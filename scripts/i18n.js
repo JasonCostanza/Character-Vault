@@ -41,8 +41,6 @@ function refreshModuleLabels() {
         const titleInput = el.querySelector('.module-title-input');
         if (titleLabel) titleLabel.textContent = data.title || t(typeDef.label);
         if (titleInput) titleInput.placeholder = t(typeDef.label);
-        const textColorBtn = el.querySelector('.module-textcolor-btn');
-        if (textColorBtn) textColorBtn.title = t('module.toggleTextColor');
         const copyBtn = el.querySelector('.module-copy-btn');
         if (copyBtn) copyBtn.title = t('module.copyClipboard');
         const deleteBtn = el.querySelector('.module-delete-btn');

@@ -54,7 +54,6 @@ const CV_TRANSLATIONS = {
         'delete.confirm':   'Delete',
 
         // Module shared header
-        'module.toggleTextColor':   'Toggle Light/Dark Text',
         'module.copyClipboard':     'Copy to Clipboard',
         'module.deleteModule':      'Delete Module',
         'module.dragResize':        'Drag to resize',
@@ -139,7 +138,6 @@ const CV_TRANSLATIONS = {
         'delete.cancel':    'Cancelar',
         'delete.confirm':   'Eliminar',
 
-        'module.toggleTextColor':   'Alternar Texto Claro/Oscuro',
         'module.copyClipboard':     'Copiar al Portapapeles',
         'module.deleteModule':      'Eliminar Módulo',
         'module.dragResize':        'Arrastrar para redimensionar',
@@ -220,7 +218,6 @@ const CV_TRANSLATIONS = {
         'delete.cancel':    'Annuler',
         'delete.confirm':   'Supprimer',
 
-        'module.toggleTextColor':   'Basculer Texte Clair/Sombre',
         'module.copyClipboard':     'Copier dans le Presse-papiers',
         'module.deleteModule':      'Supprimer le Module',
         'module.dragResize':        'Glisser pour redimensionner',
@@ -301,7 +298,6 @@ const CV_TRANSLATIONS = {
         'delete.cancel':    'Abbrechen',
         'delete.confirm':   'Löschen',
 
-        'module.toggleTextColor':   'Hellen/Dunklen Text umschalten',
         'module.copyClipboard':     'In die Zwischenablage kopieren',
         'module.deleteModule':      'Modul löschen',
         'module.dragResize':        'Ziehen zum Ändern der Größe',
@@ -387,7 +383,6 @@ const CV_TRANSLATIONS = {
         'delete.confirm':   'Elimina',
 
         // Module shared header
-        'module.toggleTextColor':   'Alterna Testo Chiaro/Scuro',
         'module.copyClipboard':     'Copia negli Appunti',
         'module.deleteModule':      'Elimina Modulo',
         'module.dragResize':        'Trascina per ridimensionare',
@@ -472,7 +467,6 @@ const CV_TRANSLATIONS = {
         'delete.cancel':    'Cancelar',
         'delete.confirm':   'Excluir',
 
-        'module.toggleTextColor':   'Alternar Texto Claro/Escuro',
         'module.copyClipboard':     'Copiar para a Área de Transferência',
         'module.deleteModule':      'Excluir Módulo',
         'module.dragResize':        'Arrastar para redimensionar',
@@ -553,7 +547,6 @@ const CV_TRANSLATIONS = {
         'delete.cancel':    'Отмена',
         'delete.confirm':   'Удалить',
 
-        'module.toggleTextColor':   'Переключить Светлый/Тёмный Текст',
         'module.copyClipboard':     'Копировать в Буфер Обмена',
         'module.deleteModule':      'Удалить Модуль',
         'module.dragResize':        'Перетащите для изменения размера',

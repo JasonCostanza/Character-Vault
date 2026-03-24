@@ -578,43 +578,6 @@ select,
     color: var(--cv-text);
 }
 
-.module-textcolor-btn {
-    margin-left: auto;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    color: var(--cv-text-muted);
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.module:hover .module-textcolor-btn {
-    opacity: 1;
-}
-
-.module-textcolor-btn:hover {
-    color: var(--cv-accent);
-    background: rgba(192, 135, 74, 0.12);
-    border-color: rgba(192, 135, 74, 0.3);
-}
-
-.module-textcolor-btn.active {
-    color: var(--cv-accent);
-    opacity: 1;
-}
-
-.module-textcolor-btn .icon {
-    width: 14px;
-    height: 14px;
-}
-
 .module-rollable-btn {
     margin-left: 4px;
     display: inline-flex;
@@ -1016,9 +979,6 @@ select,
     color: rgba(255, 255, 255, 0.5);
 }
 
-.module.text-light .module-textarea::placeholder {
-    color: rgba(0, 0, 0, 0.45);
-}
 
 .module-textarea:focus {
     box-shadow: inset 0 0 0 1px var(--cv-focus-ring);
@@ -1243,9 +1203,6 @@ select,
     overflow: visible;
 }
 
-.module[data-type="hline"] .module-textcolor-btn {
-    display: none !important;
-}
 
 .module[data-type="hline"] .module-body {
     padding: 0;
@@ -1566,21 +1523,6 @@ select,
     font-weight: 700 !important;
 }
 
-.module.text-light .stat-edit-field label {
-    color: rgba(0, 0, 0, 0.55);
-}
-
-.module.text-light .stat-edit-name,
-.module.text-light .stat-edit-field input[type="number"] {
-    background-color: transparent;
-    border-color: rgba(0, 0, 0, 0.25);
-}
-
-.module.text-light .stat-edit-name:focus,
-.module.text-light .stat-edit-field input[type="number"]:focus {
-    border-color: var(--cv-accent);
-}
-
 .stat-edit-field input[type="number"] {
     width: 100%;
     font-size: 13px;
@@ -1747,41 +1689,11 @@ select,
 /* ── Responsive Size Classes (set by ResizeObserver) ── */
 
 /* XS: ~1 column width */
-.module[data-size="xs"] .module-header {
-    padding: 3px 4px;
-    gap: 2px;
-    min-height: 24px;
-}
-
-.module[data-size="xs"] .module-title-input {
-    min-width: 24px;
-    font-size: 9px;
-}
-
-.module[data-size="xs"] .module-type-label {
-    font-size: 9px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 40px;
-}
-
-.module[data-size="xs"] .module-header button {
-    width: 16px;
-    height: 16px;
-    padding: 0;
-}
-
-.module[data-size="xs"] .module-header .icon {
-    width: 10px;
-    height: 10px;
-}
 
 .module[data-size="xs"] .module-overflow-btn {
     display: inline-flex;
 }
 
-.module[data-size="xs"] .module-textcolor-btn,
 .module[data-size="xs"] .module-rollable-btn,
 .module[data-size="xs"] .module-addstat-btn,
 .module[data-size="xs"] .module-swaplayout-btn,
@@ -1828,26 +1740,11 @@ select,
 }
 
 /* SM: ~2 column narrow width */
-.module[data-size="sm"] .module-header {
-    padding: 4px 6px;
-    gap: 4px;
-    min-height: 28px;
-}
-
-.module[data-size="sm"] .module-title-input {
-    min-width: 40px;
-    font-size: 10px;
-}
-
-.module[data-size="sm"] .module-type-label {
-    font-size: 10px;
-}
 
 .module[data-size="sm"] .module-overflow-btn {
     display: inline-flex;
 }
 
-.module[data-size="sm"] .module-textcolor-btn,
 .module[data-size="sm"] .module-rollable-btn,
 .module[data-size="sm"] .module-addstat-btn,
 .module[data-size="sm"] .module-swaplayout-btn,

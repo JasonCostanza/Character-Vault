@@ -207,6 +207,7 @@ btnWizardCreate.addEventListener('click', () => {
             const selectedOption = wizardStatTemplateSelect.querySelector('.cv-select-option.selected');
             if (selectedOption) moduleData.title = selectedOption.textContent.trim() + ' Stats';
         }
+        moduleData.colSpan = 1;
         // Auto-height so stat blocks aren't clipped by a fixed rowSpan
         moduleData.rowSpan = null;
     }

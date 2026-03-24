@@ -14,7 +14,6 @@ const btnWizardCancel = document.getElementById('btn-wizard-cancel');
 const btnWizardCreate = document.getElementById('btn-wizard-create');
 const wizardTypeCards = document.querySelectorAll('.wizard-type-card');
 const wizardSwatches = document.querySelectorAll('.wizard-swatch');
-const wizardCustomColor = document.getElementById('wizard-custom-color');
 
 let lastWizardType = null;
 
@@ -50,6 +49,11 @@ function resetWizard() {
     wizardSwatches.forEach(sw => {
         sw.classList.toggle('selected', sw.dataset.color === '');
     });
+
+    const customHex = document.getElementById('wizard-custom-hex');
+    const customSwatch = document.querySelector('.wizard-swatch-custom');
+    if (customHex) { customHex.value = ''; customHex.classList.remove('visible'); }
+    if (customSwatch) { customSwatch.style.backgroundColor = ''; customSwatch.classList.remove('has-color'); }
 
     const themeSection = document.getElementById('wizard-theme-section');
     if (themeSection) themeSection.style.display = (defaultType === 'hline' || defaultType === 'spacer') ? 'none' : '';
@@ -157,24 +161,39 @@ if (wizardStatTemplateSelect) {
 }
 
 // Color swatch selection
+const wizardCustomHex = document.getElementById('wizard-custom-hex');
+const wizardCustomSwatch = document.querySelector('.wizard-swatch-custom');
+
 wizardSwatches.forEach(swatch => {
     swatch.addEventListener('click', () => {
         if (swatch.dataset.color === 'custom') {
-            wizardCustomColor.click();
+            wizardSwatches.forEach(s => s.classList.remove('selected'));
+            swatch.classList.add('selected');
+            wizardCustomHex.classList.add('visible');
+            wizardCustomHex.focus();
+            wizardState.theme = wizardCustomHex.value.match(/^#[0-9A-Fa-f]{6}$/) ? wizardCustomHex.value : null;
             return;
         }
         wizardSwatches.forEach(s => s.classList.remove('selected'));
         swatch.classList.add('selected');
+        wizardCustomHex.classList.remove('visible');
+        wizardCustomSwatch.style.backgroundColor = '';
+        wizardCustomSwatch.classList.remove('has-color');
         wizardState.theme = swatch.dataset.color || null;
     });
 });
 
-wizardCustomColor.addEventListener('input', (e) => {
-    const customSwatch = document.querySelector('.wizard-swatch-custom');
-    wizardSwatches.forEach(s => s.classList.remove('selected'));
-    customSwatch.classList.add('selected');
-    customSwatch.style.background = e.target.value;
-    wizardState.theme = e.target.value;
+wizardCustomHex.addEventListener('input', () => {
+    const val = wizardCustomHex.value;
+    if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+        wizardCustomSwatch.style.backgroundColor = val;
+        wizardCustomSwatch.classList.add('has-color');
+        wizardState.theme = val;
+    } else {
+        wizardCustomSwatch.style.backgroundColor = '';
+        wizardCustomSwatch.classList.remove('has-color');
+        wizardState.theme = null;
+    }
 });
 
 // ── Create Module ──

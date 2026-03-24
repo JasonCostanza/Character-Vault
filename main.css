@@ -2117,6 +2117,50 @@ select,
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
 
+.wizard-swatch-custom {
+    background: transparent;
+    border: 2px dashed var(--cv-border);
+    color: var(--cv-text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.wizard-swatch-custom.selected {
+    border-style: solid;
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+.wizard-swatch-custom.has-color {
+    color: transparent;
+}
+
+.wizard-custom-hex {
+    display: none;
+    width: 80px;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-family: inherit;
+    background: var(--cv-bg-surface);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    color: var(--cv-text);
+    outline: none;
+}
+
+.wizard-custom-hex:focus {
+    border-color: var(--cv-accent);
+}
+
+.wizard-custom-hex.visible {
+    display: block;
+}
+
 .wizard-swatch-default {
     background: var(--cv-bg-surface);
     border-color: var(--cv-border);
@@ -2124,19 +2168,6 @@ select,
 
 .wizard-swatch-default.selected {
     border-color: var(--cv-accent);
-}
-
-.wizard-swatch-custom {
-    background: conic-gradient(red, yellow, lime, aqua, blue, magenta, red);
-    position: relative;
-}
-
-.wizard-color-input {
-    position: absolute;
-    width: 0;
-    height: 0;
-    opacity: 0;
-    pointer-events: none;
 }
 
 /* ── Wizard Footer ── */

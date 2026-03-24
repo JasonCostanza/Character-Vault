@@ -728,6 +728,49 @@ select,
     border-color: var(--cv-success);
 }
 
+.module-theme-btn {
+    margin-left: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.module:hover .module-theme-btn {
+    opacity: 1;
+}
+
+.module-theme-btn:hover {
+    color: var(--cv-accent);
+    background: rgba(192, 135, 74, 0.12);
+    border-color: rgba(192, 135, 74, 0.3);
+}
+
+.module-theme-btn .icon {
+    width: 14px;
+    height: 14px;
+}
+
+.module-theme-popover {
+    position: fixed;
+    z-index: 150;
+    background: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    padding: 4px 0;
+    min-width: 160px;
+}
+
 .module-delete-btn {
     margin-left: 4px;
     display: inline-flex;
@@ -836,6 +879,93 @@ select,
     width: 14px;
     height: 14px;
     flex-shrink: 0;
+}
+
+/* ── Overflow Theme Swatch Panel ── */
+.overflow-theme-label {
+    padding: 6px 12px 2px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--cv-text-muted);
+    user-select: none;
+}
+
+.overflow-swatch-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px 8px;
+    flex-wrap: wrap;
+}
+
+.overflow-swatch {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+    outline: none;
+    padding: 0;
+    background: none;
+    font-size: 0;
+}
+
+.overflow-swatch:hover {
+    transform: scale(1.15);
+}
+
+.overflow-swatch.selected {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+.overflow-swatch-default {
+    background: var(--cv-bg-surface);
+    border-color: var(--cv-border);
+}
+
+.overflow-swatch-default.selected {
+    border-color: var(--cv-accent);
+}
+
+.overflow-swatch-custom {
+    background: var(--cv-bg-sunken);
+    border-color: var(--cv-border);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--cv-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overflow-swatch-custom.has-color {
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.overflow-custom-hex {
+    display: none;
+    width: 70px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-family: inherit;
+    background: var(--cv-bg-sunken);
+    color: var(--cv-text);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    outline: none;
+}
+
+.overflow-custom-hex.visible {
+    display: block;
+}
+
+.overflow-custom-hex:focus {
+    border-color: var(--cv-accent);
 }
 
 /* ── Delete Confirmation Dialog ── */
@@ -1698,6 +1828,7 @@ select,
 .module[data-size="xs"] .module-addstat-btn,
 .module[data-size="xs"] .module-swaplayout-btn,
 .module[data-size="xs"] .module-copy-btn,
+.module[data-size="xs"] .module-theme-btn,
 .module[data-size="xs"] .module-delete-btn {
     display: none !important;
 }
@@ -1749,6 +1880,7 @@ select,
 .module[data-size="sm"] .module-addstat-btn,
 .module[data-size="sm"] .module-swaplayout-btn,
 .module[data-size="sm"] .module-copy-btn,
+.module[data-size="sm"] .module-theme-btn,
 .module[data-size="sm"] .module-delete-btn {
     display: none !important;
 }

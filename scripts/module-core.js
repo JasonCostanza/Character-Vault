@@ -266,6 +266,7 @@ let activeOverflowMenu = null;
 
 function openOverflowMenu(moduleEl, overflowBtn) {
     closeOverflowMenu();
+    closeThemePopover();
 
     const menu = document.createElement('div');
     menu.className = 'module-overflow-menu';
@@ -277,6 +278,20 @@ function openOverflowMenu(moduleEl, overflowBtn) {
         { sel: '.module-copy-btn', label: t('module.copyClipboard'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' },
         { sel: '.module-delete-btn', label: t('module.deleteModule'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>', cls: 'danger' },
     ];
+
+    // Add "Change Theme" item for modules that support theming
+    const moduleType = moduleEl.dataset.type;
+    if (moduleType !== 'hline' && moduleType !== 'spacer') {
+        const themeIcon = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>';
+        const themeItem = document.createElement('button');
+        themeItem.className = 'module-overflow-menu-item';
+        themeItem.innerHTML = themeIcon + `<span>${escapeHtml(t('module.changeTheme'))}</span>`;
+        themeItem.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showThemeSwatchPanel(menu, moduleEl);
+        });
+        menu.appendChild(themeItem);
+    }
 
     btnDefs.forEach(def => {
         const realBtn = moduleEl.querySelector(def.sel);
@@ -328,6 +343,156 @@ function handleOverflowOutsideClick(e) {
     }
 }
 
+const THEME_SWATCHES = [
+    { color: '',        key: 'wizard.swatchDefault', cls: 'overflow-swatch-default' },
+    { color: '#8B2020', key: 'wizard.swatchCrimson' },
+    { color: '#2D5A3D', key: 'wizard.swatchForest' },
+    { color: '#1E3A5F', key: 'wizard.swatchNavy' },
+    { color: '#4A2D6B', key: 'wizard.swatchRoyal' },
+    { color: '#5C3A1E', key: 'wizard.swatchLeather' },
+    { color: '#3A3A3A', key: 'wizard.swatchSlate' },
+];
+
+function buildSwatchPanel(container, moduleEl, data, onClose) {
+    const label = document.createElement('div');
+    label.className = 'overflow-theme-label';
+    label.textContent = t('module.changeTheme');
+    container.appendChild(label);
+
+    const row = document.createElement('div');
+    row.className = 'overflow-swatch-row';
+
+    THEME_SWATCHES.forEach(sw => {
+        const btn = document.createElement('button');
+        btn.className = 'overflow-swatch' + (sw.cls ? ' ' + sw.cls : '');
+        btn.title = t(sw.key);
+        if (sw.color) btn.style.backgroundColor = sw.color;
+        const current = data.theme || '';
+        if (sw.color === current) btn.classList.add('selected');
+
+        btn.addEventListener('click', () => {
+            data.theme = sw.color || null;
+            moduleEl.style.backgroundColor = sw.color || '';
+            scheduleSave();
+            onClose();
+        });
+        row.appendChild(btn);
+    });
+
+    // Custom color swatch
+    const customBtn = document.createElement('button');
+    customBtn.className = 'overflow-swatch overflow-swatch-custom';
+    customBtn.title = t('wizard.swatchCustom');
+    customBtn.textContent = '#';
+    const currentTheme = data.theme || '';
+    const isCustom = currentTheme && !THEME_SWATCHES.some(sw => sw.color === currentTheme);
+    if (isCustom) {
+        customBtn.style.backgroundColor = currentTheme;
+        customBtn.classList.add('has-color', 'selected');
+    }
+
+    customBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        row.querySelectorAll('.overflow-swatch').forEach(s => s.classList.remove('selected'));
+        customBtn.classList.add('selected');
+        hexInput.classList.add('visible');
+        hexInput.focus();
+    });
+    row.appendChild(customBtn);
+
+    // Custom hex input
+    const hexInput = document.createElement('input');
+    hexInput.type = 'text';
+    hexInput.className = 'overflow-custom-hex';
+    hexInput.placeholder = '#000000';
+    hexInput.maxLength = 7;
+    hexInput.spellcheck = false;
+    if (isCustom) {
+        hexInput.value = currentTheme;
+        hexInput.classList.add('visible');
+    }
+
+    hexInput.addEventListener('input', () => {
+        const val = hexInput.value;
+        if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+            customBtn.style.backgroundColor = val;
+            customBtn.classList.add('has-color');
+            data.theme = val;
+            moduleEl.style.backgroundColor = val;
+            scheduleSave();
+        } else {
+            customBtn.style.backgroundColor = '';
+            customBtn.classList.remove('has-color');
+        }
+    });
+
+    hexInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') onClose();
+    });
+
+    hexInput.addEventListener('click', (e) => e.stopPropagation());
+
+    row.appendChild(hexInput);
+    container.appendChild(row);
+}
+
+function showThemeSwatchPanel(menu, moduleEl) {
+    const data = modules.find(m => m.id === moduleEl.dataset.id);
+    if (!data) return;
+    menu.innerHTML = '';
+    buildSwatchPanel(menu, moduleEl, data, closeOverflowMenu);
+}
+
+// ── Theme Popover (header button) ──
+let activeThemePopover = null;
+
+function openThemePopover(moduleEl, anchorBtn) {
+    closeThemePopover();
+    const data = modules.find(m => m.id === moduleEl.dataset.id);
+    if (!data) return;
+
+    const popover = document.createElement('div');
+    closeOverflowMenu();
+    popover.className = 'module-theme-popover';
+
+    buildSwatchPanel(popover, moduleEl, data, closeThemePopover);
+    document.body.appendChild(popover);
+
+    // Position below the anchor button
+    const rect = anchorBtn.getBoundingClientRect();
+    popover.style.top = (rect.bottom + 4) + 'px';
+    popover.style.left = rect.left + 'px';
+
+    // Clamp to viewport
+    const popRect = popover.getBoundingClientRect();
+    if (popRect.right > window.innerWidth) {
+        popover.style.left = (window.innerWidth - popRect.width - 4) + 'px';
+    }
+    if (popRect.bottom > window.innerHeight) {
+        popover.style.top = (rect.top - popRect.height - 4) + 'px';
+    }
+
+    activeThemePopover = popover;
+
+    requestAnimationFrame(() => {
+        document.addEventListener('click', handleThemePopoverOutsideClick);
+    });
+}
+
+function closeThemePopover() {
+    if (activeThemePopover) {
+        activeThemePopover.remove();
+        activeThemePopover = null;
+        document.removeEventListener('click', handleThemePopoverOutsideClick);
+    }
+}
+
+function handleThemePopoverOutsideClick(e) {
+    if (activeThemePopover && !activeThemePopover.contains(e.target)) {
+        closeThemePopover();
+    }
+}
+
 function renderModule(data) {
     const typeDef = MODULE_TYPES[data.type];
     if (!typeDef) {
@@ -363,6 +528,7 @@ function renderModule(data) {
             ${data.type === 'stat' ? `<button class="module-rollable-btn disabled" title="${t('stat.toggleRollable')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 20 7 20 17 12 22 4 17 4 7"/><text x="12" y="15" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor" stroke="none">20</text></svg></button>` : ''}
             ${data.type === 'stat' ? `<button class="module-swaplayout-btn" title="${t('stat.swapLayout')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 3 3 7 7 11"/><line x1="3" y1="7" x2="21" y2="7"/><polyline points="17 13 21 17 17 21"/><line x1="21" y1="17" x2="3" y2="17"/></svg></button>` : ''}
             ${data.type === 'text' ? `<button class="module-copy-btn" title="${t('module.copyClipboard')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>` : ''}
+            ${data.type !== 'hline' && data.type !== 'spacer' ? `<button class="module-theme-btn" title="${t('module.changeTheme')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></button>` : ''}
             <button class="module-delete-btn" title="${t('module.deleteModule')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
         </div>
         <div class="module-body"></div>
@@ -427,6 +593,15 @@ function renderModule(data) {
             document.body.removeChild(tmp);
             copyBtn.classList.add('flash-confirm');
             setTimeout(() => copyBtn.classList.remove('flash-confirm'), 600);
+        });
+    }
+
+    // Theme button (opens swatch popover)
+    const themeBtn = el.querySelector('.module-theme-btn');
+    if (themeBtn) {
+        themeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openThemePopover(el, themeBtn);
         });
     }
 
@@ -542,6 +717,8 @@ function applyPlayMode() {
         if (deleteBtn) deleteBtn.style.display = 'none';
         const overflowBtn = mod.querySelector('.module-overflow-btn');
         if (overflowBtn) overflowBtn.style.display = 'none';
+        const themeBtn = mod.querySelector('.module-theme-btn');
+        if (themeBtn) themeBtn.style.display = 'none';
         // Clear stat selection when entering play mode
         mod._selectedStatIndex = null;
         // Title: show label, hide input
@@ -583,6 +760,8 @@ function applyEditMode() {
         if (deleteBtn) deleteBtn.style.display = '';
         const overflowBtnEdit = mod.querySelector('.module-overflow-btn');
         if (overflowBtnEdit) overflowBtnEdit.style.display = '';
+        const themeBtnEdit = mod.querySelector('.module-theme-btn');
+        if (themeBtnEdit) themeBtnEdit.style.display = '';
         // Title: show input, hide label
         const titleInput = mod.querySelector('.module-title-input');
         const titleLabel = mod.querySelector('.module-type-label');

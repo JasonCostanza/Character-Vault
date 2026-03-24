@@ -54,6 +54,7 @@ const CV_TRANSLATIONS = {
         'delete.confirm':   'Delete',
 
         // Module shared header
+        'module.changeTheme':       'Change Theme',
         'module.copyClipboard':     'Copy to Clipboard',
         'module.deleteModule':      'Delete Module',
         'module.dragResize':        'Drag to resize',
@@ -138,6 +139,7 @@ const CV_TRANSLATIONS = {
         'delete.cancel':    'Cancelar',
         'delete.confirm':   'Eliminar',
 
+        'module.changeTheme':       'Cambiar Tema',
         'module.copyClipboard':     'Copiar al Portapapeles',
         'module.deleteModule':      'Eliminar Módulo',
         'module.dragResize':        'Arrastrar para redimensionar',
@@ -218,6 +220,7 @@ const CV_TRANSLATIONS = {
         'delete.cancel':    'Annuler',
         'delete.confirm':   'Supprimer',
 
+        'module.changeTheme':       'Changer le Thème',
         'module.copyClipboard':     'Copier dans le Presse-papiers',
         'module.deleteModule':      'Supprimer le Module',
         'module.dragResize':        'Glisser pour redimensionner',
@@ -298,6 +301,7 @@ const CV_TRANSLATIONS = {
         'delete.cancel':    'Abbrechen',
         'delete.confirm':   'Löschen',
 
+        'module.changeTheme':       'Thema Ändern',
         'module.copyClipboard':     'In die Zwischenablage kopieren',
         'module.deleteModule':      'Modul löschen',
         'module.dragResize':        'Ziehen zum Ändern der Größe',
@@ -383,6 +387,7 @@ const CV_TRANSLATIONS = {
         'delete.confirm':   'Elimina',
 
         // Module shared header
+        'module.changeTheme':       'Cambia Tema',
         'module.copyClipboard':     'Copia negli Appunti',
         'module.deleteModule':      'Elimina Modulo',
         'module.dragResize':        'Trascina per ridimensionare',
@@ -467,6 +472,7 @@ const CV_TRANSLATIONS = {
         'delete.cancel':    'Cancelar',
         'delete.confirm':   'Excluir',
 
+        'module.changeTheme':       'Alterar Tema',
         'module.copyClipboard':     'Copiar para a Área de Transferência',
         'module.deleteModule':      'Excluir Módulo',
         'module.dragResize':        'Arrastar para redimensionar',
@@ -547,6 +553,7 @@ const CV_TRANSLATIONS = {
         'delete.cancel':    'Отмена',
         'delete.confirm':   'Удалить',
 
+        'module.changeTheme':       'Изменить Тему',
         'module.copyClipboard':     'Копировать в Буфер Обмена',
         'module.deleteModule':      'Удалить Модуль',
         'module.dragResize':        'Перетащите для изменения размера',

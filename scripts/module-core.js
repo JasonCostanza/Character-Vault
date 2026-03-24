@@ -87,7 +87,9 @@ btnWizardCancel.addEventListener('click', closeWizard);
 // ── Global Escape Key ──
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-        if (deleteConfirmOverlay.classList.contains('open')) {
+        if (activeOverflowMenu) {
+            closeOverflowMenu();
+        } else if (deleteConfirmOverlay.classList.contains('open')) {
             closeDeleteConfirm();
         } else if (wizardOverlay.classList.contains('open')) {
             closeWizard();
@@ -240,6 +242,74 @@ function updateEmptyState() {
     emptyState.style.display = modules.length === 0 ? 'flex' : 'none';
 }
 
+// ── Module Overflow Menu ──
+let activeOverflowMenu = null;
+
+function openOverflowMenu(moduleEl, overflowBtn) {
+    closeOverflowMenu();
+
+    const menu = document.createElement('div');
+    menu.className = 'module-overflow-menu';
+
+    const btnDefs = [
+        { sel: '.module-textcolor-btn', label: t('module.toggleTextColor'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M7 20L12 4l5 16"/><path d="M9.5 13h5"/></svg>' },
+        { sel: '.module-rollable-btn', label: t('stat.toggleRollable'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 20 7 20 17 12 22 4 17 4 7"/><text x="12" y="15" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor" stroke="none">20</text></svg>' },
+        { sel: '.module-addstat-btn', label: t('stat.addStat'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' },
+        { sel: '.module-swaplayout-btn', label: t('stat.swapLayout'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 3 3 7 7 11"/><line x1="3" y1="7" x2="21" y2="7"/><polyline points="17 13 21 17 17 21"/><line x1="21" y1="17" x2="3" y2="17"/></svg>' },
+        { sel: '.module-copy-btn', label: t('module.copyClipboard'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' },
+        { sel: '.module-delete-btn', label: t('module.deleteModule'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>', cls: 'danger' },
+    ];
+
+    btnDefs.forEach(def => {
+        const realBtn = moduleEl.querySelector(def.sel);
+        if (!realBtn) return;
+        const item = document.createElement('button');
+        item.className = 'module-overflow-menu-item' + (def.cls ? ' ' + def.cls : '');
+        item.innerHTML = def.icon + `<span>${escapeHtml(def.label)}</span>`;
+        item.addEventListener('click', () => {
+            realBtn.click();
+            closeOverflowMenu();
+        });
+        menu.appendChild(item);
+    });
+
+    document.body.appendChild(menu);
+
+    // Position below the kebab button
+    const rect = overflowBtn.getBoundingClientRect();
+    menu.style.top = (rect.bottom + 4) + 'px';
+    menu.style.left = rect.left + 'px';
+
+    // Clamp to viewport
+    const menuRect = menu.getBoundingClientRect();
+    if (menuRect.right > window.innerWidth) {
+        menu.style.left = (window.innerWidth - menuRect.width - 4) + 'px';
+    }
+    if (menuRect.bottom > window.innerHeight) {
+        menu.style.top = (rect.top - menuRect.height - 4) + 'px';
+    }
+
+    activeOverflowMenu = menu;
+
+    requestAnimationFrame(() => {
+        document.addEventListener('click', handleOverflowOutsideClick);
+    });
+}
+
+function closeOverflowMenu() {
+    if (activeOverflowMenu) {
+        activeOverflowMenu.remove();
+        activeOverflowMenu = null;
+        document.removeEventListener('click', handleOverflowOutsideClick);
+    }
+}
+
+function handleOverflowOutsideClick(e) {
+    if (activeOverflowMenu && !activeOverflowMenu.contains(e.target)) {
+        closeOverflowMenu();
+    }
+}
+
 function renderModule(data) {
     const typeDef = MODULE_TYPES[data.type];
     if (!typeDef) {
@@ -270,6 +340,7 @@ function renderModule(data) {
             <span class="module-drag-handle" style="${isPlayMode ? 'display:none' : ''}">&#x2807;</span>
             <span class="module-type-label" style="${isPlayMode ? '' : 'display:none'}">${escapeHtml(displayTitle)}</span>
             <input class="module-title-input" type="text" value="${escapeHtml(displayTitle)}" placeholder="${escapeHtml(t(typeDef.label))}" style="${isPlayMode ? 'display:none' : ''}" />
+            <button class="module-overflow-btn" title="${t('module.moreOptions')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button>
             <button class="module-textcolor-btn${data.textLight ? ' active' : ''}" title="${t('module.toggleTextColor')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M7 20L12 4l5 16"/><path d="M9.5 13h5"/></svg></button>
             ${data.type === 'stat' ? `<button class="module-rollable-btn disabled" title="${t('stat.toggleRollable')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 20 7 20 17 12 22 4 17 4 7"/><text x="12" y="15" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor" stroke="none">20</text></svg></button>` : ''}
             ${data.type === 'stat' ? `<button class="module-addstat-btn" title="${t('stat.addStat')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>` : ''}
@@ -356,6 +427,13 @@ function renderModule(data) {
         });
     }
 
+    // Overflow menu (kebab button for narrow modules)
+    const overflowBtn = el.querySelector('.module-overflow-btn');
+    overflowBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openOverflowMenu(el, overflowBtn);
+    });
+
     // Title input — sync custom title to data
     const titleInput = el.querySelector('.module-title-input');
     titleInput.addEventListener('input', () => {
@@ -438,6 +516,7 @@ btnDeleteConfirm.addEventListener('click', () => {
 
 // ── Edit/Play Mode Switching ──
 function applyPlayMode() {
+    closeOverflowMenu();
     document.querySelectorAll('.module').forEach(mod => {
         const type = mod.dataset.type;
         const data = modules.find(m => m.id === mod.dataset.id);
@@ -460,6 +539,8 @@ function applyPlayMode() {
         if (swapLayoutBtn) swapLayoutBtn.style.display = 'none';
         const deleteBtn = mod.querySelector('.module-delete-btn');
         if (deleteBtn) deleteBtn.style.display = 'none';
+        const overflowBtn = mod.querySelector('.module-overflow-btn');
+        if (overflowBtn) overflowBtn.style.display = 'none';
         // Clear stat selection when entering play mode
         mod._selectedStatIndex = null;
         // Title: show label, hide input
@@ -501,6 +582,8 @@ function applyEditMode() {
         mod._selectedStatIndex = null;
         const deleteBtn = mod.querySelector('.module-delete-btn');
         if (deleteBtn) deleteBtn.style.display = '';
+        const overflowBtnEdit = mod.querySelector('.module-overflow-btn');
+        if (overflowBtnEdit) overflowBtnEdit.style.display = '';
         // Title: show input, hide label
         const titleInput = mod.querySelector('.module-title-input');
         const titleLabel = mod.querySelector('.module-type-label');

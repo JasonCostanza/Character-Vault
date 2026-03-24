@@ -58,6 +58,7 @@ const CV_TRANSLATIONS = {
         'module.copyClipboard':     'Copy to Clipboard',
         'module.deleteModule':      'Delete Module',
         'module.dragResize':        'Drag to resize',
+        'module.moreOptions':       'More options',
 
         // Module type labels
         'type.text':    'Text Box',
@@ -142,6 +143,7 @@ const CV_TRANSLATIONS = {
         'module.copyClipboard':     'Copiar al Portapapeles',
         'module.deleteModule':      'Eliminar Módulo',
         'module.dragResize':        'Arrastrar para redimensionar',
+        'module.moreOptions':       'Más opciones',
 
         'type.text':    'Cuadro de Texto',
         'type.hline':   'Línea Horizontal',
@@ -222,6 +224,7 @@ const CV_TRANSLATIONS = {
         'module.copyClipboard':     'Copier dans le Presse-papiers',
         'module.deleteModule':      'Supprimer le Module',
         'module.dragResize':        'Glisser pour redimensionner',
+        'module.moreOptions':       'Plus d\'options',
 
         'type.text':    'Zone de Texte',
         'type.hline':   'Ligne Horizontale',
@@ -302,6 +305,7 @@ const CV_TRANSLATIONS = {
         'module.copyClipboard':     'In die Zwischenablage kopieren',
         'module.deleteModule':      'Modul löschen',
         'module.dragResize':        'Ziehen zum Ändern der Größe',
+        'module.moreOptions':       'Mehr Optionen',
 
         'type.text':    'Textfeld',
         'type.hline':   'Horizontale Linie',
@@ -387,6 +391,7 @@ const CV_TRANSLATIONS = {
         'module.copyClipboard':     'Copia negli Appunti',
         'module.deleteModule':      'Elimina Modulo',
         'module.dragResize':        'Trascina per ridimensionare',
+        'module.moreOptions':       'Altre opzioni',
 
         // Module type labels
         'type.text':    'Casella di Testo',
@@ -471,6 +476,7 @@ const CV_TRANSLATIONS = {
         'module.copyClipboard':     'Copiar para a Área de Transferência',
         'module.deleteModule':      'Excluir Módulo',
         'module.dragResize':        'Arrastar para redimensionar',
+        'module.moreOptions':       'Mais opções',
 
         'type.text':    'Caixa de Texto',
         'type.hline':   'Linha Horizontal',
@@ -551,6 +557,7 @@ const CV_TRANSLATIONS = {
         'module.copyClipboard':     'Копировать в Буфер Обмена',
         'module.deleteModule':      'Удалить Модуль',
         'module.dragResize':        'Перетащите для изменения размера',
+        'module.moreOptions':       'Дополнительные параметры',
 
         'type.text':    'Текстовое Поле',
         'type.hline':   'Горизонтальная Линия',

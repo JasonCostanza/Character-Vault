@@ -797,6 +797,84 @@ select,
     height: 14px;
 }
 
+/* ── Module Overflow (Kebab) Button ── */
+.module-overflow-btn {
+    margin-left: auto;
+    display: none;              /* hidden by default, shown at xs/sm via data-size */
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.module:hover .module-overflow-btn {
+    opacity: 1;
+}
+
+.module-overflow-btn:hover {
+    color: var(--cv-accent);
+    background: rgba(192, 135, 74, 0.12);
+    border-color: rgba(192, 135, 74, 0.3);
+}
+
+.module-overflow-btn .icon {
+    width: 14px;
+    height: 14px;
+}
+
+/* ── Module Overflow Menu (Flyout) ── */
+.module-overflow-menu {
+    position: fixed;
+    z-index: 150;
+    background: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    padding: 4px 0;
+    min-width: 160px;
+}
+
+.module-overflow-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    color: var(--cv-text-secondary);
+    cursor: pointer;
+    font-size: 11px;
+    font-family: inherit;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    transition: background-color 0.1s ease, color 0.1s ease;
+    user-select: none;
+}
+
+.module-overflow-menu-item:hover {
+    background: var(--cv-bg-surface);
+    color: var(--cv-text);
+}
+
+.module-overflow-menu-item.danger:hover {
+    color: var(--cv-danger);
+    background: rgba(184, 64, 64, 0.12);
+}
+
+.module-overflow-menu-item .icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
 /* ── Delete Confirmation Dialog ── */
 .delete-confirm-overlay {
     position: fixed;
@@ -1699,6 +1777,19 @@ select,
     height: 10px;
 }
 
+.module[data-size="xs"] .module-overflow-btn {
+    display: inline-flex;
+}
+
+.module[data-size="xs"] .module-textcolor-btn,
+.module[data-size="xs"] .module-rollable-btn,
+.module[data-size="xs"] .module-addstat-btn,
+.module[data-size="xs"] .module-swaplayout-btn,
+.module[data-size="xs"] .module-copy-btn,
+.module[data-size="xs"] .module-delete-btn {
+    display: none !important;
+}
+
 .module[data-size="xs"] .stat-container {
     grid-template-columns: 1fr;
 }
@@ -1750,6 +1841,19 @@ select,
 
 .module[data-size="sm"] .module-type-label {
     font-size: 10px;
+}
+
+.module[data-size="sm"] .module-overflow-btn {
+    display: inline-flex;
+}
+
+.module[data-size="sm"] .module-textcolor-btn,
+.module[data-size="sm"] .module-rollable-btn,
+.module[data-size="sm"] .module-addstat-btn,
+.module[data-size="sm"] .module-swaplayout-btn,
+.module[data-size="sm"] .module-copy-btn,
+.module[data-size="sm"] .module-delete-btn {
+    display: none !important;
 }
 
 .module[data-size="sm"] .stat-block {

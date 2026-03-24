@@ -1113,6 +1113,28 @@ select,
     box-shadow: 0 0 0 2px var(--cv-accent), 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+.module-resize-badge {
+    position: absolute;
+    bottom: 20px;
+    right: 4px;
+    background: var(--cv-bg-raised);
+    color: var(--cv-text-secondary);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-family: monospace;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 51;
+    opacity: 0;
+    transition: opacity 0.1s ease;
+}
+
+.module.module-resizing .module-resize-badge {
+    opacity: 1;
+}
+
 /* ── Module Drag & Drop ── */
 .module-ghost {
     opacity: 0.3;
@@ -2064,12 +2086,6 @@ select,
     color: var(--cv-accent);
 }
 
-.coming-soon {
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--cv-text-muted);
-}
 
 /* ── Color Swatches ── */
 .wizard-color-row {

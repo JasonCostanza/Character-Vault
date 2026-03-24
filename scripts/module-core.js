@@ -584,6 +584,15 @@ function initResizeHandle(moduleEl, data) {
         moduleEl.classList.add('module-resizing');
         handle.classList.add('resizing');
 
+        // Create resize dimension badge
+        let badge = moduleEl.querySelector('.module-resize-badge');
+        if (!badge) {
+            badge = document.createElement('div');
+            badge.className = 'module-resize-badge';
+            moduleEl.appendChild(badge);
+        }
+        badge.textContent = `${startColSpan} col × ${startRowSpan} row`;
+
         function onMouseMove(e) {
             // Calculate new colSpan from drag delta (avoids stale position after grid reflow)
             const deltaX = e.clientX - startX;
@@ -607,11 +616,15 @@ function initResizeHandle(moduleEl, data) {
 
             moduleEl.style.height = `${newHeight}px`;
             data.rowSpan = newRowSpan;
+
+            // Update resize badge
+            badge.textContent = `${data.colSpan} col × ${data.rowSpan} row`;
         }
 
         function onMouseUp() {
             moduleEl.classList.remove('module-resizing');
             handle.classList.remove('resizing');
+            if (badge) badge.remove();
             document.removeEventListener('mousemove', onMouseMove);
             document.removeEventListener('mouseup', onMouseUp);
             console.log(`[CV] Module resized: ${data.id} → ${data.colSpan} cols, ${data.rowSpan || '?'} rows`);

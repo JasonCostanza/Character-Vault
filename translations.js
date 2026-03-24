@@ -65,6 +65,7 @@ const CV_TRANSLATIONS = {
         'type.hline':   'Horizontal Line',
         'type.stat':    'Stat',
         'type.list':    'List',
+        'type.spacer':  'Spacer',
 
         // Text box submodule
         'text.placeholder': 'Write your notes...',
@@ -148,6 +149,7 @@ const CV_TRANSLATIONS = {
         'type.hline':   'Línea Horizontal',
         'type.stat':    'Estadística',
         'type.list':    'Lista',
+        'type.spacer':  'Espaciador',
 
         'text.placeholder': 'Escribe tus notas...',
 
@@ -228,6 +230,7 @@ const CV_TRANSLATIONS = {
         'type.hline':   'Ligne Horizontale',
         'type.stat':    'Statistique',
         'type.list':    'Liste',
+        'type.spacer':  'Espacement',
 
         'text.placeholder': 'Écrivez vos notes...',
 
@@ -308,6 +311,7 @@ const CV_TRANSLATIONS = {
         'type.hline':   'Horizontale Linie',
         'type.stat':    'Wert',
         'type.list':    'Liste',
+        'type.spacer':  'Abstandshalter',
 
         'text.placeholder': 'Schreibe deine Notizen...',
 
@@ -394,6 +398,7 @@ const CV_TRANSLATIONS = {
         'type.hline':   'Linea Orizzontale',
         'type.stat':    'Statistica',
         'type.list':    'Lista',
+        'type.spacer':  'Spaziatore',
 
         // Text box submodule
         'text.placeholder': 'Scrivi le tue note...',
@@ -477,6 +482,7 @@ const CV_TRANSLATIONS = {
         'type.hline':   'Linha Horizontal',
         'type.stat':    'Estatística',
         'type.list':    'Lista',
+        'type.spacer':  'Espaçador',
 
         'text.placeholder': 'Escreva suas anotações...',
 
@@ -557,6 +563,7 @@ const CV_TRANSLATIONS = {
         'type.hline':   'Горизонтальная Линия',
         'type.stat':    'Характеристика',
         'type.list':    'Список',
+        'type.spacer':  'Разделитель',
 
         'text.placeholder': 'Пишите заметки...',
 

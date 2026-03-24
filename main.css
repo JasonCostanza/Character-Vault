@@ -1243,6 +1243,74 @@ select,
     display: none !important;
 }
 
+/* ── Spacer Module ── */
+
+.module[data-type="spacer"] .module-header {
+    display: none !important;
+}
+
+.module[data-type="spacer"] {
+    background: transparent;
+    border: 1px dashed var(--cv-border);
+    box-shadow: none;
+}
+
+.module[data-type="spacer"] .module-body {
+    padding: 4px 8px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.module[data-type="spacer"] .spacer-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+}
+
+.module[data-type="spacer"] .spacer-drag-handle {
+    color: var(--cv-text-muted);
+    cursor: grab;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.module[data-type="spacer"] .spacer-drag-handle:active {
+    cursor: grabbing;
+}
+
+.module[data-type="spacer"] .spacer-label {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    flex: 1;
+    user-select: none;
+}
+
+.module[data-type="spacer"] .spacer-delete-btn {
+    background: none;
+    border: none;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    padding: 2px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.module[data-type="spacer"] .spacer-delete-btn:hover {
+    color: var(--cv-danger);
+}
+
+/* Play mode: invisible but still occupies grid space */
+.mode-play .module[data-type="spacer"] {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    pointer-events: none;
+}
+
 /* ── Stat Module ── */
 .stat-container {
     display: grid;

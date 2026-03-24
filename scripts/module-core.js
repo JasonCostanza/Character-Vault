@@ -52,7 +52,7 @@ function resetWizard() {
     });
 
     const themeSection = document.getElementById('wizard-theme-section');
-    if (themeSection) themeSection.style.display = defaultType === 'hline' ? 'none' : '';
+    if (themeSection) themeSection.style.display = (defaultType === 'hline' || defaultType === 'spacer') ? 'none' : '';
 
     const statLayoutSection = document.getElementById('wizard-stat-layout');
     if (statLayoutSection) {
@@ -106,7 +106,7 @@ wizardTypeCards.forEach(card => {
         wizardTypeCards.forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
         wizardState.type = card.dataset.type;
-        wizardThemeSection.style.display = wizardState.type === 'hline' ? 'none' : '';
+        wizardThemeSection.style.display = (wizardState.type === 'hline' || wizardState.type === 'spacer') ? 'none' : '';
         wizardStatLayout.classList.toggle('visible', wizardState.type === 'stat');
         const statTemplateEl = document.getElementById('wizard-stat-template');
         if (statTemplateEl) statTemplateEl.classList.toggle('visible', wizardState.type === 'stat');
@@ -191,6 +191,12 @@ btnWizardCreate.addEventListener('click', () => {
     if (moduleData.type === 'hline') {
         moduleData.colSpan = 4;
         moduleData.rowSpan = null;
+        moduleData.theme = null;
+    }
+
+    if (moduleData.type === 'spacer') {
+        moduleData.colSpan = 1;
+        moduleData.rowSpan = 1;
         moduleData.theme = null;
     }
 

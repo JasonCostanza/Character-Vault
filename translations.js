@@ -332,6 +332,95 @@ const CV_TRANSLATIONS = {
         'empty.message': 'Klicke auf <strong>Neues Modul</strong> um zu beginnen',
     },
 
+    it: {
+        // Menu bar
+        'menu.settings':        'Impostazioni',
+        'menu.newModule':       'Nuovo Modulo',
+        'menu.newModuleTitle':  'Nuovo Modulo',
+        'menu.edit':            'Modifica',
+        'menu.play':            'Gioca',
+        'menu.toggleMode':      'Alterna Modalità Gioco/Modifica',
+
+        // Settings overlay
+        'settings.title':           'Impostazioni',
+        'settings.close':           'Chiudi Impostazioni',
+        'settings.language':        'Lingua',
+        'settings.theme':           'Tema',
+        'settings.themeDark':       'Scuro',
+        'settings.themeLight':      'Chiaro',
+        'settings.saveLoad':        'Salva / Carica',
+        'settings.save':            'Salva',
+        'settings.load':            'Carica',
+        'settings.autoSave':        'Salva automaticamente',
+        'settings.autoSaveTip':     'Salva la scheda del personaggio dopo ogni modifica.',
+        'settings.autoLoad':        'Carica automaticamente',
+        'settings.autoLoadTip':     'Carica automaticamente la scheda del personaggio all\'ingresso.',
+        'settings.troubleshooting': 'Risoluzione dei problemi',
+        'settings.forceReload':     'Forza Ricaricamento',
+        'settings.github':          'GitHub',
+        'settings.githubTitle':     'Repository su GitHub',
+
+        // New Module Wizard
+        'wizard.title':         'Nuovo Modulo',
+        'wizard.close':         'Chiudi',
+        'wizard.type':          'Tipo',
+        'wizard.moduleTheme':   'Tema del Modulo',
+        'wizard.comingSoon':    'In Arrivo',
+        'wizard.cancel':        'Annulla',
+        'wizard.addModule':     'Aggiungi Modulo',
+        'wizard.swatchDefault': 'Predefinito',
+        'wizard.swatchCrimson': 'Cremisi',
+        'wizard.swatchForest':  'Foresta',
+        'wizard.swatchNavy':    'Blu Navy',
+        'wizard.swatchRoyal':   'Reale',
+        'wizard.swatchLeather': 'Cuoio',
+        'wizard.swatchSlate':   'Ardesia',
+        'wizard.swatchCustom':  'Colore Personalizzato',
+
+        // Delete confirmation
+        'delete.title':     'Elimina Modulo',
+        'delete.message':   'Sei sicuro? Questa azione non può essere annullata.',
+        'delete.cancel':    'Annulla',
+        'delete.confirm':   'Elimina',
+
+        // Module shared header
+        'module.toggleTextColor':   'Alterna Testo Chiaro/Scuro',
+        'module.copyClipboard':     'Copia negli Appunti',
+        'module.deleteModule':      'Elimina Modulo',
+        'module.dragResize':        'Trascina per ridimensionare',
+
+        // Module type labels
+        'type.text':    'Casella di Testo',
+        'type.hline':   'Linea Orizzontale',
+        'type.stat':    'Statistica',
+        'type.list':    'Lista',
+
+        // Text box submodule
+        'text.placeholder': 'Scrivi le tue note...',
+
+        // Stat submodule
+        'stat.addStat':         'Aggiungi Statistica',
+        'stat.deleteStat':      'Elimina Statistica',
+        'stat.unnamed':         'Senza Nome',
+        'stat.rollable':        'Tirabile',
+        'stat.proficient':      'Competente',
+        'stat.check':           'Prova',
+        'stat.value':           'Valore',
+        'stat.modifier':        'Mod',
+        'stat.layoutLabel':     'Layout',
+        'stat.largeStat':       'Valore Grande',
+        'stat.largeModifier':   'Modificatore Grande',
+        'stat.swapLayout':      'Scambia Visualizzazione Valore/Modificatore',
+        'stat.toggleRollable':  'Alterna Tirabile (seleziona prima una statistica)',
+        'stat.rollableOn':      'Tirabile — clicca per disattivare',
+        'stat.rollableOff':     'Non Tirabile — clicca per attivare',
+        'stat.templateLabel':   'Modello',
+        'stat.templateNone':    'Nessuno (vuoto)',
+
+        // Empty state
+        'empty.message': 'Clicca su <strong>Nuovo Modulo</strong> per iniziare',
+    },
+
     'pt-BR': {
         'menu.settings':        'Configurações',
         'menu.newModule':       'Novo Módulo',

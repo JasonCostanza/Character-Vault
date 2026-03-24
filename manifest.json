@@ -1,0 +1,38 @@
+{
+    "manifestVersion": 1,
+    "name": "Character Vault",
+    "entryPoint": "/main.html",
+    "summary": "A character sheet engine for RPGs.",
+    "descriptionFilePath": "/README.md",
+    "version": "0.1",
+    "license": "GPLv3 + Common Clause",
+    "about": {
+        "website": "https://github.com/jasoncostanza/character-vault",
+        "authors": [
+            "Jason Costanza"
+        ]
+    },
+    "api": {
+        "version": "0.1",
+        "subscriptions": {
+            "dice": {
+                "onRollResults": "handleRollResult"
+            },
+            "symbiote": {
+                "onstateChangeEvent": "onStateChangeEvent"
+            }
+        }
+    },
+    "environment": {
+        "webViewBackgroundColor": "#000000",
+        "capabilities": [
+            "runInBackground"
+        ],
+        "extras": [
+            "fonts",
+            "icons",
+            "colorStyles",
+            "diceFinder"
+        ]
+    }
+}

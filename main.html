@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Vault</title>
+    <link rel="stylesheet" href="main.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.5/dist/purify.min.js"></script>
+    <script src="translations.js"></script>
+</head>
+<body>
+
+    <!-- Top Menu Bar -->
+    <div id="menu-bar">
+        <div id="menu-left">
+            <button id="btn-settings" class="menu-btn" title="Settings" data-i18n-title="menu.settings"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+            <button id="btn-new-module" class="menu-btn" title="New Module" data-i18n-title="menu.newModuleTitle"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span class="mode-label" data-i18n="menu.newModule">New Module</span></button>
+        </div>
+        <div id="menu-right">
+            <button id="btn-mode-toggle" class="menu-btn mode-edit" title="Toggle Play/Edit Mode" data-i18n-title="menu.toggleMode">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                <span class="mode-label">Edit</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div id="content">
+        <div id="module-grid">
+            <div id="empty-state" class="empty-state">
+                <svg class="icon empty-state-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span data-i18n="empty.message" data-i18n-html>Click <strong>New Module</strong> to get started</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Overlay -->
+    <div id="settings-overlay" class="settings-overlay" aria-hidden="true">
+        <div class="settings-panel">
+
+            <!-- Header -->
+            <div class="settings-header">
+                <h2 class="settings-title" data-i18n="settings.title">Settings</h2>
+                <button id="btn-settings-close" class="menu-btn" title="Close Settings" data-i18n-title="settings.close"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+
+            <!-- Body -->
+            <div class="settings-body">
+
+                <!-- Language -->
+                <div class="settings-section">
+                    <label class="settings-label" for="setting-language" data-i18n="settings.language">Language</label>
+                    <select id="setting-language" class="settings-select">
+                        <option value="en">English</option>
+                        <option value="es">Espa&#241;ol</option>
+                        <option value="fr">Fran&#231;ais</option>
+                        <option value="de">Deutsch</option>
+                        <option value="pt-BR">Portugu&#234;s (Brasil)</option>
+                        <option value="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option>
+                    </select>
+                </div>
+
+                <!-- Theme -->
+                <div class="settings-section">
+                    <label class="settings-label" data-i18n="settings.theme">Theme</label>
+                    <div class="settings-toggle-group">
+                        <button id="btn-theme-dark" class="settings-toggle-btn active" data-i18n="settings.themeDark">Dark</button>
+                        <button id="btn-theme-light" class="settings-toggle-btn" data-i18n="settings.themeLight">Light</button>
+                    </div>
+                </div>
+
+                <!-- Save / Load -->
+                <div class="settings-section">
+                    <label class="settings-label" data-i18n="settings.saveLoad">Save / Load</label>
+                    <div class="settings-btn-row">
+                        <button id="btn-save" class="settings-action-btn" data-i18n="settings.save">Save</button>
+                        <button id="btn-load" class="settings-action-btn" data-i18n="settings.load">Load</button>
+                    </div>
+                    <div class="settings-checkbox-row">
+                        <input type="checkbox" id="chk-auto-save">
+                        <label for="chk-auto-save" data-i18n="settings.autoSave">Save automatically</label>
+                        <span class="settings-tooltip" data-tip="Save the character sheet after every change." data-i18n-tip="settings.autoSaveTip">?</span>
+                    </div>
+                    <div class="settings-checkbox-row">
+                        <input type="checkbox" id="chk-auto-load">
+                        <label for="chk-auto-load" data-i18n="settings.autoLoad">Load automatically</label>
+                        <span class="settings-tooltip" data-tip="Automatically load the character sheet when you enter." data-i18n-tip="settings.autoLoadTip">?</span>
+                    </div>
+                </div>
+
+                <!-- Troubleshooting -->
+                <div class="settings-section">
+                    <label class="settings-label" data-i18n="settings.troubleshooting">Troubleshooting</label>
+                    <button id="btn-force-reload" class="settings-action-btn settings-action-btn--warning" data-i18n="settings.forceReload">Force Reload</button>
+                </div>
+
+                <!-- Links -->
+                <div class="settings-section settings-links">
+                    <a href="https://github.com/JasonCostanza/Character-Vault" target="_blank" rel="noopener" class="settings-link" title="GitHub Repository" data-i18n="settings.github" data-i18n-title="settings.githubTitle">
+                        GitHub
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="settings-footer">
+                <span class="settings-version">v0.1</span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- New Module Wizard Overlay -->
+    <div id="wizard-overlay" class="wizard-overlay" aria-hidden="true">
+        <div class="wizard-panel">
+
+            <!-- Header -->
+            <div class="wizard-header">
+                <h2 class="wizard-title" data-i18n="wizard.title">New Module</h2>
+                <button id="btn-wizard-close" class="menu-btn" title="Close" data-i18n-title="wizard.close"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+
+            <!-- Body -->
+            <div class="wizard-body">
+
+                <!-- Type Selection -->
+                <div class="wizard-section">
+                    <label class="wizard-label" data-i18n="wizard.type">Type</label>
+                    <div class="wizard-type-grid">
+                        <div class="wizard-type-card" data-type="hline">
+                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/></svg>
+                            <span class="wizard-type-name" data-i18n="type.hline">Horizontal Line</span>
+                        </div>
+                        <div class="wizard-type-card" data-type="stat">
+                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <span class="wizard-type-name" data-i18n="type.stat">Stat</span>
+                        </div>
+                        <div class="wizard-type-card disabled" data-type="list">
+                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                            <span class="wizard-type-name" data-i18n="type.list">List</span>
+                            <span class="coming-soon" data-i18n="wizard.comingSoon">Coming Soon</span>
+                        </div>
+                        <div class="wizard-type-card" data-type="text">
+                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+                            <span class="wizard-type-name" data-i18n="type.text">Text Box</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stat Layout Sub-Option -->
+                <div id="wizard-stat-layout" class="wizard-stat-layout">
+                    <label class="wizard-label" data-i18n="stat.layoutLabel">Layout</label>
+                    <div class="wizard-layout-row">
+                        <button class="wizard-layout-btn selected" data-layout="large-stat">
+                            <span class="wizard-layout-preview">16</span>
+                            <span class="wizard-layout-preview-sub">+3</span>
+                            <span class="wizard-layout-label" data-i18n="stat.largeStat">Large Stat</span>
+                        </button>
+                        <button class="wizard-layout-btn" data-layout="large-modifier">
+                            <span class="wizard-layout-preview">+3</span>
+                            <span class="wizard-layout-preview-sub">16</span>
+                            <span class="wizard-layout-label" data-i18n="stat.largeModifier">Large Modifier</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Module Theme -->
+                <div id="wizard-theme-section" class="wizard-section">
+                    <label class="wizard-label" data-i18n="wizard.moduleTheme">Module Theme</label>
+                    <div class="wizard-color-row">
+                        <button class="wizard-swatch wizard-swatch-default selected" data-color="" title="Default" data-i18n-title="wizard.swatchDefault"></button>
+                        <button class="wizard-swatch" data-color="#8B2020" style="background-color: #8B2020;" title="Crimson" data-i18n-title="wizard.swatchCrimson"></button>
+                        <button class="wizard-swatch" data-color="#2D5A3D" style="background-color: #2D5A3D;" title="Forest" data-i18n-title="wizard.swatchForest"></button>
+                        <button class="wizard-swatch" data-color="#1E3A5F" style="background-color: #1E3A5F;" title="Navy" data-i18n-title="wizard.swatchNavy"></button>
+                        <button class="wizard-swatch" data-color="#4A2D6B" style="background-color: #4A2D6B;" title="Royal" data-i18n-title="wizard.swatchRoyal"></button>
+                        <button class="wizard-swatch" data-color="#5C3A1E" style="background-color: #5C3A1E;" title="Leather" data-i18n-title="wizard.swatchLeather"></button>
+                        <button class="wizard-swatch" data-color="#3A3A3A" style="background-color: #3A3A3A;" title="Slate" data-i18n-title="wizard.swatchSlate"></button>
+                        <button class="wizard-swatch wizard-swatch-custom" data-color="custom" title="Custom Color" data-i18n-title="wizard.swatchCustom">
+                            <input type="color" class="wizard-color-input" id="wizard-custom-color" value="#444444">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stat Template -->
+                <div id="wizard-stat-template" class="wizard-stat-template">
+                    <label class="wizard-label" data-i18n="stat.templateLabel">Template</label>
+                    <div class="cv-select" id="wizard-stat-template-select">
+                        <button type="button" class="cv-select-trigger" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="cv-select-value" data-i18n="stat.templateNone">None (blank)</span>
+                            <svg class="cv-select-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <ul class="cv-select-menu" role="listbox">
+                            <li class="cv-select-option selected" data-value="" role="option" data-i18n="stat.templateNone">None (blank)</li>
+                            <li class="cv-select-option" data-value="dnd5e" role="option">D&amp;D 5e</li>
+                            <li class="cv-select-option" data-value="pf2e" role="option">Pathfinder 2e</li>
+                            <li class="cv-select-option" data-value="daggerheart" role="option">Daggerheart</li>
+                            <li class="cv-select-option" data-value="coc" role="option">Call of Cthulhu</li>
+                            <li class="cv-select-option" data-value="vtm" role="option">Vampire: The Masquerade</li>
+                            <li class="cv-select-option" data-value="cpred" role="option">Cyberpunk Red</li>
+                            <li class="cv-select-option" data-value="mothership" role="option">Mothership</li>
+                            <li class="cv-select-option" data-value="sr6" role="option">Shadowrun 6e</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Sizing -->
+
+            </div>
+
+            <!-- Footer -->
+            <div class="wizard-footer">
+                <button id="btn-wizard-cancel" class="wizard-btn-cancel" data-i18n="wizard.cancel">Cancel</button>
+                <button id="btn-wizard-create" class="wizard-btn-create" data-i18n="wizard.addModule">Add Module</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Dialog -->
+    <div id="delete-confirm-overlay" class="delete-confirm-overlay" aria-hidden="true">
+        <div class="delete-confirm-panel">
+            <div class="delete-confirm-title" data-i18n="delete.title">Delete Module</div>
+            <div class="delete-confirm-msg" data-i18n="delete.message">Are you sure? This cannot be undone.</div>
+            <div class="delete-confirm-actions">
+                <button id="btn-delete-cancel" class="delete-confirm-cancel" data-i18n="delete.cancel">Cancel</button>
+                <button id="btn-delete-confirm" class="delete-confirm-delete" data-i18n="delete.confirm">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Scripts (load order matters — no async/defer) -->
+    <script src="scripts/shared.js"></script>
+    <script src="scripts/i18n.js"></script>
+    <script src="scripts/theme.js"></script>
+    <script src="scripts/settings.js"></script>
+    <script src="scripts/persistence.js"></script>
+    <script src="scripts/module-core.js"></script>
+    <script src="scripts/module-text.js"></script>
+    <script src="scripts/module-stat.js"></script>
+    <script src="scripts/module-hr.js"></script>
+    <script src="scripts/app.js"></script>
+
+</body>
+</html>

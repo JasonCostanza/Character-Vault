@@ -1,0 +1,5 @@
+# Claude Code local settings
+.claude/
+
+# TaleSpire local storage (user save data)
+.localStorage/

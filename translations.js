@@ -29,7 +29,8 @@ const CV_TRANSLATIONS = {
         'settings.troubleshooting': 'Troubleshooting',
         'settings.forceReload':     'Force Reload',
         'settings.github':          'GitHub',
-        'settings.githubTitle':     'GitHub Repository',
+        'settings.githubTitle':     'Copy GitHub link to clipboard',
+        'settings.githubCopied':    'Copied!',
 
         // New Module Wizard
         'wizard.title':         'New Module',
@@ -133,7 +134,8 @@ const CV_TRANSLATIONS = {
         'settings.troubleshooting': 'Solución de problemas',
         'settings.forceReload':     'Forzar Recarga',
         'settings.github':          'GitHub',
-        'settings.githubTitle':     'Repositorio en GitHub',
+        'settings.githubTitle':     'Copiar enlace de GitHub al portapapeles',
+        'settings.githubCopied':    '¡Copiado!',
 
         'wizard.title':         'Nuevo Módulo',
         'wizard.close':         'Cerrar',
@@ -229,7 +231,8 @@ const CV_TRANSLATIONS = {
         'settings.troubleshooting': 'Dépannage',
         'settings.forceReload':     'Forcer le Rechargement',
         'settings.github':          'GitHub',
-        'settings.githubTitle':     'Dépôt GitHub',
+        'settings.githubTitle':     'Copier le lien GitHub dans le presse-papiers',
+        'settings.githubCopied':    'Copié !',
 
         'wizard.title':         'Nouveau Module',
         'wizard.close':         'Fermer',
@@ -325,7 +328,8 @@ const CV_TRANSLATIONS = {
         'settings.troubleshooting': 'Fehlerbehebung',
         'settings.forceReload':     'Neu laden erzwingen',
         'settings.github':          'GitHub',
-        'settings.githubTitle':     'GitHub-Repository',
+        'settings.githubTitle':     'GitHub-Link in die Zwischenablage kopieren',
+        'settings.githubCopied':    'Kopiert!',
 
         'wizard.title':         'Neues Modul',
         'wizard.close':         'Schließen',
@@ -423,7 +427,8 @@ const CV_TRANSLATIONS = {
         'settings.troubleshooting': 'Risoluzione dei problemi',
         'settings.forceReload':     'Forza Ricaricamento',
         'settings.github':          'GitHub',
-        'settings.githubTitle':     'Repository su GitHub',
+        'settings.githubTitle':     'Copia il link GitHub negli appunti',
+        'settings.githubCopied':    'Copiato!',
 
         // New Module Wizard
         'wizard.title':         'Nuovo Modulo',
@@ -527,7 +532,8 @@ const CV_TRANSLATIONS = {
         'settings.troubleshooting': 'Solução de Problemas',
         'settings.forceReload':     'Forçar Recarga',
         'settings.github':          'GitHub',
-        'settings.githubTitle':     'Repositório no GitHub',
+        'settings.githubTitle':     'Copiar link do GitHub para a área de transferência',
+        'settings.githubCopied':    'Copiado!',
 
         'wizard.title':         'Novo Módulo',
         'wizard.close':         'Fechar',
@@ -623,7 +629,8 @@ const CV_TRANSLATIONS = {
         'settings.troubleshooting': 'Устранение неполадок',
         'settings.forceReload':     'Принудительная Перезагрузка',
         'settings.github':          'GitHub',
-        'settings.githubTitle':     'Репозиторий на GitHub',
+        'settings.githubTitle':     'Скопировать ссылку на GitHub в буфер обмена',
+        'settings.githubCopied':    'Скопировано!',
 
         'wizard.title':         'Новый Модуль',
         'wizard.close':         'Закрыть',

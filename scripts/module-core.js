@@ -600,10 +600,16 @@ function renderModule(data) {
     if (healthEyedropperBtn) {
         healthEyedropperBtn.addEventListener('click', async () => {
             try {
-                const creature = await TS.creatures.getSelectedCreature();
-                if (creature && creature.hp !== undefined) {
-                    data.content.currentHP = creature.hp;
-                    data.content.maxHP = creature.maxHp || creature.hp;
+                const selected = await TS.creatures.getSelectedCreatures();
+                if (!selected || selected.length === 0) {
+                    console.warn('[CV] Eyedropper: no creature selected on the board.');
+                    return;
+                }
+                const moreInfo = await TS.creatures.getMoreInfo(selected);
+                const creature = moreInfo[0];
+                if (creature && creature.hp) {
+                    data.content.currentHP = creature.hp.value;
+                    data.content.maxHP = creature.hp.max;
                     const bodyEl = el.querySelector('.module-body');
                     const isPlay = modeToggle.classList.contains('mode-play');
                     typeDef.renderBody(bodyEl, data, isPlay);

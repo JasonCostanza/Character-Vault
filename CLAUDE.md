@@ -13,6 +13,7 @@ Character Vault is a TaleSpire Symbiote — a web-based plugin that runs inside 
 - `main.css` — Stylesheet
 - `README.md` — Project readme
 - `LICENSE.txt` — GPL-3.0 with Commons Clause license
+- `NEW_MODULE_GUIDE.md` - Guide to creating new modules
 
 ## Folder Structure
 
@@ -35,7 +36,7 @@ Character Vault is a TaleSpire Symbiote — a web-based plugin that runs inside 
 
 - No build system — this is a vanilla HTML/CSS/JS project served directly by TaleSpire
 - To test, the symbiote folder must reside in TaleSpire's `Symbiotes` directory (this repo's location)
-- This is the `Character Vault DEV` instance; changes are tested live in TaleSpire
+- This is the `Character Vault DEV` instance; changes are tested live in TaleSpire but can be roughly previewed in VS Code's `HTML Preview` Tab.
 
 ## Project Rules
 
@@ -48,9 +49,6 @@ Character Vault is a TaleSpire Symbiote — a web-based plugin that runs inside 
 - **Buttons with icons use inline SVGs.** Use `<svg class="icon">` with `stroke="currentColor"` so icons inherit color from the button state. Prefer basic shapes (`<line>`, `<circle>`, `<rect>`, `<polyline>`) for simple icons, but use `<path d="...">` when the icon requires curves or complex geometry (gears, pencils, etc.). **Do not use CSS `mask-image` for icons** — it does not render in TaleSpire's embedded Chromium browser.
 - **Module ≠ Submodule.** A **Module** is a container (e.g., a tab panel or section) that holds one or more **Submodules**. A **Submodule** is an individual component (e.g., Stats, Abilities, Spells) that lives inside a Module. Do not use these terms interchangeably.
 - **New module types must use `registerModuleType()`.** All modules share a common shell (header with drag handle, resize handle, theme, height mode). Never build a new module by duplicating the shell markup — instead call `registerModuleType('typeName', { label, renderBody, onPlayMode, onEditMode })` and the shared `renderModule()` function handles the rest. See the `'text'` registration as the reference pattern.
-- Pay attention to when a file says `# Note to Claude`. This will be an important callout from me to you.
 - Iconography for native Talespire icons can be found at: https://symbiote-docs.talespire.com/icons.html
-
-## License
-
-GPL-3.0 with Commons Clause. Keep it open source and give credit. Commercial use requires explicit written permission.
+- The bar at the top of a module is referred to as the `Tools bar`.
+- The menu that appears when a module is too small is referred to as `module overlay menu` or `module menu`.

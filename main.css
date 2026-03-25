@@ -803,6 +803,43 @@ select,
     height: 14px;
 }
 
+/* ── Health Module Header Buttons ── */
+.module-health-maxmod-btn,
+.module-health-eyedropper-btn {
+    margin-left: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.module:hover .module-health-maxmod-btn,
+.module:hover .module-health-eyedropper-btn {
+    opacity: 1;
+}
+
+.module-health-maxmod-btn:hover,
+.module-health-eyedropper-btn:hover {
+    color: var(--cv-accent);
+    background: rgba(192, 135, 74, 0.12);
+    border-color: rgba(192, 135, 74, 0.3);
+}
+
+.module-health-maxmod-btn .icon,
+.module-health-eyedropper-btn .icon {
+    width: 14px;
+    height: 14px;
+}
+
 /* ── Module Overflow (Kebab) Button ── */
 .module-overflow-btn {
     margin-left: auto;
@@ -1816,6 +1853,379 @@ select,
     border-radius: 6px;
 }
 
+/* ── Health Module ── */
+.health-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 8px;
+}
+
+/* ── Play Mode: HP Display ── */
+.health-hp-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    user-select: none;
+}
+
+.health-current {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: inherit;
+}
+
+.health-sep {
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--cv-text-muted);
+}
+
+.health-max {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--cv-text-secondary);
+}
+
+.health-maxmod-indicator {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-warning);
+    margin-top: -2px;
+    user-select: none;
+}
+
+/* ── Temp HP Badge ── */
+.health-temp-row {
+    display: flex;
+    justify-content: center;
+}
+
+.health-temp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+    user-select: none;
+}
+
+.health-temp-badge:hover {
+    border-color: var(--cv-accent);
+}
+
+.health-temp-badge.has-temp {
+    border-color: var(--cv-warning);
+    background-color: rgba(192, 144, 64, 0.1);
+}
+
+.health-temp-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cv-text);
+}
+
+.health-temp-badge.has-temp .health-temp-value {
+    color: var(--cv-warning);
+}
+
+.health-temp-label {
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--cv-text-muted);
+}
+
+.health-temp-badge.has-temp .health-temp-label {
+    color: var(--cv-warning);
+}
+
+/* ── Play Mode: Main Row (HP + buttons side by side) ── */
+.health-main-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.health-hp-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ── Action Buttons ── */
+.health-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.health-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    user-select: none;
+}
+
+.health-action-btn .icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.health-damage-btn {
+    background-color: rgba(184, 64, 64, 0.1);
+    border: 1px solid var(--cv-danger);
+    color: var(--cv-danger);
+}
+
+.health-damage-btn:hover {
+    background-color: rgba(184, 64, 64, 0.25);
+}
+
+.health-heal-btn {
+    background-color: rgba(90, 158, 110, 0.1);
+    border: 1px solid var(--cv-success);
+    color: var(--cv-success);
+}
+
+.health-heal-btn:hover {
+    background-color: rgba(90, 158, 110, 0.25);
+}
+
+/* ── Health Action Overlay ── */
+.health-action-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    background-color: var(--cv-bg-surface);
+    border-radius: 6px;
+    border: 1px solid var(--cv-border);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.health-action-overlay-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.health-action-overlay-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--cv-text-secondary);
+    user-select: none;
+}
+
+.health-action-overlay-subheading {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--cv-text-muted);
+    user-select: none;
+    margin-top: 4px;
+}
+
+.health-action-overlay-close {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0;
+    transition: color 0.15s ease;
+}
+
+.health-action-overlay-close:hover {
+    color: var(--cv-text);
+}
+
+.health-action-overlay-close .icon {
+    width: 12px;
+    height: 12px;
+}
+
+.health-action-overlay-input {
+    width: 100%;
+    max-width: 120px;
+    padding: 6px 8px;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: inherit;
+    text-align: center;
+    color: var(--cv-text);
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    outline: none;
+}
+
+.health-action-overlay-input:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+.health-action-overlay-actions {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+    max-width: 160px;
+}
+
+.health-action-overlay-cancel {
+    flex: 1;
+    padding: 5px 8px;
+    font-size: 11px;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--cv-border);
+    border-radius: 3px;
+    background: transparent;
+    color: var(--cv-text-muted);
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.health-action-overlay-cancel:hover {
+    color: var(--cv-text-secondary);
+    background-color: var(--cv-bg-raised);
+}
+
+.health-action-overlay-ok {
+    flex: 1;
+    padding: 5px 8px;
+    font-size: 11px;
+    font-family: inherit;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    border: 1px solid var(--cv-accent-secondary);
+    border-radius: 3px;
+    background: rgba(192, 135, 74, 0.1);
+    color: var(--cv-accent);
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.health-action-overlay-ok:hover {
+    background: rgba(192, 135, 74, 0.2);
+    border-color: var(--cv-accent);
+}
+
+/* ── Edit Mode: Inline Inputs ── */
+.health-inline-input {
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 3px;
+    background-color: var(--cv-bg-sunken);
+    font-family: inherit;
+    text-align: center;
+    color: inherit;
+    outline: none;
+    padding: 1px 2px;
+    box-sizing: border-box;
+}
+
+.health-inline-input:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 1px var(--cv-focus-ring);
+}
+
+.health-inline-input.health-current {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.1;
+    width: 3ch;
+    max-width: 60px;
+}
+
+.health-inline-input.health-max {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--cv-text-secondary);
+    width: 3ch;
+    max-width: 48px;
+}
+
+.health-temp-badge-edit {
+    cursor: default;
+}
+
+.health-temp-input {
+    width: 2.5ch;
+    max-width: 32px;
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 3px;
+    background-color: var(--cv-bg-sunken);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--cv-text);
+    outline: none;
+    padding: 1px 2px;
+    box-sizing: border-box;
+}
+
+.health-temp-input:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+.health-temp-badge.has-temp .health-temp-input {
+    color: var(--cv-warning);
+}
+
+/* ── Responsive: XS Health ── */
+.module[data-size="xs"] .health-current {
+    font-size: 26px;
+}
+
+.module[data-size="xs"] .health-max {
+    font-size: 17px;
+}
+
+.module[data-size="xs"] .health-sep {
+    font-size: 17px;
+}
+
+.module[data-size="xs"] .health-inline-input.health-current {
+    font-size: 26px;
+}
+
+.module[data-size="xs"] .health-inline-input.health-max {
+    font-size: 17px;
+}
+
 /* ── Responsive Size Classes (set by ResizeObserver) ── */
 
 /* XS: ~1 column width */
@@ -1827,6 +2237,8 @@ select,
 .module[data-size="xs"] .module-rollable-btn,
 .module[data-size="xs"] .module-addstat-btn,
 .module[data-size="xs"] .module-swaplayout-btn,
+.module[data-size="xs"] .module-health-maxmod-btn,
+.module[data-size="xs"] .module-health-eyedropper-btn,
 .module[data-size="xs"] .module-copy-btn,
 .module[data-size="xs"] .module-theme-btn,
 .module[data-size="xs"] .module-delete-btn {
@@ -1879,6 +2291,8 @@ select,
 .module[data-size="sm"] .module-rollable-btn,
 .module[data-size="sm"] .module-addstat-btn,
 .module[data-size="sm"] .module-swaplayout-btn,
+.module[data-size="sm"] .module-health-maxmod-btn,
+.module[data-size="sm"] .module-health-eyedropper-btn,
 .module[data-size="sm"] .module-copy-btn,
 .module[data-size="sm"] .module-theme-btn,
 .module[data-size="sm"] .module-delete-btn {

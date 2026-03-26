@@ -2,7 +2,7 @@
 
 ## Overview
 
-Character Vault supports **two themes**: `light` (parchment) and `dark` (default, matches TaleSpire's aesthetic). The active theme is toggled via a `data-theme` attribute on the root `<html>` element.
+Character Vault supports **six themes**: `dark` (default, matches TaleSpire's aesthetic), `light` (parchment), `cyberpunk` (neon pink/cyan on indigo-black), `scifi` (blue-steel HUD), `angelic` (gold on silver-white, light theme), and `demonic` (blood red on crimson-black). The active theme is set via a `data-theme` attribute on the root `<html>` element.
 
 TaleSpire injects its own CSS variables when `colorStyles` is listed under `extras` in `manifest.json`. These TS-provided variables are documented below as a reference, but Character Vault defines its own semantic token layer on top of them for full control over both themes.
 
@@ -34,24 +34,24 @@ All app-level styling uses `--cv-*` prefixed CSS custom properties. These are de
 
 ### Semantic Token Table
 
-| Token | Light (Parchment) | Dark | Purpose |
-|---|---|---|---|
-| `--cv-bg` | `#F2E8D0` | `#1C1C1C` | Page / app background |
-| `--cv-bg-surface` | `#EDE0C4` | `#252525` | Cards, panels, modules |
-| `--cv-bg-raised` | `#F7EED8` | `#2E2E2E` | Elevated elements (dropdowns, tooltips) |
-| `--cv-bg-sunken` | `#D9C9A8` | `#141414` | Inset areas, input backgrounds |
-| `--cv-text` | `#2C1A0E` | `#E8DCC8` | Primary body text |
-| `--cv-text-secondary` | `#5C3D2E` | `#B0A090` | Labels, supporting text |
-| `--cv-text-muted` | `#8B6E5A` | `#6A5A4A` | Placeholder, disabled text |
-| `--cv-border` | `#C8AE8C` | `#3A3530` | Default borders and dividers |
-| `--cv-border-subtle` | `#DDD0B2` | `#2A2520` | Subtle separators |
-| `--cv-accent` | `#8B4513` | `#C0874A` | Primary accent (buttons, highlights) |
-| `--cv-accent-hover` | `#6B3410` | `#D9A060` | Accent hover state |
-| `--cv-accent-secondary` | `#6B4226` | `#A06838` | Secondary accent |
-| `--cv-success` | `#4A7C59` | `#5A9E6E` | Positive / success states |
-| `--cv-danger` | `#8B2020` | `#B84040` | Error / danger states |
-| `--cv-warning` | `#A0722A` | `#C09040` | Warning / caution states |
-| `--cv-focus-ring` | `#8B451380` | `#C0874A80` | Focus outline (with alpha) |
+| Token | Dark | Light | Cyberpunk | Sci-Fi | Angelic | Demonic | Purpose |
+|---|---|---|---|---|---|---|---|
+| `--cv-bg` | `#1C1C1C` | `#F2E8D0` | `#0A0A14` | `#0C1018` | `#F0F0F5` | `#120808` | Page / app background |
+| `--cv-bg-surface` | `#252525` | `#EDE0C4` | `#12121F` | `#131A24` | `#E8E8F0` | `#1C0E0E` | Cards, panels, modules |
+| `--cv-bg-raised` | `#2E2E2E` | `#F7EED8` | `#1A1A2A` | `#1A2332` | `#F5F5FA` | `#281414` | Elevated elements (dropdowns, tooltips) |
+| `--cv-bg-sunken` | `#141414` | `#D9C9A8` | `#06060E` | `#080C12` | `#D8D8E4` | `#0A0404` | Inset areas, input backgrounds |
+| `--cv-text` | `#E8DCC8` | `#2C1A0E` | `#E0E0F0` | `#C8D8E8` | `#1A1A2E` | `#E8D0C8` | Primary body text |
+| `--cv-text-secondary` | `#B0A090` | `#5C3D2E` | `#9090B0` | `#7A90A8` | `#484868` | `#A08078` | Labels, supporting text |
+| `--cv-text-muted` | `#6A5A4A` | `#8B6E5A` | `#505070` | `#3E5068` | `#8888A0` | `#604840` | Placeholder, disabled text |
+| `--cv-border` | `#3A3530` | `#C8AE8C` | `#2A2A40` | `#1E2E40` | `#C0C0D4` | `#3A2020` | Default borders and dividers |
+| `--cv-border-subtle` | `#2A2520` | `#DDD0B2` | `#1E1E30` | `#162030` | `#D8D8E8` | `#2A1515` | Subtle separators |
+| `--cv-accent` | `#C0874A` | `#8B4513` | `#FF2E8B` | `#2196F3` | `#B8860B` | `#CC2020` | Primary accent (buttons, highlights) |
+| `--cv-accent-hover` | `#D9A060` | `#6B3410` | `#FF5AA5` | `#42A5F5` | `#9A7209` | `#E03030` | Accent hover state |
+| `--cv-accent-secondary` | `#A06838` | `#6B4226` | `#00E5FF` | `#00BCD4` | `#6A5ACD` | `#E07020` | Secondary accent |
+| `--cv-success` | `#5A9E6E` | `#4A7C59` | `#00E676` | `#4CAF50` | `#3A8A4A` | `#6A9A40` | Positive / success states |
+| `--cv-danger` | `#B84040` | `#8B2020` | `#FF1744` | `#E04848` | `#A03030` | `#FF3030` | Error / danger states |
+| `--cv-warning` | `#C09040` | `#A0722A` | `#FFAB00` | `#F5A623` | `#B07A10` | `#D48A20` | Warning / caution states |
+| `--cv-focus-ring` | `#C0874A80` | `#8B451380` | `#FF2E8B80` | `#2196F380` | `#B8860B80` | `#CC202080` | Focus outline (with alpha) |
 
 ---
 
@@ -110,6 +110,106 @@ html[data-theme="light"] {
 
   --cv-focus-ring:      #8B451380;
 }
+
+/* ── Cyberpunk Theme ─────────────────────────────────────────────── */
+html[data-theme="cyberpunk"] {
+  --cv-bg:              #0A0A14;
+  --cv-bg-surface:      #12121F;
+  --cv-bg-raised:       #1A1A2A;
+  --cv-bg-sunken:       #06060E;
+
+  --cv-text:            #E0E0F0;
+  --cv-text-secondary:  #9090B0;
+  --cv-text-muted:      #505070;
+
+  --cv-border:          #2A2A40;
+  --cv-border-subtle:   #1E1E30;
+
+  --cv-accent:          #FF2E8B;
+  --cv-accent-hover:    #FF5AA5;
+  --cv-accent-secondary:#00E5FF;
+
+  --cv-success:         #00E676;
+  --cv-danger:          #FF1744;
+  --cv-warning:         #FFAB00;
+
+  --cv-focus-ring:      #FF2E8B80;
+}
+
+/* ── Sci-Fi Theme ────────────────────────────────────────────────── */
+html[data-theme="scifi"] {
+  --cv-bg:              #0C1018;
+  --cv-bg-surface:      #131A24;
+  --cv-bg-raised:       #1A2332;
+  --cv-bg-sunken:       #080C12;
+
+  --cv-text:            #C8D8E8;
+  --cv-text-secondary:  #7A90A8;
+  --cv-text-muted:      #3E5068;
+
+  --cv-border:          #1E2E40;
+  --cv-border-subtle:   #162030;
+
+  --cv-accent:          #2196F3;
+  --cv-accent-hover:    #42A5F5;
+  --cv-accent-secondary:#00BCD4;
+
+  --cv-success:         #4CAF50;
+  --cv-danger:          #E04848;
+  --cv-warning:         #F5A623;
+
+  --cv-focus-ring:      #2196F380;
+}
+
+/* ── Angelic Theme (Light) ───────────────────────────────────────── */
+html[data-theme="angelic"] {
+  --cv-bg:              #F0F0F5;
+  --cv-bg-surface:      #E8E8F0;
+  --cv-bg-raised:       #F5F5FA;
+  --cv-bg-sunken:       #D8D8E4;
+
+  --cv-text:            #1A1A2E;
+  --cv-text-secondary:  #484868;
+  --cv-text-muted:      #8888A0;
+
+  --cv-border:          #C0C0D4;
+  --cv-border-subtle:   #D8D8E8;
+
+  --cv-accent:          #B8860B;
+  --cv-accent-hover:    #9A7209;
+  --cv-accent-secondary:#6A5ACD;
+
+  --cv-success:         #3A8A4A;
+  --cv-danger:          #A03030;
+  --cv-warning:         #B07A10;
+
+  --cv-focus-ring:      #B8860B80;
+}
+
+/* ── Demonic Theme ───────────────────────────────────────────────── */
+html[data-theme="demonic"] {
+  --cv-bg:              #120808;
+  --cv-bg-surface:      #1C0E0E;
+  --cv-bg-raised:       #281414;
+  --cv-bg-sunken:       #0A0404;
+
+  --cv-text:            #E8D0C8;
+  --cv-text-secondary:  #A08078;
+  --cv-text-muted:      #604840;
+
+  --cv-border:          #3A2020;
+  --cv-border-subtle:   #2A1515;
+
+  --cv-accent:          #CC2020;
+  --cv-accent-hover:    #E03030;
+  --cv-accent-secondary:#E07020;
+
+  --cv-success:         #6A9A40;
+  --cv-danger:          #FF3030;
+  --cv-warning:         #D48A20;
+
+  --cv-focus-ring:      #CC202080;
+}
 ```
 
 ---
@@ -118,7 +218,7 @@ html[data-theme="light"] {
 
 ```js
 function setTheme(theme) {
-  // theme: "light" | "dark"
+  // theme: "dark" | "light" | "cyberpunk" | "scifi" | "angelic" | "demonic"
   document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("cv-theme", theme);
 }

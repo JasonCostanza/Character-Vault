@@ -36,22 +36,21 @@ btnSettingsOpen.addEventListener('click', openSettings);
 btnSettingsClose.addEventListener('click', closeSettings);
 
 // ── Theme Toggle Buttons ──
-const btnThemeDark = document.getElementById('btn-theme-dark');
-const btnThemeLight = document.getElementById('btn-theme-light');
+const themeButtons = document.querySelectorAll('.settings-toggle-btn[id^="btn-theme-"]');
 
 function updateThemeButtons(theme) {
-    btnThemeDark.classList.toggle('active', theme === 'dark');
-    btnThemeLight.classList.toggle('active', theme === 'light');
+    themeButtons.forEach(btn => {
+        const btnTheme = btn.id.replace('btn-theme-', '');
+        btn.classList.toggle('active', btnTheme === theme);
+    });
 }
 
-btnThemeDark.addEventListener('click', () => {
-    setTheme('dark');
-    updateThemeButtons('dark');
-});
-
-btnThemeLight.addEventListener('click', () => {
-    setTheme('light');
-    updateThemeButtons('light');
+themeButtons.forEach(btn => {
+    const theme = btn.id.replace('btn-theme-', '');
+    btn.addEventListener('click', () => {
+        setTheme(theme);
+        updateThemeButtons(theme);
+    });
 });
 
 updateThemeButtons(localStorage.getItem('cv-theme') ?? 'dark');

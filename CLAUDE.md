@@ -17,7 +17,7 @@ Character Vault is a TaleSpire Symbiote — a web-based plugin that runs inside 
 
 ## Folder Structure
 
-- `./_DOCS/` — Internal-use markdown files for design documents, implementation notes, and AI context. Not part of the shipped symbiote. Contents: `ARCHITECTURE.md` (code map — **read this first** for line ranges, data structures, and event flows), `_DESIGN.md` (overall design), `TABS.md` (tab system), `MODULES.md` (module/layout system), `COLORS.md` (color system and `--cv-*` token definitions)
+- `./_DOCS/` — Internal-use markdown files for design documents, implementation notes, and AI context. Not part of the shipped symbiote. Contents: `ARCHITECTURE.md` (code map — **read this first** for data structures, and event flows), `_DESIGN.md` (overall design), `TABS.md` (tab system), `MODULES.md` (module/layout system), `COLORS.md` (color system and `--cv-*` token definitions)
 - `./_DOCS/SUBMODULES/` — Submodule design notes. Contents: `STATS.md`, `SAVING_THROWS.md`, `ABILITIES.md`, `SPELLS.md`, `INVENTORY.md`, `COMPANIONS.md`, `NOTES.md`, `COUNTERS.md`
 - `./_DOCS/plans/` — Saved implementation plans. Use kebab-case filenames based on the feature or task (e.g., `vitest-qase-test-infrastructure.md`, `exploding-dice-refactor.md`). **DO NOT** save them in the global plans directory, `~\.claude\plans`
 

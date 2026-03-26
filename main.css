@@ -49,6 +49,106 @@ html[data-theme="light"] {
     --cv-focus-ring:      #8B451380;
 }
 
+/* ── Cyberpunk Theme ─────────────────────────────────────────────── */
+html[data-theme="cyberpunk"] {
+    --cv-bg:              #0A0A14;
+    --cv-bg-surface:      #12121F;
+    --cv-bg-raised:       #1A1A2A;
+    --cv-bg-sunken:       #06060E;
+
+    --cv-text:            #E0E0F0;
+    --cv-text-secondary:  #9090B0;
+    --cv-text-muted:      #505070;
+
+    --cv-border:          #2A2A40;
+    --cv-border-subtle:   #1E1E30;
+
+    --cv-accent:          #FF2E8B;
+    --cv-accent-hover:    #FF5AA5;
+    --cv-accent-secondary:#00E5FF;
+
+    --cv-success:         #00E676;
+    --cv-danger:          #FF1744;
+    --cv-warning:         #FFAB00;
+
+    --cv-focus-ring:      #FF2E8B80;
+}
+
+/* ── Sci-Fi Theme ────────────────────────────────────────────────── */
+html[data-theme="scifi"] {
+    --cv-bg:              #0C1018;
+    --cv-bg-surface:      #131A24;
+    --cv-bg-raised:       #1A2332;
+    --cv-bg-sunken:       #080C12;
+
+    --cv-text:            #C8D8E8;
+    --cv-text-secondary:  #7A90A8;
+    --cv-text-muted:      #3E5068;
+
+    --cv-border:          #1E2E40;
+    --cv-border-subtle:   #162030;
+
+    --cv-accent:          #2196F3;
+    --cv-accent-hover:    #42A5F5;
+    --cv-accent-secondary:#00BCD4;
+
+    --cv-success:         #4CAF50;
+    --cv-danger:          #E04848;
+    --cv-warning:         #F5A623;
+
+    --cv-focus-ring:      #2196F380;
+}
+
+/* ── Angelic Theme (Light) ───────────────────────────────────────── */
+html[data-theme="angelic"] {
+    --cv-bg:              #F0F0F5;
+    --cv-bg-surface:      #E8E8F0;
+    --cv-bg-raised:       #F5F5FA;
+    --cv-bg-sunken:       #D8D8E4;
+
+    --cv-text:            #1A1A2E;
+    --cv-text-secondary:  #484868;
+    --cv-text-muted:      #8888A0;
+
+    --cv-border:          #C0C0D4;
+    --cv-border-subtle:   #D8D8E8;
+
+    --cv-accent:          #B8860B;
+    --cv-accent-hover:    #9A7209;
+    --cv-accent-secondary:#6A5ACD;
+
+    --cv-success:         #3A8A4A;
+    --cv-danger:          #A03030;
+    --cv-warning:         #B07A10;
+
+    --cv-focus-ring:      #B8860B80;
+}
+
+/* ── Demonic Theme ───────────────────────────────────────────────── */
+html[data-theme="demonic"] {
+    --cv-bg:              #120808;
+    --cv-bg-surface:      #1C0E0E;
+    --cv-bg-raised:       #281414;
+    --cv-bg-sunken:       #0A0404;
+
+    --cv-text:            #E8D0C8;
+    --cv-text-secondary:  #A08078;
+    --cv-text-muted:      #604840;
+
+    --cv-border:          #3A2020;
+    --cv-border-subtle:   #2A1515;
+
+    --cv-accent:          #CC2020;
+    --cv-accent-hover:    #E03030;
+    --cv-accent-secondary:#E07020;
+
+    --cv-success:         #6A9A40;
+    --cv-danger:          #FF3030;
+    --cv-warning:         #D48A20;
+
+    --cv-focus-ring:      #CC202080;
+}
+
 /* ── Icon System (inline SVG) ── */
 .icon {
     display: inline-block;
@@ -305,6 +405,20 @@ select,
     border: 1px solid var(--cv-border);
     border-radius: 4px;
     overflow: hidden;
+}
+
+.settings-theme-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.settings-theme-grid .settings-toggle-btn:nth-child(n+4) {
+    border-top: 1px solid var(--cv-border);
+}
+
+.settings-theme-grid .settings-toggle-btn:nth-child(3n+1),
+.settings-theme-grid .settings-toggle-btn:nth-child(3n+2) {
+    border-right: 1px solid var(--cv-border);
 }
 
 .settings-toggle-btn {

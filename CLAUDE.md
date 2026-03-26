@@ -73,6 +73,6 @@ Per-file descriptions live in `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
 |---|---|
 | **Module** | A container (card) on the grid. Holds content for one submodule type. |
 | **Submodule** | An individual component (Stats, Health, Spells, etc.) that defines a module's behavior. Do not use "module" and "submodule" interchangeably. |
-| **Tools bar** | The bar at the top of a module (drag handle, title, action buttons). |
-| **Module overlay menu** | The compact menu shown when a module is too small for its tools bar. Also called "module menu". |
+| **Module toolbar** | The bar at the top of a module (drag handle, title, action buttons). |
+| **Module overlay menu** | The compact menu shown when a module is too small for its module toolbar. Also called "module menu". |
 | **Wizard** | The "New Module" creation overlay (type selection, color picker). |

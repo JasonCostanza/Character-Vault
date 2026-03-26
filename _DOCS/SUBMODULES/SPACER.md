@@ -9,11 +9,13 @@ Registered via `registerModuleType('spacer', { ... })` in `scripts/module-spacer
 | Hook | Behavior |
 |---|---|
 | `label` | `'type.spacer'` — i18n key, resolves to "Spacer" in English |
-| `renderBody(bodyEl, data, isPlayMode)` | Renders a `.spacer-controls` div with drag handle, label, and delete button. Hidden in play mode. |
-| `onPlayMode(moduleEl, data)` | Hides `.spacer-controls` |
-| `onEditMode(moduleEl, data)` | Shows `.spacer-controls` |
+| `renderBody(bodyEl, data, isPlayMode)` | Renders a `.spacer-controls` div with drag handle, label, and delete button. Hidden in play mode. Wires up the delete button to `openDeleteConfirm()`. |
+| `onPlayMode(moduleEl, data)` | Hides `.spacer-controls` (`display: none`) |
+| `onEditMode(moduleEl, data)` | Shows `.spacer-controls` (`display: ''`) |
 
 No `syncState` hook is needed — the spacer has no user-editable content to persist.
+
+**Note:** The spacer does **not** use the standard `.module-header` toolbar at all — it is hidden via CSS. All controls (drag, label, delete) are rendered inline within `.module-body` by `renderBody()`.
 
 ## Data Model
 The Spacer uses the shared `moduleData` object from the `modules[]` array with no type-specific fields:

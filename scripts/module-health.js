@@ -16,6 +16,11 @@ function evaluateHealthExpression(str) {
     }
 }
 
+function autoSizeInput(input, buffer) {
+    const len = input.value.length || 1;
+    input.style.width = (len + buffer) + 'ch';
+}
+
 function getEffectiveMaxHP(content) {
     return (content.maxHP || 0) + (content.maxHPModifier || 0);
 }
@@ -176,7 +181,7 @@ registerModuleType('health', {
             hpRow.appendChild(maxSpan);
         } else {
             // Edit mode: inline inputs matching play mode layout
-            function makeHPInput(key, className, value) {
+            function makeHPInput(key, className, value, sizeBuffer) {
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.className = 'health-inline-input ' + className;
@@ -202,15 +207,17 @@ registerModuleType('health', {
                         input.blur();
                     }
                 });
+                input.addEventListener('input', () => autoSizeInput(input, sizeBuffer));
+                autoSizeInput(input, sizeBuffer);
 
                 return input;
             }
 
-            const currentInput = makeHPInput('currentHP', 'health-current', c.currentHP);
+            const currentInput = makeHPInput('currentHP', 'health-current', c.currentHP, 0.5);
             const sepSpan = document.createElement('span');
             sepSpan.className = 'health-sep';
             sepSpan.textContent = '/';
-            const maxInput = makeHPInput('maxHP', 'health-max', c.maxHP);
+            const maxInput = makeHPInput('maxHP', 'health-max', c.maxHP, 0.5);
 
             hpRow.appendChild(currentInput);
             hpRow.appendChild(sepSpan);
@@ -229,33 +236,37 @@ registerModuleType('health', {
 
         mainRow.appendChild(hpCol);
 
-        if (isPlayMode) {
-            // ── Action buttons (stacked vertically to the right) ──
-            const actions = document.createElement('div');
-            actions.className = 'health-actions';
+        // ── Action buttons (stacked vertically to the right) ──
+        const actions = document.createElement('div');
+        actions.className = 'health-actions';
 
-            const healBtn = document.createElement('button');
-            healBtn.className = 'health-action-btn health-heal-btn';
-            healBtn.title = t('health.heal');
-            healBtn.innerHTML =
-                `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`;
+        const healBtn = document.createElement('button');
+        healBtn.className = 'health-action-btn health-heal-btn';
+        healBtn.title = t('health.heal');
+        healBtn.textContent = t('health.healShort');
+        if (!isPlayMode) {
+            healBtn.disabled = true;
+        } else {
             healBtn.addEventListener('click', () => {
                 openHealthActionOverlay(bodyEl.closest('.module'), data, 'heal');
             });
+        }
 
-            const damageBtn = document.createElement('button');
-            damageBtn.className = 'health-action-btn health-damage-btn';
-            damageBtn.title = t('health.takeDamage');
-            damageBtn.innerHTML =
-                `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>`;
+        const damageBtn = document.createElement('button');
+        damageBtn.className = 'health-action-btn health-damage-btn';
+        damageBtn.title = t('health.takeDamage');
+        damageBtn.textContent = t('health.dmgShort');
+        if (!isPlayMode) {
+            damageBtn.disabled = true;
+        } else {
             damageBtn.addEventListener('click', () => {
                 openHealthActionOverlay(bodyEl.closest('.module'), data, 'damage');
             });
-
-            actions.appendChild(healBtn);
-            actions.appendChild(damageBtn);
-            mainRow.appendChild(actions);
         }
+
+        actions.appendChild(healBtn);
+        actions.appendChild(damageBtn);
+        mainRow.appendChild(actions);
 
         container.appendChild(mainRow);
 
@@ -304,6 +315,8 @@ registerModuleType('health', {
                     tempInput.blur();
                 }
             });
+            tempInput.addEventListener('input', () => autoSizeInput(tempInput, 1.5));
+            autoSizeInput(tempInput, 1.5);
 
             const tempLabel = document.createElement('span');
             tempLabel.className = 'health-temp-label';

@@ -9,7 +9,7 @@
 | `manifest.json` | Symbiote metadata: API subscriptions, capabilities, extras, entry point |
 | `main.html` | **All markup** — HTML structure only, loads scripts via `<script src>` tags |
 | `main.css` | **All styles** — theme tokens, components, overlays |
-| `translations.js` | **i18n dictionary** — `CV_TRANSLATIONS` object keyed by language code (`en`, `es`, `fr`, `de`, `pt-BR`, `ru`) |
+| `scripts/translations.js` | **i18n dictionary** — `CV_TRANSLATIONS` object keyed by language code (`en`, `es`, `fr`, `de`, `pt-BR`, `ru`) |
 | `scripts/shared.js` | Shared utilities: `escapeHtml()`, markdown rendering (`renderMarkdown`, `attachCheckboxHandlers`, `toggleCheckboxInMarkdown`) |
 | `scripts/i18n.js` | Localization: `currentLang`, `t()`, `applyTranslations()`, `refreshModuleLabels()` |
 | `scripts/theme.js` | Theme system: `setTheme()`, `loadTheme()` |

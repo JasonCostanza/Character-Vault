@@ -1,4 +1,5 @@
 // ── Spacer Module Type ──
+(function () {
 registerModuleType('spacer', {
     label: 'type.spacer',
     renderBody(bodyEl, data, isPlayMode) {
@@ -22,3 +23,4 @@ registerModuleType('spacer', {
         if (controls) controls.style.display = '';
     }
 });
+})();

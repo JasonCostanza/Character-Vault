@@ -2890,3 +2890,53 @@ select,
     border-color: var(--cv-accent);
     color: var(--cv-accent-hover);
 }
+
+/* ── Toast Notifications ── */
+#toast-container {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 8px;
+    z-index: 400;
+    pointer-events: none;
+}
+
+.toast {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: inherit;
+    font-weight: 500;
+    white-space: nowrap;
+    user-select: none;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.toast-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-success {
+    background-color: var(--cv-bg-raised);
+    border: 1px solid var(--cv-success);
+    color: var(--cv-success);
+}
+
+.toast-error {
+    background-color: var(--cv-bg-raised);
+    border: 1px solid var(--cv-danger);
+    color: var(--cv-danger);
+}
+
+.toast-warning {
+    background-color: var(--cv-bg-raised);
+    border: 1px solid var(--cv-warning);
+    color: var(--cv-warning);
+}

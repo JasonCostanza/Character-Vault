@@ -1,3 +1,5 @@
+// ── Stat Module Type ──
+(function () {
 // ── Stat Templates ──
 const STAT_TEMPLATES = {
     dnd5e: [
@@ -330,3 +332,8 @@ registerModuleType('stat', {
         });
     }
 });
+
+window.STAT_TEMPLATES = STAT_TEMPLATES;
+window.applyStatTemplate = applyStatTemplate;
+window.updateRollableBtn = updateRollableBtn;
+})();

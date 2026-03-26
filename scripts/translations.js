@@ -1,6 +1,7 @@
 // ── Character Vault — Translation Dictionary ──
 // Each language maps flat dot-notation keys to translated strings.
 // Missing keys fall back to English automatically.
+(function () {
 const CV_TRANSLATIONS = {
 
     en: {
@@ -35,6 +36,12 @@ const CV_TRANSLATIONS = {
         'settings.github':          'GitHub',
         'settings.githubTitle':     'Copy GitHub link to clipboard',
         'settings.githubCopied':    'Copied!',
+
+        // Toast Notifications
+        'toast.saveSuccess':    'Character saved',
+        'toast.saveFail':       'Save failed',
+        'toast.loadSuccess':    'Character loaded',
+        'toast.loadFail':       'Load failed — no saved data found',
 
         // New Module Wizard
         'wizard.title':         'New Module',
@@ -145,6 +152,11 @@ const CV_TRANSLATIONS = {
         'settings.githubTitle':     'Copiar enlace de GitHub al portapapeles',
         'settings.githubCopied':    '¡Copiado!',
 
+        'toast.saveSuccess':    'Personaje guardado',
+        'toast.saveFail':       'Error al guardar',
+        'toast.loadSuccess':    'Personaje cargado',
+        'toast.loadFail':       'Error al cargar — no se encontraron datos guardados',
+
         'wizard.title':         'Nuevo Módulo',
         'wizard.close':         'Cerrar',
         'wizard.type':          'Tipo',
@@ -246,6 +258,11 @@ const CV_TRANSLATIONS = {
         'settings.githubTitle':     'Copier le lien GitHub dans le presse-papiers',
         'settings.githubCopied':    'Copié !',
 
+        'toast.saveSuccess':    'Personnage sauvegardé',
+        'toast.saveFail':       'Échec de la sauvegarde',
+        'toast.loadSuccess':    'Personnage chargé',
+        'toast.loadFail':       'Échec du chargement — aucune donnée trouvée',
+
         'wizard.title':         'Nouveau Module',
         'wizard.close':         'Fermer',
         'wizard.type':          'Type',
@@ -346,6 +363,11 @@ const CV_TRANSLATIONS = {
         'settings.github':          'GitHub',
         'settings.githubTitle':     'GitHub-Link in die Zwischenablage kopieren',
         'settings.githubCopied':    'Kopiert!',
+
+        'toast.saveSuccess':    'Charakter gespeichert',
+        'toast.saveFail':       'Speichern fehlgeschlagen',
+        'toast.loadSuccess':    'Charakter geladen',
+        'toast.loadFail':       'Laden fehlgeschlagen — keine Daten gefunden',
 
         'wizard.title':         'Neues Modul',
         'wizard.close':         'Schließen',
@@ -449,6 +471,11 @@ const CV_TRANSLATIONS = {
         'settings.github':          'GitHub',
         'settings.githubTitle':     'Copia il link GitHub negli appunti',
         'settings.githubCopied':    'Copiato!',
+
+        'toast.saveSuccess':    'Personaggio salvato',
+        'toast.saveFail':       'Salvataggio fallito',
+        'toast.loadSuccess':    'Personaggio caricato',
+        'toast.loadFail':       'Caricamento fallito — nessun dato trovato',
 
         // New Module Wizard
         'wizard.title':         'Nuovo Modulo',
@@ -559,6 +586,11 @@ const CV_TRANSLATIONS = {
         'settings.githubTitle':     'Copiar link do GitHub para a área de transferência',
         'settings.githubCopied':    'Copiado!',
 
+        'toast.saveSuccess':    'Personagem salvo',
+        'toast.saveFail':       'Falha ao salvar',
+        'toast.loadSuccess':    'Personagem carregado',
+        'toast.loadFail':       'Falha ao carregar — nenhum dado encontrado',
+
         'wizard.title':         'Novo Módulo',
         'wizard.close':         'Fechar',
         'wizard.type':          'Tipo',
@@ -660,6 +692,11 @@ const CV_TRANSLATIONS = {
         'settings.githubTitle':     'Скопировать ссылку на GitHub в буфер обмена',
         'settings.githubCopied':    'Скопировано!',
 
+        'toast.saveSuccess':    'Персонаж сохранён',
+        'toast.saveFail':       'Ошибка сохранения',
+        'toast.loadSuccess':    'Персонаж загружен',
+        'toast.loadFail':       'Ошибка загрузки — данные не найдены',
+
         'wizard.title':         'Новый Модуль',
         'wizard.close':         'Закрыть',
         'wizard.type':          'Тип',
@@ -731,3 +768,6 @@ const CV_TRANSLATIONS = {
     },
 
 };
+
+window.CV_TRANSLATIONS = CV_TRANSLATIONS;
+})();

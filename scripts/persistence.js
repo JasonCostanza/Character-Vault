@@ -1,4 +1,5 @@
 // ── Save / Load System ──
+(function () {
 function migrateData(blob) {
     const migrators = {
         // Future: 1: (data) => { /* transform */ data.version = 2; return data; }
@@ -99,3 +100,12 @@ function scheduleSave() {
         autoSaveTimer = setTimeout(saveCharacter, 2000);
     }
 }
+
+window.migrateData = migrateData;
+window.syncModuleState = syncModuleState;
+window.serializeCharacter = serializeCharacter;
+window.deserializeCharacter = deserializeCharacter;
+window.saveCharacter = saveCharacter;
+window.loadCharacter = loadCharacter;
+window.scheduleSave = scheduleSave;
+})();

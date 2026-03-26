@@ -1,4 +1,5 @@
 // ── Horizontal Line Module Type ──
+(function () {
 registerModuleType('hline', {
     label: 'type.hline',
     renderBody(bodyEl, data, isPlayMode) {
@@ -73,3 +74,4 @@ registerModuleType('hline', {
         if (deleteBtn) deleteBtn.style.display = '';
     }
 });
+})();

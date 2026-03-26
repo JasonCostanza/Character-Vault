@@ -1,8 +1,9 @@
 // ── i18n ──
-let currentLang = localStorage.getItem('cv-language') || 'en';
+(function () {
+window.currentLang = localStorage.getItem('cv-language') || 'en';
 
 function t(key, replacements) {
-    const lang = CV_TRANSLATIONS[currentLang] || CV_TRANSLATIONS['en'];
+    const lang = CV_TRANSLATIONS[window.currentLang] || CV_TRANSLATIONS['en'];
     let str = lang[key] || CV_TRANSLATIONS['en'][key] || key;
     if (replacements) {
         Object.keys(replacements).forEach(k => {
@@ -65,3 +66,8 @@ function refreshModuleLabels() {
         label.textContent = modeToggle.classList.contains('mode-play') ? t('menu.play') : t('menu.edit');
     }
 }
+
+window.t = t;
+window.applyTranslations = applyTranslations;
+window.refreshModuleLabels = refreshModuleLabels;
+})();

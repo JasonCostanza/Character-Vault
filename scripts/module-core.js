@@ -1,9 +1,11 @@
+// ── Module Core ──
+(function () {
 // ── Module State ──
-let modules = [];
-let moduleIdCounter = 0;
+window.modules = [];
+window.moduleIdCounter = 0;
 
 function generateModuleId() {
-    return `module-${String(++moduleIdCounter).padStart(3, '0')}`;
+    return `module-${String(++window.moduleIdCounter).padStart(3, '0')}`;
 }
 
 // ── New Module Wizard ──
@@ -204,7 +206,7 @@ btnWizardCreate.addEventListener('click', () => {
         title: null,
         colSpan: 2,
         rowSpan: 2,
-        order: modules.length,
+        order: window.modules.length,
         theme: wizardState.theme,
         content: ''
     };
@@ -240,7 +242,7 @@ btnWizardCreate.addEventListener('click', () => {
     }
 
     lastWizardType = moduleData.type;
-    modules.push(moduleData);
+    window.modules.push(moduleData);
     renderModule(moduleData);
     updateEmptyState();
     closeWizard();
@@ -264,7 +266,7 @@ const moduleGrid = document.getElementById('module-grid');
 const emptyState = document.getElementById('empty-state');
 
 function updateEmptyState() {
-    emptyState.style.display = modules.length === 0 ? 'flex' : 'none';
+    emptyState.style.display = window.modules.length === 0 ? 'flex' : 'none';
 }
 
 // ── Module Overflow Menu ──
@@ -445,7 +447,7 @@ function buildSwatchPanel(container, moduleEl, data, onClose) {
 }
 
 function showThemeSwatchPanel(menu, moduleEl) {
-    const data = modules.find(m => m.id === moduleEl.dataset.id);
+    const data = window.modules.find(m => m.id === moduleEl.dataset.id);
     if (!data) return;
     menu.innerHTML = '';
     buildSwatchPanel(menu, moduleEl, data, closeOverflowMenu);
@@ -456,7 +458,7 @@ let activeThemePopover = null;
 
 function openThemePopover(moduleEl, anchorBtn) {
     closeThemePopover();
-    const data = modules.find(m => m.id === moduleEl.dataset.id);
+    const data = window.modules.find(m => m.id === moduleEl.dataset.id);
     if (!data) return;
 
     const popover = document.createElement('div');
@@ -688,8 +690,8 @@ const sortable = new Sortable(moduleGrid, {
         // Sync the modules array to match the new DOM order
         const orderedIds = Array.from(moduleGrid.querySelectorAll('.module'))
             .map(el => el.dataset.id);
-        modules.sort((a, b) => orderedIds.indexOf(a.id) - orderedIds.indexOf(b.id));
-        modules.forEach((m, i) => m.order = i);
+        window.modules.sort((a, b) => orderedIds.indexOf(a.id) - orderedIds.indexOf(b.id));
+        window.modules.forEach((m, i) => m.order = i);
         console.log(`[CV] Module reordered: ${evt.item.dataset.id} → position ${evt.newIndex}`);
         scheduleSave();
     }
@@ -720,8 +722,8 @@ function deleteModule(moduleId) {
         if (bodyEl) moduleSizeObserver.unobserve(bodyEl);
         el.remove();
     }
-    modules = modules.filter(m => m.id !== moduleId);
-    modules.forEach((m, i) => m.order = i);
+    window.modules = window.modules.filter(m => m.id !== moduleId);
+    window.modules.forEach((m, i) => m.order = i);
     updateEmptyState();
     console.log(`[CV] Module deleted: ${moduleId}`);
     scheduleSave();
@@ -741,7 +743,7 @@ function applyPlayMode() {
     closeOverflowMenu();
     document.querySelectorAll('.module').forEach(mod => {
         const type = mod.dataset.type;
-        const data = modules.find(m => m.id === mod.dataset.id);
+        const data = window.modules.find(m => m.id === mod.dataset.id);
         if (type && MODULE_TYPES[type]?.onPlayMode) {
             MODULE_TYPES[type].onPlayMode(mod, data);
         }
@@ -786,7 +788,7 @@ function applyPlayMode() {
 function applyEditMode() {
     document.querySelectorAll('.module').forEach(mod => {
         const type = mod.dataset.type;
-        const data = modules.find(m => m.id === mod.dataset.id);
+        const data = window.modules.find(m => m.id === mod.dataset.id);
         if (type && MODULE_TYPES[type]?.onEditMode) {
             MODULE_TYPES[type].onEditMode(mod, data);
         }
@@ -861,7 +863,7 @@ const moduleSizeObserver = new ResizeObserver(entries => {
         mod.dataset.size = size;
 
         // Re-snap auto-height modules when body size changes
-        const data = modules.find(m => m.id === mod.dataset.id);
+        const data = window.modules.find(m => m.id === mod.dataset.id);
         if (data && data.rowSpan === null) {
             snapModuleHeight(mod, data);
         }
@@ -949,3 +951,23 @@ function initResizeHandle(moduleEl, data) {
         document.addEventListener('mouseup', onMouseUp);
     });
 }
+
+window.MODULE_TYPES = MODULE_TYPES;
+window.registerModuleType = registerModuleType;
+window.moduleGrid = moduleGrid;
+window.updateEmptyState = updateEmptyState;
+window.renderModule = renderModule;
+window.openDeleteConfirm = openDeleteConfirm;
+window.applyPlayMode = applyPlayMode;
+window.applyEditMode = applyEditMode;
+window.GRID_COLUMNS = GRID_COLUMNS;
+window.GRID_GAP = GRID_GAP;
+window.ROW_H = ROW_H;
+window.snapModuleHeight = snapModuleHeight;
+window.initResizeHandle = initResizeHandle;
+window.openWizard = openWizard;
+window.closeWizard = closeWizard;
+window.THEME_SWATCHES = THEME_SWATCHES;
+window.buildSwatchPanel = buildSwatchPanel;
+window.sortable = sortable;
+})();

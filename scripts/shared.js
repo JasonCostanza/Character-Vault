@@ -1,4 +1,5 @@
 // ── Shared Utilities ──
+(function () {
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
@@ -30,6 +31,25 @@ function attachCheckboxHandlers(displayEl, data, moduleEl) {
     });
 }
 
+// ── Toast Notifications ──
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    container.appendChild(toast);
+
+    // Trigger enter animation
+    requestAnimationFrame(() => toast.classList.add('toast-visible'));
+
+    setTimeout(() => {
+        toast.classList.remove('toast-visible');
+        toast.addEventListener('transitionend', () => toast.remove());
+    }, 2500);
+}
+
 function toggleCheckboxInMarkdown(data, moduleEl, index, checked) {
     const pattern = /- \[([ xX])\]/g;
     let count = 0;
@@ -43,3 +63,10 @@ function toggleCheckboxInMarkdown(data, moduleEl, index, checked) {
     if (textarea) textarea.value = data.content;
     scheduleSave();
 }
+
+window.escapeHtml = escapeHtml;
+window.renderMarkdown = renderMarkdown;
+window.attachCheckboxHandlers = attachCheckboxHandlers;
+window.showToast = showToast;
+window.toggleCheckboxInMarkdown = toggleCheckboxInMarkdown;
+})();

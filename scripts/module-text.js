@@ -1,4 +1,5 @@
 // ── Text Box Module Type ──
+(function () {
 function autoResizeTextarea(textarea) {
     const module = textarea.closest('.module');
     textarea.style.height = 'auto';
@@ -57,3 +58,4 @@ registerModuleType('text', {
         if (textarea) data.content = textarea.value;
     }
 });
+})();

@@ -1,3 +1,5 @@
+// ── Settings ──
+(function () {
 // ── Mode Toggle ──
 const modeToggle = document.getElementById('btn-mode-toggle');
 modeToggle.addEventListener('click', () => {
@@ -60,7 +62,7 @@ const langSelect = document.getElementById('setting-language');
 
 langSelect.addEventListener('change', (e) => {
     localStorage.setItem('cv-language', e.target.value);
-    currentLang = e.target.value;
+    window.currentLang = e.target.value;
     applyTranslations();
     refreshModuleLabels();
 });
@@ -73,8 +75,14 @@ const btnLoad = document.getElementById('btn-load');
 const chkAutoSave = document.getElementById('chk-auto-save');
 const chkAutoLoad = document.getElementById('chk-auto-load');
 
-btnSave.addEventListener('click', () => { saveCharacter(); });
-btnLoad.addEventListener('click', () => { loadCharacter(); });
+btnSave.addEventListener('click', async () => {
+    const ok = await saveCharacter();
+    showToast(t(ok ? 'toast.saveSuccess' : 'toast.saveFail'), ok ? 'success' : 'error');
+});
+btnLoad.addEventListener('click', async () => {
+    const ok = await loadCharacter();
+    showToast(t(ok ? 'toast.loadSuccess' : 'toast.loadFail'), ok ? 'success' : 'error');
+});
 
 chkAutoSave.addEventListener('change', () => {
     localStorage.setItem('cv-auto-save', chkAutoSave.checked);
@@ -109,3 +117,12 @@ document.getElementById('btn-github-link').addEventListener('click', () => {
         }, 1500);
     });
 });
+
+window.modeToggle = modeToggle;
+window.settingsOverlay = settingsOverlay;
+window.openSettings = openSettings;
+window.closeSettings = closeSettings;
+window.updateThemeButtons = updateThemeButtons;
+window.chkAutoSave = chkAutoSave;
+window.chkAutoLoad = chkAutoLoad;
+})();

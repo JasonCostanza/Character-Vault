@@ -1,4 +1,5 @@
 // ── Apply Translations on Startup ──
+(function () {
 applyTranslations();
 refreshModuleLabels();
 
@@ -6,3 +7,4 @@ refreshModuleLabels();
 if (chkAutoLoad.checked && typeof TS !== 'undefined') {
     loadCharacter();
 }
+})();

@@ -1,3 +1,5 @@
+// ── Health Module Type ──
+(function () {
 // ── Health Module Helpers ──
 
 function evaluateHealthExpression(str) {
@@ -347,3 +349,7 @@ registerModuleType('health', {
         }
     }
 });
+
+// Expose for cross-file access (module-core.js)
+window.openHealthActionOverlay = openHealthActionOverlay;
+})();

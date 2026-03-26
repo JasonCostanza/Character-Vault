@@ -43,9 +43,10 @@ Per-file descriptions live in `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
 7. **Use `escapeHtml()`** (in `shared.js`) when interpolating user-provided strings into HTML.
 8. **Use `null`, not `undefined`**, for intentionally empty values (e.g., `title: null`, `theme: null`) — ensures clean JSON serialization.
 9. **Inline SVG icons only** — `<svg class="icon">` with `stroke="currentColor"`. Do **not** use CSS `mask-image` (broken in TaleSpire's Chromium).
-10. **After exiting plan mode, offer to save the plan** to `_DOCS/plans/` with a kebab-case filename. Never save plans to `~/.claude/plans`.
-11. **No line numbers in `_DOCS/ARCHITECTURE.md`** — reference sections and function names instead.
-12. **All `.js` files go in `scripts/`** — never create JavaScript files in the project root or any other directory.
+10. **Module toolbar buttons must have `title` attributes** for custom CSS tooltips (native `title` tooltips don't render in TaleSpire's Chromium). Rightmost buttons need the right-anchored tooltip override (see `.module-delete-btn[title]::after` in `main.css`).
+11. **After exiting plan mode, offer to save the plan** to `_DOCS/plans/` with a kebab-case filename. Never save plans to `~/.claude/plans`.
+12. **No line numbers in `_DOCS/ARCHITECTURE.md`** — reference sections and function names instead.
+13. **All `.js` files go in `scripts/`** — never create JavaScript files in the project root or any other directory.
 
 ## Conventions
 

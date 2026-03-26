@@ -663,6 +663,42 @@ select,
     flex-shrink: 0;
 }
 
+/* ── Module Toolbar Tooltips ── */
+.module-header [title] {
+    position: relative;
+}
+
+.module-header [title]::after {
+    content: attr(title);
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 3px 8px;
+    background: var(--cv-bg-elevated);
+    color: var(--cv-text);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease 0.4s;
+    z-index: 200;
+    user-select: none;
+}
+
+.module-header [title]:hover::after {
+    opacity: 1;
+}
+
+.module-delete-btn[title]::after {
+    left: auto;
+    right: 0;
+    transform: none;
+}
+
 .module-drag-handle {
     color: var(--cv-text-muted);
     cursor: grab;

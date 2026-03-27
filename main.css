@@ -2581,6 +2581,17 @@ select,
     background: rgba(255, 255, 255, 0.06);
 }
 
+/* ── Cross-List Drag Transfer ── */
+.module.list-drop-target {
+    outline: 2px dashed var(--cv-accent);
+    outline-offset: -2px;
+    transition: outline-color 0.15s ease, background 0.15s ease;
+}
+
+.module.list-drop-target .module-body {
+    background: rgba(192, 135, 74, 0.06);
+}
+
 /* ── Wizard Overlay ── */
 .wizard-overlay {
     position: fixed;

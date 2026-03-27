@@ -64,8 +64,8 @@ Registered via `registerModuleType('list', { ... })` in `scripts/module-list.js`
 |---|---|
 | `label` | `'type.list'` — i18n key, resolves to "List" in English |
 | `renderBody(bodyEl, data, isPlayMode)` | Builds the item table with pinned attribute columns; wires up sort headers, expand buttons, and drag handlers |
-| `onPlayMode(moduleEl)` | Switches to read-only rows; enables sort-by-column-header; enables cross-module drag-to-transfer |
-| `onEditMode(moduleEl)` | Switches to editable rows; enables drag-to-reorder; shows add/delete controls |
+| `onPlayMode(moduleEl)` | Switches to read-only rows; enables sort-by-column-header |
+| `onEditMode(moduleEl)` | Switches to editable rows; enables drag-to-reorder and cross-list transfer; shows add/delete controls |
 | `syncState(moduleEl, data)` | Reads all inline inputs back into `data.content` before save |
 
 ## Grid Sizing
@@ -78,13 +78,13 @@ Registered via `registerModuleType('list', { ... })` in `scripts/module-list.js`
 - **Item rows** display: item name, pinned attribute values (as icons/badges/text), and an expand button on the far right.
 - **Sort by column** — clicking a column header (name or any attribute) sorts ascending; clicking again toggles descending; clicking a third time returns to manual order. Current sort state is persisted in `sortBy` / `sortDir`.
 - **Item inspect overlay** — clicking the expand button opens the inspect overlay (see "Item Inspect Overlay" below).
-- **Cross-list drag transfer** — items can be dragged from one list module and dropped onto another list module on the grid (see "Cross-List Item Transfer" below).
 
 ## Edit Mode
 - **Inline item editing** — item names are editable directly in the row.
 - **Add Item** — toolbar button appends a new item with an empty name, empty notes, and default values for all attributes.
 - **Delete Item** — each row has a delete button. No confirmation needed for individual item deletion.
 - **Drag-to-reorder** — items can be reordered via drag handles. After reorder, `order` values are updated and `scheduleSave()` is called.
+- **Cross-list drag transfer** — items can be dragged from one list module and dropped onto another list module on the grid using the drag handle (see "Cross-List Item Transfer" below). Other list modules are highlighted as drop targets during the drag.
 - **Manage Attributes** — toolbar button opens the attribute management panel where the user can add/remove/reorder attributes and launch the Attribute Wizard.
 
 ## Module Toolbar

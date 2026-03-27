@@ -47,6 +47,7 @@ Per-file descriptions live in `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
 11. **After exiting plan mode, offer to save the plan** to `_DOCS/plans/` with a kebab-case filename. Never save plans to `~/.claude/plans`.
 12. **No line numbers in `_DOCS/ARCHITECTURE.md`** — reference sections and function names instead.
 13. **All `.js` files go in `scripts/`** — never create JavaScript files in the project root or any other directory.
+14. **Use SortableJS for all drag-to-reorder** — never write custom pointer/mouse-based drag systems. SortableJS is already loaded via CDN. Follow the existing pattern: `handle`, `animation: 150`, `ghostClass`, `draggable`, and `onEnd`. See `initStatSortable()` or `initListSortable()` as references.
 
 ## Conventions
 

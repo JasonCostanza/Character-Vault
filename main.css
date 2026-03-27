@@ -739,7 +739,8 @@ select,
     color: var(--cv-text);
 }
 
-.module-rollable-btn {
+/* ── Module Toolbar Button (shared base) ── */
+.module-toolbar-btn {
     margin-left: 4px;
     display: inline-flex;
     align-items: center;
@@ -756,10 +757,22 @@ select,
     transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
 }
 
-.module:hover .module-rollable-btn {
+.module:hover .module-toolbar-btn {
     opacity: 1;
 }
 
+.module-toolbar-btn:hover {
+    color: var(--cv-accent);
+    background: rgba(192, 135, 74, 0.12);
+    border-color: rgba(192, 135, 74, 0.3);
+}
+
+.module-toolbar-btn .icon {
+    width: 14px;
+    height: 14px;
+}
+
+/* ── Toolbar Button Overrides ── */
 .module-rollable-btn.disabled {
     opacity: 0;
     cursor: default;
@@ -783,142 +796,9 @@ select,
     border-color: rgba(192, 135, 74, 0.3);
 }
 
-.module-rollable-btn .icon {
-    width: 14px;
-    height: 14px;
-}
-
-.module-addstat-btn {
-    margin-left: 4px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    color: var(--cv-text-muted);
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.module:hover .module-addstat-btn {
-    opacity: 1;
-}
-
-.module-addstat-btn:hover {
-    color: var(--cv-accent);
-    background: rgba(192, 135, 74, 0.12);
-    border-color: rgba(192, 135, 74, 0.3);
-}
-
-.module-addstat-btn .icon {
-    width: 14px;
-    height: 14px;
-}
-
-.module-swaplayout-btn {
-    margin-left: 4px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    color: var(--cv-text-muted);
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.module:hover .module-swaplayout-btn {
-    opacity: 1;
-}
-
-.module-swaplayout-btn:hover {
-    color: var(--cv-accent);
-    background: rgba(192, 135, 74, 0.12);
-    border-color: rgba(192, 135, 74, 0.3);
-}
-
-.module-swaplayout-btn .icon {
-    width: 14px;
-    height: 14px;
-}
-
-.module-copy-btn {
-    margin-left: 4px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    color: var(--cv-text-muted);
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.module:hover .module-copy-btn {
-    opacity: 1;
-}
-
-.module-copy-btn:hover {
-    color: var(--cv-accent);
-    background: rgba(192, 135, 74, 0.12);
-    border-color: rgba(192, 135, 74, 0.3);
-}
-
-.module-copy-btn .icon {
-    width: 14px;
-    height: 14px;
-}
-
 .module-copy-btn.flash-confirm {
     color: var(--cv-success);
     border-color: var(--cv-success);
-}
-
-.module-theme-btn {
-    margin-left: 4px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    color: var(--cv-text-muted);
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.module:hover .module-theme-btn {
-    opacity: 1;
-}
-
-.module-theme-btn:hover {
-    color: var(--cv-accent);
-    background: rgba(192, 135, 74, 0.12);
-    border-color: rgba(192, 135, 74, 0.3);
-}
-
-.module-theme-btn .icon {
-    width: 14px;
-    height: 14px;
 }
 
 .module-theme-popover {
@@ -932,74 +812,14 @@ select,
     min-width: 160px;
 }
 
-.module-delete-btn {
-    margin-left: 4px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    color: var(--cv-text-muted);
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.module:hover .module-delete-btn {
-    opacity: 1;
-}
-
 .module-delete-btn:hover {
     color: var(--cv-danger);
     background: rgba(184, 64, 64, 0.12);
     border-color: rgba(184, 64, 64, 0.3);
 }
 
-.module-delete-btn .icon {
-    width: 14px;
-    height: 14px;
-}
-
 /* ── Health Module Header Buttons ── */
-.module-health-maxmod-btn,
-.module-health-eyedropper-btn {
-    margin-left: 4px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    color: var(--cv-text-muted);
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.module:hover .module-health-maxmod-btn,
-.module:hover .module-health-eyedropper-btn {
-    opacity: 1;
-}
-
-.module-health-maxmod-btn:hover,
-.module-health-eyedropper-btn:hover {
-    color: var(--cv-accent);
-    background: rgba(192, 135, 74, 0.12);
-    border-color: rgba(192, 135, 74, 0.3);
-}
-
-.module-health-maxmod-btn .icon,
-.module-health-eyedropper-btn .icon {
-    width: 14px;
-    height: 14px;
-}
+/* (base styles provided by .module-toolbar-btn) */
 
 /* ── Module Overflow (Kebab) Button ── */
 .module-overflow-btn {
@@ -2397,14 +2217,7 @@ select,
     display: inline-flex;
 }
 
-.module[data-size="xs"] .module-rollable-btn,
-.module[data-size="xs"] .module-addstat-btn,
-.module[data-size="xs"] .module-swaplayout-btn,
-.module[data-size="xs"] .module-health-maxmod-btn,
-.module[data-size="xs"] .module-health-eyedropper-btn,
-.module[data-size="xs"] .module-copy-btn,
-.module[data-size="xs"] .module-theme-btn,
-.module[data-size="xs"] .module-delete-btn {
+.module[data-size="xs"] .module-toolbar-btn {
     display: none !important;
 }
 
@@ -2451,14 +2264,7 @@ select,
     display: inline-flex;
 }
 
-.module[data-size="sm"] .module-rollable-btn,
-.module[data-size="sm"] .module-addstat-btn,
-.module[data-size="sm"] .module-swaplayout-btn,
-.module[data-size="sm"] .module-health-maxmod-btn,
-.module[data-size="sm"] .module-health-eyedropper-btn,
-.module[data-size="sm"] .module-copy-btn,
-.module[data-size="sm"] .module-theme-btn,
-.module[data-size="sm"] .module-delete-btn {
+.module[data-size="sm"] .module-toolbar-btn {
     display: none !important;
 }
 
@@ -2650,6 +2456,129 @@ select,
 
 .wizard-layout-btn.selected .wizard-layout-label {
     color: var(--cv-accent);
+}
+
+/* ── List Module ── */
+
+.module[data-type="list"] .module-body {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px 0;
+}
+
+.list-empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 8px;
+    color: var(--cv-text-secondary);
+    font-size: 12px;
+    font-style: italic;
+    user-select: none;
+}
+
+.list-item-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    min-height: 28px;
+    transition: background 0.15s ease;
+}
+
+.list-item-row:hover {
+    background: var(--cv-surface-hover, rgba(255, 255, 255, 0.04));
+}
+
+.list-item-drag-handle {
+    cursor: grab;
+    color: var(--cv-text-secondary);
+    font-size: 12px;
+    user-select: none;
+    flex-shrink: 0;
+    opacity: 0.5;
+}
+
+.list-item-drag-handle:hover {
+    opacity: 1;
+}
+
+.list-item-ghost {
+    opacity: 0.3;
+    border: 2px dashed var(--cv-accent);
+    background-color: var(--cv-bg-sunken);
+    box-shadow: none;
+    border-radius: 4px;
+}
+
+.list-item-name {
+    flex: 1;
+    font-size: 13px;
+    color: var(--cv-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+}
+
+.list-item-name-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--cv-border);
+    color: var(--cv-text);
+    font-size: 13px;
+    font-family: inherit;
+    padding: 2px 4px;
+    outline: none;
+    min-width: 0;
+}
+
+.list-item-name-input:focus {
+    border-bottom-color: var(--cv-accent);
+}
+
+.list-item-name-input::placeholder {
+    color: var(--cv-text-secondary);
+    opacity: 0.5;
+}
+
+.text-light .list-item-name-input::placeholder {
+    color: var(--cv-text);
+    opacity: 0.4;
+}
+
+.list-item-expand-btn,
+.list-item-delete-btn {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--cv-text-secondary);
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.list-item-expand-btn:hover {
+    color: var(--cv-accent);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.list-item-delete-btn:hover {
+    color: var(--cv-danger);
+    background: rgba(255, 255, 255, 0.06);
 }
 
 /* ── Wizard Overlay ── */

@@ -2592,6 +2592,256 @@ select,
     background: rgba(192, 135, 74, 0.06);
 }
 
+/* ── List Manage Attributes Panel ── */
+.list-manage-panel {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--cv-bg-surface);
+    border-radius: 6px;
+    border: 1px solid var(--cv-border);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.list-manage-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--cv-border-subtle);
+    flex-shrink: 0;
+}
+
+.list-manage-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--cv-text-secondary);
+    user-select: none;
+}
+
+.list-manage-close {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0;
+    transition: color 0.15s ease;
+}
+
+.list-manage-close:hover {
+    color: var(--cv-text);
+}
+
+.list-manage-close .icon {
+    width: 12px;
+    height: 12px;
+}
+
+.list-manage-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 8px 10px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.list-manage-body::-webkit-scrollbar {
+    width: 4px;
+}
+.list-manage-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+.list-manage-body::-webkit-scrollbar-thumb {
+    background-color: var(--cv-text-muted);
+    border-radius: 2px;
+}
+
+.list-manage-no-attrs {
+    font-size: 12px;
+    font-style: italic;
+    color: var(--cv-text-secondary);
+    user-select: none;
+    padding: 4px 0;
+}
+
+.list-manage-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.list-manage-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--cv-text-muted);
+    user-select: none;
+}
+
+.list-attr-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 2px;
+    border-bottom: 1px solid var(--cv-border-subtle);
+}
+
+.list-attr-row:last-child {
+    border-bottom: none;
+}
+
+.list-attr-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cv-text-muted);
+}
+
+.list-attr-icon .icon {
+    width: 14px;
+    height: 14px;
+}
+
+.list-attr-name {
+    flex: 1;
+    font-size: 12px;
+    color: var(--cv-text);
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.list-attr-type-badge {
+    flex-shrink: 0;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--cv-text-muted);
+    background: var(--cv-bg-sunken);
+    padding: 2px 5px;
+    border-radius: 3px;
+    user-select: none;
+}
+
+.list-attr-pin-btn,
+.list-attr-delete-btn {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0;
+    color: var(--cv-text-muted);
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.list-attr-pin-btn:hover {
+    color: var(--cv-accent);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.list-attr-pin-btn.pinned {
+    color: var(--cv-accent);
+}
+
+.list-attr-delete-btn:hover {
+    color: var(--cv-danger);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.list-attr-pin-btn .icon,
+.list-attr-delete-btn .icon {
+    width: 14px;
+    height: 14px;
+}
+
+.list-preset-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.list-attr-preset-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-family: inherit;
+    font-weight: 500;
+    color: var(--cv-text-secondary);
+    background: transparent;
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.list-attr-preset-btn:hover {
+    color: var(--cv-accent);
+    border-color: var(--cv-accent-secondary);
+    background: rgba(192, 135, 74, 0.08);
+}
+
+.list-attr-preset-btn .icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.list-custom-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-family: inherit;
+    font-weight: 500;
+    color: var(--cv-text-secondary);
+    background: transparent;
+    border: 1px dashed var(--cv-border);
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.list-custom-btn:hover {
+    color: var(--cv-accent);
+    border-color: var(--cv-accent-secondary);
+    background: rgba(192, 135, 74, 0.08);
+}
+
+.list-custom-btn .icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
 /* ── Wizard Overlay ── */
 .wizard-overlay {
     position: fixed;

@@ -488,6 +488,15 @@ select,
     color: var(--cv-warning);
 }
 
+.settings-dimensions {
+    margin-top: 12px;
+    text-align: left;
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    font-family: monospace;
+    letter-spacing: 0.05em;
+}
+
 /* ── Checkboxes ── */
 .settings-checkbox-row {
     display: flex;

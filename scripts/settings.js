@@ -100,6 +100,16 @@ document.getElementById('btn-force-reload').addEventListener('click', () => {
     location.reload();
 });
 
+// ── Window Dimensions ──
+const dimensionsEl = document.getElementById('window-dimensions');
+function updateDimensions() {
+    if (dimensionsEl) {
+        dimensionsEl.textContent = `Window Size: ${window.innerWidth} x ${window.innerHeight}`;
+    }
+}
+window.addEventListener('resize', updateDimensions);
+updateDimensions();
+
 // ── GitHub Link (copy to clipboard) ──
 document.getElementById('btn-github-link').addEventListener('click', () => {
     const btn = document.getElementById('btn-github-link');

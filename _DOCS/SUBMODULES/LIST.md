@@ -44,6 +44,7 @@ data.content = {
 | `number` | `number` | `5` (weight) |
 | `number-pair` | `{ current: number, max: number }` | `{ current: 8, max: 10 }` (durability) |
 | `text` | `string` | `"Magical"` |
+| `dropdown` | `string` | `"L"` (bulk) |
 
 ### Built-in Attribute Presets
 These are selectable when adding attributes to a list. They come pre-configured with a type, icon, and default value:
@@ -125,26 +126,39 @@ The Attribute Wizard allows the user to create a custom attribute. The user conf
 ## Attribute Icon Library
 Icons are inline SVGs using basic shapes per project conventions. Users select from this fixed set — they cannot provide their own.
 
-- Balance Scale
-- Power Button
-- Apple
-- Bread
-- Bottle of Water
-- Magnifying Glass
-- Torch
-- Flashlight
-- Armour
-- Helmet
-- Boots
-- Gloves
-- T-Shirt
-- Pants
-- Shoes
-- Gun
-- Sword
-- Dagger
-- Wand
-- Staff
+The grid displays **None** (no icon) as the first option, followed by the 27 icons below, filling exactly 4 rows of 7 in the selection grid.
+
+| Key | Label |
+|---|---|
+| `scale` | Balance Scale |
+| `power` | Power Button |
+| `apple` | Apple |
+| `bread` | Bread |
+| `bottle` | Bottle of Water |
+| `magnify` | Magnifying Glass |
+| `torch` | Torch |
+| `flash` | Flashlight |
+| `armour` | Armour |
+| `helmet` | Helmet |
+| `boots` | Boots |
+| `gloves` | Gloves |
+| `shirt` | T-Shirt |
+| `pants` | Pants |
+| `shoes` | Shoes |
+| `gun` | Gun |
+| `sword` | Sword |
+| `dagger` | Dagger |
+| `wand` | Wand |
+| `staff` | Staff |
+| `coin` | Coin |
+| `potion` | Potion |
+| `key` | Key |
+| `gem` | Gem |
+| `bow` | Bow |
+| `axe` | Axe |
+| `shield` | Shield |
+
+The `icon` field on an attribute stores the key string, or `null` for no icon.
 
 # Item Inspect Overlay
 Every item has an expand button on the far right of its row. Clicking it opens a centered overlay (z-index consistent with settings/wizard overlays: `200`) that displays:
@@ -156,6 +170,7 @@ Every item has an expand button on the far right of its row. Clicking it opens a
 At the bottom of the overlay:
 - **[Save]** button — commits changes and closes
 - **[Close]** button — discards changes and closes
+- **[Delete]** button — opens delete confirmation prompt, deletes item and closes overlay if confirmed
 
 Top-right corner:
 - **[X]** button — same behavior as [Close] (discard and close)

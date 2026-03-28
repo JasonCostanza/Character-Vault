@@ -63,7 +63,7 @@ Per-file descriptions live in `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
 
 - **No build system.** No bundler, transpiler, or npm. Vanilla HTML/CSS/JS served raw by TaleSpire's embedded Chromium.
 - **`mask-image` does not render** in TaleSpire's Chromium. Always use inline SVGs.
-- **z-index layers**: 300 = delete confirm, 200 = settings/wizard overlays, 100 = menu bar + dragging module, 50 = resizing module, 10 = resize handle.
+- **z-index layers**: 300 = delete confirm, 200 = settings/wizard overlays, 100 = menu bar + dragging module, 60 = resize handle, 50 = resizing module.
 - **Grid layout**: `#module-grid` is a 4-column CSS Grid, 8px gap. Modules span 1–4 columns. Fixed row height = `rowSpan * 80px + (rowSpan - 1) * 8px`.
 - **`TS.*` API unavailable** when previewing in VS Code — guard calls with `typeof TS !== 'undefined'` or test in TaleSpire directly.
 - **`_localStorage/`** contains user save data — gitignored, never commit.

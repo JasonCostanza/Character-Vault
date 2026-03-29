@@ -1377,6 +1377,7 @@ select,
     align-items: center;
     gap: 8px;
     width: 100%;
+    min-height: 24px;
 }
 
 .module[data-type="hline"] .hline-line {
@@ -1397,6 +1398,11 @@ select,
 
 .module[data-type="hline"] .hline-label:empty {
     display: none;
+}
+
+/* Remove gap when label is empty to form a solid line */
+.mode-play .module[data-type="hline"] .hline-divider:has(.hline-label:empty) {
+    gap: 0;
 }
 
 .module[data-type="hline"] .hline-input {

@@ -2751,6 +2751,28 @@ select,
     max-width: 100%;
 }
 
+.list-attr-quantity-display {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cv-accent);
+    cursor: pointer;
+    user-select: none;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(192, 135, 74, 0.05);
+    min-width: 24px;
+    text-align: center;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.list-attr-quantity-display:hover {
+    background: rgba(192, 135, 74, 0.15);
+}
+
+.list-attr-quantity-display:active {
+    transform: scale(0.95);
+}
+
 .list-attr-number-input {
     width: 100%;
     min-width: 0;

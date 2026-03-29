@@ -48,7 +48,8 @@
         gem:     '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14l3 5-10 13L2 9l3-5z"/><line x1="2" y1="9" x2="22" y2="9"/></svg>',
         bow:     '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4 Q1 12 5 20"/><line x1="5" y1="4" x2="5" y2="20"/><line x1="5" y1="12" x2="20" y2="12"/><polyline points="16 9 20 12 16 15"/></svg>',
         axe:     '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="18" x2="15" y2="9"/><path d="M15 9 Q15 3 21 3 Q21 9 15 9"/></svg>',
-        shield:  '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/></svg>'
+        shield:  '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/></svg>',
+        hash:    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>'
     };
 
     // ── Attribute Wizard Icon Library ──
@@ -68,6 +69,7 @@
         { key: 'gem',     label: 'Gem' },
         { key: 'gloves',  label: 'Gloves' },
         { key: 'gun',     label: 'Gun' },
+        { key: 'hash',    label: 'Hash' },
         { key: 'helmet',  label: 'Helmet' },
         { key: 'key',     label: 'Key' },
         { key: 'magnify', label: 'Magnifying Glass' },
@@ -86,6 +88,7 @@
     // ── Built-in Attribute Presets ──
     var LIST_ATTR_PRESETS = [
         { key: 'presetWeight',      type: 'number',      icon: 'scale',  defaultValue: 0 },
+        { key: 'presetQuantity',    type: 'quantity',    icon: 'hash',   defaultValue: 1 },
         { key: 'presetDurability',   type: 'number-pair', icon: 'armour', defaultValue: { current: 0, max: 0 } },
         { key: 'presetEquipped',     type: 'toggle',      icon: 'helmet', defaultValue: false },
         { key: 'presetActive',       type: 'toggle',      icon: 'power',  defaultValue: false },
@@ -194,6 +197,7 @@
                 case 'toggle':
                     result = (av ? 1 : 0) - (bv ? 1 : 0);
                     break;
+                case 'quantity':
                 case 'number':
                     result = (parseFloat(av) || 0) - (parseFloat(bv) || 0);
                     break;
@@ -238,6 +242,37 @@
                 onUpdate(newVal);
             });
             cell.appendChild(toggleBtn);
+            return cell;
+        }
+
+        if (attr.type === 'quantity') {
+            var val = parseInt(value) || 0;
+            if (isPlayMode) {
+                var qtySpan = document.createElement('span');
+                qtySpan.className = 'list-attr-quantity-display';
+                qtySpan.textContent = val;
+                qtySpan.title = t('list.attrTypeQuantityDesc');
+                qtySpan.addEventListener('click', function (e) {
+                    val++;
+                    qtySpan.textContent = val;
+                    onUpdate(val);
+                });
+                qtySpan.addEventListener('contextmenu', function (e) {
+                    e.preventDefault();
+                    val--;
+                    qtySpan.textContent = val;
+                    onUpdate(val);
+                });
+                cell.appendChild(qtySpan);
+            } else {
+                var qtyInput = document.createElement('input');
+                qtyInput.type = 'number';
+                qtyInput.className = 'list-attr-number-input';
+                qtyInput.value = val;
+                qtyInput.addEventListener('input', function () { onUpdate(parseInt(qtyInput.value) || 0); });
+                qtyInput.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === 'Escape') qtyInput.blur(); });
+                cell.appendChild(qtyInput);
+            }
             return cell;
         }
 
@@ -1046,6 +1081,12 @@
                 glyphHtml: '<span style="font-size:15px;font-weight:700;font-family:Palatino Linotype,Book Antiqua,Palatino,Georgia,serif;font-style:italic;">Aa</span>',
                 nameKey: 'list.attrTypeText',
                 descKey: 'list.attrTypeTextDesc'
+            },
+            {
+                key: 'quantity',
+                glyphHtml: '<span style="font-size:16px;font-weight:800;color:var(--cv-accent);">#</span>',
+                nameKey: 'list.attrTypeQuantity',
+                descKey: 'list.attrTypeQuantityDesc'
             }
         ];
 
@@ -1168,6 +1209,7 @@
             switch (selectedType) {
                 case 'toggle':      defaultValue = false; break;
                 case 'number':      defaultValue = 0; break;
+                case 'quantity':    defaultValue = 1; break;
                 case 'number-pair': defaultValue = { current: 0, max: 0 }; break;
                 case 'text':        defaultValue = ''; break;
                 default:            defaultValue = null;

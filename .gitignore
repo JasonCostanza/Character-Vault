@@ -3,3 +3,6 @@
 
 # TaleSpire local storage (user save data)
 .localStorage/
+
+# Developer Responses
+_DOCS/RESPONSES.md

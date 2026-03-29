@@ -3725,6 +3725,7 @@ select,
 
 .res-layout-columns {
     display: flex;
+    flex: 1;
     gap: 8px;
 }
 
@@ -3748,13 +3749,13 @@ select,
 
 .res-layout-columns .res-play-section:not(:first-child),
 .res-layout-columns .res-edit-section:not(:first-child) {
-    border-left: 1px dashed var(--cv-border-subtle);
+    border-left: 1px dashed var(--cv-border);
     padding-left: 8px;
 }
 
 .res-layout-rows .res-play-section:not(:first-child),
 .res-layout-rows .res-edit-section:not(:first-child) {
-    border-top: 1px dashed var(--cv-border-subtle);
+    border-top: 1px dashed var(--cv-border);
     padding-top: 6px;
     margin-top: 2px;
 }

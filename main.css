@@ -3877,6 +3877,20 @@ select,
     z-index: 10;
 }
 
+/* Fix tooltip clipping on left-most items */
+.res-layout-columns .res-play-section:first-child .res-play-item[data-tooltip]::after,
+.res-layout-rows .res-play-item[data-tooltip]::after {
+    left: 0;
+    transform: none;
+}
+
+/* Fix tooltip clipping on right-most items */
+.res-layout-columns .res-play-section:last-child .res-play-item[data-tooltip]::after {
+    left: auto;
+    right: 0;
+    transform: none;
+}
+
 .res-play-item[data-tooltip]:hover::after {
     opacity: 1;
 }

@@ -101,6 +101,7 @@ const CV_TRANSLATIONS = {
         'health.ok':            'OK',
         'health.cancel':        'Cancel',
         'health.eyedropper':    'Get from Board',
+        'stat.eyedropper':      'Get from Board',
 
         // Stat submodule
         'stat.addStat':         'Add Stat',
@@ -333,6 +334,7 @@ const CV_TRANSLATIONS = {
         'health.ok':            'Aceptar',
         'health.cancel':        'Cancelar',
         'health.eyedropper':    'Obtener del Tablero',
+        'stat.eyedropper':      'Obtener del Tablero',
 
         'stat.addStat':         'Agregar Estadística',
         'stat.deleteStat':      'Eliminar Estadística',
@@ -531,6 +533,7 @@ const CV_TRANSLATIONS = {
         'health.ok':            'OK',
         'health.cancel':        'Annuler',
         'health.eyedropper':    'Récupérer du Plateau',
+        'stat.eyedropper':      'Récupérer du Plateau',
 
         'stat.addStat':         'Ajouter une Statistique',
         'stat.deleteStat':      'Supprimer la Statistique',
@@ -729,6 +732,7 @@ const CV_TRANSLATIONS = {
         'health.ok':            'OK',
         'health.cancel':        'Abbrechen',
         'health.eyedropper':    'Vom Spielfeld holen',
+        'stat.eyedropper':      'Vom Spielfeld holen',
 
         'stat.addStat':         'Wert hinzufügen',
         'stat.deleteStat':      'Wert löschen',

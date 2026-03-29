@@ -7,6 +7,70 @@ function generateCounterId() {
     return 'counter_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 }
 
+// ── Confirmation Dialog ──
+function showConfirm(options, onConfirm) {
+    var message = typeof options === 'string' ? options : options.message;
+    var titleText = options.title || t('counter.delete');
+
+    var overlay = document.createElement('div');
+    overlay.className = 'delete-confirm-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+
+    var panel = document.createElement('div');
+    panel.className = 'delete-confirm-panel';
+
+    var title = document.createElement('div');
+    title.className = 'delete-confirm-title';
+    title.style.userSelect = 'none';
+    title.textContent = titleText;
+
+    var msg = document.createElement('div');
+    msg.className = 'delete-confirm-msg';
+    msg.style.userSelect = 'none';
+    msg.textContent = message;
+
+    var actions = document.createElement('div');
+    actions.className = 'delete-confirm-actions';
+
+    var cancelBtn = document.createElement('button');
+    cancelBtn.className = 'delete-confirm-cancel';
+    cancelBtn.textContent = options.cancelText || t('delete.cancel');
+
+    var confirmBtn = document.createElement('button');
+    confirmBtn.className = 'delete-confirm-delete';
+    confirmBtn.textContent = options.confirmText || t('delete.confirm');
+
+    actions.appendChild(cancelBtn);
+    actions.appendChild(confirmBtn);
+    panel.appendChild(title);
+    panel.appendChild(msg);
+    panel.appendChild(actions);
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+
+    function close() {
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden', 'true');
+        setTimeout(function () { overlay.remove(); }, 200);
+    }
+
+    cancelBtn.addEventListener('click', close);
+    confirmBtn.addEventListener('click', function () {
+        onConfirm();
+        close();
+    });
+
+    // Close on overlay click
+    overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) close();
+    });
+
+    requestAnimationFrame(function () {
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+    });
+}
+
 // ── Content Shape Guard ──
 function ensureContent(data) {
     if (!data.content || typeof data.content === 'string') {
@@ -400,7 +464,7 @@ function openCounterEditModal(moduleEl, data, counterId) {
     deleteBtn.className = 'counter-modal-btn-delete';
     deleteBtn.textContent = t('counter.delete');
     deleteBtn.addEventListener('click', function () {
-        if (confirm(t('counter.deleteConfirm'))) {
+        showConfirm(t('counter.deleteConfirm'), function () {
             var idx = content.counters.findIndex(function (c) { return c.id === counterId; });
             if (idx !== -1) content.counters.splice(idx, 1);
             // Re-index order values
@@ -408,7 +472,7 @@ function openCounterEditModal(moduleEl, data, counterId) {
             scheduleSave();
             overlay.remove();
             reRenderCounterModule(moduleEl, data);
-        }
+        });
     });
 
     var closeBtn = document.createElement('button');
@@ -464,9 +528,18 @@ function openCounterEditModal(moduleEl, data, counterId) {
 
     function doClose() {
         if (isDirty()) {
-            if (!confirm(t('counter.discardPrompt'))) return;
+            showConfirm({
+                message: t('counter.discardPrompt'),
+                title: t('counter.editTitle'),
+                confirmText: t('counter.cancel') // "Cancel" as in "Cancel the edit which discards it"
+            }, function () {
+                overlay.remove();
+            });
+            // Note: Native confirm() blocks, but ours doesn't. 
+            // We moved the removal into the callback.
+        } else {
+            overlay.remove();
         }
-        overlay.remove();
     }
 }
 

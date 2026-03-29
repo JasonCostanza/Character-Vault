@@ -117,6 +117,15 @@ registerModuleType('typename', {
 
 ### Pattern Notes
 
+- **Interaction Modes** — Ensure a clear distinction:
+  - **Play Mode:** Read-only data display with direct in-game interactions (toggles, rolling, quick stat adjustments). Support Quick Edit (Ctrl+Click) on key values to avoid full mode toggles.
+  - **Edit Mode:** Inline inputs, array manipulation, and structure changes. Cross-module drag-and-drop applies here.
+- **Data Sorting** — If your module manages lists/arrays, implement the standard 3-state sorting cycle (Ascending/Descending/Custom) on column headers. Remember to disable `SortableJS` drag-to-reorder when an active auto-sort is applied. Save sort state (`sortBy`, `sortDir`) in `data.content`.
+- **Modals & Overlays** — If your module requires complex modal editing:
+  - Add universal buttons (`[Save]`/`[Create]`, `[Cancel]`/`[Close]`, `[X]`, and potentially `[Delete]`).
+  - Implement an unsaved changes prompt if the user closes without saving.
+  - Auto-clamp values live (e.g., `Current Value` cannot exceed `Max`).
+- **Icons** — Use the curated SVG library. Place the `None`/`null` option first in icon pickers. Avoid custom uploads.
 - **Event handlers** — Attach in `renderBody()`. They're recreated on each render, so no cleanup needed.
 - **`scheduleSave()`** — Call after any user interaction that changes `data`. This triggers the auto-save debounce.
 - **`escapeHtml()`** — Always escape user-supplied text before inserting into HTML strings.
@@ -435,7 +444,12 @@ Copy this into your plan when creating a new module:
 
 ```
 - [ ] Define content shape (data.content structure)
+  - [ ] Include zero-state defaults
+  - [ ] Add `sortBy` / `sortDir` if managing lists
 - [ ] Create `scripts/module-TYPENAME.js` with registerModuleType()
+  - [ ] Implement robust Play vs Edit mode logic
+  - [ ] Wire up Quick Edit (Ctrl+Click) if applicable
+  - [ ] Ensure manual sorting is disabled when list is auto-sorted
 - [ ] Add `type.typename` to translations.js (all 7 languages)
 - [ ] Add module-specific translation keys (all 7 languages)
 - [ ] Add wizard type card to main.html (alphabetical order)

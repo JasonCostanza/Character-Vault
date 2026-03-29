@@ -274,6 +274,27 @@ scheduleSave() called after:
   → 2-second debounce → saveCharacter()
 ```
 
+### Data Sorting Cycle (for Lists/Counters)
+```
+User clicks a column header
+  → cycles state: Ascending (`asc`) → Descending (`desc`) → Custom (`null`)
+  → updates `data.content.sortBy` and `data.content.sortDir`
+  → re-renders module content based on new sort
+  → if ascending/descending: manual SortableJS drag is explicitly disabled
+  → if custom: SortableJS drag is enabled
+  → scheduleSave()
+```
+
+### Quick Edit (Play Mode)
+```
+User Ctrl+Clicks an editable value in Play mode
+  → enters temporary inline input state (bypassing full Edit mode shift)
+  → User types new value and triggers confirmation (blur, Enter)
+  → value is saved to data
+  → UI reverts to static text display with new value applied
+  → scheduleSave()
+```
+
 ---
 
 ## z-index Layers

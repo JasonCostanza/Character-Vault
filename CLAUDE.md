@@ -42,12 +42,14 @@ Per-file descriptions live in `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
 6. **Call `scheduleSave()` after any mutation to module state**. It debounces (2 s) into `saveCharacter()`. Never call `saveCharacter()` directly from event handlers.
 7. **Use `escapeHtml()`** (in `shared.js`) when interpolating user-provided strings into HTML.
 8. **Use `null`, not `undefined`**, for intentionally empty values (e.g., `title: null`, `theme: null`) — ensures clean JSON serialization.
-9. **Inline SVG icons only** — `<svg class="icon">` with `stroke="currentColor"`. Do **not** use CSS `mask-image` (broken in TaleSpire's Chromium).
+9. **Inline SVG icons only** — Use the curated in-code SVG library to avoid memory bloat from custom image uploads. The "None" option should sit first in icon pickers. Do **not** use CSS `mask-image` (broken in TaleSpire's Chromium).
 10. **Module toolbar buttons must have `title` attributes** for custom CSS tooltips (native `title` tooltips don't render in TaleSpire's Chromium). Rightmost buttons need the right-anchored tooltip override (see `.module-delete-btn[title]::after` in `main.css`).
 11. **After exiting plan mode, offer to save the plan** to `_DOCS/plans/` with a kebab-case filename. Never save plans to `~/.claude/plans`.
 12. **No line numbers in `_DOCS/ARCHITECTURE.md`** — reference sections and function names instead.
 13. **All `.js` files go in `scripts/`** — never create JavaScript files in the project root or any other directory.
-14. **Use SortableJS for all drag-to-reorder** — never write custom pointer/mouse-based drag systems. SortableJS is already loaded via CDN. Follow the existing pattern: `handle`, `animation: 150`, `ghostClass`, `draggable`, and `onEnd`. See `initStatSortable()` or `initListSortable()` as references.
+14. **Use SortableJS for all drag-to-reorder** — never write custom pointer/mouse-based drag systems. SortableJS is already loaded via CDN. Follow the existing pattern: `handle`, `animation: 150`, `ghostClass`, `draggable`, and `onEnd`. See `initStatSortable()` or `initListSortable()` as references. **Important:** Disable SortableJS manual drag-to-reorder if your module uses column header sorting and an auto-sort (asc/desc) is active.
+15. **Play vs Edit Mode interaction rules**: Play mode is read-only, optimized for simple in-game actions. Edit mode allows structure and data modification. Critical stats/values should support Quick Edit (Ctrl+Click) in Play mode to bypass a full mode switch.
+16. **Modal and Overlay standard**: Modals must include standard action buttons (`[Save]`/`[Create]`, `[Cancel]`/`[Close]`, and an `[X]` top-right). If editing an existing entity, consider a `[Delete]` button. Always prompt for unsaved changes if the modal is dismissed with edits pending. Values should clamp live during input to prevent invalid states.
 
 ## Conventions
 

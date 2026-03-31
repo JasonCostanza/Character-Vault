@@ -195,11 +195,13 @@
             items.forEach(function (item) {
                 var el = document.createElement('div');
                 el.className = 'res-play-item';
+                if (item.active === false) el.classList.add('inactive');
                 el.dataset.id = item.id;
 
                 var name = getResName(item, content);
                 var valueText = colKey === 'immunities' ? t('res.immune') : (item.value || '');
                 var tooltipText = name + (valueText ? ' \u2014 ' + valueText : '');
+                if (item.active === false) tooltipText += ' (' + t('res.inactive') + ')';
                 el.setAttribute('data-tooltip', tooltipText);
 
                 var iconSvg = getResIconSvg(item, content);
@@ -221,6 +223,22 @@
                     valSpan.textContent = valueText;
                     el.appendChild(valSpan);
                 }
+
+                // Toggle active/inactive on click
+                (function (el, item, colKey) {
+                    el.addEventListener('click', function () {
+                        item.active = !item.active;
+                        el.classList.toggle('inactive');
+
+                        var updatedName = getResName(item, content);
+                        var updatedValue = colKey === 'immunities' ? t('res.immune') : (item.value || '');
+                        var updatedTooltip = updatedName + (updatedValue ? ' \u2014 ' + updatedValue : '');
+                        if (item.active === false) updatedTooltip += ' (' + t('res.inactive') + ')';
+                        el.setAttribute('data-tooltip', updatedTooltip);
+
+                        scheduleSave();
+                    });
+                })(el, item, colKey);
 
                 itemsWrap.appendChild(el);
             });

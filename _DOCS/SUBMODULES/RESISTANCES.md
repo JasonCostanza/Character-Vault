@@ -14,8 +14,7 @@ In the Module Settings menu, there is a **Staging Area** displayed below the col
 The assigned resistances will be displayed in their respective columns with their icon, name, and value.
 
 - Assigned resistances are always shown in alphabetical order within their column.
-- Resistances have an `active` state (defaults to `true` when created). The active state is stored in the module data and persists across sessions.
-- ⚠️ **Note:** Toggle functionality for the `active` state is not yet implemented in the UI.
+- Resistances have an `active` state (defaults to `true` when created). The active state is stored in the module data and persists across sessions. Clicking a resistance in Play mode toggles its active state with visual feedback (dimmed when inactive).
 
 While in `Edit` mode, the user can:
 - Open the Module Settings Menu to access the Staging Area (gear/settings button)
@@ -27,7 +26,7 @@ While in `Edit` mode, the user can:
 
 While in `Play` mode, the user can:
 - Hover over a resistance to see its name and value (If immune, it will show "Immune" instead of a value)
-- ⚠️ **Note:** Toggle click functionality is not yet implemented. When implemented, clicking a resistance will toggle it as active (icon & text illuminates or darkens, based on the `active` state)
+- Click a resistance to toggle its `active` state. Inactive resistances are visually dimmed (opacity 0.3, muted text color) and their tooltip appends "(Inactive)". Clicking again restores the active state. The toggle persists across sessions.
 
 ## Data Structure
 
@@ -121,8 +120,7 @@ The Resistance module uses an inline SVG icon set. When creating a custom resist
 - Data persistence through save/load system
 - Edit mode with value editing and deletion
 - Play mode with hover tooltips
+- Toggle active/inactive in Play mode (click to dim/brighten, persists across sessions)
 
 ### Pending / Not Yet Implemented
-- **Toggle active/inactive in Play mode**: The `active` property is stored in data but click handlers are not yet implemented. When implemented, will support toggling via click with visual feedback (dimmed/brightened).
-- **Layout toggle button**: The `layout` property ('columns' vs 'rows') exists in the data structure and CSS styles support both modes, but no UI control is exposed to switch between them.
-- **Same-column reordering**: Currently, SortableJS is configured to prevent reordering within the same column (no `sort: true`). Manual reorder by drag within a column is disabled.
+- **Same-column reordering**: Currently, SortableJS is configured to prevent reordering within the same column (no `sort: true`). Manual reorder by drag within a column is disabled. Alphabetical sort is applied on every render.

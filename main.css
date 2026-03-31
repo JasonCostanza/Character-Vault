@@ -4926,38 +4926,77 @@ select,
     user-select: none;
 }
 
-/* ── Sort Controls ── */
+/* ── Column Headers ── */
 
-.counter-sort-controls {
+.counter-header-row {
     display: flex;
-    gap: 4px;
-    padding: 0 0 2px;
-}
-
-.counter-sort-btn {
-    background: none;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    color: var(--cv-text-muted);
-    font-size: 9px;
-    font-weight: 600;
-    font-family: inherit;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    padding: 2px 6px;
-    cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    position: sticky;
+    top: 0;
+    background: var(--cv-bg-module);
+    border-bottom: 1px solid var(--cv-border);
+    z-index: 2;
+    flex-shrink: 0;
     user-select: none;
 }
 
-.counter-sort-btn:hover {
-    color: var(--cv-text-secondary);
-    border-color: var(--cv-border-subtle);
+.counter-col-header {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    user-select: none;
 }
 
-.counter-sort-btn.active {
+.counter-col-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    transition: color 0.15s ease;
+}
+
+.counter-col-name:hover {
+    color: var(--cv-text);
+}
+
+.counter-col-name.active-sort {
     color: var(--cv-accent);
-    border-color: var(--cv-border);
+}
+
+.counter-col-value {
+    flex: 0 0 72px;
+    width: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    transition: color 0.15s ease;
+}
+
+.counter-col-value:hover {
+    color: var(--cv-text);
+}
+
+.counter-col-value.active-sort {
+    color: var(--cv-accent);
+}
+
+.counter-col-icon-spacer {
+    flex: 0 0 20px;
+    width: 20px;
+    cursor: default;
+}
+
+.counter-col-actions {
+    flex: 0 0 24px;
+    width: 24px;
+    cursor: default;
 }
 
 /* ── Play Mode Row ── */
@@ -4965,19 +5004,17 @@ select,
 .counter-row-play {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 6px 8px;
-    border-radius: 5px;
-    background: var(--cv-bg-raised);
-    border: 1px solid var(--cv-border-subtle);
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    min-height: 28px;
     cursor: pointer;
-    transition: border-color 0.15s ease, background-color 0.15s ease;
+    transition: background 0.15s ease;
     user-select: none;
 }
 
 .counter-row-play:hover {
-    border-color: var(--cv-accent-secondary);
-    background: var(--cv-bg-sunken);
+    background: var(--cv-surface-hover, rgba(255, 255, 255, 0.04));
 }
 
 .counter-row-play.counter-at-max {
@@ -5014,13 +5051,13 @@ select,
 }
 
 .counter-row-value {
-    flex-shrink: 0;
+    flex: 0 0 72px;
+    width: 72px;
     font-size: 13px;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     color: var(--cv-text);
-    text-align: right;
-    min-width: 30px;
+    text-align: center;
 }
 
 .counter-val-sep {

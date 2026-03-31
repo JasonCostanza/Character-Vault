@@ -690,49 +690,72 @@ function renderCounterRowEdit(counter, data, moduleEl) {
     return row;
 }
 
-// ── Sort Controls ──
-function renderSortControls(container, content, moduleEl, data) {
-    var controls = document.createElement('div');
-    controls.className = 'counter-sort-controls';
+// ── Column Headers ──
+function renderCounterColumnHeaders(container, content, moduleEl, data) {
+    var SVG_UP   = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
+    var SVG_DOWN = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>';
 
-    var sortItems = [
-        { key: 'name', label: t('counter.sortName') },
-        { key: 'value', label: t('counter.sortValue') }
+    var headerRow = document.createElement('div');
+    headerRow.className = 'counter-header-row';
+
+    // Icon spacer — only when any counter has an icon, to keep name column aligned
+    if (content.counters.some(function (c) { return c.icon; })) {
+        var iconSpacer = document.createElement('div');
+        iconSpacer.className = 'counter-col-header counter-col-icon-spacer';
+        headerRow.appendChild(iconSpacer);
+    }
+
+    // Column definitions
+    var cols = [
+        { key: 'name',  cls: 'counter-col-name',  labelKey: 'list.colName' },
+        { key: 'value', cls: 'counter-col-value',  labelKey: 'counter.colValue' }
     ];
 
-    sortItems.forEach(function (item) {
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'counter-sort-btn';
-        if (content.sortBy === item.key) btn.classList.add('active');
+    cols.forEach(function (col) {
+        var isActive = content.sortBy === col.key;
+        var colEl = document.createElement('div');
+        colEl.className = 'counter-col-header ' + col.cls + (isActive ? ' active-sort' : '');
+        colEl.title = escapeHtml(isActive
+            ? (content.sortDir === 'asc' ? t('list.sortDesc') : t('list.sortManual'))
+            : t('list.sortAsc'));
 
-        var arrow = '';
-        if (content.sortBy === item.key) {
-            arrow = content.sortDir === 'asc' ? ' \u25B2' : ' \u25BC';
+        var label = document.createElement('span');
+        label.className = 'list-col-header-label';
+        label.textContent = t(col.labelKey);
+        colEl.appendChild(label);
+
+        if (isActive) {
+            var indicator = document.createElement('span');
+            indicator.className = 'list-sort-indicator';
+            indicator.innerHTML = content.sortDir === 'asc' ? SVG_UP : SVG_DOWN;
+            colEl.appendChild(indicator);
         }
-        btn.textContent = item.label + arrow;
 
-        btn.addEventListener('click', function () {
-            if (content.sortBy === item.key) {
+        colEl.addEventListener('click', function () {
+            if (content.sortBy === col.key) {
                 if (content.sortDir === 'asc') {
                     content.sortDir = 'desc';
                 } else {
-                    // Third click: return to custom
                     content.sortBy = 'custom';
                     content.sortDir = 'asc';
                 }
             } else {
-                content.sortBy = item.key;
+                content.sortBy = col.key;
                 content.sortDir = 'asc';
             }
             scheduleSave();
             reRenderCounterModule(moduleEl, data);
         });
 
-        controls.appendChild(btn);
+        headerRow.appendChild(colEl);
     });
 
-    container.appendChild(controls);
+    // Actions spacer — aligns with reset button column
+    var actionsSpacer = document.createElement('div');
+    actionsSpacer.className = 'counter-col-header counter-col-actions';
+    headerRow.appendChild(actionsSpacer);
+
+    container.appendChild(headerRow);
 }
 
 // ── SortableJS for Edit Mode Reorder ──
@@ -771,7 +794,7 @@ registerModuleType('counters', {
         if (isPlayMode) {
             // Sort controls
             if (content.counters.length > 0) {
-                renderSortControls(container, content, moduleEl, data);
+                renderCounterColumnHeaders(container, content, moduleEl, data);
             }
 
             // Counter list

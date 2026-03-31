@@ -20,6 +20,7 @@
 | `scripts/module-stat.js` | Stat module type registration + helpers (render, edit, quick-edit, dice rolling) |
 | `scripts/module-hr.js` | Horizontal Line module type registration |
 | `scripts/module-resistance.js` | Resistance module type registration + helpers (settings panel, staging area, creation wizard, drag-to-assign) |
+| `scripts/module-condition.js` | Condition module type registration + helpers (settings panel, staging area, game system templates, cascading sub-conditions, custom wizard) |
 | `scripts/app.js` | Startup: applies translations, triggers auto-load |
 
 There is no build step. Everything ships as-is to TaleSpire's embedded Chromium.
@@ -29,7 +30,7 @@ There is no build step. Everything ships as-is to TaleSpire's embedded Chromium.
 Scripts are loaded via plain `<script src>` tags (no `async`/`defer`) in `main.html`, which guarantees sequential execution. The order matters because later scripts depend on globals defined by earlier ones:
 
 ```
-translations.js → shared.js → i18n.js → theme.js → settings.js → persistence.js → module-core.js → module-text.js → module-stat.js → module-health.js → module-hr.js → module-spacer.js → module-resistance.js → module-list.js → app.js
+translations.js → shared.js → i18n.js → theme.js → settings.js → persistence.js → module-core.js → module-condition.js → module-counters.js → module-text.js → module-stat.js → module-health.js → module-hr.js → module-spacer.js → module-resistance.js → module-list.js → app.js
 ```
 
 ## External Dependencies (CDN)
@@ -72,6 +73,7 @@ All JS lives in `scripts/` as separate files loaded by `main.html` in dependency
 | **module-stat.js** | `formatModifier(mod)`, `renderStatBlock()`, `renderStatBlockEdit()`, `reRenderStatEdits()`, `initStatSortable()`, `rollStatCheck(stat)`, `enterQuickEdit()`, `registerModuleType('stat', ...)` — stat blocks with values/modifiers, play mode dice rolling, edit mode inputs, layout toggle (large-stat / large-modifier) |
 | **module-hr.js** | `registerModuleType('hline', ...)` — simple `<hr>` divider, header hidden in play mode |
 | **module-resistance.js** | `registerModuleType('resistance', ...)` — drag-to-assign resistance/immunity/weakness columns; `openResSettingsPanel()`, `openResWizard()`, SortableJS staging area, value prompts, layout toggle |
+| **module-condition.js** | `registerModuleType('condition', ...)` — game system template conditions with toggle/value types; `openCondSettingsPanel()`, `openCondWizard()`, SortableJS staging area, cascading sub-conditions, expand modal, template switching |
 | **app.js** | Startup: `applyTranslations()`, `refreshModuleLabels()`, auto-load check (`chkAutoLoad` + `TS` availability → `loadCharacter()`) |
 
 ---
@@ -130,7 +132,7 @@ Maps type keys to behavior definitions. Each entry:
   syncState(moduleEl, data) {}                 // optional — sync live DOM state to data before save
 }
 ```
-Currently registered types: `text`, `stat`, `hline`, `health`, `spacer`, `list`, `resistance`
+Currently registered types: `text`, `stat`, `hline`, `health`, `spacer`, `list`, `resistance`, `condition`
 
 ### Save Blob (JSON schema v1)
 Character sheet persistence format, stored via `TS.localStorage.campaign`:

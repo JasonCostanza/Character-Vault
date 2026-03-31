@@ -69,7 +69,6 @@ Per-file descriptions live in `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
 - **Grid layout**: `#module-grid` is a 4-column CSS Grid, 8px gap. Modules span 1–4 columns. Fixed row height = `rowSpan * 80px + (rowSpan - 1) * 8px`.
 - **`TS.*` API unavailable** when previewing in VS Code — guard calls with `typeof TS !== 'undefined'` or test in TaleSpire directly.
 - **`_localStorage/`** contains user save data — gitignored, never commit.
-- **This is the `Character Vault DEV` instance** — changes are tested live in TaleSpire but can be roughly previewed in VS Code's HTML Preview tab.
 
 ## Terminology
 
@@ -80,3 +79,6 @@ Per-file descriptions live in `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
 | **Module toolbar** | The bar at the top of a module (drag handle, title, action buttons). |
 | **Module overlay menu** | The compact menu shown when a module is too small for its module toolbar. Also called "module menu". |
 | **Wizard** | The "New Module" creation overlay (type selection, color picker). |
+
+## Reponse behavior
+- Do not tell me how to test the symbiote at the end of code changes, we're wasting tokens. Just tell me you're done with the work.

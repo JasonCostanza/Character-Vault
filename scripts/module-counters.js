@@ -791,12 +791,12 @@ registerModuleType('counters', {
         container.className = 'counter-container';
         var moduleEl = bodyEl.closest('.module');
 
-        if (isPlayMode) {
-            // Sort controls
-            if (content.counters.length > 0) {
-                renderCounterColumnHeaders(container, content, moduleEl, data);
-            }
+        // Sort controls — shown in both play and edit mode
+        if (content.counters.length > 0) {
+            renderCounterColumnHeaders(container, content, moduleEl, data);
+        }
 
+        if (isPlayMode) {
             // Counter list
             var list = document.createElement('div');
             list.className = 'counter-list';

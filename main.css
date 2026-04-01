@@ -496,7 +496,6 @@ select,
     border-bottom: 1px solid var(--cv-border);
 }
 
-/* .settings-title - now uses .heading-fancy */
 
 /* ── Settings Body ── */
 .settings-body {
@@ -612,7 +611,6 @@ select,
     margin-bottom: 12px;
 }
 
-/* .settings-action-btn - now uses .btn-primary */
 
 .settings-action-btn--warning {
     border-color: var(--cv-warning);
@@ -1192,7 +1190,6 @@ select,
     gap: 10px;
 }
 
-/* .delete-confirm-cancel - now uses .btn-secondary */
 
 .delete-confirm-delete {
     padding: 8px 16px;
@@ -2173,7 +2170,6 @@ select,
     margin-top: 4px;
 }
 
-/* .health-action-overlay-close - now uses .close-btn */
 
 .health-action-overlay-input {
     width: 100%;
@@ -2202,9 +2198,7 @@ select,
     max-width: 160px;
 }
 
-/* .health-action-overlay-cancel - now uses .btn-secondary.sm */
 
-/* .health-action-overlay-ok - now uses .btn-primary */
 
 /* ── Edit Mode: Inline Inputs ── */
 .health-inline-input {
@@ -3021,7 +3015,6 @@ select,
     user-select: none;
 }
 
-/* .list-manage-close - now uses .close-btn */
 
 .list-manage-body {
     display: flex;
@@ -3267,7 +3260,6 @@ select,
     border-bottom: 1px solid var(--cv-border);
 }
 
-/* .wizard-title - now uses .heading-fancy */
 
 /* ── Wizard Body ── */
 .wizard-body {
@@ -3454,9 +3446,7 @@ select,
     border-top: 1px solid var(--cv-border-subtle);
 }
 
-/* .wizard-btn-cancel - now uses .btn-secondary */
 
-/* .wizard-btn-create - now uses .btn-primary.wide */
 
 /* ── Attribute Wizard ── */
 
@@ -3498,9 +3488,7 @@ select,
     flex-shrink: 0;
 }
 
-/* .attr-wizard-title - now uses .heading-fancy */
 
-/* .attr-wizard-close - now uses .close-btn (with padding: 4px from HTML styling) */
 
 .attr-wizard-body {
     flex: 1;
@@ -3685,9 +3673,7 @@ select,
     flex-shrink: 0;
 }
 
-/* .attr-wizard-btn-cancel - now uses .btn-secondary */
 
-/* .attr-wizard-btn-create - now uses .btn-primary.solid */
 .attr-wizard-btn-create:disabled {
     background: var(--cv-bg-raised);
     color: var(--cv-text-muted);
@@ -3941,7 +3927,6 @@ select,
     user-select: none;
 }
 
-/* .res-settings-close - now uses .close-btn */
 
 .res-settings-body {
     display: flex;
@@ -4233,7 +4218,6 @@ select,
     gap: 6px;
 }
 
-/* .res-value-cancel - now uses .btn-secondary.sm */
 
 .res-value-ok {
     flex: 1;
@@ -4301,9 +4285,7 @@ select,
     flex-shrink: 0;
 }
 
-/* .res-wizard-title - now uses .heading-fancy */
 
-/* .res-wizard-close - now uses .close-btn.lg */
 
 .res-wizard-body {
     flex: 1;
@@ -4427,9 +4409,7 @@ select,
     flex-shrink: 0;
 }
 
-/* .res-wizard-btn-cancel - now uses .btn-secondary */
 
-/* .res-wizard-btn-create - now uses .btn-primary.solid */
 
 .res-wizard-btn-create:disabled {
     background: var(--cv-bg-raised);
@@ -5460,7 +5440,6 @@ select,
     gap: 6px;
 }
 
-/* .cond-value-cancel - now uses .btn-secondary.sm */
 
 .cond-value-ok {
     flex: 1;
@@ -6089,9 +6068,7 @@ select,
     flex-shrink: 0;
 }
 
-/* .cond-wizard-btn-cancel - now uses .btn-secondary */
 
-/* .cond-wizard-btn-create - now uses .btn-primary.solid */
 
 .cond-wizard-btn-create:disabled {
     background: var(--cv-bg-raised);
@@ -6599,9 +6576,7 @@ select,
     gap: 8px;
 }
 
-/* .counter-modal-btn-cancel - now uses .btn-secondary.sm */
 
-/* .counter-modal-btn-create - now uses .btn-primary.solid */
 
 .counter-modal-btn-delete {
     background: none;

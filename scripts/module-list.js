@@ -121,7 +121,7 @@
         actions.className = 'delete-confirm-actions';
 
         var cancelBtn = document.createElement('button');
-        cancelBtn.className = 'delete-confirm-cancel';
+        cancelBtn.className = 'delete-confirm-cancel btn-secondary';
         cancelBtn.textContent = t('delete.cancel');
 
         var confirmBtn = document.createElement('button');
@@ -1167,11 +1167,11 @@
         footer.className = 'attr-wizard-footer';
 
         var cancelBtn = document.createElement('button');
-        cancelBtn.className = 'attr-wizard-btn-cancel';
+        cancelBtn.className = 'attr-wizard-btn-cancel btn-secondary';
         cancelBtn.textContent = t('delete.cancel');
 
         var createBtn = document.createElement('button');
-        createBtn.className = 'attr-wizard-btn-create';
+        createBtn.className = 'attr-wizard-btn-create btn-primary solid';
         createBtn.textContent = t('list.attrWizardCreate');
         createBtn.disabled = true;
 

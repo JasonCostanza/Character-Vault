@@ -72,8 +72,8 @@ function openHealthActionOverlay(moduleEl, data, mode) {
         subHeading +
         `<input type="text" class="health-action-overlay-input" placeholder="0" spellcheck="false" autocomplete="off">` +
         `<div class="health-action-overlay-actions">` +
-            `<button class="health-action-overlay-cancel">${escapeHtml(t('health.cancel'))}</button>` +
-            `<button class="health-action-overlay-ok">${escapeHtml(t('health.ok'))}</button>` +
+            `<button class="health-action-overlay-cancel btn-secondary sm">${escapeHtml(t('health.cancel'))}</button>` +
+            `<button class="health-action-overlay-ok btn-primary">${escapeHtml(t('health.ok'))}</button>` +
         `</div>`;
 
     const input = overlay.querySelector('.health-action-overlay-input');

@@ -184,6 +184,173 @@ select,
     user-select: text;
 }
 
+/* ── Consolidated Button & UI Base Classes ── */
+
+/* Close Button (20x20 transparent icon button) */
+.close-btn {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0;
+    transition: color 0.15s ease;
+}
+
+.close-btn:hover {
+    color: var(--cv-text);
+}
+
+.close-btn .icon {
+    width: 12px;
+    height: 12px;
+}
+
+.close-btn.lg {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+}
+
+/* Icon Button (flexible sizing with modifiers) */
+.icon-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--cv-text-muted);
+    transition: color 0.15s ease, background 0.15s ease;
+    border-radius: 3px;
+}
+
+.icon-btn.sm {
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+}
+
+.icon-btn.md {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.icon-btn.danger:hover {
+    color: var(--cv-danger);
+}
+
+.icon-btn.soft:hover {
+    color: var(--cv-text-secondary);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* Base Button */
+.btn {
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Secondary Button (neutral, muted) */
+.btn-secondary {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--cv-border);
+    background: transparent;
+    color: var(--cv-text-muted);
+}
+
+.btn-secondary:hover {
+    color: var(--cv-text-secondary);
+    background-color: var(--cv-bg-raised);
+}
+
+.btn-secondary.sm {
+    padding: 5px 8px;
+    font-size: 11px;
+    border-radius: 3px;
+}
+
+/* Primary Button (accent, highlighted) */
+.btn-primary {
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--cv-accent-secondary);
+    background: rgba(192, 135, 74, 0.1);
+    color: var(--cv-accent);
+}
+
+.btn-primary:hover {
+    background: rgba(192, 135, 74, 0.2);
+    border-color: var(--cv-accent);
+}
+
+.btn-primary.wide {
+    padding: 10px 20px;
+}
+
+.btn-primary.solid {
+    background: var(--cv-accent);
+    color: var(--cv-bg-sunken);
+    border: none;
+}
+
+.btn-primary.solid:hover {
+    background: var(--cv-accent-hover);
+}
+
+/* Danger Button (red, destructive) */
+.btn-danger {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--cv-danger);
+    background: rgba(184, 64, 64, 0.1);
+    color: var(--cv-danger);
+}
+
+.btn-danger:hover {
+    background: rgba(184, 64, 64, 0.25);
+}
+
+/* Success Button (green) */
+.btn-success {
+    color: var(--cv-success);
+    border: 1px solid var(--cv-success);
+    background: rgba(90, 158, 110, 0.1);
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.btn-success:hover {
+    background: rgba(90, 158, 110, 0.2);
+}
+
+/* Consolidated Title/Heading Styles */
+.heading-fancy {
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cv-accent);
+    user-select: none;
+}
+
 /* ── Top Menu Bar ── */
 #menu-bar {
     display: flex;
@@ -329,14 +496,7 @@ select,
     border-bottom: 1px solid var(--cv-border);
 }
 
-.settings-title {
-    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--cv-accent);
-}
+/* .settings-title - now uses .heading-fancy */
 
 /* ── Settings Body ── */
 .settings-body {
@@ -452,29 +612,7 @@ select,
     margin-bottom: 12px;
 }
 
-.settings-action-btn {
-    flex: 1;
-    padding: 10px 16px;
-    font-size: 13px;
-    font-family: inherit;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    border: 1px solid var(--cv-accent-secondary);
-    border-radius: 4px;
-    background: rgba(192, 135, 74, 0.1);
-    color: var(--cv-accent);
-    transition: background-color 0.15s ease,
-                border-color 0.15s ease,
-                color 0.15s ease;
-}
-
-.settings-action-btn:hover {
-    background: rgba(192, 135, 74, 0.2);
-    border-color: var(--cv-accent);
-    color: var(--cv-accent-hover);
-}
+/* .settings-action-btn - now uses .btn-primary */
 
 .settings-action-btn--warning {
     border-color: var(--cv-warning);
@@ -1054,24 +1192,7 @@ select,
     gap: 10px;
 }
 
-.delete-confirm-cancel {
-    padding: 8px 16px;
-    font-size: 13px;
-    font-family: inherit;
-    font-weight: 500;
-    cursor: pointer;
-    border: 1px solid var(--cv-border);
-    border-radius: 4px;
-    background: transparent;
-    color: var(--cv-text-muted);
-    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.delete-confirm-cancel:hover {
-    border-color: var(--cv-border);
-    color: var(--cv-text-secondary);
-    background-color: var(--cv-bg-surface);
-}
+/* .delete-confirm-cancel - now uses .btn-secondary */
 
 .delete-confirm-delete {
     padding: 8px 16px;
@@ -2052,29 +2173,7 @@ select,
     margin-top: 4px;
 }
 
-.health-action-overlay-close {
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    color: var(--cv-text-muted);
-    cursor: pointer;
-    border-radius: 3px;
-    padding: 0;
-    transition: color 0.15s ease;
-}
-
-.health-action-overlay-close:hover {
-    color: var(--cv-text);
-}
-
-.health-action-overlay-close .icon {
-    width: 12px;
-    height: 12px;
-}
+/* .health-action-overlay-close - now uses .close-btn */
 
 .health-action-overlay-input {
     width: 100%;
@@ -2103,45 +2202,9 @@ select,
     max-width: 160px;
 }
 
-.health-action-overlay-cancel {
-    flex: 1;
-    padding: 5px 8px;
-    font-size: 11px;
-    font-family: inherit;
-    font-weight: 500;
-    cursor: pointer;
-    border: 1px solid var(--cv-border);
-    border-radius: 3px;
-    background: transparent;
-    color: var(--cv-text-muted);
-    transition: background-color 0.15s ease, color 0.15s ease;
-}
+/* .health-action-overlay-cancel - now uses .btn-secondary.sm */
 
-.health-action-overlay-cancel:hover {
-    color: var(--cv-text-secondary);
-    background-color: var(--cv-bg-raised);
-}
-
-.health-action-overlay-ok {
-    flex: 1;
-    padding: 5px 8px;
-    font-size: 11px;
-    font-family: inherit;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    border: 1px solid var(--cv-accent-secondary);
-    border-radius: 3px;
-    background: rgba(192, 135, 74, 0.1);
-    color: var(--cv-accent);
-    transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.health-action-overlay-ok:hover {
-    background: rgba(192, 135, 74, 0.2);
-    border-color: var(--cv-accent);
-}
+/* .health-action-overlay-ok - now uses .btn-primary */
 
 /* ── Edit Mode: Inline Inputs ── */
 .health-inline-input {
@@ -2958,29 +3021,7 @@ select,
     user-select: none;
 }
 
-.list-manage-close {
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    color: var(--cv-text-muted);
-    cursor: pointer;
-    border-radius: 3px;
-    padding: 0;
-    transition: color 0.15s ease;
-}
-
-.list-manage-close:hover {
-    color: var(--cv-text);
-}
-
-.list-manage-close .icon {
-    width: 12px;
-    height: 12px;
-}
+/* .list-manage-close - now uses .close-btn */
 
 .list-manage-body {
     display: flex;
@@ -3214,7 +3255,7 @@ select,
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0;
 }
 
 /* ── Wizard Header ── */
@@ -3222,25 +3263,22 @@ select,
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 0;
+    padding: 16px 24px;
     border-bottom: 1px solid var(--cv-border);
 }
 
-.wizard-title {
-    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--cv-accent);
-}
+/* .wizard-title - now uses .heading-fancy */
 
 /* ── Wizard Body ── */
 .wizard-body {
     flex: 1;
     overflow-y: auto;
-    padding: 20px 0;
+    padding: 20px 24px;
 }
+
+.wizard-body::-webkit-scrollbar { width: 4px; }
+.wizard-body::-webkit-scrollbar-track { background: transparent; }
+.wizard-body::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .wizard-section {
     margin-bottom: 24px;
@@ -3394,6 +3432,10 @@ select,
     display: block;
 }
 
+.wizard-hex-row {
+    margin-top: 8px;
+}
+
 .wizard-swatch-default {
     background: var(--cv-bg-surface);
     border-color: var(--cv-border);
@@ -3408,49 +3450,13 @@ select,
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    padding: 16px 0;
+    padding: 16px 24px;
     border-top: 1px solid var(--cv-border-subtle);
 }
 
-.wizard-btn-cancel {
-    padding: 10px 20px;
-    font-size: 13px;
-    font-family: inherit;
-    font-weight: 500;
-    cursor: pointer;
-    border: 1px solid var(--cv-border);
-    border-radius: 4px;
-    background: transparent;
-    color: var(--cv-text-muted);
-    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
+/* .wizard-btn-cancel - now uses .btn-secondary */
 
-.wizard-btn-cancel:hover {
-    border-color: var(--cv-border);
-    color: var(--cv-text-secondary);
-    background-color: var(--cv-bg-raised);
-}
-
-.wizard-btn-create {
-    padding: 10px 20px;
-    font-size: 13px;
-    font-family: inherit;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    border: 1px solid var(--cv-accent-secondary);
-    border-radius: 4px;
-    background: rgba(192, 135, 74, 0.1);
-    color: var(--cv-accent);
-    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.wizard-btn-create:hover {
-    background: rgba(192, 135, 74, 0.2);
-    border-color: var(--cv-accent);
-    color: var(--cv-accent-hover);
-}
+/* .wizard-btn-create - now uses .btn-primary.wide */
 
 /* ── Attribute Wizard ── */
 
@@ -3492,29 +3498,9 @@ select,
     flex-shrink: 0;
 }
 
-.attr-wizard-title {
-    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--cv-accent);
-    user-select: none;
-}
+/* .attr-wizard-title - now uses .heading-fancy */
 
-.attr-wizard-close {
-    background: none;
-    border: none;
-    color: var(--cv-text-muted);
-    cursor: pointer;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    transition: color 0.15s ease;
-}
-.attr-wizard-close:hover { color: var(--cv-text); }
+/* .attr-wizard-close - now uses .close-btn (with padding: 4px from HTML styling) */
 
 .attr-wizard-body {
     flex: 1;
@@ -3699,43 +3685,9 @@ select,
     flex-shrink: 0;
 }
 
-.attr-wizard-btn-cancel {
-    background: none;
-    border: 1px solid var(--cv-border);
-    border-radius: 4px;
-    color: var(--cv-text-secondary);
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: border-color 0.15s ease, color 0.15s ease;
-    user-select: none;
-    font-family: inherit;
-}
-.attr-wizard-btn-cancel:hover {
-    border-color: var(--cv-text-muted);
-    color: var(--cv-text);
-}
+/* .attr-wizard-btn-cancel - now uses .btn-secondary */
 
-.attr-wizard-btn-create {
-    flex: 1;
-    background: var(--cv-accent);
-    border: none;
-    border-radius: 4px;
-    color: var(--cv-bg-sunken);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-    user-select: none;
-    font-family: inherit;
-}
-.attr-wizard-btn-create:hover:not(:disabled) { background: var(--cv-accent-hover); }
+/* .attr-wizard-btn-create - now uses .btn-primary.solid */
 .attr-wizard-btn-create:disabled {
     background: var(--cv-bg-raised);
     color: var(--cv-text-muted);
@@ -3989,23 +3941,7 @@ select,
     user-select: none;
 }
 
-.res-settings-close {
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;
-    color: var(--cv-text-muted);
-    transition: color 0.15s ease;
-}
-
-.res-settings-close:hover {
-    color: var(--cv-text);
-}
+/* .res-settings-close - now uses .close-btn */
 
 .res-settings-body {
     display: flex;
@@ -4297,26 +4233,7 @@ select,
     gap: 6px;
 }
 
-.res-value-cancel {
-    flex: 1;
-    background: none;
-    border: 1px solid var(--cv-border);
-    border-radius: 4px;
-    color: var(--cv-text-secondary);
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 5px 8px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: border-color 0.15s ease, color 0.15s ease;
-}
-
-.res-value-cancel:hover {
-    color: var(--cv-text);
-    border-color: var(--cv-text-muted);
-}
+/* .res-value-cancel - now uses .btn-secondary.sm */
 
 .res-value-ok {
     flex: 1;
@@ -4384,33 +4301,9 @@ select,
     flex-shrink: 0;
 }
 
-.res-wizard-title {
-    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--cv-accent);
-    user-select: none;
-}
+/* .res-wizard-title - now uses .heading-fancy */
 
-.res-wizard-close {
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    color: var(--cv-text-muted);
-    transition: color 0.15s ease;
-}
-
-.res-wizard-close:hover {
-    color: var(--cv-text);
-}
+/* .res-wizard-close - now uses .close-btn.lg */
 
 .res-wizard-body {
     flex: 1;
@@ -4534,45 +4427,9 @@ select,
     flex-shrink: 0;
 }
 
-.res-wizard-btn-cancel {
-    background: none;
-    border: 1px solid var(--cv-border);
-    border-radius: 4px;
-    color: var(--cv-text-secondary);
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 8px 16px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: border-color 0.15s ease, color 0.15s ease;
-}
+/* .res-wizard-btn-cancel - now uses .btn-secondary */
 
-.res-wizard-btn-cancel:hover {
-    color: var(--cv-text);
-    border-color: var(--cv-text-muted);
-}
-
-.res-wizard-btn-create {
-    flex: 1;
-    background: var(--cv-accent);
-    border: none;
-    border-radius: 4px;
-    color: var(--cv-bg-sunken);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 8px 16px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background-color 0.15s ease;
-}
-
-.res-wizard-btn-create:hover:not(:disabled) {
-    background: var(--cv-accent-hover);
-}
+/* .res-wizard-btn-create - now uses .btn-primary.solid */
 
 .res-wizard-btn-create:disabled {
     background: var(--cv-bg-raised);
@@ -5603,26 +5460,7 @@ select,
     gap: 6px;
 }
 
-.cond-value-cancel {
-    flex: 1;
-    background: none;
-    border: 1px solid var(--cv-border);
-    border-radius: 4px;
-    color: var(--cv-text-secondary);
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 5px 8px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: border-color 0.15s ease, color 0.15s ease;
-}
-
-.cond-value-cancel:hover {
-    color: var(--cv-text);
-    border-color: var(--cv-text-muted);
-}
+/* .cond-value-cancel - now uses .btn-secondary.sm */
 
 .cond-value-ok {
     flex: 1;
@@ -6251,45 +6089,9 @@ select,
     flex-shrink: 0;
 }
 
-.cond-wizard-btn-cancel {
-    background: none;
-    border: 1px solid var(--cv-border);
-    border-radius: 4px;
-    color: var(--cv-text-secondary);
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 8px 16px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: border-color 0.15s ease, color 0.15s ease;
-}
+/* .cond-wizard-btn-cancel - now uses .btn-secondary */
 
-.cond-wizard-btn-cancel:hover {
-    color: var(--cv-text);
-    border-color: var(--cv-text-muted);
-}
-
-.cond-wizard-btn-create {
-    flex: 1;
-    background: var(--cv-accent);
-    border: none;
-    border-radius: 4px;
-    color: var(--cv-bg-sunken);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 8px 16px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background-color 0.15s ease;
-}
-
-.cond-wizard-btn-create:hover:not(:disabled) {
-    background: var(--cv-accent-hover);
-}
+/* .cond-wizard-btn-create - now uses .btn-primary.solid */
 
 .cond-wizard-btn-create:disabled {
     background: var(--cv-bg-raised);
@@ -6797,42 +6599,9 @@ select,
     gap: 8px;
 }
 
-.counter-modal-btn-cancel {
-    background: none;
-    border: 1px solid var(--cv-border);
-    color: var(--cv-text-secondary);
-    font-size: 11px;
-    font-weight: 600;
-    font-family: inherit;
-    padding: 6px 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease;
-}
+/* .counter-modal-btn-cancel - now uses .btn-secondary.sm */
 
-.counter-modal-btn-cancel:hover {
-    color: var(--cv-text);
-    border-color: var(--cv-text-muted);
-}
-
-.counter-modal-btn-create {
-    background: var(--cv-accent);
-    border: 1px solid var(--cv-accent);
-    color: var(--cv-bg-sunken);
-    font-size: 11px;
-    font-weight: 700;
-    font-family: inherit;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 6px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.15s ease;
-}
-
-.counter-modal-btn-create:hover {
-    background: var(--cv-accent-hover);
-}
+/* .counter-modal-btn-create - now uses .btn-primary.solid */
 
 .counter-modal-btn-delete {
     background: none;

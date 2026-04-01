@@ -414,7 +414,7 @@
             '</div>' +
             '<input type="number" class="cond-value-input" placeholder="' + escapeHtml(t('cond.valuePlaceholder')) + '" min="0"' + (maxValue ? ' max="' + maxValue + '"' : '') + ' step="1" spellcheck="false" autocomplete="off">' +
             '<div class="cond-value-prompt-actions">' +
-                '<button class="cond-value-cancel">' + escapeHtml(t('cond.cancel')) + '</button>' +
+                '<button class="cond-value-cancel btn-secondary sm">' + escapeHtml(t('cond.cancel')) + '</button>' +
                 '<button class="cond-value-ok">' + escapeHtml(t('cond.ok')) + '</button>' +
             '</div>';
 
@@ -1597,13 +1597,13 @@
         footer.className = 'cond-wizard-footer';
 
         var cancelBtn = document.createElement('button');
-        cancelBtn.className = 'cond-wizard-btn-cancel';
+        cancelBtn.className = 'cond-wizard-btn-cancel btn-secondary';
         cancelBtn.textContent = t('cond.wizardCancel');
         cancelBtn.addEventListener('click', function () { overlay.remove(); });
         footer.appendChild(cancelBtn);
 
         var createBtn = document.createElement('button');
-        createBtn.className = 'cond-wizard-btn-create';
+        createBtn.className = 'cond-wizard-btn-create btn-primary solid';
         createBtn.textContent = t('cond.wizardCreate');
         createBtn.disabled = true;
         createBtn.addEventListener('click', function () {

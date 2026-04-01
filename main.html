@@ -80,8 +80,8 @@
                 <div class="settings-section">
                     <label class="settings-label" data-i18n="settings.saveLoad">Save / Load</label>
                     <div class="settings-btn-row">
-                        <button id="btn-save" class="settings-action-btn" data-i18n="settings.save">Save</button>
-                        <button id="btn-load" class="settings-action-btn" data-i18n="settings.load">Load</button>
+                        <button id="btn-save" class="settings-action-btn btn-primary" data-i18n="settings.save">Save</button>
+                        <button id="btn-load" class="settings-action-btn btn-primary" data-i18n="settings.load">Load</button>
                     </div>
                     <div class="settings-checkbox-row">
                         <input type="checkbox" id="chk-auto-save">
@@ -98,7 +98,7 @@
                 <!-- Troubleshooting -->
                 <div class="settings-section">
                     <label class="settings-label" data-i18n="settings.troubleshooting">Troubleshooting</label>
-                    <button id="btn-force-reload" class="settings-action-btn settings-action-btn--warning" data-i18n="settings.forceReload">Force Reload</button>
+                    <button id="btn-force-reload" class="settings-action-btn btn-primary settings-action-btn--warning" data-i18n="settings.forceReload">Force Reload</button>
                     <div id="window-dimensions" class="settings-dimensions"></div>
                 </div>
 
@@ -188,6 +188,8 @@
                         <button class="wizard-swatch" data-color="#5C3A1E" style="background-color: #5C3A1E;" title="Leather" data-i18n-title="wizard.swatchLeather"></button>
                         <button class="wizard-swatch" data-color="#3A3A3A" style="background-color: #3A3A3A;" title="Slate" data-i18n-title="wizard.swatchSlate"></button>
                         <button class="wizard-swatch wizard-swatch-custom" data-color="custom" title="Custom Color" data-i18n-title="wizard.swatchCustom">#</button>
+                    </div>
+                    <div class="wizard-hex-row">
                         <input type="text" class="wizard-custom-hex" id="wizard-custom-hex" placeholder="#000000" maxlength="7" spellcheck="false">
                     </div>
                 </div>
@@ -237,8 +239,8 @@
 
             <!-- Footer -->
             <div class="wizard-footer">
-                <button id="btn-wizard-cancel" class="wizard-btn-cancel" data-i18n="wizard.cancel">Cancel</button>
-                <button id="btn-wizard-create" class="wizard-btn-create" data-i18n="wizard.addModule">Add Module</button>
+                <button id="btn-wizard-cancel" class="wizard-btn-cancel btn-secondary" data-i18n="wizard.cancel">Cancel</button>
+                <button id="btn-wizard-create" class="wizard-btn-create btn-primary wide" data-i18n="wizard.addModule">Add Module</button>
             </div>
 
         </div>

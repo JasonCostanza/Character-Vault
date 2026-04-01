@@ -123,7 +123,7 @@
             '</div>' +
             '<input type="text" class="res-value-input" placeholder="' + escapeHtml(t('res.valuePlaceholder')) + '" spellcheck="false" autocomplete="off">' +
             '<div class="res-value-prompt-actions">' +
-                '<button class="res-value-cancel">' + escapeHtml(t('res.cancel')) + '</button>' +
+                '<button class="res-value-cancel btn-secondary sm">' + escapeHtml(t('res.cancel')) + '</button>' +
                 '<button class="res-value-ok">' + escapeHtml(t('res.ok')) + '</button>' +
             '</div>';
 
@@ -748,13 +748,13 @@
         footer.className = 'res-wizard-footer';
 
         var cancelBtn = document.createElement('button');
-        cancelBtn.className = 'res-wizard-btn-cancel';
+        cancelBtn.className = 'res-wizard-btn-cancel btn-secondary';
         cancelBtn.textContent = t('res.wizardCancel');
         cancelBtn.addEventListener('click', function () { overlay.remove(); });
         footer.appendChild(cancelBtn);
 
         var createBtn = document.createElement('button');
-        createBtn.className = 'res-wizard-btn-create';
+        createBtn.className = 'res-wizard-btn-create btn-primary solid';
         createBtn.textContent = t('res.wizardCreate');
         createBtn.disabled = true;
         createBtn.addEventListener('click', function () {

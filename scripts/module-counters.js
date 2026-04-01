@@ -33,7 +33,7 @@ function showConfirm(options, onConfirm) {
     actions.className = 'delete-confirm-actions';
 
     var cancelBtn = document.createElement('button');
-    cancelBtn.className = 'delete-confirm-cancel';
+    cancelBtn.className = 'delete-confirm-cancel btn-secondary';
     cancelBtn.textContent = options.cancelText || t('delete.cancel');
 
     var confirmBtn = document.createElement('button');
@@ -270,13 +270,13 @@ function openCounterCreateModal(moduleEl, data) {
 
     var cancelBtn = document.createElement('button');
     cancelBtn.type = 'button';
-    cancelBtn.className = 'counter-modal-btn-cancel';
+    cancelBtn.className = 'counter-modal-btn-cancel btn-secondary sm';
     cancelBtn.textContent = t('counter.cancel');
     cancelBtn.addEventListener('click', doClose);
 
     var createBtn = document.createElement('button');
     createBtn.type = 'button';
-    createBtn.className = 'counter-modal-btn-create';
+    createBtn.className = 'counter-modal-btn-create btn-primary solid';
     createBtn.textContent = t('counter.create');
     createBtn.addEventListener('click', doCreate);
 
@@ -477,13 +477,13 @@ function openCounterEditModal(moduleEl, data, counterId) {
 
     var closeBtn = document.createElement('button');
     closeBtn.type = 'button';
-    closeBtn.className = 'counter-modal-btn-cancel';
+    closeBtn.className = 'counter-modal-btn-cancel btn-secondary sm';
     closeBtn.textContent = t('counter.close');
     closeBtn.addEventListener('click', doClose);
 
     var saveBtn = document.createElement('button');
     saveBtn.type = 'button';
-    saveBtn.className = 'counter-modal-btn-create';
+    saveBtn.className = 'counter-modal-btn-create btn-primary solid';
     saveBtn.textContent = t('counter.save');
     saveBtn.addEventListener('click', doSave);
 

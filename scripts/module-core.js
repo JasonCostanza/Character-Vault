@@ -298,9 +298,21 @@ btnWizardCreate.addEventListener('click', () => {
             const selectedOption = wizardStatTemplateSelect.querySelector('.cv-select-option.selected');
             if (selectedOption) moduleData.title = selectedOption.textContent.trim() + ' Stats';
         }
-        moduleData.colSpan = 1;
-        // Auto-height so stat blocks aren't clipped by a fixed rowSpan
-        moduleData.rowSpan = null;
+        const statCount = templateStats.length;
+        if (statCount === 0) {
+            moduleData.colSpan = 2;
+            moduleData.rowSpan = 2;
+        } else {
+            // Estimate stat blocks per row based on minmax(70px,1fr) auto-fit at typical widths
+            const sPerRow = cols => cols === 2 ? 3 : cols === 3 ? 5 : 6;
+            let targetCols = 4;
+            for (let cols = 2; cols <= 4; cols++) {
+                if (sPerRow(cols) >= statCount) { targetCols = cols; break; }
+            }
+            const statRows = Math.ceil(statCount / sPerRow(targetCols));
+            moduleData.colSpan = targetCols;
+            moduleData.rowSpan = statRows + 1;
+        }
     }
 
     if (moduleData.type === 'list') {

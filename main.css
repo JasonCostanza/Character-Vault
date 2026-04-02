@@ -1279,6 +1279,26 @@ select,
 }
 
 
+.delete-confirm-cancel {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--cv-text-muted);
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.delete-confirm-cancel:hover {
+    background: var(--cv-bg-raised);
+    color: var(--cv-text-secondary);
+}
+
 .delete-confirm-delete {
     padding: 8px 16px;
     font-size: 13px;

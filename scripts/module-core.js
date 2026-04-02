@@ -23,7 +23,8 @@ let wizardState = {
     type: 'text',
     theme: null,
     statLayout: 'large-stat',
-    statTemplate: ''
+    statTemplate: '',
+    abilitiesTemplate: ''
 };
 
 function openWizard() {
@@ -42,7 +43,7 @@ function resetWizard() {
     const firstAvailable = Array.from(wizardTypeCards).find(c => !c.classList.contains('disabled'));
     const defaultType = lastWizardType || (firstAvailable ? firstAvailable.dataset.type : 'text');
 
-    wizardState = { type: defaultType, theme: null, statLayout: 'large-stat', statTemplate: '' };
+    wizardState = { type: defaultType, theme: null, statLayout: 'large-stat', statTemplate: '', abilitiesTemplate: '' };
 
     wizardTypeCards.forEach(card => {
         card.classList.toggle('selected', card.dataset.type === defaultType);
@@ -84,6 +85,23 @@ function resetWizard() {
             }
         }
     }
+
+    const abilitiesTemplateSection = document.getElementById('wizard-abilities-template');
+    if (abilitiesTemplateSection) {
+        abilitiesTemplateSection.classList.toggle('visible', defaultType === 'abilities');
+        const abilitiesTemplateSelect = document.getElementById('wizard-abilities-template-select');
+        if (abilitiesTemplateSelect) {
+            abilitiesTemplateSelect.classList.remove('open');
+            const opts = abilitiesTemplateSelect.querySelectorAll('.cv-select-option');
+            opts.forEach(o => o.classList.remove('selected'));
+            const firstOpt = opts[0];
+            if (firstOpt) {
+                firstOpt.classList.add('selected');
+                const valSpan = abilitiesTemplateSelect.querySelector('.cv-select-value');
+                if (valSpan) valSpan.textContent = firstOpt.textContent;
+            }
+        }
+    }
 }
 
 btnNewModule.addEventListener('click', openWizard);
@@ -118,6 +136,8 @@ wizardTypeCards.forEach(card => {
         wizardStatLayout.classList.toggle('visible', wizardState.type === 'stat');
         const statTemplateEl = document.getElementById('wizard-stat-template');
         if (statTemplateEl) statTemplateEl.classList.toggle('visible', wizardState.type === 'stat');
+        const abilitiesTemplateEl = document.getElementById('wizard-abilities-template');
+        if (abilitiesTemplateEl) abilitiesTemplateEl.classList.toggle('visible', wizardState.type === 'abilities');
     });
 });
 
@@ -157,6 +177,37 @@ if (wizardStatTemplateSelect) {
     document.addEventListener('click', (e) => {
         if (!wizardStatTemplateSelect.contains(e.target)) {
             wizardStatTemplateSelect.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+        }
+    });
+}
+
+// Abilities template selection (custom cv-select)
+const wizardAbilitiesTemplateSelect = document.getElementById('wizard-abilities-template-select');
+if (wizardAbilitiesTemplateSelect) {
+    const trigger = wizardAbilitiesTemplateSelect.querySelector('.cv-select-trigger');
+    const valueSpan = wizardAbilitiesTemplateSelect.querySelector('.cv-select-value');
+    const options = wizardAbilitiesTemplateSelect.querySelectorAll('.cv-select-option');
+
+    trigger.addEventListener('click', () => {
+        wizardAbilitiesTemplateSelect.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', wizardAbilitiesTemplateSelect.classList.contains('open'));
+    });
+
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            options.forEach(o => o.classList.remove('selected'));
+            option.classList.add('selected');
+            valueSpan.textContent = option.textContent;
+            wizardState.abilitiesTemplate = option.dataset.value;
+            wizardAbilitiesTemplateSelect.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!wizardAbilitiesTemplateSelect.contains(e.target)) {
+            wizardAbilitiesTemplateSelect.classList.remove('open');
             trigger.setAttribute('aria-expanded', 'false');
         }
     });
@@ -210,6 +261,17 @@ btnWizardCreate.addEventListener('click', () => {
         theme: wizardState.theme,
         content: ''
     };
+
+    if (moduleData.type === 'abilities') {
+        const templateAbilities = wizardState.abilitiesTemplate ? applyAbilityTemplate(wizardState.abilitiesTemplate) : [];
+        moduleData.content = { linkedStatModuleId: null, abilities: templateAbilities };
+        if (wizardState.abilitiesTemplate && wizardAbilitiesTemplateSelect) {
+            const selectedOption = wizardAbilitiesTemplateSelect.querySelector('.cv-select-option.selected');
+            if (selectedOption) moduleData.title = selectedOption.textContent.trim() + ' ' + t('type.abilities');
+        }
+        moduleData.colSpan = 1;
+        moduleData.rowSpan = null;
+    }
 
     if (moduleData.type === 'hline') {
         moduleData.colSpan = 4;
@@ -304,6 +366,8 @@ function openOverflowMenu(moduleEl, overflowBtn) {
     menu.className = 'module-overflow-menu';
 
     const btnDefs = [
+        { sel: '.module-abilities-settings-btn', label: t('abilities.settings'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>' },
+        { sel: '.module-abilities-add-btn', label: t('abilities.addAbility'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' },
         { sel: '.module-health-maxmod-btn', label: t('health.moduleSettings'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>' },
         { sel: '.module-health-eyedropper-btn', label: t('health.eyedropper'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>' },
         { sel: '.module-stat-eyedropper-btn', label: t('stat.eyedropper'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>' },
@@ -575,6 +639,8 @@ function renderModule(data) {
             ${data.type === 'counters' ? `<button class="module-toolbar-btn module-counter-add-btn" title="${t('counter.addCounter')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>` : ''}
             ${data.type === 'list' ? `<button class="module-toolbar-btn module-list-additem-btn" title="${t('list.addItem')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>` : ''}
             ${data.type === 'list' ? `<button class="module-toolbar-btn module-list-manage-btn" title="${t('list.manageAttrs')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></button>` : ''}
+            ${data.type === 'abilities' ? `<button class="module-toolbar-btn module-abilities-settings-btn" title="${t('abilities.settings')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
+            ${data.type === 'abilities' ? `<button class="module-toolbar-btn module-abilities-add-btn" title="${t('abilities.addAbility')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>` : ''}
             ${data.type === 'condition' ? `<button class="module-toolbar-btn module-cond-settings-btn" title="${t('cond.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'resistance' ? `<button class="module-toolbar-btn module-res-settings-btn" title="${t('res.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'resistance' ? `<button class="module-toolbar-btn module-res-layout-btn" title="${t('res.toggleLayout')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>` : ''}
@@ -588,6 +654,27 @@ function renderModule(data) {
     el.querySelector('.module-delete-btn').addEventListener('click', () => {
         openDeleteConfirm(data.id);
     });
+
+    // Add ability button (abilities modules only)
+    const addAbilityBtn = el.querySelector('.module-abilities-add-btn');
+    if (addAbilityBtn) {
+        addAbilityBtn.addEventListener('click', () => {
+            data.content.abilities.push({ name: '', modifier: 0, proficiency: false, linkedStat: null });
+            const bodyEl = el.querySelector('.module-body');
+            const isPlay = modeToggle.classList.contains('mode-play');
+            typeDef.renderBody(bodyEl, data, isPlay);
+            snapModuleHeight(el, data);
+            scheduleSave();
+        });
+    }
+
+    // Settings button (abilities modules only)
+    const abilitiesSettingsBtn = el.querySelector('.module-abilities-settings-btn');
+    if (abilitiesSettingsBtn) {
+        abilitiesSettingsBtn.addEventListener('click', () => {
+            openAbilitySettings(el, data);
+        });
+    }
 
     // Add stat button (stat modules only — lives in header)
     const addStatBtn = el.querySelector('.module-addstat-btn');
@@ -903,6 +990,10 @@ function applyPlayMode() {
         if (listAddItemBtn) listAddItemBtn.style.display = 'none';
         const listManageBtn = mod.querySelector('.module-list-manage-btn');
         if (listManageBtn) listManageBtn.style.display = 'none';
+        const abilitiesSettingsBtnPlay = mod.querySelector('.module-abilities-settings-btn');
+        if (abilitiesSettingsBtnPlay) abilitiesSettingsBtnPlay.style.display = 'none';
+        const abilitiesAddBtnPlay = mod.querySelector('.module-abilities-add-btn');
+        if (abilitiesAddBtnPlay) abilitiesAddBtnPlay.style.display = 'none';
         const condSettingsBtnPlay = mod.querySelector('.module-cond-settings-btn');
         if (condSettingsBtnPlay) condSettingsBtnPlay.style.display = 'none';
         const resSettingsBtnPlay = mod.querySelector('.module-res-settings-btn');
@@ -960,6 +1051,10 @@ function applyEditMode() {
         if (listAddItemBtnEdit) listAddItemBtnEdit.style.display = '';
         const listManageBtnEdit = mod.querySelector('.module-list-manage-btn');
         if (listManageBtnEdit) listManageBtnEdit.style.display = '';
+        const abilitiesSettingsBtnEdit = mod.querySelector('.module-abilities-settings-btn');
+        if (abilitiesSettingsBtnEdit) abilitiesSettingsBtnEdit.style.display = '';
+        const abilitiesAddBtnEdit = mod.querySelector('.module-abilities-add-btn');
+        if (abilitiesAddBtnEdit) abilitiesAddBtnEdit.style.display = '';
         const condSettingsBtnEdit = mod.querySelector('.module-cond-settings-btn');
         if (condSettingsBtnEdit) condSettingsBtnEdit.style.display = '';
         const resSettingsBtnEdit = mod.querySelector('.module-res-settings-btn');

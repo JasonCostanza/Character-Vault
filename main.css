@@ -2062,6 +2062,288 @@ select,
     border-radius: 6px;
 }
 
+/* ── Abilities Module ── */
+.ability-container {
+    display: flex;
+    flex-direction: column;
+    padding: 4px 6px;
+    gap: 1px;
+}
+
+.ability-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    min-height: 28px;
+    transition: background-color 0.1s ease;
+    user-select: none;
+}
+
+.ability-row.ability-rollable {
+    cursor: pointer;
+}
+
+.ability-row.ability-rollable:hover {
+    background-color: var(--cv-bg-raised);
+}
+
+.ability-proficiency-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid var(--cv-border);
+    background-color: transparent;
+    flex-shrink: 0;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.ability-proficiency-dot.active {
+    background-color: var(--cv-accent);
+    border-color: var(--cv-accent);
+}
+
+.ability-edit-row .ability-proficiency-dot {
+    cursor: pointer;
+}
+
+.ability-edit-row .ability-proficiency-dot.linked {
+    cursor: default;
+}
+
+.ability-abbrev {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--cv-text-muted);
+    min-width: 22px;
+    text-align: center;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.ability-abbrev--locked {
+    opacity: 0.7;
+}
+
+.ability-abbrev-input {
+    width: 26px;
+    font-size: 9px;
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--cv-text-muted);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--cv-border-subtle);
+    border-radius: 0;
+    padding: 0 1px;
+    outline: none;
+    flex-shrink: 0;
+    font-family: inherit;
+}
+
+.ability-abbrev-input:focus {
+    border-bottom-color: var(--cv-accent);
+    color: var(--cv-text);
+}
+
+.ability-name {
+    flex: 1;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--cv-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.ability-modifier {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--cv-text);
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 10px;
+    padding: 1px 6px;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+/* Abilities edit mode */
+.ability-edit-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 4px;
+    border-radius: 4px;
+    min-height: 28px;
+    transition: background-color 0.1s ease;
+}
+
+.ability-edit-row:hover {
+    background-color: var(--cv-bg-raised);
+}
+
+.ability-drag-handle {
+    color: var(--cv-text-muted);
+    cursor: grab;
+    font-size: 12px;
+    line-height: 1;
+    padding: 0 2px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.ability-edit-row:hover .ability-drag-handle {
+    opacity: 1;
+}
+
+.ability-drag-handle:active {
+    cursor: grabbing;
+}
+
+.ability-edit-name {
+    flex: 1;
+    min-width: 0;
+    font-size: 11px;
+    font-weight: 500;
+    color: inherit;
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 3px;
+    padding: 2px 4px;
+    outline: none;
+    font-family: inherit;
+}
+
+.ability-edit-name:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+.ability-edit-modifier {
+    width: 36px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: inherit;
+    text-align: center;
+    color: inherit;
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 3px;
+    padding: 2px 2px;
+    outline: none;
+    flex-shrink: 0;
+    -moz-appearance: textfield;
+}
+
+.ability-edit-modifier::-webkit-inner-spin-button,
+.ability-edit-modifier::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.ability-edit-modifier:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+.ability-edit-proficiency-label {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    padding: 2px;
+}
+
+.ability-edit-proficiency-label input[type="checkbox"] {
+    accent-color: var(--cv-accent);
+    width: 11px;
+    height: 11px;
+    cursor: pointer;
+}
+
+.ability-edit-delete {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0;
+    transition: color 0.15s ease, opacity 0.15s ease;
+    opacity: 0;
+    flex-shrink: 0;
+}
+
+.ability-edit-row:hover .ability-edit-delete {
+    opacity: 1;
+}
+
+.ability-edit-delete:hover {
+    color: var(--cv-danger);
+}
+
+.ability-edit-delete .icon {
+    width: 12px;
+    height: 12px;
+}
+
+.ability-empty-state {
+    padding: 16px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    user-select: none;
+}
+
+/* SortableJS drag ghost for abilities */
+.ability-ghost {
+    opacity: 0.3;
+    border: 2px dashed var(--cv-accent);
+    background-color: var(--cv-bg-sunken);
+    box-shadow: none;
+    border-radius: 4px;
+}
+
+/* Abilities settings panel */
+.ability-settings-label {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-secondary);
+    user-select: none;
+}
+
+.ability-settings-select {
+    width: 100%;
+    font-size: 12px;
+    font-family: inherit;
+    color: var(--cv-text);
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    padding: 6px 8px;
+    outline: none;
+    cursor: pointer;
+}
+
+.ability-settings-select:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
 /* ── Health Module ── */
 .health-container {
     display: flex;

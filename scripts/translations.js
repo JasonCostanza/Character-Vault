@@ -73,6 +73,7 @@ const CV_TRANSLATIONS = {
         'module.moreOptions':       'More options',
 
         // Module type labels
+        'type.abilities':'Abilities',
         'type.text':    'Text Box',
         'type.hline':   'Horizontal Line',
         'type.stat':    'Stat',
@@ -81,6 +82,25 @@ const CV_TRANSLATIONS = {
         'type.list':    'List',
         'type.resistance': 'Resistances',
         'type.spacer':  'Spacer',
+
+        // Abilities submodule
+        'abilities.addAbility':      'Add Ability',
+        'abilities.deleteAbility':   'Delete Ability',
+        'abilities.unnamed':         'Unnamed',
+        'abilities.noAbilities':     'No abilities added',
+        'abilities.rollCheck':       'Roll {name} check',
+        'abilities.check':           'Check',
+        'abilities.proficiency':     'Proficient',
+        'abilities.abbrevLabel':     'Stat abbreviation',
+        'abilities.linkedStatModule':'Linked Stat Module',
+        'abilities.noLinkedModule':  'None (manual)',
+        'abilities.settingsTitle':   'Ability Settings',
+        'abilities.settings':        'Ability Settings',
+        'abilities.templateLabel':   'Template',
+        'abilities.templateNone':    'None (blank)',
+        'abilities.save':            'Save',
+        'abilities.cancel':          'Cancel',
+        'abilities.close':           'Close',
 
         // Text box submodule
         'text.placeholder': 'Write your notes...',
@@ -691,6 +711,7 @@ const CV_TRANSLATIONS = {
         'module.dragResize':        'Arrastrar para redimensionar',
         'module.moreOptions':       'Más opciones',
 
+        'type.abilities':'Habilidades',
         'type.text':    'Cuadro de Texto',
         'type.hline':   'Línea Horizontal',
         'type.stat':    'Estadística',
@@ -699,6 +720,25 @@ const CV_TRANSLATIONS = {
         'type.list':    'Lista',
         'type.resistance': 'Resistencias',
         'type.spacer':  'Espaciador',
+
+        // Abilities submodule
+        'abilities.addAbility':      'Agregar Habilidad',
+        'abilities.deleteAbility':   'Eliminar Habilidad',
+        'abilities.unnamed':         'Sin Nombre',
+        'abilities.noAbilities':     'No hay habilidades',
+        'abilities.rollCheck':       'Tirada de {name}',
+        'abilities.check':           'Prueba',
+        'abilities.proficiency':     'Competente',
+        'abilities.abbrevLabel':     'Abreviatura de atributo',
+        'abilities.linkedStatModule':'Módulo de Estadística Vinculado',
+        'abilities.noLinkedModule':  'Ninguno (manual)',
+        'abilities.settingsTitle':   'Ajustes de Habilidades',
+        'abilities.settings':        'Ajustes de Habilidades',
+        'abilities.templateLabel':   'Plantilla',
+        'abilities.templateNone':    'Ninguno (vacío)',
+        'abilities.save':            'Guardar',
+        'abilities.cancel':          'Cancelar',
+        'abilities.close':           'Cerrar',
 
         'text.placeholder': 'Escribe tus notas...',
 
@@ -894,6 +934,7 @@ const CV_TRANSLATIONS = {
         'module.dragResize':        'Glisser pour redimensionner',
         'module.moreOptions':       'Plus d\'options',
 
+        'type.abilities':'Compétences',
         'type.text':    'Zone de Texte',
         'type.hline':   'Ligne Horizontale',
         'type.stat':    'Statistique',
@@ -902,6 +943,25 @@ const CV_TRANSLATIONS = {
         'type.list':    'Liste',
         'type.resistance': 'Résistances',
         'type.spacer':  'Espacement',
+
+        // Abilities submodule
+        'abilities.addAbility':      'Ajouter Compétence',
+        'abilities.deleteAbility':   'Supprimer Compétence',
+        'abilities.unnamed':         'Sans Nom',
+        'abilities.noAbilities':     'Aucune compétence',
+        'abilities.rollCheck':       'Jet de {name}',
+        'abilities.check':           'Test',
+        'abilities.proficiency':     'Maîtrise',
+        'abilities.abbrevLabel':     'Abréviation de statistique',
+        'abilities.linkedStatModule':'Module de Statistique Lié',
+        'abilities.noLinkedModule':  'Aucun (manuel)',
+        'abilities.settingsTitle':   'Paramètres des Compétences',
+        'abilities.settings':        'Paramètres des Compétences',
+        'abilities.templateLabel':   'Modèle',
+        'abilities.templateNone':    'Aucun (vide)',
+        'abilities.save':            'Enregistrer',
+        'abilities.cancel':          'Annuler',
+        'abilities.close':           'Fermer',
 
         'text.placeholder': 'Écrivez vos notes...',
 
@@ -1096,6 +1156,7 @@ const CV_TRANSLATIONS = {
         'module.dragResize':        'Ziehen zum Ändern der Größe',
         'module.moreOptions':       'Mehr Optionen',
 
+        'type.abilities':'Fähigkeiten',
         'type.text':    'Textfeld',
         'type.hline':   'Horizontale Linie',
         'type.stat':    'Wert',
@@ -1104,6 +1165,25 @@ const CV_TRANSLATIONS = {
         'type.list':    'Liste',
         'type.resistance': 'Resistenzen',
         'type.spacer':  'Abstandshalter',
+
+        // Abilities submodule
+        'abilities.addAbility':      'Fähigkeit hinzufügen',
+        'abilities.deleteAbility':   'Fähigkeit löschen',
+        'abilities.unnamed':         'Unbenannt',
+        'abilities.noAbilities':     'Keine Fähigkeiten',
+        'abilities.rollCheck':       '{name}-Probe würfeln',
+        'abilities.check':           'Probe',
+        'abilities.proficiency':     'Geübt',
+        'abilities.abbrevLabel':     'Attributabkürzung',
+        'abilities.linkedStatModule':'Verknüpftes Wert-Modul',
+        'abilities.noLinkedModule':  'Kein (manuell)',
+        'abilities.settingsTitle':   'Fähigkeitseinstellungen',
+        'abilities.settings':        'Fähigkeitseinstellungen',
+        'abilities.templateLabel':   'Vorlage',
+        'abilities.templateNone':    'Keine (leer)',
+        'abilities.save':            'Speichern',
+        'abilities.cancel':          'Abbrechen',
+        'abilities.close':           'Schließen',
 
         'text.placeholder': 'Schreibe deine Notizen...',
 
@@ -1303,6 +1383,7 @@ const CV_TRANSLATIONS = {
         'module.moreOptions':       'Altre opzioni',
 
         // Module type labels
+        'type.abilities':'Abilità',
         'type.text':    'Casella di Testo',
         'type.hline':   'Linea Orizzontale',
         'type.stat':    'Statistica',
@@ -1311,6 +1392,25 @@ const CV_TRANSLATIONS = {
         'type.list':    'Lista',
         'type.resistance': 'Resistenze',
         'type.spacer':  'Spaziatore',
+
+        // Abilities submodule
+        'abilities.addAbility':      'Aggiungi Abilità',
+        'abilities.deleteAbility':   'Elimina Abilità',
+        'abilities.unnamed':         'Senza Nome',
+        'abilities.noAbilities':     'Nessuna abilità',
+        'abilities.rollCheck':       'Tiro di {name}',
+        'abilities.check':           'Prova',
+        'abilities.proficiency':     'Competente',
+        'abilities.abbrevLabel':     'Abbreviazione statistica',
+        'abilities.linkedStatModule':'Modulo Statistiche Collegato',
+        'abilities.noLinkedModule':  'Nessuno (manuale)',
+        'abilities.settingsTitle':   'Impostazioni Abilità',
+        'abilities.settings':        'Impostazioni Abilità',
+        'abilities.templateLabel':   'Modello',
+        'abilities.templateNone':    'Nessuno (vuoto)',
+        'abilities.save':            'Salva',
+        'abilities.cancel':          'Annulla',
+        'abilities.close':           'Chiudi',
 
         // Text box submodule
         'text.placeholder': 'Scrivi le tue note...',
@@ -1506,6 +1606,7 @@ const CV_TRANSLATIONS = {
         'module.dragResize':        'Arrastar para redimensionar',
         'module.moreOptions':       'Mais opções',
 
+        'type.abilities':'Habilidades',
         'type.text':    'Caixa de Texto',
         'type.hline':   'Linha Horizontal',
         'type.stat':    'Estatística',
@@ -1514,6 +1615,25 @@ const CV_TRANSLATIONS = {
         'type.list':    'Lista',
         'type.resistance': 'Resistências',
         'type.spacer':  'Espaçador',
+
+        // Abilities submodule
+        'abilities.addAbility':      'Adicionar Habilidade',
+        'abilities.deleteAbility':   'Excluir Habilidade',
+        'abilities.unnamed':         'Sem Nome',
+        'abilities.noAbilities':     'Nenhuma habilidade',
+        'abilities.rollCheck':       'Rolar {name}',
+        'abilities.check':           'Teste',
+        'abilities.proficiency':     'Proficiente',
+        'abilities.abbrevLabel':     'Abreviatura de atributo',
+        'abilities.linkedStatModule':'Módulo de Atributo Vinculado',
+        'abilities.noLinkedModule':  'Nenhum (manual)',
+        'abilities.settingsTitle':   'Configurações de Habilidades',
+        'abilities.settings':        'Configurações de Habilidades',
+        'abilities.templateLabel':   'Modelo',
+        'abilities.templateNone':    'Nenhum (em branco)',
+        'abilities.save':            'Salvar',
+        'abilities.cancel':          'Cancelar',
+        'abilities.close':           'Fechar',
 
         'text.placeholder': 'Escreva suas anotações...',
 
@@ -1702,6 +1822,7 @@ const CV_TRANSLATIONS = {
         'module.dragResize':        'Перетащите для изменения размера',
         'module.moreOptions':       'Дополнительные параметры',
 
+        'type.abilities':'Навыки',
         'type.text':    'Текстовое Поле',
         'type.hline':   'Горизонтальная Линия',
         'type.stat':    'Характеристика',
@@ -1710,6 +1831,25 @@ const CV_TRANSLATIONS = {
         'type.list':    'Список',
         'type.resistance': 'Сопротивления',
         'type.spacer':  'Разделитель',
+
+        // Abilities submodule
+        'abilities.addAbility':      'Добавить навык',
+        'abilities.deleteAbility':   'Удалить навык',
+        'abilities.unnamed':         'Без названия',
+        'abilities.noAbilities':     'Нет навыков',
+        'abilities.rollCheck':       'Бросок {name}',
+        'abilities.check':           'Проверка',
+        'abilities.proficiency':     'Умение',
+        'abilities.abbrevLabel':     'Аббревиатура характеристики',
+        'abilities.linkedStatModule':'Связанный модуль характеристик',
+        'abilities.noLinkedModule':  'Нет (вручную)',
+        'abilities.settingsTitle':   'Настройки навыков',
+        'abilities.settings':        'Настройки навыков',
+        'abilities.templateLabel':   'Шаблон',
+        'abilities.templateNone':    'Нет (пустой)',
+        'abilities.save':            'Сохранить',
+        'abilities.cancel':          'Отмена',
+        'abilities.close':           'Закрыть',
 
         'text.placeholder': 'Пишите заметки...',
 

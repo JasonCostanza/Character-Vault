@@ -16,6 +16,7 @@
 | `scripts/settings.js` | Settings overlay, mode toggle, theme buttons, language picker, save/load buttons, force reload |
 | `scripts/persistence.js` | Save/load system: `migrateData()`, `serializeCharacter()`, `deserializeCharacter()`, `saveCharacter()`, `loadCharacter()`, `scheduleSave()` |
 | `scripts/module-core.js` | Module engine: state (`modules[]`), wizard, type registry (`MODULE_TYPES`), `renderModule()`, drag & drop, delete confirm, edit/play mode switching, resize handle |
+| `scripts/module-abilities.js` | Abilities module type registration + helpers (render, edit, sortable, proficiency sync, settings panel, dice rolling) |
 | `scripts/module-text.js` | Text Box module type registration |
 | `scripts/module-stat.js` | Stat module type registration + helpers (render, edit, quick-edit, dice rolling) |
 | `scripts/module-hr.js` | Horizontal Line module type registration |
@@ -30,7 +31,7 @@ There is no build step. Everything ships as-is to TaleSpire's embedded Chromium.
 Scripts are loaded via plain `<script src>` tags (no `async`/`defer`) in `main.html`, which guarantees sequential execution. The order matters because later scripts depend on globals defined by earlier ones:
 
 ```
-translations.js → shared.js → i18n.js → theme.js → settings.js → persistence.js → module-core.js → module-condition.js → module-counters.js → module-text.js → module-stat.js → module-health.js → module-hr.js → module-spacer.js → module-resistance.js → module-list.js → app.js
+translations.js → shared.js → i18n.js → theme.js → settings.js → persistence.js → module-core.js → module-condition.js → module-counters.js → module-text.js → module-abilities.js → module-stat.js → module-health.js → module-hr.js → module-spacer.js → module-resistance.js → module-list.js → app.js
 ```
 
 ## External Dependencies (CDN)
@@ -70,6 +71,7 @@ All JS lives in `scripts/` as separate files loaded by `main.html` in dependency
 | **persistence.js** | `migrateData()`, `syncModuleState()`, `serializeCharacter()`, `deserializeCharacter()`, `saveCharacter()`, `loadCharacter()`, `scheduleSave()` — TaleSpire campaign localStorage persistence with auto-save debounce |
 | **module-core.js** | `modules[]` array, `moduleIdCounter`, `generateModuleId()`, `wizardState`, wizard open/close/reset, global Escape key handler, wizard interactions (type cards, color swatches), create module handler, `MODULE_TYPES{}` registry, `registerModuleType()`, `renderModule(data)`, SortableJS drag & drop, `openDeleteConfirm()`, `closeDeleteConfirm()`, `deleteModule()`, `applyPlayMode()`, `applyEditMode()`, `initResizeHandle()` (constants `GRID_COLUMNS=4`, `GRID_GAP=8`, row height `80px`) |
 | **module-text.js** | `registerModuleType('text', ...)` — textarea in edit mode, rendered markdown in play mode; `autoResizeTextarea()`, `syncState()` |
+| **module-abilities.js** | `getProficiencyState(ability, data)`, `rollAbilityCheck(ability)`, `renderAbilityRow()`, `renderAbilityRowEdit()`, `reRenderAbilityEdits()`, `initAbilitySortable()`, `openAbilitySettings()`, `buildAbilityBody()`, `registerModuleType('abilities', ...)` — skill list with modifier badges, proficiency dots, linked Stat module sync, play mode dice rolling, settings panel |
 | **module-stat.js** | `formatModifier(mod)`, `renderStatBlock()`, `renderStatBlockEdit()`, `reRenderStatEdits()`, `initStatSortable()`, `rollStatCheck(stat)`, `enterQuickEdit()`, `registerModuleType('stat', ...)` — stat blocks with values/modifiers, play mode dice rolling, edit mode inputs, layout toggle (large-stat / large-modifier) |
 | **module-hr.js** | `registerModuleType('hline', ...)` — simple `<hr>` divider, header hidden in play mode |
 | **module-resistance.js** | `registerModuleType('resistance', ...)` — drag-to-assign resistance/immunity/weakness columns; `openResSettingsPanel()`, `openResWizard()`, SortableJS staging area, value prompts, layout toggle |
@@ -98,6 +100,7 @@ Sections are delimited by `/* ── Name ── */` comment headers.
 | **Delete Confirmation** | `.delete-confirm-overlay`, panel, title, actions, button variants |
 | **Module Body / Text** | `.module-body`, `.module-textarea`, `.module-text-display`, full markdown rendered content styles (h1–h6, lists, blockquotes, code, tables, images) |
 | **Module Resize & Drag** | `.module-resize-handle`, `.module-resizing`, `.module-ghost`, `.module-dragging`, `.module-drag-active` |
+| **Abilities Module** | `.ability-container`, `.ability-row`, `.ability-rollable`, `.ability-proficiency-dot`, `.ability-name`, `.ability-modifier`, `.ability-edit-row`, `.ability-drag-handle`, `.ability-edit-name`, `.ability-edit-modifier`, `.ability-edit-proficiency-label`, `.ability-edit-delete`, `.ability-empty-state`, `.ability-ghost`, `.ability-settings-select` |
 | **Stat Module** | `.stat-container`, `.stat-block`, `.stat-rollable`, `.stat-name`, `.stat-primary`, `.stat-secondary`, `.stat-proficiency-dot`, `.stat-block-edit`, edit inputs/toggles, `.stat-add-btn`, `.stat-quick-input`, `.stat-ghost`, wizard layout buttons (`.wizard-stat-layout`, `.wizard-layout-btn`) |
 | **Wizard Overlay** | Full-screen overlay, panel, header, body, type cards grid, color swatches, footer buttons |
 
@@ -132,7 +135,7 @@ Maps type keys to behavior definitions. Each entry:
   syncState(moduleEl, data) {}                 // optional — sync live DOM state to data before save
 }
 ```
-Currently registered types: `text`, `stat`, `hline`, `health`, `spacer`, `list`, `resistance`, `condition`
+Currently registered types: `abilities`, `text`, `stat`, `hline`, `health`, `spacer`, `list`, `resistance`, `condition`
 
 ### Save Blob (JSON schema v1)
 Character sheet persistence format, stored via `TS.localStorage.campaign`:
@@ -142,6 +145,18 @@ Character sheet persistence format, stored via `TS.localStorage.campaign`:
   savedAt: '2026-03-21T...',    // ISO timestamp
   moduleIdCounter: 5,           // resume ID generation
   modules: [ /* modules[] array entries */ ]
+}
+```
+
+### Abilities Module `content` (object)
+When `type === 'abilities'`, the `content` field stores:
+```js
+{
+  linkedStatModuleId: null,   // or module ID string — syncs proficiency from a Stat module
+  abilities: [
+    { name: 'Acrobatics', modifier: 3, proficiency: false, linkedStat: 'DEX' },
+    ...
+  ]
 }
 ```
 
@@ -178,7 +193,7 @@ When `type === 'resistance'`, the `content` field stores:
 ### `wizardState` (object)
 Transient state for the New Module wizard:
 ```js
-{ type: 'text', theme: null, statLayout: 'large-stat' }
+{ type: 'text', theme: null, statLayout: 'large-stat', statTemplate: '', abilitiesTemplate: '' }
 ```
 
 ---

@@ -8,19 +8,6 @@ This module will look similar to the Stats module in that each one is a "saving 
 
 Below the list of saving throws, there is a small text box for adding a custom note or description that applies to all saving throws (e.g., "+1 to all saving throws while raging"). This note supports markdown formatting and is optional.
 
-## Data Structure
-Each saving throw is represented as an object with the following properties:
-
-```json
-{
-  "id": "unique-saving-throw-id",
-  "name": "Strength",
-  "value": 3,
-  "proficiencyTier": "Trained", // Optional, if tiered proficiency is enabled
-  "icon": "shield", // Optional icon name from the SVG library
-}
-```
-
 ## Game System Integration
 The user can select from a list of preconfigured saving throw templates based on their game system (e.g., D&D 5e, Pathfinder). Each template includes a set of standard saving throws with appropriate names and default values. Users can customize these saving throws after selection.
 
@@ -35,7 +22,7 @@ Alternatively, the user can start from scratch and create custom saving throws. 
 ## Edit Mode
 - The user can:
     - Add a new saving throw (via template selection or custom creation).
-    - Edit an existing saving throw's name, value, and icon.
+    - Edit an existing saving throw's name, and value.
     - Delete a saving throw.
     - Reorder saving throws via drag-and-drop.
     - Change proficiency toggle or tier (if applicable).

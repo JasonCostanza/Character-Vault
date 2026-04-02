@@ -269,7 +269,7 @@ btnWizardCreate.addEventListener('click', () => {
             const selectedOption = wizardAbilitiesTemplateSelect.querySelector('.cv-select-option.selected');
             if (selectedOption) moduleData.title = selectedOption.textContent.trim() + ' ' + t('type.abilities');
         }
-        moduleData.colSpan = 1;
+        moduleData.colSpan = 2;
         moduleData.rowSpan = null;
     }
 

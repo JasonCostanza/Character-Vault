@@ -82,53 +82,8 @@ function ensureContent(data) {
     return data.content;
 }
 
-// ── Counter Icon Library ──
-// 32 icons across 6 categories — inline SVG using basic shapes per project conventions
-var COUNTER_ICON_SVG = {
-    // Generic
-    star:     '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
-    circle:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>',
-    square:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>',
-    triangle: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 22 2 22"/></svg>',
-    diamond:  '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 12 12 22 2 12"/></svg>',
-
-    // Time
-    hourglass: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v4l-5 5 5 5v4H6v-4l5-5-5-5V2z"/><line x1="6" y1="2" x2="18" y2="2"/><line x1="6" y1="22" x2="18" y2="22"/></svg>',
-    clock:     '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
-    stopwatch: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="8"/><line x1="12" y1="14" x2="12" y2="10"/><line x1="10" y1="2" x2="14" y2="2"/><line x1="18.5" y1="7.5" x2="20" y2="6"/></svg>',
-    bell:      '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
-    timer:     '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="9"/><polyline points="12 9 12 13 15 16"/><line x1="12" y1="1" x2="12" y2="4"/></svg>',
-
-    // Combat
-    sword:  '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="2" x2="7" y2="18"/><line x1="21" y1="6" x2="12" y2="6"/><path d="M5 20l2-2"/><path d="M3 22l2-2"/></svg>',
-    shield: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L3 7v6c0 5.25 3.75 9.5 9 11 5.25-1.5 9-5.75 9-11V7l-9-5z"/></svg>',
-    flame:  '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c-4-2-7-6-7-11 0-3 2-6 4-7 0 3 2 5 3 5 0-4 2-8 5-9 0 4 1 7 1 10 2 0 3-2 3-4 2 2 3 5 3 6 0 5-3 9-7 11-1 .5-3 .5-5-1z"/></svg>',
-    bolt:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
-    target: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
-
-    // Resources
-    coin:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="6" x2="12" y2="18"/><path d="M9 9h3.5a2 2 0 010 4H9m0 0h4a2 2 0 010 4H9"/></svg>',
-    gem:    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14l3 5-10 13L2 9l3-5z"/><line x1="2" y1="9" x2="22" y2="9"/></svg>',
-    potion: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v3l4 7A6 6 0 015 13l4-7V3z"/><line x1="8" y1="9" x2="16" y2="9"/></svg>',
-    apple:  '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1-1 3-1.5 4 0"/><path d="M17 6c2 2 3 5 2.5 9s-2.5 6-5.5 7c-1 .3-1.7.3-2 0-3-1-5-3-5.5-7S7 8 9 6c1-1 3-1 4 0s2-.5 4 0z"/></svg>',
-    water:  '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 8 5 12 5 16a7 7 0 0014 0c0-4-3-8-7-14z"/></svg>',
-
-    // Miscellaneous
-    scroll:           '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h12a2 2 0 002-2V5a2 2 0 00-2-2H8l-4 4v12a2 2 0 002 2z"/><path d="M4 7h4v-4"/><line x1="10" y1="11" x2="16" y2="11"/><line x1="10" y1="15" x2="14" y2="15"/></svg>',
-    skull:            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="8"/><circle cx="9" cy="9" r="1.5" fill="currentColor" stroke="none"/><circle cx="15" cy="9" r="1.5" fill="currentColor" stroke="none"/><path d="M9 18v4"/><path d="M15 18v4"/><path d="M12 18v4"/></svg>',
-    'skull-crossbones': '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="7"/><circle cx="9.5" cy="8" r="1.5" fill="currentColor" stroke="none"/><circle cx="14.5" cy="8" r="1.5" fill="currentColor" stroke="none"/><path d="M8 16l8 6"/><path d="M16 16l-8 6"/></svg>',
-    eye:              '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>',
-    hand:             '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17V8a1.5 1.5 0 013 0v5"/><path d="M12 11V7a1.5 1.5 0 013 0v4"/><path d="M15 11V8.5a1.5 1.5 0 013 0V17a5 5 0 01-10 0v-2.5a1.5 1.5 0 013 0"/><path d="M6 13V9a1.5 1.5 0 013 0"/></svg>',
-
-    // Sci-Fi
-    rocket:    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 6 6 10 6 16h12c0-6-2-10-6-14z"/><line x1="9" y1="22" x2="9" y2="16"/><line x1="15" y1="22" x2="15" y2="16"/><circle cx="12" cy="12" r="2"/></svg>',
-    laser:     '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="12" x2="10" y2="12"/><polygon points="10 8 22 12 10 16 10 8"/><line x1="2" y1="8" x2="6" y2="8"/><line x1="2" y1="16" x2="6" y2="16"/></svg>',
-    radiation: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 9C11 5 9 2 6 2c0 4 1 6 3 8"/><path d="M15 12c4-1 7-3 7-6-4 0-6 1-8 3"/><path d="M12 15c1 4 3 7 6 7 0-4-1-6-3-8"/><path d="M9 12c-4 1-7 3-7 6 4 0 6-1 8-3"/></svg>',
-    circuit:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none"/><circle cx="16" cy="8" r="1.5" fill="currentColor" stroke="none"/><circle cx="8" cy="16" r="1.5" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none"/><line x1="8" y1="9.5" x2="8" y2="14.5"/><line x1="16" y1="9.5" x2="16" y2="14.5"/><line x1="9.5" y1="8" x2="14.5" y2="8"/></svg>',
-    energy:    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/><line x1="7" y1="2" x2="5" y2="6"/><line x1="19" y1="18" x2="17" y2="22"/></svg>',
-    robot:     '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12" rx="2"/><line x1="12" y1="4" x2="12" y2="7"/><circle cx="12" cy="3" r="1"/><circle cx="9" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1.5" fill="currentColor" stroke="none"/><line x1="9" y1="16" x2="15" y2="16"/></svg>',
-    wrench:    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>'
-};
+// ── Counter Icon Library — references shared CV_ICONS ──
+var COUNTER_ICON_SVG = CV_ICONS;
 
 // Icon picker data — organized by category for display in modals
 var COUNTER_ICON_CATEGORIES = [
@@ -218,34 +173,34 @@ function openCounterCreateModal(moduleEl, data) {
     var modalState = { name: '', icon: null };
 
     var overlay = document.createElement('div');
-    overlay.className = 'counter-modal-overlay';
+    overlay.className = 'cv-modal-overlay counter-modal-overlay';
 
     var panel = document.createElement('div');
-    panel.className = 'counter-modal-panel';
+    panel.className = 'cv-modal-panel counter-modal-panel';
 
     // Header
     var header = document.createElement('div');
-    header.className = 'counter-modal-header';
+    header.className = 'cv-modal-header';
     header.innerHTML =
-        '<h3 class="counter-modal-title">' + escapeHtml(t('counter.createTitle')) + '</h3>' +
-        '<button type="button" class="counter-modal-close" title="' + escapeHtml(t('counter.close')) + '">' +
+        '<h3 class="cv-modal-title">' + escapeHtml(t('counter.createTitle')) + '</h3>' +
+        '<button type="button" class="cv-modal-close" title="' + escapeHtml(t('counter.close')) + '">' +
             '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
         '</button>';
     panel.appendChild(header);
 
     // Body
     var body = document.createElement('div');
-    body.className = 'counter-modal-body';
+    body.className = 'cv-modal-body';
 
     // Name field
     var nameLabel = document.createElement('label');
-    nameLabel.className = 'counter-modal-label';
+    nameLabel.className = 'cv-modal-label';
     nameLabel.textContent = t('counter.name');
     body.appendChild(nameLabel);
 
     var nameInput = document.createElement('input');
     nameInput.type = 'text';
-    nameInput.className = 'counter-modal-input';
+    nameInput.className = 'cv-modal-input';
     nameInput.placeholder = t('counter.namePlaceholder');
     nameInput.addEventListener('input', function () { modalState.name = nameInput.value; });
     nameInput.addEventListener('keydown', function (e) {
@@ -256,7 +211,7 @@ function openCounterCreateModal(moduleEl, data) {
 
     // Icon picker
     var iconLabel = document.createElement('label');
-    iconLabel.className = 'counter-modal-label';
+    iconLabel.className = 'cv-modal-label';
     iconLabel.textContent = t('counter.icon');
     body.appendChild(iconLabel);
 
@@ -266,7 +221,7 @@ function openCounterCreateModal(moduleEl, data) {
 
     // Footer
     var footer = document.createElement('div');
-    footer.className = 'counter-modal-footer';
+    footer.className = 'cv-modal-footer';
 
     var cancelBtn = document.createElement('button');
     cancelBtn.type = 'button';
@@ -288,7 +243,7 @@ function openCounterCreateModal(moduleEl, data) {
     document.body.appendChild(overlay);
 
     // Close via X button
-    header.querySelector('.counter-modal-close').addEventListener('click', doClose);
+    header.querySelector('.cv-modal-close').addEventListener('click', doClose);
 
     // Close on overlay click
     overlay.addEventListener('click', function (e) {
@@ -343,34 +298,34 @@ function openCounterEditModal(moduleEl, data, counterId) {
     };
 
     var overlay = document.createElement('div');
-    overlay.className = 'counter-modal-overlay';
+    overlay.className = 'cv-modal-overlay counter-modal-overlay';
 
     var panel = document.createElement('div');
-    panel.className = 'counter-modal-panel counter-edit-panel';
+    panel.className = 'cv-modal-panel counter-modal-panel counter-edit-panel';
 
     // Header
     var header = document.createElement('div');
-    header.className = 'counter-modal-header';
+    header.className = 'cv-modal-header';
     header.innerHTML =
-        '<h3 class="counter-modal-title">' + escapeHtml(t('counter.editTitle')) + '</h3>' +
-        '<button type="button" class="counter-modal-close" title="' + escapeHtml(t('counter.close')) + '">' +
+        '<h3 class="cv-modal-title">' + escapeHtml(t('counter.editTitle')) + '</h3>' +
+        '<button type="button" class="cv-modal-close" title="' + escapeHtml(t('counter.close')) + '">' +
             '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
         '</button>';
     panel.appendChild(header);
 
     // Body
     var body = document.createElement('div');
-    body.className = 'counter-modal-body counter-edit-body';
+    body.className = 'cv-modal-body counter-edit-body';
 
     // Name
     var nameLabel = document.createElement('label');
-    nameLabel.className = 'counter-modal-label';
+    nameLabel.className = 'cv-modal-label';
     nameLabel.textContent = t('counter.name');
     body.appendChild(nameLabel);
 
     var nameInput = document.createElement('input');
     nameInput.type = 'text';
-    nameInput.className = 'counter-modal-input';
+    nameInput.className = 'cv-modal-input';
     nameInput.value = editState.name;
     nameInput.placeholder = t('counter.namePlaceholder');
     nameInput.addEventListener('input', function () { editState.name = nameInput.value; });
@@ -381,7 +336,7 @@ function openCounterEditModal(moduleEl, data, counterId) {
 
     // Icon
     var iconLabel = document.createElement('label');
-    iconLabel.className = 'counter-modal-label';
+    iconLabel.className = 'cv-modal-label';
     iconLabel.textContent = t('counter.icon');
     body.appendChild(iconLabel);
 
@@ -395,11 +350,11 @@ function openCounterEditModal(moduleEl, data, counterId) {
     var valField = document.createElement('div');
     valField.className = 'counter-edit-field';
     var valLabel = document.createElement('label');
-    valLabel.className = 'counter-modal-label';
+    valLabel.className = 'cv-modal-label';
     valLabel.textContent = t('counter.currentValue');
     var valInput = document.createElement('input');
     valInput.type = 'number';
-    valInput.className = 'counter-modal-input counter-modal-num';
+    valInput.className = 'cv-modal-input cv-modal-num';
     valInput.value = editState.value;
     valInput.addEventListener('input', function () {
         editState.value = parseInt(valInput.value, 10) || 0;
@@ -412,11 +367,11 @@ function openCounterEditModal(moduleEl, data, counterId) {
     var maxField = document.createElement('div');
     maxField.className = 'counter-edit-field';
     var maxLabel = document.createElement('label');
-    maxLabel.className = 'counter-modal-label';
+    maxLabel.className = 'cv-modal-label';
     maxLabel.textContent = t('counter.maxValue');
     var maxInput = document.createElement('input');
     maxInput.type = 'number';
-    maxInput.className = 'counter-modal-input counter-modal-num';
+    maxInput.className = 'cv-modal-input cv-modal-num';
     maxInput.value = editState.max !== null ? editState.max : '';
     maxInput.placeholder = t('counter.unlimited');
     maxInput.addEventListener('input', function () {
@@ -439,11 +394,11 @@ function openCounterEditModal(moduleEl, data, counterId) {
     var minField = document.createElement('div');
     minField.className = 'counter-edit-field';
     var minLabel = document.createElement('label');
-    minLabel.className = 'counter-modal-label';
+    minLabel.className = 'cv-modal-label';
     minLabel.textContent = t('counter.minValue');
     var minInput = document.createElement('input');
     minInput.type = 'number';
-    minInput.className = 'counter-modal-input counter-modal-num';
+    minInput.className = 'cv-modal-input cv-modal-num';
     minInput.value = editState.min;
     minInput.addEventListener('input', function () {
         editState.min = parseInt(minInput.value, 10) || 0;
@@ -457,7 +412,7 @@ function openCounterEditModal(moduleEl, data, counterId) {
 
     // Footer
     var footer = document.createElement('div');
-    footer.className = 'counter-modal-footer counter-edit-footer';
+    footer.className = 'cv-modal-footer counter-edit-footer';
 
     var deleteBtn = document.createElement('button');
     deleteBtn.type = 'button';
@@ -499,7 +454,7 @@ function openCounterEditModal(moduleEl, data, counterId) {
     document.body.appendChild(overlay);
 
     // Wire close actions
-    header.querySelector('.counter-modal-close').addEventListener('click', doClose);
+    header.querySelector('.cv-modal-close').addEventListener('click', doClose);
     overlay.addEventListener('click', function (e) {
         if (e.target === overlay) doClose();
     });
@@ -692,8 +647,8 @@ function renderCounterRowEdit(counter, data, moduleEl) {
 
 // ── Column Headers ──
 function renderCounterColumnHeaders(container, content, moduleEl, data) {
-    var SVG_UP   = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
-    var SVG_DOWN = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>';
+    var SVG_UP   = CV_SVG_SORT_UP;
+    var SVG_DOWN = CV_SVG_SORT_DOWN;
 
     var headerRow = document.createElement('div');
     headerRow.className = 'counter-header-row';

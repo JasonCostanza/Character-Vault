@@ -21,36 +21,8 @@
     }
 
     // ── Preset Icon SVGs ──
-    var LIST_ICON_SVG = {
-        scale:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><polyline points="4 7 12 3 20 7"/><line x1="4" y1="7" x2="4" y2="13"/><line x1="20" y1="7" x2="20" y2="13"/><path d="M4 13a4 4 0 0 0 8 0"/><path d="M12 13a4 4 0 0 0 8 0"/></svg>',
-        power:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>',
-        apple:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1-1 3-1.5 4 0"/><path d="M17 6c2 2 3 5 2.5 9s-2.5 6-5.5 7c-1 .3-1.7.3-2 0-3-1-5-3-5.5-7S7 8 9 6c1-1 3-1 4 0s2-.5 4 0z"/></svg>',
-        bread:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16c0-5 2-9 8-9s8 4 8 9l-1 2H5l-1-2z"/><line x1="8" y1="12" x2="8" y2="17"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="16" y1="12" x2="16" y2="17"/></svg>',
-        bottle:  '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3h4v3l1.5 2.5V20a1 1 0 01-1 1H9.5a1 1 0 01-1-1V8.5L10 6V3z"/><line x1="9.5" y1="13" x2="14.5" y2="13"/></svg>',
-        magnify: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>',
-        torch:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="14" width="4" height="7" rx="1"/><path d="M12 14c-3-4-1-9 0-11 1 2 3 7 0 11z"/></svg>',
-        flash:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="6" height="10" rx="1"/><path d="M8 9L6 5h12l-2 4"/><circle cx="12" cy="15" r="1.5" fill="currentColor" stroke="none"/></svg>',
-        armour:  '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L3 7v6c0 5.25 3.75 9.5 9 11 5.25-1.5 9-5.75 9-11V7l-9-5z"/></svg>',
-        helmet:  '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C7 2 3 6 3 11v3h2v-1a7 7 0 0 1 14 0v1h2v-3c0-5-4-9-9-9z"/><rect x="3" y="14" width="18" height="4" rx="1"/></svg>',
-        boots:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v13l-3 4h12v-3l-3-3V3H8z"/><line x1="8" y1="11" x2="14" y2="11"/></svg>',
-        gloves:  '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17V8a1.5 1.5 0 013 0v5"/><path d="M12 11V7a1.5 1.5 0 013 0v4"/><path d="M15 11V8.5a1.5 1.5 0 013 0V17a5 5 0 01-10 0v-2.5a1.5 1.5 0 013 0"/></svg>',
-        shirt:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 8 7 4 9.5 7 12 4 14.5 7 17 4 21 8 18 10 18 20 6 20 6 10 3 8"/></svg>',
-        pants:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-2 10h-4l-2 6-2-6H6L4 4z"/></svg>',
-        shoes:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16l1-6h5l2 3h10v3H3z"/><line x1="4" y1="13" x2="6" y2="13"/></svg>',
-        gun:     '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h10v4l4 1v2h-5v-2H4v-5z"/><line x1="14" y1="10" x2="17" y2="8"/><rect x="5" y="14" width="2" height="4" rx="1"/></svg>',
-        sword:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="2" x2="7" y2="18"/><line x1="21" y1="6" x2="12" y2="6"/><path d="M5 20l2-2"/><path d="M3 22l2-2"/></svg>',
-        dagger:  '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="17"/><line x1="8" y1="8" x2="16" y2="8"/><path d="M10 17 Q12 21 14 17"/></svg>',
-        wand:    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="16" y2="8"/><polyline points="16 8 19 5 21 7 18 10 16 8"/><line x1="20" y1="3" x2="22" y2="5"/><line x1="18" y1="2" x2="18" y2="4"/><line x1="22" y1="6" x2="20" y2="6"/></svg>',
-        staff:   '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M9 6Q12 3 15 6"/><circle cx="12" cy="10" r="2"/><path d="M9 18Q12 21 15 18"/></svg>',
-        coin:    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="6" x2="12" y2="18"/><path d="M9 9h3.5a2 2 0 010 4H9m0 0h4a2 2 0 010 4H9"/></svg>',
-        potion:  '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v3l4 7A6 6 0 015 13l4-7V3z"/><line x1="8" y1="9" x2="16" y2="9"/><circle cx="10" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="14" cy="16" r="1" fill="currentColor" stroke="none"/></svg>',
-        key:     '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="9" r="5"/><line x1="13" y1="9" x2="21" y2="9"/><line x1="17" y1="9" x2="17" y2="12"/><line x1="20" y1="9" x2="20" y2="11"/></svg>',
-        gem:     '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14l3 5-10 13L2 9l3-5z"/><line x1="2" y1="9" x2="22" y2="9"/></svg>',
-        bow:     '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4 Q1 12 5 20"/><line x1="5" y1="4" x2="5" y2="20"/><line x1="5" y1="12" x2="20" y2="12"/><polyline points="16 9 20 12 16 15"/></svg>',
-        axe:     '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="18" x2="15" y2="9"/><path d="M15 9 Q15 3 21 3 Q21 9 15 9"/></svg>',
-        shield:  '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/></svg>',
-        hash:    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>'
-    };
+    // ── List Icon Library — references shared CV_ICONS ──
+    var LIST_ICON_SVG = CV_ICONS;
 
     // ── Attribute Wizard Icon Library ──
     var ATTR_WIZARD_ICONS = [
@@ -76,7 +48,7 @@
         { key: 'pants',   label: 'Pants' },
         { key: 'potion',  label: 'Potion' },
         { key: 'power',   label: 'Power Button' },
-        { key: 'shield',  label: 'Shield' },
+        { key: 'crosshair', label: 'Crosshair' },
         { key: 'shirt',   label: 'T-Shirt' },
         { key: 'shoes',   label: 'Shoes' },
         { key: 'staff',   label: 'Staff' },
@@ -399,9 +371,7 @@
         if (nameIsActive) {
             var nameIndicator = document.createElement('span');
             nameIndicator.className = 'list-sort-indicator';
-            nameIndicator.innerHTML = content.sortDir === 'asc'
-                ? '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>'
-                : '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>';
+            nameIndicator.innerHTML = content.sortDir === 'asc' ? CV_SVG_SORT_UP : CV_SVG_SORT_DOWN;
             nameHeader.appendChild(nameIndicator);
         }
 
@@ -441,9 +411,7 @@
             if (isActive) {
                 var indicator = document.createElement('span');
                 indicator.className = 'list-sort-indicator';
-                indicator.innerHTML = content.sortDir === 'asc'
-                    ? '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>'
-                    : '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>';
+                indicator.innerHTML = content.sortDir === 'asc' ? CV_SVG_SORT_UP : CV_SVG_SORT_DOWN;
                 colHeader.appendChild(indicator);
             }
 
@@ -803,9 +771,9 @@
     // ── Manage Attributes Panel ──
 
     function closeManageAttrsPanel(moduleEl, data) {
-        var panel = moduleEl.querySelector('.list-manage-panel');
-        if (!panel) return;
-        panel.remove();
+        var overlay = document.querySelector('.list-manage-overlay');
+        if (!overlay) return;
+        overlay.remove();
         // Re-render list body in edit mode
         var bodyEl = moduleEl.querySelector('.module-body');
         renderListBody(bodyEl, data, false);
@@ -816,13 +784,28 @@
         closeManageAttrsPanel(moduleEl, data);
         var content = ensureContent(data);
 
+        var overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay list-manage-overlay';
+
         var panel = document.createElement('div');
-        panel.className = 'list-manage-panel';
+        panel.className = 'cv-modal-panel list-manage-modal';
 
         renderManagePanelContent(panel, moduleEl, data, content);
 
-        var bodyEl = moduleEl.querySelector('.module-body');
-        bodyEl.appendChild(panel);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+
+        // Close on overlay background click
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) closeManageAttrsPanel(moduleEl, data);
+        });
+
+        // Close on Escape
+        overlay.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeManageAttrsPanel(moduleEl, data);
+        });
+        overlay.setAttribute('tabindex', '-1');
+        overlay.focus();
     }
 
     function renderManagePanelContent(panel, moduleEl, data, content) {
@@ -830,20 +813,20 @@
 
         // ── Header ──
         var header = document.createElement('div');
-        header.className = 'list-manage-header';
+        header.className = 'cv-modal-header';
         header.innerHTML =
-            '<span class="list-manage-title">' + escapeHtml(t('list.manageAttrs')) + '</span>' +
-            '<button class="list-manage-close" title="' + escapeHtml(t('list.close')) + '">' +
+            '<span class="cv-modal-title">' + escapeHtml(t('list.manageAttrs')) + '</span>' +
+            '<button class="cv-modal-close" title="' + escapeHtml(t('list.close')) + '">' +
                 '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
             '</button>';
-        header.querySelector('.list-manage-close').addEventListener('click', function () {
+        header.querySelector('.cv-modal-close').addEventListener('click', function () {
             closeManageAttrsPanel(moduleEl, data);
         });
         panel.appendChild(header);
 
         // ── Body (scrollable) ──
         var body = document.createElement('div');
-        body.className = 'list-manage-body';
+        body.className = 'cv-modal-body list-manage-body';
 
         // ── Current Attributes Section ──
         if (content.attributes.length === 0) {
@@ -1466,6 +1449,7 @@
         },
 
         onPlayMode(moduleEl, data) {
+            closeManageAttrsPanel(moduleEl, data);
             const bodyEl = moduleEl.querySelector('.module-body');
             renderListBody(bodyEl, data, true);
         },

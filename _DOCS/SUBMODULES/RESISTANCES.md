@@ -34,7 +34,7 @@ The Resistances module stores data in a hierarchical structure:
 
 ```js
 {
-  layout: 'columns',              // 'columns' or 'rows' (affects display layout; toggle not yet implemented)
+  layout: 'columns',              // 'columns' or 'rows' (toggled via toolbar button in Edit mode)
   immunities: [],                 // Array of assigned immunity objects
   resistances: [],                // Array of assigned resistance objects
   weaknesses: [],                 // Array of assigned weakness objects
@@ -46,14 +46,14 @@ The Resistances module stores data in a hierarchical structure:
   id: 'res_...unique id...',      // Auto-generated unique ID
   typeKey: 'fire',                // Key referencing a pre-defined or custom type
   value: '5',                     // User-provided value (or 'Immune' for immunities)
-  active: true                    // Toggle state (not yet implemented in UI)
+  active: true                    // Toggle state (click in Play mode to toggle)
 }
 
 // Custom type definition:
 {
   key: 'custom_...unique key...',  // Auto-generated unique key
   name: 'Psychic Force',           // User-provided name
-  icon: 'force'                    // Icon key from the RESISTANCE_ICON_SVG set
+  icon: 'force'                    // Icon key from the shared CV_ICONS library
 }
 ```
 
@@ -63,7 +63,7 @@ The module supports two layout modes controlled by the `layout` property:
 - **`columns`** (default): Displays the 3 categories side-by-side
 - **`rows`**: Displays the 3 categories stacked vertically
 
-⚠️ **Note:** The layout mode can only be changed programmatically; there is no UI toggle yet.
+The layout mode is toggled via the `.module-res-layout-btn` toolbar button, which is visible only in Edit mode. The button is defined in `module-core.js` and swaps the `layout` property between `'columns'` and `'rows'`.
 
 ## Resistance Creation Wizard
 
@@ -104,12 +104,13 @@ Each pre-defined type maps to a key that is used in the module data structure an
 
 ## Icon System
 
-The Resistance module uses an inline SVG icon set. When creating a custom resistance type, the user selects from this same icon grid. Custom types store the icon key (e.g., `'fire'`, `'cold'`) in their definition, allowing them to reuse any of the pre-defined icon designs.
+The Resistance module uses icons from the shared `CV_ICONS` library in `shared.js`. When creating a custom resistance type, the user selects from the icon grid. Custom types store the icon key (e.g., `'fire'`, `'cold'`) in their definition, allowing them to reuse any of the pre-defined icon designs.
 
 ## Implementation Notes & Pending Features
 
 ### Fully Implemented
 - Multi-column layout (Immunities, Resistances, Weaknesses)
+- Layout toggle (columns/rows) via toolbar button in Edit mode
 - Drag-and-drop assignment via SortableJS
 - Drag-to-move between columns
 - Alphabetical sorting within columns
@@ -123,4 +124,4 @@ The Resistance module uses an inline SVG icon set. When creating a custom resist
 - Toggle active/inactive in Play mode (click to dim/brighten, persists across sessions)
 
 ### Pending / Not Yet Implemented
-- **Same-column reordering**: Currently, SortableJS is configured to prevent reordering within the same column (no `sort: true`). Manual reorder by drag within a column is disabled. Alphabetical sort is applied on every render.
+- **Same-column reordering**: SortableJS is configured to prevent reordering within the same column. Alphabetical sort is applied on every render.

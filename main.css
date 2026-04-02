@@ -1131,6 +1131,94 @@ select,
     border-color: var(--cv-accent);
 }
 
+/* ── Shared Modal ── */
+
+.cv-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+}
+
+.cv-modal-panel {
+    background: var(--cv-bg-surface);
+    border: 1px solid var(--cv-border);
+    border-radius: 8px;
+    width: 320px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.cv-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px 8px;
+    border-bottom: 1px solid var(--cv-border-subtle);
+    flex-shrink: 0;
+}
+
+.cv-modal-title {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cv-text);
+    user-select: none;
+}
+
+.cv-modal-close {
+    background: none;
+    border: none;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    transition: color 0.15s ease;
+}
+
+.cv-modal-close:hover {
+    color: var(--cv-text);
+}
+
+.cv-modal-body {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
+}
+
+.cv-modal-body::-webkit-scrollbar { width: 4px; }
+.cv-modal-body::-webkit-scrollbar-track { background: transparent; }
+.cv-modal-body::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
+
+.cv-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--cv-border-subtle);
+}
+
+.cv-modal-label {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-secondary);
+    user-select: none;
+}
+
 /* ── Delete Confirmation Dialog ── */
 .delete-confirm-overlay {
     position: fixed;
@@ -2130,48 +2218,22 @@ select,
 }
 
 /* ── Health Action Overlay ── */
-.health-action-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
+.health-action-modal {
+    width: 280px;
+}
+
+.health-action-body {
     align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px;
-    background-color: var(--cv-bg-surface);
-    border-radius: 6px;
-    border: 1px solid var(--cv-border);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
 
-.health-action-overlay-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.health-action-overlay-title {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--cv-text-secondary);
-    user-select: none;
-}
-
-.health-action-overlay-subheading {
+.health-action-subheading {
     font-size: 10px;
     font-weight: 500;
     color: var(--cv-text-muted);
     user-select: none;
-    margin-top: 4px;
 }
 
-
-.health-action-overlay-input {
+.health-action-input {
     width: 100%;
     max-width: 120px;
     padding: 6px 8px;
@@ -2186,16 +2248,9 @@ select,
     outline: none;
 }
 
-.health-action-overlay-input:focus {
+.health-action-input:focus {
     border-color: var(--cv-accent);
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
-}
-
-.health-action-overlay-actions {
-    display: flex;
-    gap: 6px;
-    width: 100%;
-    max-width: 160px;
 }
 
 
@@ -2696,9 +2751,6 @@ select,
     color: var(--cv-text);
 }
 
-.list-col-name.active-sort {
-    color: var(--cv-accent);
-}
 
 .list-col-attr {
     flex: 0 0 68px;
@@ -2715,9 +2767,6 @@ select,
     color: var(--cv-text);
 }
 
-.list-col-attr.active-sort {
-    color: var(--cv-accent);
-}
 
 .list-header-row.cols-draggable .list-col-attr {
     cursor: grab;
@@ -2737,6 +2786,11 @@ select,
 .list-col-handle-spacer {
     flex: 0 0 14px;
     width: 14px;
+}
+
+/* Shared active-sort highlight — used by list, counter, and condition column headers */
+.active-sort {
+    color: var(--cv-accent);
 }
 
 .list-sort-indicator {
@@ -2984,56 +3038,12 @@ select,
 }
 
 /* ── List Manage Attributes Panel ── */
-.list-manage-panel {
-    position: absolute;
-    inset: 0;
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--cv-bg-surface);
-    border-radius: 6px;
-    border: 1px solid var(--cv-border);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
+.list-manage-modal {
+    width: 360px;
 }
-
-.list-manage-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 10px;
-    border-bottom: 1px solid var(--cv-border-subtle);
-    flex-shrink: 0;
-}
-
-.list-manage-title {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--cv-text-secondary);
-    user-select: none;
-}
-
 
 .list-manage-body {
-    display: flex;
-    flex-direction: column;
     gap: 12px;
-    padding: 8px 10px;
-    overflow-y: auto;
-    flex: 1;
-}
-
-.list-manage-body::-webkit-scrollbar {
-    width: 4px;
-}
-.list-manage-body::-webkit-scrollbar-track {
-    background: transparent;
-}
-.list-manage-body::-webkit-scrollbar-thumb {
-    background-color: var(--cv-text-muted);
-    border-radius: 2px;
 }
 
 .list-manage-no-attrs {
@@ -3896,59 +3906,13 @@ select,
 }
 
 /* ── Resistance Settings Panel ── */
-.res-settings-panel {
-    position: absolute;
-    inset: 0;
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--cv-bg-surface);
-    border-radius: 6px;
-    border: 1px solid var(--cv-border);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
+.res-settings-modal {
+    width: 480px;
 }
-
-.res-settings-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 10px;
-    border-bottom: 1px solid var(--cv-border-subtle);
-    flex-shrink: 0;
-}
-
-.res-settings-title {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--cv-text-secondary);
-    user-select: none;
-}
-
 
 .res-settings-body {
-    display: flex;
-    flex-direction: column;
     gap: 12px;
-    padding: 8px 10px;
-    overflow-y: auto;
-    flex: 1;
     position: relative;
-}
-
-.res-settings-body::-webkit-scrollbar {
-    width: 4px;
-}
-
-.res-settings-body::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.res-settings-body::-webkit-scrollbar-thumb {
-    background-color: var(--cv-text-muted);
-    border-radius: 2px;
 }
 
 /* ── Resistance Settings Columns (Drop Zones) ── */
@@ -4818,21 +4782,6 @@ select,
     color: var(--cv-text);
 }
 
-.cond-sort-header-col.active-sort {
-    color: var(--cv-accent);
-}
-
-.cond-sort-indicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.cond-sort-indicator .icon {
-    width: 10px;
-    height: 10px;
-}
 
 /* ── Condition Applied List ── */
 .cond-applied-list {
@@ -5035,76 +4984,13 @@ select,
 }
 
 /* ── Condition Settings Panel ── */
-.cond-settings-panel {
-    position: absolute;
-    inset: 0;
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--cv-bg-surface);
-    border-radius: 6px;
-    border: 1px solid var(--cv-border);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
-}
-
-.cond-settings-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 10px;
-    border-bottom: 1px solid var(--cv-border-subtle);
-    flex-shrink: 0;
-}
-
-.cond-settings-title {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--cv-text-secondary);
-    user-select: none;
-}
-
-.cond-settings-close {
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;
-    color: var(--cv-text-muted);
-    transition: color 0.15s ease;
-}
-
-.cond-settings-close:hover {
-    color: var(--cv-text);
+.cond-settings-modal {
+    width: 400px;
 }
 
 .cond-settings-body {
-    display: flex;
-    flex-direction: column;
     gap: 12px;
-    padding: 8px 10px;
-    overflow-y: auto;
-    flex: 1;
     position: relative;
-}
-
-.cond-settings-body::-webkit-scrollbar {
-    width: 4px;
-}
-
-.cond-settings-body::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.cond-settings-body::-webkit-scrollbar-thumb {
-    background-color: var(--cv-text-muted);
-    border-radius: 2px;
 }
 
 /* ── Condition Template Selector ── */
@@ -6138,9 +6024,6 @@ select,
     color: var(--cv-text);
 }
 
-.counter-col-name.active-sort {
-    color: var(--cv-accent);
-}
 
 .counter-col-value {
     flex: 0 0 72px;
@@ -6156,9 +6039,6 @@ select,
     color: var(--cv-text);
 }
 
-.counter-col-value.active-sort {
-    color: var(--cv-accent);
-}
 
 .counter-col-icon-spacer {
     flex: 0 0 20px;
@@ -6348,94 +6228,17 @@ select,
     border-radius: 5px;
 }
 
-/* ── Counter Modal Overlay ── */
-
-.counter-modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.55);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 200;
-}
-
-.counter-modal-panel {
-    background: var(--cv-bg-surface);
-    border: 1px solid var(--cv-border);
-    border-radius: 8px;
-    width: 320px;
-    max-height: 85vh;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-}
+/* ── Counter Modal Overrides ── */
 
 .counter-edit-panel {
     width: 360px;
 }
 
-.counter-modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 14px 8px;
-    border-bottom: 1px solid var(--cv-border-subtle);
-}
-
-.counter-modal-title {
-    margin: 0;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--cv-text);
-    user-select: none;
-}
-
-.counter-modal-close {
-    background: none;
-    border: none;
-    color: var(--cv-text-muted);
-    cursor: pointer;
-    padding: 2px;
-    display: flex;
-    align-items: center;
-    transition: color 0.15s ease;
-}
-
-.counter-modal-close:hover {
-    color: var(--cv-text);
-}
-
-.counter-modal-body {
-    padding: 12px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
-}
-
-
-.counter-modal-body::-webkit-scrollbar { width: 4px; }
-.counter-modal-body::-webkit-scrollbar-track { background: transparent; }
-.counter-modal-body::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
-
 .counter-edit-body {
     max-height: 50vh;
 }
 
-.counter-modal-label {
-    font-size: 9px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--cv-text-secondary);
-    user-select: none;
-}
-
-.counter-modal-input {
+.cv-modal-input {
     width: 100%;
     font-size: 12px;
     font-family: inherit;
@@ -6449,18 +6252,18 @@ select,
     box-sizing: border-box;
 }
 
-.counter-modal-input:focus {
+.cv-modal-input:focus {
     border-color: var(--cv-accent);
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
 
-.counter-modal-num {
+.cv-modal-num {
     text-align: center;
     -moz-appearance: textfield;
 }
 
-.counter-modal-num::-webkit-inner-spin-button,
-.counter-modal-num::-webkit-outer-spin-button {
+.cv-modal-num::-webkit-inner-spin-button,
+.cv-modal-num::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
@@ -6556,16 +6359,7 @@ select,
 
 .counter-icon-pick-btn:hover::after { opacity: 1; }
 
-/* ── Modal Footer ── */
-
-.counter-modal-footer {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-    padding: 10px 14px;
-    border-top: 1px solid var(--cv-border-subtle);
-}
+/* ── Counter Modal Footer Overrides ── */
 
 .counter-edit-footer {
     justify-content: space-between;

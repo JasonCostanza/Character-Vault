@@ -396,8 +396,8 @@
     }
 
     // ── Sort Header SVGs ──
-    var SORT_ASC_SVG = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
-    var SORT_DESC_SVG = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>';
+    var SORT_ASC_SVG = CV_SVG_SORT_UP;
+    var SORT_DESC_SVG = CV_SVG_SORT_DOWN;
 
     // ── Value Prompt ──
 
@@ -654,7 +654,7 @@
 
         function rerender() {
             var bodyEl = moduleEl.querySelector('.module-body');
-            if (bodyEl && !moduleEl.querySelector('.cond-settings-panel')) {
+            if (bodyEl && !document.querySelector('.cond-settings-overlay')) {
                 var isPlay = document.querySelector('.mode-toggle') && document.querySelector('.mode-toggle').classList.contains('mode-play');
                 if (isPlay) {
                     renderPlayBody(bodyEl, data);
@@ -876,7 +876,7 @@
 
         if (nameIsActive) {
             var nameIndicator = document.createElement('span');
-            nameIndicator.className = 'cond-sort-indicator';
+            nameIndicator.className = 'list-sort-indicator';
             nameIndicator.innerHTML = content.sortDir === 'asc' ? SORT_ASC_SVG : SORT_DESC_SVG;
             nameHeader.appendChild(nameIndicator);
         }
@@ -914,7 +914,7 @@
 
         if (valueIsActive) {
             var valueIndicator = document.createElement('span');
-            valueIndicator.className = 'cond-sort-indicator';
+            valueIndicator.className = 'list-sort-indicator';
             valueIndicator.innerHTML = content.sortDir === 'asc' ? SORT_ASC_SVG : SORT_DESC_SVG;
             valueHeader.appendChild(valueIndicator);
         }
@@ -951,12 +951,12 @@
     // ── Settings Panel ──
 
     function closeCondSettingsPanel(moduleEl, data) {
-        var panel = moduleEl.querySelector('.cond-settings-panel');
-        if (!panel) return;
-        panel.querySelectorAll('.cond-applied-settings-list, .cond-staging-grid').forEach(function (el) {
+        var overlay = document.querySelector('.cond-settings-overlay');
+        if (!overlay) return;
+        overlay.querySelectorAll('.cond-applied-settings-list, .cond-staging-grid').forEach(function (el) {
             if (el._sortable) { el._sortable.destroy(); el._sortable = null; }
         });
-        panel.remove();
+        overlay.remove();
         var bodyEl = moduleEl.querySelector('.module-body');
         renderEditBody(bodyEl, data);
         snapModuleHeight(moduleEl, data);
@@ -966,14 +966,28 @@
         closeCondSettingsPanel(moduleEl, data);
         var content = ensureCondContent(data);
 
+        var overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay cond-settings-overlay';
+
         var panel = document.createElement('div');
-        panel.className = 'cond-settings-panel';
+        panel.className = 'cv-modal-panel cond-settings-modal';
 
         renderSettingsPanelContent(panel, moduleEl, data, content);
 
-        var bodyEl = moduleEl.querySelector('.module-body');
-        bodyEl.innerHTML = '';
-        bodyEl.appendChild(panel);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+
+        // Close on overlay background click
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) closeCondSettingsPanel(moduleEl, data);
+        });
+
+        // Close on Escape
+        overlay.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeCondSettingsPanel(moduleEl, data);
+        });
+        overlay.setAttribute('tabindex', '-1');
+        overlay.focus();
     }
 
     function renderSettingsPanelContent(panel, moduleEl, data, content) {
@@ -981,15 +995,15 @@
 
         // Header
         var header = document.createElement('div');
-        header.className = 'cond-settings-header';
+        header.className = 'cv-modal-header';
 
         var title = document.createElement('span');
-        title.className = 'cond-settings-title';
+        title.className = 'cv-modal-title';
         title.textContent = t('cond.moduleSettings');
         header.appendChild(title);
 
         var closeBtn = document.createElement('button');
-        closeBtn.className = 'cond-settings-close';
+        closeBtn.className = 'cv-modal-close';
         closeBtn.title = t('cond.close');
         closeBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
         closeBtn.addEventListener('click', function () {
@@ -1000,7 +1014,7 @@
 
         // Body
         var body = document.createElement('div');
-        body.className = 'cond-settings-body';
+        body.className = 'cv-modal-body cond-settings-body';
 
         // Template Selector
         var tplSection = document.createElement('div');
@@ -1154,7 +1168,7 @@
             valSpan.textContent = item.value || 0;
             valSpan.addEventListener('click', function (e) {
                 e.stopPropagation();
-                var settingsBody = el.closest('.cond-settings-body');
+                var settingsBody = el.closest('.cv-modal-body');
                 if (!settingsBody) return;
                 showCondValuePrompt(settingsBody, item.value, getCondMaxValue(item, content), function (newVal) {
                     item.value = newVal;
@@ -1242,7 +1256,7 @@
                         if (condType === 'value') {
                             // Prompt for value
                             var condMax = getCondMaxValue(stagingItem, content);
-                            showCondValuePrompt(panel.querySelector('.cond-settings-body'), 1, condMax, function (val) {
+                            showCondValuePrompt(panel.querySelector('.cv-modal-body'), 1, condMax, function (val) {
                                 // Move from staging to applied
                                 var idx = content.staging.findIndex(function (s) { return s.id === itemId; });
                                 if (idx !== -1) content.staging.splice(idx, 1);

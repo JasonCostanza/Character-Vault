@@ -50,7 +50,10 @@ function openHealthActionOverlay(moduleEl, data, mode) {
     closeHealthActionOverlay(moduleEl);
 
     const overlay = document.createElement('div');
-    overlay.className = 'health-action-overlay';
+    overlay.className = 'cv-modal-overlay health-action-overlay';
+
+    const panel = document.createElement('div');
+    panel.className = 'cv-modal-panel health-action-modal';
 
     let titleKey;
     switch (mode) {
@@ -60,26 +63,28 @@ function openHealthActionOverlay(moduleEl, data, mode) {
         case 'maxmod': titleKey = 'health.moduleSettings'; break;
     }
 
-    const subHeading = mode === 'maxmod' ? `<div class="health-action-overlay-subheading">${escapeHtml(t('health.maxHPMod'))}</div>` : '';
+    const subHeading = mode === 'maxmod' ? `<div class="health-action-subheading">${escapeHtml(t('health.maxHPMod'))}</div>` : '';
 
-    overlay.innerHTML =
-        `<div class="health-action-overlay-header">` +
-            `<span class="health-action-overlay-title">${escapeHtml(t(titleKey))}</span>` +
-            `<button class="health-action-overlay-close" title="${escapeHtml(t('health.cancel'))}">` +
+    panel.innerHTML =
+        `<div class="cv-modal-header">` +
+            `<span class="cv-modal-title">${escapeHtml(t(titleKey))}</span>` +
+            `<button class="cv-modal-close" title="${escapeHtml(t('health.cancel'))}">` +
                 `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>` +
             `</button>` +
         `</div>` +
-        subHeading +
-        `<input type="text" class="health-action-overlay-input" placeholder="0" spellcheck="false" autocomplete="off">` +
-        `<div class="health-action-overlay-actions">` +
-            `<button class="health-action-overlay-cancel btn-secondary sm">${escapeHtml(t('health.cancel'))}</button>` +
-            `<button class="health-action-overlay-ok btn-primary">${escapeHtml(t('health.ok'))}</button>` +
+        `<div class="cv-modal-body health-action-body">` +
+            subHeading +
+            `<input type="text" class="health-action-input" placeholder="0" spellcheck="false" autocomplete="off">` +
+        `</div>` +
+        `<div class="cv-modal-footer">` +
+            `<button class="health-action-cancel btn-secondary sm">${escapeHtml(t('health.cancel'))}</button>` +
+            `<button class="health-action-ok btn-primary">${escapeHtml(t('health.ok'))}</button>` +
         `</div>`;
 
-    const input = overlay.querySelector('.health-action-overlay-input');
-    const closeBtn = overlay.querySelector('.health-action-overlay-close');
-    const cancelBtn = overlay.querySelector('.health-action-overlay-cancel');
-    const okBtn = overlay.querySelector('.health-action-overlay-ok');
+    const input = panel.querySelector('.health-action-input');
+    const closeBtn = panel.querySelector('.cv-modal-close');
+    const cancelBtn = panel.querySelector('.health-action-cancel');
+    const okBtn = panel.querySelector('.health-action-ok');
 
     // Pre-fill for setters
     if (mode === 'maxmod') input.value = data.content.maxHPModifier || '';
@@ -123,14 +128,19 @@ function openHealthActionOverlay(moduleEl, data, mode) {
         if (e.key === 'Escape') cancel();
     });
 
-    const body = moduleEl.querySelector('.module-body');
-    body.appendChild(overlay);
+    // Close on overlay background click
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) cancel();
+    });
+
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
     input.focus();
     input.select();
 }
 
 function closeHealthActionOverlay(moduleEl) {
-    const existing = moduleEl.querySelector('.health-action-overlay');
+    const existing = document.querySelector('.health-action-overlay');
     if (existing) existing.remove();
 }
 

@@ -39,21 +39,8 @@
     ];
 
     // ── Resistance Icon SVGs ──
-    var RESISTANCE_ICON_SVG = {
-        acid: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v6l-4 8a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4l-4-8V2"/><line x1="10" y1="2" x2="14" y2="2"/><path d="M8.5 14a1.5 1.5 0 1 0 0 3"/><circle cx="14" cy="16" r="1"/></svg>',
-        bludgeoning: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="14" x2="4" y2="20"/><path d="M12 12a5 5 0 0 1 5-5h1a2 2 0 0 0 2-2V4a1 1 0 0 0-1-1h-1a2 2 0 0 0-2 2 5 5 0 0 1-5 5"/><circle cx="14" cy="10" r="4"/></svg>',
-        cold: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/><line x1="19.07" y1="4.93" x2="4.93" y2="19.07"/><polyline points="9 2 12 5 15 2"/><polyline points="9 22 12 19 15 22"/><polyline points="2 9 5 12 2 15"/><polyline points="22 9 19 12 22 15"/></svg>',
-        fire: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1 3 5 6 5 11a5 5 0 0 1-10 0c0-5 4-8 5-11z"/><path d="M12 18a2 2 0 0 1-2-2c0-2 2-3 2-3s2 1 2 3a2 2 0 0 1-2 2z"/></svg>',
-        force: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>',
-        lightning: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 4 14 12 14 11 22 20 10 12 10 13 2"/></svg>',
-        necrotic: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="7"/><circle cx="9.5" cy="8" r="1.5" fill="currentColor" stroke="none"/><circle cx="14.5" cy="8" r="1.5" fill="currentColor" stroke="none"/><path d="M8 13h8"/><line x1="10" y1="13" x2="10" y2="16"/><line x1="14" y1="13" x2="14" y2="16"/><path d="M9 22v-6"/><path d="M15 22v-6"/></svg>',
-        piercing: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><polygon points="12 2 8 10 12 8 16 10 12 2" fill="none"/></svg>',
-        poison: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 6 5 9 5 14a7 7 0 0 0 14 0c0-5-3-8-7-12z"/><circle cx="10" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="14" cy="13" r="1" fill="currentColor" stroke="none"/><path d="M9 17c1.5 1 4.5 1 6 0"/></svg>',
-        psychic: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a8 8 0 0 0-8 8c0 3 1.5 5 3 6.5V20a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-3.5c1.5-1.5 3-3.5 3-6.5a8 8 0 0 0-8-8z"/><path d="M8 12c1-1 2-2 4-2s3 1 4 2"/><line x1="9" y1="17" x2="15" y2="17"/></svg>',
-        radiant: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>',
-        slashing: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="4" x2="19" y2="20"/><line x1="9" y1="4" x2="22" y2="18"/><line x1="2" y1="6" x2="15" y2="20"/></svg>',
-        thunder: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c2-1 3-3 3-3"/><path d="M5 12c2-2 3-5 3-5"/><path d="M8 12c2-3 3-7 3-7"/><path d="M22 12c-2-1-3-3-3-3"/><path d="M19 12c-2-2-3-5-3-5"/><path d="M16 12c-2-3-3-7-3-7"/><path d="M2 12c2 1 3 3 3 3"/><path d="M5 12c2 2 3 5 3 5"/><path d="M8 12c2 3 3 7 3 7"/><path d="M22 12c-2 1-3 3-3 3"/><path d="M19 12c-2 2-3 5-3 5"/><path d="M16 12c-2 3-3 7-3 7"/></svg>'
-    };
+    // ── Resistance Icon Library — references shared CV_ICONS ──
+    var RESISTANCE_ICON_SVG = CV_ICONS;
 
     // ── Helpers ──
 
@@ -328,13 +315,13 @@
     // ── Settings Panel ──
 
     function closeResSettingsPanel(moduleEl, data) {
-        var panel = moduleEl.querySelector('.res-settings-panel');
-        if (!panel) return;
+        var overlay = document.querySelector('.res-settings-overlay');
+        if (!overlay) return;
         // Destroy any SortableJS instances
-        panel.querySelectorAll('.res-column-list, .res-staging-grid').forEach(function (el) {
+        overlay.querySelectorAll('.res-column-list, .res-staging-grid').forEach(function (el) {
             if (el._sortable) { el._sortable.destroy(); el._sortable = null; }
         });
-        panel.remove();
+        overlay.remove();
         // Re-render edit body
         var bodyEl = moduleEl.querySelector('.module-body');
         renderEditBody(bodyEl, data);
@@ -345,14 +332,28 @@
         closeResSettingsPanel(moduleEl, data);
         var content = ensureResContent(data);
 
+        var overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay res-settings-overlay';
+
         var panel = document.createElement('div');
-        panel.className = 'res-settings-panel';
+        panel.className = 'cv-modal-panel res-settings-modal';
 
         renderSettingsPanelContent(panel, moduleEl, data, content);
 
-        var bodyEl = moduleEl.querySelector('.module-body');
-        bodyEl.innerHTML = '';
-        bodyEl.appendChild(panel);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+
+        // Close on overlay background click
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) closeResSettingsPanel(moduleEl, data);
+        });
+
+        // Close on Escape
+        overlay.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeResSettingsPanel(moduleEl, data);
+        });
+        overlay.setAttribute('tabindex', '-1');
+        overlay.focus();
     }
 
     function renderSettingsPanelContent(panel, moduleEl, data, content) {
@@ -360,15 +361,15 @@
 
         // ── Header ──
         var header = document.createElement('div');
-        header.className = 'res-settings-header';
+        header.className = 'cv-modal-header';
 
         var title = document.createElement('span');
-        title.className = 'res-settings-title';
+        title.className = 'cv-modal-title';
         title.textContent = t('res.moduleSettings');
         header.appendChild(title);
 
         var closeBtn = document.createElement('button');
-        closeBtn.className = 'res-settings-close';
+        closeBtn.className = 'cv-modal-close';
         closeBtn.title = t('res.close');
         closeBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
         closeBtn.addEventListener('click', function () {
@@ -379,7 +380,7 @@
 
         // ── Body ──
         var body = document.createElement('div');
-        body.className = 'res-settings-body';
+        body.className = 'cv-modal-body res-settings-body';
 
         // ── Columns (drop zones) ──
         var columnsRow = document.createElement('div');
@@ -492,8 +493,7 @@
             // Click to edit value
             valSpan.addEventListener('click', function (e) {
                 e.stopPropagation();
-                var moduleEl = el.closest('.module');
-                var settingsBody = el.closest('.res-settings-body');
+                var settingsBody = el.closest('.cv-modal-body');
                 if (!settingsBody) return;
 
                 showValuePrompt(settingsBody, item.value, function (newVal) {
@@ -516,9 +516,9 @@
             if (idx !== -1) content[colKey].splice(idx, 1);
             scheduleSave();
             // Re-render panel
-            var panel = el.closest('.res-settings-panel');
-            var moduleEl = el.closest('.module');
-            if (panel && moduleEl) {
+            var panel = el.closest('.cv-modal-panel');
+            var moduleEl = el.closest('.module') || document.querySelector('.module[data-id="' + data.id + '"]');
+            if (panel) {
                 renderSettingsPanelContent(panel, moduleEl, data, content);
             }
         });
@@ -572,7 +572,7 @@
                             renderSettingsPanelContent(panel, moduleEl, data, content);
                         } else {
                             // Prompt for value
-                            showValuePrompt(panel.querySelector('.res-settings-body'), '', function (val) {
+                            showValuePrompt(panel.querySelector('.cv-modal-body'), '', function (val) {
                                 addResistanceToColumn(content, typeKey, toColumn, val);
                                 scheduleSave();
                                 renderSettingsPanelContent(panel, moduleEl, data, content);
@@ -604,7 +604,7 @@
                             scheduleSave();
                             renderSettingsPanelContent(panel, moduleEl, data, content);
                         } else {
-                            showValuePrompt(panel.querySelector('.res-settings-body'), movedItem.value, function (val) {
+                            showValuePrompt(panel.querySelector('.cv-modal-body'), movedItem.value, function (val) {
                                 movedItem.value = val;
                                 content[toColumn].push(movedItem);
                                 scheduleSave();

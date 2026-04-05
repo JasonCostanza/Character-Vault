@@ -3577,6 +3577,9 @@ select,
 .wizard-body {
     flex: 1;
     overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
     padding: 20px 24px;
 }
 

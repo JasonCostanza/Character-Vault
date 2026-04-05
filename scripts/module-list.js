@@ -22,81 +22,87 @@
 
     // ── Preset Icon SVGs ──
     // ── List Icon Library — references shared CV_ICONS ──
-    var LIST_ICON_SVG = CV_ICONS;
+    const LIST_ICON_SVG = CV_ICONS;
 
     // ── Attribute Wizard Icon Library ──
-    var ATTR_WIZARD_ICONS = [
-        { key: null,      label: 'None' },
-        { key: 'apple',   label: 'Apple' },
-        { key: 'armour',  label: 'Armour' },
-        { key: 'axe',     label: 'Axe' },
-        { key: 'scale',   label: 'Balance Scale' },
-        { key: 'boots',   label: 'Boots' },
-        { key: 'bottle',  label: 'Bottle of Water' },
-        { key: 'bow',     label: 'Bow' },
-        { key: 'bread',   label: 'Bread' },
-        { key: 'coin',    label: 'Coin' },
-        { key: 'dagger',  label: 'Dagger' },
-        { key: 'flash',   label: 'Flashlight' },
-        { key: 'gem',     label: 'Gem' },
-        { key: 'gloves',  label: 'Gloves' },
-        { key: 'gun',     label: 'Gun' },
-        { key: 'hash',    label: 'Hash' },
-        { key: 'helmet',  label: 'Helmet' },
-        { key: 'key',     label: 'Key' },
+    const ATTR_WIZARD_ICONS = [
+        { key: null, label: 'None' },
+        { key: 'apple', label: 'Apple' },
+        { key: 'armour', label: 'Armour' },
+        { key: 'axe', label: 'Axe' },
+        { key: 'scale', label: 'Balance Scale' },
+        { key: 'boots', label: 'Boots' },
+        { key: 'bottle', label: 'Bottle of Water' },
+        { key: 'bow', label: 'Bow' },
+        { key: 'bread', label: 'Bread' },
+        { key: 'coin', label: 'Coin' },
+        { key: 'dagger', label: 'Dagger' },
+        { key: 'flash', label: 'Flashlight' },
+        { key: 'gem', label: 'Gem' },
+        { key: 'gloves', label: 'Gloves' },
+        { key: 'gun', label: 'Gun' },
+        { key: 'hash', label: 'Hash' },
+        { key: 'helmet', label: 'Helmet' },
+        { key: 'key', label: 'Key' },
         { key: 'magnify', label: 'Magnifying Glass' },
-        { key: 'pants',   label: 'Pants' },
-        { key: 'potion',  label: 'Potion' },
-        { key: 'power',   label: 'Power Button' },
+        { key: 'pants', label: 'Pants' },
+        { key: 'potion', label: 'Potion' },
+        { key: 'power', label: 'Power Button' },
         { key: 'crosshair', label: 'Crosshair' },
-        { key: 'shirt',   label: 'T-Shirt' },
-        { key: 'shoes',   label: 'Shoes' },
-        { key: 'staff',   label: 'Staff' },
-        { key: 'sword',   label: 'Sword' },
-        { key: 'torch',   label: 'Torch' },
-        { key: 'wand',    label: 'Wand' }
+        { key: 'shirt', label: 'T-Shirt' },
+        { key: 'shoes', label: 'Shoes' },
+        { key: 'staff', label: 'Staff' },
+        { key: 'sword', label: 'Sword' },
+        { key: 'torch', label: 'Torch' },
+        { key: 'wand', label: 'Wand' },
     ];
 
     // ── Built-in Attribute Presets ──
-    var LIST_ATTR_PRESETS = [
-        { key: 'presetWeight',      type: 'number',      icon: 'scale',  defaultValue: 0 },
-        { key: 'presetQuantity',    type: 'quantity',    icon: 'hash',   defaultValue: 1 },
-        { key: 'presetDurability',   type: 'number-pair', icon: 'armour', defaultValue: { current: 0, max: 0 } },
-        { key: 'presetEquipped',     type: 'toggle',      icon: 'helmet', defaultValue: false },
-        { key: 'presetActive',       type: 'toggle',      icon: 'power',  defaultValue: false },
-        { key: 'presetBroken',       type: 'toggle',      icon: 'sword',  defaultValue: false },
-        { key: 'presetConsumable',   type: 'toggle',      icon: 'apple',  defaultValue: false },
-        { key: 'presetDamage',       type: 'text',        icon: 'sword',  defaultValue: '' },
-        { key: 'presetBulk',         type: 'dropdown',    icon: 'shirt',  defaultValue: 'XS', options: ['XS', 'S', 'M', 'L', 'XL'] }
+    const LIST_ATTR_PRESETS = [
+        { key: 'presetWeight', type: 'number', icon: 'scale', defaultValue: 0 },
+        { key: 'presetQuantity', type: 'quantity', icon: 'hash', defaultValue: 1 },
+        { key: 'presetDurability', type: 'number-pair', icon: 'armour', defaultValue: { current: 0, max: 0 } },
+        { key: 'presetEquipped', type: 'toggle', icon: 'helmet', defaultValue: false },
+        { key: 'presetActive', type: 'toggle', icon: 'power', defaultValue: false },
+        { key: 'presetBroken', type: 'toggle', icon: 'sword', defaultValue: false },
+        { key: 'presetConsumable', type: 'toggle', icon: 'apple', defaultValue: false },
+        { key: 'presetDamage', type: 'text', icon: 'sword', defaultValue: '' },
+        {
+            key: 'presetBulk',
+            type: 'dropdown',
+            icon: 'shirt',
+            defaultValue: 'XS',
+            options: ['XS', 'S', 'M', 'L', 'XL'],
+        },
     ];
 
     // ── Attribute Delete Confirmation ──
     function showAttrDeleteConfirm(attrName, onConfirm) {
-        var overlay = document.createElement('div');
+        const overlay = document.createElement('div');
         overlay.className = 'delete-confirm-overlay';
         overlay.setAttribute('aria-hidden', 'true');
 
-        var panel = document.createElement('div');
+        const panel = document.createElement('div');
         panel.className = 'delete-confirm-panel';
 
-        var title = document.createElement('div');
+        const title = document.createElement('div');
         title.className = 'delete-confirm-title';
         title.style.userSelect = 'none';
         title.textContent = t('list.removeAttrTitle');
 
-        var msg = document.createElement('div');
+        const msg = document.createElement('div');
         msg.className = 'delete-confirm-msg';
         msg.style.userSelect = 'none';
         msg.textContent = t('list.removeAttrConfirm', { name: attrName });
 
-        var actions = document.createElement('div');
+        const actions = document.createElement('div');
         actions.className = 'delete-confirm-actions';
 
-        var cancelBtn = document.createElement('button');
+        const cancelBtn = document.createElement('button');
         cancelBtn.className = 'delete-confirm-cancel btn-secondary';
         cancelBtn.textContent = t('delete.cancel');
 
-        var confirmBtn = document.createElement('button');
+        const confirmBtn = document.createElement('button');
         confirmBtn.className = 'delete-confirm-delete';
         confirmBtn.textContent = t('delete.confirm');
 
@@ -112,7 +118,9 @@
             overlay.classList.remove('open');
             overlay.setAttribute('aria-hidden', 'true');
             document.removeEventListener('keydown', onKeyDown);
-            setTimeout(function () { overlay.remove(); }, 200);
+            setTimeout(function () {
+                overlay.remove();
+            }, 200);
         }
 
         function onKeyDown(e) {
@@ -143,28 +151,32 @@
 
     // ── Sorted Items ──
     function getSortedItems(content) {
-        var items = content.items.slice();
+        const items = content.items.slice();
         if (content.sortBy === null) {
-            items.sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
+            items.sort(function (a, b) {
+                return (a.order || 0) - (b.order || 0);
+            });
             return items;
         }
         if (content.sortBy === '__name__') {
-            var dir = content.sortDir === 'desc' ? -1 : 1;
+            const dir = content.sortDir === 'desc' ? -1 : 1;
             items.sort(function (a, b) {
-                var an = (a.name || '').toLowerCase();
-                var bn = (b.name || '').toLowerCase();
+                const an = (a.name || '').toLowerCase();
+                const bn = (b.name || '').toLowerCase();
                 return (an < bn ? -1 : an > bn ? 1 : 0) * dir;
             });
             return items;
         }
-        var attrId = content.sortBy;
-        var dir = content.sortDir === 'desc' ? -1 : 1;
-        var attr = content.attributes.find(function (a) { return a.id === attrId; });
-        var attrType = attr ? attr.type : 'text';
+        const attrId = content.sortBy;
+        const dir = content.sortDir === 'desc' ? -1 : 1;
+        const attr = content.attributes.find(function (a) {
+            return a.id === attrId;
+        });
+        const attrType = attr ? attr.type : 'text';
         items.sort(function (a, b) {
-            var av = a.values ? a.values[attrId] : null;
-            var bv = b.values ? b.values[attrId] : null;
-            var result = 0;
+            const av = a.values ? a.values[attrId] : null;
+            const bv = b.values ? b.values[attrId] : null;
+            let result = 0;
             switch (attrType) {
                 case 'toggle':
                     result = (av ? 1 : 0) - (bv ? 1 : 0);
@@ -174,19 +186,20 @@
                     result = (parseFloat(av) || 0) - (parseFloat(bv) || 0);
                     break;
                 case 'number-pair':
-                    result = ((av && av.current != null) ? parseFloat(av.current) || 0 : 0) -
-                             ((bv && bv.current != null) ? parseFloat(bv.current) || 0 : 0);
+                    result =
+                        (av && av.current != null ? parseFloat(av.current) || 0 : 0) -
+                        (bv && bv.current != null ? parseFloat(bv.current) || 0 : 0);
                     break;
                 case 'dropdown': {
-                    var opts = attr.options || [];
-                    var ai = opts.indexOf(av != null ? av : '');
-                    var bi = opts.indexOf(bv != null ? bv : '');
+                    const opts = attr.options || [];
+                    const ai = opts.indexOf(av != null ? av : '');
+                    const bi = opts.indexOf(bv != null ? bv : '');
                     result = (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
                     break;
                 }
                 default: {
-                    var aStr = (av || '').toString().toLowerCase();
-                    var bStr = (bv || '').toString().toLowerCase();
+                    const aStr = (av || '').toString().toLowerCase();
+                    const bStr = (bv || '').toString().toLowerCase();
                     result = aStr < bStr ? -1 : aStr > bStr ? 1 : 0;
                 }
             }
@@ -197,18 +210,19 @@
 
     // ── Attribute Value Cell ──
     function renderAttrValue(attr, value, isPlayMode, item, onUpdate) {
-        var cell = document.createElement('div');
+        const cell = document.createElement('div');
         cell.className = 'list-attr-cell list-attr-' + attr.type;
 
         if (attr.type === 'toggle') {
-            var toggleIconSvg = (attr.icon && LIST_ICON_SVG[attr.icon])
-                ? LIST_ICON_SVG[attr.icon]
-                : '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7"/></svg>';
-            var toggleBtn = document.createElement('button');
+            const toggleIconSvg =
+                attr.icon && LIST_ICON_SVG[attr.icon]
+                    ? LIST_ICON_SVG[attr.icon]
+                    : '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7"/></svg>';
+            const toggleBtn = document.createElement('button');
             toggleBtn.className = 'list-attr-toggle-btn' + (value ? ' is-on' : ' is-off');
             toggleBtn.innerHTML = toggleIconSvg;
             toggleBtn.addEventListener('click', function () {
-                var newVal = toggleBtn.classList.contains('is-off');
+                const newVal = toggleBtn.classList.contains('is-off');
                 toggleBtn.classList.toggle('is-on', newVal);
                 toggleBtn.classList.toggle('is-off', !newVal);
                 onUpdate(newVal);
@@ -218,9 +232,9 @@
         }
 
         if (attr.type === 'quantity') {
-            var val = parseInt(value) || 0;
+            let val = parseInt(value) || 0;
             if (isPlayMode) {
-                var qtySpan = document.createElement('span');
+                const qtySpan = document.createElement('span');
                 qtySpan.className = 'list-attr-quantity-display';
                 qtySpan.textContent = val;
                 qtySpan.title = t('list.attrTypeQuantityDesc');
@@ -237,12 +251,16 @@
                 });
                 cell.appendChild(qtySpan);
             } else {
-                var qtyInput = document.createElement('input');
+                const qtyInput = document.createElement('input');
                 qtyInput.type = 'number';
                 qtyInput.className = 'list-attr-number-input';
                 qtyInput.value = val;
-                qtyInput.addEventListener('input', function () { onUpdate(parseInt(qtyInput.value) || 0); });
-                qtyInput.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === 'Escape') qtyInput.blur(); });
+                qtyInput.addEventListener('input', function () {
+                    onUpdate(parseInt(qtyInput.value) || 0);
+                });
+                qtyInput.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === 'Escape') qtyInput.blur();
+                });
                 cell.appendChild(qtyInput);
             }
             return cell;
@@ -250,49 +268,57 @@
 
         if (attr.type === 'number') {
             if (isPlayMode) {
-                var numSpan = document.createElement('span');
+                const numSpan = document.createElement('span');
                 numSpan.className = 'list-attr-number-display';
                 numSpan.textContent = value != null ? value : 0;
                 cell.appendChild(numSpan);
             } else {
-                var numInput = document.createElement('input');
+                const numInput = document.createElement('input');
                 numInput.type = 'number';
                 numInput.className = 'list-attr-number-input';
                 numInput.value = value != null ? value : 0;
-                numInput.addEventListener('input', function () { onUpdate(parseFloat(numInput.value) || 0); });
-                numInput.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === 'Escape') numInput.blur(); });
+                numInput.addEventListener('input', function () {
+                    onUpdate(parseFloat(numInput.value) || 0);
+                });
+                numInput.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === 'Escape') numInput.blur();
+                });
                 cell.appendChild(numInput);
             }
             return cell;
         }
 
         if (attr.type === 'number-pair') {
-            var pairCur = value && value.current != null ? value.current : 0;
-            var pairMax = value && value.max != null ? value.max : 0;
+            const pairCur = value && value.current != null ? value.current : 0;
+            const pairMax = value && value.max != null ? value.max : 0;
             if (isPlayMode) {
-                var pairSpan = document.createElement('span');
+                const pairSpan = document.createElement('span');
                 pairSpan.className = 'list-attr-pair-display';
                 pairSpan.textContent = pairCur + ' / ' + pairMax;
                 cell.appendChild(pairSpan);
             } else {
-                var curInput = document.createElement('input');
+                const curInput = document.createElement('input');
                 curInput.type = 'number';
                 curInput.className = 'list-attr-pair-input';
                 curInput.value = pairCur;
-                var pairSep = document.createElement('span');
+                const pairSep = document.createElement('span');
                 pairSep.className = 'list-attr-pair-sep';
                 pairSep.textContent = '/';
-                var maxInput = document.createElement('input');
+                const maxInput = document.createElement('input');
                 maxInput.type = 'number';
                 maxInput.className = 'list-attr-pair-input';
                 maxInput.value = pairMax;
-                var updatePair = function () {
+                const updatePair = function () {
                     onUpdate({ current: parseFloat(curInput.value) || 0, max: parseFloat(maxInput.value) || 0 });
                 };
                 curInput.addEventListener('input', updatePair);
                 maxInput.addEventListener('input', updatePair);
-                curInput.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === 'Escape') curInput.blur(); });
-                maxInput.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === 'Escape') maxInput.blur(); });
+                curInput.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === 'Escape') curInput.blur();
+                });
+                maxInput.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === 'Escape') maxInput.blur();
+                });
                 cell.appendChild(curInput);
                 cell.appendChild(pairSep);
                 cell.appendChild(maxInput);
@@ -301,23 +327,25 @@
         }
 
         if (attr.type === 'dropdown') {
-            var opts = attr.options || [];
+            const opts = attr.options || [];
             if (isPlayMode) {
-                var dropSpan = document.createElement('span');
+                const dropSpan = document.createElement('span');
                 dropSpan.className = 'list-attr-dropdown-display';
-                dropSpan.textContent = value != null ? value : (opts[0] || '');
+                dropSpan.textContent = value != null ? value : opts[0] || '';
                 cell.appendChild(dropSpan);
             } else {
-                var sel = document.createElement('select');
+                const sel = document.createElement('select');
                 sel.className = 'list-attr-dropdown-select';
                 opts.forEach(function (opt) {
-                    var option = document.createElement('option');
+                    const option = document.createElement('option');
                     option.value = opt;
                     option.textContent = opt;
                     if (opt === value) option.selected = true;
                     sel.appendChild(option);
                 });
-                sel.addEventListener('change', function () { onUpdate(sel.value); });
+                sel.addEventListener('change', function () {
+                    onUpdate(sel.value);
+                });
                 cell.appendChild(sel);
             }
             return cell;
@@ -325,17 +353,21 @@
 
         // text
         if (isPlayMode) {
-            var txtSpan = document.createElement('span');
+            const txtSpan = document.createElement('span');
             txtSpan.className = 'list-attr-text-display';
             txtSpan.textContent = value != null ? value : '';
             cell.appendChild(txtSpan);
         } else {
-            var txtInput = document.createElement('input');
+            const txtInput = document.createElement('input');
             txtInput.type = 'text';
             txtInput.className = 'list-attr-text-input';
             txtInput.value = value != null ? value : '';
-            txtInput.addEventListener('input', function () { onUpdate(txtInput.value); });
-            txtInput.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === 'Escape') txtInput.blur(); });
+            txtInput.addEventListener('input', function () {
+                onUpdate(txtInput.value);
+            });
+            txtInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === 'Escape') txtInput.blur();
+            });
             cell.appendChild(txtInput);
         }
         return cell;
@@ -343,33 +375,35 @@
 
     // ── Column Headers ──
     function renderColumnHeaders(content, bodyEl, data, isPlayMode, isSorted) {
-        var pinnedAttrs = content.attributes.filter(function (a) { return a.pinned; });
+        const pinnedAttrs = content.attributes.filter(function (a) {
+            return a.pinned;
+        });
 
-        var headerRow = document.createElement('div');
+        const headerRow = document.createElement('div');
         headerRow.className = 'list-header-row' + (!isPlayMode && !isSorted ? ' cols-draggable' : '');
 
         // Handle spacer — matches drag handle width when handles are visible
         if (!isPlayMode && !isSorted) {
-            var handleSpacer = document.createElement('div');
+            const handleSpacer = document.createElement('div');
             handleSpacer.className = 'list-col-handle-spacer';
             headerRow.appendChild(handleSpacer);
         }
 
         // Name column header — sortable (alphabetical)
-        var nameIsActive = content.sortBy === '__name__';
-        var nameHeader = document.createElement('div');
+        const nameIsActive = content.sortBy === '__name__';
+        const nameHeader = document.createElement('div');
         nameHeader.className = 'list-col-header list-col-name' + (nameIsActive ? ' active-sort' : '');
-        nameHeader.title = escapeHtml(nameIsActive
-            ? (content.sortDir === 'asc' ? t('list.sortDesc') : t('list.sortManual'))
-            : t('list.sortAsc'));
+        nameHeader.title = escapeHtml(
+            nameIsActive ? (content.sortDir === 'asc' ? t('list.sortDesc') : t('list.sortManual')) : t('list.sortAsc')
+        );
 
-        var nameLabel = document.createElement('span');
+        const nameLabel = document.createElement('span');
         nameLabel.className = 'list-col-header-label';
         nameLabel.textContent = t('list.colName');
         nameHeader.appendChild(nameLabel);
 
         if (nameIsActive) {
-            var nameIndicator = document.createElement('span');
+            const nameIndicator = document.createElement('span');
             nameIndicator.className = 'list-sort-indicator';
             nameIndicator.innerHTML = content.sortDir === 'asc' ? CV_SVG_SORT_UP : CV_SVG_SORT_DOWN;
             nameHeader.appendChild(nameIndicator);
@@ -395,21 +429,21 @@
 
         // One column per pinned attribute
         pinnedAttrs.forEach(function (attr) {
-            var isActive = content.sortBy === attr.id;
-            var colHeader = document.createElement('div');
+            const isActive = content.sortBy === attr.id;
+            const colHeader = document.createElement('div');
             colHeader.className = 'list-col-header list-col-attr' + (isActive ? ' active-sort' : '');
             colHeader.dataset.attrId = attr.id;
-            colHeader.title = escapeHtml(isActive
-                ? (content.sortDir === 'asc' ? t('list.sortDesc') : t('list.sortManual'))
-                : t('list.sortAsc'));
+            colHeader.title = escapeHtml(
+                isActive ? (content.sortDir === 'asc' ? t('list.sortDesc') : t('list.sortManual')) : t('list.sortAsc')
+            );
 
-            var label = document.createElement('span');
+            const label = document.createElement('span');
             label.className = 'list-col-header-label';
             label.textContent = attr.name;
             colHeader.appendChild(label);
 
             if (isActive) {
-                var indicator = document.createElement('span');
+                const indicator = document.createElement('span');
                 indicator.className = 'list-sort-indicator';
                 indicator.innerHTML = content.sortDir === 'asc' ? CV_SVG_SORT_UP : CV_SVG_SORT_DOWN;
                 colHeader.appendChild(indicator);
@@ -435,7 +469,7 @@
         });
 
         // Actions spacer — matches delete/expand button width
-        var actionsSpacer = document.createElement('div');
+        const actionsSpacer = document.createElement('div');
         actionsSpacer.className = 'list-col-header list-col-actions';
         headerRow.appendChild(actionsSpacer);
 
@@ -447,7 +481,7 @@
     function getModuleDataFromContainer(container) {
         const moduleEl = container.closest('.module');
         if (!moduleEl) return null;
-        return window.modules.find(m => m.id === moduleEl.dataset.id) || null;
+        return window.modules.find((m) => m.id === moduleEl.dataset.id) || null;
     }
 
     function transferItem(itemId, sourceData, targetData) {
@@ -455,7 +489,7 @@
         const tgtContent = ensureContent(targetData);
 
         // Find and remove item from source
-        const itemIdx = srcContent.items.findIndex(i => i.id === itemId);
+        const itemIdx = srcContent.items.findIndex((i) => i.id === itemId);
         if (itemIdx === -1) return false;
         const item = srcContent.items.splice(itemIdx, 1)[0];
 
@@ -463,9 +497,9 @@
         const attrMapping = {};
 
         // Merge attributes: Match by name + type
-        srcContent.attributes.forEach(srcAttr => {
-            const exists = tgtContent.attributes.find(a => a.name === srcAttr.name && a.type === srcAttr.type);
-            
+        srcContent.attributes.forEach((srcAttr) => {
+            const exists = tgtContent.attributes.find((a) => a.name === srcAttr.name && a.type === srcAttr.type);
+
             if (exists) {
                 // Feature exists, map source ID to existing target ID
                 attrMapping[srcAttr.id] = exists.id;
@@ -474,9 +508,9 @@
                 const clonedAttr = JSON.parse(JSON.stringify(srcAttr));
                 tgtContent.attributes.push(clonedAttr);
                 attrMapping[srcAttr.id] = clonedAttr.id;
-                
+
                 // Give existing target items the default value for this new attribute
-                tgtContent.items.forEach(tgtItem => {
+                tgtContent.items.forEach((tgtItem) => {
                     if (!tgtItem.values) tgtItem.values = {};
                     tgtItem.values[clonedAttr.id] = clonedAttr.defaultValue;
                 });
@@ -486,7 +520,7 @@
         // Re-key the transferred item's values to use target attribute IDs
         const newValues = {};
         if (item.values) {
-            Object.keys(item.values).forEach(oldId => {
+            Object.keys(item.values).forEach((oldId) => {
                 if (attrMapping[oldId]) {
                     newValues[attrMapping[oldId]] = item.values[oldId];
                 }
@@ -495,7 +529,7 @@
         item.values = newValues;
 
         // Fill any target attributes the item is missing
-        tgtContent.attributes.forEach(tgtAttr => {
+        tgtContent.attributes.forEach((tgtAttr) => {
             if (!(tgtAttr.id in item.values)) {
                 item.values[tgtAttr.id] = tgtAttr.defaultValue;
             }
@@ -521,7 +555,7 @@
 
             onStart(evt) {
                 // Highlight all other list modules as potential drop targets
-                document.querySelectorAll('.module[data-type="list"]').forEach(mod => {
+                document.querySelectorAll('.module[data-type="list"]').forEach((mod) => {
                     if (!mod.contains(evt.from)) {
                         mod.classList.add('list-drop-target');
                     }
@@ -530,7 +564,7 @@
 
             onEnd(evt) {
                 // Remove all drop-target highlights
-                document.querySelectorAll('.module.list-drop-target').forEach(mod => {
+                document.querySelectorAll('.module.list-drop-target').forEach((mod) => {
                     mod.classList.remove('list-drop-target');
                 });
 
@@ -538,7 +572,7 @@
                 if (evt.from === evt.to) {
                     const rows = Array.from(container.querySelectorAll('.list-item-row'));
                     const reordered = rows
-                        .map(el => content.items.find(i => i.id === el.dataset.itemId))
+                        .map((el) => content.items.find((i) => i.id === el.dataset.itemId))
                         .filter(Boolean);
                     content.items = reordered;
                     scheduleSave();
@@ -573,7 +607,7 @@
                 }
 
                 scheduleSave();
-            }
+            },
         });
     }
 
@@ -585,18 +619,23 @@
             animation: 150,
             ghostClass: 'list-col-ghost',
             onEnd: function () {
-                var newPinnedIds = Array.from(headerRow.querySelectorAll('.list-col-attr'))
-                    .map(function (el) { return el.dataset.attrId; });
-                var pinnedInNewOrder = newPinnedIds
-                    .map(function (id) { return content.attributes.find(function (a) { return a.id === id; }); })
+                const newPinnedIds = Array.from(headerRow.querySelectorAll('.list-col-attr')).map(function (el) {
+                    return el.dataset.attrId;
+                });
+                const pinnedInNewOrder = newPinnedIds
+                    .map(function (id) {
+                        return content.attributes.find(function (a) {
+                            return a.id === id;
+                        });
+                    })
                     .filter(Boolean);
-                var pinnedIdx = 0;
+                let pinnedIdx = 0;
                 content.attributes = content.attributes.map(function (a) {
                     return a.pinned ? pinnedInNewOrder[pinnedIdx++] : a;
                 });
                 scheduleSave();
                 renderListBody(bodyEl, data, false);
-            }
+            },
         });
     }
 
@@ -622,7 +661,7 @@
             return;
         }
 
-        const pinnedAttrs = content.attributes.filter(a => a.pinned);
+        const pinnedAttrs = content.attributes.filter((a) => a.pinned);
         const isSorted = content.sortBy !== null;
         const sortedItems = getSortedItems(content);
         const hasItems = content.items.length > 0;
@@ -651,7 +690,7 @@
             emptyDiv.textContent = t('list.emptyState');
             container.appendChild(emptyDiv);
         } else {
-            sortedItems.forEach(item => {
+            sortedItems.forEach((item) => {
                 const row = document.createElement('div');
                 row.className = 'list-item-row' + (showHeader ? ' has-columns' : '');
                 row.dataset.itemId = item.id;
@@ -665,8 +704,9 @@
                     row.appendChild(nameSpan);
 
                     // Pinned attribute value cells
-                    pinnedAttrs.forEach(attr => {
-                        const val = (item.values && item.values[attr.id] != null) ? item.values[attr.id] : attr.defaultValue;
+                    pinnedAttrs.forEach((attr) => {
+                        const val =
+                            item.values && item.values[attr.id] != null ? item.values[attr.id] : attr.defaultValue;
                         row.appendChild(renderAttrValue(attr, val, true, item, function () {}));
                     });
 
@@ -674,12 +714,12 @@
                     const expandBtn = document.createElement('button');
                     expandBtn.className = 'list-item-expand-btn';
                     expandBtn.title = escapeHtml(t('list.inspectTitle'));
-                    expandBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>';
-                    expandBtn.addEventListener('click', function() {
+                    expandBtn.innerHTML =
+                        '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>';
+                    expandBtn.addEventListener('click', function () {
                         openItemInspect(moduleEl, data, item.id);
                     });
                     row.appendChild(expandBtn);
-
                 } else {
                     // Drag handle — only when not sorted
                     if (!isSorted) {
@@ -705,8 +745,9 @@
                     row.appendChild(nameInput);
 
                     // Pinned attribute value cells
-                    pinnedAttrs.forEach(attr => {
-                        const val = (item.values && item.values[attr.id] != null) ? item.values[attr.id] : attr.defaultValue;
+                    pinnedAttrs.forEach((attr) => {
+                        const val =
+                            item.values && item.values[attr.id] != null ? item.values[attr.id] : attr.defaultValue;
                         const attrCell = renderAttrValue(attr, val, false, item, function (newVal) {
                             if (!item.values) item.values = {};
                             item.values[attr.id] = newVal;
@@ -719,9 +760,10 @@
                     const deleteBtn = document.createElement('button');
                     deleteBtn.className = 'list-item-delete-btn';
                     deleteBtn.title = escapeHtml(t('list.deleteItem'));
-                    deleteBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+                    deleteBtn.innerHTML =
+                        '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
                     deleteBtn.addEventListener('click', () => {
-                        const idx = content.items.findIndex(i => i.id === item.id);
+                        const idx = content.items.findIndex((i) => i.id === item.id);
                         if (idx !== -1) {
                             content.items.splice(idx, 1);
                             renderListBody(bodyEl, data, false);
@@ -749,7 +791,7 @@
     window.addListItem = function (moduleEl, data) {
         const content = ensureContent(data);
         const values = {};
-        content.attributes.forEach(attr => {
+        content.attributes.forEach((attr) => {
             values[attr.id] = attr.defaultValue;
         });
         content.items.push({
@@ -757,7 +799,7 @@
             name: '',
             notes: '',
             order: content.items.length,
-            values: values
+            values: values,
         });
         const bodyEl = moduleEl.querySelector('.module-body');
         renderListBody(bodyEl, data, false);
@@ -771,23 +813,23 @@
     // ── Manage Attributes Panel ──
 
     function closeManageAttrsPanel(moduleEl, data) {
-        var overlay = document.querySelector('.list-manage-overlay');
+        const overlay = document.querySelector('.list-manage-overlay');
         if (!overlay) return;
         overlay.remove();
         // Re-render list body in edit mode
-        var bodyEl = moduleEl.querySelector('.module-body');
+        const bodyEl = moduleEl.querySelector('.module-body');
         renderListBody(bodyEl, data, false);
         snapModuleHeight(moduleEl, data);
     }
 
     function openManageAttrsPanel(moduleEl, data) {
         closeManageAttrsPanel(moduleEl, data);
-        var content = ensureContent(data);
+        const content = ensureContent(data);
 
-        var overlay = document.createElement('div');
+        const overlay = document.createElement('div');
         overlay.className = 'cv-modal-overlay list-manage-overlay';
 
-        var panel = document.createElement('div');
+        const panel = document.createElement('div');
         panel.className = 'cv-modal-panel list-manage-modal';
 
         renderManagePanelContent(panel, moduleEl, data, content);
@@ -812,12 +854,16 @@
         panel.innerHTML = '';
 
         // ── Header ──
-        var header = document.createElement('div');
+        const header = document.createElement('div');
         header.className = 'cv-modal-header';
         header.innerHTML =
-            '<span class="cv-modal-title">' + escapeHtml(t('list.manageAttrs')) + '</span>' +
-            '<button class="cv-modal-close" title="' + escapeHtml(t('list.close')) + '">' +
-                '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+            '<span class="cv-modal-title">' +
+            escapeHtml(t('list.manageAttrs')) +
+            '</span>' +
+            '<button class="cv-modal-close" title="' +
+            escapeHtml(t('list.close')) +
+            '">' +
+            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
             '</button>';
         header.querySelector('.cv-modal-close').addEventListener('click', function () {
             closeManageAttrsPanel(moduleEl, data);
@@ -825,22 +871,22 @@
         panel.appendChild(header);
 
         // ── Body (scrollable) ──
-        var body = document.createElement('div');
+        const body = document.createElement('div');
         body.className = 'cv-modal-body list-manage-body';
 
         // ── Current Attributes Section ──
         if (content.attributes.length === 0) {
-            var noAttrs = document.createElement('div');
+            const noAttrs = document.createElement('div');
             noAttrs.className = 'list-manage-no-attrs';
             noAttrs.textContent = t('list.noAttrs');
             body.appendChild(noAttrs);
         } else {
             content.attributes.forEach(function (attr) {
-                var row = document.createElement('div');
+                const row = document.createElement('div');
                 row.className = 'list-attr-row';
 
                 // Icon
-                var iconSpan = document.createElement('span');
+                const iconSpan = document.createElement('span');
                 iconSpan.className = 'list-attr-icon';
                 if (attr.icon && LIST_ICON_SVG[attr.icon]) {
                     iconSpan.innerHTML = LIST_ICON_SVG[attr.icon];
@@ -848,19 +894,25 @@
                 row.appendChild(iconSpan);
 
                 // Name
-                var nameSpan = document.createElement('span');
+                const nameSpan = document.createElement('span');
                 nameSpan.className = 'list-attr-name';
                 nameSpan.textContent = attr.name;
                 row.appendChild(nameSpan);
 
                 // Type badge
-                var typeBadge = document.createElement('span');
+                const typeBadge = document.createElement('span');
                 typeBadge.className = 'list-attr-type-badge';
-                typeBadge.textContent = t('list.attrType' + attr.type.charAt(0).toUpperCase() + attr.type.slice(1).replace(/-([a-z])/g, function (m, c) { return c.toUpperCase(); }));
+                typeBadge.textContent = t(
+                    'list.attrType' +
+                        attr.type.charAt(0).toUpperCase() +
+                        attr.type.slice(1).replace(/-([a-z])/g, function (m, c) {
+                            return c.toUpperCase();
+                        })
+                );
                 row.appendChild(typeBadge);
 
                 // Pin toggle
-                var pinBtn = document.createElement('button');
+                const pinBtn = document.createElement('button');
                 pinBtn.className = 'list-attr-pin-btn' + (attr.pinned ? ' pinned' : '');
                 pinBtn.title = escapeHtml(t('list.pinnedLabel'));
                 pinBtn.innerHTML = attr.pinned
@@ -874,13 +926,14 @@
                 row.appendChild(pinBtn);
 
                 // Delete button
-                var deleteBtn = document.createElement('button');
+                const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'list-attr-delete-btn';
                 deleteBtn.title = escapeHtml(t('list.deleteItem'));
-                deleteBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+                deleteBtn.innerHTML =
+                    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
                 deleteBtn.addEventListener('click', function () {
                     showAttrDeleteConfirm(attr.name, function () {
-                        var idx = content.attributes.indexOf(attr);
+                        const idx = content.attributes.indexOf(attr);
                         if (idx !== -1) content.attributes.splice(idx, 1);
                         // Reset sort if the removed attribute was the active sort column
                         if (content.sortBy === attr.id) {
@@ -902,23 +955,27 @@
         }
 
         // ── Add Preset Section ──
-        var usedKeys = content.attributes
-            .filter(function (a) { return a.builtIn; })
-            .map(function (a) { return a.presetKey; });
-        var availablePresets = LIST_ATTR_PRESETS.filter(function (p) {
+        const usedKeys = content.attributes
+            .filter(function (a) {
+                return a.builtIn;
+            })
+            .map(function (a) {
+                return a.presetKey;
+            });
+        const availablePresets = LIST_ATTR_PRESETS.filter(function (p) {
             return usedKeys.indexOf(p.key) === -1;
         });
 
         if (availablePresets.length > 0) {
-            var presetSection = document.createElement('div');
+            const presetSection = document.createElement('div');
             presetSection.className = 'list-manage-section';
 
-            var presetLabel = document.createElement('span');
+            const presetLabel = document.createElement('span');
             presetLabel.className = 'list-manage-section-label';
             presetLabel.textContent = t('list.addPreset');
             presetSection.appendChild(presetLabel);
 
-            var presetGrid = document.createElement('div');
+            const presetGrid = document.createElement('div');
             presetGrid.className = 'list-preset-grid';
 
             availablePresets.sort(function (a, b) {
@@ -926,15 +983,16 @@
             });
 
             availablePresets.forEach(function (preset) {
-                var btn = document.createElement('button');
+                const btn = document.createElement('button');
                 btn.className = 'list-attr-preset-btn';
-                var iconHtml = LIST_ICON_SVG[preset.icon] || '';
+                const iconHtml = LIST_ICON_SVG[preset.icon] || '';
                 btn.innerHTML = iconHtml + '<span>' + escapeHtml(t('list.' + preset.key)) + '</span>';
                 btn.addEventListener('click', function () {
-                    var defaultVal = typeof preset.defaultValue === 'object' && preset.defaultValue !== null
-                        ? JSON.parse(JSON.stringify(preset.defaultValue))
-                        : preset.defaultValue;
-                    var newAttr = {
+                    const defaultVal =
+                        typeof preset.defaultValue === 'object' && preset.defaultValue !== null
+                            ? JSON.parse(JSON.stringify(preset.defaultValue))
+                            : preset.defaultValue;
+                    const newAttr = {
                         id: generateListId('attr'),
                         name: t('list.' + preset.key),
                         type: preset.type,
@@ -942,16 +1000,17 @@
                         defaultValue: defaultVal,
                         pinned: false,
                         builtIn: true,
-                        presetKey: preset.key
+                        presetKey: preset.key,
                     };
                     if (preset.options) newAttr.options = preset.options.slice();
                     content.attributes.push(newAttr);
                     // Set default on all existing items
                     content.items.forEach(function (item) {
                         if (!item.values) item.values = {};
-                        item.values[newAttr.id] = typeof newAttr.defaultValue === 'object' && newAttr.defaultValue !== null
-                            ? JSON.parse(JSON.stringify(newAttr.defaultValue))
-                            : newAttr.defaultValue;
+                        item.values[newAttr.id] =
+                            typeof newAttr.defaultValue === 'object' && newAttr.defaultValue !== null
+                                ? JSON.parse(JSON.stringify(newAttr.defaultValue))
+                                : newAttr.defaultValue;
                     });
                     console.log('[CV] Preset attribute added:', newAttr.name);
                     scheduleSave();
@@ -965,13 +1024,15 @@
         }
 
         // ── Create Custom Button ──
-        var customSection = document.createElement('div');
+        const customSection = document.createElement('div');
         customSection.className = 'list-manage-section';
-        var customBtn = document.createElement('button');
+        const customBtn = document.createElement('button');
         customBtn.className = 'list-custom-btn';
         customBtn.innerHTML =
             '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
-            '<span>' + escapeHtml(t('list.createCustom')) + '</span>';
+            '<span>' +
+            escapeHtml(t('list.createCustom')) +
+            '</span>';
         customBtn.addEventListener('click', function () {
             openAttrWizard(moduleEl, data, content, panel);
         });
@@ -983,42 +1044,43 @@
 
     // ── Attribute Wizard ──
     function openAttrWizard(moduleEl, data, content, panel) {
-        var overlay = document.createElement('div');
+        const overlay = document.createElement('div');
         overlay.className = 'attr-wizard-overlay';
 
-        var wizPanel = document.createElement('div');
+        const wizPanel = document.createElement('div');
         wizPanel.className = 'attr-wizard-panel';
 
         // Header
-        var header = document.createElement('div');
+        const header = document.createElement('div');
         header.className = 'attr-wizard-header';
 
-        var titleEl = document.createElement('span');
+        const titleEl = document.createElement('span');
         titleEl.className = 'attr-wizard-title';
         titleEl.textContent = t('list.attrWizardTitle');
 
-        var closeBtn = document.createElement('button');
+        const closeBtn = document.createElement('button');
         closeBtn.className = 'attr-wizard-close';
         closeBtn.title = escapeHtml(t('list.close'));
-        closeBtn.innerHTML = '<svg class="icon" width="16" height="16" viewBox="0 0 24 24" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeBtn.innerHTML =
+            '<svg class="icon" width="16" height="16" viewBox="0 0 24 24" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
 
         header.appendChild(titleEl);
         header.appendChild(closeBtn);
 
         // Body
-        var body = document.createElement('div');
+        const body = document.createElement('div');
         body.className = 'attr-wizard-body';
 
         // -- Name section --
-        var nameSection = document.createElement('div');
+        const nameSection = document.createElement('div');
         nameSection.className = 'attr-wizard-section';
 
-        var nameLabel = document.createElement('label');
+        const nameLabel = document.createElement('label');
         nameLabel.className = 'attr-wizard-label';
         nameLabel.setAttribute('for', 'attr-wizard-name-input');
         nameLabel.textContent = t('list.attrName');
 
-        var nameInput = document.createElement('input');
+        const nameInput = document.createElement('input');
         nameInput.id = 'attr-wizard-name-input';
         nameInput.className = 'attr-wizard-name-input';
         nameInput.type = 'text';
@@ -1029,66 +1091,70 @@
         nameSection.appendChild(nameInput);
 
         // -- Type section --
-        var typeSection = document.createElement('div');
+        const typeSection = document.createElement('div');
         typeSection.className = 'attr-wizard-section';
 
-        var typeLabel = document.createElement('span');
+        const typeLabel = document.createElement('span');
         typeLabel.className = 'attr-wizard-label';
         typeLabel.textContent = t('list.attrType');
         typeSection.appendChild(typeLabel);
 
-        var typeGrid = document.createElement('div');
+        const typeGrid = document.createElement('div');
         typeGrid.className = 'attr-wizard-type-grid';
 
-        var TYPES = [
+        const TYPES = [
             {
                 key: 'toggle',
-                glyphHtml: '<svg class="icon" width="22" height="13" viewBox="0 0 36 22" stroke-width="2.5"><rect x="1" y="1" width="34" height="20" rx="10"/><circle cx="26" cy="11" r="7" fill="currentColor" stroke="none"/></svg>',
+                glyphHtml:
+                    '<svg class="icon" width="22" height="13" viewBox="0 0 36 22" stroke-width="2.5"><rect x="1" y="1" width="34" height="20" rx="10"/><circle cx="26" cy="11" r="7" fill="currentColor" stroke="none"/></svg>',
                 nameKey: 'list.attrTypeToggle',
-                descKey: 'list.attrTypeToggleDesc'
+                descKey: 'list.attrTypeToggleDesc',
             },
             {
                 key: 'number',
-                glyphHtml: '<span style="font-size:15px;font-weight:700;font-family:Palatino Linotype,Book Antiqua,Palatino,Georgia,serif;">42</span>',
+                glyphHtml:
+                    '<span style="font-size:15px;font-weight:700;font-family:Palatino Linotype,Book Antiqua,Palatino,Georgia,serif;">42</span>',
                 nameKey: 'list.attrTypeNumber',
-                descKey: 'list.attrTypeNumberDesc'
+                descKey: 'list.attrTypeNumberDesc',
             },
             {
                 key: 'number-pair',
-                glyphHtml: '<span style="font-size:12px;font-weight:700;font-family:Palatino Linotype,Book Antiqua,Palatino,Georgia,serif;letter-spacing:-0.02em;">8 / 10</span>',
+                glyphHtml:
+                    '<span style="font-size:12px;font-weight:700;font-family:Palatino Linotype,Book Antiqua,Palatino,Georgia,serif;letter-spacing:-0.02em;">8 / 10</span>',
                 nameKey: 'list.attrTypeNumberPair',
-                descKey: 'list.attrTypeNumberPairDesc'
+                descKey: 'list.attrTypeNumberPairDesc',
             },
             {
                 key: 'text',
-                glyphHtml: '<span style="font-size:15px;font-weight:700;font-family:Palatino Linotype,Book Antiqua,Palatino,Georgia,serif;font-style:italic;">Aa</span>',
+                glyphHtml:
+                    '<span style="font-size:15px;font-weight:700;font-family:Palatino Linotype,Book Antiqua,Palatino,Georgia,serif;font-style:italic;">Aa</span>',
                 nameKey: 'list.attrTypeText',
-                descKey: 'list.attrTypeTextDesc'
+                descKey: 'list.attrTypeTextDesc',
             },
             {
                 key: 'quantity',
                 glyphHtml: '<span style="font-size:16px;font-weight:800;color:var(--cv-accent);">#</span>',
                 nameKey: 'list.attrTypeQuantity',
-                descKey: 'list.attrTypeQuantityDesc'
-            }
+                descKey: 'list.attrTypeQuantityDesc',
+            },
         ];
 
-        var selectedType = 'toggle';
+        let selectedType = 'toggle';
 
         TYPES.forEach(function (typeObj) {
-            var card = document.createElement('button');
+            const card = document.createElement('button');
             card.className = 'attr-wizard-type-card' + (typeObj.key === 'toggle' ? ' selected' : '');
             card.dataset.type = typeObj.key;
 
-            var glyph = document.createElement('div');
+            const glyph = document.createElement('div');
             glyph.className = 'attr-wizard-type-glyph';
             glyph.innerHTML = typeObj.glyphHtml;
 
-            var typeName = document.createElement('span');
+            const typeName = document.createElement('span');
             typeName.className = 'attr-wizard-type-name';
             typeName.textContent = t(typeObj.nameKey);
 
-            var typeDesc = document.createElement('span');
+            const typeDesc = document.createElement('span');
             typeDesc.className = 'attr-wizard-type-desc';
             typeDesc.textContent = t(typeObj.descKey);
 
@@ -1097,7 +1163,9 @@
             card.appendChild(typeDesc);
 
             card.addEventListener('click', function () {
-                typeGrid.querySelectorAll('.attr-wizard-type-card').forEach(function (c) { c.classList.remove('selected'); });
+                typeGrid.querySelectorAll('.attr-wizard-type-card').forEach(function (c) {
+                    c.classList.remove('selected');
+                });
                 card.classList.add('selected');
                 selectedType = typeObj.key;
             });
@@ -1108,21 +1176,25 @@
         typeSection.appendChild(typeGrid);
 
         // -- Icon section --
-        var iconSection = document.createElement('div');
+        const iconSection = document.createElement('div');
         iconSection.className = 'attr-wizard-section';
 
-        var iconLabel = document.createElement('span');
+        const iconLabel = document.createElement('span');
         iconLabel.className = 'attr-wizard-label';
-        iconLabel.innerHTML = escapeHtml(t('list.attrIcon')) + ' <span class="attr-wizard-label-note">— ' + escapeHtml(t('list.attrIconOptional')) + '</span>';
+        iconLabel.innerHTML =
+            escapeHtml(t('list.attrIcon')) +
+            ' <span class="attr-wizard-label-note">— ' +
+            escapeHtml(t('list.attrIconOptional')) +
+            '</span>';
         iconSection.appendChild(iconLabel);
 
-        var iconGrid = document.createElement('div');
+        const iconGrid = document.createElement('div');
         iconGrid.className = 'attr-wizard-icon-grid';
 
-        var selectedIcon = null;
+        let selectedIcon = null;
 
         ATTR_WIZARD_ICONS.forEach(function (ic) {
-            var btn = document.createElement('button');
+            const btn = document.createElement('button');
             btn.className = 'attr-wizard-icon-btn' + (ic.key === null ? ' selected' : '');
             btn.dataset.iconKey = ic.key || '';
             btn.title = ic.label;
@@ -1132,7 +1204,9 @@
                 btn.innerHTML = LIST_ICON_SVG[ic.key] || '';
             }
             btn.addEventListener('click', function () {
-                iconGrid.querySelectorAll('.attr-wizard-icon-btn').forEach(function (b) { b.classList.remove('selected'); });
+                iconGrid.querySelectorAll('.attr-wizard-icon-btn').forEach(function (b) {
+                    b.classList.remove('selected');
+                });
                 btn.classList.add('selected');
                 selectedIcon = ic.key;
             });
@@ -1146,14 +1220,14 @@
         body.appendChild(iconSection);
 
         // Footer
-        var footer = document.createElement('div');
+        const footer = document.createElement('div');
         footer.className = 'attr-wizard-footer';
 
-        var cancelBtn = document.createElement('button');
+        const cancelBtn = document.createElement('button');
         cancelBtn.className = 'attr-wizard-btn-cancel btn-secondary';
         cancelBtn.textContent = t('delete.cancel');
 
-        var createBtn = document.createElement('button');
+        const createBtn = document.createElement('button');
         createBtn.className = 'attr-wizard-btn-create btn-primary solid';
         createBtn.textContent = t('list.attrWizardCreate');
         createBtn.disabled = true;
@@ -1185,35 +1259,47 @@
         document.addEventListener('keydown', onKeyDown);
 
         createBtn.addEventListener('click', function () {
-            var name = nameInput.value.trim();
+            const name = nameInput.value.trim();
             if (!name) return;
 
-            var defaultValue;
+            let defaultValue;
             switch (selectedType) {
-                case 'toggle':      defaultValue = false; break;
-                case 'number':      defaultValue = 0; break;
-                case 'quantity':    defaultValue = 1; break;
-                case 'number-pair': defaultValue = { current: 0, max: 0 }; break;
-                case 'text':        defaultValue = ''; break;
-                default:            defaultValue = null;
+                case 'toggle':
+                    defaultValue = false;
+                    break;
+                case 'number':
+                    defaultValue = 0;
+                    break;
+                case 'quantity':
+                    defaultValue = 1;
+                    break;
+                case 'number-pair':
+                    defaultValue = { current: 0, max: 0 };
+                    break;
+                case 'text':
+                    defaultValue = '';
+                    break;
+                default:
+                    defaultValue = null;
             }
 
-            var newAttr = {
+            const newAttr = {
                 id: generateListId('attr'),
                 name: name,
                 type: selectedType,
                 icon: selectedIcon,
                 defaultValue: defaultValue,
                 pinned: false,
-                builtIn: false
+                builtIn: false,
             };
 
             content.attributes.push(newAttr);
             content.items.forEach(function (item) {
                 if (!item.values) item.values = {};
-                item.values[newAttr.id] = typeof defaultValue === 'object' && defaultValue !== null
-                    ? JSON.parse(JSON.stringify(defaultValue))
-                    : defaultValue;
+                item.values[newAttr.id] =
+                    typeof defaultValue === 'object' && defaultValue !== null
+                        ? JSON.parse(JSON.stringify(defaultValue))
+                        : defaultValue;
             });
 
             console.log('[CV] Custom attribute created:', newAttr.name);
@@ -1240,18 +1326,18 @@
             // Check dirty state
             const currentItemJson = JSON.stringify(ctx.itemOriginal);
             const editedItemJson = JSON.stringify(ctx.itemProxy);
-            
+
             if (currentItemJson !== editedItemJson) {
                 if (!confirm(t('list.discardPrompt'))) return;
             }
         } else {
             // Save: update original object
             const content = ensureContent(ctx.data);
-            const realItemIdx = content.items.findIndex(i => i.id === ctx.itemProxy.id);
+            const realItemIdx = content.items.findIndex((i) => i.id === ctx.itemProxy.id);
             if (realItemIdx !== -1) {
                 content.items[realItemIdx] = JSON.parse(JSON.stringify(ctx.itemProxy));
                 scheduleSave();
-                
+
                 // Re-render
                 const bodyEl = ctx.moduleEl.querySelector('.module-body');
                 if (bodyEl) {
@@ -1270,7 +1356,7 @@
 
     function openItemInspect(moduleEl, data, itemId) {
         const content = ensureContent(data);
-        const itemOriginal = content.items.find(i => i.id === itemId);
+        const itemOriginal = content.items.find((i) => i.id === itemId);
         if (!itemOriginal) return;
 
         // Clone for edit
@@ -1283,7 +1369,7 @@
             itemProxy: itemProxy,
             onKeyDown: function (e) {
                 if (e.key === 'Escape') closeItemInspect(true);
-            }
+            },
         };
 
         const overlay = document.getElementById('list-inspect-overlay');
@@ -1293,16 +1379,19 @@
         // Header
         const header = document.createElement('div');
         header.className = 'list-inspect-header';
-        
+
         const title = document.createElement('span');
         title.className = 'list-inspect-title';
         title.textContent = t('list.inspectTitle');
-        
+
         const closeXBtn = document.createElement('button');
         closeXBtn.className = 'list-inspect-close-x';
-        closeXBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeXBtn.innerHTML =
+            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
         closeXBtn.title = t('list.close');
-        closeXBtn.addEventListener('click', function() { closeItemInspect(true); });
+        closeXBtn.addEventListener('click', function () {
+            closeItemInspect(true);
+        });
 
         header.appendChild(title);
         header.appendChild(closeXBtn);
@@ -1314,18 +1403,20 @@
         // Name field
         const nameField = document.createElement('div');
         nameField.className = 'list-inspect-field';
-        
+
         const nameLabel = document.createElement('label');
         nameLabel.className = 'list-inspect-label';
         nameLabel.textContent = t('list.colName');
-        
+
         const nameInput = document.createElement('input');
         nameInput.className = 'list-inspect-name-input';
         nameInput.type = 'text';
         nameInput.value = itemProxy.name || '';
         nameInput.placeholder = t('list.itemName');
-        nameInput.addEventListener('input', function() { itemProxy.name = nameInput.value; });
-        
+        nameInput.addEventListener('input', function () {
+            itemProxy.name = nameInput.value;
+        });
+
         nameField.appendChild(nameLabel);
         nameField.appendChild(nameInput);
         body.appendChild(nameField);
@@ -1333,17 +1424,19 @@
         // Notes field
         const notesField = document.createElement('div');
         notesField.className = 'list-inspect-field';
-        
+
         const notesLabel = document.createElement('label');
         notesLabel.className = 'list-inspect-label';
         notesLabel.textContent = t('list.notesTitle');
-        
+
         const notesInput = document.createElement('textarea');
         notesInput.className = 'list-inspect-notes-input';
         notesInput.value = itemProxy.notes || '';
         notesInput.placeholder = t('list.notesPlaceholder');
-        notesInput.addEventListener('input', function() { itemProxy.notes = notesInput.value; });
-        
+        notesInput.addEventListener('input', function () {
+            itemProxy.notes = notesInput.value;
+        });
+
         notesField.appendChild(notesLabel);
         notesField.appendChild(notesInput);
         body.appendChild(notesField);
@@ -1352,33 +1445,36 @@
         if (content.attributes.length > 0) {
             const attrGrid = document.createElement('div');
             attrGrid.className = 'list-inspect-attr-grid';
-            
-            content.attributes.forEach(attr => {
+
+            content.attributes.forEach((attr) => {
                 const attrItem = document.createElement('div');
                 attrItem.className = 'list-inspect-attr-item';
-                
+
                 const attrLabel = document.createElement('div');
                 attrLabel.className = 'list-inspect-attr-label';
-                
+
                 if (attr.icon && LIST_ICON_SVG[attr.icon]) {
                     const iconSpan = document.createElement('span');
                     iconSpan.innerHTML = LIST_ICON_SVG[attr.icon];
                     attrLabel.appendChild(iconSpan.firstChild);
                 }
-                
+
                 const attrNameSpan = document.createElement('span');
                 attrNameSpan.textContent = attr.name;
                 attrLabel.appendChild(attrNameSpan);
-                
+
                 attrItem.appendChild(attrLabel);
 
-                const val = (itemProxy.values && itemProxy.values[attr.id] != null) ? itemProxy.values[attr.id] : attr.defaultValue;
+                const val =
+                    itemProxy.values && itemProxy.values[attr.id] != null
+                        ? itemProxy.values[attr.id]
+                        : attr.defaultValue;
                 const attrCell = renderAttrValue(attr, val, false, itemProxy, function (newVal) {
                     if (!itemProxy.values) itemProxy.values = {};
                     itemProxy.values[attr.id] = newVal;
                 });
                 attrItem.appendChild(attrCell);
-                
+
                 attrGrid.appendChild(attrItem);
             });
             body.appendChild(attrGrid);
@@ -1387,14 +1483,14 @@
         // Actions (Footer)
         const actions = document.createElement('div');
         actions.className = 'list-inspect-actions';
-        
+
         const delBtn = document.createElement('button');
         delBtn.className = 'list-inspect-btn-delete';
         delBtn.textContent = t('list.delete');
-        delBtn.addEventListener('click', function() {
-            showAttrDeleteConfirm(itemProxy.name || t('list.itemName'), function() {
+        delBtn.addEventListener('click', function () {
+            showAttrDeleteConfirm(itemProxy.name || t('list.itemName'), function () {
                 // Remove item from real payload
-                const idx = content.items.findIndex(i => i.id === itemProxy.id);
+                const idx = content.items.findIndex((i) => i.id === itemProxy.id);
                 if (idx !== -1) {
                     content.items.splice(idx, 1);
                     scheduleSave();
@@ -1410,17 +1506,21 @@
                 overlay.setAttribute('aria-hidden', 'true');
             });
         });
-        
+
         const closeBtn = document.createElement('button');
         closeBtn.className = 'list-inspect-btn-close';
         closeBtn.textContent = t('list.close');
-        closeBtn.addEventListener('click', function() { closeItemInspect(true); });
-        
+        closeBtn.addEventListener('click', function () {
+            closeItemInspect(true);
+        });
+
         const saveBtn = document.createElement('button');
         saveBtn.className = 'list-inspect-btn-save';
         saveBtn.textContent = t('list.save');
-        saveBtn.addEventListener('click', function() { closeItemInspect(false); });
-        
+        saveBtn.addEventListener('click', function () {
+            closeItemInspect(false);
+        });
+
         actions.appendChild(delBtn);
         actions.appendChild(closeBtn);
         actions.appendChild(saveBtn);
@@ -1434,7 +1534,7 @@
         document.addEventListener('keydown', activeInspectContext.onKeyDown);
         overlay.classList.add('open');
         overlay.setAttribute('aria-hidden', 'false');
-        
+
         // Focus name
         setTimeout(() => nameInput.focus(), 100);
     }
@@ -1461,13 +1561,13 @@
 
         syncState(moduleEl, data) {
             const content = ensureContent(data);
-            moduleEl.querySelectorAll('.list-item-row').forEach(row => {
-                const item = content.items.find(i => i.id === row.dataset.itemId);
+            moduleEl.querySelectorAll('.list-item-row').forEach((row) => {
+                const item = content.items.find((i) => i.id === row.dataset.itemId);
                 if (!item) return;
                 const nameInput = row.querySelector('.list-item-name-input');
                 if (nameInput) item.name = nameInput.value;
             });
-        }
+        },
     });
 
     console.log('[CV] List module registered');

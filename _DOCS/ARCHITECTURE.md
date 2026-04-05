@@ -21,6 +21,7 @@
 | `scripts/module-stat.js` | Stat module type registration + helpers (render, edit, quick-edit, dice rolling) |
 | `scripts/module-hr.js` | Horizontal Line module type registration |
 | `scripts/module-resistance.js` | Resistance module type registration + helpers (settings panel, staging area, creation wizard, drag-to-assign) |
+| `scripts/module-savingthrow.js` | Saving Throw module type registration + helpers (render blocks, edit blocks, sortable, quick-edit, dice rolling, notes area, settings modal, custom tier editor) |
 | `scripts/module-condition.js` | Condition module type registration + helpers (settings panel, staging area, game system templates, cascading sub-conditions, custom wizard) |
 | `scripts/app.js` | Startup: applies translations, triggers auto-load |
 
@@ -31,7 +32,7 @@ There is no build step. Everything ships as-is to TaleSpire's embedded Chromium.
 Scripts are loaded via plain `<script src>` tags (no `async`/`defer`) in `main.html`, which guarantees sequential execution. The order matters because later scripts depend on globals defined by earlier ones:
 
 ```
-translations.js → shared.js → i18n.js → theme.js → settings.js → persistence.js → module-core.js → module-condition.js → module-counters.js → module-text.js → module-abilities.js → module-stat.js → module-health.js → module-hr.js → module-spacer.js → module-resistance.js → module-list.js → app.js
+translations.js → shared.js → i18n.js → theme.js → settings.js → persistence.js → module-core.js → module-condition.js → module-counters.js → module-text.js → module-abilities.js → module-stat.js → module-health.js → module-hr.js → module-spacer.js → module-resistance.js → module-savingthrow.js → module-list.js → app.js
 ```
 
 ## External Dependencies (CDN)
@@ -75,6 +76,7 @@ All JS lives in `scripts/` as separate files loaded by `main.html` in dependency
 | **module-stat.js** | `formatModifier(mod)`, `renderStatBlock()`, `renderStatBlockEdit()`, `reRenderStatEdits()`, `initStatSortable()`, `rollStatCheck(stat)`, `enterQuickEdit()`, `registerModuleType('stat', ...)` — stat blocks with values/modifiers, play mode dice rolling, edit mode inputs, layout toggle (large-stat / large-modifier) |
 | **module-hr.js** | `registerModuleType('hline', ...)` — simple `<hr>` divider, header hidden in play mode |
 | **module-resistance.js** | `registerModuleType('resistance', ...)` — drag-to-assign resistance/immunity/weakness columns; `openResSettingsPanel()`, `openResWizard()`, SortableJS staging area, value prompts, layout toggle |
+| **module-savingthrow.js** | `applySavingThrowTemplate(key)`, `applyTierPreset(key)`, `formatModifier(n)`, `renderSaveBlock()`, `renderSaveBlockEdit()`, `reRenderSaveEdits()`, `initSaveSortable()`, `rollSavingThrow()`, `enterSaveQuickEdit()`, `renderNotesArea()`, `openSaveSettings()`, `openCustomTierEditor()`, `registerModuleType('savingthrow', ...)` |
 | **module-condition.js** | `registerModuleType('condition', ...)` — game system template conditions with toggle/value types; `openCondSettingsPanel()`, `openCondWizard()`, SortableJS staging area, cascading sub-conditions, expand modal, template switching |
 | **app.js** | Startup: `applyTranslations()`, `refreshModuleLabels()`, auto-load check (`chkAutoLoad` + `TS` availability → `loadCharacter()`) |
 
@@ -102,6 +104,7 @@ Sections are delimited by `/* ── Name ── */` comment headers.
 | **Module Resize & Drag** | `.module-resize-handle`, `.module-resizing`, `.module-ghost`, `.module-dragging`, `.module-drag-active` |
 | **Abilities Module** | `.ability-container`, `.ability-row`, `.ability-rollable`, `.ability-proficiency-dot`, `.ability-name`, `.ability-modifier`, `.ability-edit-row`, `.ability-drag-handle`, `.ability-edit-name`, `.ability-edit-modifier`, `.ability-edit-proficiency-label`, `.ability-edit-delete`, `.ability-empty-state`, `.ability-ghost`, `.ability-settings-select` |
 | **Stat Module** | `.stat-container`, `.stat-block`, `.stat-rollable`, `.stat-name`, `.stat-primary`, `.stat-secondary`, `.stat-proficiency-dot`, `.stat-block-edit`, edit inputs/toggles, `.stat-add-btn`, `.stat-quick-input`, `.stat-ghost`, wizard layout buttons (`.wizard-stat-layout`, `.wizard-layout-btn`) |
+| **Saving Throws Module** | `.save-container`, `.save-block`, `.save-rollable`, `.save-name`, `.save-modifier`, `.save-tier-badge`, `.save-block-edit`, `.save-edit-name-row`, `.save-drag-handle`, `.save-edit-name`, `.save-edit-value`, `.save-edit-tier`, `.save-quick-input`, `.save-ghost`, `.save-notes-area`, `.save-notes-textarea`, `.save-notes-display`, settings modal styles, tier editor styles, XS responsive overrides |
 | **Wizard Overlay** | Full-screen overlay, panel, header, body, type cards grid, color swatches, footer buttons |
 
 ---
@@ -135,7 +138,7 @@ Maps type keys to behavior definitions. Each entry:
   syncState(moduleEl, data) {}                 // optional — sync live DOM state to data before save
 }
 ```
-Currently registered types: `abilities`, `text`, `stat`, `hline`, `health`, `spacer`, `list`, `resistance`, `condition`
+Currently registered types: `abilities`, `text`, `stat`, `hline`, `health`, `spacer`, `list`, `resistance`, `savingthrow`, `condition`
 
 ### Save Blob (JSON schema v1)
 Character sheet persistence format, stored via `TS.localStorage.campaign`:
@@ -190,10 +193,27 @@ When `type === 'resistance'`, the `content` field stores:
 }
 ```
 
+### Saving Throw Module `content` (object)
+When `type === 'savingthrow'`, the `content` field stores:
+```js
+{
+  saves: [
+    { id: 'save_abc', name: 'Strength', value: 3, proficiencyTier: null }
+  ],
+  notes: '',            // optional markdown string
+  tiersEnabled: false,  // whether tier badges are visible
+  tiers: [              // always present; used when tiersEnabled is true
+    { name: 'Untrained', letter: 'U', color: '#888888' },
+    { name: 'Trained',   letter: 'T', color: '#22aa44' }
+  ],
+  tierPreset: 'simple'  // 'simple' | 'dnd5e' | 'pf2e' | 'custom'
+}
+```
+
 ### `wizardState` (object)
 Transient state for the New Module wizard:
 ```js
-{ type: 'text', theme: null, statLayout: 'large-stat', statTemplate: '', abilitiesTemplate: '' }
+{ type: 'text', theme: null, statLayout: 'large-stat', statTemplate: '', abilitiesTemplate: '', savingthrowTemplate: '' }
 ```
 
 ---

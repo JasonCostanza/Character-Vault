@@ -24,7 +24,8 @@ let wizardState = {
     theme: null,
     statLayout: 'large-stat',
     statTemplate: '',
-    abilitiesTemplate: ''
+    abilitiesTemplate: '',
+    savingthrowTemplate: ''
 };
 
 function openWizard() {
@@ -43,7 +44,7 @@ function resetWizard() {
     const firstAvailable = Array.from(wizardTypeCards).find(c => !c.classList.contains('disabled'));
     const defaultType = lastWizardType || (firstAvailable ? firstAvailable.dataset.type : 'text');
 
-    wizardState = { type: defaultType, theme: null, statLayout: 'large-stat', statTemplate: '', abilitiesTemplate: '' };
+    wizardState = { type: defaultType, theme: null, statLayout: 'large-stat', statTemplate: '', abilitiesTemplate: '', savingthrowTemplate: '' };
 
     wizardTypeCards.forEach(card => {
         card.classList.toggle('selected', card.dataset.type === defaultType);
@@ -102,6 +103,23 @@ function resetWizard() {
             }
         }
     }
+
+    const savingthrowTemplateSection = document.getElementById('wizard-savingthrow-template');
+    if (savingthrowTemplateSection) {
+        savingthrowTemplateSection.classList.toggle('visible', defaultType === 'savingthrow');
+        const savingthrowTemplateSelect = document.getElementById('wizard-savingthrow-template-select');
+        if (savingthrowTemplateSelect) {
+            savingthrowTemplateSelect.classList.remove('open');
+            const opts = savingthrowTemplateSelect.querySelectorAll('.cv-select-option');
+            opts.forEach(o => o.classList.remove('selected'));
+            const firstOpt = opts[0];
+            if (firstOpt) {
+                firstOpt.classList.add('selected');
+                const valSpan = savingthrowTemplateSelect.querySelector('.cv-select-value');
+                if (valSpan) valSpan.textContent = firstOpt.textContent;
+            }
+        }
+    }
 }
 
 btnNewModule.addEventListener('click', openWizard);
@@ -138,6 +156,8 @@ wizardTypeCards.forEach(card => {
         if (statTemplateEl) statTemplateEl.classList.toggle('visible', wizardState.type === 'stat');
         const abilitiesTemplateEl = document.getElementById('wizard-abilities-template');
         if (abilitiesTemplateEl) abilitiesTemplateEl.classList.toggle('visible', wizardState.type === 'abilities');
+        const savingthrowTemplateEl = document.getElementById('wizard-savingthrow-template');
+        if (savingthrowTemplateEl) savingthrowTemplateEl.classList.toggle('visible', wizardState.type === 'savingthrow');
     });
 });
 
@@ -208,6 +228,37 @@ if (wizardAbilitiesTemplateSelect) {
     document.addEventListener('click', (e) => {
         if (!wizardAbilitiesTemplateSelect.contains(e.target)) {
             wizardAbilitiesTemplateSelect.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+        }
+    });
+}
+
+// Saving Throw template selection (custom cv-select)
+const wizardSavingthrowTemplateSelect = document.getElementById('wizard-savingthrow-template-select');
+if (wizardSavingthrowTemplateSelect) {
+    const trigger = wizardSavingthrowTemplateSelect.querySelector('.cv-select-trigger');
+    const valueSpan = wizardSavingthrowTemplateSelect.querySelector('.cv-select-value');
+    const options = wizardSavingthrowTemplateSelect.querySelectorAll('.cv-select-option');
+
+    trigger.addEventListener('click', () => {
+        wizardSavingthrowTemplateSelect.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', wizardSavingthrowTemplateSelect.classList.contains('open'));
+    });
+
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            options.forEach(o => o.classList.remove('selected'));
+            option.classList.add('selected');
+            valueSpan.textContent = option.textContent;
+            wizardState.savingthrowTemplate = option.dataset.value;
+            wizardSavingthrowTemplateSelect.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!wizardSavingthrowTemplateSelect.contains(e.target)) {
+            wizardSavingthrowTemplateSelect.classList.remove('open');
             trigger.setAttribute('aria-expanded', 'false');
         }
     });
@@ -339,6 +390,29 @@ btnWizardCreate.addEventListener('click', () => {
         moduleData.content = { template: 'custom', applied: [], staging: [], customConditions: [], sortBy: null, sortDir: 'asc' };
     }
 
+    if (moduleData.type === 'savingthrow') {
+        const tplKey = wizardState.savingthrowTemplate || '';
+        const templateSaves = tplKey ? applySavingThrowTemplate(tplKey) : [];
+        const presetTiers = tplKey && typeof applyTierPreset === 'function' ? applyTierPreset(tplKey) : [];
+        const autoTierPreset = presetTiers.length > 0;
+        moduleData.content = {
+            saves: templateSaves,
+            notes: '',
+            tiersEnabled: autoTierPreset,
+            tiers: autoTierPreset ? presetTiers : applyTierPreset('simple'),
+            tierPreset: autoTierPreset ? tplKey : 'simple'
+        };
+        if (wizardState.savingthrowTemplate && wizardSavingthrowTemplateSelect) {
+            const selectedOption = wizardSavingthrowTemplateSelect.querySelector('.cv-select-option.selected');
+            if (selectedOption && selectedOption.dataset.value) {
+                moduleData.title = selectedOption.textContent.trim() + ' ' + t('type.savingthrow');
+            }
+        }
+        const saveCount = templateSaves.length;
+        moduleData.colSpan = saveCount <= 3 ? 2 : saveCount <= 6 ? 3 : 4;
+        moduleData.rowSpan = null;
+    }
+
     lastWizardType = moduleData.type;
     window.modules.push(moduleData);
     renderModule(moduleData);
@@ -390,6 +464,8 @@ function openOverflowMenu(moduleEl, overflowBtn) {
         { sel: '.module-list-additem-btn', label: t('list.addItem'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' },
         { sel: '.module-list-manage-btn', label: t('list.manageAttrs'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>' },
         { sel: '.module-cond-settings-btn', label: t('cond.moduleSettings'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>' },
+        { sel: '.module-save-add-btn', label: t('save.addSave'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' },
+        { sel: '.module-save-settings-btn', label: t('save.moduleSettings'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>' },
         { sel: '.module-res-settings-btn', label: t('res.moduleSettings'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>' },
         { sel: '.module-res-layout-btn', label: t('res.toggleLayout'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>' },
         { sel: '.module-copy-btn', label: t('module.copyClipboard'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' },
@@ -654,6 +730,8 @@ function renderModule(data) {
             ${data.type === 'abilities' ? `<button class="module-toolbar-btn module-abilities-settings-btn" title="${t('abilities.settings')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'abilities' ? `<button class="module-toolbar-btn module-abilities-add-btn" title="${t('abilities.addAbility')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>` : ''}
             ${data.type === 'condition' ? `<button class="module-toolbar-btn module-cond-settings-btn" title="${t('cond.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
+            ${data.type === 'savingthrow' ? `<button class="module-toolbar-btn module-save-add-btn" title="${t('save.addSave')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>` : ''}
+            ${data.type === 'savingthrow' ? `<button class="module-toolbar-btn module-save-settings-btn" title="${t('save.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'resistance' ? `<button class="module-toolbar-btn module-res-settings-btn" title="${t('res.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'resistance' ? `<button class="module-toolbar-btn module-res-layout-btn" title="${t('res.toggleLayout')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>` : ''}
             ${data.type !== 'hline' && data.type !== 'spacer' ? `<button class="module-toolbar-btn module-theme-btn" title="${t('module.changeTheme')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.37 2.63a2.12 2.12 0 0 1 3 3L14 13l-4 1 1-4 7.37-7.37z"/><path d="M9 3.5a7.5 7.5 0 1 0 5.59 12.5"/><path d="M7.5 16.5c0 1.38-1.12 2.5-2.5 2.5S2.5 19.38 2.5 18c0-2 2.5-3 2.5-3s2.5 1 2.5 3z"/></svg></button>` : ''}
@@ -854,6 +932,27 @@ function renderModule(data) {
         });
     }
 
+    // Add Save button (savingthrow modules only)
+    const saveAddBtn = el.querySelector('.module-save-add-btn');
+    if (saveAddBtn) {
+        saveAddBtn.addEventListener('click', () => {
+            data.content.saves.push({ id: 'save_' + Date.now().toString(36), name: '', value: 0, proficiencyTier: null });
+            const bodyEl = el.querySelector('.module-body');
+            const isPlay = modeToggle.classList.contains('mode-play');
+            typeDef.renderBody(bodyEl, data, isPlay);
+            snapModuleHeight(el, data);
+            scheduleSave();
+        });
+    }
+
+    // Settings button (savingthrow modules only)
+    const saveSettingsBtn = el.querySelector('.module-save-settings-btn');
+    if (saveSettingsBtn) {
+        saveSettingsBtn.addEventListener('click', () => {
+            openSaveSettings(el, data);
+        });
+    }
+
     // Settings button (resistance modules only)
     const resSettingsBtn = el.querySelector('.module-res-settings-btn');
     if (resSettingsBtn) {
@@ -1008,6 +1107,10 @@ function applyPlayMode() {
         if (abilitiesAddBtnPlay) abilitiesAddBtnPlay.style.display = 'none';
         const condSettingsBtnPlay = mod.querySelector('.module-cond-settings-btn');
         if (condSettingsBtnPlay) condSettingsBtnPlay.style.display = 'none';
+        const saveAddBtnPlay = mod.querySelector('.module-save-add-btn');
+        if (saveAddBtnPlay) saveAddBtnPlay.style.display = 'none';
+        const saveSettingsBtnPlay = mod.querySelector('.module-save-settings-btn');
+        if (saveSettingsBtnPlay) saveSettingsBtnPlay.style.display = 'none';
         const resSettingsBtnPlay = mod.querySelector('.module-res-settings-btn');
         if (resSettingsBtnPlay) resSettingsBtnPlay.style.display = 'none';
         const resLayoutBtnPlay = mod.querySelector('.module-res-layout-btn');
@@ -1069,6 +1172,10 @@ function applyEditMode() {
         if (abilitiesAddBtnEdit) abilitiesAddBtnEdit.style.display = '';
         const condSettingsBtnEdit = mod.querySelector('.module-cond-settings-btn');
         if (condSettingsBtnEdit) condSettingsBtnEdit.style.display = '';
+        const saveAddBtnEdit = mod.querySelector('.module-save-add-btn');
+        if (saveAddBtnEdit) saveAddBtnEdit.style.display = '';
+        const saveSettingsBtnEdit = mod.querySelector('.module-save-settings-btn');
+        if (saveSettingsBtnEdit) saveSettingsBtnEdit.style.display = '';
         const resSettingsBtnEdit = mod.querySelector('.module-res-settings-btn');
         if (resSettingsBtnEdit) resSettingsBtnEdit.style.display = '';
         const resLayoutBtnEdit = mod.querySelector('.module-res-layout-btn');

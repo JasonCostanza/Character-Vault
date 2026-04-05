@@ -180,7 +180,8 @@ input,
 textarea,
 select,
 [contenteditable],
-.module-text-display {
+.module-text-display,
+.save-notes-display {
     user-select: text;
 }
 
@@ -1382,36 +1383,51 @@ select,
     word-wrap: break-word;
 }
 
+.save-notes-display {
+    width: 100%;
+    min-width: 0;
+    padding: 8px;
+    font-size: 13px;
+    color: inherit;
+    line-height: 1.5;
+    word-wrap: break-word;
+    box-sizing: border-box;
+}
+
 /* ── Markdown Rendered Content ── */
-.module-text-display h1 { font-size: 1.4em; font-weight: 700; margin: 0.4em 0 0.2em; }
-.module-text-display h2 { font-size: 1.25em; font-weight: 700; margin: 0.4em 0 0.2em; }
-.module-text-display h3 { font-size: 1.1em; font-weight: 600; margin: 0.3em 0 0.15em; }
-.module-text-display h4 { font-size: 1em; font-weight: 600; margin: 0.3em 0 0.15em; }
-.module-text-display h5 { font-size: 0.9em; font-weight: 600; margin: 0.2em 0 0.1em; }
-.module-text-display h6 { font-size: 0.85em; font-weight: 600; margin: 0.2em 0 0.1em; color: var(--cv-text-secondary); }
+.module-text-display h1, .save-notes-display h1 { font-size: 1.4em; font-weight: 700; margin: 0.4em 0 0.2em; }
+.module-text-display h2, .save-notes-display h2 { font-size: 1.25em; font-weight: 700; margin: 0.4em 0 0.2em; }
+.module-text-display h3, .save-notes-display h3 { font-size: 1.1em; font-weight: 600; margin: 0.3em 0 0.15em; }
+.module-text-display h4, .save-notes-display h4 { font-size: 1em; font-weight: 600; margin: 0.3em 0 0.15em; }
+.module-text-display h5, .save-notes-display h5 { font-size: 0.9em; font-weight: 600; margin: 0.2em 0 0.1em; }
+.module-text-display h6, .save-notes-display h6 { font-size: 0.85em; font-weight: 600; margin: 0.2em 0 0.1em; color: var(--cv-text-secondary); }
 
-.module-text-display p { margin: 0.3em 0; }
+.module-text-display p, .save-notes-display p { margin: 0.3em 0; }
 
-.module-text-display a {
+.module-text-display a, .save-notes-display a {
     color: var(--cv-accent);
     text-decoration: underline;
     text-underline-offset: 2px;
 }
-.module-text-display a:hover { color: var(--cv-accent-hover); }
+.module-text-display a:hover, .save-notes-display a:hover { color: var(--cv-accent-hover); }
 
 .module-text-display ul,
-.module-text-display ol {
+.module-text-display ol,
+.save-notes-display ul,
+.save-notes-display ol {
     padding-left: 1.5em;
     margin: 0.3em 0;
 }
-.module-text-display li { margin: 0.1em 0; }
-.module-text-display li:has(> input[type="checkbox"]) {
+.module-text-display li, .save-notes-display li { margin: 0.1em 0; }
+.module-text-display li:has(> input[type="checkbox"]),
+.save-notes-display li:has(> input[type="checkbox"]) {
     list-style: none;
     margin-left: -1.5em;
 }
 
 /* ── Task List Checkboxes ── */
-.module-text-display input[type="checkbox"] {
+.module-text-display input[type="checkbox"],
+.save-notes-display input[type="checkbox"] {
     appearance: none;
     width: 14px;
     height: 14px;
@@ -1423,11 +1439,13 @@ select,
     cursor: pointer;
     position: relative;
 }
-.module-text-display input[type="checkbox"]:checked {
+.module-text-display input[type="checkbox"]:checked,
+.save-notes-display input[type="checkbox"]:checked {
     background: var(--cv-accent);
     border-color: var(--cv-accent);
 }
-.module-text-display input[type="checkbox"]:checked::after {
+.module-text-display input[type="checkbox"]:checked::after,
+.save-notes-display input[type="checkbox"]:checked::after {
     content: '';
     position: absolute;
     left: 3px;
@@ -1439,7 +1457,7 @@ select,
     transform: rotate(45deg);
 }
 
-.module-text-display blockquote {
+.module-text-display blockquote, .save-notes-display blockquote {
     border-left: 3px solid var(--cv-accent);
     background: var(--cv-bg-sunken);
     padding: 0.4em 0.8em;
@@ -1448,7 +1466,7 @@ select,
     color: var(--cv-text-secondary);
 }
 
-.module-text-display code {
+.module-text-display code, .save-notes-display code {
     background: var(--cv-bg-sunken);
     padding: 0.15em 0.4em;
     border-radius: 3px;
@@ -1456,7 +1474,7 @@ select,
     font-size: 0.9em;
 }
 
-.module-text-display pre {
+.module-text-display pre, .save-notes-display pre {
     background: var(--cv-bg-sunken);
     border: 1px solid var(--cv-border-subtle);
     border-radius: 4px;
@@ -1464,42 +1482,44 @@ select,
     margin: 0.4em 0;
     overflow-x: auto;
 }
-.module-text-display pre code {
+.module-text-display pre code, .save-notes-display pre code {
     background: none;
     padding: 0;
     border-radius: 0;
 }
 
-.module-text-display hr {
+.module-text-display hr, .save-notes-display hr {
     border: none;
     border-top: 1px solid var(--cv-border);
     margin: 0.6em 0;
 }
 
-.module-text-display table {
+.module-text-display table, .save-notes-display table {
     border-collapse: collapse;
     width: 100%;
     margin: 0.4em 0;
     font-size: 0.95em;
 }
 .module-text-display th,
-.module-text-display td {
+.module-text-display td,
+.save-notes-display th,
+.save-notes-display td {
     border: 1px solid var(--cv-border);
     padding: 0.3em 0.6em;
     text-align: left;
 }
-.module-text-display th {
+.module-text-display th, .save-notes-display th {
     background: var(--cv-bg-sunken);
     font-weight: 600;
 }
 
-.module-text-display img {
+.module-text-display img, .save-notes-display img {
     max-width: 100%;
     border-radius: 4px;
 }
 
-.module-text-display > :first-child { margin-top: 0; }
-.module-text-display > :last-child { margin-bottom: 0; }
+.module-text-display > :first-child, .save-notes-display > :first-child { margin-top: 0; }
+.module-text-display > :last-child, .save-notes-display > :last-child { margin-bottom: 0; }
 
 /* ── Module Resize Handle ── */
 .module-resize-handle {
@@ -6695,5 +6715,516 @@ select,
 .counter-modal-btn-delete:hover {
     background: var(--cv-danger);
     color: var(--cv-bg-surface);
+}
+
+/* ── Saving Throws Module ── */
+
+.save-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 6px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.save-blocks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 6px;
+    width: 100%;
+    min-width: 0;
+}
+
+/* ── Play Mode Blocks (mirrors .stat-block / .stat-name / .stat-primary) ── */
+
+.save-block {
+    background-color: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    border-radius: 6px;
+    padding: 8px 6px 20px;
+    text-align: center;
+    position: relative;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    user-select: none;
+}
+
+.save-block.save-rollable {
+    cursor: pointer;
+}
+
+.save-block.save-rollable:hover {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 1px var(--cv-focus-ring);
+}
+
+.save-name {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--cv-text-secondary);
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    user-select: none;
+}
+
+.save-modifier {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: inherit;
+    user-select: none;
+}
+
+.save-tier-badge {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+    user-select: none;
+}
+
+/* ── Quick Edit Input (mirrors .stat-quick-input) ── */
+
+.save-quick-input {
+    font-size: 24px;
+    font-weight: 700;
+    font-family: inherit;
+    text-align: center;
+    color: var(--cv-text);
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-accent);
+    border-radius: 3px;
+    outline: none;
+    width: 50px;
+    padding: 0 2px;
+    margin-top: 0;
+    -moz-appearance: textfield;
+}
+
+.save-quick-input::-webkit-inner-spin-button,
+.save-quick-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* ── Edit Mode Blocks (mirrors .stat-block-edit) ── */
+
+.save-block-edit {
+    background-color: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    border-radius: 6px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: relative;
+    cursor: default;
+}
+
+.save-edit-name-row {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.save-drag-handle {
+    color: var(--cv-text-muted);
+    cursor: grab;
+    font-size: 12px;
+    line-height: 1;
+    padding: 0 2px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.save-drag-handle:active {
+    cursor: grabbing;
+}
+
+.save-block-edit:hover .save-drag-handle {
+    opacity: 1;
+}
+
+.save-edit-name {
+    flex: 1;
+    min-width: 0;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: inherit;
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 3px;
+    padding: 2px 3px;
+    outline: none;
+    font-family: inherit;
+    text-align: center;
+}
+
+.save-edit-name:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+.save-edit-delete {
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0;
+    transition: color 0.15s ease, opacity 0.15s ease;
+    opacity: 0;
+    flex-shrink: 0;
+}
+
+.save-block-edit:hover .save-edit-delete {
+    opacity: 1;
+}
+
+.save-edit-delete:hover {
+    color: var(--cv-danger);
+}
+
+.save-edit-delete .icon {
+    width: 12px;
+    height: 12px;
+}
+
+.save-edit-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: stretch;
+}
+
+.save-edit-field {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+}
+
+/* Full-width proficiency select (native select needs row width; modifier field stays centered) */
+.save-edit-field:has(.save-edit-tier) {
+    align-items: stretch;
+}
+
+.save-edit-field label {
+    font-size: 7px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--cv-text-muted);
+    user-select: none;
+}
+
+.save-edit-value {
+    width: 100%;
+    max-width: 52px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    text-align: center;
+    color: inherit;
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 3px;
+    padding: 1px;
+    outline: none;
+    -moz-appearance: textfield;
+}
+
+.save-edit-value::-webkit-inner-spin-button,
+.save-edit-value::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.save-edit-value:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+.save-edit-tier {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 3px;
+    color: inherit;
+    font-family: inherit;
+    font-size: 10px;
+    padding: 1px 4px;
+    cursor: pointer;
+    outline: none;
+}
+
+.save-edit-tier:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+/* ── SortableJS Ghost (mirrors .stat-ghost) ── */
+
+.save-ghost {
+    opacity: 0.3;
+    border: 2px dashed var(--cv-accent) !important;
+    background-color: var(--cv-bg-sunken);
+    box-shadow: none;
+    border-radius: 6px;
+}
+
+/* ── Notes Area ── */
+
+.save-notes-area {
+    width: 100%;
+    min-width: 0;
+    flex-shrink: 0;
+}
+
+.save-notes-textarea {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    user-select: text;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 4px;
+    color: var(--cv-text);
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 6px 8px;
+    resize: none;
+    overflow-y: hidden;
+    min-height: calc(1.5em + 12px);
+    box-sizing: border-box;
+}
+
+.save-notes-textarea:focus {
+    outline: none;
+    border-color: var(--cv-accent);
+}
+
+.save-notes-textarea::-webkit-scrollbar { width: 4px; }
+.save-notes-textarea::-webkit-scrollbar-track { background: transparent; }
+.save-notes-textarea::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
+
+/* ── Settings Modal ── */
+
+.save-settings-row {
+    margin-bottom: 12px;
+}
+
+.save-settings-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--cv-text);
+    cursor: pointer;
+    user-select: none;
+}
+
+.save-settings-preset-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.save-settings-select {
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 4px;
+    color: var(--cv-text);
+    font-family: inherit;
+    font-size: 11px;
+    padding: 4px 8px;
+    cursor: pointer;
+    flex: 1;
+}
+
+.save-settings-select:focus {
+    outline: none;
+    border-color: var(--cv-accent);
+}
+
+.save-settings-edit-btn {
+    font-size: 10px;
+    padding: 4px 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* ── Custom Tier Editor ── */
+
+.save-tier-col-header {
+    display: grid;
+    grid-template-columns: 18px 1fr 36px 1fr 24px;
+    gap: 6px;
+    align-items: center;
+    padding: 0 0 4px;
+    border-bottom: 1px solid var(--cv-border-subtle);
+    margin-bottom: 6px;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-muted);
+    user-select: none;
+}
+
+.save-tier-editor-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.save-tier-row {
+    display: grid;
+    grid-template-columns: 18px 1fr 36px 1fr 24px;
+    gap: 6px;
+    align-items: center;
+    padding: 4px 0;
+}
+
+.save-tier-drag-handle {
+    color: var(--cv-text-muted);
+    cursor: grab;
+    font-size: 14px;
+    text-align: center;
+    user-select: none;
+    opacity: 0.6;
+}
+
+.save-tier-drag-handle:hover {
+    opacity: 1;
+}
+
+.save-tier-name-input,
+.save-tier-letter-input,
+.save-tier-color-hex {
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 4px;
+    color: var(--cv-text);
+    font-family: inherit;
+    font-size: 11px;
+    padding: 4px 6px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.save-tier-letter-input {
+    text-align: center;
+    font-weight: 700;
+}
+
+.save-tier-name-input:focus,
+.save-tier-letter-input:focus,
+.save-tier-color-hex:focus {
+    outline: none;
+    border-color: var(--cv-accent);
+}
+
+.save-tier-color-wrap {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.save-tier-color-picker {
+    width: 28px;
+    height: 24px;
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 4px;
+    padding: 1px;
+    cursor: pointer;
+    background: none;
+    flex-shrink: 0;
+}
+
+.save-tier-delete {
+    background: none;
+    border: none;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.1s ease;
+}
+
+.save-tier-delete:hover {
+    color: var(--cv-danger);
+}
+
+.save-add-tier-btn {
+    margin-top: 10px;
+    width: 100%;
+    font-size: 11px;
+}
+
+/* ── Responsive: Saving Throws XS / SM (mirrors Stat module) ── */
+
+.module[data-size="xs"] .save-blocks-grid {
+    grid-template-columns: 1fr;
+}
+
+.module[data-size="xs"] .save-block {
+    padding: 4px 4px 16px;
+}
+
+.module[data-size="xs"] .save-modifier {
+    font-size: 18px;
+}
+
+.module[data-size="xs"] .save-name {
+    font-size: 8px;
+}
+
+.module[data-size="xs"] .save-edit-name {
+    font-size: 9px;
+}
+
+.module[data-size="xs"] .save-edit-field label {
+    font-size: 7px;
+}
+
+.module[data-size="xs"] .save-edit-value {
+    font-size: 11px;
+}
+
+.module[data-size="sm"] .save-modifier {
+    font-size: 20px;
 }
 

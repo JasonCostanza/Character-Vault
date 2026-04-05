@@ -59,7 +59,7 @@ function toggleCheckboxInMarkdown(data, moduleEl, index, checked) {
         }
         return match;
     });
-    const textarea = moduleEl.querySelector('.module-textarea');
+    const textarea = moduleEl.querySelector('.module-textarea') || moduleEl.querySelector('.save-notes-textarea');
     if (textarea) textarea.value = data.content;
     scheduleSave();
 }

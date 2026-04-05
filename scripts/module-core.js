@@ -873,6 +873,7 @@ function renderModule(data) {
                     const bodyEl = el.querySelector('.module-body');
                     const isPlay = modeToggle.classList.contains('mode-play');
                     typeDef.renderBody(bodyEl, data, isPlay);
+                    snapModuleHeight(el, data);
                     scheduleSave();
                 }
             } catch (e) {
@@ -1076,9 +1077,7 @@ function applyPlayMode() {
     document.querySelectorAll('.module').forEach(mod => {
         const type = mod.dataset.type;
         const data = window.modules.find(m => m.id === mod.dataset.id);
-        if (type && MODULE_TYPES[type]?.onPlayMode) {
-            MODULE_TYPES[type].onPlayMode(mod, data);
-        }
+        // Apply header/toolbar play state first so auto-height modules measure final chrome
         const handle = mod.querySelector('.module-drag-handle');
         if (handle) handle.style.display = 'none';
         const resizeHandle = mod.querySelector('.module-resize-handle');
@@ -1132,6 +1131,9 @@ function applyPlayMode() {
             titleLabel.style.display = '';
             titleInput.style.display = 'none';
         }
+        if (type && MODULE_TYPES[type]?.onPlayMode) {
+            MODULE_TYPES[type].onPlayMode(mod, data);
+        }
         // Re-snap auto-height after mode switch (play blocks are shorter)
         if (data) snapModuleHeight(mod, data);
     });
@@ -1141,9 +1143,7 @@ function applyEditMode() {
     document.querySelectorAll('.module').forEach(mod => {
         const type = mod.dataset.type;
         const data = window.modules.find(m => m.id === mod.dataset.id);
-        if (type && MODULE_TYPES[type]?.onEditMode) {
-            MODULE_TYPES[type].onEditMode(mod, data);
-        }
+        // Apply header/toolbar edit state first so auto-height modules measure final chrome
         const handle = mod.querySelector('.module-drag-handle');
         if (handle) handle.style.display = '';
         const resizeHandle = mod.querySelector('.module-resize-handle');
@@ -1194,6 +1194,9 @@ function applyEditMode() {
         if (titleInput && titleLabel) {
             titleLabel.style.display = 'none';
             titleInput.style.display = '';
+        }
+        if (type && MODULE_TYPES[type]?.onEditMode) {
+            MODULE_TYPES[type].onEditMode(mod, data);
         }
         // Re-snap auto-height after mode switch (edit blocks are taller)
         if (data) snapModuleHeight(mod, data);

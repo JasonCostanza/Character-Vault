@@ -2388,11 +2388,27 @@ select,
 .health-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
     flex: 1;
-    gap: 6px;
     padding: 8px;
+    /* Reduces grid row snap oscillation when toggling edit vs play */
+    min-height: 132px;
+    box-sizing: border-box;
+}
+
+.health-layer {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.health-layer.is-active {
+    display: flex;
 }
 
 /* ── Play Mode: HP Display ── */

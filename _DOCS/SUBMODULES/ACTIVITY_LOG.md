@@ -3,7 +3,7 @@
 ## Activity Log Summary
 The Activity Log module provides a way for users to keep track of various activities and events that occur during their game sessions. Every time a major action is taken (e.g. a character takes damage, casts a spell, uses an item, etc.), the Activity Log will automatically create a new entry with details about that action. This allows users to easily review what has happened during their game sessions and keep a record of important events.
 
-The Activity Log is not designed to be manually edited by the user. The user can only view the log entries, or delete ones that are deemed unecessary, overridden, or invalid for some reason.
+The Activity Log is not designed to be manually edited by the user. The user can only view the log entries, or delete ones that are deemed unecessary, overridden in play, or invalid for some reason.
 
 The events are always sorted chronologically but the user can sort them Newest to Oldest or Oldest to Newest via a button in the module's toolbar or overlay menu.
 
@@ -20,6 +20,10 @@ Within the settings menu the user can:
 - Date format settings (e.g. MM/DD/YYYY, DD/MM/YYYY, YYYY/MM/DD, etc.)
 - Time format settings (e.g. 12-hour with AM/PM, 24-hour, etc.)
 - Enable/Disable automatic log entry creation for specific types of events (e.g. damage taken, spells cast, items used, etc.) with a toggle for each event type in a list.
+- Event Filtering settings (see `# Event Filtering`)
+
+# Event Filtering
+The user can filter the activity log entries by event type (e.g. damage taken, spells cast, items used, etc.) using a themed dropdown selection at the top of the module's view. This allows users to focus on specific types of events when reviewing their activity log. The dropdown includes an "All Events" option to show all log entries regardless of type. When a specific event type is selected, only log entries corresponding to that event type will be displayed in the activity log view. The user can switch between different event types or return to viewing all events at any time using the dropdown selection.
 
 # Open Questions
 Do we need to invent a whole new Activity Log API for modules to communicate events to the Activity Log module?

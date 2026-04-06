@@ -38,14 +38,18 @@ Character Vault is a Swiss-Army Knife of character sheets. It will not automate 
 
 ## Installation
 
-Character Vault is a [TaleSpire Symbiote](https://symbiote.talespire.com/).
+Character Vault is a [TaleSpire Symbiote](https://symbiote-docs.talespire.com/#symbiotes-intro). You can install it through the in-game Symbiote browser or manually:
 
-1. Download or clone this repository
-2. In TaleSpire, open the Symbiote browser
-3. Point it to the folder containing `manifest.json`
-4. Character Vault will appear in your Symbiote list
+### Manual Installation
 
-No build step required -- everything runs as vanilla HTML/CSS/JS in TaleSpire's embedded browser.
+Place the following into `%userprofile%\LocalLow\BouncyRock Entertainment\TaleSpire\Symbiotes\Character Vault`:
+
+- `scripts/` folder and its contents
+- `main.html`
+- `main.css`
+- `manifest.json`
+
+No build step required -- everything runs as vanilla HTML/CSS/JS.
 
 ## Themes
 

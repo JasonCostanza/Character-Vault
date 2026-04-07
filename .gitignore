@@ -9,3 +9,6 @@ node_modules/
 
 # Developer Responses
 _DOCS/RESPONSES.md
+
+# Dependencies
+node_modules/

@@ -9,48 +9,46 @@
 
     // ── Templates ──
     const SAVE_TEMPLATES = {
-        dnd5e:     ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma'],
-        pf2e:      ['Fortitude', 'Reflex', 'Will'],
-        coc:       ['Sanity', 'Luck', 'Power'],
-        cpred:     ['Death Save', 'Stun'],
-        mothership:['Sanity', 'Fear', 'Body', 'Armor']
+        dnd5e: ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma'],
+        pf2e: ['Fortitude', 'Reflex', 'Will'],
+        coc: ['Sanity', 'Luck', 'Power'],
+        cpred: ['Death Save', 'Stun'],
+        mothership: ['Sanity', 'Fear', 'Body', 'Armor'],
     };
 
     const TIER_PRESETS = {
         // One tier: proficient saves show badge; non-proficiency is the empty "None" option (not a tier row).
-        dnd5e: [
-            { name: 'Proficient', letter: 'P', color: '#22aa44' }
-        ],
+        dnd5e: [{ name: 'Proficient', letter: 'P', color: '#22aa44' }],
         pf2e: [
-            { name: 'Untrained',  letter: 'U', color: '#888888' },
-            { name: 'Trained',    letter: 'T', color: '#22aa44' },
-            { name: 'Expert',     letter: 'E', color: '#3388dd' },
-            { name: 'Master',     letter: 'M', color: '#aa44cc' },
-            { name: 'Legendary',  letter: 'L', color: '#cc9900' }
+            { name: 'Untrained', letter: 'U', color: '#888888' },
+            { name: 'Trained', letter: 'T', color: '#22aa44' },
+            { name: 'Expert', letter: 'E', color: '#3388dd' },
+            { name: 'Master', letter: 'M', color: '#aa44cc' },
+            { name: 'Legendary', letter: 'L', color: '#cc9900' },
         ],
         simple: [
             { name: 'Untrained', letter: 'U', color: '#888888' },
-            { name: 'Trained',   letter: 'T', color: '#22aa44' },
-            { name: 'Expert',    letter: 'E', color: '#3388dd' },
-            { name: 'Master',    letter: 'M', color: '#aa44cc' }
-        ]
+            { name: 'Trained', letter: 'T', color: '#22aa44' },
+            { name: 'Expert', letter: 'E', color: '#3388dd' },
+            { name: 'Master', letter: 'M', color: '#aa44cc' },
+        ],
     };
 
     function applySavingThrowTemplate(key) {
         const names = SAVE_TEMPLATES[key];
         if (!names) return [];
-        return names.map(name => ({
+        return names.map((name) => ({
             id: generateSaveId(),
             name,
             value: 0,
-            proficiencyTier: null
+            proficiencyTier: null,
         }));
     }
 
     function applyTierPreset(key) {
         const preset = TIER_PRESETS[key];
         if (!preset) return [];
-        return preset.map(tier => ({ name: tier.name, letter: tier.letter, color: tier.color }));
+        return preset.map((tier) => ({ name: tier.name, letter: tier.letter, color: tier.color }));
     }
 
     // ── Content Shape Guard ──
@@ -61,17 +59,17 @@
                 notes: '',
                 tiersEnabled: false,
                 tiers: applyTierPreset('simple'),
-                tierPreset: 'simple'
+                tierPreset: 'simple',
             };
         }
-        if (!Array.isArray(data.content.saves))        data.content.saves = [];
-        if (typeof data.content.notes !== 'string')    data.content.notes = '';
+        if (!Array.isArray(data.content.saves)) data.content.saves = [];
+        if (typeof data.content.notes !== 'string') data.content.notes = '';
         if (typeof data.content.tiersEnabled !== 'boolean') data.content.tiersEnabled = false;
-        if (!Array.isArray(data.content.tiers))        data.content.tiers = applyTierPreset('simple');
-        if (!data.content.tierPreset)                  data.content.tierPreset = 'simple';
+        if (!Array.isArray(data.content.tiers)) data.content.tiers = applyTierPreset('simple');
+        if (!data.content.tierPreset) data.content.tierPreset = 'simple';
         if (data.content.tierPreset === 'dnd5e') {
             data.content.tiers = applyTierPreset('dnd5e');
-            data.content.saves.forEach(save => {
+            data.content.saves.forEach((save) => {
                 if (save.proficiencyTier === 'Not Proficient') save.proficiencyTier = null;
             });
         }
@@ -80,8 +78,12 @@
 
     function saveNotesCheckboxProxy(data) {
         return {
-            get content() { return data.content.notes || ''; },
-            set content(v) { data.content.notes = v; }
+            get content() {
+                return data.content.notes || '';
+            },
+            set content(v) {
+                data.content.notes = v;
+            },
         };
     }
 
@@ -93,7 +95,7 @@
 
     function getTierForSave(save, tiers) {
         if (!save.proficiencyTier) return null;
-        return tiers.find(tier => tier.name === save.proficiencyTier) || null;
+        return tiers.find((tier) => tier.name === save.proficiencyTier) || null;
     }
 
     // ── Play Mode Block ──
@@ -133,49 +135,61 @@
 
         let tierFieldHtml = '';
         if (content.tiersEnabled) {
-            const opts = content.tiers.map(tier =>
-                `<option value="${escapeHtml(tier.name)}" ${save.proficiencyTier === tier.name ? 'selected' : ''}>${escapeHtml(tier.name)}</option>`
-            ).join('');
+            const opts = content.tiers
+                .map(
+                    (tier) =>
+                        `<option value="${escapeHtml(tier.name)}" ${save.proficiencyTier === tier.name ? 'selected' : ''}>${escapeHtml(tier.name)}</option>`
+                )
+                .join('');
             tierFieldHtml =
                 `<div class="save-edit-field">` +
-                    `<label>${escapeHtml(t('save.proficiency'))}</label>` +
-                    `<select class="save-edit-tier">` +
-                        `<option value="">${escapeHtml(t('save.noProficiency'))}</option>` +
-                        opts +
-                    `</select>` +
+                `<label>${escapeHtml(t('save.proficiency'))}</label>` +
+                `<select class="save-edit-tier">` +
+                `<option value="">${escapeHtml(t('save.noProficiency'))}</option>` +
+                opts +
+                `</select>` +
                 `</div>`;
         }
 
         block.innerHTML =
             `<div class="save-edit-name-row">` +
-                `<span class="save-drag-handle">&#x2807;</span>` +
-                `<input class="save-edit-name" type="text" value="${escapeHtml(save.name)}" placeholder="${escapeHtml(t('save.unnamed'))}">` +
-                `<button class="save-edit-delete" title="${escapeHtml(t('save.deleteSave'))}">` +
-                    `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
-                        `<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>` +
-                    `</svg>` +
-                `</button>` +
+            `<span class="save-drag-handle">&#x2807;</span>` +
+            `<input class="save-edit-name" type="text" value="${escapeHtml(save.name)}" placeholder="${escapeHtml(t('save.unnamed'))}">` +
+            `<button class="save-edit-delete" title="${escapeHtml(t('save.deleteSave'))}">` +
+            `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
+            `<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>` +
+            `</svg>` +
+            `</button>` +
             `</div>` +
             `<div class="save-edit-row">` +
-                `<div class="save-edit-field">` +
-                    `<label>${escapeHtml(t('save.modifier'))}</label>` +
-                    `<input type="number" class="save-edit-value" value="${save.value}">` +
-                `</div>` +
-                tierFieldHtml +
+            `<div class="save-edit-field">` +
+            `<label>${escapeHtml(t('save.modifier'))}</label>` +
+            `<input type="number" class="save-edit-value" value="${save.value}">` +
+            `</div>` +
+            tierFieldHtml +
             `</div>`;
 
-        const nameInput  = block.querySelector('.save-edit-name');
-        const valInput   = block.querySelector('.save-edit-value');
+        const nameInput = block.querySelector('.save-edit-name');
+        const valInput = block.querySelector('.save-edit-value');
         const tierSelect = block.querySelector('.save-edit-tier');
-        const deleteBtn  = block.querySelector('.save-edit-delete');
+        const deleteBtn = block.querySelector('.save-edit-delete');
 
-        nameInput.addEventListener('input', () => { save.name = nameInput.value; scheduleSave(); });
-        valInput.addEventListener('input', () => { save.value = parseInt(valInput.value, 10) || 0; scheduleSave(); });
+        nameInput.addEventListener('input', () => {
+            save.name = nameInput.value;
+            scheduleSave();
+        });
+        valInput.addEventListener('input', () => {
+            save.value = parseInt(valInput.value, 10) || 0;
+            scheduleSave();
+        });
         if (tierSelect) {
-            tierSelect.addEventListener('change', () => { save.proficiencyTier = tierSelect.value || null; scheduleSave(); });
+            tierSelect.addEventListener('change', () => {
+                save.proficiencyTier = tierSelect.value || null;
+                scheduleSave();
+            });
         }
 
-        [nameInput, valInput].forEach(inp => {
+        [nameInput, valInput].forEach((inp) => {
             inp.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === 'Escape') inp.blur();
             });
@@ -192,7 +206,7 @@
     }
 
     function reRenderSaveEdits(blocksGrid, data) {
-        blocksGrid.querySelectorAll('.save-block-edit').forEach(el => el.remove());
+        blocksGrid.querySelectorAll('.save-block-edit').forEach((el) => el.remove());
         data.content.saves.forEach((save, i) => {
             blocksGrid.appendChild(renderSaveBlockEdit(save, i, data));
         });
@@ -208,11 +222,13 @@
             draggable: '.save-block-edit, .save-block',
             onEnd() {
                 const items = Array.from(blocksGrid.querySelectorAll('.save-block-edit, .save-block'));
-                const reordered = items.map(el => data.content.saves[parseInt(el.dataset.index, 10)]).filter(Boolean);
+                const reordered = items.map((el) => data.content.saves[parseInt(el.dataset.index, 10)]).filter(Boolean);
                 data.content.saves = reordered;
-                items.forEach((el, i) => { el.dataset.index = i; });
+                items.forEach((el, i) => {
+                    el.dataset.index = i;
+                });
                 scheduleSave();
-            }
+            },
         });
     }
 
@@ -220,10 +236,12 @@
     function rollSavingThrow(save) {
         const modStr = save.value >= 0 ? `+${save.value}` : `${save.value}`;
         try {
-            TS.dice.putDiceInTray([{
-                name: `${save.name || t('save.unnamed')} ${t('save.save')}`,
-                roll: `1d20${modStr}`
-            }]);
+            TS.dice.putDiceInTray([
+                {
+                    name: `${save.name || t('save.unnamed')} ${t('save.save')}`,
+                    roll: `1d20${modStr}`,
+                },
+            ]);
         } catch (e) {
             console.warn('[CV] Saving throw dice roll failed:', e);
         }
@@ -316,8 +334,8 @@
 
         // Working copies
         let workingTiersEnabled = content.tiersEnabled;
-        let workingTierPreset   = content.tierPreset;
-        let workingTiers        = content.tiers.map(tier => ({ ...tier }));
+        let workingTierPreset = content.tierPreset;
+        let workingTiers = content.tiers.map((tier) => ({ ...tier }));
         let dirty = false;
 
         const overlay = document.createElement('div');
@@ -375,10 +393,10 @@
         presetSelect.className = 'save-settings-select';
         [
             { value: 'simple', label: t('save.tierPresetSimple') },
-            { value: 'dnd5e',  label: t('save.tierPresetDnd5e') },
-            { value: 'pf2e',   label: t('save.tierPresetPf2e') },
-            { value: 'custom', label: t('save.tierPresetCustom') }
-        ].forEach(opt => {
+            { value: 'dnd5e', label: t('save.tierPresetDnd5e') },
+            { value: 'pf2e', label: t('save.tierPresetPf2e') },
+            { value: 'custom', label: t('save.tierPresetCustom') },
+        ].forEach((opt) => {
             const o = document.createElement('option');
             o.value = opt.value;
             o.textContent = opt.label;
@@ -445,11 +463,11 @@
 
         function commitAndClose() {
             content.tiersEnabled = workingTiersEnabled;
-            content.tierPreset   = workingTierPreset;
-            content.tiers        = workingTiers;
+            content.tierPreset = workingTierPreset;
+            content.tiers = workingTiers;
             // Orphan cleanup: saves pointing at deleted/renamed tiers → null
-            const tierNames = new Set(content.tiers.map(tier => tier.name));
-            content.saves.forEach(save => {
+            const tierNames = new Set(content.tiers.map((tier) => tier.name));
+            content.saves.forEach((save) => {
                 if (save.proficiencyTier && !tierNames.has(save.proficiencyTier)) {
                     save.proficiencyTier = null;
                 }
@@ -482,7 +500,7 @@
 
     // ── Custom Tier Editor ──
     function openCustomTierEditor(workingTiers, onSave) {
-        let editTiers = workingTiers.map(tier => ({ ...tier }));
+        let editTiers = workingTiers.map((tier) => ({ ...tier }));
 
         const overlay = document.createElement('div');
         overlay.className = 'cv-modal-overlay';
@@ -536,23 +554,27 @@
                     `<input type="text" class="save-tier-name-input" value="${escapeHtml(tier.name)}" placeholder="${escapeHtml(t('save.tierName'))}">` +
                     `<input type="text" class="save-tier-letter-input" value="${escapeHtml(tier.letter)}" maxlength="1" placeholder="A">` +
                     `<div class="save-tier-color-wrap">` +
-                        `<input type="color" class="save-tier-color-picker" value="${escapeHtml(tier.color)}">` +
-                        `<input type="text" class="save-tier-color-hex" value="${escapeHtml(tier.color)}" maxlength="7" placeholder="#888888">` +
+                    `<input type="color" class="save-tier-color-picker" value="${escapeHtml(tier.color)}">` +
+                    `<input type="text" class="save-tier-color-hex" value="${escapeHtml(tier.color)}" maxlength="7" placeholder="#888888">` +
                     `</div>` +
                     `<button class="save-tier-delete" title="${escapeHtml(t('save.deleteSave'))}">` +
-                        `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
-                            `<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>` +
-                        `</svg>` +
+                    `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
+                    `<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>` +
+                    `</svg>` +
                     `</button>`;
 
-                const nameInput   = row.querySelector('.save-tier-name-input');
+                const nameInput = row.querySelector('.save-tier-name-input');
                 const letterInput = row.querySelector('.save-tier-letter-input');
                 const colorPicker = row.querySelector('.save-tier-color-picker');
-                const colorHex    = row.querySelector('.save-tier-color-hex');
-                const deleteBtn   = row.querySelector('.save-tier-delete');
+                const colorHex = row.querySelector('.save-tier-color-hex');
+                const deleteBtn = row.querySelector('.save-tier-delete');
 
-                nameInput.addEventListener('input', () => { editTiers[i].name = nameInput.value; });
-                letterInput.addEventListener('input', () => { editTiers[i].letter = letterInput.value.slice(0, 1); });
+                nameInput.addEventListener('input', () => {
+                    editTiers[i].name = nameInput.value;
+                });
+                letterInput.addEventListener('input', () => {
+                    editTiers[i].letter = letterInput.value.slice(0, 1);
+                });
                 colorPicker.addEventListener('input', () => {
                     editTiers[i].color = colorPicker.value;
                     colorHex.value = colorPicker.value;
@@ -582,10 +604,12 @@
                 draggable: '.save-tier-row',
                 onEnd() {
                     const rows = Array.from(tierList.querySelectorAll('.save-tier-row'));
-                    const reordered = rows.map(r => editTiers[parseInt(r.dataset.index, 10)]).filter(Boolean);
+                    const reordered = rows.map((r) => editTiers[parseInt(r.dataset.index, 10)]).filter(Boolean);
                     editTiers = reordered;
-                    rows.forEach((r, i) => { r.dataset.index = i; });
-                }
+                    rows.forEach((r, i) => {
+                        r.dataset.index = i;
+                    });
+                },
             });
         }
 
@@ -691,15 +715,15 @@
                 const save = data.content.saves[i];
                 if (!save) return;
                 const nameInput = block.querySelector('.save-edit-name');
-                const valInput  = block.querySelector('.save-edit-value');
+                const valInput = block.querySelector('.save-edit-value');
                 const tierSelect = block.querySelector('.save-edit-tier');
                 if (nameInput) save.name = nameInput.value;
-                if (valInput)  save.value = parseInt(valInput.value, 10) || 0;
+                if (valInput) save.value = parseInt(valInput.value, 10) || 0;
                 if (tierSelect) save.proficiencyTier = tierSelect.value || null;
             });
             const textarea = moduleEl.querySelector('.save-notes-textarea');
             if (textarea) data.content.notes = textarea.value;
-        }
+        },
     });
 
     window.applySavingThrowTemplate = applySavingThrowTemplate;

@@ -22,6 +22,7 @@
 | `scripts/module-hr.js` | Horizontal Line module type registration |
 | `scripts/module-resistance.js` | Resistance module type registration + helpers (settings panel, staging area, creation wizard, drag-to-assign) |
 | `scripts/module-savingthrow.js` | Saving Throw module type registration + helpers (render blocks, edit blocks, sortable, quick-edit, dice rolling, notes area, settings modal, custom tier editor) |
+| `scripts/module-spells.js` | Spells module type registration + helpers (pip-style slot tracking, category/spell editor, SortableJS reorder, cast logic, detail/edit/settings modals, dice roll dispatch) |
 | `scripts/module-condition.js` | Condition module type registration + helpers (settings panel, staging area, game system templates, cascading sub-conditions, custom wizard) |
 | `scripts/app.js` | Startup: applies translations, triggers auto-load |
 
@@ -32,7 +33,7 @@ There is no build step. Everything ships as-is to TaleSpire's embedded Chromium.
 Scripts are loaded via plain `<script src>` tags (no `async`/`defer`) in `main.html`, which guarantees sequential execution. The order matters because later scripts depend on globals defined by earlier ones:
 
 ```
-translations.js → shared.js → i18n.js → theme.js → settings.js → persistence.js → module-core.js → module-condition.js → module-counters.js → module-text.js → module-abilities.js → module-stat.js → module-health.js → module-hr.js → module-spacer.js → module-resistance.js → module-savingthrow.js → module-list.js → app.js
+translations.js → shared.js → i18n.js → theme.js → settings.js → persistence.js → module-core.js → module-condition.js → module-counters.js → module-text.js → module-abilities.js → module-stat.js → module-health.js → module-hr.js → module-spacer.js → module-resistance.js → module-savingthrow.js → module-spells.js → module-list.js → app.js
 ```
 
 ## External Dependencies (CDN)
@@ -77,6 +78,7 @@ All JS lives in `scripts/` as separate files loaded by `main.html` in dependency
 | **module-hr.js** | `registerModuleType('hline', ...)` — simple `<hr>` divider, header hidden in play mode |
 | **module-resistance.js** | `registerModuleType('resistance', ...)` — drag-to-assign resistance/immunity/weakness columns; `openResSettingsPanel()`, `openResWizard()`, SortableJS staging area, value prompts, layout toggle |
 | **module-savingthrow.js** | `applySavingThrowTemplate(key)`, `applyTierPreset(key)`, `formatModifier(n)`, `renderSaveBlock()`, `renderSaveBlockEdit()`, `reRenderSaveEdits()`, `initSaveSortable()`, `rollSavingThrow()`, `enterSaveQuickEdit()`, `renderNotesArea()`, `openSaveSettings()`, `openCustomTierEditor()`, `registerModuleType('savingthrow', ...)` |
+| **module-spells.js** | `isDiceNotation(val)`, `extractDiceRoll(val)`, `defaultContent()`, `genId(prefix)`, `getAvailableSlots(data, slotLevel)`, `spendSlot(data, slotLevel)`, `restoreAllSlots(moduleEl, data)`, `rollAllSpellDice(spell)`, `rollSingleAttribute(spell, attr)`, `castSpell(moduleEl, data, spell, catId, onSuccess)`, `renderSpellsPlayLayer(bodyEl, data)`, `renderSpellsEditLayer(bodyEl, data)`, `syncSpellSlots(moduleEl, data)`, `openSpellDetailModal(moduleEl, data, spell, catId)`, `openSpellEditModal(moduleEl, data, spell, catId)`, `openCategoryEditModal(moduleEl, data, cat)`, `openSpellSettings(moduleEl, data)` (also `window.openSpellSettings`), `registerModuleType('spells', ...)` |
 | **module-condition.js** | `registerModuleType('condition', ...)` — game system template conditions with toggle/value types; `openCondSettingsPanel()`, `openCondWizard()`, SortableJS staging area, cascading sub-conditions, expand modal, template switching |
 | **app.js** | Startup: `applyTranslations()`, `refreshModuleLabels()`, auto-load check (`chkAutoLoad` + `TS` availability → `loadCharacter()`) |
 
@@ -105,6 +107,7 @@ Sections are delimited by `/* ── Name ── */` comment headers.
 | **Abilities Module** | `.ability-container`, `.ability-row`, `.ability-rollable`, `.ability-proficiency-dot`, `.ability-name`, `.ability-modifier`, `.ability-edit-row`, `.ability-drag-handle`, `.ability-edit-name`, `.ability-edit-modifier`, `.ability-edit-proficiency-label`, `.ability-edit-delete`, `.ability-empty-state`, `.ability-ghost`, `.ability-settings-select` |
 | **Stat Module** | `.stat-container`, `.stat-block`, `.stat-rollable`, `.stat-name`, `.stat-primary`, `.stat-secondary`, `.stat-proficiency-dot`, `.stat-block-edit`, edit inputs/toggles, `.stat-add-btn`, `.stat-quick-input`, `.stat-ghost`, wizard layout buttons (`.wizard-stat-layout`, `.wizard-layout-btn`) |
 | **Saving Throws Module** | `.save-container`, `.save-block`, `.save-rollable`, `.save-name`, `.save-modifier`, `.save-tier-badge`, `.save-block-edit`, `.save-edit-name-row`, `.save-drag-handle`, `.save-edit-name`, `.save-edit-value`, `.save-edit-tier`, `.save-quick-input`, `.save-ghost`, `.save-notes-area`, `.save-notes-textarea`, `.save-notes-display`, settings modal styles, tier editor styles, XS responsive overrides |
+| **Spells Module** | `.spells-play-container`, `.spells-slots-section`, `.spells-slots-header`, `.spells-slots-label`, `.spells-no-slots-msg`, `.spells-pips-wrap`, `.spells-pip-row`, `.spells-pip-label`, `.spell-pip`, `.spell-pip.spent`, `.spells-list-scroll`, `.spells-no-cats-msg`, `.spells-category`, `.spells-cat-header`, `.spells-collapse-icon`, `.spells-cat-name`, `.spells-cat-slot-badge`, `.spells-spell-list`, `.spells-spell-row`, `.spells-spell-name`, `.spells-spell-actions`, `.spells-detail-attr-row`, `.spells-detail-attr-key`, `.spells-detail-attr-value`, `.spells-detail-empty`, `.spells-attrs-list`, `.spells-attr-edit-row`, `.spells-attr-key-input`, `.spells-attr-value-input`, `.spells-edit-container`, `.spells-edit-section`, `.spells-edit-section-header`, `.spells-edit-section-label`, `.spells-slot-level-row`, `.spells-slot-level-label`, `.spells-slot-max-label`, `.spells-slot-max-input`, `.spells-edit-divider`, `.spells-cat-edit-list`, `.spells-edit-cat`, `.spells-edit-cat-header`, `.spells-cat-drag-handle`, `.spells-edit-cat-name`, `.spells-edit-spell-section`, `.spells-edit-spell-list`, `.spells-edit-spell-row`, `.spells-spell-drag-handle`, `.spells-edit-spell-name`, `.spells-cat-ghost`, `.spells-spell-ghost`, `.spells-settings-toggle-label` |
 | **Wizard Overlay** | Full-screen overlay, panel, header, body, type cards grid, color swatches, footer buttons |
 
 ---
@@ -138,7 +141,7 @@ Maps type keys to behavior definitions. Each entry:
   syncState(moduleEl, data) {}                 // optional — sync live DOM state to data before save
 }
 ```
-Currently registered types: `abilities`, `text`, `stat`, `hline`, `health`, `spacer`, `list`, `resistance`, `savingthrow`, `condition`
+Currently registered types: `abilities`, `text`, `stat`, `hline`, `health`, `spacer`, `list`, `resistance`, `savingthrow`, `spells`, `condition`
 
 ### Save Blob (JSON schema v1)
 Character sheet persistence format, stored via `TS.localStorage.campaign`:
@@ -209,6 +212,37 @@ When `type === 'savingthrow'`, the `content` field stores:
   tierPreset: 'simple'  // 'simple' | 'dnd5e' | 'pf2e' | 'custom'
 }
 ```
+
+### Spells Module `content` (object)
+When `type === 'spells'`, the `content` field stores:
+```js
+{
+  autoSpendSlots: true,       // setting: auto-spend on cast
+  showSlotErrors: true,       // setting: show error when no slots available
+  slotLevels: [
+    { id: 'sl_001', level: 1, max: 4, spent: 1 }
+  ],
+  categories: [
+    {
+      id: 'cat_001',
+      name: 'Cantrips',
+      slotLevel: null,         // null = no slot consumed on cast
+      collapsed: false,
+      spells: [
+        {
+          id: 'sp_001',
+          name: 'Fire Bolt',
+          attributes: [
+            { id: 'a_001', key: 'Damage', value: '2d10' },
+            { id: 'a_002', key: 'Range',  value: '120 ft' }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+Default size: 4col × 2row.
 
 ### `wizardState` (object)
 Transient state for the New Module wizard:

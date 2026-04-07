@@ -4,12 +4,16 @@
     "lint": "eslint scripts/",
     "lint:fix": "eslint scripts/ --fix",
     "format": "prettier --write \"scripts/**/*.js\"",
-    "format:check": "prettier --check \"scripts/**/*.js\""
+    "format:check": "prettier --check \"scripts/**/*.js\"",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
     "eslint": "^9.0.0",
     "@eslint/js": "^9.0.0",
     "prettier": "^3.0.0",
-    "globals": "^16.0.0"
+    "globals": "^16.0.0",
+    "vitest": "^3.1.1",
+    "jsdom": "^26.1.0"
   }
 }

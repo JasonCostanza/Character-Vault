@@ -468,6 +468,367 @@ Copy this into your plan when creating a new module:
 
 ---
 
+## Common Implementation Patterns
+
+Use these as copy-paste starting points. They reflect the exact conventions used throughout the codebase — read the relevant source reference once to verify they haven't drifted, then skip re-reading it for future modules.
+
+---
+
+### Pattern A — Action Modal (single input + confirm)
+
+Use for quick interactions that need one value from the user: add XP, adjust a modifier, set a field.
+**Source reference:** `openHealthActionOverlay()` in `scripts/module-health.js`
+
+```js
+function openTypenameActionModal(moduleEl, data) {
+    // Remove any existing instance (prevent duplicates)
+    const existing = document.querySelector('.typename-action-overlay');
+    if (existing) existing.remove();
+
+    const overlay = document.createElement('div');
+    overlay.className = 'cv-modal-overlay typename-action-overlay';
+
+    // Use innerHTML for simple, fixed-layout modals
+    const panel = document.createElement('div');
+    panel.className = 'cv-modal-panel typename-action-modal';
+    panel.innerHTML =
+        `<div class="cv-modal-header">` +
+        `<span class="cv-modal-title">${escapeHtml(t('typename.modalTitle'))}</span>` +
+        `<button class="cv-modal-close" title="${escapeHtml(t('typename.cancel'))}">` +
+        `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>` +
+        `</button>` +
+        `</div>` +
+        `<div class="cv-modal-body">` +
+        `<input type="text" class="typename-action-input" placeholder="0" spellcheck="false" autocomplete="off">` +
+        `</div>` +
+        `<div class="cv-modal-footer">` +
+        `<button class="typename-action-cancel btn-secondary sm">${escapeHtml(t('typename.cancel'))}</button>` +
+        `<button class="typename-action-ok btn-primary sm">${escapeHtml(t('typename.ok'))}</button>` +
+        `</div>`;
+
+    const input  = panel.querySelector('.typename-action-input');
+    const closeBtn  = panel.querySelector('.cv-modal-close');
+    const cancelBtn = panel.querySelector('.typename-action-cancel');
+    const okBtn     = panel.querySelector('.typename-action-ok');
+
+    // Pre-fill current value if editing
+    input.value = data.content.someField ?? '';
+
+    function confirm() {
+        // Validate / parse input — bail silently if invalid
+        const val = parseInt(input.value, 10);
+        if (isNaN(val)) { cancel(); return; }
+
+        // Mutate data, save, re-render
+        data.content.someField = val;
+        scheduleSave();
+        const bodyEl = moduleEl.querySelector('.module-body');
+        MODULE_TYPES['typename'].renderBody(bodyEl, data, /* isPlayMode */ true);
+        cancel();
+    }
+
+    function cancel() {
+        overlay.remove();
+    }
+
+    closeBtn.addEventListener('click', cancel);
+    cancelBtn.addEventListener('click', cancel);
+    okBtn.addEventListener('click', confirm);
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') confirm();
+        if (e.key === 'Escape') cancel();
+    });
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) cancel(); });
+
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+    input.focus();
+    input.select();
+}
+```
+
+**Note:** To support math expressions (e.g. `2d6+5`), replace `parseInt` with `evaluateHealthExpression(input.value)` from `shared.js`. Returns `null` on invalid input.
+
+---
+
+### Pattern B — Settings Modal (structured configuration panel)
+
+Use for module settings with multiple fields, toggles, or selects. Uses `createElement` instead of innerHTML for readability when the body is complex.
+**Source references:** `openAbilitySettings()` in `scripts/module-abilities.js`, `openSaveSettings()` in `scripts/module-savingthrow.js`
+
+```js
+function openTypenameSettings(moduleEl, data) {
+    const existing = document.querySelector('.typename-settings-overlay');
+    if (existing) existing.remove();
+
+    // Work on a local copy — only commit on Save
+    const working = { ...data.content };
+    let dirty = false;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'cv-modal-overlay typename-settings-overlay';
+
+    const panel = document.createElement('div');
+    panel.className = 'cv-modal-panel';
+
+    // Header
+    const header = document.createElement('div');
+    header.className = 'cv-modal-header';
+    const titleEl = document.createElement('span');
+    titleEl.className = 'cv-modal-title';
+    titleEl.textContent = t('typename.settingsTitle');
+    const closeBtnEl = document.createElement('button');
+    closeBtnEl.className = 'cv-modal-close';
+    closeBtnEl.title = t('typename.close');
+    closeBtnEl.innerHTML =
+        '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    header.appendChild(titleEl);
+    header.appendChild(closeBtnEl);
+
+    // Body
+    const body = document.createElement('div');
+    body.className = 'cv-modal-body';
+
+    // Example: checkbox toggle
+    const toggleLabel = document.createElement('label');
+    toggleLabel.className = 'cv-modal-label';
+    const toggleCheckbox = document.createElement('input');
+    toggleCheckbox.type = 'checkbox';
+    toggleCheckbox.checked = working.someToggle;
+    toggleLabel.appendChild(toggleCheckbox);
+    toggleLabel.appendChild(document.createTextNode('\u00a0' + t('typename.someToggle')));
+    body.appendChild(toggleLabel);
+
+    toggleCheckbox.addEventListener('change', () => {
+        working.someToggle = toggleCheckbox.checked;
+        dirty = true;
+    });
+
+    // Example: select dropdown
+    const selectLabel = document.createElement('label');
+    selectLabel.className = 'cv-modal-label';
+    selectLabel.textContent = t('typename.someOption');
+    const select = document.createElement('select');
+    [
+        { value: 'a', label: t('typename.optionA') },
+        { value: 'b', label: t('typename.optionB') },
+    ].forEach(({ value, label }) => {
+        const opt = document.createElement('option');
+        opt.value = value;
+        opt.textContent = label;
+        if (value === working.someOption) opt.selected = true;
+        select.appendChild(opt);
+    });
+    select.addEventListener('change', () => {
+        working.someOption = select.value;
+        dirty = true;
+    });
+    body.appendChild(selectLabel);
+    body.appendChild(select);
+
+    // Footer
+    const footer = document.createElement('div');
+    footer.className = 'cv-modal-footer';
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'btn-secondary sm';
+    cancelBtn.textContent = t('typename.cancel');
+    const saveBtn = document.createElement('button');
+    saveBtn.className = 'btn-primary sm';
+    saveBtn.textContent = t('typename.save');
+    footer.appendChild(cancelBtn);
+    footer.appendChild(saveBtn);
+
+    panel.appendChild(header);
+    panel.appendChild(body);
+    panel.appendChild(footer);
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+
+    function close() {
+        overlay.remove();
+        document.removeEventListener('keydown', onKeydown);
+    }
+
+    function save() {
+        // Commit working copy → data.content
+        data.content.someToggle = working.someToggle;
+        data.content.someOption = working.someOption;
+        scheduleSave();
+        // Re-render
+        const bodyEl = moduleEl.querySelector('.module-body');
+        const isPlay = modeToggle.classList.contains('mode-play');
+        MODULE_TYPES['typename'].renderBody(bodyEl, data, isPlay);
+        close();
+    }
+
+    closeBtnEl.addEventListener('click', close);
+    cancelBtn.addEventListener('click', close);
+    saveBtn.addEventListener('click', save);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+
+    function onKeydown(e) {
+        if (e.key === 'Escape') {
+            e.stopPropagation();
+            if (dirty && !window.confirm(t('common.discardChanges'))) return;
+            close();
+        }
+    }
+    document.addEventListener('keydown', onKeydown);
+}
+```
+
+**Note on dirty state:** Only guard the Escape key with a discard prompt if the user's partial changes would be confusing to lose. Simple single-field settings don't need it. See `openSaveSettings()` in `scripts/module-savingthrow.js` for a real dirty-state example.
+
+---
+
+### Pattern C — Editable List (add / edit / delete / reorder rows)
+
+Use inside a settings modal body when the user needs to manage an array (e.g. XP thresholds, custom categories, tier definitions).
+**Source reference:** `openCustomTierEditor()` in `scripts/module-savingthrow.js`
+
+```js
+// workingItems is a local array (copy of data.content.someArray)
+// Call buildRows() after any mutation to re-render the list
+
+const listEl = document.createElement('div');
+listEl.className = 'typename-item-list';
+body.appendChild(listEl);
+
+let listSortable = null;
+
+function buildRows() {
+    listEl.innerHTML = '';
+    workingItems.forEach((item, i) => {
+        const row = document.createElement('div');
+        row.className = 'typename-item-row';
+        row.dataset.index = i;
+        row.innerHTML =
+            `<span class="typename-drag-handle">&#x2807;</span>` +
+            `<input type="text" class="typename-item-input" value="${escapeHtml(item.name)}" placeholder="${escapeHtml(t('typename.itemPlaceholder'))}">` +
+            `<button class="typename-item-delete" title="${escapeHtml(t('typename.deleteItem'))}">` +
+            `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
+            `<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>` +
+            `</svg>` +
+            `</button>`;
+
+        row.querySelector('.typename-item-input').addEventListener('input', (e) => {
+            workingItems[i].name = e.target.value;
+            dirty = true;
+        });
+        row.querySelector('.typename-item-delete').addEventListener('click', () => {
+            workingItems.splice(i, 1);
+            buildRows();
+            initSortable();
+            dirty = true;
+        });
+
+        listEl.appendChild(row);
+    });
+}
+
+function initSortable() {
+    if (listSortable) listSortable.destroy();
+    listSortable = new Sortable(listEl, {
+        handle: '.typename-drag-handle',
+        animation: 150,
+        ghostClass: 'cv-drag-ghost',
+        draggable: '.typename-item-row',
+        onEnd() {
+            const rows = Array.from(listEl.querySelectorAll('.typename-item-row'));
+            const reordered = rows.map((r) => workingItems[parseInt(r.dataset.index, 10)]).filter(Boolean);
+            workingItems.length = 0;
+            reordered.forEach((item) => workingItems.push(item));
+            rows.forEach((r, i) => { r.dataset.index = i; });
+            dirty = true;
+        },
+    });
+}
+
+buildRows();
+initSortable();
+
+const addBtn = document.createElement('button');
+addBtn.className = 'btn-secondary typename-add-btn';
+addBtn.textContent = t('typename.addItem');
+addBtn.addEventListener('click', () => {
+    workingItems.push({ name: '' });
+    buildRows();
+    initSortable();
+    dirty = true;
+    // Scroll to and focus the new row's input
+    const inputs = listEl.querySelectorAll('.typename-item-input');
+    if (inputs.length) inputs[inputs.length - 1].focus();
+});
+body.appendChild(addBtn);
+```
+
+**Important:** Always call `initSortable()` after `buildRows()` — SortableJS needs to re-attach after the DOM is rebuilt. See the memory note in `MEMORY.md` about always explicitly re-rendering the list after item removal.
+
+---
+
+### Pattern D — Cross-Module Linking
+
+Use when your module needs to read data from another module instance (e.g. reference a character's level, stat block, or health pool).
+**Source reference:** `openAbilitySettings()` and `buildAbilityBody()` in `scripts/module-abilities.js`
+
+**1. Content schema** — store the linked module's ID, not a reference:
+```js
+content: {
+    linkedTypenameModuleId: null,  // null = no link
+    // ...rest of your content
+}
+```
+
+**2. Linking dropdown in settings modal:**
+```js
+const linkLabel = document.createElement('label');
+linkLabel.className = 'cv-modal-label';
+linkLabel.textContent = t('typename.linkedModule');
+
+const linkSelect = document.createElement('select');
+
+const noneOpt = document.createElement('option');
+noneOpt.value = '';
+noneOpt.textContent = t('typename.noLinkedModule');
+linkSelect.appendChild(noneOpt);
+
+window.modules
+    .filter((m) => m.type === 'targettype')
+    .forEach((m) => {
+        const opt = document.createElement('option');
+        opt.value = m.id;
+        opt.textContent = m.title || t('type.targettype');
+        linkSelect.appendChild(opt);
+    });
+
+linkSelect.value = data.content.linkedTypenameModuleId || '';
+```
+
+**3. Reading linked data at render time:**
+```js
+function getLinkedData(data) {
+    const id = data.content.linkedTypenameModuleId;
+    if (!id) return null;
+    const mod = window.modules.find((m) => m.id === id && m.type === 'targettype');
+    return mod ? mod.content : null;
+}
+
+// In renderBody():
+const linked = getLinkedData(data);
+const someValue = linked ? linked.someField : null;
+```
+
+**4. Exposing a global API** (optional — for modules consumed by many others):
+```js
+// At end of module-typename.js, outside registerModuleType():
+window.getTypenameValue = function(moduleId) {
+    const mod = window.modules.find((m) => m.id === moduleId && m.type === 'typename');
+    return mod ? mod.content.someField : null;
+};
+```
+
+---
+
 ## Common Pitfalls
 
 1. **Forgetting a language** — Missing translation keys fall back to English silently. Always add to all 7 blocks.

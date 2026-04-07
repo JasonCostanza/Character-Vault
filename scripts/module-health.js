@@ -236,6 +236,26 @@ function buildPlayLayer(bodyEl, data) {
 
     mainRow.appendChild(hpCol);
 
+    layer.appendChild(mainRow);
+
+    const tempRow = document.createElement('div');
+    tempRow.className = 'health-temp-row';
+
+    const tempBadge = document.createElement('button');
+    tempBadge.type = 'button';
+    tempBadge.className = 'health-temp-badge' + (c.tempHP > 0 ? ' has-temp' : '');
+    tempBadge.innerHTML =
+        `<span class="health-temp-value">${c.tempHP > 0 ? '+' + c.tempHP : '0'}</span>` +
+        `<span class="health-temp-label">${escapeHtml(t('health.tempHP'))}</span>`;
+    tempBadge.addEventListener('click', () => {
+        openHealthActionOverlay(bodyEl.closest('.module'), data, 'temp');
+    });
+    tempRow.appendChild(tempBadge);
+    layer.appendChild(tempRow);
+
+    const actionsRow = document.createElement('div');
+    actionsRow.className = 'health-actions-row';
+
     const actions = document.createElement('div');
     actions.className = 'health-actions';
 
@@ -257,24 +277,8 @@ function buildPlayLayer(bodyEl, data) {
 
     actions.appendChild(healBtn);
     actions.appendChild(damageBtn);
-    mainRow.appendChild(actions);
-
-    layer.appendChild(mainRow);
-
-    const tempRow = document.createElement('div');
-    tempRow.className = 'health-temp-row';
-
-    const tempBadge = document.createElement('button');
-    tempBadge.type = 'button';
-    tempBadge.className = 'health-temp-badge' + (c.tempHP > 0 ? ' has-temp' : '');
-    tempBadge.innerHTML =
-        `<span class="health-temp-value">${c.tempHP > 0 ? '+' + c.tempHP : '0'}</span>` +
-        `<span class="health-temp-label">${escapeHtml(t('health.tempHP'))}</span>`;
-    tempBadge.addEventListener('click', () => {
-        openHealthActionOverlay(bodyEl.closest('.module'), data, 'temp');
-    });
-    tempRow.appendChild(tempBadge);
-    layer.appendChild(tempRow);
+    actionsRow.appendChild(actions);
+    layer.appendChild(actionsRow);
 
     return layer;
 }
@@ -344,25 +348,6 @@ function buildEditLayer(bodyEl, data) {
 
     mainRow.appendChild(hpCol);
 
-    const actions = document.createElement('div');
-    actions.className = 'health-actions';
-
-    const healBtn = document.createElement('button');
-    healBtn.className = 'health-action-btn health-heal-btn';
-    healBtn.title = t('health.heal');
-    healBtn.textContent = t('health.healShort');
-    healBtn.disabled = true;
-
-    const damageBtn = document.createElement('button');
-    damageBtn.className = 'health-action-btn health-damage-btn';
-    damageBtn.title = t('health.takeDamage');
-    damageBtn.textContent = t('health.dmgShort');
-    damageBtn.disabled = true;
-
-    actions.appendChild(healBtn);
-    actions.appendChild(damageBtn);
-    mainRow.appendChild(actions);
-
     layer.appendChild(mainRow);
 
     const tempRow = document.createElement('div');
@@ -409,6 +394,29 @@ function buildEditLayer(bodyEl, data) {
     tempBadge.appendChild(tempLabel);
     tempRow.appendChild(tempBadge);
     layer.appendChild(tempRow);
+
+    const actionsRow = document.createElement('div');
+    actionsRow.className = 'health-actions-row';
+
+    const actions = document.createElement('div');
+    actions.className = 'health-actions';
+
+    const healBtn = document.createElement('button');
+    healBtn.className = 'health-action-btn health-heal-btn';
+    healBtn.title = t('health.heal');
+    healBtn.textContent = t('health.healShort');
+    healBtn.disabled = true;
+
+    const damageBtn = document.createElement('button');
+    damageBtn.className = 'health-action-btn health-damage-btn';
+    damageBtn.title = t('health.takeDamage');
+    damageBtn.textContent = t('health.dmgShort');
+    damageBtn.disabled = true;
+
+    actions.appendChild(healBtn);
+    actions.appendChild(damageBtn);
+    actionsRow.appendChild(actions);
+    layer.appendChild(actionsRow);
 
     return layer;
 }

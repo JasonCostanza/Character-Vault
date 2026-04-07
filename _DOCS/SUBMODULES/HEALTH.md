@@ -34,11 +34,12 @@ All text input fields **MUST** allow simple mathematical equations to be entered
 
 The module body has three visual sections stacked vertically:
 
-1. **Main row** (`health-main-row`) — HP values on the left, action buttons on the right.
+1. **Main row** (`health-main-row`) — HP values centered.
    - **HP column** (`health-hp-col`) — `Current / Max` display (spans or inputs depending on mode).
    - **Max HP modifier indicator** — Shown below the HP fraction only when `maxHPModifier !== 0`, formatted as `(+N MAX)` or `(-N MAX)`.
-   - **Action buttons** (`health-actions`) — Heal and Damage buttons stacked vertically.
 2. **Temp HP row** (`health-temp-row`) — Badge showing temp HP value and label.
+3. **Action buttons row** (`health-actions-row`) — Heal and Damage buttons side by side (Heal left, Dmg right).
+   - **Action buttons** (`health-actions`) — Container with two buttons arranged horizontally.
 
 ## Taking Damage
 **IMPORTANT** All damage is removed from `Temporary HP` **BEFORE** the `Current HP`. Example, the character has 20 HP currently, and 3 `Temporary HP`. The user takes 8 damage. First we subtract all 3 `Temporary HP` before subtracting from the 20 `Current HP`. Resulting in 15 HP remaining. If the character has 0 `Temporary HP`, remove all damage from their `Current HP`. Example, the character has 20 HP and 0 `Temporary HP` and they take 5 damage. Because there is 0 `Temporary HP`, the damage goes towards their `Current HP` resulting in 15 HP remaining. **`Temporary HP` cannot go to less than 0**.

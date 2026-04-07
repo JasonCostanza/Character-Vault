@@ -2499,11 +2499,11 @@ select,
     color: var(--cv-warning);
 }
 
-/* ── Play Mode: Main Row (HP + buttons side by side) ── */
+/* ── Play Mode: Main Row (HP values) ── */
 .health-main-row {
     display: flex;
     align-items: center;
-    gap: 14px;
+    justify-content: center;
 }
 
 .health-hp-col {
@@ -2512,11 +2512,20 @@ select,
     align-items: center;
 }
 
-/* ── Action Buttons ── */
+/* ── Action Buttons Row ── */
+.health-actions-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+/* ── Action Buttons (horizontal layout) ── */
 .health-actions {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
+    flex-direction: row;
+    gap: 8px;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .health-action-btn {

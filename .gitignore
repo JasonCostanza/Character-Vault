@@ -1,3 +1,6 @@
+# Dependencies
+node_modules/
+
 # Claude Code local settings
 .claude/
 
@@ -6,3 +9,6 @@
 
 # Developer Responses
 _DOCS/RESPONSES.md
+
+# Dependencies
+node_modules/

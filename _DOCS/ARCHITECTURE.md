@@ -2,6 +2,8 @@
 
 > Code map for Character Vault. Designed to help Claude Code (and humans) find things fast without exploratory searching.
 
+**Important:** When referencing this file in prompts or issues, use section names and function names, never line numbers. Line numbers change as the file evolves; section/function references remain stable.
+
 ## Files at a Glance
 
 | File | Purpose |

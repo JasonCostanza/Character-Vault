@@ -8,7 +8,7 @@ Character Vault is a TaleSpire Symbiote — a vanilla HTML/CSS/JS character shee
 |---|---|
 | Code map, script load order, data structures, event flows | `_DOCS/ARCHITECTURE.md` |
 | Add or modify a module type | `_DOCS/NEW_MODULE_GUIDE.md`, then `_DOCS/ARCHITECTURE.md` (MODULE_TYPES registry) |
-| Work on a specific submodule (stats, health, etc.) | `_DOCS/SUBMODULES/<NAME>.md` |
+| Work on a specific submodule (stats, health, etc.) | `_DOCS/SUBMODULES/<NAME>.md` — Available: ABILITIES, ACTIVITY_LOG, CHARACTER_LEVEL, COMPANIONS, CONDITIONS, COUNTERS, HEALTH, LANGUAGES, LIST, RESISTANCES, REST, SAVING_THROWS, SPACER, SPELLS, STATS, TEXT_BOX |
 | Module/layout system concepts | `_DOCS/MODULES.md` |
 | Tab system | `_DOCS/TABS.md` |
 | Color tokens or themes | `_DOCS/COLORS.md` |
@@ -42,15 +42,15 @@ Per-file descriptions live in `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
 6. **Call `scheduleSave()` after any mutation to module state**. It debounces (2 s) into `saveCharacter()`. Never call `saveCharacter()` directly from event handlers.
 7. **Use `escapeHtml()`** (in `shared.js`) when interpolating user-provided strings into HTML.
 8. **Use `null`, not `undefined`**, for intentionally empty values (e.g., `title: null`, `theme: null`) — ensures clean JSON serialization.
-9. **Inline SVG icons only** — Use the curated in-code SVG library to avoid memory bloat from custom image uploads. The "None" option should sit first in icon pickers. Do **not** use CSS `mask-image` (broken in TaleSpire's Chromium).
+9. **Inline SVG icons only** — Use the curated in-code SVG library to avoid memory bloat from custom image uploads. The "None" option should sit first in icon pickers.
 10. **Module toolbar buttons must have `title` attributes** for custom CSS tooltips (native `title` tooltips don't render in TaleSpire's Chromium). Rightmost buttons need the right-anchored tooltip override (see `.module-delete-btn[title]::after` in `main.css`).
-11. **After exiting plan mode, offer to save the plan** to `_DOCS/plans/` with a kebab-case filename. Never save plans to `~/.claude/plans`.
-12. **No line numbers in `_DOCS/ARCHITECTURE.md`** — reference sections and function names instead.
-13. **All `.js` files go in `scripts/`** — never create JavaScript files in the project root or any other directory.
-14. **Use SortableJS for all drag-to-reorder** — never write custom pointer/mouse-based drag systems. SortableJS is already loaded via CDN. Follow the existing pattern: `handle`, `animation: 150`, `ghostClass`, `draggable`, and `onEnd`. See `initStatSortable()` or `initListSortable()` as references. **Important:** Disable SortableJS manual drag-to-reorder if your module uses column header sorting and an auto-sort (asc/desc) is active.
-15. **Play vs Edit Mode interaction rules**: Play mode is read-only, optimized for simple in-game actions. Edit mode allows structure and data modification. Critical stats/values should support Quick Edit (Ctrl+Click) in Play mode to bypass a full mode switch.
-16. **Modal and Overlay standard**: Modals must include standard action buttons (`[Save]`/`[Create]`, `[Cancel]`/`[Close]`, and an `[X]` top-right). If editing an existing entity, consider a `[Delete]` button. Always prompt for unsaved changes if the modal is dismissed with edits pending. Values should clamp live during input to prevent invalid states.
-17. **Scrollbar layout shift prevention**: All scrollable containers must use `scrollbar-gutter: stable;` to reserve scrollbar space. This prevents jarring content shifts when scrollbars appear or disappear. Apply to any element with `overflow-y: auto` or `overflow-x: auto`.
+11. **After exiting plan mode, offer to save the plan** to `_DOCS/plans/` with a descriptive kebab-case filename based on the feature (e.g., `spell-category-collapse.md`). Never use auto-generated random names, and never save plans to `~/.claude/plans`.
+12. **All `.js` files go in `scripts/`** — never create JavaScript files in the project root or any other directory.
+13. **Use SortableJS for all drag-to-reorder** — never write custom pointer/mouse-based drag systems. SortableJS is already loaded via CDN. Follow the existing pattern: `handle`, `animation: 150`, `ghostClass`, `draggable`, and `onEnd`. See `initStatSortable()` or `initListSortable()` as references.
+14. **Play vs Edit Mode interaction rules**: Play mode is read-only, optimized for simple in-game actions. Edit mode allows structure and data modification. Critical stats/values should support Quick Edit (Ctrl+Click) in Play mode to bypass a full mode switch.
+15. **Modal and Overlay standard**: Modals must include standard action buttons (`[Save]`/`[Create]`, `[Cancel]`/`[Close]`, and an `[X]` top-right). If editing an existing entity, consider a `[Delete]` button. Always prompt for unsaved changes if the modal is dismissed with edits pending. Values should clamp live during input to prevent invalid states. Reference: `openSpellDetailModal()` in `scripts/module-spells.js`.
+16. **Scrollbar layout shift prevention**: All scrollable containers must use `scrollbar-gutter: stable;` to reserve scrollbar space. This prevents jarring content shifts when scrollbars appear or disappear. Apply to any element with `overflow-y: auto` or `overflow-x: auto`.
+17. **All user-visible strings must be translatable** — every hardcoded text string is a bug. Use `data-i18n` / `data-i18n-placeholder` / `data-i18n-title` attributes for static text, or call `t(key, replacements?)` for dynamic text. See `_DOCS/LOCALIZATION.md`.
 
 ## Conventions
 
@@ -65,7 +65,6 @@ Per-file descriptions live in `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
 ## Gotchas / Constraints
 
 - **No build system.** No bundler, transpiler, or npm. Vanilla HTML/CSS/JS served raw by TaleSpire's embedded Chromium.
-- **`mask-image` does not render** in TaleSpire's Chromium. Always use inline SVGs.
 - **z-index layers**: 300 = delete confirm, 200 = settings/wizard overlays, 100 = menu bar + dragging module, 60 = resize handle, 50 = resizing module.
 - **Grid layout**: `#module-grid` is a 4-column CSS Grid, 8px gap. Modules span 1–4 columns. Fixed row height = `rowSpan * 80px + (rowSpan - 1) * 8px`.
 - **`TS.*` API unavailable** when previewing in VS Code — guard calls with `typeof TS !== 'undefined'` or test in TaleSpire directly.
@@ -81,5 +80,5 @@ Per-file descriptions live in `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
 | **Module overlay menu** | The compact menu shown when a module is too small for its module toolbar. Also called "module menu". |
 | **Wizard** | The "New Module" creation overlay (type selection, color picker). |
 
-## Reponse behavior
+## Response behavior
 - Do not tell me how to test the symbiote at the end of code changes, we're wasting tokens. Just tell me you're done with the work.

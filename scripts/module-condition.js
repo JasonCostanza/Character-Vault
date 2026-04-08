@@ -2482,6 +2482,13 @@
             })(item);
             itemEl.appendChild(delBtn);
 
+            (function (item) {
+                itemEl.addEventListener('click', function (e) {
+                    if (e.target.closest('.cond-staging-delete')) return;
+                    applyConditionFromStaging(item.typeKey, item.id, content, panel, moduleEl, data);
+                });
+            })(item);
+
             stagingGrid.appendChild(itemEl);
         });
 
@@ -2576,6 +2583,50 @@
         return el;
     }
 
+    // ── Apply Condition from Staging ──
+
+    function applyConditionFromStaging(typeKey, itemId, content, panel, moduleEl, data) {
+        if (content.applied.some(function (a) { return a.typeKey === typeKey; })) {
+            renderSettingsPanelContent(panel, moduleEl, data, content);
+            return;
+        }
+        const stagingItem = content.staging.find(function (s) { return s.id === itemId; });
+        if (!stagingItem) {
+            renderSettingsPanelContent(panel, moduleEl, data, content);
+            return;
+        }
+        const condType = getCondType(stagingItem, content);
+        if (condType === 'value') {
+            const condMax = getCondMaxValue(stagingItem, content);
+            showCondValuePrompt(
+                panel.querySelector('.cv-modal-body'),
+                1,
+                condMax,
+                function (val) {
+                    const idx = content.staging.findIndex(function (s) { return s.id === itemId; });
+                    if (idx !== -1) content.staging.splice(idx, 1);
+                    stagingItem.value = val;
+                    stagingItem.active = val > 0;
+                    content.applied.push(stagingItem);
+                    if (stagingItem.active) activateSubconditions(typeKey, content);
+                    scheduleSave();
+                    renderSettingsPanelContent(panel, moduleEl, data, content);
+                },
+                function () {
+                    renderSettingsPanelContent(panel, moduleEl, data, content);
+                }
+            );
+        } else {
+            const idx = content.staging.findIndex(function (s) { return s.id === itemId; });
+            if (idx !== -1) content.staging.splice(idx, 1);
+            stagingItem.active = true;
+            content.applied.push(stagingItem);
+            activateSubconditions(typeKey, content);
+            scheduleSave();
+            renderSettingsPanelContent(panel, moduleEl, data, content);
+        }
+    }
+
     // ── SortableJS Setup ──
 
     function initCondSettingsSortables(panel, moduleEl, data, content) {
@@ -2607,63 +2658,7 @@
                     evt.item.remove();
 
                     if (isFromStaging) {
-                        // Check duplicate
-                        if (
-                            content.applied.some(function (a) {
-                                return a.typeKey === typeKey;
-                            })
-                        ) {
-                            renderSettingsPanelContent(panel, moduleEl, data, content);
-                            return;
-                        }
-
-                        // Find in staging
-                        const stagingItem = content.staging.find(function (s) {
-                            return s.id === itemId;
-                        });
-                        if (!stagingItem) {
-                            renderSettingsPanelContent(panel, moduleEl, data, content);
-                            return;
-                        }
-
-                        const condType = getCondType(stagingItem, content);
-
-                        if (condType === 'value') {
-                            // Prompt for value
-                            const condMax = getCondMaxValue(stagingItem, content);
-                            showCondValuePrompt(
-                                panel.querySelector('.cv-modal-body'),
-                                1,
-                                condMax,
-                                function (val) {
-                                    // Move from staging to applied
-                                    const idx = content.staging.findIndex(function (s) {
-                                        return s.id === itemId;
-                                    });
-                                    if (idx !== -1) content.staging.splice(idx, 1);
-                                    stagingItem.value = val;
-                                    stagingItem.active = val > 0;
-                                    content.applied.push(stagingItem);
-                                    if (stagingItem.active) activateSubconditions(typeKey, content);
-                                    scheduleSave();
-                                    renderSettingsPanelContent(panel, moduleEl, data, content);
-                                },
-                                function () {
-                                    renderSettingsPanelContent(panel, moduleEl, data, content);
-                                }
-                            );
-                        } else {
-                            // Toggle — move directly
-                            const idx = content.staging.findIndex(function (s) {
-                                return s.id === itemId;
-                            });
-                            if (idx !== -1) content.staging.splice(idx, 1);
-                            stagingItem.active = true;
-                            content.applied.push(stagingItem);
-                            activateSubconditions(typeKey, content);
-                            scheduleSave();
-                            renderSettingsPanelContent(panel, moduleEl, data, content);
-                        }
+                        applyConditionFromStaging(typeKey, itemId, content, panel, moduleEl, data);
                     }
                 },
                 onEnd: function (evt) {

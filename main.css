@@ -5841,7 +5841,7 @@ select,
     background: transparent;
     border: 1px solid var(--cv-border);
     border-radius: 4px;
-    cursor: grab;
+    cursor: pointer;
     transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
     user-select: none;
 }

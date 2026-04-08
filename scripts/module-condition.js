@@ -2313,21 +2313,91 @@
         tplLabel.textContent = t('cond.template');
         tplSection.appendChild(tplLabel);
 
-        const tplSelect = document.createElement('select');
-        tplSelect.className = 'cond-template-select';
+        const tplSelect = document.createElement('div');
+        tplSelect.className = 'cv-select';
+
+        const tplTrigger = document.createElement('button');
+        tplTrigger.type = 'button';
+        tplTrigger.className = 'cv-select-trigger';
+        tplTrigger.setAttribute('aria-haspopup', 'listbox');
+        tplTrigger.setAttribute('aria-expanded', 'false');
+        const tplValueSpan = document.createElement('span');
+        tplValueSpan.className = 'cv-select-value';
+        tplValueSpan.textContent = t(CONDITION_TEMPLATES[content.template].nameKey);
+        tplTrigger.appendChild(tplValueSpan);
+        tplTrigger.insertAdjacentHTML('beforeend',
+            '<svg class="cv-select-chevron" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>');
+
+        const tplMenu = document.createElement('ul');
+        tplMenu.className = 'cv-select-menu';
+        tplMenu.setAttribute('role', 'listbox');
+
+        // Shim so handleTemplateChange can reset displayed value on cancel
+        const tplSelectController = {
+            set value(v) {
+                tplMenu.querySelectorAll('.cv-select-option').forEach(function (o) {
+                    o.classList.toggle('selected', o.dataset.value === v);
+                });
+                tplValueSpan.textContent = t(CONDITION_TEMPLATES[v].nameKey);
+                tplTrigger.setAttribute('aria-expanded', 'false');
+                tplSelect.classList.remove('open');
+                tplMenu.style.position = '';
+                tplMenu.style.top = '';
+                tplMenu.style.left = '';
+                tplMenu.style.width = '';
+                tplMenu.style.right = '';
+            }
+        };
+
         TEMPLATE_KEYS.forEach(function (key) {
-            const opt = document.createElement('option');
-            opt.value = key;
-            opt.textContent = t(CONDITION_TEMPLATES[key].nameKey);
-            if (key === content.template) opt.selected = true;
-            tplSelect.appendChild(opt);
+            const li = document.createElement('li');
+            li.className = 'cv-select-option' + (key === content.template ? ' selected' : '');
+            li.dataset.value = key;
+            li.setAttribute('role', 'option');
+            li.textContent = t(CONDITION_TEMPLATES[key].nameKey);
+            li.addEventListener('click', function () {
+                tplSelect.classList.remove('open');
+                tplTrigger.setAttribute('aria-expanded', 'false');
+                tplMenu.style.position = '';
+                tplMenu.style.top = '';
+                tplMenu.style.left = '';
+                tplMenu.style.width = '';
+                tplMenu.style.right = '';
+                if (key !== content.template) {
+                    handleTemplateChange(key, content, moduleEl, data, panel, tplSelectController);
+                }
+            });
+            tplMenu.appendChild(li);
         });
-        tplSelect.addEventListener('change', function () {
-            const newTpl = tplSelect.value;
-            if (newTpl !== content.template) {
-                handleTemplateChange(newTpl, content, moduleEl, data, panel, tplSelect);
+
+        tplTrigger.addEventListener('click', function () {
+            const isOpen = tplSelect.classList.toggle('open');
+            tplTrigger.setAttribute('aria-expanded', isOpen);
+            if (isOpen) {
+                // Position menu as fixed so it escapes the modal's overflow container
+                const rect = tplTrigger.getBoundingClientRect();
+                tplMenu.style.position = 'fixed';
+                tplMenu.style.top = (rect.bottom + 4) + 'px';
+                tplMenu.style.left = rect.left + 'px';
+                tplMenu.style.width = rect.width + 'px';
+                tplMenu.style.right = 'auto';
             }
         });
+
+        document.addEventListener('click', function (e) {
+            if (!tplSelect.contains(e.target)) {
+                tplSelect.classList.remove('open');
+                tplTrigger.setAttribute('aria-expanded', 'false');
+                tplMenu.style.position = '';
+                tplMenu.style.top = '';
+                tplMenu.style.left = '';
+                tplMenu.style.width = '';
+                tplMenu.style.right = '';
+            }
+        });
+
+        tplSelect.appendChild(tplTrigger);
+        tplSelect.appendChild(tplMenu);
         tplSection.appendChild(tplSelect);
         body.appendChild(tplSection);
 

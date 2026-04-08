@@ -5697,30 +5697,6 @@ select,
     user-select: none;
 }
 
-.cond-template-select {
-    width: 100%;
-    background: var(--cv-bg-sunken);
-    border: 1px solid var(--cv-border);
-    border-radius: 4px;
-    color: var(--cv-text);
-    font-size: 11px;
-    padding: 5px 8px;
-    outline: none;
-    font-family: inherit;
-    cursor: pointer;
-    transition: border-color 0.15s ease;
-    box-sizing: border-box;
-    -webkit-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    padding-right: 24px;
-}
-
-.cond-template-select:focus {
-    border-color: var(--cv-accent);
-}
 
 /* ── Condition Section Labels ── */
 .cond-section-label {

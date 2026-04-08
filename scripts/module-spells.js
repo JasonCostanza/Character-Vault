@@ -124,14 +124,16 @@
                 row.appendChild(label);
                 for (let i = 0; i < sl.max; i++) {
                     const pip = document.createElement('button');
-                    pip.className = 'spell-pip' + (i < sl.spent ? ' spent' : '');
-                    pip.title = i < sl.spent ? t('spells.pipRestore') : t('spells.pipSpend');
+                    const isSpent = i >= sl.max - sl.spent;
+                    pip.className = 'spell-pip' + (isSpent ? ' spent' : '');
+                    pip.title = isSpent ? t('spells.pipRestore') : t('spells.pipSpend');
                     const slotIndex = i;
                     pip.addEventListener('click', () => {
-                        if (slotIndex < sl.spent) {
-                            sl.spent = Math.max(0, sl.spent - 1);
+                        const clickedIsSpent = slotIndex >= sl.max - sl.spent;
+                        if (clickedIsSpent) {
+                            sl.spent = sl.max - 1 - slotIndex;
                         } else {
-                            sl.spent = Math.min(sl.max, sl.spent + 1);
+                            sl.spent = sl.max - slotIndex;
                         }
                         scheduleSave();
                         MODULE_TYPES['spells'].renderBody(bodyEl, data, true);

@@ -7884,6 +7884,7 @@ select,
     box-sizing: border-box;
     scrollbar-width: thin;
     scrollbar-color: var(--cv-text-muted) transparent;
+    scrollbar-gutter: stable;
 }
 
 .spells-edit-container::-webkit-scrollbar { width: 4px; }

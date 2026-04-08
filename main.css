@@ -7568,7 +7568,7 @@ select,
 .spells-play-container {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    flex: 1;
     min-height: 0;
 }
 
@@ -7649,6 +7649,7 @@ select,
     flex: 1;
     overflow-y: auto;
     min-height: 0;
+    scrollbar-gutter: stable;
     scrollbar-width: thin;
     scrollbar-color: var(--cv-text-muted) transparent;
 }
@@ -7859,11 +7860,21 @@ select,
 .spells-edit-container {
     display: flex;
     flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
     gap: 10px;
     padding: 8px;
     width: 100%;
     box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
 }
+
+.spells-edit-container::-webkit-scrollbar { width: 4px; }
+.spells-edit-container::-webkit-scrollbar-track { background: transparent; }
+.spells-edit-container::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .spells-edit-section {
     display: flex;

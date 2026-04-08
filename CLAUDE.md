@@ -50,6 +50,7 @@ Per-file descriptions live in `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
 14. **Use SortableJS for all drag-to-reorder** — never write custom pointer/mouse-based drag systems. SortableJS is already loaded via CDN. Follow the existing pattern: `handle`, `animation: 150`, `ghostClass`, `draggable`, and `onEnd`. See `initStatSortable()` or `initListSortable()` as references. **Important:** Disable SortableJS manual drag-to-reorder if your module uses column header sorting and an auto-sort (asc/desc) is active.
 15. **Play vs Edit Mode interaction rules**: Play mode is read-only, optimized for simple in-game actions. Edit mode allows structure and data modification. Critical stats/values should support Quick Edit (Ctrl+Click) in Play mode to bypass a full mode switch.
 16. **Modal and Overlay standard**: Modals must include standard action buttons (`[Save]`/`[Create]`, `[Cancel]`/`[Close]`, and an `[X]` top-right). If editing an existing entity, consider a `[Delete]` button. Always prompt for unsaved changes if the modal is dismissed with edits pending. Values should clamp live during input to prevent invalid states.
+17. **Scrollbar layout shift prevention**: All scrollable containers must use `scrollbar-gutter: stable;` to reserve scrollbar space. This prevents jarring content shifts when scrollbars appear or disappear. Apply to any element with `overflow-y: auto` or `overflow-x: auto`.
 
 ## Conventions
 

@@ -24,6 +24,7 @@
         if (!Array.isArray(data.content.applied)) data.content.applied = [];
         if (!Array.isArray(data.content.staging)) data.content.staging = [];
         if (!Array.isArray(data.content.customConditions)) data.content.customConditions = [];
+        if (!Array.isArray(data.content.savedCustomInstances)) data.content.savedCustomInstances = [];
         if (data.content.sortBy === undefined) data.content.sortBy = null;
         if (!data.content.sortDir) data.content.sortDir = 'asc';
         return data.content;
@@ -2773,22 +2774,63 @@
         const tpl = CONDITION_TEMPLATES[templateKey];
         if (!tpl) return;
 
+        const customKeys = new Set((content.customConditions || []).map(function (c) { return c.key; }));
+
         if (mode === 'replace') {
+            // Stash custom condition instances before clearing so they survive template switches.
+            // Each instance is tagged with the homeTemplate from its definition (defaulting to 'custom'
+            // for legacy data) so it is restored to the correct template later.
+            if (!Array.isArray(content.savedCustomInstances)) content.savedCustomInstances = [];
+            const stashedKeys = new Set(content.savedCustomInstances.map(function (i) { return i.typeKey; }));
+            const getHomeTemplate = function (typeKey) {
+                const def = (content.customConditions || []).find(function (c) { return c.key === typeKey; });
+                return (def && def.homeTemplate) ? def.homeTemplate : 'custom';
+            };
+            content.applied.forEach(function (a) {
+                if (customKeys.has(a.typeKey) && !stashedKeys.has(a.typeKey)) {
+                    content.savedCustomInstances.push(Object.assign({}, a, { wasApplied: true, homeTemplate: getHomeTemplate(a.typeKey) }));
+                    stashedKeys.add(a.typeKey);
+                }
+            });
+            content.staging.forEach(function (s) {
+                if (customKeys.has(s.typeKey) && !stashedKeys.has(s.typeKey)) {
+                    content.savedCustomInstances.push(Object.assign({}, s, { wasApplied: false, homeTemplate: getHomeTemplate(s.typeKey) }));
+                    stashedKeys.add(s.typeKey);
+                }
+            });
             content.applied = [];
             content.staging = [];
-            content.customConditions = [];
         }
 
         content.template = templateKey;
 
-        // Build set of existing typeKeys
+        // Restore stashed instances whose homeTemplate matches the new template
+        if (Array.isArray(content.savedCustomInstances) && content.savedCustomInstances.length) {
+            const existingTypeKeys = new Set(
+                content.applied.map(function (a) { return a.typeKey; }).concat(
+                content.staging.map(function (s) { return s.typeKey; }))
+            );
+            const remaining = [];
+            content.savedCustomInstances.forEach(function (inst) {
+                if (inst.homeTemplate === templateKey && !existingTypeKeys.has(inst.typeKey)) {
+                    const restored = { id: inst.id, typeKey: inst.typeKey, type: inst.type, value: inst.value, active: inst.active, description: inst.description, maxValue: inst.maxValue };
+                    if (inst.wasApplied) {
+                        content.applied.push(restored);
+                    } else {
+                        content.staging.push(restored);
+                    }
+                    existingTypeKeys.add(inst.typeKey);
+                } else {
+                    remaining.push(inst);
+                }
+            });
+            content.savedCustomInstances = remaining;
+        }
+
+        // Build set of existing typeKeys to skip duplicates when adding template conditions
         const existingKeys = {};
-        content.applied.forEach(function (a) {
-            existingKeys[a.typeKey] = true;
-        });
-        content.staging.forEach(function (s) {
-            existingKeys[s.typeKey] = true;
-        });
+        content.applied.forEach(function (a) { existingKeys[a.typeKey] = true; });
+        content.staging.forEach(function (s) { existingKeys[s.typeKey] = true; });
 
         // Add template conditions to staging (skip duplicates)
         tpl.conditions.forEach(function (def) {
@@ -3027,6 +3069,7 @@
                 description: wizardDesc || '',
                 maxValue: wizardType === 'value' ? wizardMaxValue : null,
                 subconditions: [],
+                homeTemplate: content.template,
             });
             // Add to staging
             content.staging.push({

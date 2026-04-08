@@ -284,6 +284,15 @@ select,
     border-radius: 3px;
 }
 
+.btn-secondary.filled {
+    background: var(--cv-bg-raised);
+    border-color: var(--cv-text-muted);
+}
+
+.btn-secondary.filled:hover {
+    background: var(--cv-bg-sunken);
+}
+
 /* Primary Button (accent, highlighted) */
 .btn-primary {
     padding: 10px 16px;

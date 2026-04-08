@@ -476,7 +476,7 @@
         }
 
         const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'btn-secondary sm';
+        cancelBtn.className = 'btn-secondary filled';
         cancelBtn.textContent = t('spells.cancel');
         const saveBtn = document.createElement('button');
         saveBtn.className = 'btn-primary sm';
@@ -624,7 +624,7 @@
         const footer = document.createElement('div');
         footer.className = 'cv-modal-footer';
         const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'btn-secondary sm';
+        cancelBtn.className = 'btn-secondary filled';
         cancelBtn.textContent = t('spells.cancel');
         const saveBtn = document.createElement('button');
         saveBtn.className = 'btn-primary sm';
@@ -1000,7 +1000,7 @@
         const footer = document.createElement('div');
         footer.className = 'cv-modal-footer';
         const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'btn-secondary sm';
+        cancelBtn.className = 'btn-secondary filled';
         cancelBtn.textContent = t('spells.cancel');
         const saveBtn = document.createElement('button');
         saveBtn.className = 'btn-primary sm';

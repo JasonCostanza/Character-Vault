@@ -613,6 +613,42 @@
         }
         row.appendChild(valueEl);
 
+        // Action buttons group
+        const actionsGroup = document.createElement('div');
+        actionsGroup.className = 'counter-row-actions';
+
+        // Decrement button
+        const decrementBtn = document.createElement('button');
+        decrementBtn.type = 'button';
+        decrementBtn.className = 'counter-decrement-btn';
+        decrementBtn.title = t('counter.decrement');
+        decrementBtn.innerHTML =
+            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+        decrementBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (counter.value <= counter.min) return;
+            counter.value--;
+            scheduleSave();
+            reRenderCounterModule(moduleEl, data);
+        });
+        actionsGroup.appendChild(decrementBtn);
+
+        // Increment button
+        const incrementBtn = document.createElement('button');
+        incrementBtn.type = 'button';
+        incrementBtn.className = 'counter-increment-btn';
+        incrementBtn.title = t('counter.increment');
+        incrementBtn.innerHTML =
+            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+        incrementBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (counter.max !== null && counter.value >= counter.max) return;
+            counter.value++;
+            scheduleSave();
+            reRenderCounterModule(moduleEl, data);
+        });
+        actionsGroup.appendChild(incrementBtn);
+
         // Reset button
         const resetBtn = document.createElement('button');
         resetBtn.type = 'button';
@@ -626,7 +662,9 @@
             scheduleSave();
             reRenderCounterModule(moduleEl, data);
         });
-        row.appendChild(resetBtn);
+        actionsGroup.appendChild(resetBtn);
+
+        row.appendChild(actionsGroup);
 
         // Boundary styling
         if (atMax) row.classList.add('counter-at-max');
@@ -634,7 +672,7 @@
 
         // Increment on click
         row.addEventListener('click', function (e) {
-            if (e.target.closest('.counter-reset-btn')) return;
+            if (e.target.closest('.counter-row-actions')) return;
             if (counter.max !== null && counter.value >= counter.max) return;
             counter.value++;
             scheduleSave();
@@ -691,7 +729,40 @@
         }
         row.appendChild(valueEl);
 
-        // Delete button
+        // Action buttons group — disabled in edit mode to preserve layout
+        const actionsGroup = document.createElement('div');
+        actionsGroup.className = 'counter-row-actions';
+
+        const decrementBtnEdit = document.createElement('button');
+        decrementBtnEdit.type = 'button';
+        decrementBtnEdit.className = 'counter-decrement-btn';
+        decrementBtnEdit.title = t('counter.decrement');
+        decrementBtnEdit.disabled = true;
+        decrementBtnEdit.innerHTML =
+            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+        actionsGroup.appendChild(decrementBtnEdit);
+
+        const incrementBtnEdit = document.createElement('button');
+        incrementBtnEdit.type = 'button';
+        incrementBtnEdit.className = 'counter-increment-btn';
+        incrementBtnEdit.title = t('counter.increment');
+        incrementBtnEdit.disabled = true;
+        incrementBtnEdit.innerHTML =
+            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+        actionsGroup.appendChild(incrementBtnEdit);
+
+        const resetBtnEdit = document.createElement('button');
+        resetBtnEdit.type = 'button';
+        resetBtnEdit.className = 'counter-reset-btn';
+        resetBtnEdit.title = t('counter.reset');
+        resetBtnEdit.disabled = true;
+        resetBtnEdit.innerHTML =
+            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>';
+        actionsGroup.appendChild(resetBtnEdit);
+
+        row.appendChild(actionsGroup);
+
+        // Delete button (outside the actions group, separate from play-mode layout)
         const deleteBtn = document.createElement('button');
         deleteBtn.type = 'button';
         deleteBtn.className = 'counter-row-delete';

@@ -692,6 +692,8 @@
             'counter.deleteCounter': 'Delete Counter',
             'counter.deleteConfirm': 'Delete this counter? This cannot be undone.',
             'counter.discardPrompt': 'You have unsaved changes. Discard?',
+            'counter.decrement': 'Decrement',
+            'counter.increment': 'Increment',
             'counter.reset': 'Reset',
             'counter.unnamed': 'Unnamed',
             'counter.emptyState': 'No counters yet',

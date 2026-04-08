@@ -6713,8 +6713,8 @@ select,
 }
 
 .counter-col-actions {
-    flex: 0 0 24px;
-    width: 24px;
+    flex: 0 0 72px;
+    width: 72px;
     cursor: default;
 }
 
@@ -6740,6 +6740,12 @@ select,
     opacity: 0.55;
 }
 
+.counter-row-play.counter-at-max .counter-increment-btn {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.counter-row-play.counter-at-min .counter-decrement-btn,
 .counter-row-play.counter-at-min .counter-reset-btn {
     opacity: 0.3;
     pointer-events: none;
@@ -6789,6 +6795,16 @@ select,
     font-weight: 500;
 }
 
+.counter-row-actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    width: 72px;
+}
+
+.counter-decrement-btn,
+.counter-increment-btn,
 .counter-reset-btn {
     flex-shrink: 0;
     display: flex;
@@ -6803,11 +6819,23 @@ select,
     transition: color 0.15s ease, border-color 0.15s ease;
 }
 
+.counter-decrement-btn:hover,
+.counter-increment-btn:hover,
 .counter-reset-btn:hover {
     color: var(--cv-accent);
     border-color: var(--cv-accent);
 }
 
+.counter-decrement-btn:disabled,
+.counter-increment-btn:disabled,
+.counter-reset-btn:disabled {
+    opacity: 0.25;
+    cursor: default;
+    pointer-events: none;
+}
+
+.counter-decrement-btn .icon,
+.counter-increment-btn .icon,
 .counter-reset-btn .icon {
     width: 13px;
     height: 13px;

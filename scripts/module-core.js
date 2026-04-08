@@ -845,8 +845,6 @@
             el.style.backgroundColor = data.theme;
         }
 
-        const isPlayMode = modeToggle.classList.contains('mode-play');
-
         const showResize = data.type !== 'hline';
         const displayTitle = data.title || t(typeDef.label);
         el.innerHTML = `
@@ -891,7 +889,7 @@
             addAbilityBtn.addEventListener('click', () => {
                 data.content.abilities.push({ name: '', modifier: 0, proficiency: false, linkedStat: null });
                 const bodyEl = el.querySelector('.module-body');
-                const isPlay = modeToggle.classList.contains('mode-play');
+                const isPlay = window.isPlayMode;
                 typeDef.renderBody(bodyEl, data, isPlay);
                 snapModuleHeight(el, data);
                 scheduleSave();
@@ -912,7 +910,7 @@
             addStatBtn.addEventListener('click', () => {
                 data.content.stats.push({ name: '', value: 0, modifier: 0, proficient: false, rollable: true });
                 const bodyEl = el.querySelector('.module-body');
-                const isPlay = modeToggle.classList.contains('mode-play');
+                const isPlay = window.isPlayMode;
                 typeDef.renderBody(bodyEl, data, isPlay);
                 snapModuleHeight(el, data);
                 scheduleSave();
@@ -937,7 +935,7 @@
             swapLayoutBtn.addEventListener('click', () => {
                 data.content.layout = data.content.layout === 'large-stat' ? 'large-modifier' : 'large-stat';
                 const bodyEl = el.querySelector('.module-body');
-                const isPlay = modeToggle.classList.contains('mode-play');
+                const isPlay = window.isPlayMode;
                 typeDef.renderBody(bodyEl, data, isPlay);
                 snapModuleHeight(el, data);
                 scheduleSave();
@@ -987,7 +985,7 @@
                             });
                         }
                         const bodyEl = el.querySelector('.module-body');
-                        const isPlay = modeToggle.classList.contains('mode-play');
+                        const isPlay = window.isPlayMode;
                         typeDef.renderBody(bodyEl, data, isPlay);
                         scheduleSave();
                     }
@@ -1013,7 +1011,7 @@
                         data.content.currentHP = creature.hp.value;
                         data.content.maxHP = creature.hp.max;
                         const bodyEl = el.querySelector('.module-body');
-                        const isPlay = modeToggle.classList.contains('mode-play');
+                        const isPlay = window.isPlayMode;
                         typeDef.renderBody(bodyEl, data, isPlay);
                         snapModuleHeight(el, data);
                         scheduleSave();
@@ -1086,7 +1084,7 @@
                     proficiencyTier: null,
                 });
                 const bodyEl = el.querySelector('.module-body');
-                const isPlay = modeToggle.classList.contains('mode-play');
+                const isPlay = window.isPlayMode;
                 typeDef.renderBody(bodyEl, data, isPlay);
                 snapModuleHeight(el, data);
                 scheduleSave();
@@ -1115,7 +1113,7 @@
             resLayoutBtn.addEventListener('click', () => {
                 data.content.layout = data.content.layout === 'columns' ? 'rows' : 'columns';
                 const bodyEl = el.querySelector('.module-body');
-                const isPlay = modeToggle.classList.contains('mode-play');
+                const isPlay = window.isPlayMode;
                 typeDef.renderBody(bodyEl, data, isPlay);
                 snapModuleHeight(el, data);
                 scheduleSave();
@@ -1181,7 +1179,7 @@
         chosenClass: 'module-dragging',
         dragClass: 'module-drag-active',
         filter: '#empty-state',
-        disabled: modeToggle.classList.contains('mode-play'),
+        disabled: window.isPlayMode,
         onEnd(evt) {
             // Sync the modules array to match the new DOM order
             const orderedIds = Array.from(moduleGrid.querySelectorAll('.module')).map((el) => el.dataset.id);
@@ -1430,7 +1428,7 @@
             e.stopPropagation();
 
             // Only allow resize in edit mode
-            if (modeToggle.classList.contains('mode-play')) return;
+            if (window.isPlayMode) return;
 
             const grid = document.getElementById('module-grid');
             const gridRect = grid.getBoundingClientRect();

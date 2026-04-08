@@ -416,30 +416,35 @@ select,
     color: var(--cv-text-secondary);
 }
 
-/* ── Mode Toggle — Edit state ── */
-.menu-btn.mode-edit {
+/* ── Mode Switcher (Segmented Control) ── */
+#mode-switcher {
+    display: flex;
+    gap: 4px;
+}
+
+#mode-switcher .mode-seg-btn {
+    border-radius: 4px;
+    color: var(--cv-text-muted);
+    background: transparent;
+    border-color: var(--cv-border-subtle);
+}
+
+#mode-switcher .mode-seg-btn.active {
     color: var(--cv-accent);
     border-color: var(--cv-accent-secondary);
     background: rgba(192, 135, 74, 0.12);
 }
 
-.menu-btn.mode-edit:hover {
+#mode-switcher .mode-seg-btn:hover:not(.active) {
+    color: var(--cv-text-secondary);
+    border-color: var(--cv-border);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+#mode-switcher .mode-seg-btn.active:hover {
     border-color: var(--cv-accent);
     background: rgba(192, 135, 74, 0.2);
     color: var(--cv-accent-hover);
-}
-
-/* ── Mode Toggle — Play state ── */
-.menu-btn.mode-play {
-    color: var(--cv-text-muted);
-    border-color: var(--cv-border-subtle);
-    background: rgba(255, 255, 255, 0.04);
-}
-
-.menu-btn.mode-play:hover {
-    color: var(--cv-text-secondary);
-    border-color: var(--cv-border);
-    background: rgba(255, 255, 255, 0.08);
 }
 
 .mode-label {

@@ -467,7 +467,7 @@
                 if (cat) cat.spells = cat.spells.filter((s) => s.id !== spell.id);
                 scheduleSave();
                 const bodyEl = moduleEl.querySelector('.module-body');
-                const isPlay = modeToggle.classList.contains('mode-play');
+                const isPlay = isPlayMode;
                 MODULE_TYPES['spells'].renderBody(bodyEl, data, isPlay);
                 dirty = false;
                 forceClose();
@@ -532,7 +532,7 @@
             }
             scheduleSave();
             const bodyEl = moduleEl.querySelector('.module-body');
-            const isPlay = modeToggle.classList.contains('mode-play');
+            const isPlay = isPlayMode;
             MODULE_TYPES['spells'].renderBody(bodyEl, data, isPlay);
             dirty = false;
             forceClose();
@@ -665,7 +665,7 @@
             }
             scheduleSave();
             const bodyEl = moduleEl.querySelector('.module-body');
-            const isPlay = modeToggle.classList.contains('mode-play');
+            const isPlay = isPlayMode;
             MODULE_TYPES['spells'].renderBody(bodyEl, data, isPlay);
             dirty = false;
             forceClose();

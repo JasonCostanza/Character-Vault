@@ -1,23 +1,28 @@
 // ── Settings ──
 (function () {
-    // ── Mode Toggle ──
-    const modeToggle = document.getElementById('btn-mode-toggle');
-    modeToggle.addEventListener('click', () => {
-        const isEdit = modeToggle.classList.contains('mode-edit');
-        const label = modeToggle.querySelector('.mode-label');
+    // ── Mode Switcher ──
+    const btnModeEdit = document.getElementById('btn-mode-edit');
+    const btnModePlay = document.getElementById('btn-mode-play');
 
-        if (isEdit) {
-            modeToggle.classList.replace('mode-edit', 'mode-play');
-            label.textContent = t('menu.play');
+    window.isPlayMode = false;
+
+    function _setMode(play) {
+        window.isPlayMode = play;
+        if (play) {
+            btnModeEdit.classList.remove('active');
+            btnModePlay.classList.add('active');
             if (typeof sortable !== 'undefined') sortable.option('disabled', true);
             applyPlayMode();
         } else {
-            modeToggle.classList.replace('mode-play', 'mode-edit');
-            label.textContent = t('menu.edit');
+            btnModePlay.classList.remove('active');
+            btnModeEdit.classList.add('active');
             if (typeof sortable !== 'undefined') sortable.option('disabled', false);
             applyEditMode();
         }
-    });
+    }
+
+    btnModeEdit.addEventListener('click', () => _setMode(!window.isPlayMode));
+    btnModePlay.addEventListener('click', () => _setMode(!window.isPlayMode));
 
     // ── Settings Overlay ──
     const settingsOverlay = document.getElementById('settings-overlay');
@@ -144,7 +149,6 @@
         }
     });
 
-    window.modeToggle = modeToggle;
     window.settingsOverlay = settingsOverlay;
     window.openSettings = openSettings;
     window.closeSettings = closeSettings;

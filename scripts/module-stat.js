@@ -302,8 +302,8 @@
             // Re-render this block in-place
             const container = block.parentElement;
             const idx = parseInt(block.dataset.index, 10);
-            const isPlayMode = modeToggle.classList.contains('mode-play');
-            const newBlock = renderStatBlock(stat, idx, data, isPlayMode);
+            const isPlayModeLocal = isPlayMode;
+            const newBlock = renderStatBlock(stat, idx, data, isPlayModeLocal);
             block.replaceWith(newBlock);
         }
 

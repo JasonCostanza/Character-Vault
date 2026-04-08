@@ -452,7 +452,7 @@
             data.content.linkedStatModuleId = select.value || null;
             scheduleSave();
             const bodyEl = moduleEl.querySelector('.module-body');
-            const isPlay = modeToggle.classList.contains('mode-play');
+            const isPlay = isPlayMode;
             buildAbilityBody(bodyEl, data, isPlay);
             close();
         }
@@ -534,7 +534,7 @@
 
     // ── Live Dot Sync ──
     function refreshLinkedDots() {
-        if (modeToggle.classList.contains('mode-play')) return;
+        if (isPlayMode) return;
         document.querySelectorAll('.module[data-type="abilities"]').forEach((moduleEl) => {
             const data = window.modules.find((m) => m.id === moduleEl.dataset.id);
             if (!data?.content?.abilities) return;

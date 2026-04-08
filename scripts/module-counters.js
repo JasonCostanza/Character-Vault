@@ -566,8 +566,8 @@
     // ── Re-render Helper ──
     function reRenderCounterModule(moduleEl, data) {
         const bodyEl = moduleEl.querySelector('.module-body');
-        const isPlayMode = document.getElementById('btn-mode-toggle').classList.contains('mode-play');
-        MODULE_TYPES['counters'].renderBody(bodyEl, data, isPlayMode);
+        const isPlayModeLocal = isPlayMode;
+        MODULE_TYPES['counters'].renderBody(bodyEl, data, isPlayModeLocal);
         snapModuleHeight(moduleEl, data);
     }
 

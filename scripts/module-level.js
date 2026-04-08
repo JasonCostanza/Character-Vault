@@ -341,7 +341,7 @@
             }
             closeModal();
             const bodyEl = moduleEl.querySelector('.module-body');
-            const isPlay = modeToggle.classList.contains('mode-play');
+            const isPlay = isPlayMode;
             renderLevelBody(bodyEl, data, isPlay);
             if (typeof window.snapModuleHeight === 'function') {
                 window.snapModuleHeight(moduleEl, data);
@@ -690,7 +690,7 @@
             content.barColor = wBarColor;
             content.barStyle = wBarStyle;
             const bodyEl = moduleEl.querySelector('.module-body');
-            const isPlay = modeToggle.classList.contains('mode-play');
+            const isPlay = isPlayMode;
             renderLevelBody(bodyEl, data, isPlay);
             if (typeof window.snapModuleHeight === 'function') {
                 window.snapModuleHeight(moduleEl, data);

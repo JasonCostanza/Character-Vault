@@ -17,9 +17,14 @@ export function setupMinimalDOM() {
         </button>
       </div>
       <div id="menu-right">
-        <button id="btn-mode-toggle" class="menu-btn mode-edit" title="Toggle Play/Edit Mode" data-i18n-title="menu.toggleMode">
-          <span class="mode-label">Edit</span>
-        </button>
+        <div id="mode-switcher">
+          <button id="btn-mode-edit" class="menu-btn mode-seg-btn active" title="Edit Mode">
+            <span class="mode-label" data-i18n="menu.edit">Edit</span>
+          </button>
+          <button id="btn-mode-play" class="menu-btn mode-seg-btn" title="Play Mode">
+            <span class="mode-label" data-i18n="menu.play">Play</span>
+          </button>
+        </div>
       </div>
     </div>
 

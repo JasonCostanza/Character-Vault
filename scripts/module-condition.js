@@ -1938,9 +1938,7 @@
         function rerender() {
             const bodyEl = moduleEl.querySelector('.module-body');
             if (bodyEl && !document.querySelector('.cond-settings-overlay')) {
-                const isPlay =
-                    document.querySelector('.mode-toggle') &&
-                    document.querySelector('.mode-toggle').classList.contains('mode-play');
+                const isPlay = isPlayMode;
                 if (isPlay) {
                     renderPlayBody(bodyEl, data);
                 } else {

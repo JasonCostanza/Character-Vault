@@ -2459,29 +2459,33 @@
             nameSpan.textContent = getCondName(item, content);
             itemEl.appendChild(nameSpan);
 
-            // Delete from pool
-            const delBtn = document.createElement('button');
-            delBtn.className = 'cond-staging-delete';
-            delBtn.title = t('cond.remove');
-            delBtn.innerHTML =
-                '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-            (function (item) {
-                delBtn.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    const idx = content.staging.findIndex(function (s) {
-                        return s.id === item.id;
+            // Delete from pool — only custom conditions can be deleted
+            const isCustom = (content.customConditions || []).some(function (c) {
+                return c.key === item.typeKey;
+            });
+            if (isCustom) {
+                const delBtn = document.createElement('button');
+                delBtn.className = 'cond-staging-delete';
+                delBtn.title = t('cond.remove');
+                delBtn.innerHTML =
+                    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+                (function (item) {
+                    delBtn.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const idx = content.staging.findIndex(function (s) {
+                            return s.id === item.id;
+                        });
+                        if (idx !== -1) content.staging.splice(idx, 1);
+                        const cIdx = content.customConditions.findIndex(function (c) {
+                            return c.key === item.typeKey;
+                        });
+                        if (cIdx !== -1) content.customConditions.splice(cIdx, 1);
+                        scheduleSave();
+                        renderSettingsPanelContent(panel, moduleEl, data, content);
                     });
-                    if (idx !== -1) content.staging.splice(idx, 1);
-                    // Also remove from customConditions if custom
-                    const cIdx = content.customConditions.findIndex(function (c) {
-                        return c.key === item.typeKey;
-                    });
-                    if (cIdx !== -1) content.customConditions.splice(cIdx, 1);
-                    scheduleSave();
-                    renderSettingsPanelContent(panel, moduleEl, data, content);
-                });
-            })(item);
-            itemEl.appendChild(delBtn);
+                })(item);
+                itemEl.appendChild(delBtn);
+            }
 
             (function (item) {
                 itemEl.addEventListener('click', function (e) {

@@ -6816,14 +6816,24 @@ select,
     color: var(--cv-text-muted);
     padding: 3px;
     cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .counter-decrement-btn:hover,
-.counter-increment-btn:hover,
-.counter-reset-btn:hover {
+.counter-increment-btn:hover {
     color: var(--cv-accent);
     border-color: var(--cv-accent);
+}
+
+.counter-reset-btn {
+    color: var(--cv-danger);
+    border-color: rgba(184, 64, 64, 0.3);
+}
+
+.counter-reset-btn:hover {
+    background: rgba(184, 64, 64, 0.15);
+    border-color: var(--cv-danger);
+    color: var(--cv-danger);
 }
 
 .counter-decrement-btn:disabled,

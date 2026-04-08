@@ -695,6 +695,8 @@
             'counter.decrement': 'Decrement',
             'counter.increment': 'Increment',
             'counter.reset': 'Reset',
+            'counter.resetCounter': 'Reset Counter',
+            'counter.resetConfirm': 'Reset this counter to its minimum value?',
             'counter.unnamed': 'Unnamed',
             'counter.emptyState': 'No counters yet',
             'counter.colValue': 'Value',

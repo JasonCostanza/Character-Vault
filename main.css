@@ -2751,35 +2751,14 @@ select,
     min-width: 0;
 }
 
-/* Segmented overlay — tick marks drawn as repeating gradient */
-.level-bar-track.segmented-10::after {
-    content: '';
+.level-bar-divider {
     position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-        to right,
-        transparent 0%,
-        transparent calc(10% - 1px),
-        var(--cv-bg-surface) calc(10% - 1px),
-        var(--cv-bg-surface) 10%
-    );
-    border-radius: 7px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--cv-bg-surface);
     pointer-events: none;
-}
-
-.level-bar-track.segmented-25::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-        to right,
-        transparent 0%,
-        transparent calc(25% - 1px),
-        var(--cv-bg-surface) calc(25% - 1px),
-        var(--cv-bg-surface) 25%
-    );
-    border-radius: 7px;
-    pointer-events: none;
+    z-index: 1;
 }
 
 /* Tooltip */

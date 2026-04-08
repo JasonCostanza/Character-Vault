@@ -162,8 +162,6 @@
 
             const track = document.createElement('div');
             track.className = 'level-bar-track';
-            if (c.barStyle === 'segmented-10') track.classList.add('segmented-10');
-            else if (c.barStyle === 'segmented-25') track.classList.add('segmented-25');
 
             const fill = document.createElement('div');
             fill.className = 'level-bar-fill';
@@ -171,6 +169,23 @@
             if (c.barColor) fill.style.background = c.barColor;
 
             track.appendChild(fill);
+
+            // Add dividers for segmented styles
+            if (c.barStyle === 'segmented-10') {
+                for (let i = 1; i < 10; i++) {
+                    const divider = document.createElement('div');
+                    divider.className = 'level-bar-divider';
+                    divider.style.left = (i * 10) + '%';
+                    track.appendChild(divider);
+                }
+            } else if (c.barStyle === 'segmented-25') {
+                for (let i = 1; i < 4; i++) {
+                    const divider = document.createElement('div');
+                    divider.className = 'level-bar-divider';
+                    divider.style.left = (i * 25) + '%';
+                    track.appendChild(divider);
+                }
+            }
             barContainer.appendChild(track);
 
             // Hover tooltip

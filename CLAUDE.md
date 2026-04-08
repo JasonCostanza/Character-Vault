@@ -22,8 +22,11 @@ Character Vault is a TaleSpire Symbiote — a vanilla HTML/CSS/JS character shee
 ```
 Root:       manifest.json  main.html  main.css  README.md  LICENSE.txt
 scripts/:   translations.js  shared.js  i18n.js  theme.js  settings.js
-            persistence.js  module-core.js  module-text.js  module-stat.js
-            module-health.js  module-hr.js  module-spacer.js  app.js
+            persistence.js  module-core.js  module-abilities.js  module-text.js
+            module-stat.js  module-health.js  module-hr.js  module-level.js
+            module-spacer.js  module-resistance.js  module-savingthrow.js
+            module-spells.js  module-list.js  module-counters.js
+            module-condition.js  app.js
 _DOCS/:     Architecture, design, color/tab/module/localization/settings refs
   SUBMODULES/:  Per-submodule design notes (STATS.md, HEALTH.md, etc.)
   plans/:       Saved implementation plans (kebab-case filenames)
@@ -51,6 +54,7 @@ Per-file descriptions live in `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
 15. **Modal and Overlay standard**: Modals must include standard action buttons (`[Save]`/`[Create]`, `[Cancel]`/`[Close]`, and an `[X]` top-right). If editing an existing entity, consider a `[Delete]` button. Always prompt for unsaved changes if the modal is dismissed with edits pending. Values should clamp live during input to prevent invalid states. Reference: `openSpellDetailModal()` in `scripts/module-spells.js`.
 16. **Scrollbar layout shift prevention**: All scrollable containers must use `scrollbar-gutter: stable;` to reserve scrollbar space. This prevents jarring content shifts when scrollbars appear or disappear. Apply to any element with `overflow-y: auto` or `overflow-x: auto`.
 17. **All user-visible strings must be translatable** — every hardcoded text string is a bug. Use `data-i18n` / `data-i18n-placeholder` / `data-i18n-title` attributes for static text, or call `t(key, replacements?)` for dynamic text. See `_DOCS/LOCALIZATION.md`.
+18. **Update `_DOCS/ARCHITECTURE.md` inline** whenever: a new file is added to `scripts/`, a new `registerModuleType()` is registered, or a new major CSS `/* ── Section ── */` block is introduced. Do this as part of the same task — not as a post-task cleanup step.
 
 ## Conventions
 

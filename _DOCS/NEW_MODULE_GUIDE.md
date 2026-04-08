@@ -118,7 +118,7 @@ registerModuleType('typename', {
 ### Pattern Notes
 
 - **Interaction Modes** — Ensure a clear distinction:
-  - **Play Mode:** Read-only data display with direct in-game interactions (toggles, rolling, quick stat adjustments). Support Quick Edit (Ctrl+Click) on key values to avoid full mode toggles.
+  - **Play Mode:** Read-only data display with direct in-game interactions (toggles, rolling, quick stat adjustments).
   - **Edit Mode:** Inline inputs, array manipulation, and structure changes. Cross-module drag-and-drop applies here.
 - **Data Sorting** — If your module manages lists/arrays, implement the standard 3-state sorting cycle (Ascending/Descending/Custom) on column headers. Remember to disable `SortableJS` drag-to-reorder when an active auto-sort is applied. Save sort state (`sortBy`, `sortDir`) in `data.content`.
 - **Modals & Overlays** — If your module requires complex modal editing:
@@ -130,6 +130,8 @@ registerModuleType('typename', {
 - **`scheduleSave()`** — Call after any user interaction that changes `data`. This triggers the auto-save debounce.
 - **`escapeHtml()`** — Always escape user-supplied text before inserting into HTML strings.
 - **`t(key)`** — Use for all visible text to support localization.
+- **`null` not `undefined`** — Use `null` for intentionally empty values in `data.content` (e.g., `linkedModuleId: null`). `undefined` doesn't survive JSON serialization.
+- **Console logging** — Prefix all `console.log` / `console.warn` / `console.error` calls with `[CV]` — e.g., `console.log('[CV] Spell added')`.
 
 ### Reference Implementations by Complexity
 
@@ -140,6 +142,8 @@ registerModuleType('typename', {
 | Medium | `module-text.js` | ~60 | Textarea input, markdown rendering |
 | Complex | `module-health.js` | ~230 | Multiple fields, action overlays, math eval |
 | Complex | `module-stat.js` | ~330 | Nested arrays, drag-drop, inline editing |
+| Advanced | `module-abilities.js` | ~400 | Settings modal with multiple fields, cross-module linking |
+| Advanced | `module-savingthrow.js` | ~500 | Custom tier editor, editable list, dirty-state guard |
 
 ---
 
@@ -163,6 +167,20 @@ Namespace all keys under your type name:
 'typename.fieldLabel':   'Field Label',
 'typename.actionName':   'Action Name',
 'typename.placeholder':  'Placeholder text...',
+```
+
+### Static vs Dynamic Text
+
+**Static HTML text** (hardcoded in `innerHTML` / template literals that won't change after render) should use `data-i18n`, `data-i18n-placeholder`, or `data-i18n-title` attributes so `applyI18n()` handles them automatically. Use `t(key)` only for text injected dynamically at runtime.
+
+```html
+<!-- Static label on a rendered element -->
+<label data-i18n="typename.fieldLabel"></label>
+<input data-i18n-placeholder="typename.placeholder">
+<button data-i18n-title="typename.actionTooltip"></button>
+
+<!-- Dynamic text — use t() -->
+const buttonText = t('typename.actionName');
 ```
 
 ### Where to Insert
@@ -273,6 +291,8 @@ if (typenameActionBtn) {
 }
 ```
 
+**Always include a `title` attribute** on toolbar buttons — TaleSpire's Chromium does not render native `title` tooltips, so these are consumed by the custom CSS tooltip system. The rightmost button in a module toolbar (usually the delete button) needs the right-anchored tooltip override (see `.module-delete-btn[title]::after` in `main.css`). If your button sits rightmost, apply the same override class pattern.
+
 ### D. Overflow Menu — (if you added header buttons)
 
 Add your button selectors to the `btnDefs` array in `openOverflowMenu()`:
@@ -345,6 +365,32 @@ Add a new section after the existing module sections (before `/* ── Responsi
 - Use `var(--cv-accent)` for focus states and interactive highlights
 - Use `var(--cv-danger)` / `var(--cv-success)` / `var(--cv-warning)` for semantic states
 - Add `user-select: none` on non-content display text
+
+**Scrollable containers** — Apply the full themed scrollbar pattern to any element with `overflow-y: auto`:
+
+```css
+.typename-scroll-container {
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
+}
+
+.typename-scroll-container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.typename-scroll-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.typename-scroll-container::-webkit-scrollbar-thumb {
+    background: var(--cv-text-muted);
+    border-radius: 2px;
+}
+```
+
+Never omit `scrollbar-gutter: stable` — it reserves scrollbar space and prevents layout shift when the scrollbar appears.
 
 ### B. Responsive Size Classes — (if you have header buttons)
 
@@ -448,19 +494,21 @@ Copy this into your plan when creating a new module:
   - [ ] Add `sortBy` / `sortDir` if managing lists
 - [ ] Create `scripts/module-TYPENAME.js` with registerModuleType()
   - [ ] Implement robust Play vs Edit mode logic
-  - [ ] Wire up Quick Edit (Ctrl+Click) if applicable
   - [ ] Ensure manual sorting is disabled when list is auto-sorted
 - [ ] Add `type.typename` to translations.js (all 7 languages)
 - [ ] Add module-specific translation keys (all 7 languages)
+- [ ] Use data-i18n / data-i18n-placeholder / data-i18n-title for static HTML text
 - [ ] Add wizard type card to main.html (alphabetical order)
 - [ ] Add <script> tag to main.html (after module-core.js, before app.js)
 - [ ] Add creation defaults in module-core.js btnWizardCreate handler
 - [ ] Add header buttons in renderModule() (if applicable)
 - [ ] Add button event handlers in renderModule() (if applicable)
+- [ ] Add title attributes to all toolbar buttons (if applicable)
 - [ ] Add overflow menu entries in openOverflowMenu() (if applicable)
 - [ ] Add button hide/show in applyPlayMode/applyEditMode (if applicable)
 - [ ] Update theme/resize exclusions (if applicable)
 - [ ] Add CSS section in main.css
+- [ ] Apply themed scrollbar styles to any scrollable container
 - [ ] Add responsive size rules in main.css (if applicable)
 - [ ] Update ARCHITECTURE.md
 - [ ] Add wizard sub-options (if applicable)
@@ -664,7 +712,11 @@ function openTypenameSettings(moduleEl, data) {
     closeBtnEl.addEventListener('click', close);
     cancelBtn.addEventListener('click', close);
     saveBtn.addEventListener('click', save);
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    overlay.addEventListener('click', (e) => {
+        if (e.target !== overlay) return;
+        if (dirty && !window.confirm(t('common.discardChanges'))) return;
+        close();
+    });
 
     function onKeydown(e) {
         if (e.key === 'Escape') {
@@ -677,7 +729,7 @@ function openTypenameSettings(moduleEl, data) {
 }
 ```
 
-**Note on dirty state:** Only guard the Escape key with a discard prompt if the user's partial changes would be confusing to lose. Simple single-field settings don't need it. See `openSaveSettings()` in `scripts/module-savingthrow.js` for a real dirty-state example.
+**Note on dirty state:** The discard prompt guards both Escape key and clicking outside the overlay — always check `dirty` in both places. Only use this if the user's partial changes would be confusing to lose. Simple single-field settings don't need it. See `openSaveSettings()` in `scripts/module-savingthrow.js` for a real dirty-state example.
 
 ---
 
@@ -826,6 +878,62 @@ window.getTypenameValue = function(moduleId) {
     return mod ? mod.content.someField : null;
 };
 ```
+
+---
+
+### Pattern E — Column Sort (3-State Cycle)
+
+Use when your module manages sortable lists with column headers (e.g. table, stat block with columns). Implements the standard 3-state sort toggle: Custom → Ascending → Descending → back to Custom.
+**Source reference:** `module-list.js` (column header click handlers, `isSorted` flag logic)
+
+**1. Content schema** — store sort state:
+```js
+content: {
+    items: [ /* your data */ ],
+    sortBy: null,           // null = custom/manual order, or column key (e.g., '__name__' or 'attr-id')
+    sortDir: 'asc',         // 'asc' or 'desc' (only meaningful when sortBy is not null)
+}
+```
+
+**2. Toggle logic on column header click** — repeats for each sortable column:
+```js
+columnHeader.addEventListener('click', () => {
+    if (content.sortBy === 'columnKey') {
+        if (content.sortDir === 'asc') {
+            content.sortDir = 'desc';       // Ascending → Descending
+        } else {
+            content.sortBy = null;          // Descending → Custom (clear sort)
+            content.sortDir = 'asc';
+        }
+    } else {
+        content.sortBy = 'columnKey';       // Custom → Ascending (first click)
+        content.sortDir = 'asc';
+    }
+    scheduleSave();
+    // Re-render to apply new sort and update drag handle visibility
+    MODULE_TYPES['typename'].renderBody(bodyEl, data, isPlayMode);
+});
+```
+
+**3. Disable drag-to-reorder when sorted** — SortableJS must be disabled when an active sort is applied:
+```js
+const isSorted = content.sortBy !== null;
+
+// Render drag handles only when not sorted
+if (!isPlayMode && !isSorted) {
+    const handle = document.createElement('span');
+    handle.className = 'typename-drag-handle';
+    handle.innerHTML = '&#x2807;';
+    row.appendChild(handle);
+}
+
+// Initialize SortableJS only when not sorted
+if (!isPlayMode && !isSorted) {
+    initTypenameListSortable(container, data);
+}
+```
+
+The strategy is two-pronged: no drag handle is rendered (user can't grab anything), and `initSortable()` is never called, so no SortableJS instance exists for that render cycle. Always call `renderBody()` after toggling sort to re-render with updated handle visibility.
 
 ---
 

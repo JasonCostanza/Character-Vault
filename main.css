@@ -7684,10 +7684,15 @@ select,
 .spells-cat-header {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 10px;
     padding: 5px 8px;
     cursor: pointer;
     user-select: none;
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    transition: background-color 0.12s ease;
 }
 
 .spells-cat-header:hover {
@@ -7696,7 +7701,7 @@ select,
 
 .spells-collapse-icon {
     font-size: 10px;
-    color: var(--cv-text-muted);
+    color: var(--cv-text-secondary);
     flex-shrink: 0;
     width: 10px;
     text-align: center;

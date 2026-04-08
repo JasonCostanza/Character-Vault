@@ -852,14 +852,6 @@
                     const spellSection = document.createElement('div');
                     spellSection.className = 'spells-edit-spell-section';
 
-                    const addSpellBtn = document.createElement('button');
-                    addSpellBtn.className = 'btn-secondary sm';
-                    addSpellBtn.textContent = t('spells.addSpell');
-                    addSpellBtn.addEventListener('click', () => {
-                        openSpellEditModal(bodyEl.closest('.module'), data, {}, cat.id);
-                    });
-                    spellSection.appendChild(addSpellBtn);
-
                     const spellListEl = document.createElement('div');
                     spellListEl.className = 'spells-edit-spell-list';
                     spellListEl.dataset.catId = cat.id;
@@ -919,6 +911,15 @@
                     }
 
                     spellSection.appendChild(spellListEl);
+
+                    const addSpellBtn = document.createElement('button');
+                    addSpellBtn.className = 'btn-secondary sm';
+                    addSpellBtn.textContent = t('spells.addSpell');
+                    addSpellBtn.addEventListener('click', () => {
+                        openSpellEditModal(bodyEl.closest('.module'), data, {}, cat.id);
+                    });
+                    spellSection.appendChild(addSpellBtn);
+
                     catEl.appendChild(spellSection);
                 }
                 catListEl.appendChild(catEl);

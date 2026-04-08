@@ -2825,6 +2825,34 @@ select,
     background: var(--cv-accent-hover);
 }
 
+/* ── Level Adjust Buttons (Milestone) ── */
+
+.level-adjust-row {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+}
+
+.level-adjust-btn {
+    flex: 1;
+    padding: 5px 0;
+    background: var(--cv-bg-sunken);
+    color: var(--cv-text-secondary);
+    border: 1px solid var(--cv-border);
+    border-radius: 5px;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.level-adjust-btn:hover {
+    background: var(--cv-accent);
+    color: #fff;
+    border-color: var(--cv-accent);
+}
+
 /* ── Level Settings Modal ── */
 
 .level-settings-section {

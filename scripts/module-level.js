@@ -122,6 +122,39 @@
         display.appendChild(numEl);
         wrap.appendChild(display);
 
+        // Milestone stepper — shown instead of XP bar
+        if (isMilestone) {
+            const adjRow = document.createElement('div');
+            adjRow.className = 'level-adjust-row';
+
+            const decBtn = document.createElement('button');
+            decBtn.className = 'level-adjust-btn';
+            decBtn.textContent = '−';
+            decBtn.title = t('level.decrementLevel');
+            decBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (c.level <= 1) return;
+                c.level--;
+                renderLevelBody(bodyEl, data, isPlayMode);
+                scheduleSave();
+            });
+
+            const incBtn = document.createElement('button');
+            incBtn.className = 'level-adjust-btn';
+            incBtn.textContent = '+';
+            incBtn.title = t('level.incrementLevel');
+            incBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                c.level++;
+                renderLevelBody(bodyEl, data, isPlayMode);
+                scheduleSave();
+            });
+
+            adjRow.appendChild(decBtn);
+            adjRow.appendChild(incBtn);
+            wrap.appendChild(adjRow);
+        }
+
         // XP bar — hidden in milestone mode
         if (!isMilestone) {
             const barContainer = document.createElement('div');

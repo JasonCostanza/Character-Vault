@@ -232,6 +232,8 @@
             'level.templatePf2e': 'Pathfinder 2e',
             'level.discardChanges': 'You have unsaved changes. Discard?',
             'level.maxLevelReached': 'Max level reached',
+            'level.decrementLevel': 'Decrease Level',
+            'level.incrementLevel': 'Increase Level',
 
             // Resistance submodule
             'res.moduleSettings': 'Module Settings',

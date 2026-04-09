@@ -4416,6 +4416,8 @@ select,
 .res-edit-section {
     flex: 1;
     min-width: 0;
+    overflow: hidden;
+    min-width: 0;
 }
 
 .res-layout-rows .res-play-section,
@@ -4468,6 +4470,8 @@ select,
     transition: opacity 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     position: relative;
     color: var(--cv-text);
+    min-width: 0;
+    max-width: 100%;
 }
 
 .res-play-item:hover {
@@ -4497,6 +4501,9 @@ select,
     font-size: 10px;
     font-weight: 600;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
 }
 
 .res-play-value {
@@ -4560,6 +4567,8 @@ select,
     border: 1px solid var(--cv-border-subtle);
     border-radius: 4px;
     color: var(--cv-text);
+    min-width: 0;
+    max-width: 100%;
 }
 
 .res-edit-icon {
@@ -4580,6 +4589,9 @@ select,
     font-size: 10px;
     font-weight: 600;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
 }
 
 .res-edit-value {

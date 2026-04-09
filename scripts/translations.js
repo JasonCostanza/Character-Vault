@@ -103,6 +103,7 @@
             'abilities.save': 'Save',
             'abilities.cancel': 'Cancel',
             'abilities.close': 'Close',
+            'abilities.linkedTo': 'Linked to {name}.',
 
             // Text box submodule
             'text.placeholder': 'Write your notes...',
@@ -892,6 +893,7 @@
             'abilities.save': 'Guardar',
             'abilities.cancel': 'Cancelar',
             'abilities.close': 'Cerrar',
+            'abilities.linkedTo': 'Vinculado a {name}.',
 
             'text.placeholder': 'Escribe tus notas...',
 
@@ -1205,6 +1207,7 @@
             'abilities.save': 'Enregistrer',
             'abilities.cancel': 'Annuler',
             'abilities.close': 'Fermer',
+            'abilities.linkedTo': 'Lié à {name}.',
 
             'text.placeholder': 'Écrivez vos notes...',
 
@@ -1518,6 +1521,7 @@
             'abilities.save': 'Speichern',
             'abilities.cancel': 'Abbrechen',
             'abilities.close': 'Schließen',
+            'abilities.linkedTo': 'Verknüpft mit {name}.',
 
             'text.placeholder': 'Schreibe deine Notizen...',
 
@@ -1835,6 +1839,7 @@
             'abilities.save': 'Salva',
             'abilities.cancel': 'Annulla',
             'abilities.close': 'Chiudi',
+            'abilities.linkedTo': 'Collegato a {name}.',
 
             // Text box submodule
             'text.placeholder': 'Scrivi le tue note...',
@@ -2148,6 +2153,7 @@
             'abilities.save': 'Salvar',
             'abilities.cancel': 'Cancelar',
             'abilities.close': 'Fechar',
+            'abilities.linkedTo': 'Vinculado a {name}.',
 
             'text.placeholder': 'Escreva suas anotações...',
 
@@ -2454,6 +2460,7 @@
             'abilities.save': 'Сохранить',
             'abilities.cancel': 'Отмена',
             'abilities.close': 'Закрыть',
+            'abilities.linkedTo': 'Связано с {name}.',
 
             'text.placeholder': 'Пишите заметки...',
 

@@ -850,6 +850,7 @@
         el.innerHTML = `
         <div class="module-header">
             <span class="module-drag-handle" style="${isPlayMode ? 'display:none' : ''}">&#x2807;</span>
+            ${data.type === 'abilities' ? `<span class="module-abilities-link-indicator" title="" style="display:none"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>` : ''}
             <span class="module-type-label" style="${isPlayMode ? '' : 'display:none'}">${escapeHtml(displayTitle)}</span>
             <input class="module-title-input" type="text" value="${escapeHtml(displayTitle)}" placeholder="${escapeHtml(t(typeDef.label))}" style="${isPlayMode ? 'display:none' : ''}" />
             <button class="module-overflow-btn" title="${t('module.moreOptions')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button>
@@ -1158,6 +1159,9 @@
             const val = titleInput.value.trim();
             data.title = val && val !== t(typeDef.label) ? val : null;
             scheduleSave();
+            if (window.refreshLinkedAbilitiesChainIcons) {
+                window.refreshLinkedAbilitiesChainIcons(data.id);
+            }
         });
 
         const bodyEl = el.querySelector('.module-body');

@@ -2121,6 +2121,22 @@ select,
 }
 
 /* ── Abilities Module ── */
+.module-abilities-link-indicator {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: var(--cv-accent);
+    opacity: 0.65;
+    cursor: default;
+    user-select: none;
+    position: relative;
+}
+
+.module-abilities-link-indicator[title]::after {
+    left: 0;
+    transform: none;
+}
+
 .ability-container {
     display: flex;
     flex-direction: column;

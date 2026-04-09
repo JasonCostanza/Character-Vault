@@ -1998,13 +1998,15 @@
                 row.appendChild(iconSpan);
             }
 
-            // Name (click to toggle)
+            // Name
             const nameSpan = document.createElement('span');
             nameSpan.className = 'cond-play-name';
             nameSpan.textContent = getCondName(item, content);
+            row.appendChild(nameSpan);
+
+            // Row click to toggle (entire row is the click target)
             (function (item) {
-                nameSpan.addEventListener('click', function (e) {
-                    e.stopPropagation();
+                row.addEventListener('click', function (e) {
                     item.active = !item.active;
                     if (item.active) {
                         if (condType === 'value' && item.value === 0) item.value = 1;
@@ -2015,7 +2017,6 @@
                     snapModuleHeight(bodyEl.closest('.module'), data);
                 });
             })(item);
-            row.appendChild(nameSpan);
 
             // Value (click to inc, right-click to dec)
             if (condType === 'value') {

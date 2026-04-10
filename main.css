@@ -5418,6 +5418,178 @@ select,
     background: var(--cv-accent-hover);
 }
 
+/* ── Activity Log Module ── */
+.activity-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 4px 0;
+}
+
+.activity-tag-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 4px 8px;
+}
+
+.activity-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--cv-border-subtle);
+    color: var(--cv-text-secondary);
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+    user-select: none;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.activity-tag:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--cv-border);
+}
+
+.activity-tag.active {
+    background: rgba(192, 135, 74, 0.2);
+    border-color: rgba(192, 135, 74, 0.4);
+    color: var(--cv-accent);
+}
+
+.activity-tag.active:hover {
+    background: rgba(192, 135, 74, 0.3);
+    border-color: rgba(192, 135, 74, 0.6);
+}
+
+.activity-entry-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0 4px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
+}
+
+.activity-entry-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.activity-entry-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.activity-entry-list::-webkit-scrollbar-thumb {
+    background: var(--cv-text-muted);
+    border-radius: 2px;
+}
+
+.activity-entry {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.activity-entry:hover {
+    background: var(--cv-surface-hover, rgba(255, 255, 255, 0.04));
+}
+
+.activity-entry-timestamp {
+    flex-shrink: 0;
+    font-size: 10px;
+    color: var(--cv-text-muted);
+    white-space: nowrap;
+    user-select: none;
+}
+
+.activity-entry-message {
+    flex: 1;
+    color: var(--cv-text);
+    user-select: text;
+    word-break: break-word;
+}
+
+.activity-entry-delete {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--cv-text-secondary);
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 3px;
+    opacity: 0;
+    transition: color 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+}
+
+.activity-entry:hover .activity-entry-delete {
+    opacity: 1;
+}
+
+.activity-entry-delete:hover {
+    color: var(--cv-danger);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.activity-empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 8px;
+    color: var(--cv-text-secondary);
+    font-size: 11px;
+    font-style: italic;
+    user-select: none;
+}
+
+.activity-clear-all-btn {
+    width: 100%;
+}
+
+/* ── Activity Log: Responsive ── */
+.module[data-size="xs"] .module-activity-settings-btn {
+    display: none !important;
+}
+
+.module[data-size="sm"] .module-activity-settings-btn {
+    display: none !important;
+}
+
+.module[data-size="xs"] .activity-entry,
+.module[data-size="sm"] .activity-entry {
+    display: block;
+    overflow: hidden;
+}
+
+.module[data-size="xs"] .activity-entry-timestamp,
+.module[data-size="sm"] .activity-entry-timestamp {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 1px;
+}
+
+.module[data-size="xs"] .activity-entry-message,
+.module[data-size="sm"] .activity-entry-message {
+    display: block;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.module[data-size="xs"] .activity-tag {
+    font-size: 9px;
+    padding: 1px 6px;
+}
+
 /* ── Condition Module ── */
 
 /* ── Condition Shared Layout ── */

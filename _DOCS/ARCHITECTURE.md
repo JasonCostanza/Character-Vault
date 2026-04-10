@@ -18,6 +18,7 @@
 | `scripts/settings.js` | Settings overlay, mode toggle, theme buttons, language picker, save/load buttons, force reload |
 | `scripts/persistence.js` | Save/load system: `migrateData()`, `serializeCharacter()`, `deserializeCharacter()`, `saveCharacter()`, `loadCharacter()`, `scheduleSave()` |
 | `scripts/module-core.js` | Module engine: state (`modules[]`), wizard, type registry (`MODULE_TYPES`), `renderModule()`, drag & drop, delete confirm, edit/play mode switching, resize handle |
+| `scripts/module-activity.js` | Activity Log submodule — event log with tag filtering, character-level shared data (`window.activityLog`), global `logActivity()` API |
 | `scripts/module-abilities.js` | Abilities module type registration + helpers (render, edit, sortable, proficiency sync, settings panel, dice rolling) |
 | `scripts/module-text.js` | Text Box module type registration |
 | `scripts/module-stat.js` | Stat module type registration + helpers (render, edit, quick-edit, dice rolling) |
@@ -39,7 +40,7 @@ There is no build step. Everything ships as-is to TaleSpire's embedded Chromium.
 Scripts are loaded via plain `<script src>` tags (no `async`/`defer`) in `main.html`, which guarantees sequential execution. The order matters because later scripts depend on globals defined by earlier ones:
 
 ```
-translations.js → shared.js → i18n.js → theme.js → settings.js → persistence.js → module-core.js → module-condition.js → module-counters.js → module-text.js → module-abilities.js → module-stat.js → module-health.js → module-hr.js → module-level.js → module-spacer.js → module-resistance.js → module-savingthrow.js → module-spells.js → module-list.js → app.js
+translations.js → shared.js → i18n.js → theme.js → settings.js → persistence.js → module-core.js → module-activity.js → module-condition.js → module-counters.js → module-text.js → module-abilities.js → module-stat.js → module-health.js → module-hr.js → module-level.js → module-spacer.js → module-resistance.js → module-savingthrow.js → module-spells.js → module-list.js → app.js
 ```
 
 ## External Dependencies (CDN)
@@ -78,6 +79,7 @@ All JS lives in `scripts/` as separate files loaded by `main.html` in dependency
 | **settings.js** | `modeToggle` element (toggles `.mode-edit` / `.mode-play`), `openSettings()`, `closeSettings()`, `updateThemeButtons(theme)`, language select handler, save/load button wiring, force reload, `chkAutoSave`, `chkAutoLoad` |
 | **persistence.js** | `migrateData()`, `syncModuleState()`, `serializeCharacter()`, `deserializeCharacter()`, `saveCharacter()`, `loadCharacter()`, `scheduleSave()` — TaleSpire campaign localStorage persistence with auto-save debounce |
 | **module-core.js** | `modules[]` array, `moduleIdCounter`, `generateModuleId()`, `wizardState`, wizard open/close/reset, global Escape key handler, wizard interactions (type cards, color swatches), create module handler, `MODULE_TYPES{}` registry, `registerModuleType()`, `renderModule(data)`, SortableJS drag & drop, `openDeleteConfirm()`, `closeDeleteConfirm()`, `deleteModule()`, `applyPlayMode()`, `applyEditMode()`, `initResizeHandle()` (constants `GRID_COLUMNS=4`, `GRID_GAP=8`, row height `80px`) |
+| **module-activity.js** | `registerModuleType('activity', ...)`, `window.logActivity(opts)` — global API other modules call to add entries, `window.openActivitySettings(moduleEl, data)` — settings modal opener, `window.activityLog[]` — character-level array of log entries shared across all Activity Log module instances |
 | **module-text.js** | `registerModuleType('text', ...)` — textarea in edit mode, rendered markdown in play mode; `autoResizeTextarea()`, `syncState()` |
 | **module-abilities.js** | `getProficiencyState(ability, data)`, `rollAbilityCheck(ability)`, `renderAbilityRow()`, `renderAbilityRowEdit()`, `reRenderAbilityEdits()`, `initAbilitySortable()`, `openAbilitySettings()`, `buildAbilityBody()`, `registerModuleType('abilities', ...)` — skill list with modifier badges, proficiency dots, linked Stat module sync, play mode dice rolling, settings panel |
 | **module-stat.js** | `formatModifier(mod)`, `renderStatBlock()`, `renderStatBlockEdit()`, `reRenderStatEdits()`, `initStatSortable()`, `rollStatCheck(stat)`, `enterQuickEdit()`, `registerModuleType('stat', ...)` — stat blocks with values/modifiers, play mode dice rolling, edit mode inputs, layout toggle (large-stat / large-modifier) |
@@ -137,6 +139,7 @@ Sections are delimited by `/* ── Name ── */` comment headers.
 | **Level Module** | `.level-container`, `.level-bar`, `.level-up-btn`, `.level-progress` — sub-sections: Level Bar, Level Up Button, Level Settings Modal |
 | **Counters Module** | `.counter-container`, `.counter-list`, `.counter-row`, `.counter-row-play`, `.counter-row-edit`, `.counter-inc-btn`, `.counter-dec-btn`, `.icon-picker-modal` — sub-sections: Column Headers, Play/Edit Mode Row, Icon Picker, Counter Modal Overrides |
 | **Abilities Module** | `.ability-container`, `.ability-row`, `.ability-rollable`, `.ability-proficiency-dot`, `.ability-name`, `.ability-modifier`, `.ability-edit-row`, `.ability-drag-handle`, `.ability-edit-name`, `.ability-edit-modifier`, `.ability-edit-proficiency-label`, `.ability-edit-delete`, `.ability-empty-state`, `.ability-ghost`, `.ability-settings-select` |
+| **Activity Log Module** | `.activity-container`, `.activity-tag-bar`, `.activity-tag`, `.activity-entry-list`, `.activity-entry`, `.activity-entry-timestamp`, `.activity-entry-message`, `.activity-entry-delete`, `.activity-empty-state`, `.activity-clear-all-btn` — sub-sections: Responsive |
 | **Resistance Module** | `.resistance-container`, `.resistance-section`, `.resistance-item`, `.resistance-item-play`, `.resistance-item-edit`, `.resistance-staging-area` — sub-sections: Shared Layout, Play/Edit Sections, Play Mode Items/Tooltips, Edit Mode Items, Empty State, Settings Panel, Staging Area, Creation Wizard, SortableJS Ghost |
 | **Saving Throws Module** | `.save-container`, `.save-block`, `.save-rollable`, `.save-name`, `.save-modifier`, `.save-tier-badge`, `.save-block-edit`, `.save-edit-name-row`, `.save-drag-handle`, `.save-edit-name`, `.save-edit-value`, `.save-edit-tier`, `.save-quick-input`, `.save-ghost`, `.save-notes-area`, `.save-notes-textarea`, `.save-notes-display` — sub-sections: Play Mode Blocks, Quick Edit Input, Edit Mode Blocks, Notes Area, Settings Modal, Custom Tier Editor, Responsive XS/SM |
 | **Spells Module** | `.spells-play-container`, `.spells-slots-section`, `.spells-category`, `.spell-pip`, `.spells-spell-row`, `.spells-detail-modal`, `.spells-edit-container` — sub-sections: Play Mode, Slot Level Rows, Spell List, Category, Spell Rows, Detail Modal Attributes, Spell Edit Modal Attributes, Edit Mode, Category Edit List, Spell Edit List, SortableJS Ghost Classes, Settings Toggle |
@@ -180,7 +183,7 @@ Maps type keys to behavior definitions. Each entry:
   syncState(moduleEl, data) {}                 // optional — sync live DOM state to data before save
 }
 ```
-Currently registered types: `abilities`, `text`, `stat`, `hline`, `health`, `level`, `spacer`, `list`, `counters`, `resistance`, `savingthrow`, `spells`, `condition`
+Currently registered types: `abilities`, `activity`, `text`, `stat`, `hline`, `health`, `level`, `spacer`, `list`, `counters`, `resistance`, `savingthrow`, `spells`, `condition`
 
 ### Save Blob (JSON schema v1)
 Character sheet persistence format, stored via `TS.localStorage.campaign`:
@@ -189,7 +192,31 @@ Character sheet persistence format, stored via `TS.localStorage.campaign`:
   version: 1,                   // schema version for migrations
   savedAt: '2026-03-21T...',    // ISO timestamp
   moduleIdCounter: 5,           // resume ID generation
+  activityLog: [ /* activity log entries — character-level, shared across all Activity Log modules */ ],
   modules: [ /* modules[] array entries */ ]
+}
+```
+
+### `window.activityLog[]` (character-level array)
+Shared across all Activity Log module instances. Each entry:
+```js
+{
+  id: 'log_abc123xyz',       // unique ID from generateLogEntryId()
+  timestamp: 1712345678901,  // Date.now() epoch ms
+  eventType: 'damage_taken', // arbitrary string, used for tag filtering
+  sourceModuleId: 'module-005' | null,
+  message: 'Took 8 fire damage'
+}
+```
+
+### Activity Log Module `content` (object)
+Per-instance view settings (NOT the log entries themselves — those are in `window.activityLog`):
+```js
+{
+  sortOrder: 'newest',       // 'newest' or 'oldest'
+  hiddenEventTypes: [],      // eventType strings the user toggled OFF
+  showTimestamps: true,      // whether timestamps are visible
+  maxEntries: 200            // max log entries to keep
 }
 ```
 

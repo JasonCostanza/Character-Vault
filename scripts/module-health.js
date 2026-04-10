@@ -159,6 +159,9 @@
                 return;
             }
 
+            const oldCurrentHP = data.content.currentHP;
+            const oldTempHP = data.content.tempHP;
+
             switch (mode) {
                 case 'damage':
                     applyDamage(data.content, result);
@@ -175,6 +178,23 @@
             }
 
             scheduleSave();
+            if (typeof window.logActivity === 'function') {
+                switch (mode) {
+                    case 'damage': {
+                        const absorbed = oldTempHP - data.content.tempHP;
+                        let msg = t('health.log.damage', { amount: result, oldHP: oldCurrentHP, newHP: data.content.currentHP });
+                        if (absorbed > 0) msg += ' ' + t('health.log.tempAbsorbed', { absorbed: absorbed });
+                        window.logActivity({ type: 'health.event.damage', message: msg, sourceModuleId: data.id });
+                        break;
+                    }
+                    case 'heal':
+                        window.logActivity({ type: 'health.event.heal', message: t('health.log.heal', { amount: result, oldHP: oldCurrentHP, newHP: data.content.currentHP }), sourceModuleId: data.id });
+                        break;
+                    case 'temp':
+                        window.logActivity({ type: 'health.event.tempHP', message: t('health.log.tempSet', { oldTemp: oldTempHP, newTemp: data.content.tempHP }), sourceModuleId: data.id });
+                        break;
+                }
+            }
             closeHealthActionOverlay(moduleEl);
             syncHealthLayersFromData(moduleEl, data);
             if (typeof window.snapModuleHeight === 'function') {
@@ -311,9 +331,17 @@
             function commitValue() {
                 const result = evaluateHealthExpression(input.value);
                 if (result !== null) {
+                    const oldVal = c[key];
                     c[key] = key === 'tempHP' ? Math.max(0, result) : result;
                     input.value = c[key];
                     scheduleSave();
+                    if (oldVal !== c[key] && typeof window.logActivity === 'function') {
+                        window.logActivity({
+                            type: 'health.event.adjust',
+                            message: t('health.log.adjust', { field: t('health.' + key), oldVal: oldVal, newVal: c[key] }),
+                            sourceModuleId: data.id
+                        });
+                    }
                     syncHealthLayersFromData(bodyEl.closest('.module'), data);
                 } else {
                     input.value = c[key];
@@ -378,9 +406,17 @@
         function commitTemp() {
             const result = evaluateHealthExpression(tempInput.value);
             if (result !== null) {
+                const oldTemp = c.tempHP;
                 c.tempHP = Math.max(0, result);
                 tempInput.value = c.tempHP;
                 scheduleSave();
+                if (oldTemp !== c.tempHP && typeof window.logActivity === 'function') {
+                    window.logActivity({
+                        type: 'health.event.tempHP',
+                        message: t('health.log.tempAdjust', { oldTemp: oldTemp, newTemp: c.tempHP }),
+                        sourceModuleId: data.id
+                    });
+                }
                 tempBadge.classList.toggle('has-temp', c.tempHP > 0);
                 syncHealthLayersFromData(bodyEl.closest('.module'), data);
             } else {

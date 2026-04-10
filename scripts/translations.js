@@ -73,6 +73,7 @@
 
             // Module type labels
             'type.abilities': 'Abilities',
+            'type.activity': 'Activity Log',
             'type.text': 'Text Box',
             'type.hline': 'Horizontal Line',
             'type.stat': 'Stat',
@@ -124,6 +125,16 @@
             'health.ok': 'OK',
             'health.cancel': 'Cancel',
             'health.eyedropper': 'Get from Board',
+            'health.event.heal': 'Heal',
+            'health.event.damage': 'Damage',
+            'health.event.tempHP': 'Temp HP',
+            'health.event.adjust': 'Adjustment',
+            'health.log.damage': 'Took {amount} damage ({oldHP} → {newHP})',
+            'health.log.tempAbsorbed': '({absorbed} absorbed by temp HP)',
+            'health.log.heal': 'Healed {amount} HP ({oldHP} → {newHP})',
+            'health.log.tempSet': 'Set temp HP ({oldTemp} → {newTemp})',
+            'health.log.tempAdjust': 'Adjusted temp HP ({oldTemp} → {newTemp})',
+            'health.log.adjust': '{field} adjusted ({oldVal} → {newVal})',
             'stat.eyedropper': 'Get from Board',
 
             // Stat submodule
@@ -798,6 +809,25 @@
             'spells.autoSpendSlots': 'Auto-spend spell slots when casting',
             'spells.showSlotErrors': 'Show error when no slots available',
 
+            // Activity Log submodule
+            'activity.emptyState': 'No activity recorded yet',
+            'activity.deleteEntry': 'Delete entry',
+            'activity.clearAll': 'Clear All',
+            'activity.clearAllConfirm': 'Delete all activity log entries? This cannot be undone.',
+            'activity.settingsTitle': 'Activity Log Settings',
+            'activity.sortOrder': 'Sort Order',
+            'activity.sortNewest': 'Newest First',
+            'activity.sortOldest': 'Oldest First',
+            'activity.showTimestamps': 'Show timestamps',
+            'activity.maxEntries': 'Maximum Entries',
+            'activity.close': 'Close',
+            'activity.cancel': 'Cancel',
+            'activity.save': 'Save',
+            'activity.settings': 'Settings',
+
+            // Common
+            'common.discardChanges': 'You have unsaved changes. Discard?',
+
             'empty.message': 'Click <strong>New Module</strong> to get started',
         },
 
@@ -864,6 +894,7 @@
             'module.moreOptions': 'Más opciones',
 
             'type.abilities': 'Habilidades',
+            'type.activity': 'Activity Log',
             'type.text': 'Cuadro de Texto',
             'type.hline': 'Línea Horizontal',
             'type.stat': 'Estadística',
@@ -912,6 +943,16 @@
             'health.ok': 'Aceptar',
             'health.cancel': 'Cancelar',
             'health.eyedropper': 'Obtener del Tablero',
+            'health.event.heal': 'Curación',
+            'health.event.damage': 'Daño',
+            'health.event.tempHP': 'HP Temporal',
+            'health.event.adjust': 'Ajuste',
+            'health.log.damage': 'Recibió {amount} de daño ({oldHP} → {newHP})',
+            'health.log.tempAbsorbed': '({absorbed} absorbido por HP temporal)',
+            'health.log.heal': 'Curado {amount} HP ({oldHP} → {newHP})',
+            'health.log.tempSet': 'HP temporal establecido ({oldTemp} → {newTemp})',
+            'health.log.tempAdjust': 'HP temporal ajustado ({oldTemp} → {newTemp})',
+            'health.log.adjust': '{field} ajustado ({oldVal} → {newVal})',
             'stat.eyedropper': 'Obtener del Tablero',
 
             'stat.addStat': 'Agregar Estadística',
@@ -1112,6 +1153,25 @@
             'spells.autoSpendSlots': 'Gastar espacios automáticamente al lanzar',
             'spells.showSlotErrors': 'Mostrar error cuando no hay espacios disponibles',
 
+            // Activity Log submodule
+            'activity.emptyState': 'No activity recorded yet',
+            'activity.deleteEntry': 'Delete entry',
+            'activity.clearAll': 'Clear All',
+            'activity.clearAllConfirm': 'Delete all activity log entries? This cannot be undone.',
+            'activity.settingsTitle': 'Activity Log Settings',
+            'activity.sortOrder': 'Sort Order',
+            'activity.sortNewest': 'Newest First',
+            'activity.sortOldest': 'Oldest First',
+            'activity.showTimestamps': 'Show timestamps',
+            'activity.maxEntries': 'Maximum Entries',
+            'activity.close': 'Close',
+            'activity.cancel': 'Cancel',
+            'activity.save': 'Save',
+            'activity.settings': 'Settings',
+
+            // Common
+            'common.discardChanges': 'You have unsaved changes. Discard?',
+
             'empty.message': 'Haz clic en <strong>Nuevo Módulo</strong> para comenzar',
         },
 
@@ -1178,6 +1238,7 @@
             'module.moreOptions': "Plus d'options",
 
             'type.abilities': 'Compétences',
+            'type.activity': 'Activity Log',
             'type.text': 'Zone de Texte',
             'type.hline': 'Ligne Horizontale',
             'type.stat': 'Statistique',
@@ -1226,6 +1287,16 @@
             'health.ok': 'OK',
             'health.cancel': 'Annuler',
             'health.eyedropper': 'Récupérer du Plateau',
+            'health.event.heal': 'Soin',
+            'health.event.damage': 'Dégâts',
+            'health.event.tempHP': 'PV Temporaires',
+            'health.event.adjust': 'Ajustement',
+            'health.log.damage': 'Subi {amount} dégâts ({oldHP} → {newHP})',
+            'health.log.tempAbsorbed': '({absorbed} absorbés par les PV temporaires)',
+            'health.log.heal': 'Soigné {amount} PV ({oldHP} → {newHP})',
+            'health.log.tempSet': 'PV temporaires définis ({oldTemp} → {newTemp})',
+            'health.log.tempAdjust': 'PV temporaires ajustés ({oldTemp} → {newTemp})',
+            'health.log.adjust': '{field} ajusté ({oldVal} → {newVal})',
             'stat.eyedropper': 'Récupérer du Plateau',
 
             'stat.addStat': 'Ajouter une Statistique',
@@ -1426,6 +1497,25 @@
             'spells.autoSpendSlots': "Dépenser automatiquement les emplacements lors du lancer",
             'spells.showSlotErrors': "Afficher une erreur quand il n'y a plus d'emplacement",
 
+            // Activity Log submodule
+            'activity.emptyState': 'No activity recorded yet',
+            'activity.deleteEntry': 'Delete entry',
+            'activity.clearAll': 'Clear All',
+            'activity.clearAllConfirm': 'Delete all activity log entries? This cannot be undone.',
+            'activity.settingsTitle': 'Activity Log Settings',
+            'activity.sortOrder': 'Sort Order',
+            'activity.sortNewest': 'Newest First',
+            'activity.sortOldest': 'Oldest First',
+            'activity.showTimestamps': 'Show timestamps',
+            'activity.maxEntries': 'Maximum Entries',
+            'activity.close': 'Close',
+            'activity.cancel': 'Cancel',
+            'activity.save': 'Save',
+            'activity.settings': 'Settings',
+
+            // Common
+            'common.discardChanges': 'You have unsaved changes. Discard?',
+
             'empty.message': 'Cliquez sur <strong>Nouveau Module</strong> pour commencer',
         },
 
@@ -1492,6 +1582,7 @@
             'module.moreOptions': 'Mehr Optionen',
 
             'type.abilities': 'Fähigkeiten',
+            'type.activity': 'Activity Log',
             'type.text': 'Textfeld',
             'type.hline': 'Horizontale Linie',
             'type.stat': 'Wert',
@@ -1540,6 +1631,16 @@
             'health.ok': 'OK',
             'health.cancel': 'Abbrechen',
             'health.eyedropper': 'Vom Spielfeld holen',
+            'health.event.heal': 'Heilung',
+            'health.event.damage': 'Schaden',
+            'health.event.tempHP': 'Temporäre TP',
+            'health.event.adjust': 'Anpassung',
+            'health.log.damage': '{amount} Schaden erlitten ({oldHP} → {newHP})',
+            'health.log.tempAbsorbed': '({absorbed} von temporären TP absorbiert)',
+            'health.log.heal': '{amount} TP geheilt ({oldHP} → {newHP})',
+            'health.log.tempSet': 'Temporäre TP gesetzt ({oldTemp} → {newTemp})',
+            'health.log.tempAdjust': 'Temporäre TP angepasst ({oldTemp} → {newTemp})',
+            'health.log.adjust': '{field} angepasst ({oldVal} → {newVal})',
             'stat.eyedropper': 'Vom Spielfeld holen',
 
             'stat.addStat': 'Wert hinzufügen',
@@ -1738,6 +1839,25 @@
             'spells.autoSpendSlots': 'Zauberschlitze beim Wirken automatisch verbrauchen',
             'spells.showSlotErrors': 'Fehler anzeigen wenn keine Schlitze verfügbar',
 
+            // Activity Log submodule
+            'activity.emptyState': 'No activity recorded yet',
+            'activity.deleteEntry': 'Delete entry',
+            'activity.clearAll': 'Clear All',
+            'activity.clearAllConfirm': 'Delete all activity log entries? This cannot be undone.',
+            'activity.settingsTitle': 'Activity Log Settings',
+            'activity.sortOrder': 'Sort Order',
+            'activity.sortNewest': 'Newest First',
+            'activity.sortOldest': 'Oldest First',
+            'activity.showTimestamps': 'Show timestamps',
+            'activity.maxEntries': 'Maximum Entries',
+            'activity.close': 'Close',
+            'activity.cancel': 'Cancel',
+            'activity.save': 'Save',
+            'activity.settings': 'Settings',
+
+            // Common
+            'common.discardChanges': 'You have unsaved changes. Discard?',
+
             'empty.message': 'Klicke auf <strong>Neues Modul</strong> um zu beginnen',
         },
 
@@ -1810,6 +1930,7 @@
 
             // Module type labels
             'type.abilities': 'Abilità',
+            'type.activity': 'Activity Log',
             'type.text': 'Casella di Testo',
             'type.hline': 'Linea Orizzontale',
             'type.stat': 'Statistica',
@@ -1860,6 +1981,16 @@
             'health.ok': 'OK',
             'health.cancel': 'Annulla',
             'health.eyedropper': 'Prendi dalla Plancia',
+            'health.event.heal': 'Cura',
+            'health.event.damage': 'Danno',
+            'health.event.tempHP': 'PF Temporanei',
+            'health.event.adjust': 'Regolazione',
+            'health.log.damage': 'Subiti {amount} danni ({oldHP} → {newHP})',
+            'health.log.tempAbsorbed': '({absorbed} assorbiti dai PF temporanei)',
+            'health.log.heal': 'Curati {amount} PF ({oldHP} → {newHP})',
+            'health.log.tempSet': 'PF temporanei impostati ({oldTemp} → {newTemp})',
+            'health.log.tempAdjust': 'PF temporanei regolati ({oldTemp} → {newTemp})',
+            'health.log.adjust': '{field} regolato ({oldVal} → {newVal})',
 
             // Stat submodule
             'stat.addStat': 'Aggiungi Statistica',
@@ -2058,6 +2189,25 @@
             'spells.autoSpendSlots': 'Usa automaticamente gli slot quando si lancia',
             'spells.showSlotErrors': 'Mostra errore quando non ci sono slot disponibili',
 
+            // Activity Log submodule
+            'activity.emptyState': 'No activity recorded yet',
+            'activity.deleteEntry': 'Delete entry',
+            'activity.clearAll': 'Clear All',
+            'activity.clearAllConfirm': 'Delete all activity log entries? This cannot be undone.',
+            'activity.settingsTitle': 'Activity Log Settings',
+            'activity.sortOrder': 'Sort Order',
+            'activity.sortNewest': 'Newest First',
+            'activity.sortOldest': 'Oldest First',
+            'activity.showTimestamps': 'Show timestamps',
+            'activity.maxEntries': 'Maximum Entries',
+            'activity.close': 'Close',
+            'activity.cancel': 'Cancel',
+            'activity.save': 'Save',
+            'activity.settings': 'Settings',
+
+            // Common
+            'common.discardChanges': 'You have unsaved changes. Discard?',
+
             'empty.message': 'Clicca su <strong>Nuovo Modulo</strong> per iniziare',
         },
 
@@ -2124,6 +2274,7 @@
             'module.moreOptions': 'Mais opções',
 
             'type.abilities': 'Habilidades',
+            'type.activity': 'Activity Log',
             'type.text': 'Caixa de Texto',
             'type.hline': 'Linha Horizontal',
             'type.stat': 'Estatística',
@@ -2172,6 +2323,16 @@
             'health.ok': 'OK',
             'health.cancel': 'Cancelar',
             'health.eyedropper': 'Obter do Tabuleiro',
+            'health.event.heal': 'Cura',
+            'health.event.damage': 'Dano',
+            'health.event.tempHP': 'HP Temporário',
+            'health.event.adjust': 'Ajuste',
+            'health.log.damage': 'Sofreu {amount} de dano ({oldHP} → {newHP})',
+            'health.log.tempAbsorbed': '({absorbed} absorvido pelo HP temporário)',
+            'health.log.heal': 'Curado {amount} HP ({oldHP} → {newHP})',
+            'health.log.tempSet': 'HP temporário definido ({oldTemp} → {newTemp})',
+            'health.log.tempAdjust': 'HP temporário ajustado ({oldTemp} → {newTemp})',
+            'health.log.adjust': '{field} ajustado ({oldVal} → {newVal})',
 
             'stat.addStat': 'Adicionar Estatística',
             'stat.deleteStat': 'Excluir Estatística',
@@ -2365,6 +2526,25 @@
             'spells.autoSpendSlots': 'Gastar espaços automaticamente ao lançar',
             'spells.showSlotErrors': 'Mostrar erro quando não há espaços disponíveis',
 
+            // Activity Log submodule
+            'activity.emptyState': 'No activity recorded yet',
+            'activity.deleteEntry': 'Delete entry',
+            'activity.clearAll': 'Clear All',
+            'activity.clearAllConfirm': 'Delete all activity log entries? This cannot be undone.',
+            'activity.settingsTitle': 'Activity Log Settings',
+            'activity.sortOrder': 'Sort Order',
+            'activity.sortNewest': 'Newest First',
+            'activity.sortOldest': 'Oldest First',
+            'activity.showTimestamps': 'Show timestamps',
+            'activity.maxEntries': 'Maximum Entries',
+            'activity.close': 'Close',
+            'activity.cancel': 'Cancel',
+            'activity.save': 'Save',
+            'activity.settings': 'Settings',
+
+            // Common
+            'common.discardChanges': 'You have unsaved changes. Discard?',
+
             'empty.message': 'Clique em <strong>Novo Módulo</strong> para começar',
         },
 
@@ -2431,6 +2611,7 @@
             'module.moreOptions': 'Дополнительные параметры',
 
             'type.abilities': 'Навыки',
+            'type.activity': 'Activity Log',
             'type.text': 'Текстовое Поле',
             'type.hline': 'Горизонтальная Линия',
             'type.stat': 'Характеристика',
@@ -2479,6 +2660,16 @@
             'health.ok': 'ОК',
             'health.cancel': 'Отмена',
             'health.eyedropper': 'Получить с Доски',
+            'health.event.heal': 'Исцеление',
+            'health.event.damage': 'Урон',
+            'health.event.tempHP': 'Врем. ОЗ',
+            'health.event.adjust': 'Коррекция',
+            'health.log.damage': 'Получено {amount} урона ({oldHP} → {newHP})',
+            'health.log.tempAbsorbed': '({absorbed} поглощено временными ОЗ)',
+            'health.log.heal': 'Исцелено {amount} ОЗ ({oldHP} → {newHP})',
+            'health.log.tempSet': 'Временные ОЗ установлены ({oldTemp} → {newTemp})',
+            'health.log.tempAdjust': 'Временные ОЗ скорректированы ({oldTemp} → {newTemp})',
+            'health.log.adjust': '{field} скорректировано ({oldVal} → {newVal})',
 
             'stat.addStat': 'Добавить Характеристику',
             'stat.deleteStat': 'Удалить Характеристику',
@@ -2671,6 +2862,25 @@
             'spells.collapse': 'Свернуть',
             'spells.autoSpendSlots': 'Автоматически использовать ячейки при применении',
             'spells.showSlotErrors': 'Показывать ошибку когда нет доступных ячеек',
+
+            // Activity Log submodule
+            'activity.emptyState': 'No activity recorded yet',
+            'activity.deleteEntry': 'Delete entry',
+            'activity.clearAll': 'Clear All',
+            'activity.clearAllConfirm': 'Delete all activity log entries? This cannot be undone.',
+            'activity.settingsTitle': 'Activity Log Settings',
+            'activity.sortOrder': 'Sort Order',
+            'activity.sortNewest': 'Newest First',
+            'activity.sortOldest': 'Oldest First',
+            'activity.showTimestamps': 'Show timestamps',
+            'activity.maxEntries': 'Maximum Entries',
+            'activity.close': 'Close',
+            'activity.cancel': 'Cancel',
+            'activity.save': 'Save',
+            'activity.settings': 'Settings',
+
+            // Common
+            'common.discardChanges': 'You have unsaved changes. Discard?',
 
             'empty.message': 'Нажмите <strong>Новый Модуль</strong> чтобы начать',
         },

@@ -125,6 +125,7 @@ registerModuleType('typename', {
   - Add universal buttons (`[Save]`/`[Create]`, `[Cancel]`/`[Close]`, `[X]`, and potentially `[Delete]`).
   - Implement an unsaved changes prompt if the user closes without saving.
   - Auto-clamp values live (e.g., `Current Value` cannot exceed `Max`).
+- **Dropdowns / Selects** — Never use native `<select>` elements. Use the `cv-select` custom component, which consists of a `div.cv-select` wrapper, a `button.cv-select-trigger` (with a `span.cv-select-value` and chevron SVG inside), and a `ul.cv-select-menu` with `li.cv-select-option` items. Wire trigger click to toggle `.open` on the wrapper and position the menu with `position: fixed` so it escapes modal overflow containers. See `buildCvSelect()` in `module-activity.js` for a reusable helper, or `openConditionSettings()` in `module-condition.js` for the inline pattern.
 - **Icons** — Use the curated SVG library. Place the `None`/`null` option first in icon pickers. Avoid custom uploads.
 - **Event handlers** — Attach in `renderBody()`. They're recreated on each render, so no cleanup needed.
 - **`scheduleSave()`** — Call after any user interaction that changes `data`. This triggers the auto-save debounce.

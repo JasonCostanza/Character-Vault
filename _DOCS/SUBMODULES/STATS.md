@@ -110,6 +110,8 @@ In edit mode, stats can be reordered by dragging the handle (`⁞`) on each stat
 
 The sortable instance is stored on `container._sortable` and is destroyed and re-initialized whenever the stat list is re-rendered (e.g. after a delete).
 
+**Important:** If the Stats module uses column header sorting with an active auto-sort (asc/desc), disable SortableJS manual drag-to-reorder for that column. Allowing both simultaneous auto-sort and manual drag creates confusing UX where the list re-sorts immediately after the user drags.
+
 ## Adding a Stat
 
 When a new stat is added via the toolbar button, it is appended with defaults: `name: ''`, `value: 0`, `modifier: 0`, `proficient: false`, `rollable: true`. The module body is re-rendered and the module height is snapped to fit.

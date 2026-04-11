@@ -476,7 +476,7 @@
             if (content.tiers.length === 0) content.tiersEnabled = false;
             // Re-render
             const bodyEl = moduleEl.querySelector('.module-body');
-            const isPlay = modeToggle.classList.contains('mode-play');
+            const isPlay = isPlayMode;
             MODULE_TYPES['savingthrow'].renderBody(bodyEl, data, isPlay);
             scheduleSave();
             closeModal();

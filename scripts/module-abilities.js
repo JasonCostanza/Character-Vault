@@ -452,8 +452,9 @@
             data.content.linkedStatModuleId = select.value || null;
             scheduleSave();
             const bodyEl = moduleEl.querySelector('.module-body');
-            const isPlay = modeToggle.classList.contains('mode-play');
+            const isPlay = isPlayMode;
             buildAbilityBody(bodyEl, data, isPlay);
+            updateAbilitiesChainIcon(moduleEl, data);
             close();
         }
 
@@ -468,6 +469,22 @@
             if (e.key === 'Escape') close();
         }
         document.addEventListener('keydown', onKeydown);
+    }
+
+    // ── Chain Link Indicator ──
+    function updateAbilitiesChainIcon(moduleEl, data) {
+        const indicator = moduleEl.querySelector('.module-abilities-link-indicator');
+        if (!indicator) return;
+        const linkedId = data.content.linkedStatModuleId;
+        if (!linkedId) {
+            indicator.style.display = 'none';
+            indicator.title = '';
+            return;
+        }
+        const linkedModule = window.modules.find((m) => m.id === linkedId);
+        const name = linkedModule ? (linkedModule.title || t('type.stat')) : '?';
+        indicator.title = t('abilities.linkedTo', { name });
+        indicator.style.display = '';
     }
 
     // ── Module Body Builder ──
@@ -500,6 +517,9 @@
 
         bodyEl.innerHTML = '';
         bodyEl.appendChild(container);
+
+        const moduleEl = bodyEl.closest('.module');
+        if (moduleEl) updateAbilitiesChainIcon(moduleEl, data);
     }
 
     // ── Module Type Registration ──
@@ -534,7 +554,7 @@
 
     // ── Live Dot Sync ──
     function refreshLinkedDots() {
-        if (modeToggle.classList.contains('mode-play')) return;
+        if (isPlayMode) return;
         document.querySelectorAll('.module[data-type="abilities"]').forEach((moduleEl) => {
             const data = window.modules.find((m) => m.id === moduleEl.dataset.id);
             if (!data?.content?.abilities) return;
@@ -558,5 +578,13 @@
     window.applyAbilityTemplate = applyAbilityTemplate;
     window.openAbilitySettings = function (moduleEl, data) {
         openAbilitySettings(moduleEl, data);
+    };
+    window.refreshLinkedAbilitiesChainIcons = function (statModuleId) {
+        window.modules.forEach((mod) => {
+            if (mod.type !== 'abilities') return;
+            if (mod.content?.linkedStatModuleId !== statModuleId) return;
+            const moduleEl = document.querySelector(`.module[data-id="${mod.id}"]`);
+            if (moduleEl) updateAbilitiesChainIcon(moduleEl, mod);
+        });
     };
 })();

@@ -461,6 +461,18 @@
             };
         }
 
+        if (moduleData.type === 'spells') {
+            moduleData.colSpan = 4;
+            moduleData.rowSpan = 3;
+            moduleData.content = { autoSpendSlots: true, showSlotErrors: true, slotLevels: [], categories: [] };
+        }
+
+        if (moduleData.type === 'activity') {
+            moduleData.colSpan = 2;
+            moduleData.rowSpan = 3;
+            moduleData.content = { sortOrder: 'newest', hiddenEventTypes: [], showTimestamps: true, maxEntries: 200 };
+        }
+
         lastWizardType = moduleData.type;
         window.modules.push(moduleData);
         renderModule(moduleData);
@@ -590,6 +602,12 @@
                 label: t('level.settings'),
                 icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
             },
+            {
+                sel: '.module-spells-settings-btn',
+                label: t('spells.settings'),
+                icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
+            },
+            { sel: '.module-activity-settings-btn', label: t('activity.settings'), icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>' },
             {
                 sel: '.module-delete-btn',
                 label: t('module.deleteModule'),
@@ -834,13 +852,12 @@
             el.style.backgroundColor = data.theme;
         }
 
-        const isPlayMode = modeToggle.classList.contains('mode-play');
-
         const showResize = data.type !== 'hline';
         const displayTitle = data.title || t(typeDef.label);
         el.innerHTML = `
         <div class="module-header">
             <span class="module-drag-handle" style="${isPlayMode ? 'display:none' : ''}">&#x2807;</span>
+            ${data.type === 'abilities' ? `<span class="module-abilities-link-indicator" title="" style="display:none"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>` : ''}
             <span class="module-type-label" style="${isPlayMode ? '' : 'display:none'}">${escapeHtml(displayTitle)}</span>
             <input class="module-title-input" type="text" value="${escapeHtml(displayTitle)}" placeholder="${escapeHtml(t(typeDef.label))}" style="${isPlayMode ? 'display:none' : ''}" />
             <button class="module-overflow-btn" title="${t('module.moreOptions')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button>
@@ -861,7 +878,9 @@
             ${data.type === 'savingthrow' ? `<button class="module-toolbar-btn module-save-settings-btn" title="${t('save.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'resistance' ? `<button class="module-toolbar-btn module-res-settings-btn" title="${t('res.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'resistance' ? `<button class="module-toolbar-btn module-res-layout-btn" title="${t('res.toggleLayout')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>` : ''}
+            ${data.type === 'spells' ? `<button class="module-toolbar-btn module-spells-settings-btn" title="${t('spells.settings')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'level' ? `<button class="module-toolbar-btn module-level-settings-btn" title="${t('level.settings')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
+            ${data.type === 'activity' ? `<button class="module-activity-settings-btn module-toolbar-btn" title="${t('activity.settings')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type !== 'hline' && data.type !== 'spacer' ? `<button class="module-toolbar-btn module-theme-btn" title="${t('module.changeTheme')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.37 2.63a2.12 2.12 0 0 1 3 3L14 13l-4 1 1-4 7.37-7.37z"/><path d="M9 3.5a7.5 7.5 0 1 0 5.59 12.5"/><path d="M7.5 16.5c0 1.38-1.12 2.5-2.5 2.5S2.5 19.38 2.5 18c0-2 2.5-3 2.5-3s2.5 1 2.5 3z"/></svg></button>` : ''}
             <button class="module-toolbar-btn module-delete-btn" title="${t('module.deleteModule')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
         </div>
@@ -879,7 +898,7 @@
             addAbilityBtn.addEventListener('click', () => {
                 data.content.abilities.push({ name: '', modifier: 0, proficiency: false, linkedStat: null });
                 const bodyEl = el.querySelector('.module-body');
-                const isPlay = modeToggle.classList.contains('mode-play');
+                const isPlay = window.isPlayMode;
                 typeDef.renderBody(bodyEl, data, isPlay);
                 snapModuleHeight(el, data);
                 scheduleSave();
@@ -894,13 +913,20 @@
             });
         }
 
+        const activitySettingsBtn = el.querySelector('.module-activity-settings-btn');
+        if (activitySettingsBtn) {
+            activitySettingsBtn.addEventListener('click', () => {
+                if (typeof openActivitySettings === 'function') openActivitySettings(el, data);
+            });
+        }
+
         // Add stat button (stat modules only — lives in header)
         const addStatBtn = el.querySelector('.module-addstat-btn');
         if (addStatBtn) {
             addStatBtn.addEventListener('click', () => {
                 data.content.stats.push({ name: '', value: 0, modifier: 0, proficient: false, rollable: true });
                 const bodyEl = el.querySelector('.module-body');
-                const isPlay = modeToggle.classList.contains('mode-play');
+                const isPlay = window.isPlayMode;
                 typeDef.renderBody(bodyEl, data, isPlay);
                 snapModuleHeight(el, data);
                 scheduleSave();
@@ -925,7 +951,7 @@
             swapLayoutBtn.addEventListener('click', () => {
                 data.content.layout = data.content.layout === 'large-stat' ? 'large-modifier' : 'large-stat';
                 const bodyEl = el.querySelector('.module-body');
-                const isPlay = modeToggle.classList.contains('mode-play');
+                const isPlay = window.isPlayMode;
                 typeDef.renderBody(bodyEl, data, isPlay);
                 snapModuleHeight(el, data);
                 scheduleSave();
@@ -975,7 +1001,7 @@
                             });
                         }
                         const bodyEl = el.querySelector('.module-body');
-                        const isPlay = modeToggle.classList.contains('mode-play');
+                        const isPlay = window.isPlayMode;
                         typeDef.renderBody(bodyEl, data, isPlay);
                         scheduleSave();
                     }
@@ -1001,7 +1027,7 @@
                         data.content.currentHP = creature.hp.value;
                         data.content.maxHP = creature.hp.max;
                         const bodyEl = el.querySelector('.module-body');
-                        const isPlay = modeToggle.classList.contains('mode-play');
+                        const isPlay = window.isPlayMode;
                         typeDef.renderBody(bodyEl, data, isPlay);
                         snapModuleHeight(el, data);
                         scheduleSave();
@@ -1074,7 +1100,7 @@
                     proficiencyTier: null,
                 });
                 const bodyEl = el.querySelector('.module-body');
-                const isPlay = modeToggle.classList.contains('mode-play');
+                const isPlay = window.isPlayMode;
                 typeDef.renderBody(bodyEl, data, isPlay);
                 snapModuleHeight(el, data);
                 scheduleSave();
@@ -1103,7 +1129,7 @@
             resLayoutBtn.addEventListener('click', () => {
                 data.content.layout = data.content.layout === 'columns' ? 'rows' : 'columns';
                 const bodyEl = el.querySelector('.module-body');
-                const isPlay = modeToggle.classList.contains('mode-play');
+                const isPlay = window.isPlayMode;
                 typeDef.renderBody(bodyEl, data, isPlay);
                 snapModuleHeight(el, data);
                 scheduleSave();
@@ -1115,6 +1141,14 @@
         if (levelSettingsBtn) {
             levelSettingsBtn.addEventListener('click', () => {
                 openLevelSettings(el, data);
+            });
+        }
+
+        // Settings button (spells modules only)
+        const spellsSettingsBtn = el.querySelector('.module-spells-settings-btn');
+        if (spellsSettingsBtn) {
+            spellsSettingsBtn.addEventListener('click', () => {
+                openSpellSettings(el, data);
             });
         }
 
@@ -1140,6 +1174,9 @@
             const val = titleInput.value.trim();
             data.title = val && val !== t(typeDef.label) ? val : null;
             scheduleSave();
+            if (window.refreshLinkedAbilitiesChainIcons) {
+                window.refreshLinkedAbilitiesChainIcons(data.id);
+            }
         });
 
         const bodyEl = el.querySelector('.module-body');
@@ -1161,7 +1198,7 @@
         chosenClass: 'module-dragging',
         dragClass: 'module-drag-active',
         filter: '#empty-state',
-        disabled: modeToggle.classList.contains('mode-play'),
+        disabled: window.isPlayMode,
         onEnd(evt) {
             // Sync the modules array to match the new DOM order
             const orderedIds = Array.from(moduleGrid.querySelectorAll('.module')).map((el) => el.dataset.id);
@@ -1258,6 +1295,10 @@
             if (resLayoutBtnPlay) resLayoutBtnPlay.style.display = 'none';
             const levelSettingsBtnPlay = mod.querySelector('.module-level-settings-btn');
             if (levelSettingsBtnPlay) levelSettingsBtnPlay.style.display = 'none';
+            const spellsSettingsBtnPlay = mod.querySelector('.module-spells-settings-btn');
+            if (spellsSettingsBtnPlay) spellsSettingsBtnPlay.style.display = 'none';
+            const activitySettingsBtnPlay = mod.querySelector('.module-activity-settings-btn');
+            if (activitySettingsBtnPlay) activitySettingsBtnPlay.style.display = 'none';
             const deleteBtn = mod.querySelector('.module-delete-btn');
             if (deleteBtn) deleteBtn.style.display = 'none';
             const overflowBtn = mod.querySelector('.module-overflow-btn');
@@ -1330,6 +1371,10 @@
             if (resLayoutBtnEdit) resLayoutBtnEdit.style.display = '';
             const levelSettingsBtnEdit = mod.querySelector('.module-level-settings-btn');
             if (levelSettingsBtnEdit) levelSettingsBtnEdit.style.display = '';
+            const spellsSettingsBtnEdit = mod.querySelector('.module-spells-settings-btn');
+            if (spellsSettingsBtnEdit) spellsSettingsBtnEdit.style.display = '';
+            const activitySettingsBtnEdit = mod.querySelector('.module-activity-settings-btn');
+            if (activitySettingsBtnEdit) activitySettingsBtnEdit.style.display = '';
             // Clear stat selection when entering edit mode
             mod._selectedStatIndex = null;
             const deleteBtn = mod.querySelector('.module-delete-btn');
@@ -1406,7 +1451,7 @@
             e.stopPropagation();
 
             // Only allow resize in edit mode
-            if (modeToggle.classList.contains('mode-play')) return;
+            if (window.isPlayMode) return;
 
             const grid = document.getElementById('module-grid');
             const gridRect = grid.getBoundingClientRect();

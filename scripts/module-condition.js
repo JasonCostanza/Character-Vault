@@ -24,6 +24,7 @@
         if (!Array.isArray(data.content.applied)) data.content.applied = [];
         if (!Array.isArray(data.content.staging)) data.content.staging = [];
         if (!Array.isArray(data.content.customConditions)) data.content.customConditions = [];
+        if (!Array.isArray(data.content.savedCustomInstances)) data.content.savedCustomInstances = [];
         if (data.content.sortBy === undefined) data.content.sortBy = null;
         if (!data.content.sortDir) data.content.sortDir = 'asc';
         return data.content;
@@ -1938,9 +1939,7 @@
         function rerender() {
             const bodyEl = moduleEl.querySelector('.module-body');
             if (bodyEl && !document.querySelector('.cond-settings-overlay')) {
-                const isPlay =
-                    document.querySelector('.mode-toggle') &&
-                    document.querySelector('.mode-toggle').classList.contains('mode-play');
+                const isPlay = isPlayMode;
                 if (isPlay) {
                     renderPlayBody(bodyEl, data);
                 } else {
@@ -1999,13 +1998,15 @@
                 row.appendChild(iconSpan);
             }
 
-            // Name (click to toggle)
+            // Name
             const nameSpan = document.createElement('span');
             nameSpan.className = 'cond-play-name';
             nameSpan.textContent = getCondName(item, content);
+            row.appendChild(nameSpan);
+
+            // Row click to toggle (entire row is the click target)
             (function (item) {
-                nameSpan.addEventListener('click', function (e) {
-                    e.stopPropagation();
+                row.addEventListener('click', function (e) {
                     item.active = !item.active;
                     if (item.active) {
                         if (condType === 'value' && item.value === 0) item.value = 1;
@@ -2016,7 +2017,6 @@
                     snapModuleHeight(bodyEl.closest('.module'), data);
                 });
             })(item);
-            row.appendChild(nameSpan);
 
             // Value (click to inc, right-click to dec)
             if (condType === 'value') {
@@ -2315,21 +2315,91 @@
         tplLabel.textContent = t('cond.template');
         tplSection.appendChild(tplLabel);
 
-        const tplSelect = document.createElement('select');
-        tplSelect.className = 'cond-template-select';
+        const tplSelect = document.createElement('div');
+        tplSelect.className = 'cv-select';
+
+        const tplTrigger = document.createElement('button');
+        tplTrigger.type = 'button';
+        tplTrigger.className = 'cv-select-trigger';
+        tplTrigger.setAttribute('aria-haspopup', 'listbox');
+        tplTrigger.setAttribute('aria-expanded', 'false');
+        const tplValueSpan = document.createElement('span');
+        tplValueSpan.className = 'cv-select-value';
+        tplValueSpan.textContent = t(CONDITION_TEMPLATES[content.template].nameKey);
+        tplTrigger.appendChild(tplValueSpan);
+        tplTrigger.insertAdjacentHTML('beforeend',
+            '<svg class="cv-select-chevron" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>');
+
+        const tplMenu = document.createElement('ul');
+        tplMenu.className = 'cv-select-menu';
+        tplMenu.setAttribute('role', 'listbox');
+
+        // Shim so handleTemplateChange can reset displayed value on cancel
+        const tplSelectController = {
+            set value(v) {
+                tplMenu.querySelectorAll('.cv-select-option').forEach(function (o) {
+                    o.classList.toggle('selected', o.dataset.value === v);
+                });
+                tplValueSpan.textContent = t(CONDITION_TEMPLATES[v].nameKey);
+                tplTrigger.setAttribute('aria-expanded', 'false');
+                tplSelect.classList.remove('open');
+                tplMenu.style.position = '';
+                tplMenu.style.top = '';
+                tplMenu.style.left = '';
+                tplMenu.style.width = '';
+                tplMenu.style.right = '';
+            }
+        };
+
         TEMPLATE_KEYS.forEach(function (key) {
-            const opt = document.createElement('option');
-            opt.value = key;
-            opt.textContent = t(CONDITION_TEMPLATES[key].nameKey);
-            if (key === content.template) opt.selected = true;
-            tplSelect.appendChild(opt);
+            const li = document.createElement('li');
+            li.className = 'cv-select-option' + (key === content.template ? ' selected' : '');
+            li.dataset.value = key;
+            li.setAttribute('role', 'option');
+            li.textContent = t(CONDITION_TEMPLATES[key].nameKey);
+            li.addEventListener('click', function () {
+                tplSelect.classList.remove('open');
+                tplTrigger.setAttribute('aria-expanded', 'false');
+                tplMenu.style.position = '';
+                tplMenu.style.top = '';
+                tplMenu.style.left = '';
+                tplMenu.style.width = '';
+                tplMenu.style.right = '';
+                if (key !== content.template) {
+                    handleTemplateChange(key, content, moduleEl, data, panel, tplSelectController);
+                }
+            });
+            tplMenu.appendChild(li);
         });
-        tplSelect.addEventListener('change', function () {
-            const newTpl = tplSelect.value;
-            if (newTpl !== content.template) {
-                handleTemplateChange(newTpl, content, moduleEl, data, panel, tplSelect);
+
+        tplTrigger.addEventListener('click', function () {
+            const isOpen = tplSelect.classList.toggle('open');
+            tplTrigger.setAttribute('aria-expanded', isOpen);
+            if (isOpen) {
+                // Position menu as fixed so it escapes the modal's overflow container
+                const rect = tplTrigger.getBoundingClientRect();
+                tplMenu.style.position = 'fixed';
+                tplMenu.style.top = (rect.bottom + 4) + 'px';
+                tplMenu.style.left = rect.left + 'px';
+                tplMenu.style.width = rect.width + 'px';
+                tplMenu.style.right = 'auto';
             }
         });
+
+        document.addEventListener('click', function (e) {
+            if (!tplSelect.contains(e.target)) {
+                tplSelect.classList.remove('open');
+                tplTrigger.setAttribute('aria-expanded', 'false');
+                tplMenu.style.position = '';
+                tplMenu.style.top = '';
+                tplMenu.style.left = '';
+                tplMenu.style.width = '';
+                tplMenu.style.right = '';
+            }
+        });
+
+        tplSelect.appendChild(tplTrigger);
+        tplSelect.appendChild(tplMenu);
         tplSection.appendChild(tplSelect);
         body.appendChild(tplSection);
 
@@ -2390,29 +2460,40 @@
             nameSpan.textContent = getCondName(item, content);
             itemEl.appendChild(nameSpan);
 
-            // Delete from pool
-            const delBtn = document.createElement('button');
-            delBtn.className = 'cond-staging-delete';
-            delBtn.title = t('cond.remove');
-            delBtn.innerHTML =
-                '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+            // Delete from pool — only custom conditions can be deleted
+            const isCustom = (content.customConditions || []).some(function (c) {
+                return c.key === item.typeKey;
+            });
+            if (isCustom) {
+                const delBtn = document.createElement('button');
+                delBtn.className = 'cond-staging-delete';
+                delBtn.title = t('cond.remove');
+                delBtn.innerHTML =
+                    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+                (function (item) {
+                    delBtn.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const idx = content.staging.findIndex(function (s) {
+                            return s.id === item.id;
+                        });
+                        if (idx !== -1) content.staging.splice(idx, 1);
+                        const cIdx = content.customConditions.findIndex(function (c) {
+                            return c.key === item.typeKey;
+                        });
+                        if (cIdx !== -1) content.customConditions.splice(cIdx, 1);
+                        scheduleSave();
+                        renderSettingsPanelContent(panel, moduleEl, data, content);
+                    });
+                })(item);
+                itemEl.appendChild(delBtn);
+            }
+
             (function (item) {
-                delBtn.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    const idx = content.staging.findIndex(function (s) {
-                        return s.id === item.id;
-                    });
-                    if (idx !== -1) content.staging.splice(idx, 1);
-                    // Also remove from customConditions if custom
-                    const cIdx = content.customConditions.findIndex(function (c) {
-                        return c.key === item.typeKey;
-                    });
-                    if (cIdx !== -1) content.customConditions.splice(cIdx, 1);
-                    scheduleSave();
-                    renderSettingsPanelContent(panel, moduleEl, data, content);
+                itemEl.addEventListener('click', function (e) {
+                    if (e.target.closest('.cond-staging-delete')) return;
+                    applyConditionFromStaging(item.typeKey, item.id, content, panel, moduleEl, data);
                 });
             })(item);
-            itemEl.appendChild(delBtn);
 
             stagingGrid.appendChild(itemEl);
         });
@@ -2508,6 +2589,50 @@
         return el;
     }
 
+    // ── Apply Condition from Staging ──
+
+    function applyConditionFromStaging(typeKey, itemId, content, panel, moduleEl, data) {
+        if (content.applied.some(function (a) { return a.typeKey === typeKey; })) {
+            renderSettingsPanelContent(panel, moduleEl, data, content);
+            return;
+        }
+        const stagingItem = content.staging.find(function (s) { return s.id === itemId; });
+        if (!stagingItem) {
+            renderSettingsPanelContent(panel, moduleEl, data, content);
+            return;
+        }
+        const condType = getCondType(stagingItem, content);
+        if (condType === 'value') {
+            const condMax = getCondMaxValue(stagingItem, content);
+            showCondValuePrompt(
+                panel.querySelector('.cv-modal-body'),
+                1,
+                condMax,
+                function (val) {
+                    const idx = content.staging.findIndex(function (s) { return s.id === itemId; });
+                    if (idx !== -1) content.staging.splice(idx, 1);
+                    stagingItem.value = val;
+                    stagingItem.active = val > 0;
+                    content.applied.push(stagingItem);
+                    if (stagingItem.active) activateSubconditions(typeKey, content);
+                    scheduleSave();
+                    renderSettingsPanelContent(panel, moduleEl, data, content);
+                },
+                function () {
+                    renderSettingsPanelContent(panel, moduleEl, data, content);
+                }
+            );
+        } else {
+            const idx = content.staging.findIndex(function (s) { return s.id === itemId; });
+            if (idx !== -1) content.staging.splice(idx, 1);
+            stagingItem.active = true;
+            content.applied.push(stagingItem);
+            activateSubconditions(typeKey, content);
+            scheduleSave();
+            renderSettingsPanelContent(panel, moduleEl, data, content);
+        }
+    }
+
     // ── SortableJS Setup ──
 
     function initCondSettingsSortables(panel, moduleEl, data, content) {
@@ -2539,63 +2664,7 @@
                     evt.item.remove();
 
                     if (isFromStaging) {
-                        // Check duplicate
-                        if (
-                            content.applied.some(function (a) {
-                                return a.typeKey === typeKey;
-                            })
-                        ) {
-                            renderSettingsPanelContent(panel, moduleEl, data, content);
-                            return;
-                        }
-
-                        // Find in staging
-                        const stagingItem = content.staging.find(function (s) {
-                            return s.id === itemId;
-                        });
-                        if (!stagingItem) {
-                            renderSettingsPanelContent(panel, moduleEl, data, content);
-                            return;
-                        }
-
-                        const condType = getCondType(stagingItem, content);
-
-                        if (condType === 'value') {
-                            // Prompt for value
-                            const condMax = getCondMaxValue(stagingItem, content);
-                            showCondValuePrompt(
-                                panel.querySelector('.cv-modal-body'),
-                                1,
-                                condMax,
-                                function (val) {
-                                    // Move from staging to applied
-                                    const idx = content.staging.findIndex(function (s) {
-                                        return s.id === itemId;
-                                    });
-                                    if (idx !== -1) content.staging.splice(idx, 1);
-                                    stagingItem.value = val;
-                                    stagingItem.active = val > 0;
-                                    content.applied.push(stagingItem);
-                                    if (stagingItem.active) activateSubconditions(typeKey, content);
-                                    scheduleSave();
-                                    renderSettingsPanelContent(panel, moduleEl, data, content);
-                                },
-                                function () {
-                                    renderSettingsPanelContent(panel, moduleEl, data, content);
-                                }
-                            );
-                        } else {
-                            // Toggle — move directly
-                            const idx = content.staging.findIndex(function (s) {
-                                return s.id === itemId;
-                            });
-                            if (idx !== -1) content.staging.splice(idx, 1);
-                            stagingItem.active = true;
-                            content.applied.push(stagingItem);
-                            activateSubconditions(typeKey, content);
-                            scheduleSave();
-                            renderSettingsPanelContent(panel, moduleEl, data, content);
-                        }
+                        applyConditionFromStaging(typeKey, itemId, content, panel, moduleEl, data);
                     }
                 },
                 onEnd: function (evt) {
@@ -2710,22 +2779,63 @@
         const tpl = CONDITION_TEMPLATES[templateKey];
         if (!tpl) return;
 
+        const customKeys = new Set((content.customConditions || []).map(function (c) { return c.key; }));
+
         if (mode === 'replace') {
+            // Stash custom condition instances before clearing so they survive template switches.
+            // Each instance is tagged with the homeTemplate from its definition (defaulting to 'custom'
+            // for legacy data) so it is restored to the correct template later.
+            if (!Array.isArray(content.savedCustomInstances)) content.savedCustomInstances = [];
+            const stashedKeys = new Set(content.savedCustomInstances.map(function (i) { return i.typeKey; }));
+            const getHomeTemplate = function (typeKey) {
+                const def = (content.customConditions || []).find(function (c) { return c.key === typeKey; });
+                return (def && def.homeTemplate) ? def.homeTemplate : 'custom';
+            };
+            content.applied.forEach(function (a) {
+                if (customKeys.has(a.typeKey) && !stashedKeys.has(a.typeKey)) {
+                    content.savedCustomInstances.push(Object.assign({}, a, { wasApplied: true, homeTemplate: getHomeTemplate(a.typeKey) }));
+                    stashedKeys.add(a.typeKey);
+                }
+            });
+            content.staging.forEach(function (s) {
+                if (customKeys.has(s.typeKey) && !stashedKeys.has(s.typeKey)) {
+                    content.savedCustomInstances.push(Object.assign({}, s, { wasApplied: false, homeTemplate: getHomeTemplate(s.typeKey) }));
+                    stashedKeys.add(s.typeKey);
+                }
+            });
             content.applied = [];
             content.staging = [];
-            content.customConditions = [];
         }
 
         content.template = templateKey;
 
-        // Build set of existing typeKeys
+        // Restore stashed instances whose homeTemplate matches the new template
+        if (Array.isArray(content.savedCustomInstances) && content.savedCustomInstances.length) {
+            const existingTypeKeys = new Set(
+                content.applied.map(function (a) { return a.typeKey; }).concat(
+                content.staging.map(function (s) { return s.typeKey; }))
+            );
+            const remaining = [];
+            content.savedCustomInstances.forEach(function (inst) {
+                if (inst.homeTemplate === templateKey && !existingTypeKeys.has(inst.typeKey)) {
+                    const restored = { id: inst.id, typeKey: inst.typeKey, type: inst.type, value: inst.value, active: inst.active, description: inst.description, maxValue: inst.maxValue };
+                    if (inst.wasApplied) {
+                        content.applied.push(restored);
+                    } else {
+                        content.staging.push(restored);
+                    }
+                    existingTypeKeys.add(inst.typeKey);
+                } else {
+                    remaining.push(inst);
+                }
+            });
+            content.savedCustomInstances = remaining;
+        }
+
+        // Build set of existing typeKeys to skip duplicates when adding template conditions
         const existingKeys = {};
-        content.applied.forEach(function (a) {
-            existingKeys[a.typeKey] = true;
-        });
-        content.staging.forEach(function (s) {
-            existingKeys[s.typeKey] = true;
-        });
+        content.applied.forEach(function (a) { existingKeys[a.typeKey] = true; });
+        content.staging.forEach(function (s) { existingKeys[s.typeKey] = true; });
 
         // Add template conditions to staging (skip duplicates)
         tpl.conditions.forEach(function (def) {
@@ -2964,6 +3074,7 @@
                 description: wizardDesc || '',
                 maxValue: wizardType === 'value' ? wizardMaxValue : null,
                 subconditions: [],
+                homeTemplate: content.template,
             });
             // Add to staging
             content.staging.push({

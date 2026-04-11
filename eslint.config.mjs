@@ -44,7 +44,7 @@ export default [
                 loadTheme: 'readonly',
 
                 // ── settings.js ──
-                modeToggle: 'readonly',
+                isPlayMode: 'readonly',
                 settingsOverlay: 'readonly',
                 openSettings: 'readonly',
                 closeSettings: 'readonly',

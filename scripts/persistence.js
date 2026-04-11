@@ -1,5 +1,7 @@
 // ── Save / Load System ──
 (function () {
+    window.activityLog = [];
+
     function migrateData(blob) {
         const migrators = {
             // Future: 1: (data) => { /* transform */ data.version = 2; return data; }
@@ -26,6 +28,7 @@
             version: 1,
             savedAt: new Date().toISOString(),
             moduleIdCounter,
+            activityLog: window.activityLog || [],
             modules: modules.map((m) => ({
                 id: m.id,
                 type: m.type,
@@ -62,6 +65,7 @@
 
         // Restore counter (ensure it's at least as high as max existing ID)
         moduleIdCounter = blob.moduleIdCounter || 0;
+        window.activityLog = Array.isArray(blob.activityLog) ? blob.activityLog : [];
 
         // Rebuild modules sorted by order
         blob.modules

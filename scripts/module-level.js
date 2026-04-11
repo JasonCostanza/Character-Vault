@@ -122,6 +122,39 @@
         display.appendChild(numEl);
         wrap.appendChild(display);
 
+        // Milestone stepper — shown instead of XP bar
+        if (isMilestone) {
+            const adjRow = document.createElement('div');
+            adjRow.className = 'level-adjust-row';
+
+            const decBtn = document.createElement('button');
+            decBtn.className = 'level-adjust-btn';
+            decBtn.textContent = '−';
+            decBtn.title = t('level.decrementLevel');
+            decBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (c.level <= 1) return;
+                c.level--;
+                renderLevelBody(bodyEl, data, isPlayMode);
+                scheduleSave();
+            });
+
+            const incBtn = document.createElement('button');
+            incBtn.className = 'level-adjust-btn';
+            incBtn.textContent = '+';
+            incBtn.title = t('level.incrementLevel');
+            incBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                c.level++;
+                renderLevelBody(bodyEl, data, isPlayMode);
+                scheduleSave();
+            });
+
+            adjRow.appendChild(decBtn);
+            adjRow.appendChild(incBtn);
+            wrap.appendChild(adjRow);
+        }
+
         // XP bar — hidden in milestone mode
         if (!isMilestone) {
             const barContainer = document.createElement('div');
@@ -129,8 +162,6 @@
 
             const track = document.createElement('div');
             track.className = 'level-bar-track';
-            if (c.barStyle === 'segmented-10') track.classList.add('segmented-10');
-            else if (c.barStyle === 'segmented-25') track.classList.add('segmented-25');
 
             const fill = document.createElement('div');
             fill.className = 'level-bar-fill';
@@ -138,6 +169,23 @@
             if (c.barColor) fill.style.background = c.barColor;
 
             track.appendChild(fill);
+
+            // Add dividers for segmented styles
+            if (c.barStyle === 'segmented-10') {
+                for (let i = 1; i < 10; i++) {
+                    const divider = document.createElement('div');
+                    divider.className = 'level-bar-divider';
+                    divider.style.left = (i * 10) + '%';
+                    track.appendChild(divider);
+                }
+            } else if (c.barStyle === 'segmented-25') {
+                for (let i = 1; i < 4; i++) {
+                    const divider = document.createElement('div');
+                    divider.className = 'level-bar-divider';
+                    divider.style.left = (i * 25) + '%';
+                    track.appendChild(divider);
+                }
+            }
             barContainer.appendChild(track);
 
             // Hover tooltip
@@ -293,7 +341,7 @@
             }
             closeModal();
             const bodyEl = moduleEl.querySelector('.module-body');
-            const isPlay = modeToggle.classList.contains('mode-play');
+            const isPlay = isPlayMode;
             renderLevelBody(bodyEl, data, isPlay);
             if (typeof window.snapModuleHeight === 'function') {
                 window.snapModuleHeight(moduleEl, data);
@@ -642,7 +690,7 @@
             content.barColor = wBarColor;
             content.barStyle = wBarStyle;
             const bodyEl = moduleEl.querySelector('.module-body');
-            const isPlay = modeToggle.classList.contains('mode-play');
+            const isPlay = isPlayMode;
             renderLevelBody(bodyEl, data, isPlay);
             if (typeof window.snapModuleHeight === 'function') {
                 window.snapModuleHeight(moduleEl, data);

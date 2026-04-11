@@ -61,9 +61,11 @@
                 btn.title = t('stat.deleteStat');
             });
         });
-        const label = modeToggle.querySelector('.mode-label');
-        if (label) {
-            label.textContent = modeToggle.classList.contains('mode-play') ? t('menu.play') : t('menu.edit');
+        const btnModeEdit = document.getElementById('btn-mode-edit');
+        const btnModePlay = document.getElementById('btn-mode-play');
+        if (btnModeEdit && btnModePlay) {
+            btnModeEdit.querySelector('.mode-label').textContent = t('menu.edit');
+            btnModePlay.querySelector('.mode-label').textContent = t('menu.play');
         }
     }
 

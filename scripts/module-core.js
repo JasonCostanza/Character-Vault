@@ -3,6 +3,7 @@
     // ── Module State ──
     window.modules = [];
     window.moduleIdCounter = 0;
+    window.gameSystem = 'custom';
 
     function generateModuleId() {
         return `module-${String(++window.moduleIdCounter).padStart(3, '0')}`;
@@ -23,9 +24,6 @@
         type: 'text',
         theme: null,
         statLayout: 'large-stat',
-        statTemplate: '',
-        abilitiesTemplate: '',
-        savingthrowTemplate: '',
     };
 
     function openWizard() {
@@ -48,9 +46,6 @@
             type: defaultType,
             theme: null,
             statLayout: 'large-stat',
-            statTemplate: '',
-            abilitiesTemplate: '',
-            savingthrowTemplate: '',
         };
 
         wizardTypeCards.forEach((card) => {
@@ -84,56 +79,6 @@
             });
         }
 
-        const statTemplateSection = document.getElementById('wizard-stat-template');
-        if (statTemplateSection) {
-            statTemplateSection.classList.toggle('visible', defaultType === 'stat');
-            const templateSelect = document.getElementById('wizard-stat-template-select');
-            if (templateSelect) {
-                templateSelect.classList.remove('open');
-                const opts = templateSelect.querySelectorAll('.cv-select-option');
-                opts.forEach((o) => o.classList.remove('selected'));
-                const firstOpt = opts[0];
-                if (firstOpt) {
-                    firstOpt.classList.add('selected');
-                    const valSpan = templateSelect.querySelector('.cv-select-value');
-                    if (valSpan) valSpan.textContent = firstOpt.textContent;
-                }
-            }
-        }
-
-        const abilitiesTemplateSection = document.getElementById('wizard-abilities-template');
-        if (abilitiesTemplateSection) {
-            abilitiesTemplateSection.classList.toggle('visible', defaultType === 'abilities');
-            const abilitiesTemplateSelect = document.getElementById('wizard-abilities-template-select');
-            if (abilitiesTemplateSelect) {
-                abilitiesTemplateSelect.classList.remove('open');
-                const opts = abilitiesTemplateSelect.querySelectorAll('.cv-select-option');
-                opts.forEach((o) => o.classList.remove('selected'));
-                const firstOpt = opts[0];
-                if (firstOpt) {
-                    firstOpt.classList.add('selected');
-                    const valSpan = abilitiesTemplateSelect.querySelector('.cv-select-value');
-                    if (valSpan) valSpan.textContent = firstOpt.textContent;
-                }
-            }
-        }
-
-        const savingthrowTemplateSection = document.getElementById('wizard-savingthrow-template');
-        if (savingthrowTemplateSection) {
-            savingthrowTemplateSection.classList.toggle('visible', defaultType === 'savingthrow');
-            const savingthrowTemplateSelect = document.getElementById('wizard-savingthrow-template-select');
-            if (savingthrowTemplateSelect) {
-                savingthrowTemplateSelect.classList.remove('open');
-                const opts = savingthrowTemplateSelect.querySelectorAll('.cv-select-option');
-                opts.forEach((o) => o.classList.remove('selected'));
-                const firstOpt = opts[0];
-                if (firstOpt) {
-                    firstOpt.classList.add('selected');
-                    const valSpan = savingthrowTemplateSelect.querySelector('.cv-select-value');
-                    if (valSpan) valSpan.textContent = firstOpt.textContent;
-                }
-            }
-        }
     }
 
     btnNewModule.addEventListener('click', openWizard);
@@ -167,13 +112,6 @@
             wizardThemeSection.style.display =
                 wizardState.type === 'hline' || wizardState.type === 'spacer' ? 'none' : '';
             wizardStatLayout.classList.toggle('visible', wizardState.type === 'stat');
-            const statTemplateEl = document.getElementById('wizard-stat-template');
-            if (statTemplateEl) statTemplateEl.classList.toggle('visible', wizardState.type === 'stat');
-            const abilitiesTemplateEl = document.getElementById('wizard-abilities-template');
-            if (abilitiesTemplateEl) abilitiesTemplateEl.classList.toggle('visible', wizardState.type === 'abilities');
-            const savingthrowTemplateEl = document.getElementById('wizard-savingthrow-template');
-            if (savingthrowTemplateEl)
-                savingthrowTemplateEl.classList.toggle('visible', wizardState.type === 'savingthrow');
         });
     });
 
@@ -185,100 +123,6 @@
             wizardState.statLayout = btn.dataset.layout;
         });
     });
-
-    // Stat template selection (custom cv-select)
-    const wizardStatTemplateSelect = document.getElementById('wizard-stat-template-select');
-    if (wizardStatTemplateSelect) {
-        const trigger = wizardStatTemplateSelect.querySelector('.cv-select-trigger');
-        const valueSpan = wizardStatTemplateSelect.querySelector('.cv-select-value');
-        const options = wizardStatTemplateSelect.querySelectorAll('.cv-select-option');
-
-        trigger.addEventListener('click', () => {
-            wizardStatTemplateSelect.classList.toggle('open');
-            trigger.setAttribute('aria-expanded', wizardStatTemplateSelect.classList.contains('open'));
-        });
-
-        options.forEach((option) => {
-            option.addEventListener('click', () => {
-                options.forEach((o) => o.classList.remove('selected'));
-                option.classList.add('selected');
-                valueSpan.textContent = option.textContent;
-                wizardState.statTemplate = option.dataset.value;
-                wizardStatTemplateSelect.classList.remove('open');
-                trigger.setAttribute('aria-expanded', 'false');
-            });
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!wizardStatTemplateSelect.contains(e.target)) {
-                wizardStatTemplateSelect.classList.remove('open');
-                trigger.setAttribute('aria-expanded', 'false');
-            }
-        });
-    }
-
-    // Abilities template selection (custom cv-select)
-    const wizardAbilitiesTemplateSelect = document.getElementById('wizard-abilities-template-select');
-    if (wizardAbilitiesTemplateSelect) {
-        const trigger = wizardAbilitiesTemplateSelect.querySelector('.cv-select-trigger');
-        const valueSpan = wizardAbilitiesTemplateSelect.querySelector('.cv-select-value');
-        const options = wizardAbilitiesTemplateSelect.querySelectorAll('.cv-select-option');
-
-        trigger.addEventListener('click', () => {
-            wizardAbilitiesTemplateSelect.classList.toggle('open');
-            trigger.setAttribute('aria-expanded', wizardAbilitiesTemplateSelect.classList.contains('open'));
-        });
-
-        options.forEach((option) => {
-            option.addEventListener('click', () => {
-                options.forEach((o) => o.classList.remove('selected'));
-                option.classList.add('selected');
-                valueSpan.textContent = option.textContent;
-                wizardState.abilitiesTemplate = option.dataset.value;
-                wizardAbilitiesTemplateSelect.classList.remove('open');
-                trigger.setAttribute('aria-expanded', 'false');
-            });
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!wizardAbilitiesTemplateSelect.contains(e.target)) {
-                wizardAbilitiesTemplateSelect.classList.remove('open');
-                trigger.setAttribute('aria-expanded', 'false');
-            }
-        });
-    }
-
-    // Saving Throw template selection (custom cv-select)
-    const wizardSavingthrowTemplateSelect = document.getElementById('wizard-savingthrow-template-select');
-    if (wizardSavingthrowTemplateSelect) {
-        const trigger = wizardSavingthrowTemplateSelect.querySelector('.cv-select-trigger');
-        const valueSpan = wizardSavingthrowTemplateSelect.querySelector('.cv-select-value');
-        const options = wizardSavingthrowTemplateSelect.querySelectorAll('.cv-select-option');
-
-        trigger.addEventListener('click', () => {
-            wizardSavingthrowTemplateSelect.classList.toggle('open');
-            trigger.setAttribute('aria-expanded', wizardSavingthrowTemplateSelect.classList.contains('open'));
-        });
-
-        options.forEach((option) => {
-            option.addEventListener('click', () => {
-                options.forEach((o) => o.classList.remove('selected'));
-                option.classList.add('selected');
-                valueSpan.textContent = option.textContent;
-                wizardState.savingthrowTemplate = option.dataset.value;
-                wizardSavingthrowTemplateSelect.classList.remove('open');
-                trigger.setAttribute('aria-expanded', 'false');
-            });
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!wizardSavingthrowTemplateSelect.contains(e.target)) {
-                wizardSavingthrowTemplateSelect.classList.remove('open');
-                trigger.setAttribute('aria-expanded', 'false');
-            }
-        });
-    }
 
     // Color swatch selection
     const wizardCustomHex = document.getElementById('wizard-custom-hex');
@@ -330,13 +174,12 @@
         };
 
         if (moduleData.type === 'abilities') {
-            const templateAbilities = wizardState.abilitiesTemplate
-                ? applyAbilityTemplate(wizardState.abilitiesTemplate)
-                : [];
+            const sys = window.gameSystem || 'custom';
+            const templateAbilities = sys !== 'custom' ? applyAbilityTemplate(sys) : [];
             moduleData.content = { linkedStatModuleId: null, abilities: templateAbilities };
-            if (wizardState.abilitiesTemplate && wizardAbilitiesTemplateSelect) {
-                const selectedOption = wizardAbilitiesTemplateSelect.querySelector('.cv-select-option.selected');
-                if (selectedOption) moduleData.title = selectedOption.textContent.trim() + ' ' + t('type.abilities');
+            const sysName = getGameSystemDisplayName(sys);
+            if (sysName && templateAbilities.length > 0) {
+                moduleData.title = sysName + ' ' + t('type.abilities');
             }
             moduleData.colSpan = 2;
             moduleData.rowSpan = null;
@@ -361,11 +204,12 @@
         }
 
         if (moduleData.type === 'stat') {
-            const templateStats = wizardState.statTemplate ? applyStatTemplate(wizardState.statTemplate) : [];
+            const sys = window.gameSystem || 'custom';
+            const templateStats = sys !== 'custom' ? applyStatTemplate(sys) : [];
             moduleData.content = { layout: wizardState.statLayout, stats: templateStats };
-            if (wizardState.statTemplate && wizardStatTemplateSelect) {
-                const selectedOption = wizardStatTemplateSelect.querySelector('.cv-select-option.selected');
-                if (selectedOption) moduleData.title = selectedOption.textContent.trim() + ' Stats';
+            const sysName = getGameSystemDisplayName(sys);
+            if (sysName && templateStats.length > 0) {
+                moduleData.title = sysName + ' Stats';
             }
             const statCount = templateStats.length;
             if (statCount === 0) {
@@ -412,35 +256,40 @@
         }
 
         if (moduleData.type === 'condition') {
+            const sys = window.gameSystem || 'custom';
             moduleData.colSpan = 2;
             moduleData.rowSpan = null;
             moduleData.content = {
-                template: 'custom',
+                template: sys,
                 applied: [],
                 staging: [],
                 customConditions: [],
                 sortBy: null,
                 sortDir: 'asc',
             };
+            if (sys !== 'custom') {
+                applyConditionTemplate(sys, 'replace', moduleData.content);
+                const sysName = getGameSystemDisplayName(sys);
+                if (sysName) moduleData.title = sysName + ' ' + t('type.condition');
+            }
         }
 
         if (moduleData.type === 'savingthrow') {
-            const tplKey = wizardState.savingthrowTemplate || '';
-            const templateSaves = tplKey ? applySavingThrowTemplate(tplKey) : [];
-            const presetTiers = tplKey && typeof applyTierPreset === 'function' ? applyTierPreset(tplKey) : [];
-            const autoTierPreset = presetTiers.length > 0;
+            const sys = window.gameSystem || 'custom';
+            const templateSaves = sys !== 'custom' ? applySavingThrowTemplate(sys) : [];
+            const tierKey = inferTierPreset(sys);
+            const presetTiers = applyTierPreset(tierKey);
+            const autoTierPreset = sys !== 'custom' && templateSaves.length > 0;
             moduleData.content = {
                 saves: templateSaves,
                 notes: '',
                 tiersEnabled: autoTierPreset,
-                tiers: autoTierPreset ? presetTiers : applyTierPreset('simple'),
-                tierPreset: autoTierPreset ? tplKey : 'simple',
+                tiers: presetTiers.length > 0 ? presetTiers : applyTierPreset('simple'),
+                tierPreset: tierKey,
             };
-            if (wizardState.savingthrowTemplate && wizardSavingthrowTemplateSelect) {
-                const selectedOption = wizardSavingthrowTemplateSelect.querySelector('.cv-select-option.selected');
-                if (selectedOption && selectedOption.dataset.value) {
-                    moduleData.title = selectedOption.textContent.trim() + ' ' + t('type.savingthrow');
-                }
+            const sysName = getGameSystemDisplayName(sys);
+            if (sysName && templateSaves.length > 0) {
+                moduleData.title = sysName + ' ' + t('type.savingthrow');
             }
             const saveCount = templateSaves.length;
             moduleData.colSpan = saveCount <= 3 ? 2 : saveCount <= 6 ? 3 : 4;
@@ -448,17 +297,21 @@
         }
 
         if (moduleData.type === 'level') {
+            const sys = window.gameSystem || 'custom';
+            const xpTpl = window.LEVEL_XP_TEMPLATES && window.LEVEL_XP_TEMPLATES[sys];
             moduleData.colSpan = 1;
             moduleData.rowSpan = null;
             moduleData.content = {
                 level: 1,
                 currentXP: 0,
                 levelingSystem: 'xp',
-                xpThresholds: [300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000],
+                xpThresholds: xpTpl ? xpTpl.thresholds.slice() : [300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000],
                 carryOverXP: true,
                 barColor: null,
                 barStyle: 'solid',
             };
+            const sysName = getGameSystemDisplayName(sys);
+            if (sysName && xpTpl) moduleData.title = sysName + ' ' + t('type.level');
         }
 
         if (moduleData.type === 'spells') {

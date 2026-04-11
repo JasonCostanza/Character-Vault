@@ -96,7 +96,7 @@ Currently, every module manages its own game system template selection independe
 
 ---
 
-## Implementation Plan (Phase 2)
+## Implementation Plan (Phase 2) — COMPLETE (2026-04-10)
 
 ### 1. Add `gameSystem` to character save data — `scripts/persistence.js`
 

@@ -433,41 +433,6 @@
         const xpOnlyWrap = document.createElement('div');
         xpOnlyWrap.style.display = wSystem === 'xp' ? '' : 'none';
 
-        // Template preset
-        const templateSection = document.createElement('div');
-        templateSection.className = 'level-settings-section';
-
-        const templateLabel = document.createElement('div');
-        templateLabel.className = 'cv-modal-label';
-        templateLabel.textContent = t('level.templateLabel');
-        templateLabel.style.userSelect = 'none';
-
-        const templateSelect = document.createElement('select');
-        templateSelect.className = 'save-settings-select';
-
-        [
-            { value: 'dnd5e', labelKey: 'level.templateDnd5e' },
-            { value: 'pf2e', labelKey: 'level.templatePf2e' },
-            { value: 'custom', labelKey: 'level.templateCustom' },
-        ].forEach(({ value, labelKey }) => {
-            const opt = document.createElement('option');
-            opt.value = value;
-            opt.textContent = t(labelKey);
-            templateSelect.appendChild(opt);
-        });
-
-        function detectTemplate() {
-            const str = JSON.stringify(wThresholds);
-            if (JSON.stringify(LEVEL_XP_TEMPLATES.dnd5e.thresholds) === str) return 'dnd5e';
-            if (JSON.stringify(LEVEL_XP_TEMPLATES.pf2e.thresholds) === str) return 'pf2e';
-            return 'custom';
-        }
-        templateSelect.value = detectTemplate();
-
-        templateSection.appendChild(templateLabel);
-        templateSection.appendChild(templateSelect);
-        xpOnlyWrap.appendChild(templateSection);
-
         // ── XP Threshold List ──
         const threshSection = document.createElement('div');
         threshSection.className = 'level-settings-section';
@@ -499,7 +464,6 @@
                     const parsed = parseInt(rowInput.value, 10);
                     if (!isNaN(parsed) && parsed >= 0) {
                         wThresholds[idx] = parsed;
-                        templateSelect.value = detectTemplate();
                         dirty = true;
                     }
                 });
@@ -510,7 +474,6 @@
                 delBtn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
                 delBtn.addEventListener('click', () => {
                     wThresholds.splice(idx, 1);
-                    templateSelect.value = 'custom';
                     dirty = true;
                     rebuildThresholdList();
                 });
@@ -531,7 +494,6 @@
         addThreshBtn.addEventListener('click', () => {
             const last = wThresholds.length > 0 ? wThresholds[wThresholds.length - 1] : 0;
             wThresholds.push(last + 1000);
-            templateSelect.value = 'custom';
             dirty = true;
             rebuildThresholdList();
         });
@@ -540,15 +502,6 @@
         threshSection.appendChild(threshList);
         threshSection.appendChild(addThreshBtn);
         xpOnlyWrap.appendChild(threshSection);
-
-        templateSelect.addEventListener('change', () => {
-            const key = templateSelect.value;
-            if (key !== 'custom' && LEVEL_XP_TEMPLATES[key]) {
-                wThresholds = LEVEL_XP_TEMPLATES[key].thresholds.slice();
-                rebuildThresholdList();
-            }
-            dirty = true;
-        });
 
         // ── Carry Over XP ──
         const carrySection = document.createElement('div');
@@ -750,6 +703,7 @@
 
     // Expose for module-core.js
     window.openLevelSettings = openLevelSettings;
+    window.LEVEL_XP_TEMPLATES = LEVEL_XP_TEMPLATES;
 
     console.log('[CV] module-level.js loaded');
 })();

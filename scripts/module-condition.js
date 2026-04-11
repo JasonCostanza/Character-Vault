@@ -2306,103 +2306,6 @@
         const body = document.createElement('div');
         body.className = 'cv-modal-body cond-settings-body';
 
-        // Template Selector
-        const tplSection = document.createElement('div');
-        tplSection.className = 'cond-template-section';
-
-        const tplLabel = document.createElement('label');
-        tplLabel.className = 'cond-template-label';
-        tplLabel.textContent = t('cond.template');
-        tplSection.appendChild(tplLabel);
-
-        const tplSelect = document.createElement('div');
-        tplSelect.className = 'cv-select';
-
-        const tplTrigger = document.createElement('button');
-        tplTrigger.type = 'button';
-        tplTrigger.className = 'cv-select-trigger';
-        tplTrigger.setAttribute('aria-haspopup', 'listbox');
-        tplTrigger.setAttribute('aria-expanded', 'false');
-        const tplValueSpan = document.createElement('span');
-        tplValueSpan.className = 'cv-select-value';
-        tplValueSpan.textContent = t(CONDITION_TEMPLATES[content.template].nameKey);
-        tplTrigger.appendChild(tplValueSpan);
-        tplTrigger.insertAdjacentHTML('beforeend',
-            '<svg class="cv-select-chevron" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>');
-
-        const tplMenu = document.createElement('ul');
-        tplMenu.className = 'cv-select-menu';
-        tplMenu.setAttribute('role', 'listbox');
-
-        // Shim so handleTemplateChange can reset displayed value on cancel
-        const tplSelectController = {
-            set value(v) {
-                tplMenu.querySelectorAll('.cv-select-option').forEach(function (o) {
-                    o.classList.toggle('selected', o.dataset.value === v);
-                });
-                tplValueSpan.textContent = t(CONDITION_TEMPLATES[v].nameKey);
-                tplTrigger.setAttribute('aria-expanded', 'false');
-                tplSelect.classList.remove('open');
-                tplMenu.style.position = '';
-                tplMenu.style.top = '';
-                tplMenu.style.left = '';
-                tplMenu.style.width = '';
-                tplMenu.style.right = '';
-            }
-        };
-
-        TEMPLATE_KEYS.forEach(function (key) {
-            const li = document.createElement('li');
-            li.className = 'cv-select-option' + (key === content.template ? ' selected' : '');
-            li.dataset.value = key;
-            li.setAttribute('role', 'option');
-            li.textContent = t(CONDITION_TEMPLATES[key].nameKey);
-            li.addEventListener('click', function () {
-                tplSelect.classList.remove('open');
-                tplTrigger.setAttribute('aria-expanded', 'false');
-                tplMenu.style.position = '';
-                tplMenu.style.top = '';
-                tplMenu.style.left = '';
-                tplMenu.style.width = '';
-                tplMenu.style.right = '';
-                if (key !== content.template) {
-                    handleTemplateChange(key, content, moduleEl, data, panel, tplSelectController);
-                }
-            });
-            tplMenu.appendChild(li);
-        });
-
-        tplTrigger.addEventListener('click', function () {
-            const isOpen = tplSelect.classList.toggle('open');
-            tplTrigger.setAttribute('aria-expanded', isOpen);
-            if (isOpen) {
-                // Position menu as fixed so it escapes the modal's overflow container
-                const rect = tplTrigger.getBoundingClientRect();
-                tplMenu.style.position = 'fixed';
-                tplMenu.style.top = (rect.bottom + 4) + 'px';
-                tplMenu.style.left = rect.left + 'px';
-                tplMenu.style.width = rect.width + 'px';
-                tplMenu.style.right = 'auto';
-            }
-        });
-
-        document.addEventListener('click', function (e) {
-            if (!tplSelect.contains(e.target)) {
-                tplSelect.classList.remove('open');
-                tplTrigger.setAttribute('aria-expanded', 'false');
-                tplMenu.style.position = '';
-                tplMenu.style.top = '';
-                tplMenu.style.left = '';
-                tplMenu.style.width = '';
-                tplMenu.style.right = '';
-            }
-        });
-
-        tplSelect.appendChild(tplTrigger);
-        tplSelect.appendChild(tplMenu);
-        tplSection.appendChild(tplSelect);
-        body.appendChild(tplSection);
-
         // Applied section
         const appliedSection = document.createElement('div');
         appliedSection.className = 'cond-applied-section';
@@ -2685,94 +2588,6 @@
                 },
             });
         }
-    }
-
-    // ── Template Switching ──
-
-    function handleTemplateChange(newTemplate, content, moduleEl, data, panel, selectEl) {
-        const hasData = content.applied.length > 0 || content.staging.length > 0 || content.customConditions.length > 0;
-
-        if (!hasData) {
-            // No data — just switch
-            applyTemplate(newTemplate, 'replace', content);
-            scheduleSave();
-            renderSettingsPanelContent(panel, moduleEl, data, content);
-            return;
-        }
-
-        // Show dialog
-        const existing = document.querySelector('.cond-template-dialog');
-        if (existing) existing.remove();
-
-        const overlay = document.createElement('div');
-        overlay.className = 'cond-template-dialog';
-
-        const dialogPanel = document.createElement('div');
-        dialogPanel.className = 'cond-template-dialog-panel';
-
-        const dialogTitle = document.createElement('div');
-        dialogTitle.className = 'cond-template-dialog-title';
-        dialogTitle.textContent = t('cond.templateWarnTitle');
-        dialogPanel.appendChild(dialogTitle);
-
-        const dialogMsg = document.createElement('div');
-        dialogMsg.className = 'cond-template-dialog-msg';
-        dialogMsg.textContent = t('cond.templateWarnMsg');
-        dialogPanel.appendChild(dialogMsg);
-
-        const dialogActions = document.createElement('div');
-        dialogActions.className = 'cond-template-dialog-actions';
-
-        const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'cond-template-dialog-btn';
-        cancelBtn.textContent = t('cond.templateCancel');
-        cancelBtn.addEventListener('click', function () {
-            selectEl.value = content.template;
-            overlay.remove();
-        });
-        dialogActions.appendChild(cancelBtn);
-
-        const mergeBtn = document.createElement('button');
-        mergeBtn.className = 'cond-template-dialog-btn cond-template-dialog-btn-merge';
-        mergeBtn.textContent = t('cond.templateMerge');
-        mergeBtn.addEventListener('click', function () {
-            overlay.remove();
-            applyTemplate(newTemplate, 'merge', content);
-            scheduleSave();
-            renderSettingsPanelContent(panel, moduleEl, data, content);
-        });
-        dialogActions.appendChild(mergeBtn);
-
-        const replaceBtn = document.createElement('button');
-        replaceBtn.className = 'cond-template-dialog-btn cond-template-dialog-btn-replace';
-        replaceBtn.textContent = t('cond.templateReplace');
-        replaceBtn.addEventListener('click', function () {
-            overlay.remove();
-            applyTemplate(newTemplate, 'replace', content);
-            scheduleSave();
-            renderSettingsPanelContent(panel, moduleEl, data, content);
-        });
-        dialogActions.appendChild(replaceBtn);
-
-        dialogPanel.appendChild(dialogActions);
-        overlay.appendChild(dialogPanel);
-
-        overlay.addEventListener('click', function (e) {
-            if (e.target === overlay) {
-                selectEl.value = content.template;
-                overlay.remove();
-            }
-        });
-        overlay.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                selectEl.value = content.template;
-                overlay.remove();
-            }
-        });
-
-        document.body.appendChild(overlay);
-        overlay.setAttribute('tabindex', '-1');
-        overlay.focus();
     }
 
     function applyTemplate(templateKey, mode, content) {
@@ -3140,6 +2955,7 @@
     window.openCondSettings = function (moduleEl, data) {
         openCondSettingsPanel(moduleEl, data);
     };
+    window.applyConditionTemplate = applyTemplate;
 
     console.log('[CV] Condition module registered');
 })();

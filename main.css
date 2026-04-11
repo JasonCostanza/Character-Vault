@@ -3115,18 +3115,6 @@ select,
     display: block;
 }
 
-/* Wizard stat template sub-option */
-.wizard-stat-template {
-    display: none;
-    margin-bottom: 24px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--cv-border-subtle);
-}
-
-.wizard-stat-template.visible {
-    display: block;
-}
-
 /* ── Custom Select (cv-select) ──────────────────────────────────── */
 .cv-select {
     position: relative;
@@ -5881,23 +5869,6 @@ select,
     position: relative;
 }
 
-/* ── Condition Template Selector ── */
-.cond-template-section {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.cond-template-label {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--cv-text-muted);
-    user-select: none;
-}
-
-
 /* ── Condition Section Labels ── */
 .cond-section-label {
     font-size: 10px;
@@ -6462,94 +6433,6 @@ select,
 
 .cond-expand-done-btn:hover {
     background: var(--cv-accent-hover);
-}
-
-/* ── Condition Template Switch Dialog ── */
-.cond-template-dialog {
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-    background: rgba(0, 0, 0, 0.55);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.cond-template-dialog-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-    max-width: 280px;
-    background: var(--cv-bg-surface);
-    border: 1px solid var(--cv-border);
-    border-radius: 8px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-    padding: 16px;
-}
-
-.cond-template-dialog-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--cv-text);
-    user-select: none;
-}
-
-.cond-template-dialog-msg {
-    font-size: 11px;
-    color: var(--cv-text-secondary);
-    line-height: 1.45;
-    user-select: none;
-}
-
-.cond-template-dialog-actions {
-    display: flex;
-    gap: 6px;
-    margin-top: 4px;
-}
-
-.cond-template-dialog-btn {
-    flex: 1;
-    background: none;
-    border: 1px solid var(--cv-border);
-    border-radius: 4px;
-    color: var(--cv-text-secondary);
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 6px 8px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
-}
-
-.cond-template-dialog-btn:hover {
-    color: var(--cv-text);
-    border-color: var(--cv-text-muted);
-}
-
-.cond-template-dialog-btn-merge {
-    background: var(--cv-accent);
-    border-color: var(--cv-accent);
-    color: var(--cv-bg-sunken);
-}
-
-.cond-template-dialog-btn-merge:hover {
-    background: var(--cv-accent-hover);
-    border-color: var(--cv-accent-hover);
-    color: var(--cv-bg-sunken);
-}
-
-.cond-template-dialog-btn-replace {
-    background: none;
-    border-color: var(--cv-danger);
-    color: var(--cv-danger);
-}
-
-.cond-template-dialog-btn-replace:hover {
-    background: var(--cv-danger);
-    color: var(--cv-bg-sunken);
 }
 
 /* ── Condition Custom Wizard ── */

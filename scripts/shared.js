@@ -177,6 +177,28 @@
     const CV_SVG_SORT_DOWN =
         '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>';
 
+    // ── Game System Helpers ──
+    function inferTierPreset(systemKey) {
+        if (systemKey === 'dnd5e') return 'dnd5e';
+        if (systemKey === 'pf2e') return 'pf2e';
+        return 'simple';
+    }
+
+    function getGameSystemDisplayName(systemKey) {
+        const names = {
+            dnd5e: 'D&D 5e',
+            pf2e: 'Pathfinder 2e',
+            coc: 'Call of Cthulhu',
+            vtm: 'Vampire: The Masquerade',
+            cpred: 'Cyberpunk Red',
+            mothership: 'Mothership',
+            sr6: 'Shadowrun 6e',
+            daggerheart: 'Daggerheart',
+            custom: null,
+        };
+        return names[systemKey] ?? null;
+    }
+
     window.escapeHtml = escapeHtml;
     window.renderMarkdown = renderMarkdown;
     window.attachCheckboxHandlers = attachCheckboxHandlers;
@@ -185,4 +207,6 @@
     window.CV_ICONS = CV_ICONS;
     window.CV_SVG_SORT_UP = CV_SVG_SORT_UP;
     window.CV_SVG_SORT_DOWN = CV_SVG_SORT_DOWN;
+    window.inferTierPreset = inferTierPreset;
+    window.getGameSystemDisplayName = getGameSystemDisplayName;
 })();

@@ -73,10 +73,10 @@ All JS lives in `scripts/` as separate files loaded by `main.html` in dependency
 
 | File | Key Functions / Globals |
 |---|---|
-| **shared.js** | `escapeHtml(text)`, `renderMarkdown(raw)` (Marked + DOMPurify), `attachCheckboxHandlers()`, `toggleCheckboxInMarkdown()` |
+| **shared.js** | `escapeHtml(text)`, `renderMarkdown(raw)` (Marked + DOMPurify), `attachCheckboxHandlers()`, `toggleCheckboxInMarkdown()`, `inferTierPreset(systemKey)`, `getGameSystemDisplayName(systemKey)` |
 | **i18n.js** | `currentLang`, `t(key, replacements?)`, `applyTranslations()`, `refreshModuleLabels()` — lightweight localization; HTML elements use `data-i18n` / `data-i18n-*` attributes for static text, JS calls `t()` for dynamic text |
 | **theme.js** | `setTheme(theme)`, `loadTheme()` — runs `loadTheme()` on load |
-| **settings.js** | `modeToggle` element (toggles `.mode-edit` / `.mode-play`), `openSettings()`, `closeSettings()`, `updateThemeButtons(theme)`, language select handler, save/load button wiring, force reload, `chkAutoSave`, `chkAutoLoad` |
+| **settings.js** | `modeToggle` element (toggles `.mode-edit` / `.mode-play`), `openSettings()`, `closeSettings()`, `updateThemeButtons(theme)`, language select handler, game system select handler, `syncGameSystemUI()`, save/load button wiring, force reload, `chkAutoSave`, `chkAutoLoad` |
 | **persistence.js** | `migrateData()`, `syncModuleState()`, `serializeCharacter()`, `deserializeCharacter()`, `saveCharacter()`, `loadCharacter()`, `scheduleSave()` — TaleSpire campaign localStorage persistence with auto-save debounce |
 | **module-core.js** | `modules[]` array, `moduleIdCounter`, `generateModuleId()`, `wizardState`, wizard open/close/reset, global Escape key handler, wizard interactions (type cards, color swatches), create module handler, `MODULE_TYPES{}` registry, `registerModuleType()`, `renderModule(data)`, SortableJS drag & drop, `openDeleteConfirm()`, `closeDeleteConfirm()`, `deleteModule()`, `applyPlayMode()`, `applyEditMode()`, `initResizeHandle()` (constants `GRID_COLUMNS=4`, `GRID_GAP=8`, row height `80px`) |
 | **module-activity.js** | `registerModuleType('activity', ...)`, `window.logActivity(opts)` — global API other modules call to add entries, `window.openActivitySettings(moduleEl, data)` — settings modal opener, `window.activityLog[]` — character-level array of log entries shared across all Activity Log module instances |
@@ -85,13 +85,13 @@ All JS lives in `scripts/` as separate files loaded by `main.html` in dependency
 | **module-stat.js** | `formatModifier(mod)`, `renderStatBlock()`, `renderStatBlockEdit()`, `reRenderStatEdits()`, `initStatSortable()`, `rollStatCheck(stat)`, `enterQuickEdit()`, `registerModuleType('stat', ...)` — stat blocks with values/modifiers, play mode dice rolling, edit mode inputs, layout toggle (large-stat / large-modifier) |
 | **module-hr.js** | `registerModuleType('hline', ...)` — simple `<hr>` divider, header hidden in play mode |
 | **module-health.js** | `evaluateHealthExpression()`, `applyDamage()`, `applyHealing()`, `syncHealthLayersFromData()`, `buildPlayLayer()`, `buildEditLayer()`, `registerModuleType('health', ...)` — HP/Max HP/Temp HP display, damage/healing overlays, quick-edit, sync play and edit layers |
-| **module-level.js** | `evaluateXPExpression()`, `getLevelProgress()`, `levelUp()`, `renderLevelBody()`, `openXPModal()`, `openLevelSettings()`, `registerModuleType('level', ...)`, `window.getCharacterLevel()` — XP tracking with thresholds or milestone leveling, progress bar, level-up button, cross-module API |
+| **module-level.js** | `evaluateXPExpression()`, `getLevelProgress()`, `levelUp()`, `renderLevelBody()`, `openXPModal()`, `openLevelSettings()`, `registerModuleType('level', ...)`, `window.getCharacterLevel()`, `window.LEVEL_XP_TEMPLATES` — XP tracking with thresholds or milestone leveling, progress bar, level-up button, cross-module API |
 | **module-spacer.js** | `registerModuleType('spacer', ...)` — trivial module type, just visual spacing |
 | **module-resistance.js** | `registerModuleType('resistance', ...)` — drag-to-assign resistance/immunity/weakness columns; `openResSettingsPanel()`, `openResWizard()`, SortableJS staging area, value prompts, layout toggle |
 | **module-savingthrow.js** | `applySavingThrowTemplate(key)`, `applyTierPreset(key)`, `formatModifier(n)`, `renderSaveBlock()`, `renderSaveBlockEdit()`, `reRenderSaveEdits()`, `initSaveSortable()`, `rollSavingThrow()`, `enterSaveQuickEdit()`, `renderNotesArea()`, `openSaveSettings()`, `openCustomTierEditor()`, `registerModuleType('savingthrow', ...)` |
 | **module-spells.js** | `isDiceNotation(val)`, `extractDiceRoll(val)`, `defaultContent()`, `genId(prefix)`, `getAvailableSlots(data, slotLevel)`, `spendSlot(data, slotLevel)`, `restoreAllSlots(moduleEl, data)`, `rollAllSpellDice(spell)`, `rollSingleAttribute(spell, attr)`, `castSpell(moduleEl, data, spell, catId, onSuccess)`, `renderSpellsPlayLayer(bodyEl, data)`, `renderSpellsEditLayer(bodyEl, data)`, `syncSpellSlots(moduleEl, data)`, `openSpellDetailModal(moduleEl, data, spell, catId)`, `openSpellEditModal(moduleEl, data, spell, catId)`, `openCategoryEditModal(moduleEl, data, cat)`, `openSpellSettings(moduleEl, data)` (also `window.openSpellSettings`), `registerModuleType('spells', ...)` |
 | **module-list.js** | `renderListBody()`, `renderListItem()`, `renderAttributeCell()`, `renderColumnHeaders()`, `buildAttributeWizard()`, `buildInspectOverlay()`, `initSortableItems()`, `initSortableAttributes()`, `closeManageAttrsPanel()`, `registerModuleType('list', ...)`, `syncState()` — multi-column item tables with custom attributes, attribute wizard, cross-list drag transfer, sort control |
-| **module-condition.js** | `registerModuleType('condition', ...)` — game system template conditions with toggle/value types; `openCondSettingsPanel()`, `openCondWizard()`, SortableJS staging area, cascading sub-conditions, expand modal, template switching |
+| **module-condition.js** | `registerModuleType('condition', ...)` — game system template conditions with toggle/value types; `openCondSettingsPanel()`, `openCondWizard()`, `window.applyConditionTemplate`, SortableJS staging area, cascading sub-conditions, expand modal |
 | **app.js** | Startup: `applyTranslations()`, `refreshModuleLabels()`, auto-load check (`chkAutoLoad` + `TS` availability → `loadCharacter()`) |
 
 ---
@@ -192,6 +192,7 @@ Character sheet persistence format, stored via `TS.localStorage.campaign`:
   version: 1,                   // schema version for migrations
   savedAt: '2026-03-21T...',    // ISO timestamp
   moduleIdCounter: 5,           // resume ID generation
+  gameSystem: 'dnd5e',          // global game system key (dnd5e | pf2e | coc | vtm | cpred | mothership | sr6 | daggerheart | custom)
   activityLog: [ /* activity log entries — character-level, shared across all Activity Log modules */ ],
   modules: [ /* modules[] array entries */ ]
 }
@@ -380,7 +381,7 @@ Default size: 4col × 2row.
 ### `wizardState` (object)
 Transient state for the New Module wizard:
 ```js
-{ type: 'text', theme: null, statLayout: 'large-stat', statTemplate: '', abilitiesTemplate: '', savingthrowTemplate: '' }
+{ type: 'text', theme: null, statLayout: 'large-stat' }
 ```
 
 ---

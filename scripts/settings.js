@@ -74,6 +74,20 @@
 
     langSelect.value = localStorage.getItem('cv-language') ?? 'en';
 
+    // ── Game System ──
+    const gameSystemSelect = document.getElementById('setting-game-system');
+
+    gameSystemSelect.addEventListener('change', () => {
+        window.gameSystem = gameSystemSelect.value;
+        scheduleSave();
+    });
+
+    window.syncGameSystemUI = function () {
+        gameSystemSelect.value = window.gameSystem || 'custom';
+    };
+
+    gameSystemSelect.value = window.gameSystem || 'custom';
+
     // ── Save / Load ──
     const btnSave = document.getElementById('btn-save');
     const btnLoad = document.getElementById('btn-load');

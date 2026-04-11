@@ -28,6 +28,7 @@
             version: 1,
             savedAt: new Date().toISOString(),
             moduleIdCounter,
+            gameSystem: window.gameSystem || 'custom',
             activityLog: window.activityLog || [],
             modules: modules.map((m) => ({
                 id: m.id,
@@ -65,6 +66,8 @@
 
         // Restore counter (ensure it's at least as high as max existing ID)
         moduleIdCounter = blob.moduleIdCounter || 0;
+        window.gameSystem = blob.gameSystem || 'custom';
+        if (typeof syncGameSystemUI === 'function') syncGameSystemUI();
         window.activityLog = Array.isArray(blob.activityLog) ? blob.activityLog : [];
 
         // Rebuild modules sorted by order

@@ -69,6 +69,22 @@
                     </select>
                 </div>
 
+                <!-- Game System -->
+                <div class="settings-section">
+                    <label class="settings-label" for="setting-game-system" data-i18n="settings.gameSystem">Game System</label>
+                    <select id="setting-game-system" class="settings-select">
+                        <option value="coc">Call of Cthulhu</option>
+                        <option value="cpred">Cyberpunk Red</option>
+                        <option value="dnd5e">D&amp;D 5e</option>
+                        <option value="daggerheart">Daggerheart</option>
+                        <option value="mothership">Mothership</option>
+                        <option value="pf2e">Pathfinder 2e</option>
+                        <option value="sr6">Shadowrun 6e</option>
+                        <option value="vtm">Vampire: The Masquerade</option>
+                        <option value="custom" data-i18n="settings.gameSystemCustom">Custom / Other</option>
+                    </select>
+                </div>
+
                 <!-- Theme -->
                 <div class="settings-section">
                     <label class="settings-label" data-i18n="settings.theme">Theme</label>
@@ -220,27 +236,6 @@
                     </div>
                 </div>
 
-                <!-- Abilities Template -->
-                <div id="wizard-abilities-template" class="wizard-stat-template">
-                    <label class="wizard-label" data-i18n="abilities.templateLabel">Template</label>
-                    <div class="cv-select" id="wizard-abilities-template-select">
-                        <button type="button" class="cv-select-trigger" aria-haspopup="listbox" aria-expanded="false">
-                            <span class="cv-select-value" data-i18n="abilities.templateNone">None (blank)</span>
-                            <svg class="cv-select-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                        </button>
-                        <ul class="cv-select-menu" role="listbox">
-                            <li class="cv-select-option selected" data-value="" role="option" data-i18n="abilities.templateNone">None (blank)</li>
-                            <li class="cv-select-option" data-value="dnd5e" role="option">D&amp;D 5e</li>
-                            <li class="cv-select-option" data-value="pf2e" role="option">Pathfinder 2e</li>
-                            <li class="cv-select-option" data-value="coc" role="option">Call of Cthulhu</li>
-                            <li class="cv-select-option" data-value="vtm" role="option">Vampire: The Masquerade</li>
-                            <li class="cv-select-option" data-value="cpred" role="option">Cyberpunk Red</li>
-                            <li class="cv-select-option" data-value="mothership" role="option">Mothership</li>
-                            <li class="cv-select-option" data-value="sr6" role="option">Shadowrun 6e</li>
-                        </ul>
-                    </div>
-                </div>
-
                 <!-- Stat Layout Sub-Option -->
                 <div id="wizard-stat-layout" class="wizard-stat-layout">
                     <label class="wizard-label" data-i18n="stat.layoutLabel">Layout</label>
@@ -255,47 +250,6 @@
                             <span class="wizard-layout-preview-sub">16</span>
                             <span class="wizard-layout-label" data-i18n="stat.largeModifier">Large Modifier</span>
                         </button>
-                    </div>
-                </div>
-
-                <!-- Stat Template -->
-                <div id="wizard-stat-template" class="wizard-stat-template">
-                    <label class="wizard-label" data-i18n="stat.templateLabel">Template</label>
-                    <div class="cv-select" id="wizard-stat-template-select">
-                        <button type="button" class="cv-select-trigger" aria-haspopup="listbox" aria-expanded="false">
-                            <span class="cv-select-value" data-i18n="stat.templateNone">None (blank)</span>
-                            <svg class="cv-select-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                        </button>
-                        <ul class="cv-select-menu" role="listbox">
-                            <li class="cv-select-option selected" data-value="" role="option" data-i18n="stat.templateNone">None (blank)</li>
-                            <li class="cv-select-option" data-value="dnd5e" role="option">D&amp;D 5e</li>
-                            <li class="cv-select-option" data-value="pf2e" role="option">Pathfinder 2e</li>
-                            <li class="cv-select-option" data-value="daggerheart" role="option">Daggerheart</li>
-                            <li class="cv-select-option" data-value="coc" role="option">Call of Cthulhu</li>
-                            <li class="cv-select-option" data-value="vtm" role="option">Vampire: The Masquerade</li>
-                            <li class="cv-select-option" data-value="cpred" role="option">Cyberpunk Red</li>
-                            <li class="cv-select-option" data-value="mothership" role="option">Mothership</li>
-                            <li class="cv-select-option" data-value="sr6" role="option">Shadowrun 6e</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Saving Throw Template -->
-                <div id="wizard-savingthrow-template" class="wizard-stat-template">
-                    <label class="wizard-label" data-i18n="save.templateLabel">Template</label>
-                    <div class="cv-select" id="wizard-savingthrow-template-select">
-                        <button type="button" class="cv-select-trigger" aria-haspopup="listbox" aria-expanded="false">
-                            <span class="cv-select-value" data-i18n="save.templateNone">None (blank)</span>
-                            <svg class="cv-select-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                        </button>
-                        <ul class="cv-select-menu" role="listbox">
-                            <li class="cv-select-option selected" data-value="" role="option" data-i18n="save.templateNone">None (blank)</li>
-                            <li class="cv-select-option" data-value="dnd5e" role="option">D&amp;D 5e</li>
-                            <li class="cv-select-option" data-value="pf2e" role="option">Pathfinder 2e</li>
-                            <li class="cv-select-option" data-value="coc" role="option">Call of Cthulhu</li>
-                            <li class="cv-select-option" data-value="cpred" role="option">Cyberpunk Red</li>
-                            <li class="cv-select-option" data-value="mothership" role="option">Mothership</li>
-                        </ul>
                     </div>
                 </div>
 

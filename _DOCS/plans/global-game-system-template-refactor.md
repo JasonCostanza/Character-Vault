@@ -4,7 +4,7 @@
 
 Currently, every module manages its own game system template selection independently — three wizard dropdowns (stats, abilities, saving throws), one conditions settings dropdown, one saving throw tier preset dropdown, and one level XP preset dropdown. There is no concept of a "character sheet's game system." This means a user could accidentally mix D&D 5e stats with PF2e conditions, which makes no sense.
 
-**Goal:** Replace per-module template selection with a single global game system setting stored in symbiote settings. New modules would auto-populate from this global setting. Existing modules might also react to it (TBD — see open questions below).
+**Goal:** Replace per-module template selection with a single global game system setting stored in character save data. New modules auto-populate from this global setting. No per-module template switching after creation.
 
 ---
 
@@ -23,9 +23,9 @@ Currently, every module manages its own game system template selection independe
 ### Code Locations
 
 **`main.html`** — Three hardcoded wizard dropdown sections:
-- `#wizard-abilities-template` / `#wizard-abilities-template-select` (lines ~209–228)
-- `#wizard-stat-template` / `#wizard-stat-template-select` (lines ~247–267)
-- `#wizard-savingthrow-template` / `#wizard-savingthrow-template-select` (lines ~269–286)
+- `#wizard-abilities-template` / `#wizard-abilities-template-select`
+- `#wizard-stat-template` / `#wizard-stat-template-select`
+- `#wizard-savingthrow-template` / `#wizard-savingthrow-template-select`
 
 **`scripts/module-core.js`** — Wizard state and creation handler:
 - `wizardState.statTemplate`, `wizardState.abilitiesTemplate`, `wizardState.savingthrowTemplate` — transient keys consumed at `btnWizardCreate`
@@ -76,77 +76,336 @@ Currently, every module manages its own game system template selection independe
 
 3. **Wizard dropdowns are static HTML** — not generated from JS objects. Adding/removing a system requires changes in both `main.html` and each JS template object.
 
+4. **All `apply*Template()` functions return `[]` for unknown keys** — safe silent fallback, no errors thrown. Conditions' `applyTemplate()` returns `undefined` for unknown keys (also safe — it's a no-op).
+
+5. **Settings.js uses raw localStorage per-control** — no centralized state object, no getter/setter pattern. Since `gameSystem` lives in character save data (not localStorage), it will use `scheduleSave()` for persistence, but the UI wiring follows the existing direct event listener pattern.
+
 ---
 
 ## Decisions
 
 | Question | Decision |
 |---|---|
+| Where is `gameSystem` stored? | **Character save data** (per-character via `persistence.js`), not localStorage. Different characters can use different systems. |
 | System change affects existing modules? | No migration needed — no current users. Implement clean new system only. |
 | Wizard per-module dropdowns | **Remove entirely.** Wizard no longer shows template pickers. |
-| Level XP preset | **Tie to global system.** D&D 5e and PF2e auto-populate; all others default blank/custom. |
+| Conditions settings template dropdown | **Remove.** System is set at creation from global setting, no per-module switching. Custom conditions still work. |
+| Level XP preset dropdown | **Remove.** XP thresholds set from global system at creation. Manual threshold editing remains. |
 | "Custom" global option | **Start blank.** No auto-population for any module type. |
+| Module title auto-naming | Derive from global system: `getGameSystemDisplayName(sys) + ' ' + t('type.<type>')`. `null` for custom. |
 
 ---
 
 ## Implementation Plan (Phase 2)
 
-### 1. Add `gameSystem` to global settings — `scripts/settings.js`
+### 1. Add `gameSystem` to character save data — `scripts/persistence.js`
 
-- Add `gameSystem: 'dnd5e'` to the default settings object
-- Supported values: `'dnd5e'`, `'pf2e'`, `'coc'`, `'vtm'`, `'cpred'`, `'mothership'`, `'sr6'`, `'daggerheart'`, `'custom'`
-- Add getter/setter wired to `scheduleSave()`
+In `serializeCharacter()` (starts at line 23), add `gameSystem: window.gameSystem || 'custom'` to the JSON object alongside `version`, `savedAt`, `moduleIdCounter`, `modules`.
 
-### 2. Add game system selector to settings overlay UI — `main.html` + `scripts/settings.js`
+In `deserializeCharacter()` (starts at line 43), after line 64 (`moduleIdCounter = blob.moduleIdCounter || 0;`), add:
+```javascript
+window.gameSystem = blob.gameSystem || 'custom';
+if (typeof syncGameSystemUI === 'function') syncGameSystemUI();
+```
 
-- Add a new section in the settings overlay: "Game System"
-- Use a `.cv-select` dropdown listing all 9 systems (alphabetical by display label, Custom last)
-- onChange: update `settings.gameSystem`, call `scheduleSave()`
+### 2. Add helpers — `scripts/shared.js`
 
-### 3. Remove per-module wizard template dropdowns — `main.html`
+Add before the closing `})()` and expose on `window`:
 
-Remove these three sections entirely from `#wizard-overlay`:
-- `#wizard-abilities-template` / `#wizard-abilities-template-select`
-- `#wizard-stat-template` / `#wizard-stat-template-select`
-- `#wizard-savingthrow-template` / `#wizard-savingthrow-template-select`
+**`inferTierPreset(systemKey)`** — returns `'dnd5e'` for `'dnd5e'`, `'pf2e'` for `'pf2e'`, `'simple'` for everything else.
 
-### 4. Clean up wizard state and handlers — `scripts/module-core.js`
+**`getGameSystemDisplayName(systemKey)`** — lookup object returning display name string, `null` for `'custom'`. Map:
+```
+dnd5e → 'D&D 5e', pf2e → 'Pathfinder 2e', coc → 'Call of Cthulhu',
+vtm → 'Vampire: The Masquerade', cpred → 'Cyberpunk Red',
+mothership → 'Mothership', sr6 → 'Shadowrun 6e', daggerheart → 'Daggerheart',
+custom → null
+```
 
-- Remove `statTemplate`, `abilitiesTemplate`, `savingthrowTemplate` from `wizardState`
-- Remove the three template wiring click handler blocks
-- Remove template section visibility toggling from `resetWizard()` and type card click handler
-- In `btnWizardCreate` handler: replace `wizardState.statTemplate` etc. with `settings.gameSystem`
+### 3. Game System selector in settings overlay — `main.html` + `scripts/settings.js`
 
-### 5. Wire creation to global system — `scripts/module-core.js`
+**`main.html`**: Insert a new `.settings-section` between the Language `</div>` (line 64) and the Theme `<!-- Theme -->` comment (line 66). Use the same pattern as the Language section. Options in this order (alphabetical by display name, Custom last):
 
-In `btnWizardCreate`, for each module type:
-- **stat**: `applyStatTemplate(settings.gameSystem)` — falls back to empty array if no template defined for that system
-- **abilities**: `applyAbilityTemplate(settings.gameSystem)` — same fallback
-- **savingthrow**: `applySavingThrowTemplate(settings.gameSystem)` + `applyTierPreset(inferTierPreset(settings.gameSystem))` — same fallback
-- **condition**: set `content.template = settings.gameSystem` (already handles `'custom'` as empty)
-- **level**: if `settings.gameSystem` is `'dnd5e'` or `'pf2e'`, auto-populate `content.xpThresholds` from `LEVEL_XP_TEMPLATES[settings.gameSystem]`; otherwise leave empty
+```
+coc       → Call of Cthulhu
+cpred     → Cyberpunk Red
+dnd5e     → D&D 5e
+daggerheart → Daggerheart
+mothership → Mothership
+pf2e      → Pathfinder 2e
+sr6       → Shadowrun 6e
+vtm       → Vampire: The Masquerade
+custom    → Custom / Other
+```
 
-Add a small helper `inferTierPreset(systemKey)` — maps `'dnd5e'` → `'dnd5e'`, `'pf2e'` → `'pf2e'`, everything else → `'simple'`.
+Use `<select id="setting-game-system" class="settings-select">`. Label with `data-i18n="settings.gameSystem"`.
 
-### 6. Handle "no template" gracefully in apply functions
+**`scripts/settings.js`** — Add after the language `change` listener wiring (after line 70):
+- `const gameSystemSelect = document.getElementById('setting-game-system');`
+- Change listener: sets `window.gameSystem = gameSystemSelect.value`, calls `scheduleSave()`
+- Expose `window.syncGameSystemUI = function()` that sets `gameSystemSelect.value = window.gameSystem || 'custom'`
+- Initial sync on load: `gameSystemSelect.value = window.gameSystem || 'custom'`
 
-Each `apply*Template()` function already returns an array. Verify they return `[]` (not error) when called with an unsupported key. Add fallback if needed:
-- `applyStatTemplate(key)` — if `STAT_TEMPLATES[key]` undefined, return `[]`
-- `applyAbilityTemplate(key)` — same
-- `applySavingThrowTemplate(key)` — same
+### 4. Initialize `window.gameSystem` — `scripts/module-core.js`
 
-### 7. Update translations — `scripts/translations.js`
+Add `window.gameSystem = 'custom';` after line 20 (`window.moduleIdCounter = 0;`) as the default before character data loads.
 
-- Add keys for the new settings section: `settings.gameSystem`, `settings.gameSystemLabel`, plus display names for all 9 systems (reuse existing `cond.template*` keys where possible, or add a unified `system.*` namespace)
-- Remove or deprecate: `abilities.templateLabel`, `abilities.templateNone`, `stat.templateLabel`, `stat.templateNone`, `save.templateLabel`, `save.templateNone` (wizard labels no longer needed)
+### 5. Remove wizard template HTML — `main.html`
 
-### 8. Update documentation
+Delete these three blocks. **Keep `#wizard-stat-layout` (lines 230–245) intact.**
 
-- `_DOCS/ARCHITECTURE.md`: Update `wizardState` schema, note removal of per-module template fields, add `settings.gameSystem`
-- `_DOCS/SUBMODULES/STATS.md`: Update "Stat Templates" section — creation now uses global setting
-- `_DOCS/SUBMODULES/ABILITIES.md`: Same
-- `_DOCS/SUBMODULES/SAVING_THROWS.md`: Same
-- `_DOCS/SUBMODULES/CONDITIONS.md`: Note that `content.template` is now initialized from global setting at creation
+- **Lines 209–228**: `<!-- Abilities Template -->` through closing `</div>` of `#wizard-abilities-template`
+- **Lines 247–267**: `<!-- Stat Template -->` through closing `</div>` of `#wizard-stat-template`
+- **Lines 269–286**: `<!-- Saving Throw Template -->` through closing `</div>` of `#wizard-savingthrow-template`
+
+### 6. Clean up wizard state/handlers — `scripts/module-core.js`
+
+**6a. `wizardState` object (lines 22–29):** Remove these three properties:
+- Line 26: `statTemplate: '',`
+- Line 27: `abilitiesTemplate: '',`
+- Line 28: `savingthrowTemplate: '',`
+
+**6b. `resetWizard()` (lines 42–137):** Remove the template reset lines:
+- Line 51: `statTemplate: '',` (inside the reset assignment)
+- Line 52: `abilitiesTemplate: '',`
+- Line 53: `savingthrowTemplate: '',`
+- Lines 87–102: Block resetting `wizard-stat-template` section (starts with `const statTemplateSelect = ...`)
+- Lines 104–119: Block resetting `wizard-abilities-template` section (starts with `const abilitiesTemplateSelect = ...`)
+- Lines 121–136: Block resetting `wizard-savingthrow-template` section (starts with `const savingthrowTemplateSelect = ...`)
+
+**6c. Type card click handler (lines 161–178):** Remove lines 170–176 (the six lines toggling template section visibility):
+```javascript
+const statTemplateEl = document.getElementById('wizard-stat-template');
+if (statTemplateEl) statTemplateEl.classList.toggle('visible', wizardState.type === 'stat');
+const abilitiesTemplateEl = document.getElementById('wizard-abilities-template');
+if (abilitiesTemplateEl) abilitiesTemplateEl.classList.toggle('visible', wizardState.type === 'abilities');
+const savingthrowTemplateEl = document.getElementById('wizard-savingthrow-template');
+if (savingthrowTemplateEl) savingthrowTemplateEl.classList.toggle('visible', wizardState.type === 'savingthrow');
+```
+
+**6d. Delete three template dropdown wiring blocks entirely:**
+- Lines 189–219: Block starting with `// Stat template selection (custom cv-select)` / `const wizardStatTemplateSelect = ...` through its closing `}`
+- Lines 221–250: Block starting with `// Abilities template selection (custom cv-select)` / `const wizardAbilitiesTemplateSelect = ...` through its closing `}`
+- Lines 252–281: Block starting with `// Saving Throw template selection (custom cv-select)` / `const wizardSavingthrowTemplateSelect = ...` through its closing `}`
+
+What comes before: line 188 (end of stat layout button wiring). What comes after: line 283 (comment for color swatch selection).
+
+### 7. Rewrite `btnWizardCreate` to use global system — `scripts/module-core.js`
+
+The `btnWizardCreate` handler spans lines 320–471. Replace each per-type block:
+
+**Abilities block (lines 332–343):** Replace with:
+```javascript
+if (moduleData.type === 'abilities') {
+    const sys = window.gameSystem || 'custom';
+    const templateAbilities = sys !== 'custom' ? applyAbilityTemplate(sys) : [];
+    moduleData.content = { linkedStatModuleId: null, abilities: templateAbilities };
+    const sysName = getGameSystemDisplayName(sys);
+    if (sysName && templateAbilities.length > 0) {
+        moduleData.title = sysName + ' ' + t('type.abilities');
+    }
+    moduleData.colSpan = 2;
+    moduleData.rowSpan = null;
+}
+```
+
+**Stat block (lines 363–388):** Replace with (preserve the grid sizing logic):
+```javascript
+if (moduleData.type === 'stat') {
+    const sys = window.gameSystem || 'custom';
+    const templateStats = sys !== 'custom' ? applyStatTemplate(sys) : [];
+    moduleData.content = { layout: wizardState.statLayout, stats: templateStats };
+    const sysName = getGameSystemDisplayName(sys);
+    if (sysName && templateStats.length > 0) {
+        moduleData.title = sysName + ' Stats';
+    }
+    // --- keep existing grid sizing logic below unchanged ---
+    const statCount = templateStats.length;
+    if (statCount === 0) {
+        moduleData.colSpan = 2;
+        moduleData.rowSpan = 2;
+    } else {
+        const sPerRow = (cols) => (cols === 2 ? 3 : cols === 3 ? 5 : 6);
+        let targetCols = 4;
+        for (let cols = 2; cols <= 4; cols++) {
+            if (sPerRow(cols) >= statCount) {
+                targetCols = cols;
+                break;
+            }
+        }
+        const statRows = Math.ceil(statCount / sPerRow(targetCols));
+        moduleData.colSpan = targetCols;
+        moduleData.rowSpan = statRows + 1;
+    }
+}
+```
+
+**Condition block (lines 414–425):** Replace with:
+```javascript
+if (moduleData.type === 'condition') {
+    const sys = window.gameSystem || 'custom';
+    moduleData.colSpan = 2;
+    moduleData.rowSpan = null;
+    moduleData.content = {
+        template: sys,
+        applied: [],
+        staging: [],
+        customConditions: [],
+        sortBy: null,
+        sortDir: 'asc',
+    };
+    if (sys !== 'custom') {
+        applyConditionTemplate(sys, 'replace', moduleData.content);
+        const sysName = getGameSystemDisplayName(sys);
+        if (sysName) moduleData.title = sysName + ' ' + t('type.condition');
+    }
+}
+```
+
+**Saving throw block (lines 427–448):** Replace with:
+```javascript
+if (moduleData.type === 'savingthrow') {
+    const sys = window.gameSystem || 'custom';
+    const templateSaves = sys !== 'custom' ? applySavingThrowTemplate(sys) : [];
+    const tierKey = inferTierPreset(sys);
+    const presetTiers = applyTierPreset(tierKey);
+    const autoTierPreset = sys !== 'custom' && templateSaves.length > 0;
+    moduleData.content = {
+        saves: templateSaves,
+        notes: '',
+        tiersEnabled: autoTierPreset,
+        tiers: presetTiers.length > 0 ? presetTiers : applyTierPreset('simple'),
+        tierPreset: tierKey,
+    };
+    const sysName = getGameSystemDisplayName(sys);
+    if (sysName && templateSaves.length > 0) {
+        moduleData.title = sysName + ' ' + t('type.savingthrow');
+    }
+    const saveCount = templateSaves.length;
+    moduleData.colSpan = saveCount <= 3 ? 2 : saveCount <= 6 ? 3 : 4;
+    moduleData.rowSpan = null;
+}
+```
+
+**Level block (lines 450–462):** Replace with:
+```javascript
+if (moduleData.type === 'level') {
+    const sys = window.gameSystem || 'custom';
+    const xpTpl = window.LEVEL_XP_TEMPLATES && window.LEVEL_XP_TEMPLATES[sys];
+    moduleData.colSpan = 1;
+    moduleData.rowSpan = null;
+    moduleData.content = {
+        level: 1,
+        currentXP: 0,
+        levelingSystem: 'xp',
+        xpThresholds: xpTpl ? xpTpl.thresholds.slice() : [300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000],
+        carryOverXP: true,
+        barColor: null,
+        barStyle: 'solid',
+    };
+    const sysName = getGameSystemDisplayName(sys);
+    if (sysName && xpTpl) moduleData.title = sysName + ' ' + t('type.level');
+}
+```
+
+### 8. Expose functions for module-core.js consumption
+
+**`scripts/module-condition.js`**: Near the window exports at line 3028–3031 (currently only `window.openCondSettings`), add:
+```javascript
+window.applyConditionTemplate = applyTemplate;
+```
+
+**`scripts/module-level.js`**: Near the window exports at lines 697–704 (currently `window.getCharacterLevel` and `window.openLevelSettings`), add:
+```javascript
+window.LEVEL_XP_TEMPLATES = LEVEL_XP_TEMPLATES;
+```
+
+### 9. Remove conditions template dropdown + dead code — `scripts/module-condition.js`
+
+**9a.** In `renderSettingsPanelContent()` (starts at line 2282), delete the template selector block at **lines 2309–2334**. This block starts with `// Template Selector` and ends with `body.appendChild(tplSection);`. What comes before: line 2307 (`body.className = 'cv-modal-body cond-settings-body';`). What comes after: line 2336 (`// Applied section`).
+
+**9b.** Delete `handleTemplateChange()` entirely at **lines 2623–2707**. Only one call site exists (line 2330, already removed in 9a). No dangling references.
+
+**Keep**: `CONDITION_TEMPLATES`, `TEMPLATE_KEYS`, `getTemplateDef()`, `getCondName()`, `getCondIconSvg()`, `getCondDescription()` — all still needed for runtime display resolution.
+
+### 10. Remove level XP preset dropdown — `scripts/module-level.js`
+
+All changes are inside `openLevelSettings()` (starts at line 317):
+
+**10a.** Delete the template preset section at **lines 388–421**: starts with `const templateSection = document.createElement('div');`, includes `detectTemplate()` function definition (lines 411–416), ends with `xpOnlyWrap.appendChild(templateSection);`. Variables: `templateSection`, `templateLabel`, `templateSelect`.
+
+**10b.** Delete the `templateSelect` change listener at **lines 496–503**: starts with `templateSelect.addEventListener('change', () => {`.
+
+**10c.** Remove `detectTemplate()` calls at these locations:
+- Line 417: `templateSelect.value = detectTemplate();` — already removed with block in 10a
+- Line 454: `templateSelect.value = detectTemplate();` inside threshold input handler — delete this line only
+- Line 465: `templateSelect.value = 'custom';` inside delete button handler — delete this line only
+- Line 486: `templateSelect.value = 'custom';` inside add threshold button handler — delete this line only
+
+**Keep**: The XP threshold list UI, "Add Level" button, and manual threshold editing all remain.
+
+### 11. Update translations — `scripts/translations.js`
+
+All 7 language blocks must be updated.
+
+**Add** (near other `settings.*` keys):
+- `'settings.gameSystem': 'Game System'`
+- `'settings.gameSystemCustom': 'Custom / Other'`
+
+**Remove** (wizard template labels — no longer needed):
+- `'abilities.templateLabel'`, `'abilities.templateNone'`
+- `'stat.templateLabel'`, `'stat.templateNone'`
+- `'save.templateLabel'`, `'save.templateNone'`
+
+**Remove** (conditions template switching UI — no longer needed):
+- `'cond.template'` (the label, currently "Game System")
+- `'cond.templateReplace'`, `'cond.templateMerge'`, `'cond.templateCancel'`
+- `'cond.templateWarnTitle'`, `'cond.templateWarnMsg'`
+
+**Remove** (level preset dropdown — no longer needed):
+- `'level.templateLabel'`, `'level.templateDnd5e'`, `'level.templatePf2e'`, `'level.templateCustom'`
+
+**Keep** (used at runtime by conditions module for display names):
+- `'cond.templateDnd5e'` through `'cond.templateDaggerheart'`, `'cond.templateCustom'`
+
+### 12. CSS cleanup — `main.css`
+
+**Remove lines 3075–3085** — wizard stat template styles:
+```css
+/* Wizard stat template sub-option */
+.wizard-stat-template { ... }
+.wizard-stat-template.visible { ... }
+```
+
+**Remove lines 5646–5685** — conditions template selector styles:
+```css
+/* ── Condition Template Selector ── */
+.cond-template-section { ... }
+.cond-template-label { ... }
+.cond-template-select { ... }
+.cond-template-select:focus { ... }
+```
+
+**Remove lines 6253–6339** — conditions template switch dialog styles:
+```css
+/* ── Condition Template Switch Dialog ── */
+.cond-template-dialog { ... }
+.cond-template-dialog-panel { ... }
+.cond-template-dialog-title { ... }
+.cond-template-dialog-msg { ... }
+.cond-template-dialog-actions { ... }
+.cond-template-dialog-btn { ... }
+.cond-template-dialog-btn:hover { ... }
+.cond-template-dialog-btn-merge { ... }
+.cond-template-dialog-btn-merge:hover { ... }
+.cond-template-dialog-btn-replace { ... }
+.cond-template-dialog-btn-replace:hover { ... }
+```
+
+### 13. Update documentation
+
+- `_DOCS/ARCHITECTURE.md`: Update `wizardState` schema (remove `statTemplate`, `abilitiesTemplate`, `savingthrowTemplate`), add `gameSystem` to save data schema, note removal of per-module template selection
+- `_DOCS/SUBMODULES/STATS.md`, `ABILITIES.md`, `SAVING_THROWS.md`, `CONDITIONS.md`: Update template sections — creation now uses global setting
 
 ---
 
@@ -154,27 +413,27 @@ Each `apply*Template()` function already returns an array. Verify they return `[
 
 | File | Change |
 |---|---|
-| `scripts/settings.js` | Add `gameSystem` field, getter/setter, settings UI section |
-| `main.html` | Remove 3 wizard template dropdown sections; add game system selector to settings overlay |
-| `scripts/module-core.js` | Remove template wizard state/handlers; wire `btnWizardCreate` to `settings.gameSystem` |
-| `scripts/module-stat.js` | Verify `applyStatTemplate` returns `[]` for unknown keys |
-| `scripts/module-abilities.js` | Verify `applyAbilityTemplate` returns `[]` for unknown keys |
-| `scripts/module-savingthrow.js` | Verify `applySavingThrowTemplate` returns `[]` for unknown keys; add `inferTierPreset` helper |
-| `scripts/module-level.js` | Wire XP preset to global system at creation |
-| `scripts/translations.js` | Add settings keys, remove obsolete wizard template keys |
-| `_DOCS/ARCHITECTURE.md` | Inline updates to wizardState, settings schema |
-| `_DOCS/SUBMODULES/*.md` | Update template sections |
+| `scripts/persistence.js` | Serialize/deserialize `gameSystem` |
+| `scripts/shared.js` | `inferTierPreset()`, `getGameSystemDisplayName()` |
+| `scripts/settings.js` | Game system dropdown, `syncGameSystemUI()` |
+| `scripts/module-core.js` | Remove wizard template state/handlers, rewrite `btnWizardCreate` |
+| `scripts/module-condition.js` | Remove settings dropdown + `handleTemplateChange()`, expose `applyTemplate` |
+| `scripts/module-level.js` | Remove XP preset dropdown + `detectTemplate()`, expose `LEVEL_XP_TEMPLATES` |
+| `main.html` | Remove 3 wizard template sections, add settings game system selector |
+| `main.css` | Remove wizard template + conditions dialog styles |
+| `scripts/translations.js` | Add settings keys, remove obsolete keys |
 
 ---
 
 ## Verification
 
-- Open settings overlay → confirm game system selector appears and saves correctly
-- Set system to D&D 5e → create Stat module → confirm STR/DEX/CON/INT/WIS/CHA populated
-- Set system to D&D 5e → create Abilities module → confirm D&D 5e skills populated
-- Set system to D&D 5e → create Saving Throws → confirm 6 saves + D&D 5e tier preset
-- Set system to D&D 5e → create Conditions → confirm `content.template === 'dnd5e'`
-- Set system to D&D 5e → create Level → confirm XP thresholds auto-populated
-- Set system to Daggerheart → create Abilities → confirm blank (no Daggerheart abilities template)
-- Set system to Custom → create any module → confirm all start blank
-- Verify no wizard template dropdowns appear for any module type
+1. Settings overlay shows game system dropdown between Language and Theme, defaults to "Custom"
+2. Set to "D&D 5e" → create stat module → 6 D&D stats, title "D&D 5e Stats"
+3. Create abilities module → D&D 5e abilities
+4. Create saving throw module → D&D 5e saves with dnd5e tier preset
+5. Create conditions module → `content.template = 'dnd5e'`, conditions in staging
+6. Create level module → D&D 5e XP thresholds
+7. Set to "Daggerheart" → create abilities module → blank (no template), title null
+8. Save, reload → game system persists and restores
+9. Conditions settings panel has no template dropdown
+10. Level settings has no XP preset dropdown (threshold editing still works)

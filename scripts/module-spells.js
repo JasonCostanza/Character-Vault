@@ -1038,6 +1038,19 @@
 
     window.openSpellSettings = openSpellSettings;
 
+    // ── Cross-Module API (used by Recovery module) ──
+
+    window.restoreAllSpellSlots = function (moduleId) {
+        const data = window.modules.find(m => m.id === moduleId);
+        if (!data || data.type !== 'spells') return;
+        data.content.slotLevels.forEach(sl => { sl.spent = 0; });
+        const el = document.querySelector(`.module[data-id="${moduleId}"]`);
+        if (el && window.isPlayMode) {
+            const bodyEl = el.querySelector('.module-body');
+            if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, data, true);
+        }
+    };
+
     // ── Registration ──
     registerModuleType('spells', {
         label: 'type.spells',

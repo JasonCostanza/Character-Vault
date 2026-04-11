@@ -576,6 +576,33 @@
         },
     });
 
+    // ── Cross-Module API (used by Recovery module) ──
+
+    window.healToFull = function (moduleId) {
+        const data = window.modules.find(m => m.id === moduleId);
+        if (!data || data.type !== 'health') return;
+        const c = data.content;
+        c.currentHP = (c.maxHP || 0) + (c.maxHPModifier || 0);
+        const el = document.querySelector(`.module[data-id="${moduleId}"]`);
+        if (el) syncHealthLayersFromData(el, data);
+    };
+
+    window.resetTempHP = function (moduleId) {
+        const data = window.modules.find(m => m.id === moduleId);
+        if (!data || data.type !== 'health') return;
+        data.content.tempHP = 0;
+        const el = document.querySelector(`.module[data-id="${moduleId}"]`);
+        if (el) syncHealthLayersFromData(el, data);
+    };
+
+    window.applyHealingAmount = function (moduleId, amount) {
+        const data = window.modules.find(m => m.id === moduleId);
+        if (!data || data.type !== 'health') return;
+        applyHealing(data.content, amount);
+        const el = document.querySelector(`.module[data-id="${moduleId}"]`);
+        if (el) syncHealthLayersFromData(el, data);
+    };
+
     // Expose for cross-file access (module-core.js)
     window.openHealthActionOverlay = openHealthActionOverlay;
 })();

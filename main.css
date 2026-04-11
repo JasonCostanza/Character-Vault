@@ -308,6 +308,12 @@ select,
     border-color: var(--cv-accent);
 }
 
+.btn-primary.sm {
+    padding: 5px 8px;
+    font-size: 11px;
+    border-radius: 3px;
+}
+
 .btn-primary.wide {
     padding: 10px 20px;
 }
@@ -330,6 +336,12 @@ select,
     border: 1px solid var(--cv-danger);
     background: rgba(184, 64, 64, 0.1);
     color: var(--cv-danger);
+}
+
+.btn-danger.sm {
+    padding: 5px 8px;
+    font-size: 11px;
+    border-radius: 3px;
 }
 
 .btn-danger:hover {
@@ -8225,5 +8237,610 @@ select,
     height: 14px;
     cursor: pointer;
     flex-shrink: 0;
+}
+
+/* ── Recovery Module ── */
+
+.recovery-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
+}
+
+.recovery-container::-webkit-scrollbar { width: 4px; }
+.recovery-container::-webkit-scrollbar-track { background: transparent; }
+.recovery-container::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
+
+.recovery-empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 16px;
+    text-align: center;
+    color: var(--cv-muted);
+    font-size: 0.8rem;
+    font-style: italic;
+    user-select: none;
+}
+
+/* ── Rest Button ── */
+
+.recovery-rest-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 14px;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--cv-accent) 12%, var(--cv-bg-module)), var(--cv-bg-module) 60%);
+    border: 1px solid var(--cv-border);
+    border-left: 3px solid var(--cv-accent);
+    border-radius: 4px;
+    color: var(--cv-text);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    position: relative;
+    overflow: hidden;
+}
+
+.recovery-rest-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--cv-accent) 8%, transparent), transparent 50%);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.recovery-rest-btn:hover:not(:disabled)::before {
+    opacity: 1;
+}
+
+.recovery-rest-btn:hover:not(:disabled) {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transform: translateY(-1px);
+}
+
+.recovery-rest-btn:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.recovery-rest-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    border-left-color: var(--cv-border);
+    transform: none;
+}
+
+.recovery-rest-btn-icon {
+    flex-shrink: 0;
+    opacity: 0.75;
+    position: relative;
+}
+
+.recovery-rest-btn-name {
+    flex: 1;
+    text-align: left;
+    user-select: none;
+}
+
+/* ── Hit Dice Display ── */
+
+.recovery-hitdice-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 4px 6px;
+    margin-top: 2px;
+    background: color-mix(in srgb, var(--cv-bg-module) 60%, transparent);
+    border: 1px solid var(--cv-border);
+    border-radius: 3px;
+    user-select: none;
+}
+
+.recovery-hitdice-label {
+    font-size: 0.7rem;
+    color: var(--cv-muted);
+    user-select: none;
+}
+
+.recovery-hitdice-value {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--cv-text);
+    user-select: none;
+}
+
+.recovery-hitdice-value.depleted {
+    color: var(--cv-danger);
+}
+
+.recovery-hitdice-die {
+    font-size: 0.7rem;
+    color: var(--cv-muted);
+    user-select: none;
+}
+
+/* ── Confirmation Overlay ── */
+
+.recovery-confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 250;
+}
+
+.recovery-confirm-panel {
+    background: var(--cv-bg-module);
+    border: 1px solid var(--cv-border);
+    border-top: 3px solid var(--cv-accent);
+    border-radius: 6px;
+    padding: 20px;
+    min-width: 260px;
+    max-width: 360px;
+    width: 90vw;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.recovery-confirm-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--cv-text);
+    user-select: none;
+}
+
+.recovery-confirm-actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.recovery-confirm-action-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    color: var(--cv-muted);
+    user-select: none;
+}
+
+.recovery-confirm-action-item::before {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--cv-accent);
+    flex-shrink: 0;
+    opacity: 0.8;
+}
+
+/* ── Hit Dice Spend Prompt ── */
+
+.recovery-hitdice-spend {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px;
+    background: color-mix(in srgb, var(--cv-accent) 6%, transparent);
+    border: 1px solid color-mix(in srgb, var(--cv-accent) 25%, var(--cv-border));
+    border-radius: 4px;
+}
+
+.recovery-hitdice-spend-label {
+    font-size: 0.75rem;
+    color: var(--cv-muted);
+    user-select: none;
+}
+
+.recovery-hitdice-spend-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.recovery-dice-stepper {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.recovery-dice-stepper-btn {
+    width: 26px;
+    height: 26px;
+    background: color-mix(in srgb, var(--cv-text) 8%, transparent);
+    border: none;
+    color: var(--cv-text);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.1s;
+    user-select: none;
+}
+
+.recovery-dice-stepper-btn:hover {
+    background: color-mix(in srgb, var(--cv-text) 15%, transparent);
+}
+
+.recovery-dice-stepper-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.recovery-dice-stepper-value {
+    width: 36px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--cv-text);
+    border-left: 1px solid var(--cv-border);
+    border-right: 1px solid var(--cv-border);
+    user-select: none;
+}
+
+.recovery-hitdice-spend-available {
+    font-size: 0.72rem;
+    color: var(--cv-muted);
+    user-select: none;
+}
+
+/* ── Confirmation Footer ── */
+
+.recovery-confirm-footer {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.recovery-btn-cancel {
+    padding: 6px 14px;
+    background: transparent;
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    color: var(--cv-muted);
+    font-size: 0.8rem;
+    cursor: pointer;
+    user-select: none;
+    transition: border-color 0.1s, color 0.1s;
+}
+
+.recovery-btn-cancel:hover {
+    border-color: var(--cv-text);
+    color: var(--cv-text);
+}
+
+.recovery-btn-confirm {
+    padding: 6px 16px;
+    background: var(--cv-accent);
+    border: 1px solid var(--cv-accent);
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.1s;
+}
+
+.recovery-btn-confirm:hover {
+    opacity: 0.88;
+}
+
+/* ── Edit Mode ── */
+
+.recovery-edit-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 6px;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
+}
+
+.recovery-edit-container::-webkit-scrollbar { width: 4px; }
+.recovery-edit-container::-webkit-scrollbar-track { background: transparent; }
+.recovery-edit-container::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
+
+.recovery-btn-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 3px;
+}
+
+.recovery-btn-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 8px;
+    background: color-mix(in srgb, var(--cv-text) 4%, transparent);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    user-select: none;
+    transition: background 0.1s;
+}
+
+.recovery-btn-row:hover {
+    background: color-mix(in srgb, var(--cv-text) 7%, transparent);
+}
+
+
+.recovery-btn-drag-handle {
+    color: var(--cv-muted);
+    cursor: grab;
+    font-size: 0.9rem;
+    opacity: 0.5;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.recovery-btn-drag-handle:active {
+    cursor: grabbing;
+}
+
+.recovery-btn-row-name {
+    flex: 1;
+    font-size: 0.82rem;
+    color: var(--cv-text);
+    user-select: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.recovery-btn-row-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.recovery-btn-row-edit,
+.recovery-btn-row-delete {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    color: var(--cv-muted);
+    transition: color 0.1s, background 0.1s;
+    user-select: none;
+}
+
+.recovery-btn-row-edit:hover {
+    color: var(--cv-text);
+    background: color-mix(in srgb, var(--cv-text) 10%, transparent);
+}
+
+.recovery-btn-row-delete:hover {
+    color: var(--cv-danger);
+    background: color-mix(in srgb, var(--cv-danger) 12%, transparent);
+}
+
+
+.recovery-edit-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.recovery-edit-label {
+    font-size: 0.7rem;
+    color: var(--cv-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    user-select: none;
+}
+
+.recovery-edit-name-input {
+    width: 100%;
+    background: color-mix(in srgb, var(--cv-text) 6%, transparent);
+    border: 1px solid var(--cv-border);
+    border-radius: 3px;
+    padding: 5px 8px;
+    color: var(--cv-text);
+    font-size: 0.82rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.1s;
+}
+
+.recovery-edit-name-input:focus {
+    border-color: var(--cv-accent);
+}
+
+/* ── Action Checklist ── */
+
+.recovery-action-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.recovery-action-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.recovery-action-toggle input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--cv-accent);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.recovery-action-toggle-label {
+    font-size: 0.78rem;
+    color: var(--cv-muted);
+    user-select: none;
+    cursor: pointer;
+}
+
+.recovery-action-toggle input:checked + .recovery-action-toggle-label {
+    color: var(--cv-text);
+}
+
+
+/* ── Add Button Row ── */
+
+.recovery-add-btn-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px;
+    border: 1px dashed color-mix(in srgb, var(--cv-border) 70%, transparent);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--cv-muted);
+    font-size: 0.78rem;
+    cursor: pointer;
+    user-select: none;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    width: 100%;
+}
+
+.recovery-add-btn-row:hover {
+    border-color: var(--cv-accent);
+    color: var(--cv-accent);
+    background: color-mix(in srgb, var(--cv-accent) 5%, transparent);
+}
+
+/* ── Hit Dice Config Section ── */
+
+.recovery-hitdice-config {
+    margin-top: 8px;
+    padding: 10px;
+    background: color-mix(in srgb, var(--cv-text) 3%, transparent);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.recovery-hitdice-config-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--cv-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    user-select: none;
+}
+
+.recovery-hitdice-config-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.recovery-hitdice-config-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.recovery-hitdice-config-label {
+    font-size: 0.67rem;
+    color: var(--cv-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    user-select: none;
+}
+
+.recovery-hitdice-config-input {
+    background: color-mix(in srgb, var(--cv-text) 6%, transparent);
+    border: 1px solid var(--cv-border);
+    border-radius: 3px;
+    padding: 4px 7px;
+    color: var(--cv-text);
+    font-size: 0.8rem;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.1s;
+    -moz-appearance: textfield;
+}
+
+.recovery-hitdice-config-input:focus {
+    border-color: var(--cv-accent);
+}
+
+.recovery-hitdice-config-input::-webkit-inner-spin-button,
+.recovery-hitdice-config-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.recovery-hd-modal-empty {
+    margin: 0;
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    text-align: center;
+    padding: 8px 0;
+    user-select: none;
+}
+
+/* ── SortableJS Ghost ── */
+
+.recovery-btn-ghost {
+    opacity: 0.4;
+    background: color-mix(in srgb, var(--cv-accent) 10%, transparent) !important;
+    border: 1px dashed var(--cv-accent) !important;
+}
+
+/* ── Responsive XS ── */
+
+.module.xs .recovery-rest-btn {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+}
+
+.module.xs .recovery-hitdice-row {
+    flex-wrap: wrap;
+    gap: 3px;
 }
 

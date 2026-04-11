@@ -31,6 +31,7 @@
 | `scripts/module-spells.js` | Spells module type registration + helpers (pip-style slot tracking, category/spell editor, SortableJS reorder, cast logic, detail/edit/settings modals, dice roll dispatch) |
 | `scripts/module-list.js` | List module type registration + helpers (multi-column item tables, custom attributes, attribute wizard, cross-list drag transfer, inspect overlay, sortable) |
 | `scripts/module-condition.js` | Condition module type registration + helpers (settings panel, staging area, game system templates, cascading sub-conditions, custom wizard) |
+| `scripts/module-recovery.js` | Recovery module type registration + helpers (rest buttons, hit dice subsystem, confirmation dialog, game system templates, cross-module API calls to Health and Spells) |
 | `scripts/app.js` | Startup: applies translations, triggers auto-load |
 
 There is no build step. Everything ships as-is to TaleSpire's embedded Chromium.
@@ -40,7 +41,7 @@ There is no build step. Everything ships as-is to TaleSpire's embedded Chromium.
 Scripts are loaded via plain `<script src>` tags (no `async`/`defer`) in `main.html`, which guarantees sequential execution. The order matters because later scripts depend on globals defined by earlier ones:
 
 ```
-translations.js → shared.js → i18n.js → theme.js → settings.js → persistence.js → module-core.js → module-activity.js → module-condition.js → module-counters.js → module-text.js → module-abilities.js → module-stat.js → module-health.js → module-hr.js → module-level.js → module-spacer.js → module-resistance.js → module-savingthrow.js → module-spells.js → module-list.js → app.js
+translations.js → shared.js → i18n.js → theme.js → settings.js → persistence.js → module-core.js → module-activity.js → module-condition.js → module-counters.js → module-text.js → module-abilities.js → module-stat.js → module-health.js → module-hr.js → module-level.js → module-spacer.js → module-resistance.js → module-savingthrow.js → module-spells.js → module-list.js → module-recovery.js → app.js
 ```
 
 ## External Dependencies (CDN)
@@ -84,7 +85,7 @@ All JS lives in `scripts/` as separate files loaded by `main.html` in dependency
 | **module-abilities.js** | `getProficiencyState(ability, data)`, `rollAbilityCheck(ability)`, `renderAbilityRow()`, `renderAbilityRowEdit()`, `reRenderAbilityEdits()`, `initAbilitySortable()`, `openAbilitySettings()`, `buildAbilityBody()`, `registerModuleType('abilities', ...)` — skill list with modifier badges, proficiency dots, linked Stat module sync, play mode dice rolling, settings panel |
 | **module-stat.js** | `formatModifier(mod)`, `renderStatBlock()`, `renderStatBlockEdit()`, `reRenderStatEdits()`, `initStatSortable()`, `rollStatCheck(stat)`, `enterQuickEdit()`, `registerModuleType('stat', ...)` — stat blocks with values/modifiers, play mode dice rolling, edit mode inputs, layout toggle (large-stat / large-modifier) |
 | **module-hr.js** | `registerModuleType('hline', ...)` — simple `<hr>` divider, header hidden in play mode |
-| **module-health.js** | `evaluateHealthExpression()`, `applyDamage()`, `applyHealing()`, `syncHealthLayersFromData()`, `buildPlayLayer()`, `buildEditLayer()`, `registerModuleType('health', ...)` — HP/Max HP/Temp HP display, damage/healing overlays, quick-edit, sync play and edit layers |
+| **module-health.js** | `evaluateHealthExpression()`, `applyDamage()`, `applyHealing()`, `syncHealthLayersFromData()`, `buildPlayLayer()`, `buildEditLayer()`, `registerModuleType('health', ...)` — HP/Max HP/Temp HP display, damage/healing overlays, quick-edit, sync play and edit layers; exposes `window.healToFull()`, `window.resetTempHP()`, `window.applyHealingAmount()` for cross-module use |
 | **module-level.js** | `evaluateXPExpression()`, `getLevelProgress()`, `levelUp()`, `renderLevelBody()`, `openXPModal()`, `openLevelSettings()`, `registerModuleType('level', ...)`, `window.getCharacterLevel()`, `window.LEVEL_XP_TEMPLATES` — XP tracking with thresholds or milestone leveling, progress bar, level-up button, cross-module API |
 | **module-spacer.js** | `registerModuleType('spacer', ...)` — trivial module type, just visual spacing |
 | **module-resistance.js** | `registerModuleType('resistance', ...)` — drag-to-assign resistance/immunity/weakness columns; `openResSettingsPanel()`, `openResWizard()`, SortableJS staging area, value prompts, layout toggle |
@@ -92,6 +93,7 @@ All JS lives in `scripts/` as separate files loaded by `main.html` in dependency
 | **module-spells.js** | `isDiceNotation(val)`, `extractDiceRoll(val)`, `defaultContent()`, `genId(prefix)`, `getAvailableSlots(data, slotLevel)`, `spendSlot(data, slotLevel)`, `restoreAllSlots(moduleEl, data)`, `rollAllSpellDice(spell)`, `rollSingleAttribute(spell, attr)`, `castSpell(moduleEl, data, spell, catId, onSuccess)`, `renderSpellsPlayLayer(bodyEl, data)`, `renderSpellsEditLayer(bodyEl, data)`, `syncSpellSlots(moduleEl, data)`, `openSpellDetailModal(moduleEl, data, spell, catId)`, `openSpellEditModal(moduleEl, data, spell, catId)`, `openCategoryEditModal(moduleEl, data, cat)`, `openSpellSettings(moduleEl, data)` (also `window.openSpellSettings`), `registerModuleType('spells', ...)` |
 | **module-list.js** | `renderListBody()`, `renderListItem()`, `renderAttributeCell()`, `renderColumnHeaders()`, `buildAttributeWizard()`, `buildInspectOverlay()`, `initSortableItems()`, `initSortableAttributes()`, `closeManageAttrsPanel()`, `registerModuleType('list', ...)`, `syncState()` — multi-column item tables with custom attributes, attribute wizard, cross-list drag transfer, sort control |
 | **module-condition.js** | `registerModuleType('condition', ...)` — game system template conditions with toggle/value types; `openCondSettingsPanel()`, `openCondWizard()`, `window.applyConditionTemplate`, SortableJS staging area, cascading sub-conditions, expand modal |
+| **module-recovery.js** | `registerModuleType('recovery', ...)` — rest buttons with configurable action lists, hit dice subsystem, confirmation dialog, game system templates; calls `window.healToFull()`, `window.resetTempHP()`, `window.applyHealingAmount()`, `window.restoreAllSpellSlots()` |
 | **app.js** | Startup: `applyTranslations()`, `refreshModuleLabels()`, auto-load check (`chkAutoLoad` + `TS` availability → `loadCharacter()`) |
 
 ---
@@ -183,7 +185,7 @@ Maps type keys to behavior definitions. Each entry:
   syncState(moduleEl, data) {}                 // optional — sync live DOM state to data before save
 }
 ```
-Currently registered types: `abilities`, `activity`, `text`, `stat`, `hline`, `health`, `level`, `spacer`, `list`, `counters`, `resistance`, `savingthrow`, `spells`, `condition`
+Currently registered types: `abilities`, `activity`, `text`, `stat`, `hline`, `health`, `level`, `spacer`, `list`, `counters`, `resistance`, `savingthrow`, `spells`, `condition`, `recovery`
 
 ### Save Blob (JSON schema v1)
 Character sheet persistence format, stored via `TS.localStorage.campaign`:
@@ -377,6 +379,33 @@ When `type === 'spells'`, the `content` field stores:
 }
 ```
 Default size: 4col × 2row.
+
+### Recovery Module `content` (object)
+When `type === 'recovery'`, the `content` field stores:
+```js
+{
+  restButtons: [
+    {
+      id: 'btn_abc123',             // unique ID
+      name: 'Long Rest',            // display name
+      actions: [
+        { type: 'healToFull' },
+        { type: 'restoreAllSpellSlots' },
+        { type: 'resetTempHP' },
+        { type: 'restoreHitDice' }
+      ]
+    }
+  ],
+  hitDice: {                        // null if no healByRoll action on any button
+    dieSize: 8,                     // die type: 4, 6, 8, 10, or 12
+    total: 5,                       // total Hit Dice pool
+    remaining: 5,                   // currently available
+    modifier: 2,                    // flat modifier added to each roll (e.g. Con mod)
+    restoreOnLongRest: 'half'       // 'all' | 'half' | 'none'
+  }
+}
+```
+Action types: `healToFull`, `healByRoll`, `resetTempHP`, `restoreAllSpellSlots`, `restoreHitDice`. Cross-module calls use `window.healToFull(moduleId)`, `window.resetTempHP(moduleId)`, `window.applyHealingAmount(moduleId, amount)`, and `window.restoreAllSpellSlots(moduleId)` exposed by Health and Spells modules.
 
 ### `wizardState` (object)
 Transient state for the New Module wizard:

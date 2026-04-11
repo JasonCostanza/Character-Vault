@@ -18,6 +18,14 @@
     const wizardTypeCards = document.querySelectorAll('.wizard-type-card');
     const wizardSwatches = document.querySelectorAll('.wizard-swatch');
 
+    // Apply background color from data-color for non-default, non-custom swatches
+    wizardSwatches.forEach((swatch) => {
+        const color = swatch.dataset.color;
+        if (color && color !== 'custom') {
+            swatch.style.backgroundColor = color;
+        }
+    });
+
     let lastWizardType = null;
 
     let wizardState = {

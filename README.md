@@ -18,7 +18,7 @@ Character Vault is a Swiss-Army Knife of character sheets. It will not automate 
 - **Auto-save** with campaign-scoped persistence
 - **Edit/Play modes** -- configure in Edit mode, clean display in Play mode
 - **Quick-edit** -- Ctrl+Click values in Play mode to edit without switching modes
-- **Game system templates** for stats, abilities, conditions, and saving throws (D&D 5e, Pathfinder 2e, Call of Cthulhu, Cyberpunk Red, and more)
+- **Game system templates** for stats, abilities, conditions, and saving throws (D&D 5e, Pathfinder 2e, Call of Cthulhu, Vampire: The Masquerade, Cyberpunk Red, Mothership, Shadowrun, Daggerheart)
 
 ## Module Types
 

@@ -575,6 +575,7 @@
         const checklist = document.createElement('div');
         checklist.className = 'recovery-action-checklist';
         const checkboxes = [];
+        let restoreHitDiceCb = null;
         ACTION_TYPES.forEach(actionType => {
             const toggle = document.createElement('label');
             toggle.className = 'recovery-action-toggle';
@@ -589,10 +590,116 @@
             toggle.appendChild(lbl);
             checklist.appendChild(toggle);
             checkboxes.push(cb);
+            if (actionType === 'restoreHitDice') restoreHitDiceCb = cb;
         });
 
         actionsField.appendChild(checklist);
         body.appendChild(actionsField);
+
+        // ── Hit Dice Config (shown when healByRoll or restoreHitDice is active) ──
+
+        const localHD = content.hitDice
+            ? { ...content.hitDice }
+            : { dieSize: 8, total: 1, remaining: 1, modifier: 0, restoreOnLongRest: 'half' };
+
+        const hdSectionEl = document.createElement('div');
+        hdSectionEl.className = 'recovery-edit-field';
+        hdSectionEl.style.marginTop = '10px';
+
+        const hdLabel = document.createElement('div');
+        hdLabel.className = 'recovery-edit-label';
+        hdLabel.textContent = t('recovery.hitDiceConfig');
+        hdSectionEl.appendChild(hdLabel);
+
+        const hdConfig = document.createElement('div');
+        hdConfig.className = 'recovery-hitdice-config';
+        hdConfig.style.marginTop = '4px';
+
+        const hdGrid = document.createElement('div');
+        hdGrid.className = 'recovery-hitdice-config-grid';
+
+        const dieSizeField = document.createElement('div');
+        dieSizeField.className = 'recovery-hitdice-config-field';
+        const dieSizeLbl = document.createElement('div');
+        dieSizeLbl.className = 'recovery-hitdice-config-label';
+        dieSizeLbl.textContent = t('recovery.dieSize');
+        const dieSizeSelect = document.createElement('select');
+        dieSizeSelect.className = 'recovery-hitdice-config-select';
+        [4, 6, 8, 10, 12].forEach(size => {
+            const opt = document.createElement('option');
+            opt.value = size;
+            opt.textContent = 'd' + size;
+            if (localHD.dieSize === size) opt.selected = true;
+            dieSizeSelect.appendChild(opt);
+        });
+        dieSizeSelect.addEventListener('change', () => { localHD.dieSize = parseInt(dieSizeSelect.value); dirty = true; });
+        dieSizeField.appendChild(dieSizeLbl);
+        dieSizeField.appendChild(dieSizeSelect);
+        hdGrid.appendChild(dieSizeField);
+
+        function makeHDNumField(labelKey, val, min, onCommit) {
+            const field = document.createElement('div');
+            field.className = 'recovery-hitdice-config-field';
+            const lbl = document.createElement('div');
+            lbl.className = 'recovery-hitdice-config-label';
+            lbl.textContent = t(labelKey);
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.className = 'recovery-hitdice-config-input';
+            input.min = min;
+            input.value = val;
+            input.addEventListener('change', () => {
+                const v = parseInt(input.value);
+                if (!isNaN(v) && v >= parseInt(min)) { onCommit(v, input); dirty = true; }
+                else { input.value = val; }
+            });
+            field.appendChild(lbl);
+            field.appendChild(input);
+            return field;
+        }
+
+        hdGrid.appendChild(makeHDNumField('recovery.totalDice', localHD.total, 1, (v) => {
+            localHD.total = v;
+            localHD.remaining = Math.min(localHD.remaining, localHD.total);
+        }));
+        hdGrid.appendChild(makeHDNumField('recovery.remainingDice', localHD.remaining, 0, (v, input) => {
+            localHD.remaining = Math.min(v, localHD.total);
+            input.value = localHD.remaining;
+        }));
+        hdGrid.appendChild(makeHDNumField('recovery.modifier', localHD.modifier || 0, -99, (v) => {
+            localHD.modifier = v;
+        }));
+        hdConfig.appendChild(hdGrid);
+
+        const restorePolicyField = document.createElement('div');
+        restorePolicyField.className = 'recovery-hitdice-config-field';
+        const restorePolicyLbl = document.createElement('div');
+        restorePolicyLbl.className = 'recovery-hitdice-config-label';
+        restorePolicyLbl.textContent = t('recovery.restoreOnLongRest');
+        const restorePolicySelect = document.createElement('select');
+        restorePolicySelect.className = 'recovery-hitdice-config-select';
+        ['all', 'half', 'none'].forEach(opt => {
+            const el = document.createElement('option');
+            el.value = opt;
+            el.textContent = t('recovery.restoreOption.' + opt);
+            if ((localHD.restoreOnLongRest || 'half') === opt) el.selected = true;
+            restorePolicySelect.appendChild(el);
+        });
+        restorePolicySelect.addEventListener('change', () => { localHD.restoreOnLongRest = restorePolicySelect.value; dirty = true; });
+        restorePolicyField.appendChild(restorePolicyLbl);
+        restorePolicyField.appendChild(restorePolicySelect);
+        hdConfig.appendChild(restorePolicyField);
+
+        hdSectionEl.appendChild(hdConfig);
+        body.appendChild(hdSectionEl);
+
+        function updateHdSection() {
+            const show = healSelect.value === 'healByRoll' || (restoreHitDiceCb && restoreHitDiceCb.checked);
+            hdSectionEl.style.display = show ? '' : 'none';
+        }
+        healSelect.addEventListener('change', updateHdSection);
+        if (restoreHitDiceCb) restoreHitDiceCb.addEventListener('change', updateHdSection);
+        updateHdSection();
 
         panel.appendChild(body);
 
@@ -645,8 +752,8 @@
             btn.actions = [];
             if (healSelect.value) btn.actions.push({ type: healSelect.value });
             checkboxes.forEach((cb, i) => { if (cb.checked) btn.actions.push({ type: ACTION_TYPES[i] }); });
-            if (btn.actions.some(a => a.type === 'healByRoll') && !content.hitDice) {
-                content.hitDice = { dieSize: 8, total: 1, remaining: 1, modifier: 0, restoreOnLongRest: 'half' };
+            if (btn.actions.some(a => a.type === 'healByRoll' || a.type === 'restoreHitDice')) {
+                content.hitDice = { ...localHD };
             }
             if (isNew) content.restButtons.push(btn);
             dirty = false;

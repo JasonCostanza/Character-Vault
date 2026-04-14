@@ -143,11 +143,13 @@ Empty module — no pre-populated buttons. The user configures from scratch via 
 ### Edit Mode
 - **Rest button list** with drag-to-reorder (SortableJS), edit, and delete controls per button.
 - **Add Rest Button** option at the bottom of the list.
-- Clicking **Edit** on a button opens a configuration view:
+- Clicking **Edit** on a button opens a configuration modal:
   - Button name (text input)
-  - Actions checklist (toggle each action type on/off)
-- **Hit Dice configuration section** (visible only if any button has `healByRoll`):
-  - Die size dropdown, total dice input, modifier input, restore-on-long-rest dropdown
+  - HP Recovery dropdown (`None`, `Heal to full HP`, `Heal by Hit Dice roll`)
+  - Actions checklist: Reset Temp HP, Restore All Spell Slots, Restore Hit Dice
+  - **Hit Dice section** (appears when `healByRoll` is selected or `restoreHitDice` is checked):
+    - Die size dropdown, total dice input, remaining dice input, modifier input, restore policy dropdown
+    - Values are buffered locally — committed to the character only when Save is clicked, discarded on Cancel
 - Rest buttons are **disabled** in Edit mode (no accidental rest triggers).
 
 ## Module Settings

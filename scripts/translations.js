@@ -860,6 +860,7 @@
             'common.discardChanges': 'You have unsaved changes. Discard?',
 
             'empty.message': 'Click <strong>New Module</strong> to get started',
+            'empty.hint': 'Open <strong>Settings</strong> to choose a game system',
         },
 
         es: {
@@ -1201,6 +1202,7 @@
             'common.discardChanges': 'You have unsaved changes. Discard?',
 
             'empty.message': 'Haz clic en <strong>Nuevo Módulo</strong> para comenzar',
+            'empty.hint': 'Abre <strong>Configuración</strong> para elegir un sistema de juego',
         },
 
         fr: {
@@ -1542,6 +1544,7 @@
             'common.discardChanges': 'You have unsaved changes. Discard?',
 
             'empty.message': 'Cliquez sur <strong>Nouveau Module</strong> pour commencer',
+            'empty.hint': 'Ouvrez <strong>Paramètres</strong> pour choisir un système de jeu',
         },
 
         de: {
@@ -1881,6 +1884,7 @@
             'common.discardChanges': 'You have unsaved changes. Discard?',
 
             'empty.message': 'Klicke auf <strong>Neues Modul</strong> um zu beginnen',
+            'empty.hint': 'Öffne <strong>Einstellungen</strong> um ein Spielsystem zu wählen',
         },
 
         it: {
@@ -2228,6 +2232,7 @@
             'common.discardChanges': 'You have unsaved changes. Discard?',
 
             'empty.message': 'Clicca su <strong>Nuovo Modulo</strong> per iniziare',
+            'empty.hint': 'Apri <strong>Impostazioni</strong> per scegliere un sistema di gioco',
         },
 
         'pt-BR': {
@@ -2562,6 +2567,7 @@
             'common.discardChanges': 'You have unsaved changes. Discard?',
 
             'empty.message': 'Clique em <strong>Novo Módulo</strong> para começar',
+            'empty.hint': 'Abra <strong>Configurações</strong> para escolher um sistema de jogo',
         },
 
         ru: {
@@ -2896,6 +2902,7 @@
             'common.discardChanges': 'You have unsaved changes. Discard?',
 
             'empty.message': 'Нажмите <strong>Новый Модуль</strong> чтобы начать',
+            'empty.hint': 'Откройте <strong>Настройки</strong> чтобы выбрать игровую систему',
         },
     };
 

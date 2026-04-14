@@ -811,6 +811,11 @@ select,
     opacity: 0.4;
 }
 
+.empty-state-hint {
+    font-size: 11px;
+    opacity: 0.6;
+}
+
 /* ── Module ── */
 .module {
     background-color: var(--cv-bg-surface);
@@ -8736,6 +8741,34 @@ select,
 .recovery-hitdice-config-input::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+.recovery-hitdice-config-select {
+    background: color-mix(in srgb, var(--cv-text) 6%, transparent);
+    border: 1px solid var(--cv-border);
+    border-radius: 3px;
+    padding: 4px 22px 4px 7px;
+    color: var(--cv-text);
+    font-size: 0.8rem;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%236A5A4A' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    transition: border-color 0.1s;
+}
+
+.recovery-hitdice-config-select:focus {
+    border-color: var(--cv-accent);
+}
+
+.recovery-hitdice-config-select option {
+    background-color: var(--cv-bg-raised);
+    color: var(--cv-text);
 }
 
 .recovery-hd-modal-empty {

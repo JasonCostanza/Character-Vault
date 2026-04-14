@@ -8,6 +8,7 @@ Character Vault is a TaleSpire Symbiote — a vanilla HTML/CSS/JS character shee
 |---|---|
 | Code map, script load order, data structures, event flows | `_DOCS/ARCHITECTURE.md` |
 | Add or modify a module type | `_DOCS/NEW_MODULE_GUIDE.md`, then `_DOCS/ARCHITECTURE.md` (MODULE_TYPES registry) |
+| Build or fix a modal/dialog | `_DOCS/NEW_MODAL_GUIDE.md` |
 | Work on a specific submodule (stats, health, etc.) | `_DOCS/SUBMODULES/<NAME>.md` — Available: ABILITIES, ACTIVITY_LOG, CHARACTER_LEVEL, COMPANIONS, CONDITIONS, COUNTERS, HEALTH, LANGUAGES, LIST, RESISTANCES, REST, SAVING_THROWS, SPACER, SPELLS, STATS, TEXT_BOX |
 | Module/layout system concepts | `_DOCS/MODULES.md` |
 | Tab system | `_DOCS/TABS.md` |

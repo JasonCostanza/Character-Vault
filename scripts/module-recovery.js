@@ -16,7 +16,7 @@
         return Math.floor(Math.random() * sides) + 1;
     }
 
-    const ACTION_TYPES = ['healToFull', 'healByRoll', 'resetTempHP', 'restoreAllSpellSlots', 'restoreHitDice'];
+    const ACTION_TYPES = ['resetTempHP', 'restoreAllSpellSlots', 'restoreHitDice'];
 
     // ── Execute Rest Button ──
 
@@ -539,6 +539,31 @@
         nameField.appendChild(nameInput);
         body.appendChild(nameField);
 
+        const hpRecoveryField = document.createElement('div');
+        hpRecoveryField.className = 'recovery-edit-field';
+        hpRecoveryField.style.marginTop = '10px';
+        const hpRecoveryLabel = document.createElement('div');
+        hpRecoveryLabel.className = 'recovery-edit-label';
+        hpRecoveryLabel.textContent = t('recovery.hpRecovery');
+        const currentHealType = btn.actions.find(a => a.type === 'healToFull' || a.type === 'healByRoll')?.type || '';
+        const healSelect = document.createElement('select');
+        healSelect.className = 'settings-select';
+        healSelect.addEventListener('change', () => { dirty = true; });
+        [
+            { value: '', label: t('recovery.hpRecovery.none') },
+            { value: 'healToFull', label: t('recovery.actionLabel.healToFull') },
+            { value: 'healByRoll', label: t('recovery.actionLabel.healByRoll') },
+        ].forEach(({ value, label }) => {
+            const opt = document.createElement('option');
+            opt.value = value;
+            opt.textContent = label;
+            if (value === currentHealType) opt.selected = true;
+            healSelect.appendChild(opt);
+        });
+        hpRecoveryField.appendChild(hpRecoveryLabel);
+        hpRecoveryField.appendChild(healSelect);
+        body.appendChild(hpRecoveryField);
+
         const actionsField = document.createElement('div');
         actionsField.className = 'recovery-edit-field';
         actionsField.style.marginTop = '10px';
@@ -565,6 +590,7 @@
             checklist.appendChild(toggle);
             checkboxes.push(cb);
         });
+
         actionsField.appendChild(checklist);
         body.appendChild(actionsField);
 
@@ -616,9 +642,9 @@
 
         saveBtn.addEventListener('click', () => {
             btn.name = nameInput.value.trim() || t('recovery.unnamedButton');
-            btn.actions = checkboxes
-                .map((cb, i) => (cb.checked ? { type: ACTION_TYPES[i] } : null))
-                .filter(Boolean);
+            btn.actions = [];
+            if (healSelect.value) btn.actions.push({ type: healSelect.value });
+            checkboxes.forEach((cb, i) => { if (cb.checked) btn.actions.push({ type: ACTION_TYPES[i] }); });
             if (btn.actions.some(a => a.type === 'healByRoll') && !content.hitDice) {
                 content.hitDice = { dieSize: 8, total: 1, remaining: 1, modifier: 0, restoreOnLongRest: 'half' };
             }

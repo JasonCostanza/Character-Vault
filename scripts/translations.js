@@ -839,6 +839,8 @@
             'recovery.restoreOption.all': 'All',
             'recovery.restoreOption.half': 'Half (rounded down)',
             'recovery.restoreOption.none': 'None',
+            'recovery.hpRecovery': 'HP Recovery',
+            'recovery.hpRecovery.none': 'None',
             'recovery.actionLabel.healToFull': 'Heal to full HP',
             'recovery.actionLabel.healByRoll': 'Heal by Hit Dice roll',
             'recovery.actionLabel.resetTempHP': 'Reset Temp HP',

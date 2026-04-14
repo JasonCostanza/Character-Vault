@@ -8378,40 +8378,6 @@ select,
 
 /* ── Confirmation Overlay ── */
 
-.recovery-confirm-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.65);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 250;
-}
-
-.recovery-confirm-panel {
-    background: var(--cv-bg-module);
-    border: 1px solid var(--cv-border);
-    border-top: 3px solid var(--cv-accent);
-    border-radius: 6px;
-    padding: 20px;
-    min-width: 260px;
-    max-width: 360px;
-    width: 90vw;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.recovery-confirm-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--cv-text);
-    user-select: none;
-}
-
 .recovery-confirm-actions-list {
     display: flex;
     flex-direction: column;
@@ -8513,49 +8479,6 @@ select,
     font-size: 0.72rem;
     color: var(--cv-muted);
     user-select: none;
-}
-
-/* ── Confirmation Footer ── */
-
-.recovery-confirm-footer {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-}
-
-.recovery-btn-cancel {
-    padding: 6px 14px;
-    background: transparent;
-    border: 1px solid var(--cv-border);
-    border-radius: 4px;
-    color: var(--cv-muted);
-    font-size: 0.8rem;
-    cursor: pointer;
-    user-select: none;
-    transition: border-color 0.1s, color 0.1s;
-}
-
-.recovery-btn-cancel:hover {
-    border-color: var(--cv-text);
-    color: var(--cv-text);
-}
-
-.recovery-btn-confirm {
-    padding: 6px 16px;
-    background: var(--cv-accent);
-    border: 1px solid var(--cv-accent);
-    border-radius: 4px;
-    color: #fff;
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    user-select: none;
-    transition: opacity 0.1s;
-}
-
-.recovery-btn-confirm:hover {
-    opacity: 0.88;
 }
 
 /* ── Edit Mode ── */

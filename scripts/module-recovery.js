@@ -87,15 +87,27 @@
         const hd = content.hitDice;
 
         const overlay = document.createElement('div');
-        overlay.className = 'recovery-confirm-overlay';
+        overlay.className = 'cv-modal-overlay recovery-confirm-overlay';
 
         const panel = document.createElement('div');
-        panel.className = 'recovery-confirm-panel';
+        panel.className = 'cv-modal-panel';
 
-        const title = document.createElement('div');
-        title.className = 'recovery-confirm-title';
-        title.textContent = btn.name;
-        panel.appendChild(title);
+        const header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        const titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = btn.name;
+        const closeXBtn = document.createElement('button');
+        closeXBtn.type = 'button';
+        closeXBtn.className = 'cv-modal-close';
+        closeXBtn.title = t('recovery.cancel');
+        closeXBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        header.appendChild(titleEl);
+        header.appendChild(closeXBtn);
+        panel.appendChild(header);
+
+        const body = document.createElement('div');
+        body.className = 'cv-modal-body';
 
         const actionList = document.createElement('ul');
         actionList.className = 'recovery-confirm-actions-list';
@@ -105,7 +117,7 @@
             item.textContent = t('recovery.actionLabel.' + action.type);
             actionList.appendChild(item);
         });
-        panel.appendChild(actionList);
+        body.appendChild(actionList);
 
         // Hit Dice spend prompt
         let getDiceCount = () => 0;
@@ -167,20 +179,22 @@
                 noHDLabel.textContent = t('recovery.noDiceAvailable');
                 spendSection.appendChild(noHDLabel);
             }
-            panel.appendChild(spendSection);
+            body.appendChild(spendSection);
         }
 
+        panel.appendChild(body);
+
         const footer = document.createElement('div');
-        footer.className = 'recovery-confirm-footer';
+        footer.className = 'cv-modal-footer';
 
         const cancelBtn = document.createElement('button');
         cancelBtn.type = 'button';
-        cancelBtn.className = 'recovery-btn-cancel';
+        cancelBtn.className = 'btn-secondary sm';
         cancelBtn.textContent = t('recovery.cancel');
 
         const confirmBtn = document.createElement('button');
         confirmBtn.type = 'button';
-        confirmBtn.className = 'recovery-btn-confirm';
+        confirmBtn.className = 'btn-primary sm';
         confirmBtn.textContent = t('recovery.doRest');
 
         footer.appendChild(cancelBtn);
@@ -191,6 +205,7 @@
 
         function closeDialog() { overlay.remove(); }
 
+        closeXBtn.addEventListener('click', closeDialog);
         cancelBtn.addEventListener('click', closeDialog);
         overlay.addEventListener('click', e => { if (e.target === overlay) closeDialog(); });
 

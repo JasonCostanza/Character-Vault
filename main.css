@@ -786,7 +786,9 @@ select,
 #module-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    align-items: start;
+    grid-auto-flow: dense;
+    grid-auto-rows: 80px;
+    align-items: stretch;
     gap: 8px;
     padding: 8px;
 }

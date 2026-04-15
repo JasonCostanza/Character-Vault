@@ -752,7 +752,11 @@
         el.style.gridColumn = `span ${data.colSpan}`;
 
         if (data.rowSpan) {
-            el.style.height = `${data.rowSpan * ROW_H + (data.rowSpan - 1) * GRID_GAP}px`;
+            el.style.gridRow = `span ${data.rowSpan}`;
+        }
+
+        if (data.type === 'hline') {
+            el.style.alignSelf = 'start';
         }
 
         if (data.theme) {
@@ -1329,12 +1333,13 @@
         if (data.rowSpan !== null) return;
         if (data.type === 'hline') return;
         _snapping = true;
-        // Temporarily clear any previously snapped height so we measure natural content height
-        el.style.height = '';
+        // Temporarily clear grid-row and collapse to content height for measurement
+        el.style.gridRow = '';
+        el.style.alignSelf = 'start';
         const actual = el.getBoundingClientRect().height;
         const snappedRows = Math.ceil((actual + GRID_GAP) / (ROW_H + GRID_GAP));
-        const snappedPx = snappedRows * ROW_H + (snappedRows - 1) * GRID_GAP;
-        el.style.height = snappedPx + 'px';
+        el.style.alignSelf = '';
+        el.style.gridRow = `span ${snappedRows}`;
         _snapping = false;
     }
 
@@ -1418,10 +1423,7 @@
                 let newRowSpan = startRowSpan + rowDelta;
                 newRowSpan = Math.max(1, newRowSpan);
 
-                // Convert row span to pixel height: (rowSpan * rowHeight) + ((rowSpan - 1) * gap)
-                const newHeight = newRowSpan * rowHeight + (newRowSpan - 1) * GRID_GAP;
-
-                moduleEl.style.height = `${newHeight}px`;
+                moduleEl.style.gridRow = `span ${newRowSpan}`;
                 data.rowSpan = newRowSpan;
 
                 // Update resize badge

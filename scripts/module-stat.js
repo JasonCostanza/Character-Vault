@@ -113,7 +113,7 @@
                     enterQuickEdit(block, stat, data);
                     return;
                 }
-                rollStatCheck(stat);
+                rollStatCheck(stat, data);
             });
         }
 
@@ -260,10 +260,13 @@
         });
     }
 
-    function rollStatCheck(stat) {
+    function rollStatCheck(stat, data) {
         const modStr = stat.modifier >= 0 ? `+${stat.modifier}` : `${stat.modifier}`;
         try {
             TS.dice.putDiceInTray([{ name: `${stat.name} ${t('stat.check')}`, roll: `1d20${modStr}` }]);
+            if (typeof window.logActivity === 'function') {
+                window.logActivity({ type: 'stat.event.roll', message: t('stat.log.roll', { name: stat.name || t('stat.unnamed'), modifier: modStr }), sourceModuleId: data.id });
+            }
         } catch (e) {
             console.warn('[CV] Dice roll failed:', e);
         }

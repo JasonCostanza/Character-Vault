@@ -134,9 +134,13 @@
             decBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 if (c.level <= 1) return;
+                const oldLevel = c.level;
                 c.level--;
                 renderLevelBody(bodyEl, data, isPlayMode);
                 scheduleSave();
+                if (typeof window.logActivity === 'function') {
+                    window.logActivity({ type: 'level.event.levelUp', message: t('level.log.levelChange', { oldLevel: oldLevel, newLevel: c.level }), sourceModuleId: data.id });
+                }
             });
 
             const incBtn = document.createElement('button');
@@ -145,9 +149,13 @@
             incBtn.title = t('level.incrementLevel');
             incBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
+                const oldLevel = c.level;
                 c.level++;
                 renderLevelBody(bodyEl, data, isPlayMode);
                 scheduleSave();
+                if (typeof window.logActivity === 'function') {
+                    window.logActivity({ type: 'level.event.levelUp', message: t('level.log.levelChange', { oldLevel: oldLevel, newLevel: c.level }), sourceModuleId: data.id });
+                }
             });
 
             adjRow.appendChild(decBtn);
@@ -221,6 +229,9 @@
                         window.snapModuleHeight(moduleEl, data);
                     }
                     scheduleSave();
+                    if (typeof window.logActivity === 'function') {
+                        window.logActivity({ type: 'level.event.levelUp', message: t('level.log.levelUp', { level: c.level }), sourceModuleId: data.id });
+                    }
                 });
                 wrap.appendChild(lvlUpBtn);
             }
@@ -334,11 +345,13 @@
                 closeModal();
                 return;
             }
+            const oldXP = c.currentXP;
             if (mode === 'add') {
                 c.currentXP += amount;
             } else {
                 c.currentXP = Math.max(0, c.currentXP - amount);
             }
+            const newXP = c.currentXP;
             closeModal();
             const bodyEl = moduleEl.querySelector('.module-body');
             const isPlay = isPlayMode;
@@ -347,6 +360,15 @@
                 window.snapModuleHeight(moduleEl, data);
             }
             scheduleSave();
+            if (typeof window.logActivity === 'function') {
+                window.logActivity({
+                    type: 'level.event.xp',
+                    message: mode === 'add'
+                        ? t('level.log.xpGain', { amount: amount, oldXP: oldXP, newXP: newXP })
+                        : t('level.log.xpLoss', { amount: amount, oldXP: oldXP, newXP: newXP }),
+                    sourceModuleId: data.id,
+                });
+            }
         }
 
         closeBtn.addEventListener('click', closeModal);

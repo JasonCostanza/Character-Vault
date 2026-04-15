@@ -765,10 +765,18 @@
                     deleteBtn.addEventListener('click', () => {
                         const idx = content.items.findIndex((i) => i.id === item.id);
                         if (idx !== -1) {
+                            const itemName = item.name || t('list.itemName');
                             content.items.splice(idx, 1);
                             renderListBody(bodyEl, data, false);
                             snapModuleHeight(bodyEl.closest('.module'), data);
                             scheduleSave();
+                            if (typeof window.logActivity === 'function') {
+                                window.logActivity({
+                                    type: 'list.event.remove',
+                                    message: t('list.log.remove', { name: itemName, listName: data.title || t('type.list') }),
+                                    sourceModuleId: data.id,
+                                });
+                            }
                         }
                     });
                     row.appendChild(deleteBtn);
@@ -805,6 +813,13 @@
         renderListBody(bodyEl, data, false);
         snapModuleHeight(moduleEl, data);
         scheduleSave();
+        if (typeof window.logActivity === 'function') {
+            window.logActivity({
+                type: 'list.event.add',
+                message: t('list.log.add', { listName: data.title || t('type.list') }),
+                sourceModuleId: data.id,
+            });
+        }
         // Focus the new item's name input
         const rows = bodyEl.querySelectorAll('.list-item-name-input');
         if (rows.length > 0) rows[rows.length - 1].focus();
@@ -1492,8 +1507,16 @@
                 // Remove item from real payload
                 const idx = content.items.findIndex((i) => i.id === itemProxy.id);
                 if (idx !== -1) {
+                    const itemName = itemProxy.name || t('list.itemName');
                     content.items.splice(idx, 1);
                     scheduleSave();
+                    if (typeof window.logActivity === 'function') {
+                        window.logActivity({
+                            type: 'list.event.remove',
+                            message: t('list.log.remove', { name: itemName, listName: data.title || t('type.list') }),
+                            sourceModuleId: data.id,
+                        });
+                    }
                     const bEl = moduleEl.querySelector('.module-body');
                     if (bEl) {
                         renderListBody(bEl, data, true);

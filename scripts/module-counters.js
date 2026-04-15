@@ -627,8 +627,12 @@
         decrementBtn.addEventListener('click', function (e) {
             e.stopPropagation();
             if (counter.value <= counter.min) return;
+            const oldVal = counter.value;
             counter.value--;
             scheduleSave();
+            if (typeof window.logActivity === 'function') {
+                window.logActivity({ type: 'counter.event.change', message: t('counter.log.decrement', { name: counter.name, oldVal: oldVal, newVal: counter.value }), sourceModuleId: data.id });
+            }
             reRenderCounterModule(moduleEl, data);
         });
         actionsGroup.appendChild(decrementBtn);
@@ -643,8 +647,12 @@
         incrementBtn.addEventListener('click', function (e) {
             e.stopPropagation();
             if (counter.max !== null && counter.value >= counter.max) return;
+            const oldVal = counter.value;
             counter.value++;
             scheduleSave();
+            if (typeof window.logActivity === 'function') {
+                window.logActivity({ type: 'counter.event.change', message: t('counter.log.increment', { name: counter.name, oldVal: oldVal, newVal: counter.value }), sourceModuleId: data.id });
+            }
             reRenderCounterModule(moduleEl, data);
         });
         actionsGroup.appendChild(incrementBtn);
@@ -668,6 +676,9 @@
                 function () {
                     counter.value = counter.min;
                     scheduleSave();
+                    if (typeof window.logActivity === 'function') {
+                        window.logActivity({ type: 'counter.event.reset', message: t('counter.log.reset', { name: counter.name, value: counter.min }), sourceModuleId: data.id });
+                    }
                     reRenderCounterModule(moduleEl, data);
                 }
             );
@@ -684,8 +695,12 @@
         row.addEventListener('click', function (e) {
             if (e.target.closest('.counter-row-actions')) return;
             if (counter.max !== null && counter.value >= counter.max) return;
+            const oldVal = counter.value;
             counter.value++;
             scheduleSave();
+            if (typeof window.logActivity === 'function') {
+                window.logActivity({ type: 'counter.event.change', message: t('counter.log.increment', { name: counter.name, oldVal: oldVal, newVal: counter.value }), sourceModuleId: data.id });
+            }
             reRenderCounterModule(moduleEl, data);
         });
 
@@ -693,8 +708,12 @@
         row.addEventListener('contextmenu', function (e) {
             e.preventDefault();
             if (counter.value <= counter.min) return;
+            const oldVal = counter.value;
             counter.value--;
             scheduleSave();
+            if (typeof window.logActivity === 'function') {
+                window.logActivity({ type: 'counter.event.change', message: t('counter.log.decrement', { name: counter.name, oldVal: oldVal, newVal: counter.value }), sourceModuleId: data.id });
+            }
             reRenderCounterModule(moduleEl, data);
         });
 

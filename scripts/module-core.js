@@ -1147,6 +1147,12 @@
     }
 
     function deleteModule(moduleId) {
+        const moduleData = window.modules.find((m) => m.id === moduleId);
+        const moduleTitle = moduleData
+            ? moduleData.title || t(MODULE_TYPES[moduleData.type] ? MODULE_TYPES[moduleData.type].label : 'module.unknownType')
+            : moduleId;
+        const moduleType = moduleData ? moduleData.type : 'unknown';
+
         const el = moduleGrid.querySelector(`.module[data-id="${moduleId}"]`);
         if (el) {
             const bodyEl = el.querySelector('.module-body');
@@ -1158,6 +1164,13 @@
         updateEmptyState();
         console.log(`[CV] Module deleted: ${moduleId}`);
         scheduleSave();
+        if (typeof window.logActivity === 'function') {
+            window.logActivity({
+                type: 'module.event.delete',
+                message: t('module.log.delete', { title: moduleTitle, type: moduleType }),
+                sourceModuleId: moduleId,
+            });
+        }
     }
 
     btnDeleteCancel.addEventListener('click', closeDeleteConfirm);

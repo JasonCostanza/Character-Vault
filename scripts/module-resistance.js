@@ -249,6 +249,13 @@
                         el.setAttribute('data-tooltip', updatedTooltip);
 
                         scheduleSave();
+                        if (typeof window.logActivity === 'function') {
+                            window.logActivity({
+                                type: 'res.event.toggle',
+                                message: t('res.log.toggle', { name: updatedName, state: item.active ? t('res.active') : t('res.inactive') }),
+                                sourceModuleId: data.id,
+                            });
+                        }
                     });
                 })(el, item, colKey);
 
@@ -549,8 +556,16 @@
             const idx = content[colKey].findIndex(function (r) {
                 return r.id === item.id;
             });
+            const itemName = getResName(item, content);
             if (idx !== -1) content[colKey].splice(idx, 1);
             scheduleSave();
+            if (typeof window.logActivity === 'function') {
+                window.logActivity({
+                    type: 'res.event.remove',
+                    message: t('res.log.remove', { name: itemName, column: t(COLUMN_LABEL_KEYS[colKey]) }),
+                    sourceModuleId: data.id,
+                });
+            }
             // Re-render panel
             const panel = el.closest('.cv-modal-panel');
             const moduleEl = el.closest('.module') || document.querySelector('.module[data-id="' + data.id + '"]');
@@ -605,6 +620,13 @@
                             // Auto-assign as Immune
                             addResistanceToColumn(content, typeKey, toColumn, t('res.immune'));
                             scheduleSave();
+                            if (typeof window.logActivity === 'function') {
+                                window.logActivity({
+                                    type: 'res.event.add',
+                                    message: t('res.log.add', { name: getResName({ typeKey: typeKey }, content), column: t(COLUMN_LABEL_KEYS[toColumn]) }),
+                                    sourceModuleId: data.id,
+                                });
+                            }
                             renderSettingsPanelContent(panel, moduleEl, data, content);
                         } else {
                             // Prompt for value
@@ -614,6 +636,13 @@
                                 function (val) {
                                     addResistanceToColumn(content, typeKey, toColumn, val);
                                     scheduleSave();
+                                    if (typeof window.logActivity === 'function') {
+                                        window.logActivity({
+                                            type: 'res.event.add',
+                                            message: t('res.log.add', { name: getResName({ typeKey: typeKey }, content), column: t(COLUMN_LABEL_KEYS[toColumn]) }),
+                                            sourceModuleId: data.id,
+                                        });
+                                    }
                                     renderSettingsPanelContent(panel, moduleEl, data, content);
                                 },
                                 function () {
@@ -645,6 +674,13 @@
                             movedItem.value = t('res.immune');
                             content[toColumn].push(movedItem);
                             scheduleSave();
+                            if (typeof window.logActivity === 'function') {
+                                window.logActivity({
+                                    type: 'res.event.move',
+                                    message: t('res.log.move', { name: getResName(movedItem, content), fromColumn: t(COLUMN_LABEL_KEYS[fromColumn]), toColumn: t(COLUMN_LABEL_KEYS[toColumn]) }),
+                                    sourceModuleId: data.id,
+                                });
+                            }
                             renderSettingsPanelContent(panel, moduleEl, data, content);
                         } else {
                             showValuePrompt(
@@ -654,6 +690,13 @@
                                     movedItem.value = val;
                                     content[toColumn].push(movedItem);
                                     scheduleSave();
+                                    if (typeof window.logActivity === 'function') {
+                                        window.logActivity({
+                                            type: 'res.event.move',
+                                            message: t('res.log.move', { name: getResName(movedItem, content), fromColumn: t(COLUMN_LABEL_KEYS[fromColumn]), toColumn: t(COLUMN_LABEL_KEYS[toColumn]) }),
+                                            sourceModuleId: data.id,
+                                        });
+                                    }
                                     renderSettingsPanelContent(panel, moduleEl, data, content);
                                 },
                                 function () {

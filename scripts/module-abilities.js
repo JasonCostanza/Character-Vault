@@ -247,10 +247,13 @@
         return stat ? stat.proficient : ability.proficiency;
     }
 
-    function rollAbilityCheck(ability) {
+    function rollAbilityCheck(ability, data) {
         const modStr = ability.modifier >= 0 ? `+${ability.modifier}` : `${ability.modifier}`;
         try {
             TS.dice.putDiceInTray([{ name: `${ability.name} ${t('abilities.check')}`, roll: `1d20${modStr}` }]);
+            if (typeof window.logActivity === 'function') {
+                window.logActivity({ type: 'abilities.event.roll', message: t('abilities.log.roll', { name: ability.name || t('abilities.unnamed'), modifier: modStr }), sourceModuleId: data.id });
+            }
         } catch (e) {
             console.warn('[CV] Ability roll failed:', e);
         }
@@ -271,7 +274,7 @@
             `<span class="ability-name">${escapeHtml(ability.name || t('abilities.unnamed'))}</span>` +
             `<span class="ability-modifier">${escapeHtml(formatModifier(ability.modifier))}</span>`;
 
-        row.addEventListener('click', () => rollAbilityCheck(ability));
+        row.addEventListener('click', () => rollAbilityCheck(ability, data));
         return row;
     }
 

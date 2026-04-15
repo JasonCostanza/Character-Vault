@@ -83,6 +83,7 @@
 
     // ── Condition Templates ──
     const CONDITION_TEMPLATES = {
+        // -- D&D 5e Template (keywords: D&D5e, DND5e, 5e) -- //
         dnd5e: {
             nameKey: 'cond.templateDnd5e',
             conditions: [
@@ -223,6 +224,7 @@
                 },
             ],
         },
+        // -- Pathfinder 2e Template (keywords: PF2e, 2e) --//
         pf2e: {
             nameKey: 'cond.templatePf2e',
             conditions: [
@@ -471,6 +473,7 @@
                 },
             ],
         },
+        // -- Call of Cthulu Template (keywords: CoC, Cthulu) --//
         coc: {
             nameKey: 'cond.templateCoc',
             conditions: [
@@ -593,6 +596,7 @@
                 },
             ],
         },
+        // -- Vampire: The Masquerade Template (keywords: VTM, VtM) --//
         vtm: {
             nameKey: 'cond.templateVtm',
             conditions: [
@@ -706,6 +710,7 @@
                 },
             ],
         },
+        // -- CyberPunk Red Tempalte (keywords: CP, CPRED, CPR) --//
         cpred: {
             nameKey: 'cond.templateCpred',
             conditions: [
@@ -1011,6 +1016,7 @@
                 },
             ],
         },
+        // -- Mothership Template (keywords: MS) --//
         mothership: {
             nameKey: 'cond.templateMothership',
             conditions: [
@@ -1227,6 +1233,7 @@
                 },
             ],
         },
+        // -- Shadowrun 6e Template (keywords: SR, SR6) --//
         sr6: {
             nameKey: 'cond.templateSr6',
             conditions: [
@@ -1439,6 +1446,7 @@
                 },
             ],
         },
+        // -- Daggerheart Template (keywords: DH) --//
         daggerheart: {
             nameKey: 'cond.templateDaggerheart',
             conditions: [
@@ -1516,12 +1524,14 @@
                 },
             ],
         },
+        // -- Custom Game Template --//
         custom: {
             nameKey: 'cond.templateCustom',
             conditions: [],
         },
     };
 
+    // Template Keys
     const TEMPLATE_KEYS = ['dnd5e', 'pf2e', 'coc', 'vtm', 'cpred', 'mothership', 'sr6', 'daggerheart', 'custom'];
 
     // ── Helpers ──
@@ -1795,6 +1805,13 @@
             if (item.active && condType === 'value' && item.value === 0) item.value = 1;
             if (item.active) activateSubconditions(item.typeKey, content);
             scheduleSave();
+            if (typeof window.logActivity === 'function') {
+                window.logActivity({
+                    type: 'cond.event.toggle',
+                    message: item.active ? t('cond.log.applied', { name: getCondName(item, content) }) : t('cond.log.removed', { name: getCondName(item, content) }),
+                    sourceModuleId: data.id,
+                });
+            }
             rerender();
         });
         toggleRow.appendChild(toggleBtn);
@@ -1817,12 +1834,16 @@
             minusBtn.textContent = '\u2212';
             minusBtn.addEventListener('click', function () {
                 if (item.value > 0) {
+                    const oldVal = item.value;
                     item.value--;
                     if (item.value === 0) item.active = false;
                     valDisplay.textContent = item.value;
                     toggleBtn.classList.toggle('active', item.active);
                     toggleBtn.textContent = item.active ? t('cond.active') : t('cond.inactive');
                     scheduleSave();
+                    if (typeof window.logActivity === 'function') {
+                        window.logActivity({ type: 'cond.event.value', message: t('cond.log.valueChange', { name: getCondName(item, content), oldVal: oldVal, newVal: item.value }), sourceModuleId: data.id });
+                    }
                     rerender();
                 }
             });
@@ -1838,6 +1859,7 @@
             plusBtn.textContent = '+';
             plusBtn.addEventListener('click', function () {
                 if (condMax === null || item.value < condMax) {
+                    const oldVal = item.value;
                     item.value++;
                     if (!item.active) {
                         item.active = true;
@@ -1847,6 +1869,9 @@
                     toggleBtn.classList.toggle('active', item.active);
                     toggleBtn.textContent = item.active ? t('cond.active') : t('cond.inactive');
                     scheduleSave();
+                    if (typeof window.logActivity === 'function') {
+                        window.logActivity({ type: 'cond.event.value', message: t('cond.log.valueChange', { name: getCondName(item, content), oldVal: oldVal, newVal: item.value }), sourceModuleId: data.id });
+                    }
                     rerender();
                 }
             });
@@ -1894,6 +1919,7 @@
         removeBtn.textContent = t('cond.remove');
         removeBtn.addEventListener('click', function () {
             // Move back to staging
+            const condName = getCondName(item, content);
             const idx = content.applied.findIndex(function (a) {
                 return a.id === item.id;
             });
@@ -1902,6 +1928,9 @@
                 removed.active = false;
                 removed.value = 0;
                 content.staging.push(removed);
+                if (typeof window.logActivity === 'function') {
+                    window.logActivity({ type: 'cond.event.toggle', message: t('cond.log.removed', { name: condName }), sourceModuleId: data.id });
+                }
             }
             scheduleSave();
             closeExpandModal();
@@ -2013,6 +2042,13 @@
                         activateSubconditions(item.typeKey, content);
                     }
                     scheduleSave();
+                    if (typeof window.logActivity === 'function') {
+                        window.logActivity({
+                            type: 'cond.event.toggle',
+                            message: item.active ? t('cond.log.applied', { name: getCondName(item, content) }) : t('cond.log.removed', { name: getCondName(item, content) }),
+                            sourceModuleId: data.id,
+                        });
+                    }
                     renderPlayBody(bodyEl, data);
                     snapModuleHeight(bodyEl.closest('.module'), data);
                 });
@@ -2027,12 +2063,16 @@
                     valSpan.addEventListener('click', function (e) {
                         e.stopPropagation();
                         if (condMax === null || item.value < condMax) {
+                            const oldVal = item.value;
                             item.value++;
                             if (!item.active) {
                                 item.active = true;
                                 activateSubconditions(item.typeKey, content);
                             }
                             scheduleSave();
+                            if (typeof window.logActivity === 'function') {
+                                window.logActivity({ type: 'cond.event.value', message: t('cond.log.valueChange', { name: getCondName(item, content), oldVal: oldVal, newVal: item.value }), sourceModuleId: data.id });
+                            }
                             renderPlayBody(bodyEl, data);
                             snapModuleHeight(bodyEl.closest('.module'), data);
                         }
@@ -2041,9 +2081,13 @@
                         e.preventDefault();
                         e.stopPropagation();
                         if (item.value > 0) {
+                            const oldVal = item.value;
                             item.value--;
                             if (item.value === 0) item.active = false;
                             scheduleSave();
+                            if (typeof window.logActivity === 'function') {
+                                window.logActivity({ type: 'cond.event.value', message: t('cond.log.valueChange', { name: getCondName(item, content), oldVal: oldVal, newVal: item.value }), sourceModuleId: data.id });
+                            }
                             renderPlayBody(bodyEl, data);
                             snapModuleHeight(bodyEl.closest('.module'), data);
                         }
@@ -2475,6 +2519,7 @@
             '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
         deleteBtn.addEventListener('click', function (e) {
             e.stopPropagation();
+            const condName = getCondName(item, content);
             const idx = content.applied.findIndex(function (a) {
                 return a.id === item.id;
             });
@@ -2483,6 +2528,9 @@
                 removed.active = false;
                 removed.value = 0;
                 content.staging.push(removed);
+                if (typeof window.logActivity === 'function') {
+                    window.logActivity({ type: 'cond.event.toggle', message: t('cond.log.removed', { name: condName }), sourceModuleId: data.id });
+                }
             }
             scheduleSave();
             renderSettingsPanelContent(panel, moduleEl, data, content);
@@ -2519,6 +2567,9 @@
                     content.applied.push(stagingItem);
                     if (stagingItem.active) activateSubconditions(typeKey, content);
                     scheduleSave();
+                    if (typeof window.logActivity === 'function') {
+                        window.logActivity({ type: 'cond.event.toggle', message: t('cond.log.applied', { name: getCondName(stagingItem, content) }), sourceModuleId: data.id });
+                    }
                     renderSettingsPanelContent(panel, moduleEl, data, content);
                 },
                 function () {
@@ -2532,6 +2583,9 @@
             content.applied.push(stagingItem);
             activateSubconditions(typeKey, content);
             scheduleSave();
+            if (typeof window.logActivity === 'function') {
+                window.logActivity({ type: 'cond.event.toggle', message: t('cond.log.applied', { name: getCondName(stagingItem, content) }), sourceModuleId: data.id });
+            }
             renderSettingsPanelContent(panel, moduleEl, data, content);
         }
     }

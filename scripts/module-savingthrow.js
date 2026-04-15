@@ -120,7 +120,7 @@
                 enterSaveQuickEdit(block, save, data);
                 return;
             }
-            rollSavingThrow(save);
+            rollSavingThrow(save, data);
         });
 
         return block;
@@ -233,7 +233,7 @@
     }
 
     // ── Dice Rolling ──
-    function rollSavingThrow(save) {
+    function rollSavingThrow(save, data) {
         const modStr = save.value >= 0 ? `+${save.value}` : `${save.value}`;
         try {
             TS.dice.putDiceInTray([
@@ -242,6 +242,9 @@
                     roll: `1d20${modStr}`,
                 },
             ]);
+            if (typeof window.logActivity === 'function') {
+                window.logActivity({ type: 'save.event.roll', message: t('save.log.roll', { name: save.name || t('save.unnamed'), modifier: modStr }), sourceModuleId: data.id });
+            }
         } catch (e) {
             console.warn('[CV] Saving throw dice roll failed:', e);
         }

@@ -106,6 +106,8 @@
             'abilities.cancel': 'Cancel',
             'abilities.close': 'Close',
             'abilities.linkedTo': 'Linked to {name}.',
+            'abilities.event.roll': 'Ability Roll',
+            'abilities.log.roll': 'Rolled {name} check ({modifier})',
 
             // Text box submodule
             'text.placeholder': 'Write your notes...',
@@ -154,6 +156,8 @@
             'stat.toggleRollable': 'Toggle Rollable (select a stat first)',
             'stat.rollableOn': 'Rollable — click to disable',
             'stat.rollableOff': 'Not Rollable — click to enable',
+            'stat.event.roll': 'Stat Roll',
+            'stat.log.roll': 'Rolled {name} check ({modifier})',
             // List submodule
             'list.addItem': 'Add Item',
             'list.deleteItem': 'Delete Item',
@@ -208,6 +212,10 @@
             'list.sortAsc': 'Sort ascending',
             'list.sortDesc': 'Sort descending',
             'list.sortManual': 'Manual order',
+            'list.event.add': 'List Item Added',
+            'list.event.remove': 'List Item Removed',
+            'list.log.add': 'Added item to {listName}',
+            'list.log.remove': 'Removed {name} from {listName}',
 
             // Level submodule
             'level.levelLabel': 'Level',
@@ -240,6 +248,12 @@
             'level.maxLevelReached': 'Max level reached',
             'level.decrementLevel': 'Decrease Level',
             'level.incrementLevel': 'Increase Level',
+            'level.event.levelUp': 'Level Change',
+            'level.event.xp': 'XP Change',
+            'level.log.levelUp': 'Leveled up to {level}',
+            'level.log.levelChange': 'Level changed ({oldLevel} → {newLevel})',
+            'level.log.xpGain': 'Gained {amount} XP ({oldXP} → {newXP})',
+            'level.log.xpLoss': 'Lost {amount} XP ({oldXP} → {newXP})',
 
             // Resistance submodule
             'res.moduleSettings': 'Module Settings',
@@ -251,6 +265,7 @@
             'res.valuePlaceholder': 'e.g. 5, x2, 1d8',
             'res.immune': 'Immune',
             'res.inactive': 'Inactive',
+            'res.active': 'Active',
             'res.emptyState': 'No resistances assigned',
             'res.availableTypes': 'Available Resistances',
             'res.createCustom': 'Create Custom',
@@ -278,6 +293,14 @@
             'res.typeRadiant': 'Radiant',
             'res.typeSlashing': 'Slashing',
             'res.typeThunder': 'Thunder',
+            'res.event.add': 'Resistance Added',
+            'res.event.remove': 'Resistance Removed',
+            'res.event.move': 'Resistance Moved',
+            'res.event.toggle': 'Resistance Toggle',
+            'res.log.add': 'Added {name} to {column}',
+            'res.log.remove': 'Removed {name} from {column}',
+            'res.log.move': 'Moved {name} from {fromColumn} to {toColumn}',
+            'res.log.toggle': 'Toggled {name} {state}',
 
             // Conditions submodule — UI
             'type.condition': 'Conditions',
@@ -313,6 +336,13 @@
             'cond.inactive': 'Inactive',
             'cond.active': 'Active',
             'cond.expand': 'Details',
+            'cond.event.toggle': 'Condition Toggle',
+            'cond.event.value': 'Condition Value',
+            'cond.log.applied': 'Applied condition: {name}',
+            'cond.log.removed': 'Removed condition: {name}',
+            'cond.log.valueChange': 'Changed {name} ({oldVal} → {newVal})',
+            'module.event.delete': 'Module Deleted',
+            'module.log.delete': 'Deleted module: {title} ({type})',
 
             // Conditions — Template names
             'cond.templateDnd5e': 'D\u0026D 5e',
@@ -707,6 +737,11 @@
             'counter.iconResource': 'Resources',
             'counter.iconMisc': 'Misc',
             'counter.iconSciFi': 'Sci-Fi',
+            'counter.event.change': 'Counter Change',
+            'counter.event.reset': 'Counter Reset',
+            'counter.log.increment': 'Incremented {name} ({oldVal} → {newVal})',
+            'counter.log.decrement': 'Decremented {name} ({oldVal} → {newVal})',
+            'counter.log.reset': 'Reset {name} to {value}',
 
             // Empty state
             // Saving Throws submodule
@@ -736,6 +771,8 @@
             'save.cancel': 'Cancel',
             'save.close': 'Close',
             'save.discardChanges': 'Discard unsaved changes?',
+            'save.event.roll': 'Saving Throw',
+            'save.log.roll': 'Rolled {name} save ({modifier})',
 
             // Spells submodule
             'spells.settings': 'Spell Settings',
@@ -793,6 +830,13 @@
             'spells.collapse': 'Collapse',
             'spells.autoSpendSlots': 'Auto-spend spell slots when casting',
             'spells.showSlotErrors': 'Show error when no slots available',
+            'spells.event.cast': 'Spell Cast',
+            'spells.log.cast': 'Cast {name}',
+            'spells.log.castSlot': 'Cast {name} (spent level {level} slot)',
+            'spells.event.roll': 'Spell Roll',
+            'spells.log.roll': 'Rolled {spellName}: {attrName} ({roll})',
+            'spells.event.restore': 'Slot Restore',
+            'spells.log.restore': 'Restored all spell slots',
 
             // Activity Log submodule
             'activity.emptyState': 'No activity recorded yet',
@@ -958,6 +1002,8 @@
             'abilities.cancel': 'Cancelar',
             'abilities.close': 'Cerrar',
             'abilities.linkedTo': 'Vinculado a {name}.',
+            'abilities.event.roll': 'Tirada de Habilidad',
+            'abilities.log.roll': 'Tirada de prueba de {name} ({modifier})',
 
             'text.placeholder': 'Escribe tus notas...',
 
@@ -1003,6 +1049,8 @@
             'stat.toggleRollable': 'Alternar Lanzable (selecciona una estadística primero)',
             'stat.rollableOn': 'Lanzable — clic para desactivar',
             'stat.rollableOff': 'No Lanzable — clic para activar',
+            'stat.event.roll': 'Tirada de Estadística',
+            'stat.log.roll': 'Tirada de prueba de {name} ({modifier})',
 
             // List submodule
             'list.addItem': 'Agregar Elemento',
@@ -1058,6 +1106,10 @@
             'list.sortAsc': 'Ordenar ascendente',
             'list.sortDesc': 'Ordenar descendente',
             'list.sortManual': 'Orden manual',
+            'list.event.add': 'Elemento de Lista Añadido',
+            'list.event.remove': 'Elemento de Lista Eliminado',
+            'list.log.add': 'Elemento añadido a {listName}',
+            'list.log.remove': '{name} eliminado de {listName}',
 
             // Resistance submodule
             'res.moduleSettings': 'Configuración del Módulo',
@@ -1069,6 +1121,7 @@
             'res.valuePlaceholder': 'ej. 5, x2, 1d8',
             'res.immune': 'Inmune',
             'res.inactive': 'Inactivo',
+            'res.active': 'Activo',
             'res.emptyState': 'Sin resistencias asignadas',
             'res.availableTypes': 'Resistencias Disponibles',
             'res.createCustom': 'Crear Personalizada',
@@ -1096,6 +1149,14 @@
             'res.typeRadiant': 'Radiante',
             'res.typeSlashing': 'Cortante',
             'res.typeThunder': 'Trueno',
+            'res.event.add': 'Resistencia Añadida',
+            'res.event.remove': 'Resistencia Eliminada',
+            'res.event.move': 'Resistencia Movida',
+            'res.event.toggle': 'Cambio de Resistencia',
+            'res.log.add': '{name} añadida a {column}',
+            'res.log.remove': '{name} eliminada de {column}',
+            'res.log.move': '{name} movida de {fromColumn} a {toColumn}',
+            'res.log.toggle': '{name} cambiada a {state}',
 
             // Saving Throws submodule
             'save.addSave': 'Agregar Salvación',
@@ -1124,6 +1185,8 @@
             'save.cancel': 'Cancelar',
             'save.close': 'Cerrar',
             'save.discardChanges': '¿Descartar cambios no guardados?',
+            'save.event.roll': 'Tirada de Salvación',
+            'save.log.roll': 'Tirada de salvación de {name} ({modifier})',
 
             // Spells submodule
             'spells.settings': 'Ajustes de Conjuros',
@@ -1181,6 +1244,31 @@
             'spells.collapse': 'Contraer',
             'spells.autoSpendSlots': 'Gastar espacios automáticamente al lanzar',
             'spells.showSlotErrors': 'Mostrar error cuando no hay espacios disponibles',
+            'spells.event.cast': 'Lanzamiento de Hechizo',
+            'spells.log.cast': 'Lanzado {name}',
+            'spells.log.castSlot': 'Lanzado {name} (espacio de nivel {level} gastado)',
+            'spells.event.roll': 'Tirada de Hechizo',
+            'spells.log.roll': 'Tirada de {spellName}: {attrName} ({roll})',
+            'spells.event.restore': 'Restauración de Espacios',
+            'spells.log.restore': 'Restaurados todos los espacios de hechizos',
+            'counter.event.change': 'Cambio de Contador',
+            'counter.event.reset': 'Restablecimiento de Contador',
+            'counter.log.increment': 'Incrementado {name} ({oldVal} → {newVal})',
+            'counter.log.decrement': 'Decrementado {name} ({oldVal} → {newVal})',
+            'counter.log.reset': '{name} restablecido a {value}',
+            'level.event.levelUp': 'Cambio de Nivel',
+            'level.event.xp': 'Cambio de XP',
+            'level.log.levelUp': 'Subido al nivel {level}',
+            'level.log.levelChange': 'Nivel cambiado ({oldLevel} → {newLevel})',
+            'level.log.xpGain': 'Ganados {amount} XP ({oldXP} → {newXP})',
+            'level.log.xpLoss': 'Perdidos {amount} XP ({oldXP} → {newXP})',
+            'cond.event.toggle': 'Cambio de Condición',
+            'cond.event.value': 'Valor de Condición',
+            'cond.log.applied': 'Condición aplicada: {name}',
+            'cond.log.removed': 'Condición eliminada: {name}',
+            'cond.log.valueChange': '{name} cambiado ({oldVal} → {newVal})',
+            'module.event.delete': 'Módulo Eliminado',
+            'module.log.delete': 'Módulo eliminado: {title} ({type})',
 
             // Activity Log submodule
             'activity.emptyState': 'No activity recorded yet',
@@ -1300,6 +1388,8 @@
             'abilities.cancel': 'Annuler',
             'abilities.close': 'Fermer',
             'abilities.linkedTo': 'Lié à {name}.',
+            'abilities.event.roll': 'Jet de Compétence',
+            'abilities.log.roll': 'Jet de test de {name} ({modifier})',
 
             'text.placeholder': 'Écrivez vos notes...',
 
@@ -1345,6 +1435,8 @@
             'stat.toggleRollable': "Basculer Lançable (sélectionnez une statistique d'abord)",
             'stat.rollableOn': 'Lançable — cliquez pour désactiver',
             'stat.rollableOff': 'Non Lançable — cliquez pour activer',
+            'stat.event.roll': 'Jet de Stat',
+            'stat.log.roll': 'Jet de test de {name} ({modifier})',
 
             // List submodule
             'list.addItem': 'Ajouter un Élément',
@@ -1400,6 +1492,10 @@
             'list.sortAsc': 'Trier croissant',
             'list.sortDesc': 'Trier décroissant',
             'list.sortManual': 'Ordre manuel',
+            'list.event.add': 'Élément de Liste Ajouté',
+            'list.event.remove': 'Élément de Liste Supprimé',
+            'list.log.add': 'Élément ajouté à {listName}',
+            'list.log.remove': '{name} supprimé(e) de {listName}',
 
             // Resistance submodule
             'res.moduleSettings': 'Paramètres du Module',
@@ -1411,6 +1507,7 @@
             'res.valuePlaceholder': 'ex. 5, x2, 1d8',
             'res.immune': 'Immunisé',
             'res.inactive': 'Inactif',
+            'res.active': 'Actif',
             'res.emptyState': 'Aucune résistance assignée',
             'res.availableTypes': 'Résistances Disponibles',
             'res.createCustom': 'Créer Personnalisée',
@@ -1438,6 +1535,14 @@
             'res.typeRadiant': 'Radiant',
             'res.typeSlashing': 'Tranchant',
             'res.typeThunder': 'Tonnerre',
+            'res.event.add': 'Résistance Ajoutée',
+            'res.event.remove': 'Résistance Retirée',
+            'res.event.move': 'Résistance Déplacée',
+            'res.event.toggle': 'Changement de Résistance',
+            'res.log.add': '{name} ajouté(e) à {column}',
+            'res.log.remove': '{name} retiré(e) de {column}',
+            'res.log.move': '{name} déplacé(e) de {fromColumn} vers {toColumn}',
+            'res.log.toggle': '{name} basculé(e) en {state}',
 
             // Saving Throws submodule
             'save.addSave': 'Ajouter Jet',
@@ -1466,6 +1571,8 @@
             'save.cancel': 'Annuler',
             'save.close': 'Fermer',
             'save.discardChanges': 'Abandonner les modifications non sauvegardées\u00a0?',
+            'save.event.roll': 'Jet de Sauvegarde',
+            'save.log.roll': 'Jet de sauvegarde de {name} ({modifier})',
 
             // Sorts (Spells submodule)
             'spells.settings': 'Paramètres des Sorts',
@@ -1523,6 +1630,31 @@
             'spells.collapse': 'Réduire',
             'spells.autoSpendSlots': "Dépenser automatiquement les emplacements lors du lancer",
             'spells.showSlotErrors': "Afficher une erreur quand il n'y a plus d'emplacement",
+            'spells.event.cast': 'Sort Lancé',
+            'spells.log.cast': 'Lancé {name}',
+            'spells.log.castSlot': 'Lancé {name} (emplacement de niveau {level} dépensé)',
+            'spells.event.roll': 'Jet de Sort',
+            'spells.log.roll': 'Jet de {spellName}\u00a0: {attrName} ({roll})',
+            'spells.event.restore': 'Restauration des Sorts',
+            'spells.log.restore': 'Tous les emplacements de sorts restaurés',
+            'counter.event.change': 'Changement de Compteur',
+            'counter.event.reset': 'Réinitialisation de Compteur',
+            'counter.log.increment': '{name} incrémenté ({oldVal} → {newVal})',
+            'counter.log.decrement': '{name} décrémenté ({oldVal} → {newVal})',
+            'counter.log.reset': '{name} réinitialisé à {value}',
+            'level.event.levelUp': 'Changement de Niveau',
+            'level.event.xp': "Changement d'XP",
+            'level.log.levelUp': 'Passé au niveau {level}',
+            'level.log.levelChange': 'Niveau modifié ({oldLevel} → {newLevel})',
+            'level.log.xpGain': 'Gagné {amount} XP ({oldXP} → {newXP})',
+            'level.log.xpLoss': 'Perdu {amount} XP ({oldXP} → {newXP})',
+            'cond.event.toggle': 'Changement de Condition',
+            'cond.event.value': 'Valeur de Condition',
+            'cond.log.applied': 'Condition appliqu\u00e9e\u00a0: {name}',
+            'cond.log.removed': 'Condition retir\u00e9e\u00a0: {name}',
+            'cond.log.valueChange': '{name} modifi\u00e9 ({oldVal} → {newVal})',
+            'module.event.delete': 'Module Supprim\u00e9',
+            'module.log.delete': 'Module supprim\u00e9\u00a0: {title} ({type})',
 
             // Activity Log submodule
             'activity.emptyState': 'No activity recorded yet',
@@ -1642,6 +1774,8 @@
             'abilities.cancel': 'Abbrechen',
             'abilities.close': 'Schließen',
             'abilities.linkedTo': 'Verknüpft mit {name}.',
+            'abilities.event.roll': 'Fertigkeitswurf',
+            'abilities.log.roll': 'Fertigkeitsprobe für {name} ({modifier})',
 
             'text.placeholder': 'Schreibe deine Notizen...',
 
@@ -1687,6 +1821,8 @@
             'stat.toggleRollable': 'Würfelbar umschalten (zuerst einen Wert auswählen)',
             'stat.rollableOn': 'Würfelbar — klicken zum Deaktivieren',
             'stat.rollableOff': 'Nicht Würfelbar — klicken zum Aktivieren',
+            'stat.event.roll': 'Attributwurf',
+            'stat.log.roll': 'Attributprobe für {name} ({modifier})',
 
             // List submodule
             'list.addItem': 'Element Hinzufügen',
@@ -1740,6 +1876,10 @@
             'list.sortAsc': 'Aufsteigend sortieren',
             'list.sortDesc': 'Absteigend sortieren',
             'list.sortManual': 'Manuelle Reihenfolge',
+            'list.event.add': 'Listenelement Hinzugef\u00fcgt',
+            'list.event.remove': 'Listenelement Entfernt',
+            'list.log.add': 'Element zu {listName} hinzugef\u00fcgt',
+            'list.log.remove': '{name} aus {listName} entfernt',
 
             // Resistance submodule
             'res.moduleSettings': 'Moduleinstellungen',
@@ -1751,6 +1891,7 @@
             'res.valuePlaceholder': 'z.B. 5, x2, 1d8',
             'res.immune': 'Immun',
             'res.inactive': 'Inaktiv',
+            'res.active': 'Aktiv',
             'res.emptyState': 'Keine Resistenzen zugewiesen',
             'res.availableTypes': 'Verfügbare Resistenzen',
             'res.createCustom': 'Eigene Erstellen',
@@ -1778,6 +1919,14 @@
             'res.typeRadiant': 'Strahlend',
             'res.typeSlashing': 'Hieb',
             'res.typeThunder': 'Donner',
+            'res.event.add': 'Resistenz Hinzugef\u00fcgt',
+            'res.event.remove': 'Resistenz Entfernt',
+            'res.event.move': 'Resistenz Verschoben',
+            'res.event.toggle': 'Resistenz Umschalten',
+            'res.log.add': '{name} zu {column} hinzugef\u00fcgt',
+            'res.log.remove': '{name} aus {column} entfernt',
+            'res.log.move': '{name} von {fromColumn} nach {toColumn} verschoben',
+            'res.log.toggle': '{name} auf {state} umgeschaltet',
 
             // Saving Throws submodule
             'save.addSave': 'Rettungswurf hinzufügen',
@@ -1806,6 +1955,8 @@
             'save.cancel': 'Abbrechen',
             'save.close': 'Schließen',
             'save.discardChanges': 'Nicht gespeicherte Änderungen verwerfen?',
+            'save.event.roll': 'Rettungswurf',
+            'save.log.roll': 'Rettungswurf für {name} ({modifier})',
 
             // Zauber (Spells submodule)
             'spells.settings': 'Zauber-Einstellungen',
@@ -1863,6 +2014,31 @@
             'spells.collapse': 'Einklappen',
             'spells.autoSpendSlots': 'Zauberschlitze beim Wirken automatisch verbrauchen',
             'spells.showSlotErrors': 'Fehler anzeigen wenn keine Schlitze verfügbar',
+            'spells.event.cast': 'Zauberwirken',
+            'spells.log.cast': '{name} gewirkt',
+            'spells.log.castSlot': '{name} gewirkt (Zauberschlitz Stufe {level} verbraucht)',
+            'spells.event.roll': 'Zauberwurf',
+            'spells.log.roll': 'Wurf für {spellName}: {attrName} ({roll})',
+            'spells.event.restore': 'Schlitz-Wiederherstellung',
+            'spells.log.restore': 'Alle Zauberschlitze wiederhergestellt',
+            'counter.event.change': 'Zähleränderung',
+            'counter.event.reset': 'Zähler zurückgesetzt',
+            'counter.log.increment': '{name} erhöht ({oldVal} → {newVal})',
+            'counter.log.decrement': '{name} verringert ({oldVal} → {newVal})',
+            'counter.log.reset': '{name} auf {value} zurückgesetzt',
+            'level.event.levelUp': 'Stufenänderung',
+            'level.event.xp': 'EP-Änderung',
+            'level.log.levelUp': 'Aufgestiegen auf Stufe {level}',
+            'level.log.levelChange': 'Stufe geändert ({oldLevel} → {newLevel})',
+            'level.log.xpGain': '{amount} EP erhalten ({oldXP} → {newXP})',
+            'level.log.xpLoss': '{amount} EP verloren ({oldXP} → {newXP})',
+            'cond.event.toggle': 'Zustandsänderung',
+            'cond.event.value': 'Zustandswert',
+            'cond.log.applied': 'Zustand angewendet: {name}',
+            'cond.log.removed': 'Zustand entfernt: {name}',
+            'cond.log.valueChange': '{name} geändert ({oldVal} → {newVal})',
+            'module.event.delete': 'Modul Gel\u00f6scht',
+            'module.log.delete': 'Modul gel\u00f6scht: {title} ({type})',
 
             // Activity Log submodule
             'activity.emptyState': 'No activity recorded yet',
@@ -1988,6 +2164,8 @@
             'abilities.cancel': 'Annulla',
             'abilities.close': 'Chiudi',
             'abilities.linkedTo': 'Collegato a {name}.',
+            'abilities.event.roll': 'Tiro di Abilità',
+            'abilities.log.roll': 'Prova di {name} ({modifier})',
 
             // Text box submodule
             'text.placeholder': 'Scrivi le tue note...',
@@ -2035,6 +2213,8 @@
             'stat.toggleRollable': 'Alterna Tirabile (seleziona prima una statistica)',
             'stat.rollableOn': 'Tirabile — clicca per disattivare',
             'stat.rollableOff': 'Non Tirabile — clicca per attivare',
+            'stat.event.roll': 'Tiro di Stat',
+            'stat.log.roll': 'Prova di {name} ({modifier})',
 
             // List submodule
             'list.addItem': 'Aggiungi Elemento',
@@ -2087,6 +2267,10 @@
             'list.sortAsc': 'Ordina crescente',
             'list.sortDesc': 'Ordina decrescente',
             'list.sortManual': 'Ordine manuale',
+            'list.event.add': 'Elemento Lista Aggiunto',
+            'list.event.remove': 'Elemento Lista Rimosso',
+            'list.log.add': 'Elemento aggiunto a {listName}',
+            'list.log.remove': '{name} rimosso da {listName}',
 
             // Resistance submodule
             'res.moduleSettings': 'Impostazioni Modulo',
@@ -2098,6 +2282,7 @@
             'res.valuePlaceholder': 'es. 5, x2, 1d8',
             'res.immune': 'Immune',
             'res.inactive': 'Inattivo',
+            'res.active': 'Attivo',
             'res.emptyState': 'Nessuna resistenza assegnata',
             'res.availableTypes': 'Resistenze Disponibili',
             'res.createCustom': 'Crea Personalizzata',
@@ -2125,6 +2310,14 @@
             'res.typeRadiant': 'Radiante',
             'res.typeSlashing': 'Tagliente',
             'res.typeThunder': 'Tuono',
+            'res.event.add': 'Resistenza Aggiunta',
+            'res.event.remove': 'Resistenza Rimossa',
+            'res.event.move': 'Resistenza Spostata',
+            'res.event.toggle': 'Cambio Resistenza',
+            'res.log.add': '{name} aggiunto a {column}',
+            'res.log.remove': '{name} rimosso da {column}',
+            'res.log.move': '{name} spostato da {fromColumn} a {toColumn}',
+            'res.log.toggle': '{name} impostato su {state}',
 
             // Empty state
             // Saving Throws submodule
@@ -2154,6 +2347,8 @@
             'save.cancel': 'Annulla',
             'save.close': 'Chiudi',
             'save.discardChanges': 'Scartare le modifiche non salvate?',
+            'save.event.roll': 'Tiro Salvezza',
+            'save.log.roll': 'Tiro salvezza di {name} ({modifier})',
 
             // Incantesimi (Spells submodule)
             'spells.settings': 'Impostazioni Incantesimi',
@@ -2211,6 +2406,31 @@
             'spells.collapse': 'Comprimi',
             'spells.autoSpendSlots': 'Usa automaticamente gli slot quando si lancia',
             'spells.showSlotErrors': 'Mostra errore quando non ci sono slot disponibili',
+            'spells.event.cast': 'Lancio Incantesimo',
+            'spells.log.cast': 'Lanciato {name}',
+            'spells.log.castSlot': 'Lanciato {name} (slot di livello {level} speso)',
+            'spells.event.roll': 'Tiro di Incantesimo',
+            'spells.log.roll': 'Tiro per {spellName}: {attrName} ({roll})',
+            'spells.event.restore': 'Ripristino Slot',
+            'spells.log.restore': 'Tutti gli slot incantesimo ripristinati',
+            'counter.event.change': 'Cambio Contatore',
+            'counter.event.reset': 'Ripristino Contatore',
+            'counter.log.increment': '{name} incrementato ({oldVal} → {newVal})',
+            'counter.log.decrement': '{name} decrementato ({oldVal} → {newVal})',
+            'counter.log.reset': '{name} ripristinato a {value}',
+            'level.event.levelUp': 'Cambio Livello',
+            'level.event.xp': 'Cambio XP',
+            'level.log.levelUp': 'Avanzato al livello {level}',
+            'level.log.levelChange': 'Livello modificato ({oldLevel} → {newLevel})',
+            'level.log.xpGain': 'Guadagnati {amount} XP ({oldXP} → {newXP})',
+            'level.log.xpLoss': 'Persi {amount} XP ({oldXP} → {newXP})',
+            'cond.event.toggle': 'Cambio Condizione',
+            'cond.event.value': 'Valore Condizione',
+            'cond.log.applied': 'Condizione applicata: {name}',
+            'cond.log.removed': 'Condizione rimossa: {name}',
+            'cond.log.valueChange': '{name} modificato ({oldVal} → {newVal})',
+            'module.event.delete': 'Modulo Eliminato',
+            'module.log.delete': 'Modulo eliminato: {title} ({type})',
 
             // Activity Log submodule
             'activity.emptyState': 'No activity recorded yet',
@@ -2330,6 +2550,8 @@
             'abilities.cancel': 'Cancelar',
             'abilities.close': 'Fechar',
             'abilities.linkedTo': 'Vinculado a {name}.',
+            'abilities.event.roll': 'Rolagem de Habilidade',
+            'abilities.log.roll': 'Teste de {name} rolado ({modifier})',
 
             'text.placeholder': 'Escreva suas anotações...',
 
@@ -2374,6 +2596,8 @@
             'stat.toggleRollable': 'Alternar Rolável (selecione uma estatística primeiro)',
             'stat.rollableOn': 'Rolável — clique para desativar',
             'stat.rollableOff': 'Não Rolável — clique para ativar',
+            'stat.event.roll': 'Rolagem de Estatística',
+            'stat.log.roll': 'Teste de {name} rolado ({modifier})',
 
             // List submodule
             'list.addItem': 'Adicionar Item',
@@ -2423,6 +2647,10 @@
             'list.sortAsc': 'Ordenar ascendente',
             'list.sortDesc': 'Ordenar descendente',
             'list.sortManual': 'Ordem manual',
+            'list.event.add': 'Item de Lista Adicionado',
+            'list.event.remove': 'Item de Lista Removido',
+            'list.log.add': 'Item adicionado a {listName}',
+            'list.log.remove': '{name} removido de {listName}',
 
             // Resistance submodule
             'res.moduleSettings': 'Configurações do Módulo',
@@ -2434,6 +2662,7 @@
             'res.valuePlaceholder': 'ex. 5, x2, 1d8',
             'res.immune': 'Imune',
             'res.inactive': 'Inativo',
+            'res.active': 'Ativo',
             'res.emptyState': 'Nenhuma resistência atribuída',
             'res.availableTypes': 'Resistências Disponíveis',
             'res.createCustom': 'Criar Personalizada',
@@ -2460,7 +2689,15 @@
             'res.typePsychic': 'Psíquico',
             'res.typeRadiant': 'Radiante',
             'res.typeSlashing': 'Cortante',
-            'res.typeThunder': 'Trovão',
+            'res.typeThunder': 'Trov\u00e3o',
+            'res.event.add': 'Resist\u00eancia Adicionada',
+            'res.event.remove': 'Resist\u00eancia Removida',
+            'res.event.move': 'Resist\u00eancia Movida',
+            'res.event.toggle': 'Altern\u00e2ncia de Resist\u00eancia',
+            'res.log.add': '{name} adicionado a {column}',
+            'res.log.remove': '{name} removido de {column}',
+            'res.log.move': '{name} movido de {fromColumn} para {toColumn}',
+            'res.log.toggle': '{name} alternado para {state}',
 
             // Saving Throws submodule
             'save.addSave': 'Adicionar Teste',
@@ -2489,6 +2726,8 @@
             'save.cancel': 'Cancelar',
             'save.close': 'Fechar',
             'save.discardChanges': 'Descartar alterações não salvas?',
+            'save.event.roll': 'Resistência',
+            'save.log.roll': 'Resistência de {name} rolada ({modifier})',
 
             // Magias (Spells submodule)
             'spells.settings': 'Configurações de Magias',
@@ -2546,6 +2785,31 @@
             'spells.collapse': 'Recolher',
             'spells.autoSpendSlots': 'Gastar espaços automaticamente ao lançar',
             'spells.showSlotErrors': 'Mostrar erro quando não há espaços disponíveis',
+            'spells.event.cast': 'Conjuração',
+            'spells.log.cast': 'Conjurado {name}',
+            'spells.log.castSlot': 'Conjurado {name} (espaço de nível {level} gasto)',
+            'spells.event.roll': 'Rolagem de Magia',
+            'spells.log.roll': 'Rolagem de {spellName}: {attrName} ({roll})',
+            'spells.event.restore': 'Restauração de Espaços',
+            'spells.log.restore': 'Todos os espaços de magia restaurados',
+            'counter.event.change': 'Mudança de Contador',
+            'counter.event.reset': 'Redefinição de Contador',
+            'counter.log.increment': '{name} incrementado ({oldVal} → {newVal})',
+            'counter.log.decrement': '{name} decrementado ({oldVal} → {newVal})',
+            'counter.log.reset': '{name} redefinido para {value}',
+            'level.event.levelUp': 'Mudança de Nível',
+            'level.event.xp': 'Mudança de XP',
+            'level.log.levelUp': 'Avançou para o nível {level}',
+            'level.log.levelChange': 'Nível alterado ({oldLevel} → {newLevel})',
+            'level.log.xpGain': 'Ganhou {amount} XP ({oldXP} → {newXP})',
+            'level.log.xpLoss': 'Perdeu {amount} XP ({oldXP} → {newXP})',
+            'cond.event.toggle': 'Alternância de Condição',
+            'cond.event.value': 'Valor de Condição',
+            'cond.log.applied': 'Condição aplicada: {name}',
+            'cond.log.removed': 'Condição removida: {name}',
+            'cond.log.valueChange': '{name} alterado ({oldVal} → {newVal})',
+            'module.event.delete': 'M\u00f3dulo Exclu\u00eddo',
+            'module.log.delete': 'M\u00f3dulo exclu\u00eddo: {title} ({type})',
 
             // Activity Log submodule
             'activity.emptyState': 'No activity recorded yet',
@@ -2665,6 +2929,8 @@
             'abilities.cancel': 'Отмена',
             'abilities.close': 'Закрыть',
             'abilities.linkedTo': 'Связано с {name}.',
+            'abilities.event.roll': 'Бросок Навыка',
+            'abilities.log.roll': 'Проверка {name} ({modifier})',
 
             'text.placeholder': 'Пишите заметки...',
 
@@ -2709,6 +2975,8 @@
             'stat.toggleRollable': 'Переключить Бросок (сначала выберите характеристику)',
             'stat.rollableOn': 'Бросаемая — нажмите для отключения',
             'stat.rollableOff': 'Не бросаемая — нажмите для включения',
+            'stat.event.roll': 'Бросок Характеристики',
+            'stat.log.roll': 'Проверка {name} ({modifier})',
 
             // List submodule
             'list.addItem': 'Добавить Элемент',
@@ -2758,6 +3026,10 @@
             'list.sortAsc': 'Сортировать по возрастанию',
             'list.sortDesc': 'Сортировать по убыванию',
             'list.sortManual': 'Ручной порядок',
+            'list.event.add': 'Элемент Списка Добавлен',
+            'list.event.remove': 'Элемент Списка Удалён',
+            'list.log.add': 'Элемент добавлен в {listName}',
+            'list.log.remove': '{name} удалён из {listName}',
 
             // Resistance submodule
             'res.moduleSettings': 'Настройки Модуля',
@@ -2769,6 +3041,7 @@
             'res.valuePlaceholder': 'напр. 5, x2, 1d8',
             'res.immune': 'Иммунитет',
             'res.inactive': 'Неактивно',
+            'res.active': 'Активно',
             'res.emptyState': 'Сопротивления не назначены',
             'res.availableTypes': 'Доступные Сопротивления',
             'res.createCustom': 'Создать Своё',
@@ -2796,6 +3069,14 @@
             'res.typeRadiant': 'Излучение',
             'res.typeSlashing': 'Рубящий',
             'res.typeThunder': 'Гром',
+            'res.event.add': 'Сопротивление Добавлено',
+            'res.event.remove': 'Сопротивление Убрано',
+            'res.event.move': 'Сопротивление Перемещено',
+            'res.event.toggle': 'Переключение Сопротивления',
+            'res.log.add': '{name} добавлено в {column}',
+            'res.log.remove': '{name} удалено из {column}',
+            'res.log.move': '{name} перемещено из {fromColumn} в {toColumn}',
+            'res.log.toggle': '{name} переключено в {state}',
 
             // Saving Throws submodule
             'save.addSave': 'Добавить Спасбросок',
@@ -2824,6 +3105,8 @@
             'save.cancel': 'Отмена',
             'save.close': 'Закрыть',
             'save.discardChanges': 'Отменить несохранённые изменения?',
+            'save.event.roll': 'Спасбросок',
+            'save.log.roll': 'Спасбросок {name} ({modifier})',
 
             // Заклинания (Spells submodule)
             'spells.settings': 'Настройки Заклинаний',
@@ -2881,6 +3164,31 @@
             'spells.collapse': 'Свернуть',
             'spells.autoSpendSlots': 'Автоматически использовать ячейки при применении',
             'spells.showSlotErrors': 'Показывать ошибку когда нет доступных ячеек',
+            'spells.event.cast': 'Использование Заклинания',
+            'spells.log.cast': 'Использовано {name}',
+            'spells.log.castSlot': 'Использовано {name} (ячейка уровня {level} потрачена)',
+            'spells.event.roll': 'Бросок Заклинания',
+            'spells.log.roll': 'Бросок {spellName}: {attrName} ({roll})',
+            'spells.event.restore': 'Восстановление Ячеек',
+            'spells.log.restore': 'Все ячейки заклинаний восстановлены',
+            'counter.event.change': 'Изменение Счётчика',
+            'counter.event.reset': 'Сброс Счётчика',
+            'counter.log.increment': '{name} увеличен ({oldVal} → {newVal})',
+            'counter.log.decrement': '{name} уменьшен ({oldVal} → {newVal})',
+            'counter.log.reset': '{name} сброшен до {value}',
+            'level.event.levelUp': 'Изменение Уровня',
+            'level.event.xp': 'Изменение ОО',
+            'level.log.levelUp': 'Повышен до уровня {level}',
+            'level.log.levelChange': 'Уровень изменён ({oldLevel} → {newLevel})',
+            'level.log.xpGain': 'Получено {amount} ОО ({oldXP} → {newXP})',
+            'level.log.xpLoss': 'Потеряно {amount} ОО ({oldXP} → {newXP})',
+            'cond.event.toggle': 'Изменение Состояния',
+            'cond.event.value': 'Значение Состояния',
+            'cond.log.applied': 'Состояние применено: {name}',
+            'cond.log.removed': 'Состояние снято: {name}',
+            'cond.log.valueChange': '{name} изменено ({oldVal} → {newVal})',
+            'module.event.delete': 'Модуль Удалён',
+            'module.log.delete': 'Модуль удалён: {title} ({type})',
 
             // Activity Log submodule
             'activity.emptyState': 'No activity recorded yet',

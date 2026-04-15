@@ -46,12 +46,15 @@
         }
     }
 
-    function rollSingleAttribute(spell, attr) {
+    function rollSingleAttribute(spell, attr, data) {
         if (typeof TS === 'undefined') return;
         const roll = extractDiceRoll(attr.value);
         if (!roll) return;
         try {
             TS.dice.putDiceInTray([{ name: (spell.name || t('spells.unnamed')) + ': ' + attr.key, roll }]);
+            if (typeof window.logActivity === 'function') {
+                window.logActivity({ type: 'spells.event.roll', message: t('spells.log.roll', { spellName: spell.name || t('spells.unnamed'), attrName: attr.key, roll }), sourceModuleId: data.id });
+            }
         } catch (e) {
             console.warn('[CV] Attribute dice roll failed:', e);
         }
@@ -62,6 +65,7 @@
         const cat = data.content.categories.find((c) => c.id === catId);
         if (!cat) return;
 
+        let slotSpent = false;
         if (cat.slotLevel !== null && data.content.autoSpendSlots) {
             const available = getAvailableSlots(data, cat.slotLevel);
             if (available <= 0) {
@@ -72,11 +76,19 @@
             }
             spendSlot(data, cat.slotLevel);
             scheduleSave();
+            slotSpent = true;
             const bodyEl = moduleEl.querySelector('.module-body');
             MODULE_TYPES['spells'].renderBody(bodyEl, data, true);
         }
 
         rollAllSpellDice(spell);
+        if (typeof window.logActivity === 'function') {
+            const spellName = spell.name || t('spells.unnamed');
+            const msg = slotSpent
+                ? t('spells.log.castSlot', { name: spellName, level: cat.slotLevel })
+                : t('spells.log.cast', { name: spellName });
+            window.logActivity({ type: 'spells.event.cast', message: msg, sourceModuleId: data.id });
+        }
         if (onSuccess) onSuccess();
     }
 
@@ -101,6 +113,9 @@
         restoreBtn.addEventListener('click', () => {
             c.slotLevels.forEach((sl) => { sl.spent = 0; });
             scheduleSave();
+            if (typeof window.logActivity === 'function') {
+                window.logActivity({ type: 'spells.event.restore', message: t('spells.log.restore'), sourceModuleId: data.id });
+            }
             MODULE_TYPES['spells'].renderBody(bodyEl, data, true);
         });
         slotsHeader.appendChild(slotsLabel);
@@ -295,7 +310,7 @@
                     const rollBtn = document.createElement('button');
                     rollBtn.className = 'btn-primary sm';
                     rollBtn.textContent = t('spells.roll');
-                    rollBtn.addEventListener('click', () => rollSingleAttribute(spell, attr));
+                    rollBtn.addEventListener('click', () => rollSingleAttribute(spell, attr, data));
                     row.appendChild(rollBtn);
                 }
 

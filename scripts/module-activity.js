@@ -183,6 +183,10 @@
         ensureContent(data);
         const content = data.content;
 
+        const existingList = bodyEl.querySelector('.activity-entry-list');
+        const wasAtBottom = !existingList ||
+            (existingList.scrollHeight - existingList.scrollTop - existingList.clientHeight < 5);
+
         bodyEl.innerHTML = '';
 
         const wrapper = document.createElement('div');
@@ -213,6 +217,10 @@
 
         wrapper.appendChild(entryList);
         bodyEl.appendChild(wrapper);
+
+        if (content.sortOrder === 'oldest' && wasAtBottom) {
+            entryList.scrollTop = entryList.scrollHeight;
+        }
     }
 
     // ── Global logActivity() API ──

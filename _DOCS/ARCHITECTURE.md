@@ -12,7 +12,7 @@
 | `main.html` | **All markup** — HTML structure only, loads scripts via `<script src>` tags |
 | `main.css` | **All styles** — theme tokens, components, overlays |
 | `scripts/translations.js` | **i18n dictionary** — `CV_TRANSLATIONS` object keyed by language code (`en`, `es`, `fr`, `de`, `pt-BR`, `ru`) |
-| `scripts/shared.js` | Shared utilities: `escapeHtml()`, markdown rendering (`renderMarkdown`, `attachCheckboxHandlers`, `toggleCheckboxInMarkdown`) |
+| `scripts/shared.js` | Shared utilities: `escapeHtml()`, markdown rendering (`renderMarkdown`, `attachCheckboxHandlers`, `toggleCheckboxInMarkdown`), `buildCvSelect()` themed dropdown builder |
 | `scripts/i18n.js` | Localization: `currentLang`, `t()`, `applyTranslations()`, `refreshModuleLabels()` |
 | `scripts/theme.js` | Theme system: `setTheme()`, `loadTheme()` |
 | `scripts/settings.js` | Settings overlay, mode toggle, theme buttons, language picker, save/load buttons, force reload |
@@ -74,7 +74,7 @@ All JS lives in `scripts/` as separate files loaded by `main.html` in dependency
 
 | File | Key Functions / Globals |
 |---|---|
-| **shared.js** | `escapeHtml(text)`, `renderMarkdown(raw)` (Marked + DOMPurify), `attachCheckboxHandlers()`, `toggleCheckboxInMarkdown()`, `inferTierPreset(systemKey)`, `getGameSystemDisplayName(systemKey)` |
+| **shared.js** | `escapeHtml(text)`, `renderMarkdown(raw)` (Marked + DOMPurify), `attachCheckboxHandlers()`, `toggleCheckboxInMarkdown()`, `inferTierPreset(systemKey)`, `getGameSystemDisplayName(systemKey)`, `buildCvSelect(options, currentValue, onChange)` |
 | **i18n.js** | `currentLang`, `t(key, replacements?)`, `applyTranslations()`, `refreshModuleLabels()` — lightweight localization; HTML elements use `data-i18n` / `data-i18n-*` attributes for static text, JS calls `t()` for dynamic text |
 | **theme.js** | `setTheme(theme)`, `loadTheme()` — runs `loadTheme()` on load |
 | **settings.js** | `modeToggle` element (toggles `.mode-edit` / `.mode-play`), `openSettings()`, `closeSettings()`, `updateThemeButtons(theme)`, language select handler, game system select handler, `syncGameSystemUI()`, save/load button wiring, force reload, `chkAutoSave`, `chkAutoLoad` |

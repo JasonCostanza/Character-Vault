@@ -63,30 +63,52 @@
     updateThemeButtons(localStorage.getItem('cv-theme') ?? 'dark');
 
     // ── Language ──
-    const langSelect = document.getElementById('setting-language');
-
-    langSelect.addEventListener('change', (e) => {
-        localStorage.setItem('cv-language', e.target.value);
-        window.currentLang = e.target.value;
-        applyTranslations();
-        refreshModuleLabels();
-    });
-
-    langSelect.value = localStorage.getItem('cv-language') ?? 'en';
+    const langOptions = [
+        { value: 'en',    label: 'English' },
+        { value: 'es',    label: 'Español' },
+        { value: 'fr',    label: 'Français' },
+        { value: 'de',    label: 'Deutsch' },
+        { value: 'it',    label: 'Italiano' },
+        { value: 'pt-BR', label: 'Português (Brasil)' },
+        { value: 'ru',    label: 'Русский' },
+    ];
+    const langWidget = buildCvSelect(
+        langOptions,
+        localStorage.getItem('cv-language') ?? 'en',
+        function (val) {
+            localStorage.setItem('cv-language', val);
+            window.currentLang = val;
+            applyTranslations();
+            refreshModuleLabels();
+        }
+    );
+    document.getElementById('setting-language-container').appendChild(langWidget.el);
 
     // ── Game System ──
-    const gameSystemSelect = document.getElementById('setting-game-system');
-
-    gameSystemSelect.addEventListener('change', () => {
-        window.gameSystem = gameSystemSelect.value;
-        scheduleSave();
-    });
+    const gameSystemOptions = [
+        { value: 'coc',         label: 'Call of Cthulhu' },
+        { value: 'cpred',       label: 'Cyberpunk Red' },
+        { value: 'dnd5e',       label: 'D&D 5e' },
+        { value: 'daggerheart', label: 'Daggerheart' },
+        { value: 'mothership',  label: 'Mothership' },
+        { value: 'pf2e',        label: 'Pathfinder 2e' },
+        { value: 'sr6',         label: 'Shadowrun 6e' },
+        { value: 'vtm',         label: 'Vampire: The Masquerade' },
+        { value: 'custom',      label: t('settings.gameSystemCustom') },
+    ];
+    const gameSystemWidget = buildCvSelect(
+        gameSystemOptions,
+        window.gameSystem || 'custom',
+        function (val) {
+            window.gameSystem = val;
+            scheduleSave();
+        }
+    );
+    document.getElementById('setting-game-system-container').appendChild(gameSystemWidget.el);
 
     window.syncGameSystemUI = function () {
-        gameSystemSelect.value = window.gameSystem || 'custom';
+        gameSystemWidget.setValue(window.gameSystem || 'custom');
     };
-
-    gameSystemSelect.value = window.gameSystem || 'custom';
 
     // ── Save / Load ──
     const btnSave = document.getElementById('btn-save');

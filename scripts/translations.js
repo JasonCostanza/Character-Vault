@@ -853,6 +853,9 @@
             'activity.cancel': 'Cancel',
             'activity.save': 'Save',
             'activity.settings': 'Settings',
+            'activity.event.quickRoll': 'Quick Roll',
+            'activity.message.quickRoll': 'Quick Roll → {total}',
+            'activity.message.quickRollWithNotation': 'Quick Roll ({notation}) → {total}',
 
             // Recovery submodule
             'recovery.longRest': 'Long Rest',
@@ -1285,6 +1288,9 @@
             'activity.cancel': 'Cancel',
             'activity.save': 'Save',
             'activity.settings': 'Settings',
+            'activity.event.quickRoll': 'Quick Roll',
+            'activity.message.quickRoll': 'Quick Roll → {total}',
+            'activity.message.quickRollWithNotation': 'Quick Roll ({notation}) → {total}',
 
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',
@@ -1671,6 +1677,9 @@
             'activity.cancel': 'Cancel',
             'activity.save': 'Save',
             'activity.settings': 'Settings',
+            'activity.event.quickRoll': 'Quick Roll',
+            'activity.message.quickRoll': 'Quick Roll → {total}',
+            'activity.message.quickRollWithNotation': 'Quick Roll ({notation}) → {total}',
 
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',
@@ -2055,6 +2064,9 @@
             'activity.cancel': 'Cancel',
             'activity.save': 'Save',
             'activity.settings': 'Settings',
+            'activity.event.quickRoll': 'Quick Roll',
+            'activity.message.quickRoll': 'Quick Roll → {total}',
+            'activity.message.quickRollWithNotation': 'Quick Roll ({notation}) → {total}',
 
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',
@@ -2447,6 +2459,9 @@
             'activity.cancel': 'Cancel',
             'activity.save': 'Save',
             'activity.settings': 'Settings',
+            'activity.event.quickRoll': 'Quick Roll',
+            'activity.message.quickRoll': 'Quick Roll → {total}',
+            'activity.message.quickRollWithNotation': 'Quick Roll ({notation}) → {total}',
 
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',
@@ -2826,6 +2841,9 @@
             'activity.cancel': 'Cancel',
             'activity.save': 'Save',
             'activity.settings': 'Settings',
+            'activity.event.quickRoll': 'Quick Roll',
+            'activity.message.quickRoll': 'Quick Roll → {total}',
+            'activity.message.quickRollWithNotation': 'Quick Roll ({notation}) → {total}',
 
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',
@@ -3205,6 +3223,9 @@
             'activity.cancel': 'Cancel',
             'activity.save': 'Save',
             'activity.settings': 'Settings',
+            'activity.event.quickRoll': 'Quick Roll',
+            'activity.message.quickRoll': 'Quick Roll → {total}',
+            'activity.message.quickRollWithNotation': 'Quick Roll ({notation}) → {total}',
 
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',

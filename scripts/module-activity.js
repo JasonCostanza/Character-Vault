@@ -448,10 +448,6 @@
     window.handleRollResult = async function (event) {
         console.log('[CV] handleRollResult', event.kind, event.payload && event.payload.rollId);
         if (event.kind === 'rollResults') {
-            const pending = window.pendingRolls[event.payload.rollId];
-            if (!pending) return;
-            delete window.pendingRolls[event.payload.rollId];
-
             let total = 0;
             if (typeof TS !== 'undefined' && event.payload.resultsGroups) {
                 for (const group of event.payload.resultsGroups) {
@@ -459,15 +455,51 @@
                 }
             }
 
-            const entry = window.activityLog.find(function (e) { return e.id === pending.logEntryId; });
-            if (entry) {
-                entry.message += ' \u2192 ' + total;
-                scheduleSave();
-                document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
-                    const modData = window.modules.find(function (m) { return m.id === el.dataset.id; });
-                    if (modData) renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
-                });
+            const pending = window.pendingRolls[event.payload.rollId];
+            if (pending) {
+                delete window.pendingRolls[event.payload.rollId];
+                const entry = window.activityLog.find(function (e) { return e.id === pending.logEntryId; });
+                if (entry) {
+                    entry.message += ' \u2192 ' + total;
+                    scheduleSave();
+                    document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
+                        const modData = window.modules.find(function (m) { return m.id === el.dataset.id; });
+                        if (modData) renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
+                    });
+                }
+                return;
             }
+
+            // Quick Roll fallback: roll originated outside our tracked sites
+            // (diceFinder click, TaleSpire dice tray UI, etc.).
+            // Reconstruct notation from the result tree per TS dice API:
+            //   rollResultsOperation: { operator, operands[] }
+            //   rollResult:           { kind: 'd6', results: [int, ...] }
+            //   rollValue:            { value: int }
+            function notationFromResult(node) {
+                if (!node || typeof node !== 'object') return '';
+                if (typeof node.value === 'number') return String(node.value);
+                if (typeof node.kind === 'string' && Array.isArray(node.results)) {
+                    return node.results.length + node.kind;
+                }
+                if (typeof node.operator === 'string' && Array.isArray(node.operands)) {
+                    return node.operands.map(notationFromResult).join(node.operator);
+                }
+                return '';
+            }
+            const groups = event.payload.resultsGroups || [];
+            const notation = groups
+                .map(function (g) { return g ? notationFromResult(g.result) : ''; })
+                .filter(function (n) { return n.length > 0; })
+                .join(' / ');
+            const message = notation
+                ? t('activity.message.quickRollWithNotation', { notation: notation, total: total })
+                : t('activity.message.quickRoll', { total: total });
+            window.logActivity({
+                type: 'activity.event.quickRoll',
+                sourceModuleId: null,
+                message: message,
+            });
         } else if (event.kind === 'rollRemoved') {
             delete window.pendingRolls[event.payload.rollId];
         }

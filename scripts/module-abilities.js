@@ -250,9 +250,10 @@
     function rollAbilityCheck(ability, data) {
         const modStr = ability.modifier >= 0 ? `+${ability.modifier}` : `${ability.modifier}`;
         try {
-            TS.dice.putDiceInTray([{ name: `${ability.name} ${t('abilities.check')}`, roll: `1d20${modStr}` }]);
+            const rollPromise = TS.dice.putDiceInTray([{ name: `${ability.name} ${t('abilities.check')}`, roll: `1d20${modStr}` }]);
             if (typeof window.logActivity === 'function') {
-                window.logActivity({ type: 'abilities.event.roll', message: t('abilities.log.roll', { name: ability.name || t('abilities.unnamed'), modifier: modStr }), sourceModuleId: data.id });
+                const logEntryId = window.logActivity({ type: 'abilities.event.roll', message: t('abilities.log.roll', { name: ability.name || t('abilities.unnamed'), modifier: modStr }), sourceModuleId: data.id });
+                rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId }; });
             }
         } catch (e) {
             console.warn('[CV] Ability roll failed:', e);

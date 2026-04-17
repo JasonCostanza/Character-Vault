@@ -73,6 +73,7 @@ Per-file descriptions live in `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
 - **z-index layers**: 300 = delete confirm, 200 = settings/wizard overlays, 100 = menu bar + dragging module, 60 = resize handle, 50 = resizing module.
 - **Grid layout**: `#module-grid` is a 4-column CSS Grid, 8px gap. Modules span 1–4 columns. Fixed row height = `rowSpan * 80px + (rowSpan - 1) * 8px`.
 - **`TS.*` API unavailable** when previewing in VS Code — guard calls with `typeof TS !== 'undefined'` or test in TaleSpire directly.
+- **`TS.dice.putDiceInTray()` returns `Promise<string>`**, not `string` — the API docs say `string` but it's async. Always use `.then(rollId => ...)` to capture the rollId. `TS.dice.evaluateDiceResultsGroup()` is also async — use `await`. See `handleRollResult` in `scripts/module-activity.js` for the canonical pattern.
 - **`_localStorage/`** contains user save data — gitignored, never commit.
 
 ## Terminology

@@ -1,3 +1,6 @@
+// ── Pending Roll Tracking ──
+window.pendingRolls = {}; // rollId → { logEntryId } — populated by roll sites, consumed by handleRollResult
+
 // ── Apply Translations on Startup ──
 (function () {
     applyTranslations();

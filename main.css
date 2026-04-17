@@ -5496,6 +5496,11 @@ select,
     word-break: break-word;
 }
 
+.activity-roll-result {
+    color: var(--cv-accent);
+    font-weight: 600;
+}
+
 .activity-entry-delete {
     flex-shrink: 0;
     background: none;

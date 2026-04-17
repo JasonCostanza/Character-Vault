@@ -236,14 +236,15 @@
     function rollSavingThrow(save, data) {
         const modStr = save.value >= 0 ? `+${save.value}` : `${save.value}`;
         try {
-            TS.dice.putDiceInTray([
+            const rollPromise = TS.dice.putDiceInTray([
                 {
                     name: `${save.name || t('save.unnamed')} ${t('save.save')}`,
                     roll: `1d20${modStr}`,
                 },
             ]);
             if (typeof window.logActivity === 'function') {
-                window.logActivity({ type: 'save.event.roll', message: t('save.log.roll', { name: save.name || t('save.unnamed'), modifier: modStr }), sourceModuleId: data.id });
+                const logEntryId = window.logActivity({ type: 'save.event.roll', message: t('save.log.roll', { name: save.name || t('save.unnamed'), modifier: modStr }), sourceModuleId: data.id });
+                rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId }; });
             }
         } catch (e) {
             console.warn('[CV] Saving throw dice roll failed:', e);

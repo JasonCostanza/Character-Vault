@@ -153,7 +153,16 @@
 
             const msg = document.createElement('span');
             msg.className = 'activity-entry-message';
-            msg.textContent = entry.message;
+            const arrowIdx = entry.message.indexOf(' \u2192 ');
+            if (arrowIdx !== -1) {
+                msg.appendChild(document.createTextNode(entry.message.slice(0, arrowIdx)));
+                const resultSpan = document.createElement('span');
+                resultSpan.className = 'activity-roll-result';
+                resultSpan.textContent = entry.message.slice(arrowIdx);
+                msg.appendChild(resultSpan);
+            } else {
+                msg.textContent = entry.message;
+            }
             row.appendChild(msg);
 
             if (!isPlayMode) {
@@ -273,6 +282,7 @@
         });
 
         console.log('[CV] Activity logged:', entry.eventType);
+        return entry.id;
     };
 
     // ── Module Settings ──
@@ -433,6 +443,35 @@
 
     // ── Expose settings opener for toolbar button ──
     window.openActivitySettings = openActivitySettings;
+
+    // ── Roll Result Handler (manifest subscription: api.subscriptions.dice.onRollResults) ──
+    window.handleRollResult = async function (event) {
+        console.log('[CV] handleRollResult', event.kind, event.payload && event.payload.rollId);
+        if (event.kind === 'rollResults') {
+            const pending = window.pendingRolls[event.payload.rollId];
+            if (!pending) return;
+            delete window.pendingRolls[event.payload.rollId];
+
+            let total = 0;
+            if (typeof TS !== 'undefined' && event.payload.resultsGroups) {
+                for (const group of event.payload.resultsGroups) {
+                    total += await TS.dice.evaluateDiceResultsGroup(group);
+                }
+            }
+
+            const entry = window.activityLog.find(function (e) { return e.id === pending.logEntryId; });
+            if (entry) {
+                entry.message += ' \u2192 ' + total;
+                scheduleSave();
+                document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
+                    const modData = window.modules.find(function (m) { return m.id === el.dataset.id; });
+                    if (modData) renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
+                });
+            }
+        } else if (event.kind === 'rollRemoved') {
+            delete window.pendingRolls[event.payload.rollId];
+        }
+    };
 
     // ── Register Module Type ──
     registerModuleType('activity', {

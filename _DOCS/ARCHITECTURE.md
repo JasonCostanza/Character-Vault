@@ -80,7 +80,7 @@ All JS lives in `scripts/` as separate files loaded by `main.html` in dependency
 | **settings.js** | `modeToggle` element (toggles `.mode-edit` / `.mode-play`), `openSettings()`, `closeSettings()`, `updateThemeButtons(theme)`, language select handler, game system select handler, `syncGameSystemUI()`, save/load button wiring, force reload, `chkAutoSave`, `chkAutoLoad` |
 | **persistence.js** | `migrateData()`, `syncModuleState()`, `serializeCharacter()`, `deserializeCharacter()`, `saveCharacter()`, `loadCharacter()`, `scheduleSave()` — TaleSpire campaign localStorage persistence with auto-save debounce |
 | **module-core.js** | `modules[]` array, `moduleIdCounter`, `generateModuleId()`, `wizardState`, wizard open/close/reset, global Escape key handler, wizard interactions (type cards, color swatches), create module handler, `MODULE_TYPES{}` registry, `registerModuleType()`, `renderModule(data)`, SortableJS drag & drop, `openDeleteConfirm()`, `closeDeleteConfirm()`, `deleteModule()`, `applyPlayMode()`, `applyEditMode()`, `initResizeHandle()` (constants `GRID_COLUMNS=4`, `GRID_GAP=8`, row height `80px`) |
-| **module-activity.js** | `registerModuleType('activity', ...)`, `window.logActivity(opts)` — global API other modules call to add entries, `window.openActivitySettings(moduleEl, data)` — settings modal opener, `window.activityLog[]` — character-level array of log entries shared across all Activity Log module instances |
+| **module-activity.js** | `registerModuleType('activity', ...)`, `window.logActivity(opts)` — global API other modules call to add entries (returns `entry.id`), `window.openActivitySettings(moduleEl, data)` — settings modal opener, `window.activityLog[]` — character-level array of log entries shared across all Activity Log module instances, `window.handleRollResult(event)` — manifest-subscribed callback that appends roll totals to pending log entries |
 | **module-text.js** | `registerModuleType('text', ...)` — textarea in edit mode, rendered markdown in play mode; `autoResizeTextarea()`, `syncState()` |
 | **module-abilities.js** | `getProficiencyState(ability, data)`, `rollAbilityCheck(ability)`, `renderAbilityRow()`, `renderAbilityRowEdit()`, `reRenderAbilityEdits()`, `initAbilitySortable()`, `openAbilitySettings()`, `buildAbilityBody()`, `registerModuleType('abilities', ...)` — skill list with modifier badges, proficiency dots, linked Stat module sync, play mode dice rolling, settings panel |
 | **module-stat.js** | `formatModifier(mod)`, `renderStatBlock()`, `renderStatBlockEdit()`, `reRenderStatEdits()`, `initStatSortable()`, `rollStatCheck(stat)`, `enterQuickEdit()`, `registerModuleType('stat', ...)` — stat blocks with values/modifiers, play mode dice rolling, edit mode inputs, layout toggle (large-stat / large-modifier) |
@@ -94,7 +94,7 @@ All JS lives in `scripts/` as separate files loaded by `main.html` in dependency
 | **module-list.js** | `renderListBody()`, `renderListItem()`, `renderAttributeCell()`, `renderColumnHeaders()`, `buildAttributeWizard()`, `buildInspectOverlay()`, `initSortableItems()`, `initSortableAttributes()`, `closeManageAttrsPanel()`, `registerModuleType('list', ...)`, `syncState()` — multi-column item tables with custom attributes, attribute wizard, cross-list drag transfer, sort control |
 | **module-condition.js** | `registerModuleType('condition', ...)` — game system template conditions with toggle/value types; `openCondSettingsPanel()`, `openCondWizard()`, `window.applyConditionTemplate`, SortableJS staging area, cascading sub-conditions, expand modal |
 | **module-recovery.js** | `registerModuleType('recovery', ...)` — rest buttons with configurable action lists, hit dice subsystem, confirmation dialog, game system templates; calls `window.healToFull()`, `window.resetTempHP()`, `window.applyHealingAmount()`, `window.restoreAllSpellSlots()` |
-| **app.js** | Startup: `applyTranslations()`, `refreshModuleLabels()`, auto-load check (`chkAutoLoad` + `TS` availability → `loadCharacter()`) |
+| **app.js** | Startup: `applyTranslations()`, `refreshModuleLabels()`, auto-load check (`chkAutoLoad` + `TS` availability → `loadCharacter()`); initializes `window.pendingRolls = {}` |
 
 ---
 
@@ -198,6 +198,12 @@ Character sheet persistence format, stored via `TS.localStorage.campaign`:
   activityLog: [ /* activity log entries — character-level, shared across all Activity Log modules */ ],
   modules: [ /* modules[] array entries */ ]
 }
+```
+
+### `window.pendingRolls` (object)
+Maps a TaleSpire `rollId` (returned by `TS.dice.putDiceInTray()`) to the Activity Log entry it should update when the result arrives. Populated by each roll site; consumed and deleted by `window.handleRollResult` in `module-activity.js`. Entries for rolls dismissed without rolling are cleaned up via the `rollRemoved` event.
+```js
+{ 'roll_abc123': { logEntryId: 'log_xyz789' } }
 ```
 
 ### `window.activityLog[]` (character-level array)

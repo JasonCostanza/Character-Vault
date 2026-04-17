@@ -51,9 +51,10 @@
         const roll = extractDiceRoll(attr.value);
         if (!roll) return;
         try {
-            TS.dice.putDiceInTray([{ name: (spell.name || t('spells.unnamed')) + ': ' + attr.key, roll }]);
+            const rollPromise = TS.dice.putDiceInTray([{ name: (spell.name || t('spells.unnamed')) + ': ' + attr.key, roll }]);
             if (typeof window.logActivity === 'function') {
-                window.logActivity({ type: 'spells.event.roll', message: t('spells.log.roll', { spellName: spell.name || t('spells.unnamed'), attrName: attr.key, roll }), sourceModuleId: data.id });
+                const logEntryId = window.logActivity({ type: 'spells.event.roll', message: t('spells.log.roll', { spellName: spell.name || t('spells.unnamed'), attrName: attr.key, roll }), sourceModuleId: data.id });
+                rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId }; });
             }
         } catch (e) {
             console.warn('[CV] Attribute dice roll failed:', e);

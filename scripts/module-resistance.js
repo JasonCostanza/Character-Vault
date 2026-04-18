@@ -110,6 +110,11 @@
         resistances: 'res.resistances',
         weaknesses: 'res.weaknesses',
     };
+    const COLUMN_SINGULAR_KEYS = {
+        immunities: 'res.immunity',
+        resistances: 'res.resistance',
+        weaknesses: 'res.weakness',
+    };
 
     // ── Value Prompt ──
 
@@ -252,7 +257,7 @@
                         if (typeof window.logActivity === 'function') {
                             window.logActivity({
                                 type: 'res.event.toggle',
-                                message: t('res.log.toggle', { name: updatedName, state: item.active ? t('res.active') : t('res.inactive') }),
+                                message: t('res.log.toggle', { name: updatedName, column: t(COLUMN_SINGULAR_KEYS[colKey]), state: item.active ? t('res.active') : t('res.inactive') }),
                                 sourceModuleId: data.id,
                             });
                         }
@@ -639,7 +644,7 @@
                                     if (typeof window.logActivity === 'function') {
                                         window.logActivity({
                                             type: 'res.event.add',
-                                            message: t('res.log.add', { name: getResName({ typeKey: typeKey }, content), column: t(COLUMN_LABEL_KEYS[toColumn]) }),
+                                            message: t('res.log.addWithValue', { name: getResName({ typeKey: typeKey }, content), column: t(COLUMN_LABEL_KEYS[toColumn]), value: val }),
                                             sourceModuleId: data.id,
                                         });
                                     }

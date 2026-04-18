@@ -154,12 +154,19 @@
             const msg = document.createElement('span');
             msg.className = 'activity-entry-message';
             const arrowIdx = entry.message.indexOf(' \u2192 ');
+            const dashIdx = arrowIdx === -1 ? entry.message.indexOf(' \u2014 ') : -1;
             if (arrowIdx !== -1) {
                 msg.appendChild(document.createTextNode(entry.message.slice(0, arrowIdx)));
                 const resultSpan = document.createElement('span');
                 resultSpan.className = 'activity-roll-result';
                 resultSpan.textContent = entry.message.slice(arrowIdx);
                 msg.appendChild(resultSpan);
+            } else if (dashIdx !== -1) {
+                msg.appendChild(document.createTextNode(entry.message.slice(0, dashIdx)));
+                const valueSpan = document.createElement('span');
+                valueSpan.className = 'activity-roll-result';
+                valueSpan.textContent = entry.message.slice(dashIdx);
+                msg.appendChild(valueSpan);
             } else {
                 msg.textContent = entry.message;
             }

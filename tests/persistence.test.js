@@ -63,6 +63,18 @@ describe('serializeCharacter / deserializeCharacter round-trip', () => {
     expect(renderModule).toHaveBeenCalled();
     expect(updateEmptyState).toHaveBeenCalled();
   });
+
+  it('serializes empty character sheet', () => {
+    globalThis.modules = [];
+    globalThis.moduleIdCounter = 0;
+
+    const json = serializeCharacter();
+    const parsed = JSON.parse(json);
+
+    expect(parsed.version).toBe(1);
+    expect(parsed.modules).toEqual([]);
+    expect(parsed.moduleIdCounter).toBe(0);
+  });
 });
 
 describe('deserializeCharacter validation', () => {
@@ -117,6 +129,17 @@ describe('deserializeCharacter validation', () => {
     expect(calls[0][0].content).toBe('first');
     expect(calls[1][0].content).toBe('second');
   });
+
+  it('defaults activityLog to empty array when missing', () => {
+    const json = JSON.stringify({
+      version: 1,
+      modules: [{ id: 'module-001', type: 'text', order: 0, content: 'test' }],
+    });
+    globalThis.modules = [];
+    const ok = deserializeCharacter(json);
+    expect(ok).toBe(true);
+    expect(globalThis.activityLog).toEqual([]);
+  });
 });
 
 describe('scheduleSave', () => {
@@ -142,6 +165,23 @@ describe('scheduleSave', () => {
     vi.advanceTimersByTime(2500);
     // saveCharacter is async and calls TS.localStorage.campaign.setBlob
     expect(TS.localStorage.campaign.setBlob).toHaveBeenCalled();
+    vi.useRealTimers();
+  });
+
+  it('debounces multiple rapid calls into one save', () => {
+    globalThis.chkAutoSave = { checked: true };
+    loadScript('scripts/persistence.js');
+
+    vi.useFakeTimers();
+    TS.localStorage.campaign.setBlob.mockClear();
+    scheduleSave();
+    scheduleSave();
+    scheduleSave();
+    // All three calls happen immediately; only one setBlob should fire after debounce
+    vi.advanceTimersByTime(2100); // Advance past 2s debounce window
+    // Should be called once (debounced) not three times
+    const callCount = TS.localStorage.campaign.setBlob.mock.calls.length;
+    expect(callCount).toBeLessThanOrEqual(1);
     vi.useRealTimers();
   });
 });

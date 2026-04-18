@@ -66,8 +66,16 @@ describe('applyTranslations()', () => {
     const el = document.querySelector('[data-i18n-tip]');
     expect(el).not.toBeNull();
     applyTranslations();
-    // The tip value comes from t() — since we have 'settings.autoSaveTip' in en translations
-    // it will return the key as fallback if not in our stub
-    expect(el.getAttribute('data-tip')).toBeTruthy();
+    // The tip value comes from t() — verify the actual translated string is set
+    const expectedTip = t(el.getAttribute('data-i18n-tip'));
+    expect(el.getAttribute('data-tip')).toBe(expectedTip);
+  });
+
+  it('applies translations in non-English language', () => {
+    window.currentLang = 'es';
+    const el = document.querySelector('[data-i18n="settings.title"]');
+    applyTranslations();
+    expect(el.textContent).toBe(t('settings.title')); // Should be Spanish translation
+    expect(el.textContent).not.toBe('Settings'); // Not English
   });
 });

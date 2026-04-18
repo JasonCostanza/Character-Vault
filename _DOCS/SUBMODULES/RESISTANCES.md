@@ -125,3 +125,14 @@ The Resistance module uses icons from the shared `CV_ICONS` library in `shared.j
 
 ### Pending / Not Yet Implemented
 - **Same-column reordering**: SortableJS is configured to prevent reordering within the same column. Alphabetical sort is applied on every render.
+
+## Globals Exposed
+
+The resistance module IIFE exposes these on `window`:
+- `ensureResContent(data)` — Shape guard; initializes missing content fields and returns `data.content`
+- `getResName(item, content)` — Resolves an item's display name from predefined types, custom types, or raw key fallback
+- `getAssignedKeys(content)` — Returns flat array of `typeKey` strings across all three columns
+- `getAvailableTypes(content)` — Returns predefined + custom types not yet assigned, sorted alphabetically
+- `sortColumnAlpha(arr, content)` — Sorts an item array in-place by resolved name
+- `addResistanceToColumn(content, typeKey, column, value)` — Appends a new resistance item to the given column
+- `generateResId()` — Returns a unique `res_`-prefixed ID string

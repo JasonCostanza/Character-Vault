@@ -47,11 +47,14 @@ export function setupMinimalDOM() {
         <div class="settings-body">
           <!-- Language -->
           <div class="settings-section">
-            <label class="settings-label" for="setting-language" data-i18n="settings.language">Language</label>
-            <select id="setting-language" class="settings-select">
-              <option value="en">English</option>
-              <option value="es">Espanol</option>
-            </select>
+            <label class="settings-label" data-i18n="settings.language">Language</label>
+            <div id="setting-language-container"></div>
+          </div>
+
+          <!-- Game System -->
+          <div class="settings-section">
+            <label class="settings-label" data-i18n="settings.gameSystem">Game System</label>
+            <div id="setting-game-system-container"></div>
           </div>
 
           <!-- Theme -->

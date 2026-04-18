@@ -732,5 +732,9 @@
 
     window.applySavingThrowTemplate = applySavingThrowTemplate;
     window.applyTierPreset = applyTierPreset;
+    window.formatModifier = formatModifier;
+    window.ensureSaveContent = ensureSaveContent;
+    window.getTierForSave = getTierForSave;
+    window.saveNotesCheckboxProxy = saveNotesCheckboxProxy;
     window.openSaveSettings = openSaveSettings;
 })();

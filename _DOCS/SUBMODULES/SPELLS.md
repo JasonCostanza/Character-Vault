@@ -37,3 +37,13 @@ Within the settings menu the user can:
 - We are **not** providing the user with a pre-populated spell library as there are far too many between different editions of D&D and other RPG systems. D&D 5e alone has 500+ spells. Instead, we are giving the user the tools to create their own spell library from scratch or copy/pasting relevant information from online sources.
 - A spell's expanded details view is default **read-only**, but the user can edit the spell's properties by clicking an "Edit" button within the expanded details view, which will allow them to modify the spell's attributes and save their changes all in that expanded view. **We use read-only** so the user can access dice roll strings like "Damage" without accidentally modifying them.
 - The Spells module is spawned at a default size of 4 col x 2 row. The user can resize it after the fact, but we want to make sure it is large enough to show a few spells and their details immediately.
+
+## Globals Exposed
+
+The spells module IIFE exposes these on `window`:
+- `isDiceNotation(val)` — Returns `true` if the string contains a valid dice expression (e.g. `2d6`, `1d20+5`)
+- `extractDiceRoll(val)` — Extracts and returns the first dice expression from a string, or `null`
+- `spellsDefaultContent()` — Returns a fresh default content object `{ autoSpendSlots, showSlotErrors, slotLevels, categories }`
+- `getAvailableSlots(data, slotLevel)` — Returns remaining slots for a level; `0` if the level is missing or fully spent
+- `spendSlot(data, slotLevel)` — Increments `spent` for the given slot level, capped at `max`
+- `castSpell(moduleEl, data, spell, catId, onSuccess)` — Runs cast logic: slot check, slot spend, dice roll, activity log, `onSuccess` callback

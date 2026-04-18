@@ -1087,6 +1087,13 @@
         }
     };
 
+    window.isDiceNotation = isDiceNotation;
+    window.extractDiceRoll = extractDiceRoll;
+    window.spellsDefaultContent = defaultContent;
+    window.getAvailableSlots = getAvailableSlots;
+    window.spendSlot = spendSlot;
+    window.castSpell = castSpell;
+
     // ── Registration ──
     registerModuleType('spells', {
         label: 'type.spells',

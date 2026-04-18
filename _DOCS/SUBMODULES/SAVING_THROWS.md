@@ -32,3 +32,13 @@ Alternatively, the user can start from scratch and create custom saving throws. 
     - Module Settings button: Opens the module settings modal where users can configure module-wide options (e.g., display settings, default templates).
     - Change Theme button: Opens the theme selection modal to customize the module's appearance.
     - Delete Module button: Deletes the entire Saving Throws module from the character sheet.
+
+## Globals Exposed
+
+The saving throw module IIFE exposes these on `window`:
+- `formatModifier(n)` — Returns a signed string like `+3` or `-2`; defaults to `+0` for non-numeric input
+- `applySavingThrowTemplate(key)` — Returns an array of save objects pre-populated from a named template (`dnd5e`, `pf2e`, etc.)
+- `applyTierPreset(key)` — Returns an array of tier objects for a named preset; `[]` for unknown keys
+- `ensureSaveContent(data)` — Shape guard; initializes missing content fields, applies dnd5e migration, returns `data.content`
+- `getTierForSave(save, tiers)` — Returns the matching tier object for a save's `proficiencyTier`, or `null`
+- `saveNotesCheckboxProxy(data)` — Returns a `{ get content, set content }` proxy wiring the notes field into `attachCheckboxHandlers`

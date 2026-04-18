@@ -115,3 +115,38 @@ describe('showToast', () => {
     expect(toast).not.toBeNull();
   });
 });
+
+describe('inferTierPreset', () => {
+  it('returns dnd5e for dnd5e system', () => {
+    expect(inferTierPreset('dnd5e')).toBe('dnd5e');
+  });
+
+  it('returns pf2e for pf2e system', () => {
+    expect(inferTierPreset('pf2e')).toBe('pf2e');
+  });
+
+  it('returns simple for unknown system', () => {
+    expect(inferTierPreset('unknown')).toBe('simple');
+  });
+
+  it('returns simple for null or empty string', () => {
+    expect(inferTierPreset(null)).toBe('simple');
+    expect(inferTierPreset('')).toBe('simple');
+  });
+});
+
+describe('getGameSystemDisplayName', () => {
+  it('returns display name for known systems', () => {
+    const name = getGameSystemDisplayName('dnd5e');
+    expect(typeof name).toBe('string');
+    expect(name.length > 0).toBe(true);
+  });
+
+  it('returns null for custom system', () => {
+    expect(getGameSystemDisplayName('custom')).toBeNull();
+  });
+
+  it('returns null for unknown system', () => {
+    expect(getGameSystemDisplayName('xyz_unknown')).toBeNull();
+  });
+});

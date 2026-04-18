@@ -927,5 +927,13 @@
         openResSettingsPanel(moduleEl, data);
     };
 
+    window.ensureResContent = ensureResContent;
+    window.getResName = getResName;
+    window.getAssignedKeys = getAssignedKeys;
+    window.getAvailableTypes = getAvailableTypes;
+    window.sortColumnAlpha = sortColumnAlpha;
+    window.addResistanceToColumn = addResistanceToColumn;
+    window.generateResId = generateResId;
+
     console.log('[CV] Resistance module registered');
 })();

@@ -285,6 +285,16 @@
         return entry.id;
     };
 
+    window.refreshActivityLog = function () {
+        document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
+            const modData = window.modules.find(function (m) { return m.id === el.dataset.id; });
+            if (modData) {
+                const bEl = el.querySelector('.module-body');
+                renderActivityLogBody(bEl, modData, window.isPlayMode);
+            }
+        });
+    };
+
     // ── Module Settings ──
     function openActivitySettings(moduleEl, data) {
         ensureContent(data);

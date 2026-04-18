@@ -3,6 +3,8 @@
 (function () {
     'use strict';
 
+    const pendingAddEntries = new Map();
+
     // ── ID Generation ──
     function generateListId(prefix) {
         return prefix + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
@@ -208,8 +210,31 @@
         return items;
     }
 
+    // ── Log Helpers ──
+    function formatAttrValueForLog(attr, val) {
+        if (attr.type === 'number-pair') {
+            const cur = val && val.current != null ? val.current : 0;
+            const max = val && val.max != null ? val.max : 0;
+            return cur + '/' + max;
+        }
+        if (val === null || val === undefined) return '';
+        return String(val);
+    }
+
+    function buildAttrOnLog(item, attr, data) {
+        return function (action, newVal) {
+            if (typeof window.logActivity !== 'function') return;
+            const itemName = item.name || t('list.itemName');
+            const listName = data.title || t('type.list');
+            const message = action === 'toggle'
+                ? t(newVal ? 'list.log.attrToggleOn' : 'list.log.attrToggleOff', { item: itemName, attr: attr.name, listName })
+                : t('list.log.attrChange', { item: itemName, attr: attr.name, value: formatAttrValueForLog(attr, newVal), listName });
+            window.logActivity({ type: 'list.event.attrChange', message, sourceModuleId: data.id });
+        };
+    }
+
     // ── Attribute Value Cell ──
-    function renderAttrValue(attr, value, isPlayMode, item, onUpdate) {
+    function renderAttrValue(attr, value, isPlayMode, item, onUpdate, onLog) {
         const cell = document.createElement('div');
         cell.className = 'list-attr-cell list-attr-' + attr.type;
 
@@ -226,6 +251,7 @@
                 toggleBtn.classList.toggle('is-on', newVal);
                 toggleBtn.classList.toggle('is-off', !newVal);
                 onUpdate(newVal);
+                if (onLog) onLog('toggle', newVal);
             });
             cell.appendChild(toggleBtn);
             return cell;
@@ -242,12 +268,14 @@
                     val++;
                     qtySpan.textContent = val;
                     onUpdate(val);
+                    if (onLog) onLog('change', val);
                 });
                 qtySpan.addEventListener('contextmenu', function (e) {
                     e.preventDefault();
                     val--;
                     qtySpan.textContent = val;
                     onUpdate(val);
+                    if (onLog) onLog('change', val);
                 });
                 cell.appendChild(qtySpan);
             } else {
@@ -260,6 +288,12 @@
                 });
                 qtyInput.addEventListener('keydown', function (e) {
                     if (e.key === 'Enter' || e.key === 'Escape') qtyInput.blur();
+                });
+                let qtyFocusVal = val;
+                qtyInput.addEventListener('focus', function () { qtyFocusVal = parseInt(qtyInput.value) || 0; });
+                qtyInput.addEventListener('blur', function () {
+                    const newQty = parseInt(qtyInput.value) || 0;
+                    if (newQty !== qtyFocusVal && onLog) onLog('change', newQty);
                 });
                 cell.appendChild(qtyInput);
             }
@@ -282,6 +316,12 @@
                 });
                 numInput.addEventListener('keydown', function (e) {
                     if (e.key === 'Enter' || e.key === 'Escape') numInput.blur();
+                });
+                let numFocusVal = value != null ? value : 0;
+                numInput.addEventListener('focus', function () { numFocusVal = parseFloat(numInput.value) || 0; });
+                numInput.addEventListener('blur', function () {
+                    const newNum = parseFloat(numInput.value) || 0;
+                    if (newNum !== numFocusVal && onLog) onLog('change', newNum);
                 });
                 cell.appendChild(numInput);
             }
@@ -319,6 +359,23 @@
                 maxInput.addEventListener('keydown', function (e) {
                     if (e.key === 'Enter' || e.key === 'Escape') maxInput.blur();
                 });
+                let pairFocusStr = JSON.stringify({ current: pairCur, max: pairMax });
+                const snapPairFocus = function () {
+                    pairFocusStr = JSON.stringify({ current: parseFloat(curInput.value) || 0, max: parseFloat(maxInput.value) || 0 });
+                };
+                const logPairBlur = function () {
+                    const current = parseFloat(curInput.value) || 0;
+                    const max = parseFloat(maxInput.value) || 0;
+                    const newStr = JSON.stringify({ current, max });
+                    if (newStr !== pairFocusStr && onLog) {
+                        pairFocusStr = newStr;
+                        onLog('change', { current, max });
+                    }
+                };
+                curInput.addEventListener('focus', snapPairFocus);
+                maxInput.addEventListener('focus', snapPairFocus);
+                curInput.addEventListener('blur', logPairBlur);
+                maxInput.addEventListener('blur', logPairBlur);
                 cell.appendChild(curInput);
                 cell.appendChild(pairSep);
                 cell.appendChild(maxInput);
@@ -345,6 +402,7 @@
                 });
                 sel.addEventListener('change', function () {
                     onUpdate(sel.value);
+                    if (onLog) onLog('change', sel.value);
                 });
                 cell.appendChild(sel);
             }
@@ -367,6 +425,11 @@
             });
             txtInput.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter' || e.key === 'Escape') txtInput.blur();
+            });
+            let textFocusVal = value != null ? value : '';
+            txtInput.addEventListener('focus', function () { textFocusVal = txtInput.value; });
+            txtInput.addEventListener('blur', function () {
+                if (txtInput.value !== textFocusVal && onLog) onLog('change', txtInput.value);
             });
             cell.appendChild(txtInput);
         }
@@ -707,7 +770,11 @@
                     pinnedAttrs.forEach((attr) => {
                         const val =
                             item.values && item.values[attr.id] != null ? item.values[attr.id] : attr.defaultValue;
-                        row.appendChild(renderAttrValue(attr, val, true, item, function () {}));
+                        row.appendChild(renderAttrValue(attr, val, true, item, function (newVal) {
+                            if (!item.values) item.values = {};
+                            item.values[attr.id] = newVal;
+                            scheduleSave();
+                        }, buildAttrOnLog(item, attr, data)));
                     });
 
                     // Expand button
@@ -742,6 +809,29 @@
                     nameInput.addEventListener('keydown', (e) => {
                         if (e.key === 'Enter' || e.key === 'Escape') nameInput.blur();
                     });
+                    let nameOnFocus = item.name;
+                    nameInput.addEventListener('focus', () => { nameOnFocus = nameInput.value; });
+                    nameInput.addEventListener('blur', () => {
+                        const newName = nameInput.value;
+                        if (pendingAddEntries.has(item.id)) {
+                            if (newName) {
+                                const entryId = pendingAddEntries.get(item.id);
+                                const entry = (window.activityLog || []).find((e) => e.id === entryId);
+                                if (entry) {
+                                    entry.message = t('list.log.addNamed', { name: newName, listName: data.title || t('type.list') });
+                                    scheduleSave();
+                                    if (typeof window.refreshActivityLog === 'function') window.refreshActivityLog();
+                                }
+                            }
+                            pendingAddEntries.delete(item.id);
+                        } else if (newName && newName !== nameOnFocus && nameOnFocus && typeof window.logActivity === 'function') {
+                            window.logActivity({
+                                type: 'list.event.rename',
+                                message: t('list.log.rename', { oldName: nameOnFocus, newName, listName: data.title || t('type.list') }),
+                                sourceModuleId: data.id,
+                            });
+                        }
+                    });
                     row.appendChild(nameInput);
 
                     // Pinned attribute value cells
@@ -752,7 +842,7 @@
                             if (!item.values) item.values = {};
                             item.values[attr.id] = newVal;
                             scheduleSave();
-                        });
+                        }, buildAttrOnLog(item, attr, data));
                         row.appendChild(attrCell);
                     });
 
@@ -766,6 +856,7 @@
                         const idx = content.items.findIndex((i) => i.id === item.id);
                         if (idx !== -1) {
                             const itemName = item.name || t('list.itemName');
+                            pendingAddEntries.delete(item.id);
                             content.items.splice(idx, 1);
                             renderListBody(bodyEl, data, false);
                             snapModuleHeight(bodyEl.closest('.module'), data);
@@ -802,23 +893,25 @@
         content.attributes.forEach((attr) => {
             values[attr.id] = attr.defaultValue;
         });
-        content.items.push({
+        const newItem = {
             id: generateListId('item'),
             name: '',
             notes: '',
             order: content.items.length,
             values: values,
-        });
+        };
+        content.items.push(newItem);
         const bodyEl = moduleEl.querySelector('.module-body');
         renderListBody(bodyEl, data, false);
         snapModuleHeight(moduleEl, data);
         scheduleSave();
         if (typeof window.logActivity === 'function') {
-            window.logActivity({
+            const logEntryId = window.logActivity({
                 type: 'list.event.add',
                 message: t('list.log.add', { listName: data.title || t('type.list') }),
                 sourceModuleId: data.id,
             });
+            if (logEntryId) pendingAddEntries.set(newItem.id, logEntryId);
         }
         // Focus the new item's name input
         const rows = bodyEl.querySelectorAll('.list-item-name-input');
@@ -1350,8 +1443,61 @@
             const content = ensureContent(ctx.data);
             const realItemIdx = content.items.findIndex((i) => i.id === ctx.itemProxy.id);
             if (realItemIdx !== -1) {
+                const oldName = ctx.itemOriginal.name;
+                const newName = ctx.itemProxy.name;
+                const listName = ctx.data.title || t('type.list');
+                const itemName = newName || t('list.itemName');
+
+                // Capture attribute diffs before overwriting
+                const attrDiffs = [];
+                content.attributes.forEach(function (attr) {
+                    const oldVal = ctx.itemOriginal.values && ctx.itemOriginal.values[attr.id] != null
+                        ? ctx.itemOriginal.values[attr.id]
+                        : attr.defaultValue;
+                    const newVal = ctx.itemProxy.values && ctx.itemProxy.values[attr.id] != null
+                        ? ctx.itemProxy.values[attr.id]
+                        : attr.defaultValue;
+                    if (JSON.stringify(oldVal) !== JSON.stringify(newVal)) {
+                        attrDiffs.push({ attr, newVal });
+                    }
+                });
+
                 content.items[realItemIdx] = JSON.parse(JSON.stringify(ctx.itemProxy));
                 scheduleSave();
+
+                // Log rename or coalesce add entry
+                if (newName !== oldName) {
+                    if (pendingAddEntries.has(ctx.itemProxy.id)) {
+                        if (newName) {
+                            const entryId = pendingAddEntries.get(ctx.itemProxy.id);
+                            const entry = (window.activityLog || []).find((e) => e.id === entryId);
+                            if (entry) {
+                                entry.message = t('list.log.addNamed', { name: newName, listName });
+                                scheduleSave();
+                                if (typeof window.refreshActivityLog === 'function') window.refreshActivityLog();
+                            }
+                        }
+                        pendingAddEntries.delete(ctx.itemProxy.id);
+                    } else if (oldName && newName && typeof window.logActivity === 'function') {
+                        window.logActivity({
+                            type: 'list.event.rename',
+                            message: t('list.log.rename', { oldName, newName, listName }),
+                            sourceModuleId: ctx.data.id,
+                        });
+                    }
+                } else {
+                    pendingAddEntries.delete(ctx.itemProxy.id);
+                }
+
+                // Log changed attributes
+                if (typeof window.logActivity === 'function') {
+                    attrDiffs.forEach(function ({ attr, newVal }) {
+                        const message = attr.type === 'toggle'
+                            ? t(newVal ? 'list.log.attrToggleOn' : 'list.log.attrToggleOff', { item: itemName, attr: attr.name, listName })
+                            : t('list.log.attrChange', { item: itemName, attr: attr.name, value: formatAttrValueForLog(attr, newVal), listName });
+                        window.logActivity({ type: 'list.event.attrChange', message, sourceModuleId: ctx.data.id });
+                    });
+                }
 
                 // Re-render
                 const bodyEl = ctx.moduleEl.querySelector('.module-body');
@@ -1508,6 +1654,7 @@
                 const idx = content.items.findIndex((i) => i.id === itemProxy.id);
                 if (idx !== -1) {
                     const itemName = itemProxy.name || t('list.itemName');
+                    pendingAddEntries.delete(itemProxy.id);
                     content.items.splice(idx, 1);
                     scheduleSave();
                     if (typeof window.logActivity === 'function') {

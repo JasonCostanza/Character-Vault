@@ -133,24 +133,6 @@
         block.className = 'save-block-edit';
         block.dataset.index = index;
 
-        let tierFieldHtml = '';
-        if (content.tiersEnabled) {
-            const opts = content.tiers
-                .map(
-                    (tier) =>
-                        `<option value="${escapeHtml(tier.name)}" ${save.proficiencyTier === tier.name ? 'selected' : ''}>${escapeHtml(tier.name)}</option>`
-                )
-                .join('');
-            tierFieldHtml =
-                `<div class="save-edit-field">` +
-                `<label>${escapeHtml(t('save.proficiency'))}</label>` +
-                `<select class="save-edit-tier">` +
-                `<option value="">${escapeHtml(t('save.noProficiency'))}</option>` +
-                opts +
-                `</select>` +
-                `</div>`;
-        }
-
         block.innerHTML =
             `<div class="save-edit-name-row">` +
             `<span class="save-drag-handle">&#x2807;</span>` +
@@ -166,13 +148,28 @@
             `<label>${escapeHtml(t('save.modifier'))}</label>` +
             `<input type="number" class="save-edit-value" value="${save.value}">` +
             `</div>` +
-            tierFieldHtml +
             `</div>`;
 
         const nameInput = block.querySelector('.save-edit-name');
         const valInput = block.querySelector('.save-edit-value');
-        const tierSelect = block.querySelector('.save-edit-tier');
         const deleteBtn = block.querySelector('.save-edit-delete');
+
+        if (content.tiersEnabled) {
+            const tierOpts = [{ value: '', label: t('save.noProficiency') }].concat(
+                content.tiers.map((tier) => ({ value: tier.name, label: tier.name }))
+            );
+            const tierWidget = buildCvSelect(tierOpts, save.proficiencyTier || '', (val) => {
+                save.proficiencyTier = val || null;
+                scheduleSave();
+            });
+            const tierField = document.createElement('div');
+            tierField.className = 'save-edit-field';
+            const tierLabel = document.createElement('label');
+            tierLabel.textContent = t('save.proficiency');
+            tierField.appendChild(tierLabel);
+            tierField.appendChild(tierWidget.el);
+            block.querySelector('.save-edit-row').appendChild(tierField);
+        }
 
         nameInput.addEventListener('input', () => {
             save.name = nameInput.value;
@@ -182,12 +179,6 @@
             save.value = parseInt(valInput.value, 10) || 0;
             scheduleSave();
         });
-        if (tierSelect) {
-            tierSelect.addEventListener('change', () => {
-                save.proficiencyTier = tierSelect.value || null;
-                scheduleSave();
-            });
-        }
 
         [nameInput, valInput].forEach((inp) => {
             inp.addEventListener('keydown', (e) => {
@@ -393,27 +384,30 @@
         const presetControls = document.createElement('div');
         presetControls.className = 'save-settings-preset-controls';
 
-        const presetSelect = document.createElement('select');
-        presetSelect.className = 'save-settings-select';
-        [
-            { value: 'simple', label: t('save.tierPresetSimple') },
-            { value: 'dnd5e', label: t('save.tierPresetDnd5e') },
-            { value: 'pf2e', label: t('save.tierPresetPf2e') },
-            { value: 'custom', label: t('save.tierPresetCustom') },
-        ].forEach((opt) => {
-            const o = document.createElement('option');
-            o.value = opt.value;
-            o.textContent = opt.label;
-            if (opt.value === workingTierPreset) o.selected = true;
-            presetSelect.appendChild(o);
-        });
-
         const editTiersBtn = document.createElement('button');
         editTiersBtn.className = 'save-settings-edit-btn btn-secondary';
         editTiersBtn.textContent = t('save.editTiers');
         editTiersBtn.disabled = workingTierPreset !== 'custom';
 
-        presetControls.appendChild(presetSelect);
+        const presetSelectWidget = buildCvSelect(
+            [
+                { value: 'simple', label: t('save.tierPresetSimple') },
+                { value: 'dnd5e', label: t('save.tierPresetDnd5e') },
+                { value: 'pf2e', label: t('save.tierPresetPf2e') },
+                { value: 'custom', label: t('save.tierPresetCustom') },
+            ],
+            workingTierPreset,
+            (val) => {
+                workingTierPreset = val;
+                editTiersBtn.disabled = workingTierPreset !== 'custom';
+                if (workingTierPreset !== 'custom') {
+                    workingTiers = applyTierPreset(workingTierPreset);
+                }
+                dirty = true;
+            }
+        );
+
+        presetControls.appendChild(presetSelectWidget.el);
         presetControls.appendChild(editTiersBtn);
         presetRow.appendChild(presetControls);
         body.appendChild(presetRow);
@@ -421,15 +415,6 @@
         enableCheckbox.addEventListener('change', () => {
             workingTiersEnabled = enableCheckbox.checked;
             presetRow.style.display = workingTiersEnabled ? '' : 'none';
-            dirty = true;
-        });
-
-        presetSelect.addEventListener('change', () => {
-            workingTierPreset = presetSelect.value;
-            editTiersBtn.disabled = workingTierPreset !== 'custom';
-            if (workingTierPreset !== 'custom') {
-                workingTiers = applyTierPreset(workingTierPreset);
-            }
             dirty = true;
         });
 
@@ -720,10 +705,8 @@
                 if (!save) return;
                 const nameInput = block.querySelector('.save-edit-name');
                 const valInput = block.querySelector('.save-edit-value');
-                const tierSelect = block.querySelector('.save-edit-tier');
                 if (nameInput) save.name = nameInput.value;
                 if (valInput) save.value = parseInt(valInput.value, 10) || 0;
-                if (tierSelect) save.proficiencyTier = tierSelect.value || null;
             });
             const textarea = moduleEl.querySelector('.save-notes-textarea');
             if (textarea) data.content.notes = textarea.value;

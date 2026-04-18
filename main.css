@@ -7405,9 +7405,29 @@ select,
     gap: 1px;
 }
 
-/* Full-width proficiency select (native select needs row width; modifier field stays centered) */
-.save-edit-field:has(.save-edit-tier) {
+/* Full-width proficiency select */
+.save-edit-field:has(.cv-select) {
     align-items: stretch;
+}
+
+.save-edit-field .cv-select {
+    margin-top: 0;
+}
+
+.save-edit-field .cv-select-trigger {
+    padding: 2px 8px;
+    font-size: 10px;
+}
+
+.save-settings-preset-controls .cv-select {
+    margin-top: 0;
+    flex: 1;
+    min-width: 0;
+}
+
+.save-settings-preset-controls .cv-select-trigger {
+    padding: 4px 10px;
+    font-size: 11px;
 }
 
 .save-edit-field label {
@@ -7446,34 +7466,6 @@ select,
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
 
-.save-edit-tier {
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 100%;
-    background-color: var(--cv-bg-sunken);
-    border: 1px solid var(--cv-border-subtle);
-    border-radius: 3px;
-    color: var(--cv-text);
-    font-family: inherit;
-    font-size: 10px;
-    padding: 1px 18px 1px 4px;
-    cursor: pointer;
-    outline: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%236A5A4A' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 4px center;
-}
-
-.save-edit-tier:focus {
-    border-color: var(--cv-accent);
-    box-shadow: 0 0 0 2px var(--cv-focus-ring);
-}
-
-.save-edit-tier option {
-    background-color: var(--cv-bg-raised);
-    color: var(--cv-text);
-}
 
 /* ── SortableJS Ghost (mirrors .stat-ghost) ── */
 
@@ -7544,17 +7536,6 @@ select,
     margin-top: 6px;
 }
 
-.save-settings-select {
-    background: var(--cv-bg-sunken);
-    border: 1px solid var(--cv-border-subtle);
-    border-radius: 4px;
-    color: var(--cv-text);
-    font-family: inherit;
-    font-size: 11px;
-    padding: 4px 8px;
-    cursor: pointer;
-    flex: 1;
-}
 
 .save-settings-select:focus {
     outline: none;

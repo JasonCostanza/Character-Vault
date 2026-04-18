@@ -284,15 +284,15 @@
 
         if (moduleData.type === 'savingthrow') {
             const sys = window.gameSystem || 'custom';
-            const templateSaves = sys !== 'custom' ? applySavingThrowTemplate(sys) : [];
-            const tierKey = inferTierPreset(sys);
-            const presetTiers = applyTierPreset(tierKey);
+            const templateSaves = sys !== 'custom' ? window.applySavingThrowTemplate(sys) : [];
+            const tierKey = window.inferTierPreset(sys);
+            const presetTiers = window.applyTierPreset(tierKey);
             const autoTierPreset = sys !== 'custom' && templateSaves.length > 0;
             moduleData.content = {
                 saves: templateSaves,
                 notes: '',
                 tiersEnabled: autoTierPreset,
-                tiers: presetTiers.length > 0 ? presetTiers : applyTierPreset('simple'),
+                tiers: presetTiers.length > 0 ? presetTiers : window.applyTierPreset('simple'),
                 tierPreset: tierKey,
             };
             const sysName = getGameSystemDisplayName(sys);

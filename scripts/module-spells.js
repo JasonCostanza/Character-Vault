@@ -34,15 +34,16 @@
 
     // ── Dice Rolling ──
     function rollAllSpellDice(spell) {
-        if (typeof TS === 'undefined') return;
+        if (typeof TS === 'undefined') return null;
         const rolls = (spell.attributes || [])
             .map((a) => ({ key: a.key, roll: extractDiceRoll(a.value) }))
             .filter((x) => x.roll);
-        if (!rolls.length) return;
+        if (!rolls.length) return null;
         try {
-            TS.dice.putDiceInTray(rolls.map((x) => ({ name: (spell.name || t('spells.unnamed')) + ': ' + x.key, roll: x.roll })));
+            return TS.dice.putDiceInTray(rolls.map((x) => ({ name: (spell.name || t('spells.unnamed')) + ': ' + x.key, roll: x.roll })));
         } catch (e) {
             console.warn('[CV] Spell dice roll failed:', e);
+            return null;
         }
     }
 
@@ -82,13 +83,18 @@
             MODULE_TYPES['spells'].renderBody(bodyEl, data, true);
         }
 
-        rollAllSpellDice(spell);
+        const rollPromise = rollAllSpellDice(spell);
         if (typeof window.logActivity === 'function') {
             const spellName = spell.name || t('spells.unnamed');
-            const msg = slotSpent
+            let msg = slotSpent
                 ? t('spells.log.castSlot', { name: spellName, level: cat.slotLevel })
                 : t('spells.log.cast', { name: spellName });
-            window.logActivity({ type: 'spells.event.cast', message: msg, sourceModuleId: data.id });
+            const diceRolls = (spell.attributes || []).map((a) => extractDiceRoll(a.value)).filter(Boolean);
+            if (diceRolls.length) msg += ' \u2014 ' + diceRolls.join(', ');
+            const logEntryId = window.logActivity({ type: 'spells.event.cast', message: msg, sourceModuleId: data.id });
+            if (rollPromise && logEntryId) {
+                rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId }; });
+            }
         }
         if (onSuccess) onSuccess();
     }
@@ -152,6 +158,10 @@
                             sl.spent = sl.max - slotIndex;
                         }
                         scheduleSave();
+                        if (typeof window.logActivity === 'function') {
+                            const key = clickedIsSpent ? 'spells.log.pipRestore' : 'spells.log.pipSpend';
+                            window.logActivity({ type: 'spells.event.slot', message: t(key, { level: sl.level }), sourceModuleId: data.id });
+                        }
                         MODULE_TYPES['spells'].renderBody(bodyEl, data, true);
                     });
                     row.appendChild(pip);
@@ -720,6 +730,9 @@
             const nextLevel = c.slotLevels.reduce((m, sl) => Math.max(m, sl.level), 0) + 1;
             c.slotLevels.push({ id: genId('sl'), level: nextLevel, max: 4, spent: 0 });
             scheduleSave();
+            if (typeof window.logActivity === 'function') {
+                window.logActivity({ type: 'spells.event.slot', message: t('spells.log.addSlot', { level: nextLevel }), sourceModuleId: data.id });
+            }
             MODULE_TYPES['spells'].renderBody(bodyEl, data, false);
         });
         slotsHdr.appendChild(slotsLabelEl);
@@ -750,6 +763,9 @@
                 sl.spent = Math.min(sl.spent, sl.max);
                 maxIn.value = v;
                 scheduleSave();
+                if (typeof window.logActivity === 'function') {
+                    window.logActivity({ type: 'spells.event.slot', message: t('spells.log.modifySlot', { level: sl.level, max: v }), sourceModuleId: data.id });
+                }
             });
 
             const removeBtn = document.createElement('button');
@@ -760,8 +776,12 @@
                 const inUse = c.categories.some((cat) => cat.slotLevel === sl.level);
                 if (inUse && !window.confirm(t('spells.removeSlotLevelConfirm'))) return;
                 if (inUse) c.categories.forEach((cat) => { if (cat.slotLevel === sl.level) cat.slotLevel = null; });
+                const removedLevel = sl.level;
                 c.slotLevels = c.slotLevels.filter((x) => x.id !== sl.id);
                 scheduleSave();
+                if (typeof window.logActivity === 'function') {
+                    window.logActivity({ type: 'spells.event.slot', message: t('spells.log.removeSlot', { level: removedLevel }), sourceModuleId: data.id });
+                }
                 MODULE_TYPES['spells'].renderBody(bodyEl, data, false);
             });
 

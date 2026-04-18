@@ -736,6 +736,24 @@ select,
     pointer-events: none;
 }
 
+/* ── Settings Select ── */
+.settings-select {
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 4px;
+    color: var(--cv-text);
+    font-family: inherit;
+    font-size: 11px;
+    padding: 4px 8px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.settings-select:focus {
+    outline: none;
+    border-color: var(--cv-accent);
+}
+
 /* ── Settings Footer ── */
 .settings-footer {
     padding: 12px 0;

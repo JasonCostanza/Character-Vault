@@ -7435,17 +7435,26 @@ select,
     background-color: var(--cv-bg-sunken);
     border: 1px solid var(--cv-border-subtle);
     border-radius: 3px;
-    color: inherit;
+    color: var(--cv-text);
     font-family: inherit;
     font-size: 10px;
-    padding: 1px 4px;
+    padding: 1px 18px 1px 4px;
     cursor: pointer;
     outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%236A5A4A' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 4px center;
 }
 
 .save-edit-tier:focus {
     border-color: var(--cv-accent);
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+.save-edit-tier option {
+    background-color: var(--cv-bg-raised);
+    color: var(--cv-text);
 }
 
 /* ── SortableJS Ghost (mirrors .stat-ghost) ── */

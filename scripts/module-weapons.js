@@ -2,8 +2,8 @@
 (function () {
     'use strict';
 
-    var CLOSE_SVG =
-        '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    var _warnedGameSystem = false;
+    var CV_ICONS_KEYS_SORTED = null;
 
     // ── ID Generation ──
     function generateWeaponId() {
@@ -210,6 +210,7 @@
 
     // ── Quick Edit ──
     function enterQuickEditAmmo(pipEl, weapon, data, bodyEl) {
+        var committed = false;
         var input = document.createElement('input');
         input.type = 'number';
         input.className = 'weapon-quick-edit-input';
@@ -221,6 +222,8 @@
         input.select();
 
         function commit() {
+            if (committed) return;
+            committed = true;
             var val = parseInt(input.value, 10);
             if (isNaN(val) || val < 0) val = 0;
             weapon.ammoCount = val;
@@ -235,6 +238,7 @@
     }
 
     function enterQuickEditShieldHp(hpEl, weapon, data, bodyEl) {
+        var committed = false;
         var oldHp = weapon.shieldHp !== null ? weapon.shieldHp : 0;
         var input = document.createElement('input');
         input.type = 'number';
@@ -248,6 +252,8 @@
         input.select();
 
         function commit() {
+            if (committed) return;
+            committed = true;
             var val = parseInt(input.value, 10);
             if (isNaN(val) || val < 0) val = 0;
             if (weapon.shieldHpMax !== null && val > weapon.shieldHpMax) val = weapon.shieldHpMax;
@@ -296,10 +302,16 @@
         offLabel.textContent = t('weapons.offHand');
         offCol.appendChild(offLabel);
 
-        var mainWeapons = content.weapons.filter(function (w) { return w.slot === 'main'; });
-        var offWeapons = content.weapons.filter(function (w) { return w.slot === 'off'; });
-        var mainTwoHanded = mainWeapons.filter(function (w) { return w.twoHanded; });
-        var offTwoHanded = offWeapons.filter(function (w) { return w.twoHanded; });
+        var mainWeapons = [], offWeapons = [], mainTwoHanded = [], offTwoHanded = [];
+        content.weapons.forEach(function (w) {
+            if (w.slot === 'main') {
+                mainWeapons.push(w);
+                if (w.twoHanded) mainTwoHanded.push(w);
+            } else {
+                offWeapons.push(w);
+                if (w.twoHanded) offTwoHanded.push(w);
+            }
+        });
 
         mainWeapons.forEach(function (w) { mainCol.appendChild(buildWeaponCard(w, data, isPlayMode, moduleEl, bodyEl)); });
         offTwoHanded.forEach(function () { mainCol.appendChild(buildPlaceholderCard()); });
@@ -316,8 +328,9 @@
 
     // ── Play Mode ──
     function renderPlayBody(bodyEl, data) {
-        if (window.gameSystem && window.gameSystem !== 'dnd5e') {
+        if (window.gameSystem && window.gameSystem !== 'dnd5e' && !_warnedGameSystem) {
             console.warn('[CV] Weapons: non-5e game system not yet supported, using 5e math');
+            _warnedGameSystem = true;
         }
         var content = ensureWeaponsContent(data);
         var moduleEl = bodyEl.closest('.module');
@@ -337,8 +350,9 @@
 
     // ── Edit Mode ──
     function renderEditBody(bodyEl, data) {
-        if (window.gameSystem && window.gameSystem !== 'dnd5e') {
+        if (window.gameSystem && window.gameSystem !== 'dnd5e' && !_warnedGameSystem) {
             console.warn('[CV] Weapons: non-5e game system not yet supported, using 5e math');
+            _warnedGameSystem = true;
         }
         var content = ensureWeaponsContent(data);
         var moduleEl = bodyEl.closest('.module');
@@ -439,7 +453,7 @@
         var closeBtn = document.createElement('button');
         closeBtn.className = 'cv-modal-close';
         closeBtn.title = t('weapons.close');
-        closeBtn.innerHTML = CLOSE_SVG;
+        closeBtn.innerHTML = CV_SVG_CLOSE;
         header.appendChild(closeBtn);
 
         var body = document.createElement('div');
@@ -575,7 +589,7 @@
         var closeBtn = document.createElement('button');
         closeBtn.className = 'cv-modal-close';
         closeBtn.title = t('weapons.close');
-        closeBtn.innerHTML = CLOSE_SVG;
+        closeBtn.innerHTML = CV_SVG_CLOSE;
         header.appendChild(closeBtn);
 
         // ── Body ──
@@ -612,7 +626,8 @@
         });
         iconGrid.appendChild(noneBtn);
 
-        Object.keys(CV_ICONS).sort().forEach(function (key) {
+        if (!CV_ICONS_KEYS_SORTED) CV_ICONS_KEYS_SORTED = Object.keys(CV_ICONS).sort();
+        CV_ICONS_KEYS_SORTED.forEach(function (key) {
             var btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'weapon-icon-btn' + (workingWeapon.icon === key ? ' selected' : '');
@@ -1002,7 +1017,6 @@
         label: 'type.weapons',
 
         renderBody: function (bodyEl, data, isPlayMode) {
-            ensureWeaponsContent(data);
             if (isPlayMode) {
                 renderPlayBody(bodyEl, data);
             } else {

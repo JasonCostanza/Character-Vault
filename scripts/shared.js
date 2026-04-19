@@ -183,6 +183,8 @@
         '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
     const CV_SVG_SORT_DOWN =
         '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>';
+    const CV_SVG_CLOSE =
+        '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
 
     // ── Game System Helpers ──
     function inferTierPreset(systemKey) {
@@ -314,6 +316,7 @@
     window.CV_ICONS = CV_ICONS;
     window.CV_SVG_SORT_UP = CV_SVG_SORT_UP;
     window.CV_SVG_SORT_DOWN = CV_SVG_SORT_DOWN;
+    window.CV_SVG_CLOSE = CV_SVG_CLOSE;
     window.inferTierPreset = inferTierPreset;
     window.getGameSystemDisplayName = getGameSystemDisplayName;
     window.buildCvSelect = buildCvSelect;

@@ -2,8 +2,8 @@
 (function () {
     // ── Stat Templates ──
     const STAT_TEMPLATES = {
-        dnd5e: [{ name: 'STR' }, { name: 'DEX' }, { name: 'CON' }, { name: 'INT' }, { name: 'WIS' }, { name: 'CHA' }],
-        pf2e: [{ name: 'STR' }, { name: 'DEX' }, { name: 'CON' }, { name: 'INT' }, { name: 'WIS' }, { name: 'CHA' }],
+        dnd5e: [{ name: 'STR' }, { name: 'DEX' }, { name: 'CON' }, { name: 'INT' }, { name: 'WIS' }, { name: 'CHA' }, { name: 'Proficiency', isProficiencyStat: true, rollable: false }],
+        pf2e: [{ name: 'STR' }, { name: 'DEX' }, { name: 'CON' }, { name: 'INT' }, { name: 'WIS' }, { name: 'CHA' }, { name: 'Proficiency', isProficiencyStat: true, rollable: false }],
         daggerheart: [
             { name: 'Agility' },
             { name: 'Strength' },
@@ -68,7 +68,8 @@
             value: 0,
             modifier: 0,
             proficient: false,
-            rollable: true,
+            rollable: t.rollable !== undefined ? t.rollable : true,
+            ...(t.isProficiencyStat ? { isProficiencyStat: true } : {}),
         }));
     }
 
@@ -141,7 +142,7 @@
             `<div class="stat-edit-field"><label class="${data.content.layout === 'large-modifier' ? 'stat-edit-primary-label' : ''}">${t('stat.modifier')}</label><input type="number" class="stat-edit-modifier" value="${stat.modifier}"></div>` +
             `</div>` +
             `<div class="stat-edit-toggles">` +
-            `<label class="stat-edit-toggle"><input type="checkbox" class="stat-edit-proficient" ${stat.proficient ? 'checked' : ''}>${t('stat.proficient')}</label>` +
+            (!stat.isProficiencyStat ? `<label class="stat-edit-toggle"><input type="checkbox" class="stat-edit-proficient" ${stat.proficient ? 'checked' : ''}>${t('stat.proficient')}</label>` : '') +
             `</div>`;
 
         // Wire up inputs
@@ -163,10 +164,12 @@
             stat.modifier = parseInt(modInput.value, 10) || 0;
             scheduleSave();
         });
-        profCb.addEventListener('change', () => {
-            stat.proficient = profCb.checked;
-            scheduleSave();
-        });
+        if (profCb) {
+            profCb.addEventListener('change', () => {
+                stat.proficient = profCb.checked;
+                scheduleSave();
+            });
+        }
 
         [nameInput, valInput, modInput].forEach((inp) => {
             inp.addEventListener('keydown', (e) => {

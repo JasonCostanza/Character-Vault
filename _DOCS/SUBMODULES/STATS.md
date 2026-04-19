@@ -27,6 +27,20 @@ Each stat entry has:
 | `modifier` | number | The modifier (displayed as "+x" or "-x") |
 | `proficient` | boolean | Whether the proficiency dot is shown |
 | `rollable` | boolean | Whether clicking the stat in Play mode triggers a dice roll |
+| `isProficiencyStat` | boolean? | Present and `true` on the Proficiency stat. Omitted on all other stats. |
+
+### The `isProficiencyStat` Flag
+
+The `dnd5e` and `pf2e` templates pre-seed a "Proficiency" stat with `isProficiencyStat: true` and `rollable: false`. This flag allows external modules to locate the proficiency bonus without relying on the stat's display name (which the user may change).
+
+The proficiency stat does **not** show the "Proficient" checkbox in edit mode — it is meaningless for this stat.
+
+External modules that need the proficiency bonus should look it up like this:
+```js
+const statModule = window.modules.find((m) => m.id === linkedStatModuleId);
+const prof = statModule?.content?.stats?.find((s) => s.isProficiencyStat);
+const profBonus = prof?.modifier ?? 0;
+```
 
 ## Stat Templates
 
@@ -35,8 +49,8 @@ When creating a new stat module through the wizard, the user can select a game s
 Available templates:
 | Key | System | Stats |
 |---|---|---|
-| `dnd5e` | D&D 5th Edition | STR, DEX, CON, INT, WIS, CHA |
-| `pf2e` | Pathfinder 2e | STR, DEX, CON, INT, WIS, CHA |
+| `dnd5e` | D&D 5th Edition | STR, DEX, CON, INT, WIS, CHA, Proficiency |
+| `pf2e` | Pathfinder 2e | STR, DEX, CON, INT, WIS, CHA, Proficiency |
 | `daggerheart` | Daggerheart | Agility, Strength, Finesse, Instinct, Presence, Knowledge |
 | `coc` | Call of Cthulhu | STR, CON, SIZ, DEX, APP, INT, POW, EDU, LCK |
 | `vtm` | Vampire: The Masquerade | Strength, Dexterity, Stamina, Charisma, Manipulation, Composure, Intelligence, Wits, Resolve |

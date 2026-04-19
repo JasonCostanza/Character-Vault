@@ -7058,6 +7058,35 @@ select,
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
 
+.cv-input {
+    width: 100%;
+    font-size: 12px;
+    font-family: inherit;
+    color: inherit;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    padding: 6px 8px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    box-sizing: border-box;
+}
+
+.cv-input:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+input[type="number"].cv-input {
+    -moz-appearance: textfield;
+}
+
+input[type="number"].cv-input::-webkit-inner-spin-button,
+input[type="number"].cv-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 .cv-modal-num {
     text-align: center;
     -moz-appearance: textfield;
@@ -9096,6 +9125,14 @@ select,
     user-select: none;
 }
 
+.weapon-edit-check-label input[type="checkbox"] {
+    accent-color: var(--cv-accent);
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
 .weapon-edit-section {
     border-top: 1px solid var(--cv-border);
     padding-top: 8px;
@@ -9156,6 +9193,14 @@ select,
     color: var(--cv-text-secondary);
     cursor: pointer;
     user-select: none;
+    flex-shrink: 0;
+}
+
+.weapon-damage-mod-label input[type="checkbox"] {
+    accent-color: var(--cv-accent);
+    width: 13px;
+    height: 13px;
+    cursor: pointer;
     flex-shrink: 0;
 }
 

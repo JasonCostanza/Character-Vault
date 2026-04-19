@@ -375,6 +375,12 @@
             }
         }
 
+        if (moduleData.type === 'weapons') {
+            moduleData.content = { weapons: [] };
+            moduleData.colSpan = 4;
+            moduleData.rowSpan = 2;
+        }
+
         lastWizardType = moduleData.type;
         window.modules.push(moduleData);
         renderModule(moduleData);

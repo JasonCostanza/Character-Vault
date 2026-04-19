@@ -8787,3 +8787,428 @@ select,
     gap: 3px;
 }
 
+/* ── Weapons Module ── */
+
+.weapons-container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    overflow: hidden;
+}
+
+.weapons-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
+    padding: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-scrollbar-thumb) transparent;
+}
+
+.weapons-column::-webkit-scrollbar { width: 4px; }
+.weapons-column::-webkit-scrollbar-track { background: transparent; }
+.weapons-column::-webkit-scrollbar-thumb { background: var(--cv-scrollbar-thumb); border-radius: 2px; }
+
+.weapons-column-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-secondary);
+    user-select: none;
+    padding: 0 2px 2px;
+}
+
+.weapons-divider {
+    width: 1px;
+    background: var(--cv-border);
+    margin: 6px 0;
+    opacity: 0.6;
+    flex-shrink: 0;
+}
+
+.weapons-empty-state {
+    padding: 16px;
+    text-align: center;
+    color: var(--cv-text-secondary);
+    font-size: 12px;
+    user-select: none;
+}
+
+.weapon-card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 6px;
+    background: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    border-radius: 6px;
+    padding: 7px 8px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.12s, box-shadow 0.12s;
+    user-select: none;
+}
+
+.weapon-card:hover {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 1px var(--cv-accent-muted);
+}
+
+.weapon-card.weapon-placeholder {
+    opacity: 0.35;
+    border-style: dashed;
+    cursor: default;
+    pointer-events: none;
+}
+
+.weapon-drag-handle {
+    color: var(--cv-text-muted);
+    cursor: grab;
+    font-size: 14px;
+    line-height: 1;
+    padding-top: 1px;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.weapon-drag-handle:active { cursor: grabbing; }
+
+.weapon-ghost {
+    opacity: 0.4;
+    background: color-mix(in srgb, var(--cv-accent) 10%, transparent) !important;
+    border: 1px dashed var(--cv-accent) !important;
+}
+
+.weapon-card-icon {
+    flex-shrink: 0;
+    color: var(--cv-text-secondary);
+    display: flex;
+    align-items: center;
+    padding-top: 1px;
+}
+
+.weapon-card-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.weapon-card-name-row {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 5px;
+    min-width: 0;
+}
+
+.weapon-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cv-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+}
+
+.weapon-bonus {
+    font-size: 11px;
+    color: var(--cv-text-secondary);
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.weapon-bonus-override {
+    color: var(--cv-accent);
+}
+
+.weapon-damage-summary {
+    font-size: 11px;
+    color: var(--cv-text-secondary);
+    user-select: none;
+}
+
+.weapon-traits {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-top: 1px;
+}
+
+.weapon-trait-chip {
+    font-size: 10px;
+    background: var(--cv-bg-sunken);
+    border-radius: 10px;
+    padding: 1px 5px;
+    color: var(--cv-text-secondary);
+    white-space: nowrap;
+    user-select: none;
+}
+
+.weapon-ammo-pip,
+.weapon-shield-hp {
+    font-size: 11px;
+    color: var(--cv-text-secondary);
+    user-select: none;
+}
+
+.weapon-quick-edit-input {
+    width: 52px;
+    font-size: 11px;
+    padding: 1px 4px;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-accent);
+    border-radius: 4px;
+    color: var(--cv-text);
+    outline: none;
+}
+
+.weapon-add-btn {
+    width: 100%;
+    padding: 5px 8px;
+    font-size: 11px;
+    color: var(--cv-text-secondary);
+    background: transparent;
+    border: 1px dashed var(--cv-border);
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.12s, color 0.12s;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.weapon-add-btn:hover {
+    border-color: var(--cv-accent);
+    color: var(--cv-accent);
+}
+
+/* ── Weapon Action Modal ── */
+
+.weapon-action-panel {
+    min-width: 280px;
+    max-width: 480px;
+}
+
+.weapon-action-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.weapon-action-columns {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.weapon-action-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.weapon-action-col-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-secondary);
+    user-select: none;
+    margin-bottom: 2px;
+}
+
+.weapon-action-btn {
+    width: 100%;
+    font-size: 12px;
+    padding: 6px 10px;
+    text-align: left;
+}
+
+.weapon-action-notes {
+    font-size: 12px;
+    color: var(--cv-text-secondary);
+    border-top: 1px solid var(--cv-border);
+    padding-top: 10px;
+    user-select: text;
+}
+
+/* ── Weapon Edit Modal ── */
+
+.weapon-edit-panel {
+    min-width: 340px;
+    max-width: 540px;
+}
+
+.weapon-edit-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-scrollbar-thumb) transparent;
+}
+
+.weapon-edit-body::-webkit-scrollbar { width: 4px; }
+.weapon-edit-body::-webkit-scrollbar-track { background: transparent; }
+.weapon-edit-body::-webkit-scrollbar-thumb { background: var(--cv-scrollbar-thumb); border-radius: 2px; }
+
+.weapon-edit-row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.weapon-edit-row .weapon-edit-field {
+    flex: 1;
+    min-width: 0;
+}
+
+.weapon-edit-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.weapon-edit-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--cv-text-secondary);
+    user-select: none;
+}
+
+.weapon-edit-check-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-top: 4px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.weapon-edit-section {
+    border-top: 1px solid var(--cv-border);
+    padding-top: 8px;
+    margin-top: 2px;
+}
+
+.weapon-edit-damage-section {
+    border-top: 1px solid var(--cv-border);
+    padding-top: 8px;
+    margin-top: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.weapon-edit-section-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--cv-text-secondary);
+    user-select: none;
+    margin-bottom: 2px;
+}
+
+.weapon-damage-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.weapon-damage-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.weapon-damage-dice {
+    width: 70px;
+    flex-shrink: 0;
+}
+
+.weapon-damage-flat {
+    width: 56px;
+    flex-shrink: 0;
+}
+
+.weapon-damage-type {
+    flex: 1;
+    min-width: 70px;
+}
+
+.weapon-damage-mod-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--cv-text-secondary);
+    cursor: pointer;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.weapon-damage-remove {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.weapon-damage-add {
+    align-self: flex-start;
+}
+
+.weapon-icon-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.weapon-icon-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 5px;
+    cursor: pointer;
+    color: var(--cv-text-secondary);
+    font-size: 10px;
+    transition: border-color 0.1s, color 0.1s;
+    user-select: none;
+}
+
+.weapon-icon-btn:hover,
+.weapon-icon-btn.selected {
+    border-color: var(--cv-accent);
+    color: var(--cv-accent);
+    background: color-mix(in srgb, var(--cv-accent) 10%, transparent);
+}
+
+.weapon-icon-btn.selected {
+    box-shadow: 0 0 0 1px var(--cv-accent-muted);
+}
+
+.weapon-edit-notes {
+    resize: vertical;
+    min-height: 50px;
+}
+
+.weapon-input-error {
+    border-color: var(--cv-danger) !important;
+    box-shadow: 0 0 0 1px var(--cv-danger) !important;
+}
+

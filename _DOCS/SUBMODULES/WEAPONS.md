@@ -1,6 +1,6 @@
 # Weapons Module
 
-> **Status:** Phase 1 (D&D 5e MVP) — master design doc. Phase 2 (multi-system, trait engine, shield HP round-trip, etc.) will be planned in a follow-up doc that uses this one plus the shipped MVP code as input.
+> **Status:** Phase 1 complete. Phase 2 (multi-system, trait engine, shield HP round-trip, etc.) will be planned in a follow-up doc that uses this one plus the shipped MVP code as input.
 
 ## Summary
 

@@ -393,4 +393,24 @@
     window.STAT_TEMPLATES = STAT_TEMPLATES;
     window.applyStatTemplate = applyStatTemplate;
     window.updateRollableBtn = updateRollableBtn;
+
+    window.getAbilityModifier = function (key) {
+        const nameMap = { str: 'STR', dex: 'DEX', con: 'CON', int: 'INT', wis: 'WIS', cha: 'CHA' };
+        const target = (nameMap[key] || key).toUpperCase();
+        for (const m of (window.modules || [])) {
+            if (m.type !== 'stat' || !m.content || !Array.isArray(m.content.stats)) continue;
+            const stat = m.content.stats.find((s) => s.name && s.name.toUpperCase() === target);
+            if (stat) return stat.modifier || 0;
+        }
+        return 0;
+    };
+
+    window.getProficiencyBonus = function () {
+        for (const m of (window.modules || [])) {
+            if (m.type !== 'stat' || !m.content || !Array.isArray(m.content.stats)) continue;
+            const profStat = m.content.stats.find((s) => s.isProficiencyStat);
+            if (profStat) return profStat.value || 2;
+        }
+        return 2;
+    };
 })();

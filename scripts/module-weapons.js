@@ -472,26 +472,22 @@
 
             var bonus = weaponsComputeAttackBonus(weapon);
             var rollExpr = '1d20' + formatBonus(bonus);
-            [t('weapons.attackFirst'), t('weapons.attackSecond'), t('weapons.attackThird')].forEach(function (lbl) {
-                var btn = document.createElement('button');
-                btn.className = 'btn-primary weapon-action-btn';
-                btn.textContent = lbl + ' (' + rollExpr + ')';
-                (function (label, expr) {
-                    btn.addEventListener('click', function () {
-                        if (typeof TS === 'undefined') return;
-                        var rollPromise = TS.dice.putDiceInTray([{ name: (weapon.name || t('weapons.unnamed')) + ': ' + label, roll: expr }]);
-                        if (typeof window.logActivity === 'function') {
-                            var logEntryId = window.logActivity({
-                                type: 'weapons.event.roll',
-                                message: t('weapons.log.attack', { name: weapon.name || t('weapons.unnamed'), roll: expr }),
-                                sourceModuleId: data.id,
-                            });
-                            rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId: logEntryId }; });
-                        }
+            var attackBtn = document.createElement('button');
+            attackBtn.className = 'btn-primary weapon-action-btn';
+            attackBtn.textContent = t('weapons.attack') + ' (' + rollExpr + ')';
+            attackBtn.addEventListener('click', function () {
+                if (typeof TS === 'undefined') return;
+                var rollPromise = TS.dice.putDiceInTray([{ name: (weapon.name || t('weapons.unnamed')) + ': ' + t('weapons.attack'), roll: rollExpr }]);
+                if (typeof window.logActivity === 'function') {
+                    var logEntryId = window.logActivity({
+                        type: 'weapons.event.roll',
+                        message: t('weapons.log.attack', { name: weapon.name || t('weapons.unnamed'), roll: rollExpr }),
+                        sourceModuleId: data.id,
                     });
-                })(lbl, rollExpr);
-                attackCol.appendChild(btn);
+                    rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId: logEntryId }; });
+                }
             });
+            attackCol.appendChild(attackBtn);
 
             colWrap.appendChild(attackCol);
         }

@@ -1,6 +1,8 @@
 # Weapons Module
 
 > **Status:** Phase 1 complete. Phase 2 (multi-system, trait engine, shield HP round-trip, etc.) will be planned in a follow-up doc that uses this one plus the shipped MVP code as input.
+>
+> **Phase 2 attack UI note:** The action modal currently shows a single "Attack" button (5e has no multi-attack penalty). Phase 2 must restore a 1st / 2nd / 3rd button row for systems like PF2e where each successive attack in a turn carries a cumulative MAP. The button labels and roll expressions will need to be computed per-system. The i18n keys `weapons.attackFirst`, `weapons.attackSecond`, `weapons.attackThird` were removed in Phase 1 cleanup — Phase 2 must re-add them for all supported locales.
 
 ## Summary
 
@@ -86,10 +88,8 @@ Clicking a card in Edit mode opens an edit modal. Reference: `openSpellDetailMod
 
 Clicking a card in Play mode opens an **action modal** with two columns:
 
-- **Left column:** Attack buttons — 1st, 2nd, 3rd
+- **Left column:** Single "Attack" button (`1d20 + bonus`)
 - **Right column:** Damage buttons — one per `DamageInstance` so the GM can cherry-pick which damage types apply against resistance/weakness
-
-The 1st/2nd/3rd attack slots exist in the UI for Phase 1 but all produce the same roll in 5e (no multi-attack penalty). Phase 2 wires per-system MAP logic into this slot.
 
 **Quick Edit (Ctrl+Click)** per CLAUDE.md rule 14: Ctrl+click directly on a card's ammo pip or shield HP value opens an inline quick-edit without entering full Edit mode.
 
@@ -171,7 +171,7 @@ Shield HP decrement in Phase 1 is **manual** — the player edits the value (Qui
 
 Read `window.gameSystem` from `scripts/settings.js`. Phase 1 gates all mechanical logic to `'dnd5e'`. Any other value falls back to 5e math and emits one `console.warn('[CV] Weapons: non-5e game system not yet supported, using 5e math')` per module render.
 
-The multi-attack-penalty hook point exists in the attack dispatch but is a no-op in 5e.
+Phase 2 will need to gate on `window.gameSystem` to show 1 button (5e) vs. 3 buttons with MAP offsets (PF2e: −5/−10 standard, −4/−8 Agile) in the attack dispatch.
 
 ## Phase 1 Out of Scope
 
@@ -219,7 +219,7 @@ Decisions made during Phase 1 design that Phase 2 must respect or revisit:
 - **Single `traits: string[]` field, free-form in Phase 1.** Phase 2 needs to migrate this into a system-aware list without breaking existing saves. Consider a hybrid: keep `traits` as string array, add a parallel `traitMeta` map if needed, or upgrade to objects with `{key, label, system}`.
 - **Slot-only organization (main/off).** If Phase 2 adds equipped/unequipped/stowed, those become a third axis — likely a `state` field alongside `slot`.
 - **Shield HP manual decrement only.** Phase 2 wiring to incoming damage needs a shared damage bus or explicit subscription; no such infrastructure exists yet.
-- **Attack modal has 1st/2nd/3rd buttons that are identical in 5e.** Preserving the three-button UI in Phase 1 was intentional so Phase 2 PF2e MAP logic slots in without UI churn.
+- **Single attack button in Phase 1.** The 3-button (1st/2nd/3rd) UI was removed because all three produced identical rolls in 5e. Phase 2 must re-introduce it gated on `window.gameSystem`, with per-system MAP logic (PF2e standard: −5/−10; Agile: −4/−8). Re-add i18n keys `weapons.attackFirst`, `weapons.attackSecond`, `weapons.attackThird` for all locales.
 - **`attackBonusOverride` exists as an escape hatch.** Phase 2 system-specific logic should still honor the override when set.
 - **Damage instances are always logged individually.** Phase 2 resistance/weakness automation (if pursued) can consume those isolated log entries directly.
 - **Non-5e systems fall back to 5e math with a console warning.** Phase 2 replaces the fallback with real system-specific implementations — the fallback should be removed, not layered over.

@@ -5,6 +5,112 @@
     var _warnedGameSystem = false;
     var CV_ICONS_KEYS_SORTED = null;
 
+    // ── Weapon Trait Definitions (D&D 5e 2014) ──
+    var WEAPON_TRAITS_DND5E = [
+        { key: 'dnd5e.ammunition', nameKey: 'weapons.trait.dnd5e.ammunition', descKey: 'weapons.trait.dnd5e.ammunitionDesc', takesValue: true  },
+        { key: 'dnd5e.finesse',    nameKey: 'weapons.trait.dnd5e.finesse',    descKey: 'weapons.trait.dnd5e.finesseDesc',    takesValue: false },
+        { key: 'dnd5e.heavy',      nameKey: 'weapons.trait.dnd5e.heavy',      descKey: 'weapons.trait.dnd5e.heavyDesc',      takesValue: false },
+        { key: 'dnd5e.light',      nameKey: 'weapons.trait.dnd5e.light',      descKey: 'weapons.trait.dnd5e.lightDesc',      takesValue: false },
+        { key: 'dnd5e.loading',    nameKey: 'weapons.trait.dnd5e.loading',    descKey: 'weapons.trait.dnd5e.loadingDesc',    takesValue: false },
+        { key: 'dnd5e.reach',      nameKey: 'weapons.trait.dnd5e.reach',      descKey: 'weapons.trait.dnd5e.reachDesc',      takesValue: false },
+        { key: 'dnd5e.special',    nameKey: 'weapons.trait.dnd5e.special',    descKey: 'weapons.trait.dnd5e.specialDesc',    takesValue: false },
+        { key: 'dnd5e.thrown',     nameKey: 'weapons.trait.dnd5e.thrown',     descKey: 'weapons.trait.dnd5e.thrownDesc',     takesValue: true  },
+        { key: 'dnd5e.twoHanded',  nameKey: 'weapons.trait.dnd5e.twoHanded',  descKey: 'weapons.trait.dnd5e.twoHandedDesc',  takesValue: false },
+        { key: 'dnd5e.versatile',  nameKey: 'weapons.trait.dnd5e.versatile',  descKey: 'weapons.trait.dnd5e.versatileDesc',  takesValue: true  },
+    ];
+
+    var DND5E_TRAITS_BY_NORMALIZED_NAME = (function () {
+        var map = new Map();
+        var aliases = {
+            'dnd5e.ammunition': ['ammunition'],
+            'dnd5e.finesse':    ['finesse'],
+            'dnd5e.heavy':      ['heavy'],
+            'dnd5e.light':      ['light'],
+            'dnd5e.loading':    ['loading'],
+            'dnd5e.reach':      ['reach'],
+            'dnd5e.special':    ['special'],
+            'dnd5e.thrown':     ['thrown'],
+            'dnd5e.twoHanded':  ['two-handed', 'two handed', 'twohanded'],
+            'dnd5e.versatile':  ['versatile'],
+        };
+        WEAPON_TRAITS_DND5E.forEach(function (entry) {
+            (aliases[entry.key] || []).forEach(function (alias) { map.set(alias, entry); });
+        });
+        return map;
+    })();
+
+    // ── Weapon Trait Pure Helpers ──
+    function generateCustomTraitKey(content) {
+        var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        var existing = new Set((content.customWeaponTraits || []).map(function (ct) { return ct.key; }));
+        var key;
+        do {
+            var suffix = '';
+            for (var i = 0; i < 6; i++) suffix += chars[Math.floor(Math.random() * chars.length)];
+            key = 'custom.wt_' + suffix;
+        } while (existing.has(key));
+        return key;
+    }
+
+    function findOrCreateCustomTrait(rawName, content) {
+        if (!Array.isArray(content.customWeaponTraits)) content.customWeaponTraits = [];
+        var normalized = rawName.trim().toLowerCase();
+        var existing = content.customWeaponTraits.find(function (ct) { return ct.name.trim().toLowerCase() === normalized; });
+        if (existing) return existing.key;
+        var key = generateCustomTraitKey(content);
+        content.customWeaponTraits.push({ key: key, name: rawName.trim(), description: '' });
+        return key;
+    }
+
+    function normalizeWeaponTraits(traits, content) {
+        if (!traits) return [];
+        if (!Array.isArray(content.customWeaponTraits)) content.customWeaponTraits = [];
+        var result = [];
+        var seen = new Set();
+        traits.forEach(function (entry) {
+            var key;
+            if (entry && typeof entry === 'object' && typeof entry.key === 'string') {
+                key = entry.key;
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    result.push({ key: key, value: entry.value !== undefined ? entry.value : null });
+                }
+                return;
+            }
+            if (typeof entry === 'string') {
+                var trimmed = entry.trim();
+                if (!trimmed) return;
+                var match = DND5E_TRAITS_BY_NORMALIZED_NAME.get(trimmed.toLowerCase());
+                key = match ? match.key : findOrCreateCustomTrait(trimmed, content);
+                if (!seen.has(key)) { seen.add(key); result.push({ key: key, value: null }); }
+            }
+        });
+        return result;
+    }
+
+    function resolveWeaponTrait(traitEntry, content) {
+        var key = traitEntry && traitEntry.key;
+        if (!key) return { key: '', name: '', description: '', takesValue: false, isCustom: false };
+        if (key.indexOf('dnd5e.') === 0) {
+            var canonical = WEAPON_TRAITS_DND5E.find(function (e) { return e.key === key; });
+            if (canonical) {
+                return {
+                    key: key,
+                    name: t(canonical.nameKey),
+                    description: t(canonical.descKey),
+                    takesValue: canonical.takesValue,
+                    isCustom: false,
+                };
+            }
+        }
+        if (key.indexOf('custom.') === 0) {
+            var customTraits = content && Array.isArray(content.customWeaponTraits) ? content.customWeaponTraits : [];
+            var custom = customTraits.find(function (e) { return e.key === key; });
+            if (custom) return { key: key, name: custom.name, description: custom.description || '', takesValue: false, isCustom: true };
+        }
+        return { key: key, name: key, description: '', takesValue: false, isCustom: false };
+    }
+
     // ── ID Generation ──
     function generateWeaponId() {
         return 'wpn_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
@@ -16,6 +122,7 @@
             data.content = { weapons: [] };
         }
         if (!Array.isArray(data.content.weapons)) data.content.weapons = [];
+        if (!Array.isArray(data.content.customWeaponTraits)) data.content.customWeaponTraits = [];
         data.content.weapons.forEach(function (w) {
             if (!w.id) w.id = generateWeaponId();
             if (typeof w.name !== 'string') w.name = '';
@@ -28,7 +135,7 @@
             if (!Array.isArray(w.damageInstances)) w.damageInstances = [];
             if (w.range === undefined) w.range = null;
             if (w.ammoCount === undefined) w.ammoCount = null;
-            if (!Array.isArray(w.traits)) w.traits = [];
+            w.traits = normalizeWeaponTraits(Array.isArray(w.traits) ? w.traits : [], data.content);
             if (typeof w.notesMarkdown !== 'string') w.notesMarkdown = '';
             if (typeof w.twoHanded !== 'boolean') w.twoHanded = false;
             if (w.acBonus === undefined) w.acBonus = null;
@@ -141,10 +248,12 @@
         if (weapon.traits && weapon.traits.length) {
             var traitsEl = document.createElement('div');
             traitsEl.className = 'weapon-traits';
-            weapon.traits.forEach(function (trait) {
+            weapon.traits.forEach(function (entry) {
+                var resolved = resolveWeaponTrait(entry, data.content);
                 var chip = document.createElement('span');
                 chip.className = 'weapon-trait-chip';
-                chip.textContent = trait;
+                chip.textContent = resolved.name;
+                if (resolved.description) chip.setAttribute('data-tooltip', resolved.description);
                 traitsEl.appendChild(chip);
             });
             info.appendChild(traitsEl);
@@ -566,7 +675,7 @@
         var isExistingWeapon = !!data.content.weapons.find(function (w) { return w.id === weapon.id; });
         var workingWeapon = Object.assign({}, weapon);
         workingWeapon.damageInstances = weapon.damageInstances.map(function (inst) { return Object.assign({}, inst); });
-        workingWeapon.traits = weapon.traits.slice();
+        workingWeapon.traits = weapon.traits.map(function (tr) { return Object.assign({}, tr); });
         var dirty = false;
 
         var overlay = document.createElement('div');
@@ -891,18 +1000,59 @@
         damageSection.appendChild(addDmgBtn);
 
         // ── Traits ──
-        var traitsField = buildField(t('weapons.traits'));
-        var traitsInput = document.createElement('input');
-        traitsInput.type = 'text';
-        traitsInput.className = 'cv-input';
-        traitsInput.value = workingWeapon.traits.join(', ');
-        traitsInput.placeholder = t('weapons.traitsPlaceholder');
-        traitsInput.spellcheck = false;
-        traitsInput.addEventListener('input', function () {
-            workingWeapon.traits = traitsInput.value.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
-            dirty = true;
+        var traitsField = document.createElement('div');
+        traitsField.className = 'weapon-traits-edit-row weapon-edit-field';
+
+        var traitsLabel = document.createElement('label');
+        traitsLabel.className = 'weapon-edit-label';
+        traitsLabel.textContent = t('weapons.traits');
+        traitsField.appendChild(traitsLabel);
+
+        var traitsChipsWrapper = document.createElement('div');
+        traitsChipsWrapper.className = 'weapon-traits-chips';
+        traitsField.appendChild(traitsChipsWrapper);
+
+        var traitAddBtn = document.createElement('button');
+        traitAddBtn.type = 'button';
+        traitAddBtn.className = 'weapon-trait-add-btn';
+        traitAddBtn.textContent = t('weapons.traitPicker.addBtn');
+        traitsField.appendChild(traitAddBtn);
+
+        function renderWeaponTraitsChips() {
+            traitsChipsWrapper.innerHTML = '';
+            workingWeapon.traits.forEach(function (entry, idx) {
+                var resolved = resolveWeaponTrait(entry, data.content);
+                var chip = document.createElement('span');
+                chip.className = 'weapon-trait-chip weapon-trait-chip--editable';
+                if (resolved.description) chip.setAttribute('data-tooltip', resolved.description);
+                var nameSpan = document.createElement('span');
+                nameSpan.textContent = resolved.name;
+                chip.appendChild(nameSpan);
+                var removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'weapon-trait-chip-remove';
+                removeBtn.setAttribute('aria-label', t('weapons.traitPicker.removeChipAria'));
+                removeBtn.textContent = '\xd7';
+                (function (i) {
+                    removeBtn.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        workingWeapon.traits.splice(i, 1);
+                        dirty = true;
+                        renderWeaponTraitsChips();
+                    });
+                })(idx);
+                chip.appendChild(removeBtn);
+                traitsChipsWrapper.appendChild(chip);
+            });
+        }
+        renderWeaponTraitsChips();
+
+        traitAddBtn.addEventListener('click', function () {
+            openWeaponTraitPickerModal(workingWeapon, data.content, function () {
+                dirty = true;
+                renderWeaponTraitsChips();
+            });
         });
-        traitsField.appendChild(traitsInput);
 
         // ── Notes ──
         var notesField = buildField(t('weapons.notes'));
@@ -1008,6 +1158,279 @@
         nameInput.focus();
     }
 
+    // ── Weapon Trait Picker Modal ──
+    function openWeaponTraitPickerModal(workingWeapon, content, onChange) {
+        var existing = document.querySelector('.weapon-trait-picker-overlay');
+        if (existing) existing.remove();
+
+        var localTraits = workingWeapon.traits.map(function (tr) { return Object.assign({}, tr); });
+        var dirty = false;
+
+        var overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay weapon-trait-picker-overlay';
+
+        var dialog = document.createElement('div');
+        dialog.className = 'cv-modal-panel weapon-trait-picker-dialog';
+
+        var header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        var titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = t('weapons.traitPicker.title');
+        header.appendChild(titleEl);
+        var closeBtn = document.createElement('button');
+        closeBtn.className = 'cv-modal-close';
+        closeBtn.title = t('weapons.close');
+        closeBtn.innerHTML = CV_SVG_CLOSE;
+        header.appendChild(closeBtn);
+
+        var body = document.createElement('div');
+        body.className = 'cv-modal-body weapon-trait-picker-body';
+
+        var searchInput = document.createElement('input');
+        searchInput.type = 'text';
+        searchInput.className = 'cv-input weapon-trait-picker-search';
+        searchInput.placeholder = t('weapons.traitPicker.searchPlaceholder');
+        searchInput.spellcheck = false;
+        body.appendChild(searchInput);
+
+        var list = document.createElement('div');
+        list.className = 'weapon-trait-picker-list';
+        body.appendChild(list);
+
+        function isSelected(key) {
+            return localTraits.some(function (tr) { return tr.key === key; });
+        }
+
+        function toggleTrait(key) {
+            var idx = localTraits.findIndex(function (tr) { return tr.key === key; });
+            if (idx !== -1) {
+                localTraits.splice(idx, 1);
+            } else {
+                localTraits.push({ key: key, value: null });
+            }
+            dirty = true;
+            renderList();
+        }
+
+        function openCustomTraitInlineForm(anchorEl, existingTrait, isNew) {
+            var oldForm = list.querySelector('.weapon-trait-inline-form');
+            if (oldForm) oldForm.remove();
+
+            var form = document.createElement('div');
+            form.className = 'weapon-trait-inline-form';
+
+            var nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.className = 'cv-input weapon-trait-inline-name';
+            nameInput.placeholder = t('weapons.traitPicker.customName');
+            nameInput.value = existingTrait ? existingTrait.name : '';
+            nameInput.spellcheck = false;
+            nameInput.autocomplete = 'off';
+
+            var descInput = document.createElement('textarea');
+            descInput.className = 'cv-input weapon-trait-inline-desc';
+            descInput.placeholder = t('weapons.traitPicker.customDescription');
+            descInput.value = existingTrait ? (existingTrait.description || '') : '';
+            descInput.rows = 2;
+            descInput.spellcheck = false;
+
+            var formActions = document.createElement('div');
+            formActions.className = 'weapon-trait-inline-actions';
+
+            var formCancelBtn = document.createElement('button');
+            formCancelBtn.type = 'button';
+            formCancelBtn.className = 'btn-secondary sm';
+            formCancelBtn.textContent = t('weapons.cancel');
+
+            var formSaveBtn = document.createElement('button');
+            formSaveBtn.type = 'button';
+            formSaveBtn.className = 'btn-primary sm solid';
+            formSaveBtn.textContent = t('weapons.save');
+
+            formActions.appendChild(formCancelBtn);
+            formActions.appendChild(formSaveBtn);
+            form.appendChild(nameInput);
+            form.appendChild(descInput);
+            form.appendChild(formActions);
+
+            anchorEl.parentNode.insertBefore(form, anchorEl.nextSibling);
+            nameInput.focus();
+
+            formSaveBtn.addEventListener('click', function () {
+                var name = nameInput.value.trim();
+                if (!name) { nameInput.focus(); return; }
+                if (isNew) {
+                    if (!Array.isArray(content.customWeaponTraits)) content.customWeaponTraits = [];
+                    var newKey = generateCustomTraitKey(content);
+                    content.customWeaponTraits.push({ key: newKey, name: name, description: descInput.value.trim() });
+                    localTraits.push({ key: newKey, value: null });
+                    dirty = true;
+                } else {
+                    existingTrait.name = name;
+                    existingTrait.description = descInput.value.trim();
+                }
+                scheduleSave();
+                renderList();
+            });
+
+            formCancelBtn.addEventListener('click', function () { renderList(); });
+        }
+
+        function renderList() {
+            list.innerHTML = '';
+            var query = searchInput.value.trim().toLowerCase();
+
+            WEAPON_TRAITS_DND5E.forEach(function (entry) {
+                var name = t(entry.nameKey);
+                if (query && name.toLowerCase().indexOf(query) === -1) return;
+                var row = document.createElement('button');
+                row.type = 'button';
+                row.className = 'weapon-trait-picker-row' + (isSelected(entry.key) ? ' is-selected' : '');
+                row.dataset.key = entry.key;
+
+                var nameSpan = document.createElement('span');
+                nameSpan.className = 'weapon-trait-picker-row-name';
+                nameSpan.textContent = name;
+                row.appendChild(nameSpan);
+
+                var check = document.createElement('span');
+                check.className = 'weapon-trait-picker-row-check';
+                check.textContent = '\u2713';
+                row.appendChild(check);
+
+                row.addEventListener('click', function () { toggleTrait(entry.key); });
+                list.appendChild(row);
+            });
+
+            var customTraits = Array.isArray(content.customWeaponTraits) ? content.customWeaponTraits : [];
+            var filteredCustom = customTraits.filter(function (ct) {
+                return !query || ct.name.toLowerCase().indexOf(query) !== -1;
+            });
+
+            if (filteredCustom.length > 0 || !query) {
+                var sectionHeader = document.createElement('div');
+                sectionHeader.className = 'weapon-trait-picker-section-header';
+                sectionHeader.textContent = t('weapons.traitPicker.customHeader');
+                list.appendChild(sectionHeader);
+            }
+
+            filteredCustom.forEach(function (ct) {
+                var row = document.createElement('div');
+                row.className = 'weapon-trait-picker-row weapon-trait-picker-row--custom' + (isSelected(ct.key) ? ' is-selected' : '');
+                row.dataset.key = ct.key;
+
+                var nameSpan = document.createElement('span');
+                nameSpan.className = 'weapon-trait-picker-row-name';
+                nameSpan.textContent = ct.name;
+
+                var editBtn = document.createElement('button');
+                editBtn.type = 'button';
+                editBtn.className = 'weapon-trait-picker-row-edit';
+                editBtn.setAttribute('aria-label', t('weapons.editWeapon'));
+                editBtn.textContent = '\u270e';
+
+                var deleteBtn = document.createElement('button');
+                deleteBtn.type = 'button';
+                deleteBtn.className = 'weapon-trait-picker-row-delete';
+                deleteBtn.setAttribute('aria-label', t('weapons.delete'));
+                deleteBtn.textContent = '\xd7';
+
+                var check = document.createElement('span');
+                check.className = 'weapon-trait-picker-row-check';
+                check.textContent = '\u2713';
+
+                nameSpan.addEventListener('click', function () { toggleTrait(ct.key); });
+                check.addEventListener('click', function () { toggleTrait(ct.key); });
+
+                editBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    openCustomTraitInlineForm(row, ct, false);
+                });
+
+                (function (key) {
+                    deleteBtn.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        var cidx = content.customWeaponTraits.findIndex(function (x) { return x.key === key; });
+                        if (cidx !== -1) content.customWeaponTraits.splice(cidx, 1);
+                        if (Array.isArray(content.weapons)) {
+                            content.weapons.forEach(function (w) {
+                                w.traits = w.traits.filter(function (tr) { return tr.key !== key; });
+                            });
+                        }
+                        var ltIdx = localTraits.findIndex(function (tr) { return tr.key === key; });
+                        if (ltIdx !== -1) localTraits.splice(ltIdx, 1);
+                        scheduleSave();
+                        renderList();
+                    });
+                })(ct.key);
+
+                row.appendChild(nameSpan);
+                row.appendChild(editBtn);
+                row.appendChild(deleteBtn);
+                row.appendChild(check);
+                list.appendChild(row);
+            });
+
+            if (!query) {
+                var createBtn = document.createElement('button');
+                createBtn.type = 'button';
+                createBtn.className = 'weapon-trait-picker-create';
+                createBtn.textContent = t('weapons.traitPicker.createCustom');
+                createBtn.addEventListener('click', function () { openCustomTraitInlineForm(createBtn, null, true); });
+                list.appendChild(createBtn);
+            }
+        }
+
+        renderList();
+        searchInput.addEventListener('input', function () { renderList(); });
+
+        var footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        var footerRight = document.createElement('div');
+        footerRight.className = 'cv-modal-footer-right';
+
+        var cancelBtn = document.createElement('button');
+        cancelBtn.className = 'btn-secondary sm';
+        cancelBtn.textContent = t('weapons.traitPicker.cancel');
+        footerRight.appendChild(cancelBtn);
+
+        var doneBtn = document.createElement('button');
+        doneBtn.className = 'btn-primary sm solid';
+        doneBtn.textContent = t('weapons.traitPicker.done');
+        footerRight.appendChild(doneBtn);
+
+        footer.appendChild(footerRight);
+        dialog.appendChild(header);
+        dialog.appendChild(body);
+        dialog.appendChild(footer);
+        overlay.appendChild(dialog);
+        document.body.appendChild(overlay);
+
+        function forceClose() {
+            overlay.remove();
+            document.removeEventListener('keydown', keyHandler);
+        }
+
+        function close() {
+            if (dirty && !window.confirm(t('weapons.traitPicker.confirmDiscard'))) return;
+            forceClose();
+        }
+
+        doneBtn.addEventListener('click', function () {
+            workingWeapon.traits = localTraits;
+            onChange();
+            forceClose();
+        });
+        cancelBtn.addEventListener('click', close);
+        closeBtn.addEventListener('click', close);
+        overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+
+        var keyHandler = function (e) { if (e.key === 'Escape') { e.stopPropagation(); close(); } };
+        document.addEventListener('keydown', keyHandler);
+        searchInput.focus();
+    }
+
     // ── Module Type Registration ──
     registerModuleType('weapons', {
         label: 'type.weapons',
@@ -1038,6 +1461,11 @@
     window.ensureWeaponsContent = ensureWeaponsContent;
     window.weaponsComputeAttackBonus = weaponsComputeAttackBonus;
     window.weaponsFormatDamageSummary = weaponsFormatDamageSummary;
+    window.WEAPON_TRAITS_DND5E     = WEAPON_TRAITS_DND5E;
+    window.resolveWeaponTrait      = resolveWeaponTrait;
+    window.normalizeWeaponTraits   = normalizeWeaponTraits;
+    window.findOrCreateCustomTrait = findOrCreateCustomTrait;
+    window.generateCustomTraitKey  = generateCustomTraitKey;
 
     console.log('[CV] Weapons module registered');
 })();

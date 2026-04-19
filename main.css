@@ -9259,40 +9259,25 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
 }
 
 /* ── Weapon Trait Chip Tooltip ── */
-.weapon-trait-chip[data-tooltip]::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
+.weapon-chip-tooltip {
+    position: fixed;
+    max-width: 220px;
+    padding: 4px 8px;
     background: var(--cv-bg-raised);
     border: 1px solid var(--cv-border);
+    border-radius: 3px;
     color: var(--cv-text-secondary);
     font-size: 10px;
     white-space: normal;
-    max-width: 220px;
-    padding: 4px 8px;
-    border-radius: 3px;
+    line-height: 1.35;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.1s ease;
-    z-index: 10;
-    line-height: 1.35;
+    z-index: 300;
 }
 
-.weapon-trait-chip[data-tooltip]:hover::after {
+.weapon-chip-tooltip.is-visible {
     opacity: 1;
-}
-
-.weapon-traits .weapon-trait-chip:first-child[data-tooltip]::after {
-    left: 0;
-    transform: none;
-}
-
-.weapon-traits .weapon-trait-chip:last-child[data-tooltip]::after {
-    left: auto;
-    right: 0;
-    transform: none;
 }
 
 /* ── Weapon Trait Chip (Editable) ── */
@@ -9487,6 +9472,52 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     color: var(--cv-text-muted);
     padding: 6px 8px 2px;
     user-select: none;
+}
+
+.weapon-trait-picker-row-info {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-right: 2px;
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: default;
+    opacity: 0.4;
+    transition: opacity 0.1s ease, color 0.1s ease;
+    user-select: none;
+}
+
+.weapon-trait-picker-row:hover .weapon-trait-picker-row-info,
+.weapon-trait-picker-row-info:hover {
+    opacity: 1;
+    color: var(--cv-text-secondary);
+}
+
+.weapon-trait-picker-tooltip {
+    position: absolute;
+    max-width: 220px;
+    padding: 5px 8px;
+    background: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    border-radius: 3px;
+    color: var(--cv-text-secondary);
+    font-size: 10px;
+    line-height: 1.4;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 20;
+    white-space: normal;
+    transition: opacity 0.12s ease;
+}
+
+.weapon-trait-picker-tooltip.is-visible {
+    opacity: 1;
 }
 
 .weapon-trait-picker-create {

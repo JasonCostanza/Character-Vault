@@ -4,6 +4,37 @@
 
     var _warnedGameSystem = false;
     var CV_ICONS_KEYS_SORTED = null;
+    var _chipTooltipEl = null;
+
+    function _getChipTooltipEl() {
+        if (!_chipTooltipEl) {
+            _chipTooltipEl = document.createElement('div');
+            _chipTooltipEl.className = 'weapon-chip-tooltip';
+            document.body.appendChild(_chipTooltipEl);
+        }
+        return _chipTooltipEl;
+    }
+
+    function showChipTooltip(chip, text) {
+        if (!text) return;
+        var el = _getChipTooltipEl();
+        el.textContent = text;
+        var rect = chip.getBoundingClientRect();
+        var left = Math.max(4, Math.min(rect.left, window.innerWidth - 232));
+        if (rect.top > 70) {
+            el.style.top = 'auto';
+            el.style.bottom = (window.innerHeight - rect.top + 6) + 'px';
+        } else {
+            el.style.bottom = 'auto';
+            el.style.top = (rect.bottom + 6) + 'px';
+        }
+        el.style.left = left + 'px';
+        el.classList.add('is-visible');
+    }
+
+    function hideChipTooltip() {
+        if (_chipTooltipEl) _chipTooltipEl.classList.remove('is-visible');
+    }
 
     // ── Weapon Trait Definitions (D&D 5e 2014) ──
     var WEAPON_TRAITS_DND5E = [
@@ -253,7 +284,10 @@
                 var chip = document.createElement('span');
                 chip.className = 'weapon-trait-chip';
                 chip.textContent = resolved.name;
-                if (resolved.description) chip.setAttribute('data-tooltip', resolved.description);
+                if (resolved.description) {
+                    chip.addEventListener('mouseenter', function () { showChipTooltip(chip, resolved.description); });
+                    chip.addEventListener('mouseleave', hideChipTooltip);
+                }
                 traitsEl.appendChild(chip);
             });
             info.appendChild(traitsEl);
@@ -1024,7 +1058,10 @@
                 var resolved = resolveWeaponTrait(entry, data.content);
                 var chip = document.createElement('span');
                 chip.className = 'weapon-trait-chip weapon-trait-chip--editable';
-                if (resolved.description) chip.setAttribute('data-tooltip', resolved.description);
+                if (resolved.description) {
+                    chip.addEventListener('mouseenter', function () { showChipTooltip(chip, resolved.description); });
+                    chip.addEventListener('mouseleave', hideChipTooltip);
+                }
                 var nameSpan = document.createElement('span');
                 nameSpan.textContent = resolved.name;
                 chip.appendChild(nameSpan);
@@ -1198,6 +1235,42 @@
         list.className = 'weapon-trait-picker-list';
         body.appendChild(list);
 
+        var tooltipEl = document.createElement('div');
+        tooltipEl.className = 'weapon-trait-picker-tooltip';
+
+        var _parentRect = null;
+
+        function showTooltip(infoBtn, text) {
+            tooltipEl.textContent = text;
+            var iconRect = infoBtn.getBoundingClientRect();
+            var top;
+            if (iconRect.top + iconRect.height / 2 < _parentRect.top + _parentRect.height / 2) {
+                top = iconRect.bottom - _parentRect.top + 6;
+            } else {
+                top = iconRect.top - _parentRect.top - 66;
+            }
+            var left = iconRect.left - _parentRect.left - 8;
+            tooltipEl.style.top = Math.max(4, top) + 'px';
+            tooltipEl.style.left = Math.max(8, Math.min(left, _parentRect.width - 232)) + 'px';
+            tooltipEl.classList.add('is-visible');
+        }
+
+        function hideTooltip() {
+            tooltipEl.classList.remove('is-visible');
+        }
+
+        function createInfoButton(description) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'weapon-trait-picker-row-info';
+            btn.setAttribute('aria-label', t('weapons.traitPicker.infoAria'));
+            btn.textContent = '\u24d8';
+            btn.addEventListener('mouseenter', function () { showTooltip(btn, description); });
+            btn.addEventListener('mouseleave', hideTooltip);
+            btn.addEventListener('click', function (e) { e.stopPropagation(); });
+            return btn;
+        }
+
         function isSelected(key) {
             return localTraits.some(function (tr) { return tr.key === key; });
         }
@@ -1294,6 +1367,9 @@
                 nameSpan.textContent = name;
                 row.appendChild(nameSpan);
 
+                var desc = t(entry.descKey);
+                if (desc) row.appendChild(createInfoButton(desc));
+
                 var check = document.createElement('span');
                 check.className = 'weapon-trait-picker-row-check';
                 check.textContent = '\u2713';
@@ -1323,6 +1399,8 @@
                 var nameSpan = document.createElement('span');
                 nameSpan.className = 'weapon-trait-picker-row-name';
                 nameSpan.textContent = ct.name;
+
+                var infoBtn = ct.description ? createInfoButton(ct.description) : null;
 
                 var editBtn = document.createElement('button');
                 editBtn.type = 'button';
@@ -1366,6 +1444,7 @@
                 })(ct.key);
 
                 row.appendChild(nameSpan);
+                if (infoBtn) row.appendChild(infoBtn);
                 row.appendChild(editBtn);
                 row.appendChild(deleteBtn);
                 row.appendChild(check);
@@ -1404,8 +1483,10 @@
         dialog.appendChild(header);
         dialog.appendChild(body);
         dialog.appendChild(footer);
+        dialog.appendChild(tooltipEl);
         overlay.appendChild(dialog);
         document.body.appendChild(overlay);
+        _parentRect = tooltipEl.offsetParent ? tooltipEl.offsetParent.getBoundingClientRect() : { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
 
         function forceClose() {
             overlay.remove();

@@ -808,7 +808,7 @@
 
         // Ability + Proficient
         var rowAbility = document.createElement('div');
-        rowAbility.className = 'weapon-edit-row';
+        rowAbility.className = 'weapon-edit-row weapon-edit-row--paired';
 
         var abilityField = buildField(t('weapons.abilityMod'));
         var abilitySel = buildCvSelect(
@@ -831,7 +831,7 @@
 
         // Attack Bonus Override + Two-Handed
         var rowOverride = document.createElement('div');
-        rowOverride.className = 'weapon-edit-row';
+        rowOverride.className = 'weapon-edit-row weapon-edit-row--paired';
 
         var overrideField = buildField(t('weapons.attackBonusOverride'));
         var overrideInput = document.createElement('input');

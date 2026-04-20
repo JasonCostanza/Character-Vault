@@ -9076,6 +9076,23 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     min-width: 0;
 }
 
+.weapon-edit-row--paired {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+    row-gap: 4px;
+}
+
+.weapon-edit-row--paired .weapon-edit-field {
+    display: contents;
+}
+
+.weapon-edit-row--paired .weapon-edit-field:first-child > .weapon-edit-label { grid-column: 1; grid-row: 1; }
+.weapon-edit-row--paired .weapon-edit-field:last-child  > .weapon-edit-label { grid-column: 2; grid-row: 1; }
+
+.weapon-edit-row--paired .weapon-edit-field:first-child > :not(.weapon-edit-label) { grid-column: 1; grid-row: 2; }
+.weapon-edit-row--paired .weapon-edit-field:last-child  > :not(.weapon-edit-label) { grid-column: 2; grid-row: 2; align-self: center; }
+
 .weapon-edit-field {
     display: flex;
     flex-direction: column;

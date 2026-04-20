@@ -2380,8 +2380,6 @@ select,
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
 
-/* Ability proficiency toggle uses .cv-toggle */
-
 .ability-edit-delete {
     width: 16px;
     height: 16px;
@@ -3050,7 +3048,6 @@ select,
     border-color: var(--cv-text);
 }
 
-/* Level carry-over uses .cv-toggle */
 .level-toggle-row {
     font-size: 12px;
 }
@@ -7569,7 +7566,6 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     margin-bottom: 12px;
 }
 
-/* Save settings checkbox uses .cv-toggle */
 .save-settings-checkbox-label {
     font-size: 12px;
 }
@@ -8254,7 +8250,6 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     background-color: var(--cv-bg-sunken);
 }
 
-/* Spells settings toggle uses .cv-toggle */
 .spells-settings-toggle-label {
     font-size: 12px;
     padding: 4px 0;
@@ -8640,7 +8635,6 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     gap: 5px;
 }
 
-/* Recovery action toggle uses .cv-toggle */
 .recovery-action-toggle {
     gap: 8px;
 }
@@ -9095,7 +9089,6 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     user-select: none;
 }
 
-/* Weapon edit toggles use .cv-toggle */
 .weapon-edit-check-label {
     padding-top: 4px;
 }
@@ -9152,7 +9145,6 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     min-width: 70px;
 }
 
-/* Weapon damage mod toggle uses .cv-toggle */
 .weapon-damage-mod-label {
     gap: 4px;
     font-size: 11px;

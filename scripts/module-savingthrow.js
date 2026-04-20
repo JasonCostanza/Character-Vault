@@ -360,14 +360,17 @@
         // Enable tiers row
         const enableRow = document.createElement('div');
         enableRow.className = 'save-settings-row';
-        const enableLabel = document.createElement('label');
-        enableLabel.className = 'save-settings-checkbox-label';
-        const enableCheckbox = document.createElement('input');
-        enableCheckbox.type = 'checkbox';
-        enableCheckbox.checked = workingTiersEnabled;
-        enableLabel.appendChild(enableCheckbox);
-        enableLabel.appendChild(document.createTextNode('\u00a0' + t('save.enableTiers')));
-        enableRow.appendChild(enableLabel);
+        const enableToggle = makeCvToggle(workingTiersEnabled, (checked) => {
+            workingTiersEnabled = checked;
+            presetRow.style.display = workingTiersEnabled ? '' : 'none';
+            dirty = true;
+        });
+        enableToggle.className = 'save-settings-checkbox-label';
+        const enableLabel = document.createElement('span');
+        enableLabel.className = 'cv-toggle-label';
+        enableLabel.textContent = t('save.enableTiers');
+        enableToggle.appendChild(enableLabel);
+        enableRow.appendChild(enableToggle);
         body.appendChild(enableRow);
 
         // Tier preset row
@@ -411,12 +414,6 @@
         presetControls.appendChild(editTiersBtn);
         presetRow.appendChild(presetControls);
         body.appendChild(presetRow);
-
-        enableCheckbox.addEventListener('change', () => {
-            workingTiersEnabled = enableCheckbox.checked;
-            presetRow.style.display = workingTiersEnabled ? '' : 'none';
-            dirty = true;
-        });
 
         editTiersBtn.addEventListener('click', () => {
             openCustomTierEditor(workingTiers, (newTiers) => {

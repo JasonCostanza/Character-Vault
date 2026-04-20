@@ -820,14 +820,12 @@
         rowAbility.appendChild(abilityField);
 
         var profField = buildField(t('weapons.proficient'));
-        var profLabel = document.createElement('label');
-        profLabel.className = 'weapon-edit-check-label';
-        var profCheck = document.createElement('input');
-        profCheck.type = 'checkbox';
-        profCheck.checked = workingWeapon.proficient;
-        profCheck.addEventListener('change', function () { workingWeapon.proficient = profCheck.checked; dirty = true; });
-        profLabel.appendChild(profCheck);
-        profField.appendChild(profLabel);
+        var profToggle = makeCvToggle(workingWeapon.proficient, function (checked) { workingWeapon.proficient = checked; dirty = true; });
+        var profLabel = document.createElement('span');
+        profLabel.className = 'cv-toggle-label';
+        profLabel.textContent = t('weapons.proficient');
+        profToggle.appendChild(profLabel);
+        profField.appendChild(profToggle);
         rowAbility.appendChild(profField);
         modalBody.appendChild(rowAbility);
 
@@ -850,14 +848,12 @@
         rowOverride.appendChild(overrideField);
 
         var twoHandedField = buildField(t('weapons.twoHanded'));
-        var twoHandedLabel = document.createElement('label');
-        twoHandedLabel.className = 'weapon-edit-check-label';
-        var twoHandedCheck = document.createElement('input');
-        twoHandedCheck.type = 'checkbox';
-        twoHandedCheck.checked = workingWeapon.twoHanded;
-        twoHandedCheck.addEventListener('change', function () { workingWeapon.twoHanded = twoHandedCheck.checked; dirty = true; });
-        twoHandedLabel.appendChild(twoHandedCheck);
-        twoHandedField.appendChild(twoHandedLabel);
+        var twoHandedToggle = makeCvToggle(workingWeapon.twoHanded, function (checked) { workingWeapon.twoHanded = checked; dirty = true; });
+        var twoHandedLabel = document.createElement('span');
+        twoHandedLabel.className = 'cv-toggle-label';
+        twoHandedLabel.textContent = t('weapons.twoHanded');
+        twoHandedToggle.appendChild(twoHandedLabel);
+        twoHandedField.appendChild(twoHandedToggle);
         rowOverride.appendChild(twoHandedField);
         modalBody.appendChild(rowOverride);
 
@@ -992,17 +988,12 @@
                 (function (i) { typeInput.addEventListener('input', function () { workingWeapon.damageInstances[i].damageType = typeInput.value.trim(); dirty = true; }); })(idx);
                 row.appendChild(typeInput);
 
-                var modLbl = document.createElement('label');
-                modLbl.className = 'weapon-damage-mod-label';
-                var modCheck = document.createElement('input');
-                modCheck.type = 'checkbox';
-                modCheck.checked = inst.modFromAbility;
-                (function (i) { modCheck.addEventListener('change', function () { workingWeapon.damageInstances[i].modFromAbility = modCheck.checked; dirty = true; }); })(idx);
-                modLbl.appendChild(modCheck);
+                var modToggle = makeCvToggle(inst.modFromAbility, (function (i) { return function (checked) { workingWeapon.damageInstances[i].modFromAbility = checked; dirty = true; }; })(idx));
                 var modSpan = document.createElement('span');
+                modSpan.className = 'cv-toggle-label';
                 modSpan.textContent = t('weapons.modFromAbility');
-                modLbl.appendChild(modSpan);
-                row.appendChild(modLbl);
+                modToggle.appendChild(modSpan);
+                row.appendChild(modToggle);
 
                 var removeBtn = document.createElement('button');
                 removeBtn.type = 'button';

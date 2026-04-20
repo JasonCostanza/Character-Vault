@@ -577,18 +577,13 @@
         const checkboxes = [];
         let restoreHitDiceCb = null;
         ACTION_TYPES.forEach(actionType => {
-            const toggle = document.createElement('label');
-            toggle.className = 'recovery-action-toggle';
-            const cb = document.createElement('input');
-            cb.type = 'checkbox';
-            cb.checked = btn.actions.some(a => a.type === actionType);
-            cb.addEventListener('change', () => { dirty = true; });
+            const toggle = makeCvToggle(btn.actions.some(a => a.type === actionType), () => { dirty = true; });
             const lbl = document.createElement('span');
-            lbl.className = 'recovery-action-toggle-label';
+            lbl.className = 'cv-toggle-label';
             lbl.textContent = t('recovery.actionLabel.' + actionType);
-            toggle.appendChild(cb);
             toggle.appendChild(lbl);
             checklist.appendChild(toggle);
+            const cb = toggle.querySelector('input[type="checkbox"]');
             checkboxes.push(cb);
             if (actionType === 'restoreHitDice') restoreHitDiceCb = cb;
         });

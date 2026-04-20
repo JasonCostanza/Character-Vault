@@ -113,6 +113,7 @@ Sections are delimited by `/* ── Name ── */` comment headers.
 | **Angelic Theme** | `[data-theme="angelic"]` — light angelic palette override |
 | **Demonic Theme** | `[data-theme="demonic"]` — dark demonic palette override |
 | **Icon System** | `.icon` base class for inline SVGs |
+| **Toggle Switch** | `.cv-toggle`, `.cv-toggle-track` — styled boolean toggles (track + sliding thumb) with all theme support |
 | **Reset** | Box-sizing reset, body layout (flex column, 100vh) |
 | **Consolidated Button & UI Base Classes** | Shared `.btn-*`, form element resets, focus states |
 | **Top Menu Bar** | `#menu-bar`, `#menu-left`, `#menu-right` |

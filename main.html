@@ -89,13 +89,19 @@
                         <button id="btn-load" class="settings-action-btn btn-primary" data-i18n="settings.load">Load</button>
                     </div>
                     <div class="settings-checkbox-row">
-                        <input type="checkbox" id="chk-auto-save">
-                        <label for="chk-auto-save" data-i18n="settings.autoSave">Save automatically</label>
+                        <label class="cv-toggle" id="chk-auto-save-wrapper">
+                            <input type="checkbox" id="chk-auto-save">
+                            <span class="cv-toggle-track"></span>
+                            <span class="cv-toggle-label" data-i18n="settings.autoSave">Save automatically</span>
+                        </label>
                         <span class="settings-tooltip" data-tip="Save the character sheet after every change." data-i18n-tip="settings.autoSaveTip">?</span>
                     </div>
                     <div class="settings-checkbox-row">
-                        <input type="checkbox" id="chk-auto-load">
-                        <label for="chk-auto-load" data-i18n="settings.autoLoad">Load automatically</label>
+                        <label class="cv-toggle" id="chk-auto-load-wrapper">
+                            <input type="checkbox" id="chk-auto-load">
+                            <span class="cv-toggle-track"></span>
+                            <span class="cv-toggle-label" data-i18n="settings.autoLoad">Load automatically</span>
+                        </label>
                         <span class="settings-tooltip" data-tip="Automatically load the character sheet when you enter." data-i18n-tip="settings.autoLoadTip">?</span>
                     </div>
                 </div>

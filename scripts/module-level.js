@@ -529,20 +529,17 @@
         const carrySection = document.createElement('div');
         carrySection.className = 'level-settings-section';
 
-        const carryLabel = document.createElement('label');
-        carryLabel.className = 'level-toggle-row';
-
-        const carryCheckbox = document.createElement('input');
-        carryCheckbox.type = 'checkbox';
-        carryCheckbox.checked = wCarryOver;
-        carryCheckbox.addEventListener('change', () => {
-            wCarryOver = carryCheckbox.checked;
+        const carryToggle = makeCvToggle(wCarryOver, (checked) => {
+            wCarryOver = checked;
             dirty = true;
         });
+        carryToggle.className = 'level-toggle-row';
 
-        carryLabel.appendChild(carryCheckbox);
-        carryLabel.appendChild(document.createTextNode('\u00a0' + t('level.carryOverLabel')));
-        carrySection.appendChild(carryLabel);
+        const carryLabel = document.createElement('span');
+        carryLabel.className = 'cv-toggle-label';
+        carryLabel.textContent = t('level.carryOverLabel');
+        carryToggle.appendChild(carryLabel);
+        carrySection.appendChild(carryToggle);
         xpOnlyWrap.appendChild(carrySection);
 
         // ── Bar Color ──

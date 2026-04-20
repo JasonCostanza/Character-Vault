@@ -308,11 +308,35 @@
         };
     }
 
+    function makeCvToggle(checked, onChange) {
+        const label = document.createElement('label');
+        label.className = 'cv-toggle';
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = checked;
+
+        const track = document.createElement('span');
+        track.className = 'cv-toggle-track';
+
+        label.appendChild(checkbox);
+        label.appendChild(track);
+
+        if (onChange) {
+            checkbox.addEventListener('change', function () {
+                onChange(checkbox.checked);
+            });
+        }
+
+        return label;
+    }
+
     window.escapeHtml = escapeHtml;
     window.renderMarkdown = renderMarkdown;
     window.attachCheckboxHandlers = attachCheckboxHandlers;
     window.showToast = showToast;
     window.toggleCheckboxInMarkdown = toggleCheckboxInMarkdown;
+    window.makeCvToggle = makeCvToggle;
     window.CV_ICONS = CV_ICONS;
     window.CV_SVG_SORT_UP = CV_SVG_SORT_UP;
     window.CV_SVG_SORT_DOWN = CV_SVG_SORT_DOWN;

@@ -142,15 +142,26 @@
             `<div class="stat-edit-field"><label class="${data.content.layout === 'large-modifier' ? 'stat-edit-primary-label' : ''}">${t('stat.modifier')}</label><input type="number" class="stat-edit-modifier" value="${stat.modifier}"></div>` +
             `</div>` +
             `<div class="stat-edit-toggles">` +
-            (!stat.isProficiencyStat ? `<label class="stat-edit-toggle"><input type="checkbox" class="stat-edit-proficient" ${stat.proficient ? 'checked' : ''}>${t('stat.proficient')}</label>` : '') +
             `</div>`;
 
         // Wire up inputs
         const nameInput = block.querySelector('.stat-edit-name');
         const valInput = block.querySelector('.stat-edit-value');
         const modInput = block.querySelector('.stat-edit-modifier');
-        const profCb = block.querySelector('.stat-edit-proficient');
         const deleteBtn = block.querySelector('.stat-edit-delete');
+        const toggleDiv = block.querySelector('.stat-edit-toggles');
+
+        if (!stat.isProficiencyStat) {
+            const profToggle = makeCvToggle(stat.proficient, (checked) => {
+                stat.proficient = checked;
+                scheduleSave();
+            });
+            const profLabel = document.createElement('span');
+            profLabel.className = 'cv-toggle-label';
+            profLabel.textContent = t('stat.proficient');
+            profToggle.appendChild(profLabel);
+            toggleDiv.appendChild(profToggle);
+        }
 
         nameInput.addEventListener('input', () => {
             stat.name = nameInput.value;
@@ -164,12 +175,6 @@
             stat.modifier = parseInt(modInput.value, 10) || 0;
             scheduleSave();
         });
-        if (profCb) {
-            profCb.addEventListener('change', () => {
-                stat.proficient = profCb.checked;
-                scheduleSave();
-            });
-        }
 
         [nameInput, valInput, modInput].forEach((inp) => {
             inp.addEventListener('keydown', (e) => {

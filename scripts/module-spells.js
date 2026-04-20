@@ -1020,15 +1020,15 @@
         body.className = 'cv-modal-body';
 
         function makeToggle(labelKey, checked, onChange) {
-            const label = document.createElement('label');
-            label.className = 'spells-settings-toggle-label';
-            const chk = document.createElement('input');
-            chk.type = 'checkbox';
-            chk.checked = checked;
-            chk.addEventListener('change', () => onChange(chk.checked));
-            label.appendChild(chk);
-            label.appendChild(document.createTextNode('\u00a0' + t(labelKey)));
-            return label;
+            const wrapper = document.createElement('div');
+            wrapper.className = 'spells-settings-toggle-label';
+            const toggle = makeCvToggle(checked, onChange);
+            const label = document.createElement('span');
+            label.className = 'cv-toggle-label';
+            label.textContent = t(labelKey);
+            toggle.appendChild(label);
+            wrapper.appendChild(toggle);
+            return wrapper;
         }
 
         body.appendChild(makeToggle('spells.autoSpendSlots', working.autoSpendSlots, (v) => { working.autoSpendSlots = v; }));

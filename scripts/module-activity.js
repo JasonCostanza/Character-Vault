@@ -357,16 +357,14 @@
         body.appendChild(sortSelectWidget.el);
 
         // Show timestamps toggle
-        const tsLabel = document.createElement('label');
-        tsLabel.className = 'cv-modal-label cv-modal-checkbox-label';
-        tsLabel.style.userSelect = 'none';
-        const tsCheckbox = document.createElement('input');
-        tsCheckbox.type = 'checkbox';
-        tsCheckbox.checked = working.showTimestamps;
-        tsCheckbox.addEventListener('change', function () { working.showTimestamps = tsCheckbox.checked; dirty = true; });
-        tsLabel.appendChild(tsCheckbox);
-        tsLabel.appendChild(document.createTextNode('\u00a0' + t('activity.showTimestamps')));
-        body.appendChild(tsLabel);
+        const tsToggle = makeCvToggle(working.showTimestamps, function (checked) { working.showTimestamps = checked; dirty = true; });
+        tsToggle.className = 'cv-modal-label';
+        tsToggle.style.userSelect = 'none';
+        const tsLabel = document.createElement('span');
+        tsLabel.className = 'cv-toggle-label';
+        tsLabel.textContent = t('activity.showTimestamps');
+        tsToggle.appendChild(tsLabel);
+        body.appendChild(tsToggle);
 
         // Max entries
         const maxLabel = document.createElement('label');

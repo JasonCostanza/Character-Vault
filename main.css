@@ -9044,6 +9044,19 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     user-select: text;
 }
 
+.weapon-action-ref {
+    font-size: 11px;
+    color: var(--cv-text-secondary);
+    user-select: none;
+}
+
+.weapon-action-ref--large {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--cv-text-primary);
+    user-select: none;
+}
+
 /* ── Weapon Edit Modal ── */
 
 .weapon-edit-panel {
@@ -9535,5 +9548,45 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     flex-direction: row;
     justify-content: flex-end;
     gap: 6px;
+}
+
+/* ── Weapons — System-specific edit sections ── */
+.weapon-firing-modes-section .weapon-edit-section-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-muted);
+    margin-bottom: 4px;
+}
+
+.weapon-firing-mode-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+.weapon-firing-mode-row {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+}
+
+.weapon-mode-name {
+    flex: 2;
+    min-width: 0;
+}
+
+.weapon-mode-ammo,
+.weapon-mode-dice,
+.weapon-mode-dmg {
+    flex: 1;
+    min-width: 0;
+}
+
+.weapon-mode-remove {
+    flex-shrink: 0;
 }
 

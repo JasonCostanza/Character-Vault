@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { loadScript } from './helpers/load-script.js';
 import { setupMinimalDOM } from './helpers/minimal-dom.js';
 
@@ -160,6 +160,110 @@ describe('weaponsComputeAttackBonus', () => {
     window.getProficiencyBonus = undefined;
     const weapon = { attackBonusOverride: null, abilityMod: 'str', proficient: true };
     expect(window.weaponsComputeAttackBonus(weapon)).toBe(0);
+  });
+});
+
+describe('weaponsComputeAttackBonus — PF2e', () => {
+  beforeEach(() => { window.gameSystem = 'pf2e'; });
+  afterEach(() => { window.gameSystem = undefined; });
+
+  it('adds abilityMod + (rankBonus + level) for trained', () => {
+    window.getAbilityModifier = vi.fn().mockReturnValue(3);
+    window.getCharacterLevel = vi.fn().mockReturnValue(5);
+    const weapon = { attackBonusOverride: null, abilityMod: 'str', proficiencyRank: 'trained' };
+    expect(window.weaponsComputeAttackBonus(weapon)).toBe(10); // 3 + (2+5)
+  });
+
+  it('uses expert rank bonus correctly', () => {
+    window.getAbilityModifier = vi.fn().mockReturnValue(2);
+    window.getCharacterLevel = vi.fn().mockReturnValue(4);
+    const weapon = { attackBonusOverride: null, abilityMod: 'dex', proficiencyRank: 'expert' };
+    expect(window.weaponsComputeAttackBonus(weapon)).toBe(10); // 2 + (4+4)
+  });
+
+  it('returns only abilityMod for untrained (rank bonus = 0)', () => {
+    window.getAbilityModifier = vi.fn().mockReturnValue(2);
+    window.getCharacterLevel = vi.fn().mockReturnValue(3);
+    const weapon = { attackBonusOverride: null, abilityMod: 'str', proficiencyRank: 'untrained' };
+    expect(window.weaponsComputeAttackBonus(weapon)).toBe(2);
+  });
+
+  it('returns only abilityMod when proficiencyRank is null', () => {
+    window.getAbilityModifier = vi.fn().mockReturnValue(1);
+    window.getCharacterLevel = vi.fn().mockReturnValue(4);
+    const weapon = { attackBonusOverride: null, abilityMod: 'str', proficiencyRank: null };
+    expect(window.weaponsComputeAttackBonus(weapon)).toBe(1);
+  });
+
+  it('override still wins for pf2e', () => {
+    const weapon = { attackBonusOverride: 9, abilityMod: 'str', proficiencyRank: 'master' };
+    expect(window.weaponsComputeAttackBonus(weapon)).toBe(9);
+  });
+});
+
+describe('weaponsComputeAttackBonus — Daggerheart', () => {
+  beforeEach(() => { window.gameSystem = 'daggerheart'; });
+  afterEach(() => { window.gameSystem = undefined; });
+
+  it('returns the governing trait modifier', () => {
+    window.getAbilityModifier = vi.fn().mockReturnValue(4);
+    const weapon = { attackBonusOverride: null, governingTrait: 'agility' };
+    expect(window.weaponsComputeAttackBonus(weapon)).toBe(4);
+    expect(window.getAbilityModifier).toHaveBeenCalledWith('agility');
+  });
+
+  it('returns 0 when getAbilityModifier is unavailable', () => {
+    window.getAbilityModifier = undefined;
+    const weapon = { attackBonusOverride: null, governingTrait: 'strength' };
+    expect(window.weaponsComputeAttackBonus(weapon)).toBe(0);
+  });
+});
+
+describe('weaponsComputeAttackBonus — tracking tier', () => {
+  afterEach(() => { window.gameSystem = undefined; });
+
+  it.each(['coc', 'vtm', 'cpred', 'mothership', 'sr6'])('returns null for %s', (sys) => {
+    window.gameSystem = sys;
+    const weapon = { attackBonusOverride: null };
+    expect(window.weaponsComputeAttackBonus(weapon)).toBeNull();
+  });
+
+  it('tracking tier override still wins', () => {
+    window.gameSystem = 'coc';
+    const weapon = { attackBonusOverride: 5 };
+    expect(window.weaponsComputeAttackBonus(weapon)).toBe(5);
+  });
+});
+
+describe('ensureWeaponsContent — Phase 2 fields', () => {
+  it('initializes all Phase 2 fields with null defaults', () => {
+    const data = { content: { weapons: [{ id: 'wpn_x', name: 'Test' }] } };
+    window.ensureWeaponsContent(data);
+    const w = data.content.weapons[0];
+    expect(w.proficiencyRank).toBeNull();
+    expect(w.skillName).toBeNull();
+    expect(w.skillValue).toBeNull();
+    expect(w.poolAttribute).toBeNull();
+    expect(w.poolSkill).toBeNull();
+    expect(w.poolSize).toBeNull();
+    expect(w.weaponCategory).toBeNull();
+    expect(w.cpredStat).toBeNull();
+    expect(w.cpredSkillValue).toBeNull();
+    expect(w.governingTrait).toBeNull();
+    expect(w.baseDamageFlat).toBeNull();
+    expect(w.damageCategory).toBeNull();
+    expect(w.firingModes).toBeNull();
+    expect(w.impaling).toBeNull();
+    expect(w.armorSavePenalty).toBeNull();
+  });
+
+  it('preserves existing Phase 2 field values', () => {
+    const data = { content: { weapons: [{ id: 'wpn_x', name: 'Pistol', skillName: 'Handgun', skillValue: 45, impaling: true }] } };
+    window.ensureWeaponsContent(data);
+    const w = data.content.weapons[0];
+    expect(w.skillName).toBe('Handgun');
+    expect(w.skillValue).toBe(45);
+    expect(w.impaling).toBe(true);
   });
 });
 

@@ -1,12 +1,10 @@
 # Weapons Module
 
-> **Status:** Phase 1 complete. Phase 2 (multi-system, trait engine, shield HP round-trip, etc.) will be planned in a follow-up doc that uses this one plus the shipped MVP code as input.
->
-> **Phase 2 attack UI note:** The action modal currently shows a single "Attack" button (5e has no multi-attack penalty). Phase 2 must restore a 1st / 2nd / 3rd button row for systems like PF2e where each successive attack in a turn carries a cumulative MAP. The button labels and roll expressions will need to be computed per-system. The i18n keys `weapons.attackFirst`, `weapons.attackSecond`, `weapons.attackThird` were removed in Phase 1 cleanup — Phase 2 must re-add them for all supported locales.
+> **Status:** Phase 2 complete. Supports D&D 5e, Pathfinder 2e, Call of Cthulhu, Vampire: The Masquerade, Cyberpunk Red, Mothership, Shadowrun 6e, and Daggerheart. Phase 3 (PF2e runes, SR6 accessories, CPR weapon mods) deferred — see `_DOCS/plans/WEAPONS_PHASE3.md`.
 
 ## Summary
 
-The Weapons submodule manages a character's weapons and off-hand equipment, including attack rolls, damage rolls (with per-type isolation for resistance/weakness handling), range, ammunition, and notes. Each weapon is represented as a card in a two-column main-hand / off-hand layout. Phase 1 targets **D&D 5e only**; non-5e game systems fall back to 5e math with a console warning until Phase 2.
+The Weapons submodule manages a character's weapons and off-hand equipment. Each weapon is a card in a two-column main/off-hand layout. The module uses a **two-tier model**: Automated Tier (d20 systems with computed bonuses: 5e, PF2e, Daggerheart, CPR) and Tracking Tier (dice-pool and percentile systems where the player adjudicates: CoC, VtM, Mothership, SR6). Three attack archetypes are supported: A (single die + modifier), B (percentile roll-under), and C (dice pool).
 
 ## Default Size
 
@@ -33,13 +31,49 @@ Weapon = {
   damageInstances: DamageInstance[],
   range: string | null,             // e.g. "80/320" — ranged only
   ammoCount: number | null,         // ranged only
-  traits: string[],                 // free-form tags in Phase 1
+  traits: TraitEntry[],             // keyed trait objects (key + optional value)
   notesMarkdown: string,
   twoHanded: boolean,
   // Shield-only fields (kind === 'shield'):
   acBonus: number | null,
   shieldHp: number | null,
-  shieldHpMax: number | null
+  shieldHpMax: number | null,
+  // Phase 2 — PF2e
+  proficiencyRank: 'untrained' | 'trained' | 'expert' | 'master' | 'legendary' | null,
+  // Phase 2 — Percentile systems (CoC, Mothership)
+  skillName: string | null,         // e.g. "Handgun"
+  skillValue: number | null,        // e.g. 45 (means 45%)
+  // Phase 2 — Dice pool systems (VtM, SR6)
+  poolAttribute: string | null,     // e.g. "Dexterity"
+  poolSkill: string | null,         // e.g. "Firearms"
+  poolSize: number | null,          // total dice in pool
+  // Phase 2 — Cyberpunk Red
+  weaponCategory: string | null,    // e.g. "Handgun", "Shoulder Arms"
+  cpredStat: string | null,         // e.g. "REF"
+  cpredSkillValue: number | null,   // numeric skill total
+  // Phase 2 — Daggerheart
+  governingTrait: string | null,    // e.g. "Agility", "Strength"
+  // Phase 2 — Shadowrun 6e
+  baseDamageFlat: number | null,    // flat base damage number
+  damageCategory: 'Physical' | 'Stun' | null,
+  // Phase 2 — Firing modes (CPR + SR6)
+  firingModes: FiringMode[] | null,
+  // Phase 2 — Call of Cthulhu
+  impaling: boolean | null,
+  // Phase 2 — Mothership
+  armorSavePenalty: number | null
+}
+
+FiringMode = {
+  name: string,                     // e.g. "Semi-Auto"
+  ammoCost: number,
+  diceModifier: number | null,      // added to pool size or skill value
+  damageBonus: number | null        // added to flat damage (SR6) or damage roll
+}
+
+TraitEntry = {
+  key: string,                      // e.g. "dnd5e.finesse", "pf2e.agile", "custom.wt_abc123"
+  value: string | null              // optional value (e.g. die size for Versatile)
 }
 
 DamageInstance = {

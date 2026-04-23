@@ -400,7 +400,12 @@
     window.updateRollableBtn = updateRollableBtn;
 
     window.getAbilityModifier = function (key) {
-        const nameMap = { str: 'STR', dex: 'DEX', con: 'CON', int: 'INT', wis: 'WIS', cha: 'CHA' };
+        const nameMap = {
+            str: 'STR', dex: 'DEX', con: 'CON', int: 'INT', wis: 'WIS', cha: 'CHA',
+            // Daggerheart governing traits
+            agility: 'AGILITY', strength: 'STRENGTH', finesse: 'FINESSE',
+            instinct: 'INSTINCT', presence: 'PRESENCE', knowledge: 'KNOWLEDGE',
+        };
         const target = (nameMap[key] || key).toUpperCase();
         for (const m of (window.modules || [])) {
             if (m.type !== 'stat' || !m.content || !Array.isArray(m.content.stats)) continue;

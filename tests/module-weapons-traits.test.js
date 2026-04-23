@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { loadScript } from './helpers/load-script.js';
 import { setupMinimalDOM } from './helpers/minimal-dom.js';
 
@@ -158,6 +158,118 @@ describe('findOrCreateCustomTrait', () => {
     const content = { customWeaponTraits: [{ key: 'custom.wt_xyz', name: 'Poison', description: '' }] };
     expect(window.findOrCreateCustomTrait('  POISON  ', content)).toBe('custom.wt_xyz');
     expect(content.customWeaponTraits).toHaveLength(1);
+  });
+});
+
+describe('resolveWeaponTrait — PF2e and Daggerheart', () => {
+  it('resolves a pf2e.* key to name + description via t()', () => {
+    const content = { customWeaponTraits: [] };
+    const result = window.resolveWeaponTrait({ key: 'pf2e.agile', value: null }, content);
+    expect(result.key).toBe('pf2e.agile');
+    expect(result.isCustom).toBe(false);
+    expect(result.takesValue).toBe(false);
+    expect(globalThis.t).toHaveBeenCalledWith('weapons.trait.pf2e.agile');
+    expect(globalThis.t).toHaveBeenCalledWith('weapons.trait.pf2e.agileDesc');
+  });
+
+  it('returns takesValue: true for deadly, fatal, thrown, twoHand, versatile', () => {
+    const content = { customWeaponTraits: [] };
+    expect(window.resolveWeaponTrait({ key: 'pf2e.deadly' }, content).takesValue).toBe(true);
+    expect(window.resolveWeaponTrait({ key: 'pf2e.fatal' }, content).takesValue).toBe(true);
+    expect(window.resolveWeaponTrait({ key: 'pf2e.thrown' }, content).takesValue).toBe(true);
+    expect(window.resolveWeaponTrait({ key: 'pf2e.twoHand' }, content).takesValue).toBe(true);
+    expect(window.resolveWeaponTrait({ key: 'pf2e.versatile' }, content).takesValue).toBe(true);
+  });
+
+  it('returns takesValue: false for agile, finesse, forceful, propulsive, reach, sweep', () => {
+    const content = { customWeaponTraits: [] };
+    expect(window.resolveWeaponTrait({ key: 'pf2e.agile' }, content).takesValue).toBe(false);
+    expect(window.resolveWeaponTrait({ key: 'pf2e.finesse' }, content).takesValue).toBe(false);
+    expect(window.resolveWeaponTrait({ key: 'pf2e.forceful' }, content).takesValue).toBe(false);
+    expect(window.resolveWeaponTrait({ key: 'pf2e.propulsive' }, content).takesValue).toBe(false);
+    expect(window.resolveWeaponTrait({ key: 'pf2e.reach' }, content).takesValue).toBe(false);
+    expect(window.resolveWeaponTrait({ key: 'pf2e.sweep' }, content).takesValue).toBe(false);
+  });
+
+  it('resolves a daggerheart.* key', () => {
+    const content = { customWeaponTraits: [] };
+    const result = window.resolveWeaponTrait({ key: 'daggerheart.powerful', value: null }, content);
+    expect(result.key).toBe('daggerheart.powerful');
+    expect(result.isCustom).toBe(false);
+    expect(result.takesValue).toBe(false);
+    expect(globalThis.t).toHaveBeenCalledWith('weapons.trait.daggerheart.powerful');
+  });
+
+  it('returns safe fallback for unknown pf2e.* key', () => {
+    const content = { customWeaponTraits: [] };
+    const result = window.resolveWeaponTrait({ key: 'pf2e.unknownTrait' }, content);
+    expect(result.key).toBe('pf2e.unknownTrait');
+    expect(result.name).toBe('pf2e.unknownTrait');
+    expect(result.isCustom).toBe(false);
+  });
+});
+
+describe('getSystemTraitCatalog', () => {
+  afterEach(() => { window.gameSystem = undefined; });
+
+  it('returns WEAPON_TRAITS_DND5E for dnd5e', () => {
+    window.gameSystem = 'dnd5e';
+    expect(window.getSystemTraitCatalog()).toBe(window.WEAPON_TRAITS_DND5E);
+  });
+
+  it('returns WEAPON_TRAITS_DND5E for custom (undefined)', () => {
+    window.gameSystem = undefined;
+    expect(window.getSystemTraitCatalog()).toBe(window.WEAPON_TRAITS_DND5E);
+  });
+
+  it('returns WEAPON_TRAITS_PF2E for pf2e', () => {
+    window.gameSystem = 'pf2e';
+    expect(window.getSystemTraitCatalog()).toBe(window.WEAPON_TRAITS_PF2E);
+  });
+
+  it('returns WEAPON_TRAITS_DAGGERHEART for daggerheart', () => {
+    window.gameSystem = 'daggerheart';
+    expect(window.getSystemTraitCatalog()).toBe(window.WEAPON_TRAITS_DAGGERHEART);
+  });
+
+  it('returns empty array for tracking tier systems', () => {
+    for (const sys of ['coc', 'vtm', 'cpred', 'mothership', 'sr6']) {
+      window.gameSystem = sys;
+      expect(window.getSystemTraitCatalog()).toEqual([]);
+    }
+  });
+
+  it('WEAPON_TRAITS_PF2E has 11 entries', () => {
+    expect(window.WEAPON_TRAITS_PF2E).toHaveLength(11);
+  });
+
+  it('WEAPON_TRAITS_DAGGERHEART has 2 entries', () => {
+    expect(window.WEAPON_TRAITS_DAGGERHEART).toHaveLength(2);
+  });
+});
+
+describe('normalizeWeaponTraits — system-aware string resolution', () => {
+  afterEach(() => { window.gameSystem = undefined; });
+
+  it('resolves "Agile" to pf2e.agile when system is pf2e', () => {
+    window.gameSystem = 'pf2e';
+    const content = { customWeaponTraits: [] };
+    const result = window.normalizeWeaponTraits(['Agile'], content);
+    expect(result[0].key).toBe('pf2e.agile');
+  });
+
+  it('resolves "Powerful" to daggerheart.powerful when system is daggerheart', () => {
+    window.gameSystem = 'daggerheart';
+    const content = { customWeaponTraits: [] };
+    const result = window.normalizeWeaponTraits(['Powerful'], content);
+    expect(result[0].key).toBe('daggerheart.powerful');
+  });
+
+  it('falls back to custom trait for "Agile" when system is dnd5e', () => {
+    window.gameSystem = 'dnd5e';
+    const content = { customWeaponTraits: [] };
+    const result = window.normalizeWeaponTraits(['Agile'], content);
+    expect(result[0].key).toMatch(/^custom\./);
   });
 });
 

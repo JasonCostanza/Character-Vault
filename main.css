@@ -9155,22 +9155,32 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
 .weapon-damage-row {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-end;
     gap: 6px;
     flex-wrap: wrap;
 }
 
-.weapon-damage-dice {
+.weapon-damage-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.weapon-damage-field > .cv-input {
+    width: 100%;
+}
+
+.weapon-damage-field--dice {
     width: 70px;
     flex-shrink: 0;
 }
 
-.weapon-damage-flat {
+.weapon-damage-field--mod {
     width: 56px;
     flex-shrink: 0;
 }
 
-.weapon-damage-type {
+.weapon-damage-field--type {
     flex: 1;
     min-width: 70px;
 }

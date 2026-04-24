@@ -1554,7 +1554,10 @@
                 diceInput.placeholder = t('weapons.dice');
                 diceInput.spellcheck = false;
                 (function (i) { diceInput.addEventListener('input', function () { workingWeapon.damageInstances[i].dice = diceInput.value.trim(); dirty = true; }); })(idx);
-                row.appendChild(diceInput);
+                var diceField = buildField(t('weapons.diceLabel'));
+                diceField.classList.add('weapon-damage-field', 'weapon-damage-field--dice');
+                diceField.appendChild(diceInput);
+                row.appendChild(diceField);
 
                 var flatInput = document.createElement('input');
                 flatInput.type = 'number';
@@ -1562,7 +1565,10 @@
                 flatInput.value = inst.flatBonus || 0;
                 flatInput.placeholder = t('weapons.flatBonus');
                 (function (i) { flatInput.addEventListener('input', function () { workingWeapon.damageInstances[i].flatBonus = Number(flatInput.value) || 0; dirty = true; }); })(idx);
-                row.appendChild(flatInput);
+                var flatField = buildField(t('weapons.modifierLabel'));
+                flatField.classList.add('weapon-damage-field', 'weapon-damage-field--mod');
+                flatField.appendChild(flatInput);
+                row.appendChild(flatField);
 
                 var typeInput = document.createElement('input');
                 typeInput.type = 'text';
@@ -1571,7 +1577,10 @@
                 typeInput.placeholder = t('weapons.damageType');
                 typeInput.spellcheck = false;
                 (function (i) { typeInput.addEventListener('input', function () { workingWeapon.damageInstances[i].damageType = typeInput.value.trim(); dirty = true; }); })(idx);
-                row.appendChild(typeInput);
+                var typeField = buildField(t('weapons.typeLabel'));
+                typeField.classList.add('weapon-damage-field', 'weapon-damage-field--type');
+                typeField.appendChild(typeInput);
+                row.appendChild(typeField);
 
                 var modToggle = makeCvToggle(inst.modFromAbility, (function (i) { return function (checked) { workingWeapon.damageInstances[i].modFromAbility = checked; dirty = true; }; })(idx));
                 var modSpan = document.createElement('span');

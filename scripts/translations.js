@@ -941,7 +941,7 @@
             'weapons.shield': 'Shield',
             'weapons.abilityMod': 'Ability',
             'weapons.proficient': 'Proficient',
-            'weapons.attackBonusOverride': 'Attack Bonus',
+            'weapons.attackBonusOverride': 'Attack Bonus Override',
             'weapons.twoHanded': 'Two-Handed',
             'weapons.range': 'Range',
             'weapons.ammo': 'Ammo',

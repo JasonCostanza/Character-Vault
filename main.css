@@ -8811,12 +8811,12 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     scrollbar-gutter: stable;
     padding: 6px;
     scrollbar-width: thin;
-    scrollbar-color: var(--cv-scrollbar-thumb) transparent;
+    scrollbar-color: var(--cv-text-muted) transparent;
 }
 
 .weapons-column::-webkit-scrollbar { width: 4px; }
 .weapons-column::-webkit-scrollbar-track { background: transparent; }
-.weapons-column::-webkit-scrollbar-thumb { background: var(--cv-scrollbar-thumb); border-radius: 2px; }
+.weapons-column::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .weapons-column-label {
     font-size: 10px;
@@ -9075,12 +9075,12 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     overflow-y: auto;
     scrollbar-gutter: stable;
     scrollbar-width: thin;
-    scrollbar-color: var(--cv-scrollbar-thumb) transparent;
+    scrollbar-color: var(--cv-text-muted) transparent;
 }
 
 .weapon-edit-body::-webkit-scrollbar { width: 4px; }
 .weapon-edit-body::-webkit-scrollbar-track { background: transparent; }
-.weapon-edit-body::-webkit-scrollbar-thumb { background: var(--cv-scrollbar-thumb); border-radius: 2px; }
+.weapon-edit-body::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .weapon-edit-row {
     display: flex;
@@ -9357,13 +9357,13 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     overflow-y: auto;
     scrollbar-gutter: stable;
     scrollbar-width: thin;
-    scrollbar-color: var(--cv-scrollbar-thumb) transparent;
+    scrollbar-color: var(--cv-text-muted) transparent;
     gap: 1px;
 }
 
 .weapon-trait-picker-list::-webkit-scrollbar { width: 4px; }
 .weapon-trait-picker-list::-webkit-scrollbar-track { background: transparent; }
-.weapon-trait-picker-list::-webkit-scrollbar-thumb { background: var(--cv-scrollbar-thumb); border-radius: 2px; }
+.weapon-trait-picker-list::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .weapon-trait-picker-row {
     display: flex;

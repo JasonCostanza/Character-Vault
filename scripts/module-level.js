@@ -48,6 +48,7 @@
                 carryOverXP: true,
                 barColor: null,
                 barStyle: 'solid',
+                className: null,
             };
         }
         if (data.content.level === undefined) data.content.level = 1;
@@ -57,6 +58,7 @@
         if (data.content.carryOverXP === undefined) data.content.carryOverXP = true;
         if (data.content.barColor === undefined) data.content.barColor = null;
         if (!data.content.barStyle) data.content.barStyle = 'solid';
+        if (data.content.className === undefined) data.content.className = null;
     }
 
     // ── Progress Calculation ──
@@ -111,8 +113,8 @@
         display.className = 'level-display';
 
         const levelLabel = document.createElement('div');
-        levelLabel.className = 'level-label';
-        levelLabel.textContent = t('level.levelLabel');
+        levelLabel.className = 'level-label' + (c.className ? ' level-label-custom' : '');
+        levelLabel.textContent = c.className || t('level.levelLabel');
 
         const numEl = document.createElement('div');
         numEl.className = 'level-number';
@@ -394,6 +396,7 @@
         let wCarryOver = content.carryOverXP;
         let wBarColor = content.barColor;
         let wBarStyle = content.barStyle;
+        let wClassName = content.className;
         let dirty = false;
 
         const overlay = document.createElement('div');
@@ -422,6 +425,32 @@
         // Body
         const body = document.createElement('div');
         body.className = 'cv-modal-body';
+
+        // ── Class Name ──
+        const classSection = document.createElement('div');
+        classSection.className = 'level-settings-section';
+
+        const classLabel = document.createElement('div');
+        classLabel.className = 'cv-modal-label';
+        classLabel.textContent = t('level.classNameLabel');
+        classLabel.style.userSelect = 'none';
+
+        const classInput = document.createElement('input');
+        classInput.type = 'text';
+        classInput.className = 'cv-modal-input';
+        classInput.value = wClassName || '';
+        classInput.placeholder = t('level.classNamePlaceholder');
+        classInput.maxLength = 40;
+        classInput.spellcheck = false;
+        classInput.autocomplete = 'off';
+        classInput.addEventListener('input', () => {
+            wClassName = classInput.value.trim() || null;
+            dirty = true;
+        });
+
+        classSection.appendChild(classLabel);
+        classSection.appendChild(classInput);
+        body.appendChild(classSection);
 
         // ── Leveling System ──
         const systemSection = document.createElement('div');
@@ -533,7 +562,7 @@
             wCarryOver = checked;
             dirty = true;
         });
-        carryToggle.className = 'level-toggle-row';
+        carryToggle.classList.add('level-toggle-row');
 
         const carryLabel = document.createElement('span');
         carryLabel.className = 'cv-toggle-label';
@@ -656,6 +685,7 @@
         }
 
         function commitAndClose() {
+            content.className = wClassName;
             content.levelingSystem = wSystem;
             content.xpThresholds = wThresholds.slice();
             content.carryOverXP = wCarryOver;
@@ -718,6 +748,11 @@
     window.getCharacterLevel = function (moduleId) {
         const mod = window.modules.find((m) => m.id === moduleId && m.type === 'level');
         return mod ? mod.content.level : null;
+    };
+
+    window.getCharacterClass = function (moduleId) {
+        const mod = window.modules.find((m) => m.id === moduleId && m.type === 'level');
+        return mod && mod.content ? (mod.content.className || null) : null;
     };
 
     // Expose for module-core.js

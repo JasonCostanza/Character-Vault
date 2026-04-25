@@ -2790,6 +2790,10 @@ select,
     margin-top: 2px;
 }
 
+.level-label-custom {
+    user-select: text;
+}
+
 /* ── Level Bar ── */
 
 .level-bar-container {

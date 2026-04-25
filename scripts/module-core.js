@@ -317,6 +317,7 @@
                 carryOverXP: true,
                 barColor: null,
                 barStyle: 'solid',
+                className: null,
             };
             const sysName = getGameSystemDisplayName(sys);
             if (sysName && xpTpl) moduleData.title = sysName + ' ' + t('type.level');

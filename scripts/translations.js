@@ -225,6 +225,8 @@
             'list.log.attrChange': '{item}: {attr} \u2192 {value} ({listName})',
 
             // Level submodule
+            'level.classNameLabel': 'Class Name',
+            'level.classNamePlaceholder': 'e.g. Fighter, Ranger, Warlock',
             'level.levelLabel': 'Level',
             'level.xpTooltip': '{current} / {target} XP',
             'level.levelUp': 'Level Up',

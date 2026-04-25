@@ -8,9 +8,9 @@
             'menu.settings': 'Settings',
             'menu.newModule': 'New Module',
             'menu.newModuleTitle': 'New Module',
-            'menu.edit': 'Edit',
+            'menu.edit': 'Layout',
             'menu.play': 'Play',
-            'menu.toggleMode': 'Toggle Play/Edit Mode',
+            'menu.toggleMode': 'Toggle Play/Layout Mode',
 
             // Settings overlay
             'settings.title': 'Settings',
@@ -1096,7 +1096,7 @@
             'menu.settings': 'Configuración',
             'menu.newModule': 'Nuevo Módulo',
             'menu.newModuleTitle': 'Nuevo Módulo',
-            'menu.edit': 'Editar',
+            'menu.edit': 'Layout',
             'menu.play': 'Jugar',
             'menu.toggleMode': 'Alternar Modo Jugar/Editar',
 
@@ -1667,7 +1667,7 @@
             'menu.settings': 'Paramètres',
             'menu.newModule': 'Nouveau Module',
             'menu.newModuleTitle': 'Nouveau Module',
-            'menu.edit': 'Éditer',
+            'menu.edit': 'Layout',
             'menu.play': 'Jouer',
             'menu.toggleMode': 'Basculer Mode Jouer/Éditer',
 
@@ -2238,7 +2238,7 @@
             'menu.settings': 'Einstellungen',
             'menu.newModule': 'Neues Modul',
             'menu.newModuleTitle': 'Neues Modul',
-            'menu.edit': 'Bearbeiten',
+            'menu.edit': 'Layout',
             'menu.play': 'Spielen',
             'menu.toggleMode': 'Spielen/Bearbeiten umschalten',
 
@@ -2808,7 +2808,7 @@
             'menu.settings': 'Impostazioni',
             'menu.newModule': 'Nuovo Modulo',
             'menu.newModuleTitle': 'Nuovo Modulo',
-            'menu.edit': 'Modifica',
+            'menu.edit': 'Layout',
             'menu.play': 'Gioca',
             'menu.toggleMode': 'Alterna Modalità Gioco/Modifica',
 
@@ -3384,7 +3384,7 @@
             'menu.settings': 'Configurações',
             'menu.newModule': 'Novo Módulo',
             'menu.newModuleTitle': 'Novo Módulo',
-            'menu.edit': 'Editar',
+            'menu.edit': 'Layout',
             'menu.play': 'Jogar',
             'menu.toggleMode': 'Alternar Modo Jogar/Editar',
 
@@ -3948,7 +3948,7 @@
             'menu.settings': 'Настройки',
             'menu.newModule': 'Новый Модуль',
             'menu.newModuleTitle': 'Новый Модуль',
-            'menu.edit': 'Редактировать',
+            'menu.edit': 'Layout',
             'menu.play': 'Играть',
             'menu.toggleMode': 'Переключить Режим Игры/Редактирования',
 

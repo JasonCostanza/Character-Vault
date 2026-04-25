@@ -11,7 +11,7 @@ Registered via `registerModuleType('text', { ... })` in `scripts/module-text.js`
 | `label` | `'type.text'` — i18n key, resolves to "Text Box" in English |
 | `renderBody(bodyEl, data, isPlayMode)` | Builds both the textarea and the display div; wires up the `input` listener; auto-sizes the textarea; attaches checkbox handlers in play mode |
 | `onPlayMode(moduleEl)` | Hides the textarea, renders Markdown into `.module-text-display`, attaches checkbox handlers, shows the display div |
-| `onEditMode(moduleEl)` | Hides the display div, shows the textarea, re-runs auto-resize |
+| `onLayoutMode(moduleEl)` | Hides the display div, shows the textarea, re-runs auto-resize |
 | `syncState(moduleEl, data)` | Reads textarea value back into `data.content` before save |
 
 ## Data Model
@@ -23,7 +23,7 @@ Text Box uses the shared `moduleData` object from the `modules[]` array. The onl
 
 All other fields (`id`, `type`, `colSpan`, `rowSpan`, `order`, `theme`, `textLight`) are part of the shared module shell.
 
-## Edit Mode
+## Layout Mode
 - The textarea (`.module-textarea`) is visible and the display div is hidden.
 - Placeholder text reads **"Write your notes..."** (i18n key: `text.placeholder`).
 - On every `input` event the textarea value is written back to `data.content`, `autoResizeTextarea()` is called, and `scheduleSave()` is invoked.
@@ -61,9 +61,9 @@ First and last child elements have their top/bottom margins removed to keep spac
 
 ## Module Toolbar
 The Text Box toolbar contains (in order, left to right):
-- **Drag handle** (edit mode only)
-- **Title** — label in play mode, editable input in edit mode
-- **Overflow menu** (edit mode only) — three-dot button for the compact overlay menu
+- **Drag handle** (layout mode only)
+- **Title** — label in play mode, editable input in layout mode
+- **Overflow menu** (layout mode only) — three-dot button for the compact overlay menu
 - **Copy to Clipboard** (`module-copy-btn`) — Copies the raw Markdown content to the clipboard using `document.execCommand('copy')`. Flashes with `flash-confirm` class for 600ms on success.
 - **Change Theme** — standard theme picker
 - **Delete** — standard delete button

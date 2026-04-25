@@ -11,7 +11,7 @@ Registered via `registerModuleType('spacer', { ... })` in `scripts/module-spacer
 | `label` | `'type.spacer'` — i18n key, resolves to "Spacer" in English |
 | `renderBody(bodyEl, data, isPlayMode)` | Renders a `.spacer-controls` div with drag handle, label, and delete button. Hidden in play mode. Wires up the delete button to `openDeleteConfirm()`. |
 | `onPlayMode(moduleEl, data)` | Hides `.spacer-controls` (`display: none`) |
-| `onEditMode(moduleEl, data)` | Shows `.spacer-controls` (`display: ''`) |
+| `onLayoutMode(moduleEl, data)` | Shows `.spacer-controls` (`display: ''`) |
 
 No `syncState` hook is needed — the spacer has no user-editable content to persist.
 
@@ -29,7 +29,7 @@ The Spacer uses the shared `moduleData` object from the `modules[]` array with n
 
 All other fields (`id`, `type`, `order`, `title`, `textLight`) are part of the shared module shell.
 
-## Edit Mode
+## Layout Mode
 - The standard `.module-header` is hidden via CSS (`display: none !important`) since the spacer needs no title, text color toggle, or type-specific buttons.
 - Instead, `.spacer-controls` renders inline in the `.module-body`:
   - **Drag handle** (`.spacer-drag-handle.module-drag-handle`) — braille character `⠇`, recognized by SortableJS for drag-and-drop reordering
@@ -56,13 +56,13 @@ All other fields (`id`, `type`, `order`, `title`, `textLight`) are part of the s
 ## CSS Classes
 | Class | Element | Purpose |
 |---|---|---|
-| `.spacer-controls` | `<div>` | Container for edit-mode controls (drag, label, delete) |
+| `.spacer-controls` | `<div>` | Container for layout-mode controls (drag, label, delete) |
 | `.spacer-drag-handle` | `<span>` | Drag handle for SortableJS reordering |
 | `.spacer-label` | `<span>` | Muted label text identifying the module as a spacer |
 | `.spacer-delete-btn` | `<button>` | Delete button — opens shared delete confirmation |
 
 ## Style
-- The spacer uses `--cv-border` for its dashed edit-mode outline and `--cv-text-muted` for all control text/icons.
+- The spacer uses `--cv-border` for its dashed layout-mode outline and `--cv-text-muted` for all control text/icons.
 - No theme color tokens are used since the spacer is always transparent.
 - The delete button highlights with `--cv-danger` on hover.
 - All text within the spacer controls is `user-select: none`.
@@ -72,4 +72,4 @@ When a new Spacer is created through the wizard, it defaults to:
 - Empty content (`''`)
 - 1-column span, 1-row span
 - No theme color (`null`)
-- Transparent background with dashed border (edit mode only)
+- Transparent background with dashed border (layout mode only)

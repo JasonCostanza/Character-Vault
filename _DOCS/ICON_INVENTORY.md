@@ -107,7 +107,7 @@ These icons are used for buttons, menus, and general interface elements.
 | :--- | :--- | :--- | :--- |
 | `main.html` | Settings Gear | `--cv-text-muted`, `--cv-text` | Settings button (Default/Hover) |
 | `main.html` | Plus Sign | `--cv-text-muted`, `--cv-accent` | New Module button (Menu/Primary) |
-| `main.html` | Edit Pen | `--cv-accent` | Edit Mode toggle (Active state) |
+| `main.html` | Edit Pen | `--cv-accent` | Layout Mode toggle (Active state) |
 | `main.html` | Play Triangle | `--cv-accent` | Play Mode toggle (Active state) |
 | `main.html` | GitHub Logo | `--cv-text-muted` | GitHub link in footer |
 | `main.html" | Close X | `--cv-text-muted`, `--cv-danger` | Modal close / Cancel buttons |

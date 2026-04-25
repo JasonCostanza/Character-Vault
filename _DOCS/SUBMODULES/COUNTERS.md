@@ -103,7 +103,7 @@ Registered via `registerModuleType('counters', { ... })` in `scripts/module-coun
 | `label` | `'type.counters'` — i18n key, resolves to "Counters" in English |
 | `renderBody(bodyEl, data, isPlayMode)` | Builds the counter list with values, max displays, and reset buttons; wires up click/right-click handlers and drag handlers |
 | `onPlayMode(moduleEl)` | Switches to read-only state; enables click-to-increment and right-click-to-decrement; enables sort-by-column-header |
-| `onEditMode(moduleEl)` | Switches to editable state; shows the quick-add modal on Add Counter button; enables drag-to-reorder |
+| `onLayoutMode(moduleEl)` | Switches to editable state; shows the quick-add modal on Add Counter button; enables drag-to-reorder |
 | `syncState(moduleEl, data)` | (Optional) Reads any inline state back into `data.content` before save |
 
 ## Grid Sizing
@@ -117,7 +117,7 @@ Registered via `registerModuleType('counters', { ... })` in `scripts/module-coun
 | Button | Mode | Description |
 |---|---|---|
 | **Drag handle** | Both | Standard module drag handle for grid repositioning |
-| **Title** | Both | Label in play mode, editable input in edit mode |
+| **Title** | Both | Label in play mode, editable input in layout mode |
 | **Add Counter** | Edit | Opens a quick creation modal to add a new counter |
 | **Change Theme** | Both | Standard theme picker |
 | **Delete** | Edit | Standard module delete button |
@@ -138,12 +138,12 @@ By default, the module UI will display all active counters in a list, with:
 - **Reset** — clicking the reset button sets the counter to its `min` value
 - **Sorting** — clicking on column headers (Name, Value) sorts the list ascending; clicking again toggles descending; clicking a third time returns to manual (`custom`) order. Current sort state is persisted in `sortBy` / `sortDir`.
 
-### Edit Mode
+### Layout Mode
 - **Add Counter** — toolbar button opens the counter creation modal (see "Counter Creation Modal" below)
 - **Edit Counter** — clicking on a counter (or double-clicking the counter row) opens the edit modal (see "Counter Edit Modal" below)
 - **Delete Counter** — each counter row has a delete button
 - **Drag-to-reorder** — counters can be reordered via drag handles. After reorder, `order` values are updated and `scheduleSave()` is called.
-- **Sorting disabled** — when in edit mode, sort headers are not interactive; users must reorder manually with drag handles
+- **Sorting disabled** — when in layout mode, sort headers are not interactive; users must reorder manually with drag handles
 
 ## Counter Creation Modal
 

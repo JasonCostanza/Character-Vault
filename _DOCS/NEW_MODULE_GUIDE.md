@@ -87,8 +87,8 @@ registerModuleType('typename', {
         this.renderBody(bodyEl, data, true);
     },
 
-    onEditMode(moduleEl, data) {
-        // Called when the sheet switches to edit mode.
+    onLayoutMode(moduleEl, data) {
+        // Called when the sheet switches to layout mode.
         const bodyEl = moduleEl.querySelector('.module-body');
         this.renderBody(bodyEl, data, false);
     },
@@ -107,7 +107,7 @@ registerModuleType('typename', {
 |---|---|---|
 | `renderBody(bodyEl, data, isPlayMode)` | Populate `.module-body` with your UI | Module creation, load, mode switch |
 | `onPlayMode(moduleEl, data)` | Transition to play mode | Global mode toggle |
-| `onEditMode(moduleEl, data)` | Transition to edit mode | Global mode toggle |
+| `onLayoutMode(moduleEl, data)` | Transition to layout mode | Global mode toggle |
 
 ### Optional Methods
 
@@ -119,7 +119,7 @@ registerModuleType('typename', {
 
 - **Interaction Modes** — Ensure a clear distinction:
   - **Play Mode:** Read-only data display with direct in-game interactions (toggles, rolling, quick stat adjustments).
-  - **Edit Mode:** Inline inputs, array manipulation, and structure changes. Cross-module drag-and-drop applies here.
+  - **Layout Mode:** Inline inputs, array manipulation, and structure changes. Cross-module drag-and-drop applies here.
 - **Data Sorting** — If your module manages lists/arrays, implement the standard 3-state sorting cycle (Ascending/Descending/Custom) on column headers. Remember to disable `SortableJS` drag-to-reorder when an active auto-sort is applied. Save sort state (`sortBy`, `sortDir`) in `data.content`.
 - **Modals & Overlays** — If your module requires complex modal editing:
   - Add universal buttons (`[Save]`/`[Create]`, `[Cancel]`/`[Close]`, `[X]`, and potentially `[Delete]`).

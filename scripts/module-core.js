@@ -391,14 +391,14 @@
     });
 
     // ── Module Type Registry ──
-    // Each module type registers: label, renderBody, onPlayMode, onEditMode.
+    // Each module type registers: label, renderBody, onPlayMode, onLayoutMode.
     // renderBody(bodyEl, data, isPlayMode) — populate the .module-body element.
     // onPlayMode(moduleEl, data) — switch this module to play mode.
-    // onEditMode(moduleEl, data) — switch this module to edit mode.
+    // onLayoutMode(moduleEl, data) — switch this module to layout mode.
     const MODULE_TYPES = {};
 
-    function registerModuleType(type, { label, renderBody, onPlayMode, onEditMode, syncState }) {
-        MODULE_TYPES[type] = { label, renderBody, onPlayMode, onEditMode, syncState };
+    function registerModuleType(type, { label, renderBody, onPlayMode, onLayoutMode, syncState }) {
+        MODULE_TYPES[type] = { label, renderBody, onPlayMode, onLayoutMode, syncState };
     }
 
     // ── Module Rendering ──
@@ -1226,7 +1226,7 @@
         });
     }
 
-    function applyEditMode() {
+    function applyLayoutMode() {
         document.querySelectorAll('.module').forEach((mod) => {
             const type = mod.dataset.type;
             const data = window.modules.find((m) => m.id === mod.dataset.id);
@@ -1241,7 +1241,7 @@
                 rollableBtn.classList.add('disabled');
                 rollableBtn.classList.remove('active');
             }
-            // Clear stat selection when entering edit mode
+            // Clear stat selection when entering layout mode
             mod._selectedStatIndex = null;
             const deleteBtn = mod.querySelector('.module-delete-btn');
             if (deleteBtn) deleteBtn.style.display = '';
@@ -1256,8 +1256,8 @@
                 titleLabel.style.display = 'none';
                 titleInput.style.display = '';
             }
-            if (type && MODULE_TYPES[type]?.onEditMode) {
-                MODULE_TYPES[type].onEditMode(mod, data);
+            if (type && MODULE_TYPES[type]?.onLayoutMode) {
+                MODULE_TYPES[type].onLayoutMode(mod, data);
             }
             // Re-snap auto-height after mode switch (edit blocks are taller)
             if (data) snapModuleHeight(mod, data);
@@ -1317,7 +1317,7 @@
             e.preventDefault();
             e.stopPropagation();
 
-            // Only allow resize in edit mode
+            // Only allow resize in layout mode
             if (window.isPlayMode) return;
 
             const grid = document.getElementById('module-grid');
@@ -1395,7 +1395,7 @@
     window.renderModule = renderModule;
     window.openDeleteConfirm = openDeleteConfirm;
     window.applyPlayMode = applyPlayMode;
-    window.applyEditMode = applyEditMode;
+    window.applyLayoutMode = applyLayoutMode;
     window.GRID_COLUMNS = GRID_COLUMNS;
     window.GRID_GAP = GRID_GAP;
     window.ROW_H = ROW_H;

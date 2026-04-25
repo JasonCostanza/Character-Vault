@@ -616,7 +616,7 @@
         bodyEl.appendChild(layout.container);
     }
 
-    // ── Edit Mode ──
+    // ── Layout Mode ──
     function renderEditBody(bodyEl, data) {
         var content = ensureWeaponsContent(data);
         var moduleEl = bodyEl.closest('.module');
@@ -2151,7 +2151,7 @@
             this.renderBody(bodyEl, data, true);
         },
 
-        onEditMode: function (moduleEl, data) {
+        onLayoutMode: function (moduleEl, data) {
             var bodyEl = moduleEl.querySelector('.module-body');
             this.renderBody(bodyEl, data, false);
         },

@@ -43,7 +43,7 @@
             }
         },
 
-        onEditMode(moduleEl) {
+        onLayoutMode(moduleEl) {
             const textarea = moduleEl.querySelector('.module-textarea');
             const display = moduleEl.querySelector('.module-text-display');
             if (textarea && display) {

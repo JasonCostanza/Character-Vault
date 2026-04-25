@@ -529,7 +529,7 @@
             syncHealthLayersFromData(moduleEl, data);
         },
 
-        onEditMode(moduleEl, data) {
+        onLayoutMode(moduleEl, data) {
             const container = moduleEl.querySelector('.health-container');
             if (!container) {
                 const bodyEl = moduleEl.querySelector('.module-body');

@@ -126,7 +126,7 @@
         return block;
     }
 
-    // ── Edit Mode Block ──
+    // ── Layout Mode Block ──
     function renderSaveBlockEdit(save, index, data) {
         const content = data.content;
         const block = document.createElement('div');
@@ -690,7 +690,7 @@
             this.renderBody(bodyEl, data, true);
         },
 
-        onEditMode(moduleEl, data) {
+        onLayoutMode(moduleEl, data) {
             ensureSaveContent(data);
             const bodyEl = moduleEl.querySelector('.module-body');
             this.renderBody(bodyEl, data, false);

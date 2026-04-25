@@ -1935,7 +1935,7 @@ select,
     background-color: var(--cv-accent);
 }
 
-/* Stat edit mode */
+/* Stat layout mode */
 .stat-block-edit {
     background-color: var(--cv-bg-raised);
     border: 1px solid var(--cv-border);
@@ -2299,7 +2299,7 @@ select,
     user-select: none;
 }
 
-/* Abilities edit mode */
+/* Abilities layout mode */
 .ability-edit-row {
     display: flex;
     align-items: center;
@@ -2675,7 +2675,7 @@ select,
 
 
 
-/* ── Edit Mode: Inline Inputs ── */
+/* ── Layout Mode: Inline Inputs ── */
 .health-inline-input {
     border: 1px solid var(--cv-border-subtle);
     border-radius: 3px;
@@ -4564,7 +4564,7 @@ select,
     opacity: 1;
 }
 
-/* ── Resistance Edit Mode Items ── */
+/* ── Resistance Layout Mode Items ── */
 .res-edit-items {
     display: flex;
     flex-wrap: wrap;
@@ -5814,7 +5814,7 @@ select,
     opacity: 1;
 }
 
-/* ── Condition Edit Mode Items ── */
+/* ── Condition Layout Mode Items ── */
 .cond-edit-item {
     display: flex;
     align-items: center;
@@ -6965,7 +6965,7 @@ select,
     height: 13px;
 }
 
-/* ── Edit Mode Row ── */
+/* ── Layout Mode Row ── */
 
 .counter-row-edit {
     display: flex;
@@ -7344,7 +7344,7 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     margin: 0;
 }
 
-/* ── Edit Mode Blocks (mirrors .stat-block-edit) ── */
+/* ── Layout Mode Blocks (mirrors .stat-block-edit) ── */
 
 .save-block-edit {
     background-color: var(--cv-bg-raised);
@@ -8043,7 +8043,7 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
 
-/* ── Edit Mode ── */
+/* ── Layout Mode ── */
 
 .spells-edit-container {
     display: flex;
@@ -8497,7 +8497,7 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     user-select: none;
 }
 
-/* ── Edit Mode ── */
+/* ── Layout Mode ── */
 
 .recovery-edit-container {
     display: flex;

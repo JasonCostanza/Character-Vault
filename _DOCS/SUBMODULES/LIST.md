@@ -66,7 +66,7 @@ Registered via `registerModuleType('list', { ... })` in `scripts/module-list.js`
 | `label` | `'type.list'` — i18n key, resolves to "List" in English |
 | `renderBody(bodyEl, data, isPlayMode)` | Builds the item table with pinned attribute columns; wires up sort headers, expand buttons, and drag handlers |
 | `onPlayMode(moduleEl)` | Switches to read-only rows; enables sort-by-column-header |
-| `onEditMode(moduleEl)` | Switches to editable rows; enables drag-to-reorder and cross-list transfer; shows add/delete controls |
+| `onLayoutMode(moduleEl)` | Switches to editable rows; enables drag-to-reorder and cross-list transfer; shows add/delete controls |
 | `syncState(moduleEl, data)` | Reads all inline inputs back into `data.content` before save |
 
 ## Grid Sizing
@@ -80,7 +80,7 @@ Registered via `registerModuleType('list', { ... })` in `scripts/module-list.js`
 - **Sort by column** — clicking a column header (name or any attribute) sorts ascending; clicking again toggles descending; clicking a third time returns to manual order. Current sort state is persisted in `sortBy` / `sortDir`.
 - **Item inspect overlay** — clicking the expand button opens the inspect overlay (see "Item Inspect Overlay" below).
 
-## Edit Mode
+## Layout Mode
 - **Inline item editing** — item names are editable directly in the row.
 - **Add Item** — toolbar button appends a new item with an empty name, empty notes, and default values for all attributes.
 - **Delete Item** — each row has a delete button. No confirmation needed for individual item deletion.
@@ -93,7 +93,7 @@ Registered via `registerModuleType('list', { ... })` in `scripts/module-list.js`
 | Button | Mode | Description |
 |---|---|---|
 | **Drag handle** | Edit | Standard module drag handle for grid repositioning |
-| **Title** | Both | Label in play mode, editable input in edit mode |
+| **Title** | Both | Label in play mode, editable input in layout mode |
 | **Add Item** | Edit | Appends a new blank item to the list |
 | **Manage Attributes** | Edit | Opens the attribute management panel / Attribute Wizard |
 | **Change Theme** | Edit | Standard theme picker |
@@ -105,7 +105,7 @@ Registered via `registerModuleType('list', { ... })` in `scripts/module-list.js`
 Attributes are properties shared by all items in a list. If the list is an inventory, items might share a Weight attribute. Equipment might track Equipped/Unequipped state. Attributes can be selected from the built-in presets or created with the Attribute Wizard.
 
 ## Adding Attributes
-By default, a new list module has no attributes — items are name-only. The user adds attributes via the **Manage Attributes** panel (accessible from the toolbar in edit mode). When an attribute is added, every existing item gains that attribute with the configured default value.
+By default, a new list module has no attributes — items are name-only. The user adds attributes via the **Manage Attributes** panel (accessible from the toolbar in layout mode). When an attribute is added, every existing item gains that attribute with the configured default value.
 
 ## Removing Attributes
 When an attribute is removed from a list, that attribute's values are deleted from all items. This action should prompt for confirmation since it is destructive and irreversible.

@@ -704,7 +704,7 @@
             renderLevelBody(bodyEl, data, true);
         },
 
-        onEditMode(moduleEl, data) {
+        onLayoutMode(moduleEl, data) {
             const bodyEl = moduleEl.querySelector('.module-body');
             renderLevelBody(bodyEl, data, false);
         },

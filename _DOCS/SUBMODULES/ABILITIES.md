@@ -93,7 +93,7 @@ Skills linked to Combat, Intellect, and Speed stats.
 ### Shadowrun 6e (18 skills, linkedStat mappings where applicable)
 Skills linked to Agility, Logic, Charisma, Intuition, Reaction. Magic/Matrix skills have `linkedStat: null`.
 
-## Toolbar Buttons (Edit Mode)
+## Toolbar Buttons (Layout Mode)
 
 - `.module-abilities-settings-btn` — Gear icon → opens settings panel for linked Stat module
 - `.module-abilities-add-btn` — Plus icon → appends a blank ability

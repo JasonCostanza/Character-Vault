@@ -1,7 +1,7 @@
 // ── Settings ──
 (function () {
     // ── Mode Switcher ──
-    const btnModeEdit = document.getElementById('btn-mode-edit');
+    const btnModeLayout = document.getElementById('btn-mode-layout');
     const btnModePlay = document.getElementById('btn-mode-play');
 
     window.isPlayMode = false;
@@ -9,19 +9,19 @@
     function _setMode(play) {
         window.isPlayMode = play;
         if (play) {
-            btnModeEdit.classList.remove('active');
+            btnModeLayout.classList.remove('active');
             btnModePlay.classList.add('active');
             if (typeof sortable !== 'undefined') sortable.option('disabled', true);
             applyPlayMode();
         } else {
             btnModePlay.classList.remove('active');
-            btnModeEdit.classList.add('active');
+            btnModeLayout.classList.add('active');
             if (typeof sortable !== 'undefined') sortable.option('disabled', false);
-            applyEditMode();
+            applyLayoutMode();
         }
     }
 
-    btnModeEdit.addEventListener('click', () => _setMode(!window.isPlayMode));
+    btnModeLayout.addEventListener('click', () => _setMode(!window.isPlayMode));
     btnModePlay.addEventListener('click', () => _setMode(!window.isPlayMode));
 
     // ── Settings Overlay ──

@@ -375,7 +375,7 @@
             this.renderBody(bodyEl, data, true);
         },
 
-        onEditMode(moduleEl, data) {
+        onLayoutMode(moduleEl, data) {
             const bodyEl = moduleEl.querySelector('.module-body');
             this.renderBody(bodyEl, data, false);
         },

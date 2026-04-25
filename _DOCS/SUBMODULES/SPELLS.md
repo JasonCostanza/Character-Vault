@@ -13,7 +13,7 @@ Spell slots can be manually spent by the user, or they can be automatically spen
 ## Spell Categories
 Spell Categories are a way to organize spells within the Spells module in a list format. Each category can represent a different level of spells (e.g. "Level-1 Spells", "Level-2 Spells", etc.). Within each category, users can add individual spells, which can have their own unique properties such as damage, range, and cooldown. This allows for a structured and organized way to manage spells within the game. Each category can be expanded or collapsed to show or hide the spells within it, making it easier for users to navigate through their spell collection when they have access to a large number of spells.
 
-# Edit Mode
+# Layout Mode
 The user can:
 - Add, remove, edit spell categories
 - Add, remove, edit spells within those categories

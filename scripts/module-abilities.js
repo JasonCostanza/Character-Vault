@@ -538,7 +538,7 @@
             buildAbilityBody(moduleEl.querySelector('.module-body'), data, true);
         },
 
-        onEditMode(moduleEl, data) {
+        onLayoutMode(moduleEl, data) {
             buildAbilityBody(moduleEl.querySelector('.module-body'), data, false);
         },
 

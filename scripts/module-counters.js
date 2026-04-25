@@ -720,7 +720,7 @@
         return row;
     }
 
-    // ── Edit Mode: Counter Row ──
+    // ── Layout Mode: Counter Row ──
     function renderCounterRowEdit(counter, data, moduleEl) {
         const content = data.content;
         const row = document.createElement('div');
@@ -758,7 +758,7 @@
         }
         row.appendChild(valueEl);
 
-        // Action buttons group — disabled in edit mode to preserve layout
+        // Action buttons group — disabled in layout mode to preserve layout
         const actionsGroup = document.createElement('div');
         actionsGroup.className = 'counter-row-actions';
 
@@ -893,7 +893,7 @@
         container.appendChild(headerRow);
     }
 
-    // ── SortableJS for Edit Mode Reorder ──
+    // ── SortableJS for Layout Mode Reorder ──
     function initCounterSortable(container, data) {
         const content = data.content;
         container._sortable = new Sortable(container, {
@@ -932,7 +932,7 @@
             container.className = 'counter-container';
             const moduleEl = bodyEl.closest('.module');
 
-            // Sort controls — shown in both play and edit mode
+            // Sort controls — shown in both play and layout mode
             if (content.counters.length > 0) {
                 renderCounterColumnHeaders(container, content, moduleEl, data);
             }
@@ -959,7 +959,7 @@
                 let list = document.createElement('div');
                 list.className = 'counter-list counter-list-edit';
 
-                // In edit mode, always show custom order
+                // In layout mode, always show custom order
                 let sorted = content.counters.slice().sort(function (a, b) {
                     return a.order - b.order;
                 });
@@ -991,7 +991,7 @@
             this.renderBody(bodyEl, data, true);
         },
 
-        onEditMode: function (moduleEl, data) {
+        onLayoutMode: function (moduleEl, data) {
             const bodyEl = moduleEl.querySelector('.module-body');
             this.renderBody(bodyEl, data, false);
         },

@@ -18,7 +18,7 @@
             const controls = moduleEl.querySelector('.spacer-controls');
             if (controls) controls.style.display = 'none';
         },
-        onEditMode(moduleEl, data) {
+        onLayoutMode(moduleEl, data) {
             const controls = moduleEl.querySelector('.spacer-controls');
             if (controls) controls.style.display = '';
         },

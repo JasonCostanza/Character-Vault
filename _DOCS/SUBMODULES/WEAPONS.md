@@ -106,7 +106,7 @@ Each weapon card displays:
 
 When `twoHanded: true`, the card renders in its assigned slot **and** a greyed-out, non-interactable placeholder card appears in the opposite slot indicating that hand is consumed. The placeholder is not draggable and does not open a modal.
 
-## Edit Mode
+## Layout Mode
 
 Clicking a card in Edit mode opens an edit modal. Reference: `openSpellDetailModal()` in `scripts/module-spells.js` for the canonical modal structure.
 
@@ -224,7 +224,7 @@ These items are deliberately deferred to Phase 2:
 Implementation must follow `_DOCS/NEW_MODULE_GUIDE.md`. High-level:
 
 1. Create `scripts/module-weapons.js` with IIFE wrapping per CLAUDE.md rule 19
-2. Register via `registerModuleType()` with `renderBody`, `onPlayMode`, `onEditMode`, `syncState`
+2. Register via `registerModuleType()` with `renderBody`, `onPlayMode`, `onLayoutMode`, `syncState`
 3. Expose pure functions on `window` for vitest coverage per rule 19 (e.g., `window.weaponsComputeAttackBonus`, `window.weaponsEnsureContent`)
 4. Add vitest tests for pure functions per rule 20
 5. Add `<script>` tag to `main.html` in load order (after `module-activity.js`)

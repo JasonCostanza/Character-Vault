@@ -82,9 +82,9 @@ The `maxmod` overlay also shows a subheading (`health.maxHPMod`).
 
 ## Module Toolbar
 The Health module toolbar contains (in order, left to right):
-- **Drag handle** (edit mode only)
-- **Title** — label in play mode, editable input in edit mode
-- **Overflow menu** (edit mode only) — three-dot button for the compact overlay menu
+- **Drag handle** (layout mode only)
+- **Title** — label in play mode, editable input in layout mode
+- **Overflow menu** (layout mode only) — three-dot button for the compact overlay menu
 - **Module Settings** (`module-health-maxmod-btn`) — Gear icon, opens the action overlay in `maxmod` mode to set `maxHPModifier`
 - **Eyedropper** (`module-health-eyedropper-btn`) — Pulls HP from the selected TaleSpire board miniature via `TS.creatures.getMoreInfo()`, setting `currentHP` and `maxHP`
 - **Change Theme** — standard theme picker
@@ -93,7 +93,7 @@ The Health module toolbar contains (in order, left to right):
 All toolbar buttons except the title label are hidden in play mode.
 
 ## syncState
-Called before saving to capture any in-progress edit-mode input values. Reads `currentHP`, `maxHP`, and `tempHP` inputs, evaluates their expressions, and writes results back to `data.content`.
+Called before saving to capture any in-progress layout-mode input values. Reads `currentHP`, `maxHP`, and `tempHP` inputs, evaluates their expressions, and writes results back to `data.content`.
 
 ## Key Functions (in `module-health.js`)
 

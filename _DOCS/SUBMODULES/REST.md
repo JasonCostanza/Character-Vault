@@ -98,7 +98,7 @@ The `restoreHitDice` action (typically on a Long Rest button) restores Hit Dice 
 - `'half'` — Restore `floor(total / 2)` dice (minimum 1), capped at `total`
 - `'none'` — No restoration
 
-### Hit Dice Configuration (Edit Mode)
+### Hit Dice Configuration (Layout Mode)
 - **Die size**: Dropdown (`d4`, `d6`, `d8`, `d10`, `d12`)
 - **Total Hit Dice**: Number input
 - **Modifier**: Number input (flat value, e.g. Con modifier)
@@ -140,7 +140,7 @@ Empty module — no pre-populated buttons. The user configures from scratch via 
 - If a `healByRoll` action is in the list, the confirmation dialog includes the Hit Dice spend prompt (how many dice to roll) before executing.
 - After execution, results are displayed briefly (e.g., "Healed 14 HP from 2 Hit Dice").
 
-### Edit Mode
+### Layout Mode
 - **Rest button list** with drag-to-reorder (SortableJS), edit, and delete controls per button.
 - **Add Rest Button** option at the bottom of the list.
 - Clicking **Edit** on a button opens a configuration modal:

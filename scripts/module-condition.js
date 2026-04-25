@@ -2117,7 +2117,7 @@
         bodyEl.appendChild(container);
     }
 
-    // ── Edit Mode Rendering ──
+    // ── Layout Mode Rendering ──
 
     function renderEditBody(bodyEl, data) {
         const content = ensureCondContent(data);
@@ -2995,7 +2995,7 @@
             this.renderBody(bodyEl, data, true);
         },
 
-        onEditMode: function (moduleEl, data) {
+        onLayoutMode: function (moduleEl, data) {
             const bodyEl = moduleEl.querySelector('.module-body');
             this.renderBody(bodyEl, data, false);
         },

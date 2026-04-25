@@ -56,7 +56,7 @@
             const deleteBtn = moduleEl.querySelector('.hline-delete-btn');
             if (deleteBtn) deleteBtn.style.display = 'none';
         },
-        onEditMode(moduleEl, data) {
+        onLayoutMode(moduleEl, data) {
             // Show input, hide static label
             const label = moduleEl.querySelector('.hline-label');
             const input = moduleEl.querySelector('.hline-input');

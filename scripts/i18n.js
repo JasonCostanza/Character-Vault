@@ -61,10 +61,10 @@
                 btn.title = t('stat.deleteStat');
             });
         });
-        const btnModeEdit = document.getElementById('btn-mode-edit');
+        const btnModeLayout = document.getElementById('btn-mode-layout');
         const btnModePlay = document.getElementById('btn-mode-play');
-        if (btnModeEdit && btnModePlay) {
-            btnModeEdit.querySelector('.mode-label').textContent = t('menu.edit');
+        if (btnModeLayout && btnModePlay) {
+            btnModeLayout.querySelector('.mode-label').textContent = t('menu.edit');
             btnModePlay.querySelector('.mode-label').textContent = t('menu.play');
         }
     }

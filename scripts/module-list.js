@@ -605,7 +605,7 @@
         return true;
     }
 
-    // ── Sortable (Edit Mode — reorder + cross-list transfer) ──
+    // ── Sortable (Layout Mode — reorder + cross-list transfer) ──
     function initListSortable(container, data) {
         if (container._sortable) container._sortable.destroy();
         const content = ensureContent(data);
@@ -674,7 +674,7 @@
         });
     }
 
-    // ── Column Header Sortable (Edit Mode — reorder columns) ──
+    // ── Column Header Sortable (Layout Mode — reorder columns) ──
     function initColumnSortable(headerRow, content, bodyEl, data) {
         if (!headerRow) return;
         headerRow._colSortable = new Sortable(headerRow, {
@@ -732,7 +732,7 @@
         // Show header row whenever there are items so the Name column is always sortable
         const showHeader = hasItems;
 
-        // Always create container (even if empty) so it can be a drop target in edit mode
+        // Always create container (even if empty) so it can be a drop target in layout mode
         const container = document.createElement('div');
         container.className = 'list-container';
 
@@ -879,7 +879,7 @@
 
         bodyEl.appendChild(container);
 
-        // Initialize SortableJS only in edit mode and only when not sorted
+        // Initialize SortableJS only in layout mode and only when not sorted
         if (!isPlayMode && !isSorted) {
             initListSortable(container, data);
         }
@@ -924,7 +924,7 @@
         const overlay = document.querySelector('.list-manage-overlay');
         if (!overlay) return;
         overlay.remove();
-        // Re-render list body in edit mode
+        // Re-render list body in layout mode
         const bodyEl = moduleEl.querySelector('.module-body');
         renderListBody(bodyEl, data, false);
         snapModuleHeight(moduleEl, data);
@@ -1724,7 +1724,7 @@
             renderListBody(bodyEl, data, true);
         },
 
-        onEditMode(moduleEl, data) {
+        onLayoutMode(moduleEl, data) {
             const bodyEl = moduleEl.querySelector('.module-body');
             renderListBody(bodyEl, data, false);
         },

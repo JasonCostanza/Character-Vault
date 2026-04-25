@@ -12,7 +12,7 @@ The Character Level module will display the character's current level in promine
     - Click the XP bar to add or subtract XP.
     - Click the "Level Up" button when they have enough XP to increase their level.
 
-## Edit Mode
+## Layout Mode
 - The user can:
     - Manually set their current level
     - Click the XP bar to add or subtract XP.

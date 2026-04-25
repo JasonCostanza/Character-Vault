@@ -19,7 +19,7 @@ Alternatively, the user can start from scratch and create custom saving throws. 
 - The user can:
     - Click a saving throw's modifier value to roll it in the dice tray (e.g., "1d20+3").
 
-## Edit Mode
+## Layout Mode
 - The user can:
     - Add a new saving throw (via template selection or custom creation).
     - Edit an existing saving throw's name, and value.

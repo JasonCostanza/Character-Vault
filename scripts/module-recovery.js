@@ -761,7 +761,7 @@
         nameInput.select();
     }
 
-    // ── Edit Mode ──
+    // ── Layout Mode ──
 
     function buildEditMode(bodyEl, moduleEl, data) {
         const content = data.content;
@@ -878,7 +878,7 @@
             buildPlayMode(bodyEl, data);
         },
 
-        onEditMode(moduleEl, data) {
+        onLayoutMode(moduleEl, data) {
             const bodyEl = moduleEl.querySelector('.module-body');
             buildEditMode(bodyEl, moduleEl, data);
         },

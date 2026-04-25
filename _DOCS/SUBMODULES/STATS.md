@@ -33,7 +33,7 @@ Each stat entry has:
 
 The `dnd5e` and `pf2e` templates pre-seed a "Proficiency" stat with `isProficiencyStat: true` and `rollable: false`. This flag allows external modules to locate the proficiency bonus without relying on the stat's display name (which the user may change).
 
-The proficiency stat does **not** show the "Proficient" checkbox in edit mode — it is meaningless for this stat.
+The proficiency stat does **not** show the "Proficient" checkbox in layout mode — it is meaningless for this stat.
 
 External modules that need the proficiency bonus should look it up like this:
 ```js
@@ -70,14 +70,14 @@ The stat values can be swapped between the `Primary` and `Secondary` element usi
 - `large-stat` layout (default): The center text (Primary) shows the **value**; the corner badge (Secondary) shows the **modifier**.
 - `large-modifier` layout: The center text (Primary) shows the **modifier**; the corner badge (Secondary) shows the **value**.
 
-In edit mode, the label for whichever field is currently the Primary element is visually highlighted with the `stat-edit-primary-label` class.
+In layout mode, the label for whichever field is currently the Primary element is visually highlighted with the `stat-edit-primary-label` class.
 
 ### Proficiency Dot
-When a stat has `proficient: true`, a small dot indicator (`stat-proficiency-dot`) is rendered inside the stat block. This can be toggled per-stat in edit mode via the checkbox.
+When a stat has `proficient: true`, a small dot indicator (`stat-proficiency-dot`) is rendered inside the stat block. This can be toggled per-stat in layout mode via the checkbox.
 
 Example: `images\_REFERENCE\stats.png`
 
-## Module Toolbar Buttons (Edit Mode Only)
+## Module Toolbar Buttons (Layout Mode Only)
 
 Stat modules have three extra toolbar buttons that are only visible in Edit mode:
 
@@ -87,9 +87,9 @@ Stat modules have three extra toolbar buttons that are only visible in Edit mode
 | **Toggle Rollable** | `.module-rollable-btn` | Toggles the `rollable` flag on the currently selected stat. Disabled when no stat is selected. Shows an `active` state when the selected stat is rollable. |
 | **Swap Layout** | `.module-swaplayout-btn` | Toggles between `large-stat` and `large-modifier` layout for the entire module |
 
-## Stat Selection (Edit Mode)
+## Stat Selection (Layout Mode)
 
-In edit mode, clicking on the background of a stat block (not on inputs or buttons) selects it. The selected stat gets the `stat-selected` class. Clicking the same stat again deselects it. Selection state is tracked on the module element as `moduleEl._selectedStatIndex`.
+In layout mode, clicking on the background of a stat block (not on inputs or buttons) selects it. The selected stat gets the `stat-selected` class. Clicking the same stat again deselects it. Selection state is tracked on the module element as `moduleEl._selectedStatIndex`.
 
 Selection is required to use the **Toggle Rollable** toolbar button. When a stat is deleted, the selection is cleared if it was the deleted stat, or adjusted if a stat before the selected one was removed.
 
@@ -101,7 +101,7 @@ Non-rollable stats do not trigger a dice roll when clicked in Play mode (but sti
 
 All information on how to send dice rolls to TaleSpire can be found at: https://symbiote-docs.talespire.com/api_doc_v0_1.md.html#calls/dice.
 
-## Modifying a Stat Block Value (Edit Mode)
+## Modifying a Stat Block Value (Layout Mode)
 
 When in `Edit` mode, all stat blocks change from static text to editable text fields. Each edit block shows:
 - A **drag handle** (`⁞`) for reordering
@@ -114,13 +114,13 @@ Pressing `Enter` or `Escape` while typing drops focus from that text field. All 
 
 ## Quick Edit (Ctrl+Click)
 
-If the user is in `Play` mode and uses `Ctrl` + `Left Click` on any stat block (rollable or not), the stat enters quick edit mode. Both the Primary and Secondary values are replaced with number inputs inline. The primary input is auto-focused and selected.
+If the user is in `Play` mode and uses `Ctrl` + `Left Click` on any stat block (rollable or not), the stat enters quick layout mode. Both the Primary and Secondary values are replaced with number inputs inline. The primary input is auto-focused and selected.
 
 Pressing `Enter`, `Escape`, or losing focus commits the changes and re-renders the stat block in place. This bypasses rolling the stat. A `commitOnce` guard prevents double-commits from overlapping blur/keydown events.
 
 ## Drag-to-Reorder
 
-In edit mode, stats can be reordered by dragging the handle (`⁞`) on each stat block. This uses the Sortable.js library. After a drag completes, the `data.content.stats` array is reordered to match the new DOM order and `scheduleSave()` is called.
+In layout mode, stats can be reordered by dragging the handle (`⁞`) on each stat block. This uses the Sortable.js library. After a drag completes, the `data.content.stats` array is reordered to match the new DOM order and `scheduleSave()` is called.
 
 The sortable instance is stored on `container._sortable` and is destroyed and re-initialized whenever the stat list is re-rendered (e.g. after a delete).
 

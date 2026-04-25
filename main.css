@@ -9604,3 +9604,228 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     flex-shrink: 0;
 }
 
+/* ── Weapon Enhancements ── */
+
+.weapon-enhancements {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-top: 1px;
+}
+
+.weapon-enhancement-chip {
+    font-size: 10px;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 10px;
+    padding: 1px 5px;
+    color: var(--cv-accent);
+    white-space: nowrap;
+    user-select: none;
+    position: relative;
+}
+
+.weapon-enhancement-chip--overflow {
+    color: var(--cv-text-muted);
+    border-style: dashed;
+}
+
+/* Edit modal enhancements section */
+.weapon-enhancements-section .weapon-edit-section-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-muted);
+}
+
+.weapon-enhancements-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.weapon-enhancement-manage-btn {
+    font-size: 11px;
+    color: var(--cv-text-secondary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+    user-select: none;
+}
+
+.weapon-enhancement-manage-btn:hover {
+    color: var(--cv-accent);
+}
+
+.weapon-enhancement-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+.weapon-enhancement-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.weapon-enhancement-row-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.weapon-enhancement-row-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cv-text-primary);
+    user-select: none;
+}
+
+.weapon-enhancement-row-desc {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+}
+
+/* Enhancement picker dropdown */
+.weapon-enhancement-picker {
+    position: fixed;
+    background: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    min-width: 200px;
+    max-width: 260px;
+    max-height: 220px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    z-index: 310;
+    padding: 4px 0;
+}
+
+.weapon-enhancement-picker-create {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--cv-border);
+    padding: 6px 10px;
+    font-size: 12px;
+    color: var(--cv-accent);
+    cursor: pointer;
+    margin-bottom: 2px;
+    user-select: none;
+}
+
+.weapon-enhancement-picker-create:hover {
+    background: var(--cv-bg-hover);
+}
+
+.weapon-enhancement-picker-row {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.weapon-enhancement-picker-row:hover {
+    background: var(--cv-bg-hover);
+}
+
+.weapon-enhancement-picker-name {
+    font-size: 12px;
+    color: var(--cv-text-primary);
+}
+
+.weapon-enhancement-picker-empty {
+    padding: 8px 10px;
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    user-select: none;
+}
+
+/* Enhancement form panel */
+.weapon-enhancement-form-panel {
+    min-width: 300px;
+    max-width: 420px;
+}
+
+/* Enhancement catalog modal */
+.weapon-enhancement-catalog-panel {
+    min-width: 340px;
+    max-width: 480px;
+}
+
+.weapon-enhancement-catalog-body {
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    max-height: 60vh;
+}
+
+.weapon-enhancement-catalog-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.weapon-enhancement-catalog-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--cv-border);
+}
+
+.weapon-enhancement-catalog-row:last-child {
+    border-bottom: none;
+}
+
+.weapon-enhancement-catalog-row-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.weapon-enhancement-catalog-row-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cv-text-primary);
+    user-select: none;
+}
+
+.weapon-enhancement-catalog-row-meta {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    user-select: none;
+}
+
+.weapon-enhancement-catalog-row-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.weapon-enhancement-catalog-empty {
+    padding: 12px 0;
+    font-size: 12px;
+    color: var(--cv-text-muted);
+    text-align: center;
+    user-select: none;
+}
+

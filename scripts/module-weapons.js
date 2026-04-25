@@ -229,6 +229,7 @@
         }
         if (!Array.isArray(data.content.weapons)) data.content.weapons = [];
         if (!Array.isArray(data.content.customWeaponTraits)) data.content.customWeaponTraits = [];
+        if (!Array.isArray(data.content.enhancementCatalog)) data.content.enhancementCatalog = [];
         data.content.weapons.forEach(function (w) {
             if (!w.id) w.id = generateWeaponId();
             if (typeof w.name !== 'string') w.name = '';
@@ -263,6 +264,7 @@
             if (w.firingModes === undefined) w.firingModes = null;
             if (w.impaling === undefined) w.impaling = null;
             if (w.armorSavePenalty === undefined) w.armorSavePenalty = null;
+            if (w.attachedEnhancements === undefined) w.attachedEnhancements = null;
         });
         return data.content;
     }
@@ -300,7 +302,7 @@
     }
 
     // ── Damage Summary ──
-    function weaponsFormatDamageSummary(weapon) {
+    function weaponsFormatDamageSummary(weapon, content) {
         if (!weapon.damageInstances || !weapon.damageInstances.length) return '';
         var inst = weapon.damageInstances[0];
         var bonus = Number(inst.flatBonus) || 0;
@@ -308,10 +310,83 @@
             bonus += typeof window.getAbilityModifier === 'function' ? window.getAbilityModifier(weapon.abilityMod) : 0;
         }
         var dmg = inst.dice || '';
+        if (content && (window.gameSystem || 'custom') === 'pf2e') {
+            var strikingBonus = weaponsComputeEnhancementStrikingBonus(weapon, content);
+            if (strikingBonus > 0) dmg = weaponsApplyStrikingBonus(dmg, strikingBonus);
+        }
         if (bonus > 0) dmg += '+' + bonus;
         else if (bonus < 0) dmg += bonus;
         if (inst.damageType) dmg += ' ' + inst.damageType;
         return dmg.trim();
+    }
+
+    // ── Enhancement Pure Helpers ──
+    function weaponsGenerateEnhancementKey(catalog) {
+        var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        var existing = new Set((catalog || []).map(function (e) { return e.key; }));
+        var key;
+        do {
+            var suffix = '';
+            for (var i = 0; i < 6; i++) suffix += chars[Math.floor(Math.random() * chars.length)];
+            key = 'enh_' + suffix;
+        } while (existing.has(key));
+        return key;
+    }
+
+    function weaponsFindEnhancement(content, key) {
+        var catalog = content && Array.isArray(content.enhancementCatalog) ? content.enhancementCatalog : [];
+        return catalog.find(function (e) { return e.key === key; });
+    }
+
+    function weaponsGetAttachedEnhancements(weapon, content) {
+        if (!weapon || !Array.isArray(weapon.attachedEnhancements) || !weapon.attachedEnhancements.length) return [];
+        return weapon.attachedEnhancements.reduce(function (acc, key) {
+            var entry = weaponsFindEnhancement(content, key);
+            if (entry) acc.push(entry);
+            return acc;
+        }, []);
+    }
+
+    function weaponsGetAvailableEnhancements(content, weapons, system) {
+        var catalog = content && Array.isArray(content.enhancementCatalog) ? content.enhancementCatalog : [];
+        var attached = new Set();
+        (weapons || []).forEach(function (w) {
+            if (Array.isArray(w.attachedEnhancements)) {
+                w.attachedEnhancements.forEach(function (k) { attached.add(k); });
+            }
+        });
+        return catalog.filter(function (e) { return e.system === system && !attached.has(e.key); });
+    }
+
+    function weaponsApplyStrikingBonus(diceStr, bonus) {
+        if (!diceStr || !bonus) return diceStr || '';
+        var match = diceStr.match(/^(\d+)d(\d+)$/);
+        if (!match) return diceStr;
+        return (parseInt(match[1], 10) + bonus) + 'd' + match[2];
+    }
+
+    function weaponsComputeEnhancementStrikingBonus(weapon, content) {
+        var attached = weaponsGetAttachedEnhancements(weapon, content);
+        return attached.reduce(function (sum, e) {
+            if (e.system === 'pf2e' && typeof e.damageDiceBonus === 'number') return sum + e.damageDiceBonus;
+            return sum;
+        }, 0);
+    }
+
+    function weaponsComputeEnhancementPoolBonus(weapon, content) {
+        var attached = weaponsGetAttachedEnhancements(weapon, content);
+        return attached.reduce(function (sum, e) {
+            if (e.system === 'sr6' && typeof e.poolBonus === 'number') return sum + e.poolBonus;
+            return sum;
+        }, 0);
+    }
+
+    function weaponsComputeEnhancementAttackBonus(weapon, content) {
+        var attached = weaponsGetAttachedEnhancements(weapon, content);
+        return attached.reduce(function (sum, e) {
+            if (e.system === 'cpred' && typeof e.attackBonus === 'number') return sum + e.attackBonus;
+            return sum;
+        }, 0);
     }
 
     // ── Misc Helpers ──
@@ -377,10 +452,12 @@
                 var cardSys = window.gameSystem || 'custom';
                 if (cardSys === 'coc' || cardSys === 'mothership') {
                     bonusEl.textContent = (weapon.skillValue || 0) + '%';
-                } else if (cardSys === 'vtm' || cardSys === 'sr6') {
+                } else if (cardSys === 'vtm') {
                     bonusEl.textContent = (weapon.poolSize || 0) + 'd';
+                } else if (cardSys === 'sr6') {
+                    bonusEl.textContent = ((weapon.poolSize || 0) + weaponsComputeEnhancementPoolBonus(weapon, data.content)) + 'd';
                 } else if (cardSys === 'cpred') {
-                    bonusEl.textContent = '+' + (weapon.cpredSkillValue || 0);
+                    bonusEl.textContent = '+' + ((weapon.cpredSkillValue || 0) + weaponsComputeEnhancementAttackBonus(weapon, data.content));
                 }
             }
             if (weapon.attackBonusOverride !== null) {
@@ -395,7 +472,7 @@
             if ((window.gameSystem || 'custom') === 'sr6' && weapon.baseDamageFlat !== null && weapon.baseDamageFlat !== undefined) {
                 dmgText = weapon.baseDamageFlat + (weapon.damageCategory === 'Stun' ? 'S' : 'P');
             } else {
-                dmgText = weaponsFormatDamageSummary(weapon);
+                dmgText = weaponsFormatDamageSummary(weapon, data.content);
             }
             if (dmgText) {
                 var dmgEl = document.createElement('div');
@@ -420,6 +497,32 @@
                 traitsEl.appendChild(chip);
             });
             info.appendChild(traitsEl);
+        }
+
+        var attachedEnhs = weaponsGetAttachedEnhancements(weapon, data.content);
+        if (attachedEnhs.length) {
+            var enhsEl = document.createElement('div');
+            enhsEl.className = 'weapon-enhancements';
+            var MAX_CHIPS = 3;
+            var visible = attachedEnhs.slice(0, MAX_CHIPS);
+            var overflow = attachedEnhs.length - MAX_CHIPS;
+            visible.forEach(function (enh) {
+                var chip = document.createElement('span');
+                chip.className = 'weapon-enhancement-chip';
+                chip.textContent = enh.name || '';
+                if (enh.description) {
+                    chip.addEventListener('mouseenter', function () { showChipTooltip(chip, enh.description); });
+                    chip.addEventListener('mouseleave', hideChipTooltip);
+                }
+                enhsEl.appendChild(chip);
+            });
+            if (overflow > 0) {
+                var overflowChip = document.createElement('span');
+                overflowChip.className = 'weapon-enhancement-chip weapon-enhancement-chip--overflow';
+                overflowChip.textContent = '+' + overflow;
+                enhsEl.appendChild(overflowChip);
+            }
+            info.appendChild(enhsEl);
         }
 
         if (weapon.kind === 'ranged' && weapon.ammoCount !== null) {
@@ -699,15 +802,15 @@
 
     // ── System Edit Config ──
     var SYSTEM_EDIT_CONFIG = {
-        dnd5e:       { abilityMod: true,  proficient: true,  profRank: false, skillField: false, poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false },
-        pf2e:        { abilityMod: true,  proficient: false, profRank: true,  skillField: false, poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false },
-        coc:         { abilityMod: false, proficient: false, profRank: false, skillField: true,  poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: false, damageInstances: true,  traits: false, impaling: true,  armorSavePen: false, baseDmgFlat: false, dmgCategory: false },
-        vtm:         { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: true,  weaponCat: false, firingModes: false, governingTrait: false, attackOverride: false, damageInstances: true,  traits: false, impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false },
-        cpred:       { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: false, weaponCat: true,  firingModes: true,  governingTrait: false, attackOverride: false, damageInstances: true,  traits: false, impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false },
-        mothership:  { abilityMod: false, proficient: false, profRank: false, skillField: true,  poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: false, damageInstances: true,  traits: false, impaling: false, armorSavePen: true,  baseDmgFlat: false, dmgCategory: false },
-        sr6:         { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: true,  weaponCat: false, firingModes: true,  governingTrait: false, attackOverride: false, damageInstances: false, traits: false, impaling: false, armorSavePen: false, baseDmgFlat: true,  dmgCategory: true  },
-        daggerheart: { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: false, weaponCat: false, firingModes: false, governingTrait: true,  attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false },
-        custom:      { abilityMod: true,  proficient: true,  profRank: false, skillField: true,  poolField: true,  weaponCat: false, firingModes: false, governingTrait: false, attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false },
+        dnd5e:       { abilityMod: true,  proficient: true,  profRank: false, skillField: false, poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: false },
+        pf2e:        { abilityMod: true,  proficient: false, profRank: true,  skillField: false, poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: true  },
+        coc:         { abilityMod: false, proficient: false, profRank: false, skillField: true,  poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: false, damageInstances: true,  traits: false, impaling: true,  armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: false },
+        vtm:         { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: true,  weaponCat: false, firingModes: false, governingTrait: false, attackOverride: false, damageInstances: true,  traits: false, impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: false },
+        cpred:       { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: false, weaponCat: true,  firingModes: true,  governingTrait: false, attackOverride: false, damageInstances: true,  traits: false, impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: true  },
+        mothership:  { abilityMod: false, proficient: false, profRank: false, skillField: true,  poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: false, damageInstances: true,  traits: false, impaling: false, armorSavePen: true,  baseDmgFlat: false, dmgCategory: false, enhancements: false },
+        sr6:         { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: true,  weaponCat: false, firingModes: true,  governingTrait: false, attackOverride: false, damageInstances: false, traits: false, impaling: false, armorSavePen: false, baseDmgFlat: true,  dmgCategory: true,  enhancements: true  },
+        daggerheart: { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: false, weaponCat: false, firingModes: false, governingTrait: true,  attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: false },
+        custom:      { abilityMod: true,  proficient: true,  profRank: false, skillField: true,  poolField: true,  weaponCat: false, firingModes: false, governingTrait: false, attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: false },
     };
 
     // ── Edit Modal Section Builders ──
@@ -1293,6 +1396,7 @@
         workingWeapon.damageInstances = weapon.damageInstances.map(function (inst) { return Object.assign({}, inst); });
         workingWeapon.traits = weapon.traits.map(function (tr) { return Object.assign({}, tr); });
         workingWeapon.firingModes = Array.isArray(weapon.firingModes) ? weapon.firingModes.map(function (m) { return Object.assign({}, m); }) : null;
+        workingWeapon.attachedEnhancements = Array.isArray(weapon.attachedEnhancements) ? weapon.attachedEnhancements.slice() : null;
         var dirty = false;
         var sys = window.gameSystem || 'custom';
         var cfg = SYSTEM_EDIT_CONFIG[sys] || SYSTEM_EDIT_CONFIG['custom'];
@@ -1697,6 +1801,7 @@
         var baseDmgSection      = buildBaseDmgSection(workingWeapon, onDirty);
         var impalingRow         = buildImpalingRow(workingWeapon, onDirty);
         var armorSavePenRow     = buildArmorSavePenRow(workingWeapon, onDirty);
+        var enhancementsSection = buildEnhancementsSection(workingWeapon, data, onDirty);
 
         // Append sections in order
         modalBody.appendChild(profRankSection);
@@ -1712,6 +1817,7 @@
         modalBody.appendChild(shieldSection);
         modalBody.appendChild(damageSection);
         modalBody.appendChild(traitsField);
+        modalBody.appendChild(enhancementsSection);
         modalBody.appendChild(notesField);
 
         function updateConditionalSections() {
@@ -1733,6 +1839,7 @@
             armorSavePenRow.style.display  = cfg.armorSavePen ? '' : 'none';
             damageSection.style.display    = cfg.damageInstances ? '' : 'none';
             traitsField.style.display      = cfg.traits ? '' : 'none';
+            enhancementsSection.style.display = cfg.enhancements ? '' : 'none';
         }
         updateConditionalSections();
 
@@ -2134,6 +2241,499 @@
         searchInput.focus();
     }
 
+    // ── Enhancement UI ──
+    function buildEnhancementsSection(workingWeapon, data, onDirty) {
+        var content = data.content;
+        var sys = window.gameSystem || 'custom';
+
+        var section = document.createElement('div');
+        section.className = 'weapon-edit-section weapon-enhancements-section';
+
+        var sectionHeader = document.createElement('div');
+        sectionHeader.className = 'weapon-enhancements-header';
+
+        var sectionLabel = document.createElement('div');
+        sectionLabel.className = 'weapon-edit-section-label';
+        sectionLabel.textContent = t('weapons.enhancements');
+        sectionHeader.appendChild(sectionLabel);
+
+        var manageCatalogBtn = document.createElement('button');
+        manageCatalogBtn.type = 'button';
+        manageCatalogBtn.className = 'btn-link sm weapon-enhancement-manage-btn';
+        manageCatalogBtn.textContent = t('weapons.enhancements.manageCatalog');
+        manageCatalogBtn.addEventListener('click', function () {
+            openEnhancementCatalogModal(data, sys, function () {
+                onDirty();
+                renderAttachedList();
+            });
+        });
+        sectionHeader.appendChild(manageCatalogBtn);
+        section.appendChild(sectionHeader);
+
+        var attachedList = document.createElement('div');
+        attachedList.className = 'weapon-enhancement-list';
+        section.appendChild(attachedList);
+
+        function renderAttachedList() {
+            attachedList.innerHTML = '';
+            var attached = weaponsGetAttachedEnhancements(workingWeapon, content);
+            attached.forEach(function (enh) {
+                var row = document.createElement('div');
+                row.className = 'weapon-enhancement-row';
+
+                var info = document.createElement('div');
+                info.className = 'weapon-enhancement-row-info';
+
+                var nameEl = document.createElement('span');
+                nameEl.className = 'weapon-enhancement-row-name';
+                nameEl.textContent = enh.name || '';
+                info.appendChild(nameEl);
+
+                if (enh.description) {
+                    var descEl = document.createElement('span');
+                    descEl.className = 'weapon-enhancement-row-desc';
+                    descEl.textContent = enh.description;
+                    info.appendChild(descEl);
+                }
+                row.appendChild(info);
+
+                var detachBtn = document.createElement('button');
+                detachBtn.type = 'button';
+                detachBtn.className = 'btn-secondary sm';
+                detachBtn.textContent = t('weapons.enhancements.detach');
+                (function (key) {
+                    detachBtn.addEventListener('click', function () {
+                        if (!Array.isArray(workingWeapon.attachedEnhancements)) return;
+                        var idx = workingWeapon.attachedEnhancements.indexOf(key);
+                        if (idx !== -1) workingWeapon.attachedEnhancements.splice(idx, 1);
+                        if (!workingWeapon.attachedEnhancements.length) workingWeapon.attachedEnhancements = null;
+                        onDirty();
+                        renderAttachedList();
+                    });
+                })(enh.key);
+                row.appendChild(detachBtn);
+
+                attachedList.appendChild(row);
+            });
+        }
+
+        renderAttachedList();
+
+        var attachBtn = document.createElement('button');
+        attachBtn.type = 'button';
+        attachBtn.className = 'btn-secondary sm weapon-enhancement-attach-btn';
+        attachBtn.textContent = t('weapons.enhancements.attach');
+        attachBtn.addEventListener('click', function () {
+            openEnhancementPickerPanel(attachBtn, workingWeapon, data, sys, function () {
+                onDirty();
+                renderAttachedList();
+            });
+        });
+        section.appendChild(attachBtn);
+
+        return section;
+    }
+
+    function openEnhancementPickerPanel(anchorEl, workingWeapon, data, sys, onChange) {
+        var existing = document.querySelector('.weapon-enhancement-picker');
+        if (existing) { existing.remove(); return; }
+
+        var content = data.content;
+        var picker = document.createElement('div');
+        picker.className = 'weapon-enhancement-picker';
+
+        function renderPickerList() {
+            picker.innerHTML = '';
+
+            var createBtn = document.createElement('button');
+            createBtn.type = 'button';
+            createBtn.className = 'weapon-enhancement-picker-create';
+            createBtn.textContent = t('weapons.enhancements.createAndAttach');
+            createBtn.addEventListener('click', function () {
+                picker.remove();
+                document.removeEventListener('click', onOutside, true);
+                openEnhancementInlineForm(null, workingWeapon, data, sys, onChange);
+            });
+            picker.appendChild(createBtn);
+
+            var available = weaponsGetAvailableEnhancements(content, content.weapons, sys);
+            if (available.length === 0) {
+                var empty = document.createElement('div');
+                empty.className = 'weapon-enhancement-picker-empty';
+                empty.textContent = t('weapons.enhancements.noneAvailable');
+                picker.appendChild(empty);
+            } else {
+                available.forEach(function (enh) {
+                    var row = document.createElement('div');
+                    row.className = 'weapon-enhancement-picker-row';
+                    var nameEl = document.createElement('span');
+                    nameEl.className = 'weapon-enhancement-picker-name';
+                    nameEl.textContent = enh.name || '';
+                    row.appendChild(nameEl);
+                    (function (e) {
+                        row.addEventListener('click', function () {
+                            if (!Array.isArray(workingWeapon.attachedEnhancements)) workingWeapon.attachedEnhancements = [];
+                            workingWeapon.attachedEnhancements.push(e.key);
+                            picker.remove();
+                            document.removeEventListener('click', onOutside, true);
+                            onChange();
+                        });
+                    })(enh);
+                    picker.appendChild(row);
+                });
+            }
+        }
+
+        renderPickerList();
+        document.body.appendChild(picker);
+
+        var rect = anchorEl.getBoundingClientRect();
+        var left = Math.min(rect.left, window.innerWidth - 220);
+        picker.style.top = (rect.bottom + 4) + 'px';
+        picker.style.left = Math.max(4, left) + 'px';
+
+        function onOutside(e) {
+            if (!picker.contains(e.target) && e.target !== anchorEl) {
+                picker.remove();
+                document.removeEventListener('click', onOutside, true);
+            }
+        }
+        setTimeout(function () { document.addEventListener('click', onOutside, true); }, 0);
+    }
+
+    function openEnhancementInlineForm(editingEntry, workingWeapon, data, sys, onChange) {
+        var existing = document.querySelector('.weapon-enhancement-form-overlay');
+        if (existing) existing.remove();
+
+        var content = data.content;
+        var isEdit = !!editingEntry;
+        var draft = isEdit ? Object.assign({}, editingEntry) : { key: weaponsGenerateEnhancementKey(content.enhancementCatalog), system: sys, name: '', description: '' };
+
+        var overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay weapon-enhancement-form-overlay';
+
+        var panel = document.createElement('div');
+        panel.className = 'cv-modal-panel weapon-enhancement-form-panel';
+
+        var header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        var titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = isEdit ? t('weapons.enhancements.editTitle') : t('weapons.enhancements.createTitle');
+        header.appendChild(titleEl);
+        var closeBtn = document.createElement('button');
+        closeBtn.className = 'cv-modal-close';
+        closeBtn.title = t('weapons.close');
+        closeBtn.innerHTML = CV_SVG_CLOSE;
+        header.appendChild(closeBtn);
+
+        var body = document.createElement('div');
+        body.className = 'cv-modal-body';
+
+        // Name field
+        var nameField = buildField(t('weapons.enhancements.name'));
+        var nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.className = 'cv-input';
+        nameInput.value = draft.name || '';
+        nameInput.spellcheck = false;
+        nameInput.addEventListener('input', function () { draft.name = nameInput.value; });
+        nameField.appendChild(nameInput);
+        body.appendChild(nameField);
+
+        // System-specific fields
+        if (sys === 'pf2e') {
+            var typeField = buildField(t('weapons.enhancements.pf2eType'));
+            var typeSel = buildCvSelect(
+                [
+                    { value: 'fundamental', label: t('weapons.enhancements.pf2eFundamental') },
+                    { value: 'property',    label: t('weapons.enhancements.pf2eProperty')    },
+                ],
+                draft.type || 'fundamental',
+                function (v) {
+                    draft.type = v;
+                    diceBonusField.style.display = v === 'fundamental' ? '' : 'none';
+                }
+            );
+            typeField.appendChild(typeSel.el);
+            body.appendChild(typeField);
+
+            var diceBonusField = buildField(t('weapons.enhancements.damageDiceBonus'));
+            var diceBonusInput = document.createElement('input');
+            diceBonusInput.type = 'number';
+            diceBonusInput.className = 'cv-input';
+            diceBonusInput.min = '0';
+            diceBonusInput.value = typeof draft.damageDiceBonus === 'number' ? draft.damageDiceBonus : '';
+            diceBonusInput.placeholder = '0';
+            diceBonusInput.addEventListener('input', function () {
+                var v = parseInt(diceBonusInput.value, 10);
+                draft.damageDiceBonus = isNaN(v) ? null : v;
+            });
+            diceBonusField.appendChild(diceBonusInput);
+            body.appendChild(diceBonusField);
+            diceBonusField.style.display = (draft.type || 'fundamental') === 'fundamental' ? '' : 'none';
+        } else if (sys === 'sr6') {
+            var catField = buildField(t('weapons.enhancements.sr6Category'));
+            var catSel = buildCvSelect(
+                [
+                    { value: 'smartlink',   label: t('weapons.enhancements.sr6Smartlink')   },
+                    { value: 'recoilComp',  label: t('weapons.enhancements.sr6RecoilComp')  },
+                    { value: 'scope',       label: t('weapons.enhancements.sr6Scope')        },
+                    { value: 'silencer',    label: t('weapons.enhancements.sr6Silencer')     },
+                    { value: 'other',       label: t('weapons.enhancements.sr6Other')        },
+                ],
+                draft.category || 'smartlink',
+                function (v) { draft.category = v; }
+            );
+            catField.appendChild(catSel.el);
+            body.appendChild(catField);
+
+            var poolBonusField = buildField(t('weapons.enhancements.poolBonus'));
+            var poolBonusInput = document.createElement('input');
+            poolBonusInput.type = 'number';
+            poolBonusInput.className = 'cv-input';
+            poolBonusInput.value = typeof draft.poolBonus === 'number' ? draft.poolBonus : '';
+            poolBonusInput.placeholder = '0';
+            poolBonusInput.addEventListener('input', function () {
+                var v = parseInt(poolBonusInput.value, 10);
+                draft.poolBonus = isNaN(v) ? null : v;
+            });
+            poolBonusField.appendChild(poolBonusInput);
+            body.appendChild(poolBonusField);
+        } else if (sys === 'cpred') {
+            var cprCatField = buildField(t('weapons.enhancements.cprCategory'));
+            var cprCatInput = document.createElement('input');
+            cprCatInput.type = 'text';
+            cprCatInput.className = 'cv-input';
+            cprCatInput.value = draft.category || '';
+            cprCatInput.placeholder = t('weapons.enhancements.cprCategoryPlaceholder');
+            cprCatInput.spellcheck = false;
+            cprCatInput.addEventListener('input', function () { draft.category = cprCatInput.value.trim(); });
+            cprCatField.appendChild(cprCatInput);
+            body.appendChild(cprCatField);
+
+            var attackBonusField = buildField(t('weapons.enhancements.attackBonus'));
+            var attackBonusInput = document.createElement('input');
+            attackBonusInput.type = 'number';
+            attackBonusInput.className = 'cv-input';
+            attackBonusInput.value = typeof draft.attackBonus === 'number' ? draft.attackBonus : '';
+            attackBonusInput.placeholder = '0';
+            attackBonusInput.addEventListener('input', function () {
+                var v = parseInt(attackBonusInput.value, 10);
+                draft.attackBonus = isNaN(v) ? null : v;
+            });
+            attackBonusField.appendChild(attackBonusInput);
+            body.appendChild(attackBonusField);
+        }
+
+        // Description field
+        var descField = buildField(t('weapons.enhancements.description'));
+        var descInput = document.createElement('input');
+        descInput.type = 'text';
+        descInput.className = 'cv-input';
+        descInput.value = draft.description || '';
+        descInput.spellcheck = false;
+        descInput.addEventListener('input', function () { draft.description = descInput.value; });
+        descField.appendChild(descInput);
+        body.appendChild(descField);
+
+        var footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        var footerRight = document.createElement('div');
+        footerRight.className = 'cv-modal-footer-right';
+
+        var cancelBtn = document.createElement('button');
+        cancelBtn.className = 'btn-secondary sm';
+        cancelBtn.textContent = t('weapons.cancel');
+        cancelBtn.addEventListener('click', forceClose);
+        footerRight.appendChild(cancelBtn);
+
+        var saveBtn = document.createElement('button');
+        saveBtn.className = 'btn-primary sm solid';
+        saveBtn.textContent = isEdit ? t('weapons.save') : t('weapons.create');
+        saveBtn.addEventListener('click', function () {
+            if (!draft.name.trim()) { nameInput.focus(); nameInput.classList.add('weapon-input-error'); return; }
+            nameInput.classList.remove('weapon-input-error');
+            draft.name = draft.name.trim();
+            if (isEdit) {
+                var idx = content.enhancementCatalog.findIndex(function (e) { return e.key === draft.key; });
+                if (idx !== -1) content.enhancementCatalog[idx] = draft;
+            } else {
+                content.enhancementCatalog.push(draft);
+                if (workingWeapon) {
+                    if (!Array.isArray(workingWeapon.attachedEnhancements)) workingWeapon.attachedEnhancements = [];
+                    workingWeapon.attachedEnhancements.push(draft.key);
+                }
+            }
+            scheduleSave();
+            forceClose();
+            if (onChange) onChange();
+        });
+        footerRight.appendChild(saveBtn);
+
+        footer.appendChild(footerRight);
+        panel.appendChild(header);
+        panel.appendChild(body);
+        panel.appendChild(footer);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+
+        function forceClose() {
+            overlay.remove();
+            document.removeEventListener('keydown', keyHandler);
+        }
+
+        closeBtn.addEventListener('click', forceClose);
+        overlay.addEventListener('click', function (e) { if (e.target === overlay) forceClose(); });
+        var keyHandler = function (e) { if (e.key === 'Escape') { e.stopPropagation(); forceClose(); } };
+        document.addEventListener('keydown', keyHandler);
+        nameInput.focus();
+    }
+
+    function openEnhancementCatalogModal(data, sys, onUpdate) {
+        var existing = document.querySelector('.weapon-enhancement-catalog-overlay');
+        if (existing) existing.remove();
+
+        var content = data.content;
+
+        var overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay weapon-enhancement-catalog-overlay';
+
+        var panel = document.createElement('div');
+        panel.className = 'cv-modal-panel weapon-enhancement-catalog-panel';
+
+        var header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        var titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = t('weapons.enhancements.catalogTitle');
+        header.appendChild(titleEl);
+        var closeBtn = document.createElement('button');
+        closeBtn.className = 'cv-modal-close';
+        closeBtn.title = t('weapons.close');
+        closeBtn.innerHTML = CV_SVG_CLOSE;
+        header.appendChild(closeBtn);
+
+        var body = document.createElement('div');
+        body.className = 'cv-modal-body weapon-enhancement-catalog-body';
+
+        var list = document.createElement('div');
+        list.className = 'weapon-enhancement-catalog-list';
+        body.appendChild(list);
+
+        function getAttachedWeaponName(key) {
+            var weapon = (content.weapons || []).find(function (w) {
+                return Array.isArray(w.attachedEnhancements) && w.attachedEnhancements.indexOf(key) !== -1;
+            });
+            return weapon ? (weapon.name || t('weapons.unnamed')) : null;
+        }
+
+        function renderList() {
+            list.innerHTML = '';
+            var entries = (content.enhancementCatalog || []).filter(function (e) { return e.system === sys; });
+            if (entries.length === 0) {
+                var empty = document.createElement('div');
+                empty.className = 'weapon-enhancement-catalog-empty';
+                empty.textContent = t('weapons.enhancements.catalogEmpty');
+                list.appendChild(empty);
+                return;
+            }
+            entries.forEach(function (enh) {
+                var row = document.createElement('div');
+                row.className = 'weapon-enhancement-catalog-row';
+
+                var infoEl = document.createElement('div');
+                infoEl.className = 'weapon-enhancement-catalog-row-info';
+
+                var nameEl = document.createElement('span');
+                nameEl.className = 'weapon-enhancement-catalog-row-name';
+                nameEl.textContent = enh.name || '';
+                infoEl.appendChild(nameEl);
+
+                var metaEl = document.createElement('span');
+                metaEl.className = 'weapon-enhancement-catalog-row-meta';
+                var attachedWeapon = getAttachedWeaponName(enh.key);
+                metaEl.textContent = attachedWeapon ? attachedWeapon : t('weapons.enhancements.unattached');
+                infoEl.appendChild(metaEl);
+
+                row.appendChild(infoEl);
+
+                var actions = document.createElement('div');
+                actions.className = 'weapon-enhancement-catalog-row-actions';
+
+                var editBtn = document.createElement('button');
+                editBtn.type = 'button';
+                editBtn.className = 'btn-secondary sm';
+                editBtn.textContent = '✎';
+                editBtn.setAttribute('aria-label', t('weapons.editWeapon'));
+                (function (entry) {
+                    editBtn.addEventListener('click', function () {
+                        openEnhancementInlineForm(entry, null, data, sys, function () {
+                            if (onUpdate) onUpdate();
+                            renderList();
+                        });
+                    });
+                })(enh);
+                actions.appendChild(editBtn);
+
+                var deleteBtn = document.createElement('button');
+                deleteBtn.type = 'button';
+                deleteBtn.className = 'btn-danger sm';
+                deleteBtn.textContent = '\xd7';
+                deleteBtn.setAttribute('aria-label', t('weapons.delete'));
+                (function (key) {
+                    deleteBtn.addEventListener('click', function () {
+                        if (!window.confirm(t('weapons.enhancements.deleteConfirm'))) return;
+                        var cidx = content.enhancementCatalog.findIndex(function (e) { return e.key === key; });
+                        if (cidx !== -1) content.enhancementCatalog.splice(cidx, 1);
+                        (content.weapons || []).forEach(function (w) {
+                            if (Array.isArray(w.attachedEnhancements)) {
+                                w.attachedEnhancements = w.attachedEnhancements.filter(function (k) { return k !== key; });
+                                if (!w.attachedEnhancements.length) w.attachedEnhancements = null;
+                            }
+                        });
+                        scheduleSave();
+                        if (onUpdate) onUpdate();
+                        renderList();
+                    });
+                })(enh.key);
+                actions.appendChild(deleteBtn);
+
+                row.appendChild(actions);
+                list.appendChild(row);
+            });
+        }
+
+        renderList();
+
+        var footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        var footerRight = document.createElement('div');
+        footerRight.className = 'cv-modal-footer-right';
+        var closeFooterBtn = document.createElement('button');
+        closeFooterBtn.className = 'btn-secondary sm';
+        closeFooterBtn.textContent = t('weapons.close');
+        closeFooterBtn.addEventListener('click', forceClose);
+        footerRight.appendChild(closeFooterBtn);
+        footer.appendChild(footerRight);
+
+        panel.appendChild(header);
+        panel.appendChild(body);
+        panel.appendChild(footer);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+
+        function forceClose() {
+            overlay.remove();
+            document.removeEventListener('keydown', keyHandler);
+        }
+
+        closeBtn.addEventListener('click', forceClose);
+        overlay.addEventListener('click', function (e) { if (e.target === overlay) forceClose(); });
+        var keyHandler = function (e) { if (e.key === 'Escape') { e.stopPropagation(); forceClose(); } };
+        document.addEventListener('keydown', keyHandler);
+    }
+
     // ── Module Type Registration ──
     registerModuleType('weapons', {
         label: 'type.weapons',
@@ -2172,6 +2772,14 @@
     window.normalizeWeaponTraits     = normalizeWeaponTraits;
     window.findOrCreateCustomTrait   = findOrCreateCustomTrait;
     window.generateCustomTraitKey    = generateCustomTraitKey;
+    // Phase 3 — Enhancement helpers
+    window.weaponsGenerateEnhancementKey      = weaponsGenerateEnhancementKey;
+    window.weaponsFindEnhancement             = weaponsFindEnhancement;
+    window.weaponsGetAttachedEnhancements     = weaponsGetAttachedEnhancements;
+    window.weaponsGetAvailableEnhancements    = weaponsGetAvailableEnhancements;
+    window.weaponsApplyStrikingBonus          = weaponsApplyStrikingBonus;
+    window.weaponsComputeEnhancementPoolBonus   = weaponsComputeEnhancementPoolBonus;
+    window.weaponsComputeEnhancementAttackBonus = weaponsComputeEnhancementAttackBonus;
 
     console.log('[CV] Weapons module registered');
 })();

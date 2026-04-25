@@ -1,6 +1,6 @@
 # Weapons Module
 
-> **Status:** Phase 2 complete. Supports D&D 5e, Pathfinder 2e, Call of Cthulhu, Vampire: The Masquerade, Cyberpunk Red, Mothership, Shadowrun 6e, and Daggerheart. Phase 3 (PF2e runes, SR6 accessories, CPR weapon mods) deferred — see `_DOCS/plans/WEAPONS_PHASE3.md`.
+> **Status:** Phase 3 complete. Supports D&D 5e, Pathfinder 2e, Call of Cthulhu, Vampire: The Masquerade, Cyberpunk Red, Mothership, Shadowrun 6e, and Daggerheart. Phase 3 adds weapon enhancements (PF2e runes, SR6 accessories, CPR weapon mods).
 
 ## Summary
 
@@ -16,7 +16,9 @@ The submodule stores its state on `data.content`:
 
 ```
 data.content = {
-  weapons: Weapon[]
+  weapons: Weapon[],
+  customWeaponTraits: CustomTrait[],
+  enhancementCatalog: Enhancement[]    // Phase 3
 }
 
 Weapon = {
@@ -61,7 +63,38 @@ Weapon = {
   // Phase 2 — Call of Cthulhu
   impaling: boolean | null,
   // Phase 2 — Mothership
-  armorSavePenalty: number | null
+  armorSavePenalty: number | null,
+  // Phase 3 — Enhancements (PF2e, SR6, CPR)
+  attachedEnhancements: string[] | null   // keys referencing enhancementCatalog entries
+}
+
+Enhancement = RuneEntry | AccessoryEntry | WeaponModEntry
+
+RuneEntry = {
+  key: string,              // 'enh_xxxxxx'
+  system: 'pf2e',
+  name: string,
+  type: 'fundamental' | 'property',
+  description: string,
+  damageDiceBonus: number | null
+}
+
+AccessoryEntry = {
+  key: string,
+  system: 'sr6',
+  name: string,
+  category: 'smartlink' | 'recoilComp' | 'scope' | 'silencer' | 'other',
+  description: string,
+  poolBonus: number | null
+}
+
+WeaponModEntry = {
+  key: string,
+  system: 'cpred',
+  name: string,
+  category: string,
+  description: string,
+  attackBonus: number | null
 }
 
 FiringMode = {

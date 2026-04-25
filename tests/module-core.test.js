@@ -39,14 +39,14 @@ describe('registerModuleType', () => {
   it('adds entry to MODULE_TYPES with correct callbacks', () => {
     const renderBody = vi.fn();
     const onPlayMode = vi.fn();
-    const onEditMode = vi.fn();
+    const onLayoutMode = vi.fn();
     const syncState = vi.fn();
 
     registerModuleType('test-type', {
       label: 'type.test',
       renderBody,
       onPlayMode,
-      onEditMode,
+      onLayoutMode,
       syncState,
     });
 
@@ -54,7 +54,7 @@ describe('registerModuleType', () => {
     expect(MODULE_TYPES['test-type'].label).toBe('type.test');
     expect(MODULE_TYPES['test-type'].renderBody).toBe(renderBody);
     expect(MODULE_TYPES['test-type'].onPlayMode).toBe(onPlayMode);
-    expect(MODULE_TYPES['test-type'].onEditMode).toBe(onEditMode);
+    expect(MODULE_TYPES['test-type'].onLayoutMode).toBe(onLayoutMode);
     expect(MODULE_TYPES['test-type'].syncState).toBe(syncState);
   });
 });

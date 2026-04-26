@@ -840,6 +840,10 @@
     function buildSkillSection(workingWeapon, sys, onDirty) {
         var section = document.createElement('div');
         section.className = 'weapon-edit-section';
+        var label = document.createElement('div');
+        label.className = 'weapon-edit-section-label';
+        label.textContent = t('weapons.sectionSkillCheck');
+        section.appendChild(label);
         var row = document.createElement('div');
         row.className = 'weapon-edit-row';
 
@@ -879,6 +883,10 @@
     function buildPoolSection(workingWeapon, onDirty) {
         var section = document.createElement('div');
         section.className = 'weapon-edit-section';
+        var label = document.createElement('div');
+        label.className = 'weapon-edit-section-label';
+        label.textContent = t('weapons.sectionDicePool');
+        section.appendChild(label);
         var row = document.createElement('div');
         row.className = 'weapon-edit-row';
 
@@ -1496,6 +1504,11 @@
         modalBody.appendChild(rowSlotKind);
 
         // Ability + Proficient
+        var labelAttackMod = document.createElement('div');
+        labelAttackMod.className = 'weapon-edit-section-label';
+        labelAttackMod.textContent = t('weapons.sectionAttackMod');
+        modalBody.appendChild(labelAttackMod);
+
         var rowAbility = document.createElement('div');
         rowAbility.className = 'weapon-edit-row weapon-edit-row--paired';
 
@@ -1824,6 +1837,7 @@
             var k = workingWeapon.kind;
             rangedSection.style.display    = k === 'ranged' ? '' : 'none';
             shieldSection.style.display    = k === 'shield' ? '' : 'none';
+            labelAttackMod.style.display   = (cfg.abilityMod || cfg.proficient) ? '' : 'none';
             rowAbility.style.display       = (cfg.abilityMod || cfg.proficient) ? '' : 'none';
             abilityField.style.display     = cfg.abilityMod ? '' : 'none';
             profField.style.display        = cfg.proficient ? '' : 'none';

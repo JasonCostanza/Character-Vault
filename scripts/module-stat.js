@@ -423,4 +423,28 @@
         }
         return 2;
     };
+
+    window.getStatValue = function (name) {
+        if (!name) return null;
+        var target = name.toUpperCase();
+        for (var i = 0; i < (window.modules || []).length; i++) {
+            var m = window.modules[i];
+            if (m.type !== 'stat' || !m.content || !Array.isArray(m.content.stats)) continue;
+            var stat = m.content.stats.find(function (s) { return s.name && s.name.toUpperCase() === target; });
+            if (stat) return typeof stat.value === 'number' ? stat.value : null;
+        }
+        return null;
+    };
+
+    window.getAllStatNames = function () {
+        var names = {};
+        for (var i = 0; i < (window.modules || []).length; i++) {
+            var m = window.modules[i];
+            if (m.type !== 'stat' || !m.content || !Array.isArray(m.content.stats)) continue;
+            m.content.stats.forEach(function (s) {
+                if (s.name && !s.isProficiencyStat) names[s.name] = true;
+            });
+        }
+        return Object.keys(names).sort();
+    };
 })();

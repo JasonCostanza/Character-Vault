@@ -3011,5 +3011,16 @@
     };
     window.applyConditionTemplate = applyTemplate;
 
+    window.getConditionValue = function (key) {
+        if (!key) return null;
+        for (var i = 0; i < (window.modules || []).length; i++) {
+            var m = window.modules[i];
+            if (m.type !== 'condition' || !m.content || !Array.isArray(m.content.applied)) continue;
+            var item = m.content.applied.find(function (c) { return c.typeKey === key && c.active; });
+            if (item && typeof item.value === 'number') return item.value;
+        }
+        return null;
+    };
+
     console.log('[CV] Condition module registered');
 })();

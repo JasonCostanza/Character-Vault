@@ -459,6 +459,21 @@
     // ── Expose settings opener for toolbar button ──
     window.openActivitySettings = openActivitySettings;
 
+    function extractDieFaces(node) {
+        if (!node || typeof node !== 'object') return [];
+        if (typeof node.kind === 'string' && Array.isArray(node.results)) {
+            return node.results.slice();
+        }
+        if (Array.isArray(node.operands)) {
+            var faces = [];
+            node.operands.forEach(function (op) {
+                faces = faces.concat(extractDieFaces(op));
+            });
+            return faces;
+        }
+        return [];
+    }
+
     // ── Roll Result Handler (manifest subscription: api.subscriptions.dice.onRollResults) ──
     window.handleRollResult = async function (event) {
         console.log('[CV] handleRollResult', event.kind, event.payload && event.payload.rollId);
@@ -474,6 +489,54 @@
             if (pending) {
                 delete window.pendingRolls[event.payload.rollId];
                 const entry = window.activityLog.find(function (e) { return e.id === pending.logEntryId; });
+
+                if (entry && pending.poolRoll) {
+                    var resultGroups = event.payload.resultsGroups || [];
+                    var threshold = pending.system === 'sr6' ? 5 : 6;
+                    var allFaces = [];
+                    var hungerFaces = [];
+
+                    resultGroups.forEach(function (group, idx) {
+                        var faces = group && group.result ? extractDieFaces(group.result) : [];
+                        if (idx === pending.hungerGroupIndex) {
+                            hungerFaces = faces;
+                        } else {
+                            allFaces = allFaces.concat(faces);
+                        }
+                    });
+
+                    var regularSuccesses = allFaces.filter(function (f) { return f >= threshold; }).length;
+                    var hungerSuccesses = hungerFaces.filter(function (f) { return f >= threshold; }).length;
+                    var totalSuccesses = regularSuccesses + hungerSuccesses;
+
+                    var resultLabel = pending.system === 'sr6' ? t('weapons.pool.hits') : t('weapons.pool.successes');
+                    var resultText = ' \u2192 ' + totalSuccesses + ' ' + resultLabel;
+
+                    if (pending.system === 'vtm') {
+                        var allTens = allFaces.filter(function (f) { return f === 10; }).length;
+                        var hungerTens = hungerFaces.filter(function (f) { return f === 10; }).length;
+                        var hungerOnes = hungerFaces.filter(function (f) { return f === 1; }).length;
+                        var totalTens = allTens + hungerTens;
+                        var critPairs = Math.floor(totalTens / 2);
+                        if (critPairs > 0 && hungerTens > 0) {
+                            resultText += ' \u2014 ' + t('weapons.vtm.messyCrit');
+                        } else if (critPairs > 0) {
+                            resultText += ' \u2014 ' + t('weapons.vtm.crit');
+                        }
+                        if (hungerOnes > 0 && totalSuccesses === 0) {
+                            resultText += ' \u2014 ' + t('weapons.vtm.bestialFailure');
+                        }
+                    }
+
+                    entry.message += resultText;
+                    scheduleSave();
+                    document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
+                        const modData = window.modules.find(function (m) { return m.id === el.dataset.id; });
+                        if (modData) renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
+                    });
+                    return;
+                }
+
                 if (entry) {
                     entry.message += ' \u2192 ' + total;
                     scheduleSave();
@@ -536,4 +599,6 @@
             renderActivityLogBody(bodyEl, data, false);
         },
     });
+
+    window.extractDieFaces = extractDieFaces;
 })();

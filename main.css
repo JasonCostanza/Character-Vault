@@ -9242,6 +9242,61 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     min-height: 50px;
 }
 
+/* Pool stat combobox */
+.pool-combobox {
+    position: relative;
+    flex: 1;
+}
+
+.pool-combobox-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    z-index: 20;
+    max-height: 120px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
+}
+
+.pool-combobox-dropdown::-webkit-scrollbar { width: 4px; }
+.pool-combobox-dropdown::-webkit-scrollbar-track { background: transparent; }
+.pool-combobox-dropdown::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
+
+.pool-combobox-dropdown.open {
+    display: block;
+}
+
+.pool-combobox-option {
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--cv-text);
+    user-select: none;
+}
+
+.pool-combobox-option:hover {
+    background: var(--cv-hover);
+}
+
+/* Pool breakdown display */
+.pool-breakdown {
+    font-size: 11px;
+    color: var(--cv-text-secondary);
+    padding: 3px 6px;
+    background: var(--cv-surface);
+    border-radius: 3px;
+    margin-top: 2px;
+    min-height: 18px;
+    user-select: none;
+}
+
 .weapon-input-error {
     border-color: var(--cv-danger) !important;
     box-shadow: 0 0 0 1px var(--cv-danger) !important;

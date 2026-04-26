@@ -265,6 +265,9 @@
             if (w.impaling === undefined) w.impaling = null;
             if (w.armorSavePenalty === undefined) w.armorSavePenalty = null;
             if (w.attachedEnhancements === undefined) w.attachedEnhancements = null;
+            if (w.poolAdjustment === undefined) w.poolAdjustment = null;
+            if (typeof w.poolAutoCompute !== 'boolean') w.poolAutoCompute = false;
+            if (w.accuracy === undefined) w.accuracy = null;
         });
         return data.content;
     }
@@ -389,6 +392,17 @@
         }, 0);
     }
 
+    function weaponsComputeEffectivePool(weapon, content) {
+        if (!weapon.poolAutoCompute) return Number(weapon.poolSize) || 0;
+        var attrVal = typeof window.getStatValue === 'function' ? window.getStatValue(weapon.poolAttribute) : null;
+        var skillVal = typeof window.getStatValue === 'function' ? window.getStatValue(weapon.poolSkill) : null;
+        if (attrVal === null && skillVal === null) return Number(weapon.poolSize) || 0;
+        var base = (attrVal || 0) + (skillVal || 0);
+        var adj = Number(weapon.poolAdjustment) || 0;
+        var enhBonus = weaponsComputeEnhancementPoolBonus(weapon, content);
+        return Math.max(0, base + adj + enhBonus);
+    }
+
     // ── Misc Helpers ──
     function formatBonus(n) {
         return n >= 0 ? '+' + n : String(n);
@@ -453,9 +467,9 @@
                 if (cardSys === 'coc' || cardSys === 'mothership') {
                     bonusEl.textContent = (weapon.skillValue || 0) + '%';
                 } else if (cardSys === 'vtm') {
-                    bonusEl.textContent = (weapon.poolSize || 0) + 'd';
+                    bonusEl.textContent = weaponsComputeEffectivePool(weapon, data.content) + 'd';
                 } else if (cardSys === 'sr6') {
-                    bonusEl.textContent = ((weapon.poolSize || 0) + weaponsComputeEnhancementPoolBonus(weapon, data.content)) + 'd';
+                    bonusEl.textContent = weaponsComputeEffectivePool(weapon, data.content) + 'd';
                 } else if (cardSys === 'cpred') {
                     bonusEl.textContent = '+' + ((weapon.cpredSkillValue || 0) + weaponsComputeEnhancementAttackBonus(weapon, data.content));
                 }
@@ -802,15 +816,15 @@
 
     // ── System Edit Config ──
     var SYSTEM_EDIT_CONFIG = {
-        dnd5e:       { abilityMod: true,  proficient: true,  profRank: false, skillField: false, poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: false },
-        pf2e:        { abilityMod: true,  proficient: false, profRank: true,  skillField: false, poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: true  },
-        coc:         { abilityMod: false, proficient: false, profRank: false, skillField: true,  poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: false, damageInstances: true,  traits: false, impaling: true,  armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: false },
-        vtm:         { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: true,  weaponCat: false, firingModes: false, governingTrait: false, attackOverride: false, damageInstances: true,  traits: false, impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: false },
-        cpred:       { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: false, weaponCat: true,  firingModes: true,  governingTrait: false, attackOverride: false, damageInstances: true,  traits: false, impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: true  },
-        mothership:  { abilityMod: false, proficient: false, profRank: false, skillField: true,  poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: false, damageInstances: true,  traits: false, impaling: false, armorSavePen: true,  baseDmgFlat: false, dmgCategory: false, enhancements: false },
-        sr6:         { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: true,  weaponCat: false, firingModes: true,  governingTrait: false, attackOverride: false, damageInstances: false, traits: false, impaling: false, armorSavePen: false, baseDmgFlat: true,  dmgCategory: true,  enhancements: true  },
-        daggerheart: { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: false, weaponCat: false, firingModes: false, governingTrait: true,  attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: false },
-        custom:      { abilityMod: true,  proficient: true,  profRank: false, skillField: true,  poolField: true,  weaponCat: false, firingModes: false, governingTrait: false, attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: false },
+        dnd5e:       { abilityMod: true,  proficient: true,  profRank: false, skillField: false, poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: false, accuracy: false },
+        pf2e:        { abilityMod: true,  proficient: false, profRank: true,  skillField: false, poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: true,  accuracy: false },
+        coc:         { abilityMod: false, proficient: false, profRank: false, skillField: true,  poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: false, damageInstances: true,  traits: false, impaling: true,  armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: false, accuracy: false },
+        vtm:         { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: true,  weaponCat: false, firingModes: false, governingTrait: false, attackOverride: false, damageInstances: false, traits: false, impaling: false, armorSavePen: false, baseDmgFlat: true,  dmgCategory: true,  enhancements: false, accuracy: false },
+        cpred:       { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: false, weaponCat: true,  firingModes: true,  governingTrait: false, attackOverride: false, damageInstances: true,  traits: false, impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: true,  accuracy: false },
+        mothership:  { abilityMod: false, proficient: false, profRank: false, skillField: true,  poolField: false, weaponCat: false, firingModes: false, governingTrait: false, attackOverride: false, damageInstances: true,  traits: false, impaling: false, armorSavePen: true,  baseDmgFlat: false, dmgCategory: false, enhancements: false, accuracy: false },
+        sr6:         { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: true,  weaponCat: false, firingModes: true,  governingTrait: false, attackOverride: false, damageInstances: false, traits: false, impaling: false, armorSavePen: false, baseDmgFlat: true,  dmgCategory: true,  enhancements: true,  accuracy: true  },
+        daggerheart: { abilityMod: false, proficient: false, profRank: false, skillField: false, poolField: false, weaponCat: false, firingModes: false, governingTrait: true,  attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: false, accuracy: false },
+        custom:      { abilityMod: true,  proficient: true,  profRank: false, skillField: true,  poolField: true,  weaponCat: false, firingModes: false, governingTrait: false, attackOverride: true,  damageInstances: true,  traits: true,  impaling: false, armorSavePen: false, baseDmgFlat: false, dmgCategory: false, enhancements: false, accuracy: false },
     };
 
     // ── Edit Modal Section Builders ──
@@ -883,36 +897,95 @@
     function buildPoolSection(workingWeapon, onDirty) {
         var section = document.createElement('div');
         section.className = 'weapon-edit-section';
-        var label = document.createElement('div');
-        label.className = 'weapon-edit-section-label';
-        label.textContent = t('weapons.sectionDicePool');
-        section.appendChild(label);
-        var row = document.createElement('div');
-        row.className = 'weapon-edit-row';
+        var sectionLabel = document.createElement('div');
+        sectionLabel.className = 'weapon-edit-section-label';
+        sectionLabel.textContent = t('weapons.sectionDicePool');
+        section.appendChild(sectionLabel);
 
-        var attrField = buildField(t('weapons.poolAttribute'));
-        var attrInput = document.createElement('input');
-        attrInput.type = 'text';
-        attrInput.className = 'cv-input';
-        attrInput.value = workingWeapon.poolAttribute || '';
-        attrInput.placeholder = t('weapons.poolAttribute');
-        attrInput.spellcheck = false;
-        attrInput.autocomplete = 'off';
-        attrInput.addEventListener('input', function () { workingWeapon.poolAttribute = attrInput.value.trim() || null; onDirty(); });
-        attrField.appendChild(attrInput);
-        row.appendChild(attrField);
+        // Row 1: Attribute + Skill comboboxes
+        var row1 = document.createElement('div');
+        row1.className = 'weapon-edit-row';
 
-        var skillField = buildField(t('weapons.poolSkill'));
-        var skillInput = document.createElement('input');
-        skillInput.type = 'text';
-        skillInput.className = 'cv-input';
-        skillInput.value = workingWeapon.poolSkill || '';
-        skillInput.placeholder = t('weapons.poolSkill');
-        skillInput.spellcheck = false;
-        skillInput.autocomplete = 'off';
-        skillInput.addEventListener('input', function () { workingWeapon.poolSkill = skillInput.value.trim() || null; onDirty(); });
-        skillField.appendChild(skillInput);
-        row.appendChild(skillField);
+        function buildStatCombobox(fieldLabel, currentValue, onSelect) {
+            var field = buildField(fieldLabel);
+            var wrap = document.createElement('div');
+            wrap.className = 'pool-combobox';
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'cv-input';
+            input.value = currentValue || '';
+            input.spellcheck = false;
+            input.autocomplete = 'off';
+            var dropdown = document.createElement('div');
+            dropdown.className = 'pool-combobox-dropdown';
+
+            function refreshDropdown(filter) {
+                dropdown.innerHTML = '';
+                var names = typeof window.getAllStatNames === 'function' ? window.getAllStatNames() : [];
+                var lc = (filter || '').toLowerCase();
+                var filtered = lc ? names.filter(function (n) { return n.toLowerCase().includes(lc); }) : names;
+                if (!filtered.length) { dropdown.classList.remove('open'); return; }
+                filtered.forEach(function (name) {
+                    var opt = document.createElement('div');
+                    opt.className = 'pool-combobox-option';
+                    opt.textContent = name;
+                    opt.addEventListener('mousedown', function (e) {
+                        e.preventDefault();
+                        input.value = name;
+                        onSelect(name);
+                        dropdown.classList.remove('open');
+                    });
+                    dropdown.appendChild(opt);
+                });
+                dropdown.classList.add('open');
+            }
+
+            input.addEventListener('focus', function () { refreshDropdown(input.value); });
+            input.addEventListener('input', function () {
+                onSelect(input.value.trim() || null);
+                refreshDropdown(input.value);
+            });
+            input.addEventListener('blur', function () {
+                setTimeout(function () { dropdown.classList.remove('open'); }, 150);
+            });
+
+            wrap.appendChild(input);
+            wrap.appendChild(dropdown);
+            field.appendChild(wrap);
+            return field;
+        }
+
+        function updateBreakdown() {
+            if (!workingWeapon.poolAutoCompute) return;
+            var attrVal = typeof window.getStatValue === 'function' ? window.getStatValue(workingWeapon.poolAttribute) : null;
+            var skillVal = typeof window.getStatValue === 'function' ? window.getStatValue(workingWeapon.poolSkill) : null;
+            if (attrVal === null && skillVal === null) { breakdownEl.textContent = ''; return; }
+            var adj = Number(workingWeapon.poolAdjustment) || 0;
+            var parts = [];
+            if (workingWeapon.poolAttribute && attrVal !== null) parts.push(workingWeapon.poolAttribute + ' ' + attrVal);
+            if (workingWeapon.poolSkill && skillVal !== null) parts.push(workingWeapon.poolSkill + ' ' + skillVal);
+            if (adj !== 0) parts.push((adj >= 0 ? '+' : '') + adj);
+            var total = (attrVal || 0) + (skillVal || 0) + adj;
+            breakdownEl.textContent = parts.join(' + ') + ' = ' + total;
+        }
+
+        var attrField = buildStatCombobox(t('weapons.poolAttribute'), workingWeapon.poolAttribute, function (v) {
+            workingWeapon.poolAttribute = v;
+            onDirty();
+            updateBreakdown();
+        });
+        var skillFieldEl = buildStatCombobox(t('weapons.poolSkill'), workingWeapon.poolSkill, function (v) {
+            workingWeapon.poolSkill = v;
+            onDirty();
+            updateBreakdown();
+        });
+        row1.appendChild(attrField);
+        row1.appendChild(skillFieldEl);
+        section.appendChild(row1);
+
+        // Row 2: Pool Size / Breakdown + Adjustment
+        var row2 = document.createElement('div');
+        row2.className = 'weapon-edit-row';
 
         var sizeField = buildField(t('weapons.poolSize'));
         var sizeInput = document.createElement('input');
@@ -926,10 +999,63 @@
             workingWeapon.poolSize = isNaN(v) ? null : Math.max(0, v);
             onDirty();
         });
+        var breakdownEl = document.createElement('div');
+        breakdownEl.className = 'pool-breakdown';
         sizeField.appendChild(sizeInput);
-        row.appendChild(sizeField);
+        sizeField.appendChild(breakdownEl);
+        row2.appendChild(sizeField);
 
-        section.appendChild(row);
+        var adjField = buildField(t('weapons.poolAdjustment'));
+        var adjInput = document.createElement('input');
+        adjInput.type = 'number';
+        adjInput.className = 'cv-input';
+        adjInput.value = workingWeapon.poolAdjustment !== null ? workingWeapon.poolAdjustment : '';
+        adjInput.placeholder = '0';
+        adjInput.addEventListener('input', function () {
+            var v = parseInt(adjInput.value, 10);
+            workingWeapon.poolAdjustment = isNaN(v) ? null : v;
+            onDirty();
+            updateBreakdown();
+        });
+        adjField.appendChild(adjInput);
+        row2.appendChild(adjField);
+        section.appendChild(row2);
+
+        // Row 3: Auto/Manual toggle
+        var row3 = document.createElement('div');
+        row3.className = 'weapon-edit-row weapon-edit-row--paired';
+        var toggleField = buildField('');
+        var toggle = makeCvToggle(!!workingWeapon.poolAutoCompute, function (checked) {
+            if (!checked && workingWeapon.poolAutoCompute) {
+                var attrVal = typeof window.getStatValue === 'function' ? window.getStatValue(workingWeapon.poolAttribute) : null;
+                var skillVal = typeof window.getStatValue === 'function' ? window.getStatValue(workingWeapon.poolSkill) : null;
+                var base = (attrVal || 0) + (skillVal || 0);
+                var adj = Number(workingWeapon.poolAdjustment) || 0;
+                var computed = Math.max(0, base + adj);
+                workingWeapon.poolSize = computed;
+                sizeInput.value = computed;
+            }
+            workingWeapon.poolAutoCompute = checked;
+            onDirty();
+            updatePoolMode();
+        });
+        var toggleLbl = document.createElement('span');
+        toggleLbl.className = 'cv-toggle-label';
+        toggleLbl.textContent = t('weapons.poolAutoCompute');
+        toggle.appendChild(toggleLbl);
+        toggleField.appendChild(toggle);
+        row3.appendChild(toggleField);
+        section.appendChild(row3);
+
+        function updatePoolMode() {
+            var isAuto = workingWeapon.poolAutoCompute;
+            sizeInput.style.display = isAuto ? 'none' : '';
+            breakdownEl.style.display = isAuto ? '' : 'none';
+            adjField.style.display = isAuto ? '' : 'none';
+            if (isAuto) updateBreakdown();
+        }
+
+        updatePoolMode();
         return section;
     }
 
@@ -1120,13 +1246,24 @@
         flatField.appendChild(flatInput);
         row.appendChild(flatField);
 
-        var catField = buildField(t('weapons.damageCategory'));
-        var catSel = buildCvSelect(
-            [
+        var sys = window.gameSystem || 'custom';
+        var categories;
+        if (sys === 'vtm') {
+            categories = [
+                { value: 'Superficial', label: t('weapons.damageSuperficial') },
+                { value: 'Aggravated',  label: t('weapons.damageAggravated')  },
+            ];
+        } else {
+            categories = [
                 { value: 'Physical', label: t('weapons.damagePhysical') },
                 { value: 'Stun',     label: t('weapons.damageStun')     },
-            ],
-            workingWeapon.damageCategory || 'Physical',
+            ];
+        }
+        var defaultCat = workingWeapon.damageCategory || categories[0].value;
+        var catField = buildField(t('weapons.damageCategory'));
+        var catSel = buildCvSelect(
+            categories,
+            defaultCat,
             function (v) { workingWeapon.damageCategory = v; onDirty(); }
         );
         catField.appendChild(catSel.el);
@@ -1134,6 +1271,25 @@
 
         section.appendChild(row);
         return section;
+    }
+
+    function buildAccuracySection(workingWeapon, onDirty) {
+        var row = document.createElement('div');
+        row.className = 'weapon-edit-row';
+        var field = buildField(t('weapons.accuracy'));
+        var input = document.createElement('input');
+        input.type = 'number';
+        input.className = 'cv-input';
+        input.value = workingWeapon.accuracy !== null ? workingWeapon.accuracy : '';
+        input.placeholder = '0';
+        input.addEventListener('input', function () {
+            var v = parseInt(input.value, 10);
+            workingWeapon.accuracy = isNaN(v) ? null : v;
+            onDirty();
+        });
+        field.appendChild(input);
+        row.appendChild(field);
+        return row;
     }
 
     function buildImpalingRow(workingWeapon, onDirty) {
@@ -1207,7 +1363,7 @@
         var colWrap = document.createElement('div');
         colWrap.className = 'weapon-action-columns';
 
-        function makeRollBtn(label, rollExpr, eventType, logKey, logReplacements) {
+        function makeRollBtn(label, rollExpr, eventType, logKey, logReplacements, extraMeta) {
             var btn = document.createElement('button');
             btn.className = 'btn-primary weapon-action-btn';
             btn.textContent = label;
@@ -1220,7 +1376,9 @@
                         message: t(logKey, logReplacements),
                         sourceModuleId: data.id,
                     });
-                    rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId: logEntryId }; });
+                    rollPromise.then(function (rollId) {
+                        if (rollId) window.pendingRolls[rollId] = Object.assign({ logEntryId: logEntryId }, extraMeta || {});
+                    });
                 }
             });
             return btn;
@@ -1289,32 +1447,74 @@
                     attackCol.appendChild(makeRefText(t('weapons.armorSavePenalty') + ': ' + weapon.armorSavePenalty));
                 }
             } else if (archetype === 'C') {
-                var poolSize = Number(weapon.poolSize) || 0;
+                var poolSize = weaponsComputeEffectivePool(weapon, data.content);
                 var dieType = sys === 'sr6' ? 'd6' : 'd10';
+
+                var hungerCount = 0;
+                if (sys === 'vtm') {
+                    var rawHunger = typeof window.getConditionValue === 'function' ? window.getConditionValue('vtm_hunger') : null;
+                    hungerCount = rawHunger ? Math.min(rawHunger, poolSize) : 0;
+                }
+                var regularCount = poolSize - hungerCount;
+
                 var poolModes = sys === 'sr6' && Array.isArray(weapon.firingModes) && weapon.firingModes.length ? weapon.firingModes : null;
                 if (poolModes) {
                     poolModes.forEach(function (mode) {
                         var modePool = poolSize + (Number(mode.diceModifier) || 0);
                         var modeExpr = modePool + dieType;
                         var modeLabel = (mode.name ? mode.name + ' ' : '') + '(' + modeExpr + ')';
-                        attackCol.appendChild(makeRollBtn(modeLabel, modeExpr, 'weapons.event.poolRoll', 'weapons.log.poolRoll', { name: weapon.name || t('weapons.unnamed'), roll: modeExpr }));
+                        attackCol.appendChild(makeRollBtn(modeLabel, modeExpr, 'weapons.event.poolRoll', 'weapons.log.poolRoll', { name: weapon.name || t('weapons.unnamed'), roll: modeExpr }, { poolRoll: true, system: sys }));
                     });
+                } else if (hungerCount > 0) {
+                    var hungerBtn = document.createElement('button');
+                    hungerBtn.className = 'btn-primary weapon-action-btn';
+                    hungerBtn.textContent = t('weapons.rollPool') + ' (' + poolSize + dieType + ')';
+                    (function (rc, hc, ps) {
+                        hungerBtn.addEventListener('click', function () {
+                            if (typeof TS === 'undefined') return;
+                            var groups = [
+                                { name: weapon.name || t('weapons.unnamed'), roll: rc + dieType },
+                                { name: (weapon.name || t('weapons.unnamed')) + ' (' + t('weapons.hunger') + ')', roll: hc + dieType },
+                            ];
+                            var rollPromise = TS.dice.putDiceInTray(groups);
+                            if (typeof window.logActivity === 'function') {
+                                var logEntryId = window.logActivity({
+                                    type: 'weapons.event.poolRoll',
+                                    message: t('weapons.log.poolRoll', { name: weapon.name || t('weapons.unnamed'), roll: ps + dieType }),
+                                    sourceModuleId: data.id,
+                                });
+                                rollPromise.then(function (rollId) {
+                                    if (rollId) window.pendingRolls[rollId] = { logEntryId: logEntryId, poolRoll: true, system: sys, hungerGroupIndex: 1 };
+                                });
+                            }
+                        });
+                    }(regularCount, hungerCount, poolSize));
+                    attackCol.appendChild(hungerBtn);
+                    attackCol.appendChild(makeRefText(regularCount + dieType + ' + ' + hungerCount + dieType + ' ' + t('weapons.hunger')));
                 } else {
                     var poolExpr = poolSize + dieType;
-                    attackCol.appendChild(makeRollBtn(t('weapons.rollPool') + ' (' + poolExpr + ')', poolExpr, 'weapons.event.poolRoll', 'weapons.log.poolRoll', { name: weapon.name || t('weapons.unnamed'), roll: poolExpr }));
+                    attackCol.appendChild(makeRollBtn(t('weapons.rollPool') + ' (' + poolExpr + ')', poolExpr, 'weapons.event.poolRoll', 'weapons.log.poolRoll', { name: weapon.name || t('weapons.unnamed'), roll: poolExpr }, { poolRoll: true, system: sys }));
                 }
                 if (weapon.poolAttribute || weapon.poolSkill) {
                     attackCol.appendChild(makeRefText((weapon.poolAttribute || '') + (weapon.poolAttribute && weapon.poolSkill ? ' + ' : '') + (weapon.poolSkill || '')));
                 }
                 attackCol.appendChild(makeRefText(sys === 'sr6' ? t('weapons.sr6HitOn') : t('weapons.vtmSuccessOn')));
+                if (sys === 'sr6' && weapon.accuracy !== null) {
+                    attackCol.appendChild(makeRefText(t('weapons.sr6Accuracy') + ': ' + weapon.accuracy));
+                }
             }
 
             colWrap.appendChild(attackCol);
         }
 
-        if (sys === 'sr6') {
+        if (sys === 'sr6' || sys === 'vtm') {
             var flatDmg = weapon.baseDamageFlat;
-            var dmgCat = weapon.damageCategory === 'Stun' ? 'S' : 'P';
+            var dmgCat;
+            if (sys === 'sr6') {
+                dmgCat = weapon.damageCategory === 'Stun' ? 'S' : 'P';
+            } else {
+                dmgCat = weapon.damageCategory === 'Aggravated' ? ' Agg' : ' Sup';
+            }
             if (flatDmg !== null && flatDmg !== undefined) {
                 var damageCol = document.createElement('div');
                 damageCol.className = 'weapon-action-col';
@@ -1326,6 +1526,12 @@
                 dmgFlatEl.className = 'weapon-action-ref weapon-action-ref--large';
                 dmgFlatEl.textContent = flatDmg + dmgCat;
                 damageCol.appendChild(dmgFlatEl);
+                if (sys === 'vtm') {
+                    var marginNote = document.createElement('div');
+                    marginNote.className = 'weapon-action-ref';
+                    marginNote.textContent = t('weapons.vtmDmgMargin');
+                    damageCol.appendChild(marginNote);
+                }
                 colWrap.appendChild(damageCol);
             }
         } else if (weapon.damageInstances && weapon.damageInstances.length) {
@@ -1808,6 +2014,7 @@
         var profRankSection     = buildProficiencyRankSection(workingWeapon, onDirty);
         var skillSection        = buildSkillSection(workingWeapon, sys, onDirty);
         var poolSection         = buildPoolSection(workingWeapon, onDirty);
+        var accuracySection     = buildAccuracySection(workingWeapon, onDirty);
         var weaponCatSection    = buildWeaponCategorySection(workingWeapon, onDirty);
         var governingTraitSection = buildGoverningTraitSection(workingWeapon, onDirty);
         var firingModesSection  = buildFiringModesSection(workingWeapon, onDirty);
@@ -1820,6 +2027,7 @@
         modalBody.appendChild(profRankSection);
         modalBody.appendChild(skillSection);
         modalBody.appendChild(poolSection);
+        modalBody.appendChild(accuracySection);
         modalBody.appendChild(weaponCatSection);
         modalBody.appendChild(governingTraitSection);
         modalBody.appendChild(firingModesSection);
@@ -1845,6 +2053,7 @@
             profRankSection.style.display  = cfg.profRank ? '' : 'none';
             skillSection.style.display     = cfg.skillField ? '' : 'none';
             poolSection.style.display      = cfg.poolField ? '' : 'none';
+            accuracySection.style.display  = cfg.accuracy ? '' : 'none';
             weaponCatSection.style.display = cfg.weaponCat ? '' : 'none';
             governingTraitSection.style.display = cfg.governingTrait ? '' : 'none';
             firingModesSection.style.display    = cfg.firingModes ? '' : 'none';
@@ -2794,6 +3003,7 @@
     window.weaponsApplyStrikingBonus          = weaponsApplyStrikingBonus;
     window.weaponsComputeEnhancementPoolBonus   = weaponsComputeEnhancementPoolBonus;
     window.weaponsComputeEnhancementAttackBonus = weaponsComputeEnhancementAttackBonus;
+    window.weaponsComputeEffectivePool          = weaponsComputeEffectivePool;
 
     console.log('[CV] Weapons module registered');
 })();

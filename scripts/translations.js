@@ -1090,6 +1090,21 @@
             'weapons.vtmSuccessOn': 'Success: 6+',
             'weapons.sr6HitOn': 'Hit: 5+',
 
+            // Pool improvements
+            'weapons.poolAdjustment': 'Pool Adjustment',
+            'weapons.poolAutoCompute': 'Auto-compute',
+            'weapons.accuracy': 'Accuracy',
+            'weapons.sr6Accuracy': 'Limit',
+            'weapons.damageSuperficial': 'Superficial',
+            'weapons.damageAggravated': 'Aggravated',
+            'weapons.vtmDmgMargin': '(+ margin of success)',
+            'weapons.hunger': 'Hunger',
+            'weapons.pool.hits': 'hits',
+            'weapons.pool.successes': 'successes',
+            'weapons.vtm.messyCrit': 'Messy Critical!',
+            'weapons.vtm.crit': 'Critical!',
+            'weapons.vtm.bestialFailure': 'Bestial Failure!',
+
             // Enhancements (Phase 3)
             'weapons.enhancements': 'Enhancements',
             'weapons.enhancements.attach': '+ Attach',
@@ -1694,6 +1709,21 @@
             'weapons.vtmSuccessOn': 'Success: 6+',
             'weapons.sr6HitOn': 'Hit: 5+',
 
+            // Pool improvements
+            'weapons.poolAdjustment': 'Pool Adjustment',
+            'weapons.poolAutoCompute': 'Auto-compute',
+            'weapons.accuracy': 'Accuracy',
+            'weapons.sr6Accuracy': 'Limit',
+            'weapons.damageSuperficial': 'Superficial',
+            'weapons.damageAggravated': 'Aggravated',
+            'weapons.vtmDmgMargin': '(+ margin of success)',
+            'weapons.hunger': 'Hunger',
+            'weapons.pool.hits': 'hits',
+            'weapons.pool.successes': 'successes',
+            'weapons.vtm.messyCrit': 'Messy Critical!',
+            'weapons.vtm.crit': 'Critical!',
+            'weapons.vtm.bestialFailure': 'Bestial Failure!',
+
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',
 
@@ -2268,6 +2298,21 @@
             'weapons.vtmSuccessOn': 'Success: 6+',
             'weapons.sr6HitOn': 'Hit: 5+',
 
+            // Pool improvements
+            'weapons.poolAdjustment': 'Pool Adjustment',
+            'weapons.poolAutoCompute': 'Auto-compute',
+            'weapons.accuracy': 'Accuracy',
+            'weapons.sr6Accuracy': 'Limit',
+            'weapons.damageSuperficial': 'Superficial',
+            'weapons.damageAggravated': 'Aggravated',
+            'weapons.vtmDmgMargin': '(+ margin of success)',
+            'weapons.hunger': 'Hunger',
+            'weapons.pool.hits': 'hits',
+            'weapons.pool.successes': 'successes',
+            'weapons.vtm.messyCrit': 'Messy Critical!',
+            'weapons.vtm.crit': 'Critical!',
+            'weapons.vtm.bestialFailure': 'Bestial Failure!',
+
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',
 
@@ -2839,6 +2884,21 @@
             'weapons.cocExtreme': 'Extreme',
             'weapons.vtmSuccessOn': 'Success: 6+',
             'weapons.sr6HitOn': 'Hit: 5+',
+
+            // Pool improvements
+            'weapons.poolAdjustment': 'Pool Adjustment',
+            'weapons.poolAutoCompute': 'Auto-compute',
+            'weapons.accuracy': 'Accuracy',
+            'weapons.sr6Accuracy': 'Limit',
+            'weapons.damageSuperficial': 'Superficial',
+            'weapons.damageAggravated': 'Aggravated',
+            'weapons.vtmDmgMargin': '(+ margin of success)',
+            'weapons.hunger': 'Hunger',
+            'weapons.pool.hits': 'hits',
+            'weapons.pool.successes': 'successes',
+            'weapons.vtm.messyCrit': 'Messy Critical!',
+            'weapons.vtm.crit': 'Critical!',
+            'weapons.vtm.bestialFailure': 'Bestial Failure!',
 
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',
@@ -3420,6 +3480,21 @@
             'weapons.vtmSuccessOn': 'Success: 6+',
             'weapons.sr6HitOn': 'Hit: 5+',
 
+            // Pool improvements
+            'weapons.poolAdjustment': 'Pool Adjustment',
+            'weapons.poolAutoCompute': 'Auto-compute',
+            'weapons.accuracy': 'Accuracy',
+            'weapons.sr6Accuracy': 'Limit',
+            'weapons.damageSuperficial': 'Superficial',
+            'weapons.damageAggravated': 'Aggravated',
+            'weapons.vtmDmgMargin': '(+ margin of success)',
+            'weapons.hunger': 'Hunger',
+            'weapons.pool.hits': 'hits',
+            'weapons.pool.successes': 'successes',
+            'weapons.vtm.messyCrit': 'Messy Critical!',
+            'weapons.vtm.crit': 'Critical!',
+            'weapons.vtm.bestialFailure': 'Bestial Failure!',
+
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',
 
@@ -3987,6 +4062,21 @@
             'weapons.vtmSuccessOn': 'Success: 6+',
             'weapons.sr6HitOn': 'Hit: 5+',
 
+            // Pool improvements
+            'weapons.poolAdjustment': 'Pool Adjustment',
+            'weapons.poolAutoCompute': 'Auto-compute',
+            'weapons.accuracy': 'Accuracy',
+            'weapons.sr6Accuracy': 'Limit',
+            'weapons.damageSuperficial': 'Superficial',
+            'weapons.damageAggravated': 'Aggravated',
+            'weapons.vtmDmgMargin': '(+ margin of success)',
+            'weapons.hunger': 'Hunger',
+            'weapons.pool.hits': 'hits',
+            'weapons.pool.successes': 'successes',
+            'weapons.vtm.messyCrit': 'Messy Critical!',
+            'weapons.vtm.crit': 'Critical!',
+            'weapons.vtm.bestialFailure': 'Bestial Failure!',
+
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',
 
@@ -4553,6 +4643,21 @@
             'weapons.cocExtreme': 'Extreme',
             'weapons.vtmSuccessOn': 'Success: 6+',
             'weapons.sr6HitOn': 'Hit: 5+',
+
+            // Pool improvements
+            'weapons.poolAdjustment': 'Pool Adjustment',
+            'weapons.poolAutoCompute': 'Auto-compute',
+            'weapons.accuracy': 'Accuracy',
+            'weapons.sr6Accuracy': 'Limit',
+            'weapons.damageSuperficial': 'Superficial',
+            'weapons.damageAggravated': 'Aggravated',
+            'weapons.vtmDmgMargin': '(+ margin of success)',
+            'weapons.hunger': 'Hunger',
+            'weapons.pool.hits': 'hits',
+            'weapons.pool.successes': 'successes',
+            'weapons.vtm.messyCrit': 'Messy Critical!',
+            'weapons.vtm.crit': 'Critical!',
+            'weapons.vtm.bestialFailure': 'Bestial Failure!',
 
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',

@@ -1928,7 +1928,7 @@ select,
 .stat-proficiency-dot {
     position: absolute;
     top: 4px;
-    right: 4px;
+    left: 4px;
     width: 6px;
     height: 6px;
     border-radius: 50%;
@@ -2047,19 +2047,41 @@ select,
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
 
-.stat-edit-toggles {
+.stat-edit-prof-row {
     display: flex;
-    flex-direction: column;
-    gap: 2px;
     align-items: center;
-    margin-top: 1px;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 2px;
 }
 
-.stat-edit-toggles {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 8px;
+.stat-edit-prof-label {
+    font-size: 7px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--cv-text-muted);
+    user-select: none;
+}
+
+.stat-edit-prof-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--cv-text-muted);
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.stat-edit-prof-dot:hover {
+    border-color: var(--cv-accent);
+}
+
+.stat-edit-prof-dot.active {
+    background-color: var(--cv-accent);
+    border-color: var(--cv-accent);
 }
 
 .stat-edit-delete {

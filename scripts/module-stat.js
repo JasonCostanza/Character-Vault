@@ -141,26 +141,21 @@
             `<div class="stat-edit-field"><label class="${data.content.layout === 'large-stat' ? 'stat-edit-primary-label' : ''}">${t('stat.value')}</label><input type="number" class="stat-edit-value" value="${stat.value}"></div>` +
             `<div class="stat-edit-field"><label class="${data.content.layout === 'large-modifier' ? 'stat-edit-primary-label' : ''}">${t('stat.modifier')}</label><input type="number" class="stat-edit-modifier" value="${stat.modifier}"></div>` +
             `</div>` +
-            `<div class="stat-edit-toggles">` +
-            `</div>`;
+            (!stat.isProficiencyStat ? `<div class="stat-edit-prof-row"><span class="stat-edit-prof-label">${t('stat.proficient')}</span><button class="stat-edit-prof-dot${stat.proficient ? ' active' : ''}" title="${t('stat.proficient')}"></button></div>` : '');
 
         // Wire up inputs
         const nameInput = block.querySelector('.stat-edit-name');
         const valInput = block.querySelector('.stat-edit-value');
         const modInput = block.querySelector('.stat-edit-modifier');
         const deleteBtn = block.querySelector('.stat-edit-delete');
-        const toggleDiv = block.querySelector('.stat-edit-toggles');
+        const profDot = block.querySelector('.stat-edit-prof-dot');
 
-        if (!stat.isProficiencyStat) {
-            const profToggle = makeCvToggle(stat.proficient, (checked) => {
-                stat.proficient = checked;
+        if (profDot) {
+            profDot.addEventListener('click', () => {
+                stat.proficient = !stat.proficient;
+                profDot.classList.toggle('active', stat.proficient);
                 scheduleSave();
             });
-            const profLabel = document.createElement('span');
-            profLabel.className = 'cv-toggle-label';
-            profLabel.textContent = t('stat.proficient');
-            profToggle.appendChild(profLabel);
-            toggleDiv.appendChild(profToggle);
         }
 
         nameInput.addEventListener('input', () => {

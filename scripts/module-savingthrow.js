@@ -225,7 +225,13 @@
 
     // ── Dice Rolling ──
     function rollSavingThrow(save, data) {
-        const modStr = save.value >= 0 ? `+${save.value}` : `${save.value}`;
+        var sys = window.gameSystem || 'custom';
+        var profBonus = 0;
+        if ((sys === 'dnd5e' || sys === 'custom') && save.proficiencyTier === 'Proficient' && typeof window.getProficiencyBonus === 'function') {
+            profBonus = window.getProficiencyBonus();
+        }
+        var totalMod = save.value + profBonus;
+        const modStr = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
         try {
             const rollPromise = TS.dice.putDiceInTray([
                 {

@@ -264,7 +264,13 @@
     }
 
     function rollStatCheck(stat, data) {
-        const modStr = stat.modifier >= 0 ? `+${stat.modifier}` : `${stat.modifier}`;
+        var sys = window.gameSystem || 'custom';
+        var profBonus = 0;
+        if ((sys === 'dnd5e' || sys === 'custom') && stat.proficient && typeof window.getProficiencyBonus === 'function') {
+            profBonus = window.getProficiencyBonus();
+        }
+        var totalMod = stat.modifier + profBonus;
+        const modStr = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
         try {
             const rollPromise = TS.dice.putDiceInTray([{ name: `${stat.name} ${t('stat.check')}`, roll: `1d20${modStr}` }]);
             if (typeof window.logActivity === 'function') {

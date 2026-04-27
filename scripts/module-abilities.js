@@ -248,7 +248,13 @@
     }
 
     function rollAbilityCheck(ability, data) {
-        const modStr = ability.modifier >= 0 ? `+${ability.modifier}` : `${ability.modifier}`;
+        var sys = window.gameSystem || 'custom';
+        var profBonus = 0;
+        if ((sys === 'dnd5e' || sys === 'custom') && getProficiencyState(ability, data) && typeof window.getProficiencyBonus === 'function') {
+            profBonus = window.getProficiencyBonus();
+        }
+        var totalMod = ability.modifier + profBonus;
+        const modStr = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
         try {
             const rollPromise = TS.dice.putDiceInTray([{ name: `${ability.name} ${t('abilities.check')}`, roll: `1d20${modStr}` }]);
             if (typeof window.logActivity === 'function') {

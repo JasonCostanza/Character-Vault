@@ -227,6 +227,7 @@
             name: t.name,
             modifier: 0,
             proficiency: false,
+            proficiencyRank: 'untrained',
             linkedStat: t.linkedStat || null,
         }));
     }
@@ -247,11 +248,23 @@
         return stat ? stat.proficient : ability.proficiency;
     }
 
+    function getProficiencyRank(ability, data) {
+        if (!data.content.linkedStatModuleId || !ability.linkedStat) {
+            return ability.proficiencyRank || 'untrained';
+        }
+        const linkedModule = window.modules.find((m) => m.id === data.content.linkedStatModuleId);
+        if (!linkedModule) return ability.proficiencyRank || 'untrained';
+        const stat = linkedModule.content?.stats?.find((s) => s.name === ability.linkedStat);
+        return stat ? (stat.proficiencyRank || 'untrained') : (ability.proficiencyRank || 'untrained');
+    }
+
     function rollAbilityCheck(ability, data) {
         var sys = window.gameSystem || 'custom';
         var profBonus = 0;
         if ((sys === 'dnd5e' || sys === 'custom') && getProficiencyState(ability, data) && typeof window.getProficiencyBonus === 'function') {
             profBonus = window.getProficiencyBonus();
+        } else if (sys === 'pf2e' && typeof window.computePf2eProficiencyBonus === 'function') {
+            profBonus = window.computePf2eProficiencyBonus(getProficiencyRank(ability, data));
         }
         var totalMod = ability.modifier + profBonus;
         const modStr = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
@@ -275,8 +288,20 @@
         row.dataset.index = index;
         row.title = t('abilities.rollCheck').replace('{name}', ability.name || t('abilities.unnamed'));
 
+        var playSys = window.gameSystem || 'custom';
+        var profHtml;
+        if (playSys === 'pf2e') {
+            var playRank = getProficiencyRank(ability, data);
+            if (playRank && playRank !== 'untrained') {
+                profHtml = '<span class="ability-rank-badge" title="' + escapeHtml(t('rank.' + playRank)) + '">' + playRank.charAt(0).toUpperCase() + '</span>';
+            } else {
+                profHtml = '<span class="ability-rank-badge untrained"></span>';
+            }
+        } else {
+            profHtml = `<span class="ability-proficiency-dot${proficient ? ' active' : ''}"></span>`;
+        }
         row.innerHTML =
-            `<span class="ability-proficiency-dot${proficient ? ' active' : ''}"></span>` +
+            profHtml +
             (abbrev ? `<span class="ability-abbrev">${escapeHtml(abbrev)}</span>` : '') +
             `<span class="ability-name">${escapeHtml(ability.name || t('abilities.unnamed'))}</span>` +
             `<span class="ability-modifier">${escapeHtml(formatModifier(ability.modifier))}</span>`;
@@ -293,9 +318,16 @@
         const proficient = getProficiencyState(ability, data);
         const isLinked = !!(data.content.linkedStatModuleId && ability.linkedStat);
         const abbrev = ability.linkedStat ? ability.linkedStat.substring(0, 3).toUpperCase() : ability.abbrev || '';
+        var editAbilitySys = window.gameSystem || 'custom';
+        var profColHtml;
+        if (editAbilitySys === 'pf2e') {
+            profColHtml = `<span class="ability-rank-select-wrap"></span>`;
+        } else {
+            profColHtml = `<span class="ability-proficiency-dot${proficient ? ' active' : ''}${isLinked ? ' linked' : ''}" title="${t('abilities.proficiency')}"></span>`;
+        }
         row.innerHTML =
             `<span class="ability-drag-handle">&#x2807;</span>` +
-            `<span class="ability-proficiency-dot${proficient ? ' active' : ''}${isLinked ? ' linked' : ''}" title="${t('abilities.proficiency')}"></span>` +
+            profColHtml +
             (isLinked
                 ? `<span class="ability-abbrev ability-abbrev--locked">${escapeHtml(abbrev)}</span>`
                 : `<input class="ability-abbrev-input" type="text" maxlength="3" value="${escapeHtml(abbrev)}" placeholder="---" title="${t('abilities.abbrevLabel')}">`) +
@@ -309,6 +341,7 @@
         const modInput = row.querySelector('.ability-edit-modifier');
         const abbrevInput = row.querySelector('.ability-abbrev-input');
         const profDot = row.querySelector('.ability-proficiency-dot');
+        const rankWrap = row.querySelector('.ability-rank-select-wrap');
         const deleteBtn = row.querySelector('.ability-edit-delete');
 
         nameInput.addEventListener('input', () => {
@@ -327,12 +360,31 @@
                 scheduleSave();
             });
         }
-        profDot.addEventListener('click', () => {
-            if (isLinked) return;
-            ability.proficiency = !ability.proficiency;
-            profDot.classList.toggle('active', ability.proficiency);
-            scheduleSave();
-        });
+        if (profDot) {
+            profDot.addEventListener('click', () => {
+                if (isLinked) return;
+                ability.proficiency = !ability.proficiency;
+                profDot.classList.toggle('active', ability.proficiency);
+                scheduleSave();
+            });
+        }
+        if (rankWrap) {
+            if (isLinked) {
+                var linkedRank = getProficiencyRank(ability, data);
+                var badge = document.createElement('span');
+                badge.className = 'ability-rank-badge' + ((!linkedRank || linkedRank === 'untrained') ? ' untrained' : '');
+                badge.title = t('rank.' + (linkedRank || 'untrained'));
+                badge.textContent = linkedRank && linkedRank !== 'untrained' ? linkedRank.charAt(0).toUpperCase() : '';
+                rankWrap.appendChild(badge);
+            } else {
+                var rankSel = window.buildCvSelect(
+                    window.buildPf2eRankOptions(),
+                    ability.proficiencyRank || 'untrained',
+                    function (v) { ability.proficiencyRank = v; scheduleSave(); }
+                );
+                rankWrap.appendChild(rankSel.el);
+            }
+        }
 
         [nameInput, modInput, abbrevInput].filter(Boolean).forEach((inp) => {
             inp.addEventListener('keydown', (e) => {
@@ -505,6 +557,12 @@
         if (!Array.isArray(data.content.abilities)) {
             data.content.abilities = [];
         }
+        var abilityGuardSys = window.gameSystem || 'custom';
+        data.content.abilities.forEach(function (ability) {
+            if (ability.proficiencyRank === undefined) {
+                ability.proficiencyRank = (abilityGuardSys === 'pf2e' && ability.proficiency) ? 'trained' : 'untrained';
+            }
+        });
 
         const container = document.createElement('div');
         container.className = 'ability-container';
@@ -565,15 +623,25 @@
     // ── Live Dot Sync ──
     function refreshLinkedDots() {
         if (isPlayMode) return;
+        var refreshSys = window.gameSystem || 'custom';
         document.querySelectorAll('.module[data-type="abilities"]').forEach((moduleEl) => {
             const data = window.modules.find((m) => m.id === moduleEl.dataset.id);
             if (!data?.content?.abilities) return;
             moduleEl.querySelectorAll('.ability-edit-row').forEach((row, i) => {
                 const ability = data.content.abilities[i];
                 if (!ability) return;
-                const dot = row.querySelector('.ability-proficiency-dot');
-                if (!dot) return;
-                dot.classList.toggle('active', getProficiencyState(ability, data));
+                if (refreshSys === 'pf2e') {
+                    const badge = row.querySelector('.ability-rank-badge');
+                    if (!badge) return;
+                    var refreshRank = getProficiencyRank(ability, data);
+                    badge.className = 'ability-rank-badge' + ((!refreshRank || refreshRank === 'untrained') ? ' untrained' : '');
+                    badge.title = t('rank.' + (refreshRank || 'untrained'));
+                    badge.textContent = refreshRank && refreshRank !== 'untrained' ? refreshRank.charAt(0).toUpperCase() : '';
+                } else {
+                    const dot = row.querySelector('.ability-proficiency-dot');
+                    if (!dot) return;
+                    dot.classList.toggle('active', getProficiencyState(ability, data));
+                }
             });
         });
     }

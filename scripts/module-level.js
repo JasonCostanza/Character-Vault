@@ -746,12 +746,16 @@
 
     // ── Cross-Module API ──
     window.getCharacterLevel = function (moduleId) {
-        const mod = window.modules.find((m) => m.id === moduleId && m.type === 'level');
-        return mod ? mod.content.level : null;
+        const mod = moduleId
+            ? window.modules.find((m) => m.id === moduleId && m.type === 'level')
+            : window.modules.find((m) => m.type === 'level');
+        return mod && mod.content ? mod.content.level : null;
     };
 
     window.getCharacterClass = function (moduleId) {
-        const mod = window.modules.find((m) => m.id === moduleId && m.type === 'level');
+        const mod = moduleId
+            ? window.modules.find((m) => m.id === moduleId && m.type === 'level')
+            : window.modules.find((m) => m.type === 'level');
         return mod && mod.content ? (mod.content.className || null) : null;
     };
 

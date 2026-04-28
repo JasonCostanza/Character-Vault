@@ -344,4 +344,28 @@
     window.inferTierPreset = inferTierPreset;
     window.getGameSystemDisplayName = getGameSystemDisplayName;
     window.buildCvSelect = buildCvSelect;
+
+    // ── PF2e Proficiency Rank Helpers ──
+    var PF2E_RANK_BONUS_MAP = { untrained: 0, trained: 2, expert: 4, master: 6, legendary: 8 };
+
+    function computePf2eProficiencyBonus(rank) {
+        if (!rank || rank === 'untrained') return 0;
+        var rankBonus = PF2E_RANK_BONUS_MAP[rank] || 0;
+        var charLevel = typeof window.getCharacterLevel === 'function' ? window.getCharacterLevel() : 0;
+        return rankBonus + (charLevel || 0);
+    }
+
+    function buildPf2eRankOptions() {
+        return [
+            { value: 'untrained', label: t('rank.untrained') },
+            { value: 'trained',   label: t('rank.trained')   },
+            { value: 'expert',    label: t('rank.expert')    },
+            { value: 'master',    label: t('rank.master')    },
+            { value: 'legendary', label: t('rank.legendary') },
+        ];
+    }
+
+    window.PF2E_RANK_BONUS_MAP = PF2E_RANK_BONUS_MAP;
+    window.computePf2eProficiencyBonus = computePf2eProficiencyBonus;
+    window.buildPf2eRankOptions = buildPf2eRankOptions;
 })();

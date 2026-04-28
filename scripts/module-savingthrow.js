@@ -229,6 +229,8 @@
         var profBonus = 0;
         if ((sys === 'dnd5e' || sys === 'custom') && save.proficiencyTier === 'Proficient' && typeof window.getProficiencyBonus === 'function') {
             profBonus = window.getProficiencyBonus();
+        } else if (sys === 'pf2e' && save.proficiencyTier && typeof window.computePf2eProficiencyBonus === 'function') {
+            profBonus = window.computePf2eProficiencyBonus(save.proficiencyTier.toLowerCase());
         }
         var totalMod = save.value + profBonus;
         const modStr = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;

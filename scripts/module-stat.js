@@ -68,6 +68,7 @@
             value: 0,
             modifier: 0,
             proficient: false,
+            proficiencyRank: 'untrained',
             rollable: t.rollable !== undefined ? t.rollable : true,
             ...(t.isProficiencyStat ? { isProficiencyStat: true } : {}),
         }));
@@ -102,8 +103,18 @@
         const block = document.createElement('div');
         block.className = 'stat-block' + (isPlayMode && stat.rollable ? ' stat-rollable' : '');
         block.dataset.index = index;
+        var sys = window.gameSystem || 'custom';
+        var profIndicatorHtml = '';
+        if (sys === 'pf2e') {
+            var rank = stat.proficiencyRank || 'untrained';
+            if (rank !== 'untrained') {
+                profIndicatorHtml = '<span class="stat-rank-badge" title="' + escapeHtml(t('rank.' + rank)) + '">' + rank.charAt(0).toUpperCase() + '</span>';
+            }
+        } else if (stat.proficient) {
+            profIndicatorHtml = '<span class="stat-proficiency-dot"></span>';
+        }
         block.innerHTML =
-            (stat.proficient ? '<span class="stat-proficiency-dot"></span>' : '') +
+            profIndicatorHtml +
             `<div class="stat-name" title="${escapeHtml(stat.name || t('stat.unnamed'))}">${escapeHtml(stat.name || t('stat.unnamed'))}</div>` +
             `<div class="stat-primary">${escapeHtml(String(primaryVal))}</div>` +
             `<div class="stat-secondary">${escapeHtml(String(secondaryVal))}</div>`;
@@ -131,6 +142,15 @@
         const block = document.createElement('div');
         block.className = 'stat-block-edit';
         block.dataset.index = index;
+        var editSys = window.gameSystem || 'custom';
+        var profRowHtml = '';
+        if (!stat.isProficiencyStat) {
+            if (editSys === 'pf2e') {
+                profRowHtml = `<div class="stat-edit-prof-row" data-pf2e-rank-row></div>`;
+            } else {
+                profRowHtml = `<div class="stat-edit-prof-row"><span class="stat-edit-prof-label">${t('stat.proficient')}</span><button class="stat-edit-prof-dot${stat.proficient ? ' active' : ''}" title="${t('stat.proficient')}"></button></div>`;
+            }
+        }
         block.innerHTML =
             `<div class="stat-edit-name-row">` +
             `<span class="stat-drag-handle">&#x2807;</span>` +
@@ -141,7 +161,7 @@
             `<div class="stat-edit-field"><label class="${data.content.layout === 'large-stat' ? 'stat-edit-primary-label' : ''}">${t('stat.value')}</label><input type="number" class="stat-edit-value" value="${stat.value}"></div>` +
             `<div class="stat-edit-field"><label class="${data.content.layout === 'large-modifier' ? 'stat-edit-primary-label' : ''}">${t('stat.modifier')}</label><input type="number" class="stat-edit-modifier" value="${stat.modifier}"></div>` +
             `</div>` +
-            (!stat.isProficiencyStat ? `<div class="stat-edit-prof-row"><span class="stat-edit-prof-label">${t('stat.proficient')}</span><button class="stat-edit-prof-dot${stat.proficient ? ' active' : ''}" title="${t('stat.proficient')}"></button></div>` : '');
+            profRowHtml;
 
         // Wire up inputs
         const nameInput = block.querySelector('.stat-edit-name');
@@ -149,6 +169,7 @@
         const modInput = block.querySelector('.stat-edit-modifier');
         const deleteBtn = block.querySelector('.stat-edit-delete');
         const profDot = block.querySelector('.stat-edit-prof-dot');
+        const rankRow = block.querySelector('[data-pf2e-rank-row]');
 
         if (profDot) {
             profDot.addEventListener('click', () => {
@@ -156,6 +177,19 @@
                 profDot.classList.toggle('active', stat.proficient);
                 scheduleSave();
             });
+        }
+
+        if (rankRow) {
+            var rankLabel = document.createElement('span');
+            rankLabel.className = 'stat-edit-prof-label';
+            rankLabel.textContent = t('stat.proficiencyRank');
+            rankRow.appendChild(rankLabel);
+            var rankSel = window.buildCvSelect(
+                window.buildPf2eRankOptions(),
+                stat.proficiencyRank || 'untrained',
+                function (v) { stat.proficiencyRank = v; scheduleSave(); }
+            );
+            rankRow.appendChild(rankSel.el);
         }
 
         nameInput.addEventListener('input', () => {
@@ -268,6 +302,8 @@
         var profBonus = 0;
         if ((sys === 'dnd5e' || sys === 'custom') && stat.proficient && typeof window.getProficiencyBonus === 'function') {
             profBonus = window.getProficiencyBonus();
+        } else if (sys === 'pf2e' && typeof window.computePf2eProficiencyBonus === 'function') {
+            profBonus = window.computePf2eProficiencyBonus(stat.proficiencyRank);
         }
         var totalMod = stat.modifier + profBonus;
         const modStr = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
@@ -351,6 +387,12 @@
             if (!Array.isArray(data.content.stats)) {
                 data.content.stats = [];
             }
+            var guardSys = window.gameSystem || 'custom';
+            data.content.stats.forEach(function (stat) {
+                if (stat.proficiencyRank === undefined) {
+                    stat.proficiencyRank = (guardSys === 'pf2e' && stat.proficient) ? 'trained' : 'untrained';
+                }
+            });
 
             const container = document.createElement('div');
             container.className = 'stat-container';

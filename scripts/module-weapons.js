@@ -288,10 +288,7 @@
 
         if (sys === 'pf2e') {
             var abilityMod = typeof window.getAbilityModifier === 'function' ? window.getAbilityModifier(weapon.abilityMod) : 0;
-            var charLevel = typeof window.getCharacterLevel === 'function' ? window.getCharacterLevel() : 1;
-            var rankBonusMap = { untrained: 0, trained: 2, expert: 4, master: 6, legendary: 8 };
-            var rankBonus = rankBonusMap[weapon.proficiencyRank] || 0;
-            var profBonus = weapon.proficiencyRank && weapon.proficiencyRank !== 'untrained' ? rankBonus + charLevel : 0;
+            var profBonus = typeof window.computePf2eProficiencyBonus === 'function' ? window.computePf2eProficiencyBonus(weapon.proficiencyRank) : 0;
             return abilityMod + profBonus;
         }
 

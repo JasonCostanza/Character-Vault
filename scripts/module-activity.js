@@ -537,6 +537,45 @@
                     return;
                 }
 
+                if (entry && pending.dualityRoll) {
+                    var resultGroups = event.payload.resultsGroups || [];
+                    var hopeFace = 0;
+                    var fearFace = 0;
+                    if (resultGroups[0] && resultGroups[0].result) {
+                        var hf = extractDieFaces(resultGroups[0].result);
+                        hopeFace = hf.length ? hf[0] : 0;
+                    }
+                    if (resultGroups[1] && resultGroups[1].result) {
+                        var ff = extractDieFaces(resultGroups[1].result);
+                        fearFace = ff.length ? ff[0] : 0;
+                    }
+                    var dualityLabel;
+                    if (hopeFace === fearFace) {
+                        dualityLabel = t('dice.criticalWithHope');
+                    } else if (hopeFace > fearFace) {
+                        dualityLabel = t('dice.withHope');
+                    } else {
+                        dualityLabel = t('dice.withFear');
+                    }
+                    var dualityTotal = hopeFace + fearFace + (pending.modifier || 0);
+                    console.log('[CV] dualityRoll result:', {
+                        hopeFace: hopeFace,
+                        fearFace: fearFace,
+                        modifier: pending.modifier,
+                        dualityTotal: dualityTotal,
+                        dualityLabel: dualityLabel,
+                        tsTotal: total,
+                        resultGroups: resultGroups,
+                    });
+                    entry.message += ' \u2192 ' + dualityTotal + ' \u2014 ' + dualityLabel;
+                    scheduleSave();
+                    document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
+                        const modData = window.modules.find(function (m) { return m.id === el.dataset.id; });
+                        if (modData) renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
+                    });
+                    return;
+                }
+
                 if (entry) {
                     entry.message += ' \u2192 ' + total;
                     scheduleSave();

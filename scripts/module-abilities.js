@@ -268,6 +268,15 @@
         }
         var totalMod = ability.modifier + profBonus;
         const modStr = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
+        if (sys === 'daggerheart') {
+            window.rollDualityDice(
+                ability.name + ' ' + t('abilities.check'), totalMod,
+                'abilities.event.roll', 'abilities.log.roll',
+                { name: ability.name || t('abilities.unnamed'), modifier: '2d12' + modStr },
+                data.id
+            );
+            return;
+        }
         try {
             const rollPromise = TS.dice.putDiceInTray([{ name: `${ability.name} ${t('abilities.check')}`, roll: `1d20${modStr}` }]);
             if (typeof window.logActivity === 'function') {

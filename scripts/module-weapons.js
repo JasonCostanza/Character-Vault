@@ -1410,7 +1410,20 @@
                     attackCol.appendChild(makeRollBtn(t('weapons.attackThird') + ' (' + expr3 + ')', expr3, 'weapons.event.roll', 'weapons.log.attack', { name: weapon.name || t('weapons.unnamed'), roll: expr3 }));
                 } else if (sys === 'daggerheart') {
                     var rollExpr = '2d12' + formatBonus(bonus);
-                    attackCol.appendChild(makeRollBtn(t('weapons.attack') + ' (' + rollExpr + ')', rollExpr, 'weapons.event.roll', 'weapons.log.attack', { name: weapon.name || t('weapons.unnamed'), roll: rollExpr }));
+                    var dualityBtn = document.createElement('button');
+                    dualityBtn.className = 'btn-primary weapon-action-btn';
+                    dualityBtn.textContent = t('weapons.attack') + ' (' + rollExpr + ')';
+                    (function (b) {
+                        dualityBtn.addEventListener('click', function () {
+                            window.rollDualityDice(
+                                weapon.name || t('weapons.unnamed'), b,
+                                'weapons.event.roll', 'weapons.log.attack',
+                                { name: weapon.name || t('weapons.unnamed'), roll: rollExpr },
+                                data.id
+                            );
+                        });
+                    }(bonus));
+                    attackCol.appendChild(dualityBtn);
                 } else if (sys === 'cpred') {
                     var cpredVal = Number(weapon.cpredSkillValue) || 0;
                     var cpredModes = Array.isArray(weapon.firingModes) && weapon.firingModes.length ? weapon.firingModes : null;

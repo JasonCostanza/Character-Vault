@@ -368,4 +368,26 @@
     window.PF2E_RANK_BONUS_MAP = PF2E_RANK_BONUS_MAP;
     window.computePf2eProficiencyBonus = computePf2eProficiencyBonus;
     window.buildPf2eRankOptions = buildPf2eRankOptions;
+
+    // ── Daggerheart Duality Dice ──
+    function rollDualityDice(label, modifier, eventType, logKey, logReplacements, sourceModuleId) {
+        if (typeof TS === 'undefined') return;
+        var groups = [
+            { name: label + ' (' + t('dice.hope') + ')', roll: '1d12' },
+            { name: label + ' (' + t('dice.fear') + ')', roll: '1d12' },
+        ];
+        var rollPromise = TS.dice.putDiceInTray(groups);
+        if (typeof window.logActivity === 'function') {
+            var logEntryId = window.logActivity({
+                type: eventType,
+                message: t(logKey, logReplacements),
+                sourceModuleId: sourceModuleId,
+            });
+            rollPromise.then(function (rollId) {
+                if (rollId) window.pendingRolls[rollId] = { logEntryId: logEntryId, dualityRoll: true, modifier: modifier };
+            });
+        }
+    }
+
+    window.rollDualityDice = rollDualityDice;
 })();

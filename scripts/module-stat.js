@@ -307,6 +307,15 @@
         }
         var totalMod = stat.modifier + profBonus;
         const modStr = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
+        if (sys === 'daggerheart') {
+            window.rollDualityDice(
+                stat.name + ' ' + t('stat.check'), totalMod,
+                'stat.event.roll', 'stat.log.roll',
+                { name: stat.name || t('stat.unnamed'), modifier: '2d12' + modStr },
+                data.id
+            );
+            return;
+        }
         try {
             const rollPromise = TS.dice.putDiceInTray([{ name: `${stat.name} ${t('stat.check')}`, roll: `1d20${modStr}` }]);
             if (typeof window.logActivity === 'function') {
@@ -443,6 +452,7 @@
     window.updateRollableBtn = updateRollableBtn;
 
     window.getAbilityModifier = function (key) {
+        if (!key) return 0;
         const nameMap = {
             str: 'STR', dex: 'DEX', con: 'CON', int: 'INT', wis: 'WIS', cha: 'CHA',
             // Daggerheart governing traits

@@ -1111,6 +1111,11 @@
             'weapons.vtm.messyCrit': 'Messy Critical!',
             'weapons.vtm.crit': 'Critical!',
             'weapons.vtm.bestialFailure': 'Bestial Failure!',
+            'dice.hope': 'Hope',
+            'dice.fear': 'Fear',
+            'dice.withHope': 'with Hope',
+            'dice.withFear': 'with Fear',
+            'dice.criticalWithHope': 'Critical — with Hope',
 
             // Enhancements (Phase 3)
             'weapons.enhancements': 'Enhancements',
@@ -1737,6 +1742,11 @@
             'weapons.vtm.messyCrit': 'Messy Critical!',
             'weapons.vtm.crit': 'Critical!',
             'weapons.vtm.bestialFailure': 'Bestial Failure!',
+            'dice.hope': 'Esperanza',
+            'dice.fear': 'Miedo',
+            'dice.withHope': 'con Esperanza',
+            'dice.withFear': 'con Miedo',
+            'dice.criticalWithHope': 'Crítico — con Esperanza',
 
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',
@@ -2333,6 +2343,11 @@
             'weapons.vtm.messyCrit': 'Messy Critical!',
             'weapons.vtm.crit': 'Critical!',
             'weapons.vtm.bestialFailure': 'Bestial Failure!',
+            'dice.hope': 'Espoir',
+            'dice.fear': 'Peur',
+            'dice.withHope': 'avec Espoir',
+            'dice.withFear': 'avec Peur',
+            'dice.criticalWithHope': 'Critique — avec Espoir',
 
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',
@@ -2927,6 +2942,11 @@
             'weapons.vtm.messyCrit': 'Messy Critical!',
             'weapons.vtm.crit': 'Critical!',
             'weapons.vtm.bestialFailure': 'Bestial Failure!',
+            'dice.hope': 'Hoffnung',
+            'dice.fear': 'Furcht',
+            'dice.withHope': 'mit Hoffnung',
+            'dice.withFear': 'mit Furcht',
+            'dice.criticalWithHope': 'Kritisch — mit Hoffnung',
 
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',
@@ -3529,6 +3549,11 @@
             'weapons.vtm.messyCrit': 'Messy Critical!',
             'weapons.vtm.crit': 'Critical!',
             'weapons.vtm.bestialFailure': 'Bestial Failure!',
+            'dice.hope': 'Speranza',
+            'dice.fear': 'Paura',
+            'dice.withHope': 'con Speranza',
+            'dice.withFear': 'con Paura',
+            'dice.criticalWithHope': 'Critico — con Speranza',
 
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',
@@ -4118,6 +4143,11 @@
             'weapons.vtm.messyCrit': 'Messy Critical!',
             'weapons.vtm.crit': 'Critical!',
             'weapons.vtm.bestialFailure': 'Bestial Failure!',
+            'dice.hope': 'Esperança',
+            'dice.fear': 'Medo',
+            'dice.withHope': 'com Esperança',
+            'dice.withFear': 'com Medo',
+            'dice.criticalWithHope': 'Crítico — com Esperança',
 
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',
@@ -4707,6 +4737,11 @@
             'weapons.vtm.messyCrit': 'Messy Critical!',
             'weapons.vtm.crit': 'Critical!',
             'weapons.vtm.bestialFailure': 'Bestial Failure!',
+            'dice.hope': 'Надежда',
+            'dice.fear': 'Страх',
+            'dice.withHope': 'с Надеждой',
+            'dice.withFear': 'со Страхом',
+            'dice.criticalWithHope': 'Критический — с Надеждой',
 
             // Common
             'common.discardChanges': 'You have unsaved changes. Discard?',

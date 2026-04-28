@@ -234,6 +234,15 @@
         }
         var totalMod = save.value + profBonus;
         const modStr = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
+        if (sys === 'daggerheart') {
+            window.rollDualityDice(
+                (save.name || t('save.unnamed')) + ' ' + t('save.save'), totalMod,
+                'save.event.roll', 'save.log.roll',
+                { name: save.name || t('save.unnamed'), modifier: '2d12' + modStr },
+                data.id
+            );
+            return;
+        }
         try {
             const rollPromise = TS.dice.putDiceInTray([
                 {

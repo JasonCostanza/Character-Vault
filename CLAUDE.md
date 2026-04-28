@@ -84,6 +84,7 @@ Per-file descriptions live in `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
 - **`TS.*` API unavailable** when previewing in VS Code — guard calls with `typeof TS !== 'undefined'` or test in TaleSpire directly.
 - **`TS.dice.putDiceInTray()` returns `Promise<string>`**, not `string` — the API docs say `string` but it's async. Always use `.then(rollId => ...)` to capture the rollId. `TS.dice.evaluateDiceResultsGroup()` is also async — use `await`. See `handleRollResult` in `scripts/module-activity.js` for the canonical pattern.
 - **`_localStorage/`** contains user save data — gitignored, never commit.
+- **`window.confirm()` / `window.alert()` / `window.prompt()` are blocked** in TaleSpire's embedded Chromium — they return `false`/`undefined` silently without showing any dialog. **Don't** use them for destructive confirmations or user prompts. **Do** use the custom `showConfirm(message, onConfirm)` DOM dialog pattern instead. Reference implementations: `showConfirm()` in `scripts/module-counters.js` and `scripts/module-activity.js`. The CSS for the dialog lives under the `/* ── Delete Confirm Overlay ── */` section in `main.css`.
 
 ## Terminology
 

@@ -35,6 +35,42 @@
         if (_chipTooltipEl) _chipTooltipEl.classList.remove('is-visible');
     }
 
+    // ── Confirmation Dialog ──
+    function showConfirm(message, onConfirm) {
+        var overlay = document.createElement('div');
+        overlay.className = 'delete-confirm-overlay';
+        overlay.setAttribute('aria-hidden', 'true');
+        var panel = document.createElement('div');
+        panel.className = 'delete-confirm-panel';
+        var msg = document.createElement('div');
+        msg.className = 'delete-confirm-msg';
+        msg.style.userSelect = 'none';
+        msg.textContent = message;
+        var actions = document.createElement('div');
+        actions.className = 'delete-confirm-actions';
+        var cancelBtn = document.createElement('button');
+        cancelBtn.className = 'delete-confirm-cancel btn-secondary';
+        cancelBtn.textContent = t('delete.cancel');
+        var confirmBtn = document.createElement('button');
+        confirmBtn.className = 'delete-confirm-delete';
+        confirmBtn.textContent = t('delete.confirm');
+        actions.appendChild(cancelBtn);
+        actions.appendChild(confirmBtn);
+        panel.appendChild(msg);
+        panel.appendChild(actions);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+        function close() {
+            overlay.classList.remove('open');
+            overlay.setAttribute('aria-hidden', 'true');
+            setTimeout(function () { overlay.remove(); }, 200);
+        }
+        cancelBtn.addEventListener('click', close);
+        confirmBtn.addEventListener('click', function () { onConfirm(); close(); });
+        overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+        requestAnimationFrame(function () { overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); });
+    }
+
     // ── Weapon Trait Definitions (D&D 5e 2014) ──
     var WEAPON_TRAITS_DND5E = [
         { key: 'dnd5e.ammunition', nameKey: 'weapons.trait.dnd5e.ammunition', descKey: 'weapons.trait.dnd5e.ammunitionDesc', takesValue: true  },
@@ -2087,12 +2123,13 @@
             deleteBtn.className = 'btn-danger sm';
             deleteBtn.textContent = t('weapons.deleteWeapon');
             deleteBtn.addEventListener('click', function () {
-                if (!window.confirm(t('weapons.deleteConfirm'))) return;
-                var idx = data.content.weapons.findIndex(function (w) { return w.id === weapon.id; });
-                if (idx !== -1) data.content.weapons.splice(idx, 1);
-                scheduleSave();
-                forceClose();
-                renderEditBody(bodyEl, data);
+                showConfirm(t('weapons.deleteConfirm'), function () {
+                    var idx = data.content.weapons.findIndex(function (w) { return w.id === weapon.id; });
+                    if (idx !== -1) data.content.weapons.splice(idx, 1);
+                    scheduleSave();
+                    forceClose();
+                    renderEditBody(bodyEl, data);
+                });
             });
             deleteWrap.appendChild(deleteBtn);
             footer.appendChild(deleteWrap);

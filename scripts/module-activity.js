@@ -558,15 +558,7 @@
                         dualityLabel = t('dice.withFear');
                     }
                     var dualityTotal = hopeFace + fearFace + (pending.modifier || 0);
-                    console.log('[CV] dualityRoll result:', {
-                        hopeFace: hopeFace,
-                        fearFace: fearFace,
-                        modifier: pending.modifier,
-                        dualityTotal: dualityTotal,
-                        dualityLabel: dualityLabel,
-                        tsTotal: total,
-                        resultGroups: resultGroups,
-                    });
+                    console.log('[CV] dualityRoll: hope=' + hopeFace + ' fear=' + fearFace + ' mod=' + pending.modifier + ' total=' + dualityTotal + ' — ' + dualityLabel);
                     entry.message += ' \u2192 ' + dualityTotal + ' \u2014 ' + dualityLabel;
                     scheduleSave();
                     document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {

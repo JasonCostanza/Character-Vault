@@ -15,7 +15,7 @@ Character Vault is a TaleSpire Symbiote — a vanilla HTML/CSS/JS character shee
 | Responsive size classes, ResizeObserver, grid layout, scrollbar rules | `_DOCS/RESPONSIVE_LAYOUT.md` |
 | Add or modify a module type | `_DOCS/NEW_MODULE_GUIDE.md`, then `_DOCS/ARCHITECTURE.md` (MODULE_TYPES registry) |
 | Build or fix a modal/dialog | `_DOCS/NEW_MODAL_GUIDE.md` |
-| Work on a specific submodule (stats, health, etc.) | `_DOCS/SUBMODULES/<NAME>.md` — Available: ABILITIES, ACTIVITY_LOG, CHARACTER_LEVEL, COMPANIONS, CONDITIONS, COUNTERS, HEALTH, LANGUAGES, LIST, RESISTANCES, REST, SAVING_THROWS, SPACER, SPELLS, STATS, TEXT_BOX |
+| Work on a specific submodule (stats, health, etc.) | `_DOCS/SUBMODULES/<NAME>.md` — Available: ABILITIES, ACTIVITY_LOG, CHARACTER_LEVEL, COMPANIONS, CONDITIONS, COUNTERS, HEALTH, LANGUAGES, LIST, RESISTANCES, REST, SAVING_THROWS, SPACER, SPELLS, STATS, TEXT_BOX, WEAPONS |
 | Module/layout system concepts | `_DOCS/MODULES.md` |
 | Tab system | `_DOCS/TABS.md` |
 | Color tokens or themes | `_DOCS/COLORS.md` |
@@ -29,11 +29,11 @@ Character Vault is a TaleSpire Symbiote — a vanilla HTML/CSS/JS character shee
 ```
 Root:       manifest.json  main.html  main.css  README.md  LICENSE.txt
 scripts/:   translations.js  shared.js  i18n.js  theme.js  settings.js
-            persistence.js  module-core.js  module-abilities.js  module-text.js
-            module-stat.js  module-health.js  module-hr.js  module-level.js
-            module-spacer.js  module-resistance.js  module-savingthrow.js
-            module-spells.js  module-list.js  module-counters.js
-            module-condition.js  app.js
+            persistence.js  module-core.js  module-abilities.js  module-activity.js
+            module-condition.js  module-counters.js  module-health.js  module-hr.js
+            module-level.js  module-list.js  module-recovery.js  module-resistance.js
+            module-savingthrow.js  module-spacer.js  module-spells.js  module-stat.js
+            module-text.js  module-weapons.js  app.js
 _DOCS/:     Architecture, design, color/tab/module/localization/settings refs
   SUBMODULES/:  Per-submodule design notes (STATS.md, HEALTH.md, etc.)
   plans/:       Saved implementation plans (kebab-case filenames)
@@ -41,6 +41,16 @@ _localStorage/: User save data (gitignored — never commit)
 ```
 
 Per-file descriptions live in `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
+
+## Commands
+
+```bash
+npm run test        # Run vitest test suite (single pass)
+npm run test:watch  # Run vitest in watch mode
+npm run lint        # ESLint check on scripts/
+npm run lint:fix    # ESLint auto-fix
+npm run format      # Prettier format scripts/
+```
 
 ## Rules
 

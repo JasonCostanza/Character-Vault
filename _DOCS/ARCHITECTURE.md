@@ -32,6 +32,7 @@
 | `scripts/module-list.js` | List module type registration + helpers (multi-column item tables, custom attributes, attribute wizard, cross-list drag transfer, inspect overlay, sortable) |
 | `scripts/module-condition.js` | Condition module type registration + helpers (settings panel, staging area, game system templates, cascading sub-conditions, custom wizard) |
 | `scripts/module-recovery.js` | Recovery module type registration + helpers (rest buttons, hit dice subsystem, confirmation dialog, game system templates, cross-module API calls to Health and Spells) |
+| `scripts/module-companions.js` | Companions module type registration + helpers (table display, inline editing, expandable drawer with notes, SortableJS row reorder, sort by column, active/inactive toggle, settings modal with add/remove companions and custom attributes) |
 | `scripts/module-weapons.js` | Weapons module type registration + helpers (two-column main/off layout, weapon cards, attack/damage roll dispatch, SortableJS cross-column drag, quick-edit ammo/shield HP, action modal, edit modal, Phase 3 `enhancementCatalog` on `data.content` with attach/detach/create/catalog-editor UI) |
 | `scripts/app.js` | Startup: applies translations, triggers auto-load |
 
@@ -42,7 +43,7 @@ There is no build step. Everything ships as-is to TaleSpire's embedded Chromium.
 Scripts are loaded via plain `<script src>` tags (no `async`/`defer`) in `main.html`, which guarantees sequential execution. The order matters because later scripts depend on globals defined by earlier ones:
 
 ```
-translations.js → shared.js → i18n.js → theme.js → settings.js → persistence.js → module-core.js → module-activity.js → module-condition.js → module-counters.js → module-text.js → module-abilities.js → module-stat.js → module-health.js → module-hr.js → module-level.js → module-spacer.js → module-resistance.js → module-savingthrow.js → module-spells.js → module-list.js → module-recovery.js → module-weapons.js → app.js
+translations.js → shared.js → i18n.js → theme.js → settings.js → persistence.js → module-core.js → module-activity.js → module-condition.js → module-counters.js → module-text.js → module-abilities.js → module-stat.js → module-health.js → module-hr.js → module-level.js → module-spacer.js → module-resistance.js → module-savingthrow.js → module-spells.js → module-list.js → module-recovery.js → module-weapons.js → module-companions.js → app.js
 ```
 
 ## External Dependencies (CDN)
@@ -95,6 +96,7 @@ All JS lives in `scripts/` as separate files loaded by `main.html` in dependency
 | **module-list.js** | `renderListBody()`, `renderListItem()`, `renderAttributeCell()`, `renderColumnHeaders()`, `buildAttributeWizard()`, `buildInspectOverlay()`, `initSortableItems()`, `initSortableAttributes()`, `closeManageAttrsPanel()`, `registerModuleType('list', ...)`, `syncState()` — multi-column item tables with custom attributes, attribute wizard, cross-list drag transfer, sort control |
 | **module-condition.js** | `registerModuleType('condition', ...)` — game system template conditions with toggle/value types; `openCondSettingsPanel()`, `openCondWizard()`, `window.applyConditionTemplate`, SortableJS staging area, cascading sub-conditions, expand modal; `window.getConditionValue(key)` — returns `.value` of the first active applied condition matching `typeKey` (used for VtM Hunger split) |
 | **module-recovery.js** | `registerModuleType('recovery', ...)` — rest buttons with configurable action lists, hit dice subsystem, confirmation dialog, game system templates; calls `window.healToFull()`, `window.resetTempHP()`, `window.applyHealingAmount()`, `window.restoreAllSpellSlots()` |
+| **module-companions.js** | `buildCompanionsDefaultContent(sys)` (window export) — seeded attributes per game system; `ensureContent(data)` — shape guard; `evaluateExpression(str)` — arithmetic eval; `getSortedCompanions(content)` — null/asc/desc sort; `makeValueCell()` — inline edit spans with arithmetic and HP Activity Log logging; `renderCompanionRow()` — tr + expandable drawer tr; `renderCompanionsBody()` — full table with sticky thead sort headers, SortableJS on tbody; `openCompanionSettings()` (window export) — settings modal with add/rename/delete companions and add/pin/delete custom attributes; `registerModuleType('companions', ...)` |
 | **module-weapons.js** | `generateWeaponId()`, `ensureWeaponsContent(data)`, `weaponsComputeAttackBonus(weapon)`, `weaponsFormatDamageSummary(weapon, content?)`, `getAttackArchetype(sys)`, `getSystemTraitCatalog()`, `resolveWeaponTrait(entry, content)`, `normalizeWeaponTraits(traits, content)`, `findOrCreateCustomTrait(name, content)`, `generateCustomTraitKey(content)`, `renderPlayBody(bodyEl, data)`, `renderEditBody(bodyEl, data)`, `initWeaponsSortable(mainCol, offCol, data, bodyEl)`, `openWeaponActionModal(moduleEl, data, weapon)`, `openWeaponEditModal(moduleEl, data, weapon, bodyEl)`, `enterQuickEditAmmo()`, `enterQuickEditShieldHp()`, `buildEnhancementsSection()`, `openEnhancementPickerPanel()`, `openEnhancementInlineForm()`, `openEnhancementCatalogModal()`, `registerModuleType('weapons', ...)` — Phase 3 window exports: `weaponsGenerateEnhancementKey`, `weaponsFindEnhancement`, `weaponsGetAttachedEnhancements`, `weaponsGetAvailableEnhancements`, `weaponsApplyStrikingBonus`, `weaponsComputeEnhancementPoolBonus`, `weaponsComputeEnhancementAttackBonus`; `window.weaponsComputeEffectivePool(weapon, content)` — resolves pool size from live stat values when `poolAutoCompute` is on, otherwise returns `poolSize` |
 | **app.js** | Startup: `applyTranslations()`, `refreshModuleLabels()`, auto-load check (`chkAutoLoad` + `TS` availability → `loadCharacter()`); initializes `window.pendingRolls = {}` |
 
@@ -156,6 +158,7 @@ Sections are delimited by `/* ── Name ── */` comment headers.
 | **Toast Notifications** | `.toast` notification styling |
 | **List Inspect Overlay** | `.list-inspect-overlay` read-only item details modal |
 | **Wizard Overlay** | Full-screen overlay, panel, header, body, type cards grid, color swatches, footer buttons |
+| **Companions Module** | `.companion-container`, `.companion-table`, `.companion-col-header`, `.companion-sort-indicator`, `.companion-row`, `.companion-row.is-inactive`, `.companion-row-ghost`, `.companion-cell`, `.companion-name-display`, `.companion-attr-display`, `.companion-inline-input`, `.companion-drag-handle`, `.companion-chevron-btn`, `.companion-active-btn`, `.companion-drawer`, `.companion-notes-label`, `.companion-notes-textarea`, `.companion-empty-state` — sub-sections: Companions Settings Modal (`.companion-settings-section-label`, `.companion-add-name-row`, `.companion-settings-companion-row`, `.companion-attr-row`, `.companion-add-attr-row`) |
 | **Weapons Module** | `.weapons-container`, `.weapons-column`, `.weapons-divider`, `.weapon-card`, `.weapon-drag-handle`, `.weapon-ghost`, `.weapon-name`, `.weapon-bonus`, `.weapon-damage-summary`, `.weapon-trait-chip`, `.weapon-ammo-pip`, `.weapon-shield-hp`, `.weapon-add-btn`, `.weapon-quick-edit-input` — sub-sections: Weapon Action Modal, Weapon Edit Modal |
 | **Weapon Enhancements** | `.weapon-enhancement-chip`, `.weapon-enhancements`, `.weapon-enhancement-row`, `.weapon-enhancement-picker`, `.weapon-enhancement-form-panel`, `.weapon-enhancement-catalog-panel` — Phase 3 enhancement chips, edit-modal attachment section, picker dropdown, create/edit form, catalog modal |
 
@@ -190,7 +193,7 @@ Maps type keys to behavior definitions. Each entry:
   syncState(moduleEl, data) {}                 // optional — sync live DOM state to data before save
 }
 ```
-Currently registered types: `abilities`, `activity`, `text`, `stat`, `hline`, `health`, `level`, `spacer`, `list`, `counters`, `resistance`, `savingthrow`, `spells`, `condition`, `recovery`, `weapons`
+Currently registered types: `abilities`, `activity`, `companions`, `text`, `stat`, `hline`, `health`, `level`, `spacer`, `list`, `counters`, `resistance`, `savingthrow`, `spells`, `condition`, `recovery`, `weapons`
 
 ### Save Blob (JSON schema v1)
 Character sheet persistence format, stored via `TS.localStorage.campaign`:

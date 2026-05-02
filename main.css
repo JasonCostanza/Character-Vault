@@ -3135,6 +3135,392 @@ select,
     font-size: 12px;
 }
 
+/* ── Companions Module ── */
+
+.module[data-type="companions"] .module-body {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+
+.companion-container {
+    flex: 1;
+    overflow-x: auto;
+    scrollbar-gutter: stable;
+}
+
+.companion-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+    font-size: 12px;
+}
+
+.companion-table thead {
+    position: sticky;
+    top: 0;
+    background: var(--cv-bg-module);
+    z-index: 2;
+}
+
+.companion-table th,
+.companion-table td {
+    padding: 0;
+}
+
+.companion-col-header {
+    padding: 4px 6px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-muted);
+    white-space: nowrap;
+    user-select: none;
+    cursor: pointer;
+    border-bottom: 1px solid var(--cv-border);
+    transition: color 0.15s ease;
+}
+
+.companion-col-header:hover {
+    color: var(--cv-text);
+}
+
+.companion-col-header.active-sort {
+    color: var(--cv-accent);
+}
+
+.companion-sort-indicator {
+    font-size: 9px;
+    margin-left: 2px;
+}
+
+.companion-row {
+    transition: background 0.15s ease, opacity 0.2s ease;
+}
+
+.companion-row:hover {
+    background: var(--cv-surface-hover, rgba(255, 255, 255, 0.04));
+}
+
+.companion-row.is-inactive {
+    opacity: 0.45;
+}
+
+.companion-row-ghost {
+    opacity: 0.3;
+    border: 2px dashed var(--cv-accent);
+    background-color: var(--cv-bg-sunken);
+    box-shadow: none;
+}
+
+.companion-cell {
+    padding: 4px 6px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.companion-name-display,
+.companion-attr-display {
+    display: block;
+    cursor: pointer;
+    color: var(--cv-text);
+    font-size: 12px;
+    user-select: none;
+    min-width: 24px;
+    padding: 2px 0;
+    border-radius: 2px;
+    transition: color 0.1s ease;
+}
+
+.companion-name-display {
+    font-size: 13px;
+    min-width: 60px;
+}
+
+.companion-name-display:hover,
+.companion-attr-display:hover {
+    color: var(--cv-accent);
+}
+
+.companion-inline-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--cv-border);
+    color: var(--cv-text);
+    font-size: 12px;
+    font-family: inherit;
+    padding: 2px 0;
+    outline: none;
+    min-width: 24px;
+    width: 100%;
+}
+
+.companion-inline-input:focus {
+    border-bottom-color: var(--cv-accent);
+}
+
+.companion-drag-handle {
+    cursor: grab;
+    color: var(--cv-text-secondary);
+    font-size: 12px;
+    user-select: none;
+    opacity: 0.5;
+    padding: 0 2px;
+    display: inline-block;
+}
+
+.companion-drag-handle:hover {
+    opacity: 1;
+}
+
+.companion-chevron-btn {
+    background: none;
+    border: none;
+    color: var(--cv-text-secondary);
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s ease;
+}
+
+.companion-chevron-btn:hover {
+    color: var(--cv-accent);
+}
+
+.companion-chevron-btn svg {
+    transition: transform 0.2s ease;
+}
+
+.companion-chevron-btn.expanded svg {
+    transform: rotate(90deg);
+}
+
+.companion-active-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cv-text-secondary);
+    transition: color 0.15s ease;
+}
+
+.companion-active-btn:hover {
+    color: var(--cv-text);
+}
+
+.companion-active-btn.is-active {
+    color: var(--cv-accent);
+}
+
+.companion-drawer {
+    padding: 8px 12px;
+    background: var(--cv-bg-sunken);
+    border-bottom: 1px solid var(--cv-border);
+}
+
+.companion-notes-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-muted);
+    margin-bottom: 4px;
+    user-select: none;
+}
+
+.companion-notes-textarea {
+    width: 100%;
+    min-height: 60px;
+    background: transparent;
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 4px;
+    color: var(--cv-text);
+    font-size: 12px;
+    font-family: inherit;
+    padding: 6px;
+    resize: vertical;
+    outline: none;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-scrollbar-thumb, rgba(255, 255, 255, 0.15)) transparent;
+}
+
+.companion-notes-textarea:focus {
+    border-color: var(--cv-accent);
+}
+
+.companion-notes-textarea::placeholder {
+    color: var(--cv-text-secondary);
+    opacity: 0.5;
+}
+
+.companion-empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 8px;
+    color: var(--cv-text-secondary);
+    font-size: 12px;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    font-style: italic;
+    user-select: none;
+}
+
+/* ── Companions Settings Modal ── */
+
+.companion-add-name-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.companion-settings-companion-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 16px;
+}
+
+.companion-settings-companion-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.companion-settings-delete-btn {
+    background: none;
+    border: none;
+    color: var(--cv-text-secondary);
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.companion-settings-delete-btn:hover {
+    color: var(--cv-danger);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.companion-attr-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.companion-attr-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    background: var(--cv-bg-surface);
+}
+
+.companion-attr-row-name {
+    flex: 1;
+    font-size: 13px;
+    color: var(--cv-text);
+    user-select: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.companion-attr-row-type {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    user-select: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.companion-attr-pin-btn,
+.companion-attr-delete-btn {
+    background: none;
+    border: none;
+    color: var(--cv-text-secondary);
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.companion-attr-pin-btn:hover {
+    color: var(--cv-accent);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.companion-attr-pin-btn.pinned {
+    color: var(--cv-accent);
+}
+
+.companion-attr-delete-btn:hover {
+    color: var(--cv-danger);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.companion-attr-drag-handle {
+    cursor: grab;
+    color: var(--cv-text-secondary);
+    font-size: 12px;
+    user-select: none;
+    opacity: 0.5;
+    padding: 0 2px;
+    display: inline-block;
+}
+
+.companion-attr-drag-handle:hover {
+    opacity: 1;
+}
+
+.companion-attr-ghost {
+    opacity: 0.3;
+    border: 1px dashed var(--cv-accent);
+    background: var(--cv-bg-sunken);
+    box-shadow: none;
+}
+
+.companion-add-attr-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 8px;
+    border-top: 1px solid var(--cv-border-subtle);
+}
+
+.companion-add-attr-row .cv-select {
+    width: auto;
+    margin-top: 0;
+    flex-shrink: 0;
+}
+
+.companion-add-attr-row .cv-select-trigger {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
 /* ── Responsive Size Classes (set by ResizeObserver) ── */
 
 /* XS: ~1 column width */

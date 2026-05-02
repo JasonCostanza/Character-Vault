@@ -1,4 +1,4 @@
-# Graph Report - Character Vault DEV  (2026-05-01)
+# Graph Report - Character Vault DEV  (2026-05-02)
 
 ## Corpus Check
 - 41 files · ~222,871 words

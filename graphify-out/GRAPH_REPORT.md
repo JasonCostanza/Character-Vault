@@ -1,12 +1,12 @@
 # Graph Report - Character Vault DEV  (2026-05-02)
 
 ## Corpus Check
-- 41 files · ~222,871 words
+- 41 files · ~222,873 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 416 nodes · 892 edges · 26 communities detected
-- Extraction: 76% EXTRACTED · 24% INFERRED · 0% AMBIGUOUS · INFERRED: 214 edges (avg confidence: 0.8)
+- 416 nodes · 893 edges · 26 communities detected
+- Extraction: 76% EXTRACTED · 24% INFERRED · 0% AMBIGUOUS · INFERRED: 215 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -47,7 +47,7 @@
 7. `renderListBody()` - 14 edges
 8. `renderSettingsPanelContent()` - 13 edges
 9. `buildField()` - 12 edges
-10. `getCondName()` - 10 edges
+10. `buildCvSelect()` - 11 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `t()` --calls--> `openAbilitySettings()`  [INFERRED]
@@ -70,7 +70,7 @@
 
 ### Community 0 - "Community 0"
 Cohesion: 0.08
-Nodes (57): refreshModuleLabels(), t(), onLayoutMode(), onPlayMode(), renderBody(), openSaveSettings(), renderSaveBlockEdit(), buildAccuracySection() (+49 more)
+Nodes (58): refreshModuleLabels(), t(), openCompanionSettings(), onLayoutMode(), onPlayMode(), renderBody(), openSaveSettings(), renderSaveBlockEdit() (+50 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.08
@@ -97,12 +97,12 @@ Cohesion: 0.16
 Nodes (18): castSpell(), defaultContent(), extractDiceRoll(), genId(), getAvailableSlots(), onLayoutMode(), onPlayMode(), openCategoryEditModal() (+10 more)
 
 ### Community 7 - "Community 7"
-Cohesion: 0.15
-Nodes (12): buildCompanionsDefaultContent(), ensureContent(), getAttrTypeLabel(), getSortedCompanions(), onLayoutMode(), onPlayMode(), openCompanionSettings(), renderBody() (+4 more)
-
-### Community 8 - "Community 8"
 Cohesion: 0.2
 Nodes (14): buildAbilityBody(), formatModifier(), getProficiencyRank(), getProficiencyState(), initAbilitySortable(), onLayoutMode(), onPlayMode(), openAbilitySettings() (+6 more)
+
+### Community 8 - "Community 8"
+Cohesion: 0.16
+Nodes (11): buildCompanionsDefaultContent(), ensureContent(), getAttrTypeLabel(), getSortedCompanions(), onLayoutMode(), onPlayMode(), renderBody(), renderCompanionRow() (+3 more)
 
 ### Community 9 - "Community 9"
 Cohesion: 0.2
@@ -194,10 +194,10 @@ Nodes (1): Inline SVG Icon System
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `t()` connect `Community 0` to `Community 2`, `Community 3`, `Community 4`, `Community 5`, `Community 6`, `Community 7`, `Community 8`, `Community 9`, `Community 10`, `Community 11`, `Community 12`, `Community 13`, `Community 14`, `Community 15`, `Community 16`?**
-  _High betweenness centrality (0.544) - this node is a cross-community bridge._
-- **Why does `scheduleSave()` connect `Community 4` to `Community 0`, `Community 2`, `Community 3`, `Community 6`, `Community 8`, `Community 9`, `Community 10`, `Community 12`, `Community 13`, `Community 14`, `Community 17`?**
+  _High betweenness centrality (0.542) - this node is a cross-community bridge._
+- **Why does `scheduleSave()` connect `Community 4` to `Community 0`, `Community 2`, `Community 3`, `Community 6`, `Community 7`, `Community 9`, `Community 10`, `Community 12`, `Community 13`, `Community 14`, `Community 17`?**
   _High betweenness centrality (0.059) - this node is a cross-community bridge._
-- **Why does `escapeHtml()` connect `Community 9` to `Community 0`, `Community 2`, `Community 3`, `Community 4`, `Community 5`, `Community 8`, `Community 10`, `Community 11`, `Community 13`, `Community 14`, `Community 15`?**
+- **Why does `escapeHtml()` connect `Community 9` to `Community 0`, `Community 2`, `Community 3`, `Community 4`, `Community 5`, `Community 7`, `Community 10`, `Community 11`, `Community 13`, `Community 14`, `Community 15`?**
   _High betweenness centrality (0.040) - this node is a cross-community bridge._
 - **Are the 114 inferred relationships involving `t()` (e.g. with `rollAbilityCheck()` and `renderAbilityRow()`) actually correct?**
   _`t()` has 114 INFERRED edges - model-reasoned connections that need verification._

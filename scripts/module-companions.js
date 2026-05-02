@@ -505,22 +505,32 @@
         drawerTd.colSpan = 3 + 1 + pinnedAttrs.length;
         drawerTd.className = 'companion-drawer';
 
+        const notesSection = document.createElement('div');
+        notesSection.className = 'companion-notes-section';
+
         const notesLabel = document.createElement('span');
         notesLabel.className = 'companion-notes-label';
         notesLabel.textContent = t('companion.notes');
+        notesSection.appendChild(notesLabel);
 
-        const notesTextarea = document.createElement('textarea');
-        notesTextarea.className = 'companion-notes-textarea';
-        notesTextarea.placeholder = t('companion.notesPlaceholder');
-        notesTextarea.value = companion.notes || '';
+        if (isLayoutMode) {
+            const notesTextarea = document.createElement('textarea');
+            notesTextarea.className = 'companion-notes-textarea';
+            notesTextarea.placeholder = t('companion.notesPlaceholder');
+            notesTextarea.value = companion.notes || '';
+            notesTextarea.addEventListener('input', () => {
+                companion.notes = notesTextarea.value;
+                scheduleSave();
+            });
+            notesSection.appendChild(notesTextarea);
+        } else {
+            const notesDisplay = document.createElement('div');
+            notesDisplay.className = 'companion-notes-display module-text-display';
+            notesDisplay.innerHTML = renderMarkdown(companion.notes || '');
+            notesSection.appendChild(notesDisplay);
+        }
 
-        notesTextarea.addEventListener('blur', () => {
-            companion.notes = notesTextarea.value;
-            scheduleSave();
-        });
-
-        drawerTd.appendChild(notesLabel);
-        drawerTd.appendChild(notesTextarea);
+        drawerTd.appendChild(notesSection);
         drawerTr.appendChild(drawerTd);
 
         // Chevron toggle
@@ -760,7 +770,7 @@
 
             const bodyEl = moduleEl.querySelector('.module-body');
             if (bodyEl) {
-                const isLayoutMode = document.body.classList.contains('mode-edit');
+                const isLayoutMode = !window.isPlayMode;
                 renderCompanionsBody(bodyEl, data, isLayoutMode);
             }
         });
@@ -800,7 +810,7 @@
                     scheduleSave();
                     const bodyEl = moduleEl.querySelector('.module-body');
                     if (bodyEl) {
-                        const isLayoutMode = document.body.classList.contains('mode-edit');
+                        const isLayoutMode = !window.isPlayMode;
                         renderCompanionsBody(bodyEl, data, isLayoutMode);
                     }
                 });
@@ -823,7 +833,7 @@
                             refreshCompanionList();
                             const bodyEl = moduleEl.querySelector('.module-body');
                             if (bodyEl) {
-                                const isLayoutMode = document.body.classList.contains('mode-edit');
+                                const isLayoutMode = !window.isPlayMode;
                                 renderCompanionsBody(bodyEl, data, isLayoutMode);
                             }
                         }
@@ -861,7 +871,7 @@
         function reRenderModuleBody() {
             const bodyEl = moduleEl.querySelector('.module-body');
             if (bodyEl) {
-                const isLayoutMode = document.body.classList.contains('mode-edit');
+                const isLayoutMode = !window.isPlayMode;
                 renderCompanionsBody(bodyEl, data, isLayoutMode);
             }
         }

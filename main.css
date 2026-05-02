@@ -3141,14 +3141,22 @@ select,
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    scrollbar-gutter: stable;
+    scrollbar-gutter: stable both-edges;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
 }
 
 .companion-container {
     flex: 1;
     overflow-x: auto;
     scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
 }
+
+.companion-container::-webkit-scrollbar { height: 4px; }
+.companion-container::-webkit-scrollbar-track { background: transparent; }
+.companion-container::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
 .companion-table {
     width: 100%;
@@ -3327,6 +3335,10 @@ select,
     border-bottom: 1px solid var(--cv-border);
 }
 
+.companion-notes-section {
+    margin: 0 8px;
+}
+
 .companion-notes-label {
     display: block;
     font-size: 10px;
@@ -3362,6 +3374,12 @@ select,
 .companion-notes-textarea::placeholder {
     color: var(--cv-text-secondary);
     opacity: 0.5;
+}
+
+.companion-notes-display {
+    width: 100%;
+    min-height: 40px;
+    font-size: 12px;
 }
 
 .companion-empty-state {

@@ -3444,9 +3444,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_character_vault",
       "community": 1,
-      "norm_label": "character vault"
+      "norm_label": "character vault",
+      "id": "cv_character_vault"
     },
     {
       "label": "TaleSpire Symbiote",
@@ -3457,9 +3457,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_talespire_symbiote",
       "community": 1,
-      "norm_label": "talespire symbiote"
+      "norm_label": "talespire symbiote",
+      "id": "cv_talespire_symbiote"
     },
     {
       "label": "Module System",
@@ -3470,9 +3470,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_module_system",
       "community": 1,
-      "norm_label": "module system"
+      "norm_label": "module system",
+      "id": "cv_module_system"
     },
     {
       "label": "MODULE_TYPES Registry",
@@ -3483,9 +3483,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_module_types_registry",
       "community": 1,
-      "norm_label": "module_types registry"
+      "norm_label": "module_types registry",
+      "id": "cv_module_types_registry"
     },
     {
       "label": "Cross-Module API Pattern",
@@ -3496,9 +3496,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_cross_module_api",
       "community": 1,
-      "norm_label": "cross-module api pattern"
+      "norm_label": "cross-module api pattern",
+      "id": "cv_cross_module_api"
     },
     {
       "label": "Save Blob Schema v1",
@@ -3509,9 +3509,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_save_blob",
       "community": 21,
-      "norm_label": "save blob schema v1"
+      "norm_label": "save blob schema v1",
+      "id": "cv_save_blob"
     },
     {
       "label": "Edit/Play Mode System",
@@ -3522,9 +3522,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_edit_play_modes",
       "community": 1,
-      "norm_label": "edit/play mode system"
+      "norm_label": "edit/play mode system",
+      "id": "cv_edit_play_modes"
     },
     {
       "label": "Quick Edit (Ctrl+Click)",
@@ -3535,9 +3535,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_quick_edit",
       "community": 1,
-      "norm_label": "quick edit (ctrl+click)"
+      "norm_label": "quick edit (ctrl+click)",
+      "id": "cv_quick_edit"
     },
     {
       "label": "Deletion UX Policy",
@@ -3548,9 +3548,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_deletion_ux",
       "community": 40,
-      "norm_label": "deletion ux policy"
+      "norm_label": "deletion ux policy",
+      "id": "cv_deletion_ux"
     },
     {
       "label": "Theme System (6 Themes)",
@@ -3561,9 +3561,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_theme_system",
       "community": 24,
-      "norm_label": "theme system (6 themes)"
+      "norm_label": "theme system (6 themes)",
+      "id": "cv_theme_system"
     },
     {
       "label": "CV Color Token Layer",
@@ -3574,9 +3574,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_color_tokens",
       "community": 24,
-      "norm_label": "cv color token layer"
+      "norm_label": "cv color token layer",
+      "id": "cv_color_tokens"
     },
     {
       "label": "TaleSpire colorStyles Variables",
@@ -3587,9 +3587,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_ts_color_vars",
       "community": 1,
-      "norm_label": "talespire colorstyles variables"
+      "norm_label": "talespire colorstyles variables",
+      "id": "cv_ts_color_vars"
     },
     {
       "label": "TaleSpire Dice API",
@@ -3600,9 +3600,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_dice_api",
       "community": 1,
-      "norm_label": "talespire dice api"
+      "norm_label": "talespire dice api",
+      "id": "cv_dice_api"
     },
     {
       "label": "Pending Rolls Map",
@@ -3613,9 +3613,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_pending_rolls",
       "community": 1,
-      "norm_label": "pending rolls map"
+      "norm_label": "pending rolls map",
+      "id": "cv_pending_rolls"
     },
     {
       "label": "Pool Rolling Mechanic",
@@ -3626,9 +3626,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_pool_rolling",
       "community": 1,
-      "norm_label": "pool rolling mechanic"
+      "norm_label": "pool rolling mechanic",
+      "id": "cv_pool_rolling"
     },
     {
       "label": "Attack Archetypes (A/B/C)",
@@ -3639,9 +3639,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_attack_archetypes",
       "community": 1,
-      "norm_label": "attack archetypes (a/b/c)"
+      "norm_label": "attack archetypes (a/b/c)",
+      "id": "cv_attack_archetypes"
     },
     {
       "label": "Game System Selection",
@@ -3652,9 +3652,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_game_system",
       "community": 1,
-      "norm_label": "game system selection"
+      "norm_label": "game system selection",
+      "id": "cv_game_system"
     },
     {
       "label": "D&D 5e System",
@@ -3665,9 +3665,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_dnd5e",
       "community": 1,
-      "norm_label": "d&d 5e system"
+      "norm_label": "d&d 5e system",
+      "id": "cv_dnd5e"
     },
     {
       "label": "Pathfinder 2e System",
@@ -3678,9 +3678,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_pf2e",
       "community": 1,
-      "norm_label": "pathfinder 2e system"
+      "norm_label": "pathfinder 2e system",
+      "id": "cv_pf2e"
     },
     {
       "label": "Vampire: The Masquerade System",
@@ -3691,9 +3691,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_vtm",
       "community": 1,
-      "norm_label": "vampire: the masquerade system"
+      "norm_label": "vampire: the masquerade system",
+      "id": "cv_vtm"
     },
     {
       "label": "Shadowrun 6e System",
@@ -3704,9 +3704,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_sr6",
       "community": 1,
-      "norm_label": "shadowrun 6e system"
+      "norm_label": "shadowrun 6e system",
+      "id": "cv_sr6"
     },
     {
       "label": "Cyberpunk Red System",
@@ -3717,9 +3717,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_cpred",
       "community": 1,
-      "norm_label": "cyberpunk red system"
+      "norm_label": "cyberpunk red system",
+      "id": "cv_cpred"
     },
     {
       "label": "Call of Cthulhu System",
@@ -3730,9 +3730,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_coc",
       "community": 1,
-      "norm_label": "call of cthulhu system"
+      "norm_label": "call of cthulhu system",
+      "id": "cv_coc"
     },
     {
       "label": "Daggerheart System",
@@ -3743,9 +3743,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_daggerheart",
       "community": 1,
-      "norm_label": "daggerheart system"
+      "norm_label": "daggerheart system",
+      "id": "cv_daggerheart"
     },
     {
       "label": "Stat Linking Pattern",
@@ -3756,9 +3756,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_stat_linking",
       "community": 1,
-      "norm_label": "stat linking pattern"
+      "norm_label": "stat linking pattern",
+      "id": "cv_stat_linking"
     },
     {
       "label": "Proficiency Rank System",
@@ -3769,9 +3769,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_proficiency_ranks",
       "community": 1,
-      "norm_label": "proficiency rank system"
+      "norm_label": "proficiency rank system",
+      "id": "cv_proficiency_ranks"
     },
     {
       "label": "Weapon Trait System",
@@ -3782,9 +3782,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_weapon_traits",
       "community": 1,
-      "norm_label": "weapon trait system"
+      "norm_label": "weapon trait system",
+      "id": "cv_weapon_traits"
     },
     {
       "label": "Weapon Enhancement System (Phase 3)",
@@ -3795,9 +3795,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_weapon_enhancements",
       "community": 1,
-      "norm_label": "weapon enhancement system (phase 3)"
+      "norm_label": "weapon enhancement system (phase 3)",
+      "id": "cv_weapon_enhancements"
     },
     {
       "label": "Pool Auto-Compute",
@@ -3808,9 +3808,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_pool_auto_compute",
       "community": 1,
-      "norm_label": "pool auto-compute"
+      "norm_label": "pool auto-compute",
+      "id": "cv_pool_auto_compute"
     },
     {
       "label": "Two-Column Main/Off Layout",
@@ -3821,9 +3821,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_two_column_layout",
       "community": 25,
-      "norm_label": "two-column main/off layout"
+      "norm_label": "two-column main/off layout",
+      "id": "cv_two_column_layout"
     },
     {
       "label": "Stat Templates",
@@ -3834,9 +3834,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_stat_templates",
       "community": 1,
-      "norm_label": "stat templates"
+      "norm_label": "stat templates",
+      "id": "cv_stat_templates"
     },
     {
       "label": "Stat Block Style (large-stat/large-modifier)",
@@ -3847,9 +3847,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_stat_block_style",
       "community": 25,
-      "norm_label": "stat block style (large-stat/large-modifier)"
+      "norm_label": "stat block style (large-stat/large-modifier)",
+      "id": "cv_stat_block_style"
     },
     {
       "label": "isProficiencyStat Flag",
@@ -3860,9 +3860,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_proficiency_stat_flag",
       "community": 1,
-      "norm_label": "isproficiencystat flag"
+      "norm_label": "isproficiencystat flag",
+      "id": "cv_proficiency_stat_flag"
     },
     {
       "label": "Localization System (i18n)",
@@ -3873,9 +3873,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_i18n",
       "community": 41,
-      "norm_label": "localization system (i18n)"
+      "norm_label": "localization system (i18n)",
+      "id": "cv_i18n"
     },
     {
       "label": "scheduleSave() Debounce",
@@ -3886,9 +3886,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_schedule_save",
       "community": 21,
-      "norm_label": "schedulesave() debounce"
+      "norm_label": "schedulesave() debounce",
+      "id": "cv_schedule_save"
     },
     {
       "label": "Data Migration Pattern",
@@ -3899,9 +3899,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_migration_pattern",
       "community": 21,
-      "norm_label": "data migration pattern"
+      "norm_label": "data migration pattern",
+      "id": "cv_migration_pattern"
     },
     {
       "label": "SortableJS Dependency",
@@ -3912,9 +3912,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_sortablejs",
       "community": 1,
-      "norm_label": "sortablejs dependency"
+      "norm_label": "sortablejs dependency",
+      "id": "cv_sortablejs"
     },
     {
       "label": "Marked.js Dependency",
@@ -3925,9 +3925,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_marked",
       "community": 1,
-      "norm_label": "marked.js dependency"
+      "norm_label": "marked.js dependency",
+      "id": "cv_marked"
     },
     {
       "label": "DOMPurify Dependency",
@@ -3938,9 +3938,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_dompurify",
       "community": 1,
-      "norm_label": "dompurify dependency"
+      "norm_label": "dompurify dependency",
+      "id": "cv_dompurify"
     },
     {
       "label": "Inline SVG Icon System",
@@ -3951,9 +3951,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "cv_icon_system",
       "community": 42,
-      "norm_label": "inline svg icon system"
+      "norm_label": "inline svg icon system",
+      "id": "cv_icon_system"
     }
   ],
   "links": [
@@ -4012,8 +4012,8 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L273",
       "weight": 1.0,
-      "_src": "scripts_module_abilities_rollabilitycheck",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_abilities_rollabilitycheck",
       "source": "scripts_i18n_t",
       "target": "scripts_module_abilities_rollabilitycheck"
     },
@@ -4024,8 +4024,8 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L298",
       "weight": 1.0,
-      "_src": "scripts_module_abilities_renderabilityrow",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_abilities_renderabilityrow",
       "source": "scripts_i18n_t",
       "target": "scripts_module_abilities_renderabilityrow"
     },
@@ -4036,8 +4036,8 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L335",
       "weight": 1.0,
-      "_src": "scripts_module_abilities_renderabilityrowedit",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_abilities_renderabilityrowedit",
       "source": "scripts_i18n_t",
       "target": "scripts_module_abilities_renderabilityrowedit"
     },
@@ -4048,8 +4048,8 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L457",
       "weight": 1.0,
-      "_src": "scripts_module_abilities_openabilitysettings",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_abilities_openabilitysettings",
       "source": "scripts_i18n_t",
       "target": "scripts_module_abilities_openabilitysettings"
     },
@@ -4060,8 +4060,8 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L556",
       "weight": 1.0,
-      "_src": "scripts_module_abilities_updateabilitieschainicon",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_abilities_updateabilitieschainicon",
       "source": "scripts_i18n_t",
       "target": "scripts_module_abilities_updateabilitieschainicon"
     },
@@ -4072,8 +4072,8 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L582",
       "weight": 1.0,
-      "_src": "scripts_module_abilities_buildabilitybody",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_abilities_buildabilitybody",
       "source": "scripts_i18n_t",
       "target": "scripts_module_abilities_buildabilitybody"
     },
@@ -4084,8 +4084,8 @@
       "source_file": "scripts\\module-activity.js",
       "source_location": "L33",
       "weight": 1.0,
-      "_src": "scripts_module_activity_showconfirm",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_activity_showconfirm",
       "source": "scripts_i18n_t",
       "target": "scripts_module_activity_showconfirm"
     },
@@ -4096,8 +4096,8 @@
       "source_file": "scripts\\module-activity.js",
       "source_location": "L120",
       "weight": 1.0,
-      "_src": "scripts_module_activity_rendertagbar",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_activity_rendertagbar",
       "source": "scripts_i18n_t",
       "target": "scripts_module_activity_rendertagbar"
     },
@@ -4108,8 +4108,8 @@
       "source_file": "scripts\\module-activity.js",
       "source_location": "L137",
       "weight": 1.0,
-      "_src": "scripts_module_activity_renderentries",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_activity_renderentries",
       "source": "scripts_i18n_t",
       "target": "scripts_module_activity_renderentries"
     },
@@ -4120,8 +4120,8 @@
       "source_file": "scripts\\module-activity.js",
       "source_location": "L329",
       "weight": 1.0,
-      "_src": "scripts_module_activity_openactivitysettings",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_activity_openactivitysettings",
       "source": "scripts_i18n_t",
       "target": "scripts_module_activity_openactivitysettings"
     },
@@ -4132,8 +4132,8 @@
       "source_file": "scripts\\module-companions.js",
       "source_location": "L82",
       "weight": 1.0,
-      "_src": "scripts_module_companions_showconfirm",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_companions_showconfirm",
       "source": "scripts_i18n_t",
       "target": "scripts_module_companions_showconfirm"
     },
@@ -4144,8 +4144,8 @@
       "source_file": "scripts\\module-companions.js",
       "source_location": "L406",
       "weight": 1.0,
-      "_src": "scripts_module_companions_rendercompanionrow",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_companions_rendercompanionrow",
       "source": "scripts_i18n_t",
       "target": "scripts_module_companions_rendercompanionrow"
     },
@@ -4156,8 +4156,8 @@
       "source_file": "scripts\\module-companions.js",
       "source_location": "L553",
       "weight": 1.0,
-      "_src": "scripts_module_companions_rendercompanionsbody",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_companions_rendercompanionsbody",
       "source": "scripts_i18n_t",
       "target": "scripts_module_companions_rendercompanionsbody"
     },
@@ -4168,8 +4168,8 @@
       "source_file": "scripts\\module-companions.js",
       "source_location": "L696",
       "weight": 1.0,
-      "_src": "scripts_module_companions_opencompanionsettings",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_companions_opencompanionsettings",
       "source": "scripts_i18n_t",
       "target": "scripts_module_companions_opencompanionsettings"
     },
@@ -4180,8 +4180,8 @@
       "source_file": "scripts\\module-companions.js",
       "source_location": "L1054",
       "weight": 1.0,
-      "_src": "scripts_module_companions_getattrtypelabel",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_companions_getattrtypelabel",
       "source": "scripts_i18n_t",
       "target": "scripts_module_companions_getattrtypelabel"
     },
@@ -4192,8 +4192,8 @@
       "source_file": "scripts\\module-condition.js",
       "source_location": "L1552",
       "weight": 1.0,
-      "_src": "scripts_module_condition_getcondname",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_condition_getcondname",
       "source": "scripts_i18n_t",
       "target": "scripts_module_condition_getcondname"
     },
@@ -4204,8 +4204,8 @@
       "source_file": "scripts\\module-condition.js",
       "source_location": "L1577",
       "weight": 1.0,
-      "_src": "scripts_module_condition_getconddescription",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_condition_getconddescription",
       "source": "scripts_i18n_t",
       "target": "scripts_module_condition_getconddescription"
     },
@@ -4216,8 +4216,8 @@
       "source_file": "scripts\\module-condition.js",
       "source_location": "L1691",
       "weight": 1.0,
-      "_src": "scripts_module_condition_showcondvalueprompt",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_condition_showcondvalueprompt",
       "source": "scripts_i18n_t",
       "target": "scripts_module_condition_showcondvalueprompt"
     },
@@ -4228,8 +4228,8 @@
       "source_file": "scripts\\module-condition.js",
       "source_location": "L1778",
       "weight": 1.0,
-      "_src": "scripts_module_condition_opencondexpandmodal",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_condition_opencondexpandmodal",
       "source": "scripts_i18n_t",
       "target": "scripts_module_condition_opencondexpandmodal"
     },
@@ -4240,8 +4240,8 @@
       "source_file": "scripts\\module-condition.js",
       "source_location": "L1991",
       "weight": 1.0,
-      "_src": "scripts_module_condition_renderplaybody",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_condition_renderplaybody",
       "source": "scripts_i18n_t",
       "target": "scripts_module_condition_renderplaybody"
     },
@@ -4252,8 +4252,8 @@
       "source_file": "scripts\\module-condition.js",
       "source_location": "L2129",
       "weight": 1.0,
-      "_src": "scripts_module_condition_rendereditbody",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_condition_rendereditbody",
       "source": "scripts_i18n_t",
       "target": "scripts_module_condition_rendereditbody"
     },
@@ -4264,8 +4264,8 @@
       "source_file": "scripts\\module-condition.js",
       "source_location": "L2200",
       "weight": 1.0,
-      "_src": "scripts_module_condition_buildsortheader",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_condition_buildsortheader",
       "source": "scripts_i18n_t",
       "target": "scripts_module_condition_buildsortheader"
     },
@@ -4276,8 +4276,8 @@
       "source_file": "scripts\\module-condition.js",
       "source_location": "L2335",
       "weight": 1.0,
-      "_src": "scripts_module_condition_rendersettingspanelcontent",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_condition_rendersettingspanelcontent",
       "source": "scripts_i18n_t",
       "target": "scripts_module_condition_rendersettingspanelcontent"
     },
@@ -4288,8 +4288,8 @@
       "source_file": "scripts\\module-condition.js",
       "source_location": "L2512",
       "weight": 1.0,
-      "_src": "scripts_module_condition_createsettingsapplieditem",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_condition_createsettingsapplieditem",
       "source": "scripts_i18n_t",
       "target": "scripts_module_condition_createsettingsapplieditem"
     },
@@ -4300,8 +4300,8 @@
       "source_file": "scripts\\module-condition.js",
       "source_location": "L2571",
       "weight": 1.0,
-      "_src": "scripts_module_condition_applyconditionfromstaging",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_condition_applyconditionfromstaging",
       "source": "scripts_i18n_t",
       "target": "scripts_module_condition_applyconditionfromstaging"
     },
@@ -4312,8 +4312,8 @@
       "source_file": "scripts\\module-condition.js",
       "source_location": "L2750",
       "weight": 1.0,
-      "_src": "scripts_module_condition_opencondwizard",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_condition_opencondwizard",
       "source": "scripts_i18n_t",
       "target": "scripts_module_condition_opencondwizard"
     },
@@ -4324,8 +4324,8 @@
       "source_file": "scripts\\module-core.js",
       "source_location": "L437",
       "weight": 1.0,
-      "_src": "scripts_module_core_openoverflowmenu",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_core_openoverflowmenu",
       "source": "scripts_i18n_t",
       "target": "scripts_module_core_openoverflowmenu"
     },
@@ -4336,8 +4336,8 @@
       "source_file": "scripts\\module-core.js",
       "source_location": "L627",
       "weight": 1.0,
-      "_src": "scripts_module_core_buildswatchpanel",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_core_buildswatchpanel",
       "source": "scripts_i18n_t",
       "target": "scripts_module_core_buildswatchpanel"
     },
@@ -4348,8 +4348,8 @@
       "source_file": "scripts\\module-core.js",
       "source_location": "L790",
       "weight": 1.0,
-      "_src": "scripts_module_core_rendermodule",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_core_rendermodule",
       "source": "scripts_i18n_t",
       "target": "scripts_module_core_rendermodule"
     },
@@ -4360,8 +4360,8 @@
       "source_file": "scripts\\module-core.js",
       "source_location": "L1184",
       "weight": 1.0,
-      "_src": "scripts_module_core_deletemodule",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_core_deletemodule",
       "source": "scripts_i18n_t",
       "target": "scripts_module_core_deletemodule"
     },
@@ -4372,8 +4372,8 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L13",
       "weight": 1.0,
-      "_src": "scripts_module_counters_showconfirm",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_counters_showconfirm",
       "source": "scripts_i18n_t",
       "target": "scripts_module_counters_showconfirm"
     },
@@ -4384,8 +4384,8 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L170",
       "weight": 1.0,
-      "_src": "scripts_module_counters_buildiconpicker",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_counters_buildiconpicker",
       "source": "scripts_i18n_t",
       "target": "scripts_module_counters_buildiconpicker"
     },
@@ -4396,8 +4396,8 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L220",
       "weight": 1.0,
-      "_src": "scripts_module_counters_opencountercreatemodal",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_counters_opencountercreatemodal",
       "source": "scripts_i18n_t",
       "target": "scripts_module_counters_opencountercreatemodal"
     },
@@ -4408,8 +4408,8 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L357",
       "weight": 1.0,
-      "_src": "scripts_module_counters_opencountereditmodal",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_counters_opencountereditmodal",
       "source": "scripts_i18n_t",
       "target": "scripts_module_counters_opencountereditmodal"
     },
@@ -4420,8 +4420,8 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L624",
       "weight": 1.0,
-      "_src": "scripts_module_counters_rendercounterrowplay",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_counters_rendercounterrowplay",
       "source": "scripts_i18n_t",
       "target": "scripts_module_counters_rendercounterrowplay"
     },
@@ -4432,8 +4432,8 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L768",
       "weight": 1.0,
-      "_src": "scripts_module_counters_rendercounterrowedit",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_counters_rendercounterrowedit",
       "source": "scripts_i18n_t",
       "target": "scripts_module_counters_rendercounterrowedit"
     },
@@ -4444,8 +4444,8 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L854",
       "weight": 1.0,
-      "_src": "scripts_module_counters_rendercountercolumnheaders",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_counters_rendercountercolumnheaders",
       "source": "scripts_i18n_t",
       "target": "scripts_module_counters_rendercountercolumnheaders"
     },
@@ -4456,8 +4456,8 @@
       "source_file": "scripts\\module-health.js",
       "source_location": "L128",
       "weight": 1.0,
-      "_src": "scripts_module_health_openhealthactionoverlay",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_health_openhealthactionoverlay",
       "source": "scripts_i18n_t",
       "target": "scripts_module_health_openhealthactionoverlay"
     },
@@ -4468,8 +4468,8 @@
       "source_file": "scripts\\module-health.js",
       "source_location": "L281",
       "weight": 1.0,
-      "_src": "scripts_module_health_buildplaylayer",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_health_buildplaylayer",
       "source": "scripts_i18n_t",
       "target": "scripts_module_health_buildplaylayer"
     },
@@ -4480,8 +4480,8 @@
       "source_file": "scripts\\module-health.js",
       "source_location": "L439",
       "weight": 1.0,
-      "_src": "scripts_module_health_buildeditlayer",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_health_buildeditlayer",
       "source": "scripts_i18n_t",
       "target": "scripts_module_health_buildeditlayer"
     },
@@ -4492,8 +4492,8 @@
       "source_file": "scripts\\module-hr.js",
       "source_location": "L6",
       "weight": 1.0,
-      "_src": "scripts_module_hr_renderbody",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_hr_renderbody",
       "source": "scripts_i18n_t",
       "target": "scripts_module_hr_renderbody"
     },
@@ -4504,8 +4504,8 @@
       "source_file": "scripts\\module-hr.js",
       "source_location": "L47",
       "weight": 1.0,
-      "_src": "scripts_module_hr_onplaymode",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_hr_onplaymode",
       "source": "scripts_i18n_t",
       "target": "scripts_module_hr_onplaymode"
     },
@@ -4516,8 +4516,8 @@
       "source_file": "scripts\\module-hr.js",
       "source_location": "L65",
       "weight": 1.0,
-      "_src": "scripts_module_hr_onlayoutmode",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_hr_onlayoutmode",
       "source": "scripts_i18n_t",
       "target": "scripts_module_hr_onlayoutmode"
     },
@@ -4528,8 +4528,8 @@
       "source_file": "scripts\\module-level.js",
       "source_location": "L117",
       "weight": 1.0,
-      "_src": "scripts_module_level_renderlevelbody",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_level_renderlevelbody",
       "source": "scripts_i18n_t",
       "target": "scripts_module_level_renderlevelbody"
     },
@@ -4540,8 +4540,8 @@
       "source_file": "scripts\\module-level.js",
       "source_location": "L264",
       "weight": 1.0,
-      "_src": "scripts_module_level_openxpmodal",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_level_openxpmodal",
       "source": "scripts_i18n_t",
       "target": "scripts_module_level_openxpmodal"
     },
@@ -4552,8 +4552,8 @@
       "source_file": "scripts\\module-level.js",
       "source_location": "L415",
       "weight": 1.0,
-      "_src": "scripts_module_level_openlevelsettings",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_level_openlevelsettings",
       "source": "scripts_i18n_t",
       "target": "scripts_module_level_openlevelsettings"
     },
@@ -4564,8 +4564,8 @@
       "source_file": "scripts\\module-list.js",
       "source_location": "L93",
       "weight": 1.0,
-      "_src": "scripts_module_list_showattrdeleteconfirm",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_list_showattrdeleteconfirm",
       "source": "scripts_i18n_t",
       "target": "scripts_module_list_showattrdeleteconfirm"
     },
@@ -4576,8 +4576,8 @@
       "source_file": "scripts\\module-list.js",
       "source_location": "L151",
       "weight": 1.0,
-      "_src": "scripts_module_list_renderemptystate",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_list_renderemptystate",
       "source": "scripts_i18n_t",
       "target": "scripts_module_list_renderemptystate"
     },
@@ -4588,8 +4588,8 @@
       "source_file": "scripts\\module-list.js",
       "source_location": "L227",
       "weight": 1.0,
-      "_src": "scripts_module_list_buildattronlog",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_list_buildattronlog",
       "source": "scripts_i18n_t",
       "target": "scripts_module_list_buildattronlog"
     },
@@ -4600,8 +4600,8 @@
       "source_file": "scripts\\module-list.js",
       "source_location": "L266",
       "weight": 1.0,
-      "_src": "scripts_module_list_renderattrvalue",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_list_renderattrvalue",
       "source": "scripts_i18n_t",
       "target": "scripts_module_list_renderattrvalue"
     },
@@ -4612,8 +4612,8 @@
       "source_file": "scripts\\module-list.js",
       "source_location": "L460",
       "weight": 1.0,
-      "_src": "scripts_module_list_rendercolumnheaders",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_list_rendercolumnheaders",
       "source": "scripts_i18n_t",
       "target": "scripts_module_list_rendercolumnheaders"
     },
@@ -4624,8 +4624,8 @@
       "source_file": "scripts\\module-list.js",
       "source_location": "L753",
       "weight": 1.0,
-      "_src": "scripts_module_list_renderlistbody",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_list_renderlistbody",
       "source": "scripts_i18n_t",
       "target": "scripts_module_list_renderlistbody"
     },
@@ -4636,8 +4636,8 @@
       "source_file": "scripts\\module-list.js",
       "source_location": "L969",
       "weight": 1.0,
-      "_src": "scripts_module_list_rendermanagepanelcontent",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_list_rendermanagepanelcontent",
       "source": "scripts_i18n_t",
       "target": "scripts_module_list_rendermanagepanelcontent"
     },
@@ -4648,8 +4648,8 @@
       "source_file": "scripts\\module-list.js",
       "source_location": "L1167",
       "weight": 1.0,
-      "_src": "scripts_module_list_openattrwizard",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_list_openattrwizard",
       "source": "scripts_i18n_t",
       "target": "scripts_module_list_openattrwizard"
     },
@@ -4660,8 +4660,8 @@
       "source_file": "scripts\\module-list.js",
       "source_location": "L1439",
       "weight": 1.0,
-      "_src": "scripts_module_list_closeiteminspect",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_list_closeiteminspect",
       "source": "scripts_i18n_t",
       "target": "scripts_module_list_closeiteminspect"
     },
@@ -4672,8 +4672,8 @@
       "source_file": "scripts\\module-list.js",
       "source_location": "L1546",
       "weight": 1.0,
-      "_src": "scripts_module_list_openiteminspect",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_list_openiteminspect",
       "source": "scripts_i18n_t",
       "target": "scripts_module_list_openiteminspect"
     },
@@ -4684,8 +4684,8 @@
       "source_file": "scripts\\module-recovery.js",
       "source_location": "L103",
       "weight": 1.0,
-      "_src": "scripts_module_recovery_openrestconfirm",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_recovery_openrestconfirm",
       "source": "scripts_i18n_t",
       "target": "scripts_module_recovery_openrestconfirm"
     },
@@ -4696,8 +4696,8 @@
       "source_file": "scripts\\module-recovery.js",
       "source_location": "L257",
       "weight": 1.0,
-      "_src": "scripts_module_recovery_openrecoverysettingsmodal",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_recovery_openrecoverysettingsmodal",
       "source": "scripts_i18n_t",
       "target": "scripts_module_recovery_openrecoverysettingsmodal"
     },
@@ -4708,8 +4708,8 @@
       "source_file": "scripts\\module-recovery.js",
       "source_location": "L450",
       "weight": 1.0,
-      "_src": "scripts_module_recovery_buildplaymode",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_recovery_buildplaymode",
       "source": "scripts_i18n_t",
       "target": "scripts_module_recovery_buildplaymode"
     },
@@ -4720,8 +4720,8 @@
       "source_file": "scripts\\module-recovery.js",
       "source_location": "L515",
       "weight": 1.0,
-      "_src": "scripts_module_recovery_openrestbuttoneditmodal",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_recovery_openrestbuttoneditmodal",
       "source": "scripts_i18n_t",
       "target": "scripts_module_recovery_openrestbuttoneditmodal"
     },
@@ -4732,8 +4732,8 @@
       "source_file": "scripts\\module-recovery.js",
       "source_location": "L849",
       "weight": 1.0,
-      "_src": "scripts_module_recovery_buildeditmode",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_recovery_buildeditmode",
       "source": "scripts_i18n_t",
       "target": "scripts_module_recovery_buildeditmode"
     },
@@ -4744,8 +4744,8 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L51",
       "weight": 1.0,
-      "_src": "scripts_module_resistance_getresname",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_resistance_getresname",
       "source": "scripts_i18n_t",
       "target": "scripts_module_resistance_getresname"
     },
@@ -4756,8 +4756,8 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L87",
       "weight": 1.0,
-      "_src": "scripts_module_resistance_getavailabletypes",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_resistance_getavailabletypes",
       "source": "scripts_i18n_t",
       "target": "scripts_module_resistance_getavailabletypes"
     },
@@ -4768,8 +4768,8 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L131",
       "weight": 1.0,
-      "_src": "scripts_module_resistance_showvalueprompt",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_resistance_showvalueprompt",
       "source": "scripts_i18n_t",
       "target": "scripts_module_resistance_showvalueprompt"
     },
@@ -4780,8 +4780,8 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L186",
       "weight": 1.0,
-      "_src": "scripts_module_resistance_renderplaybody",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_resistance_renderplaybody",
       "source": "scripts_i18n_t",
       "target": "scripts_module_resistance_renderplaybody"
     },
@@ -4792,8 +4792,8 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L288",
       "weight": 1.0,
-      "_src": "scripts_module_resistance_rendereditbody",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_resistance_rendereditbody",
       "source": "scripts_i18n_t",
       "target": "scripts_module_resistance_rendereditbody"
     },
@@ -4804,8 +4804,8 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L409",
       "weight": 1.0,
-      "_src": "scripts_module_resistance_rendersettingspanelcontent",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_resistance_rendersettingspanelcontent",
       "source": "scripts_i18n_t",
       "target": "scripts_module_resistance_rendersettingspanelcontent"
     },
@@ -4816,8 +4816,8 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L555",
       "weight": 1.0,
-      "_src": "scripts_module_resistance_createassigneditemel",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_resistance_createassigneditemel",
       "source": "scripts_i18n_t",
       "target": "scripts_module_resistance_createassigneditemel"
     },
@@ -4828,8 +4828,8 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L626",
       "weight": 1.0,
-      "_src": "scripts_module_resistance_initsettingssortables",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_resistance_initsettingssortables",
       "source": "scripts_i18n_t",
       "target": "scripts_module_resistance_initsettingssortables"
     },
@@ -4840,8 +4840,8 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L751",
       "weight": 1.0,
-      "_src": "scripts_module_resistance_openreswizard",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_resistance_openreswizard",
       "source": "scripts_i18n_t",
       "target": "scripts_module_resistance_openreswizard"
     },
@@ -4852,8 +4852,8 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L114",
       "weight": 1.0,
-      "_src": "scripts_module_savingthrow_rendersaveblock",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_savingthrow_rendersaveblock",
       "source": "scripts_i18n_t",
       "target": "scripts_module_savingthrow_rendersaveblock"
     },
@@ -4864,8 +4864,8 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L139",
       "weight": 1.0,
-      "_src": "scripts_module_savingthrow_rendersaveblockedit",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_savingthrow_rendersaveblockedit",
       "source": "scripts_i18n_t",
       "target": "scripts_module_savingthrow_rendersaveblockedit"
     },
@@ -4876,8 +4876,8 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L239",
       "weight": 1.0,
-      "_src": "scripts_module_savingthrow_rollsavingthrow",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_savingthrow_rollsavingthrow",
       "source": "scripts_i18n_t",
       "target": "scripts_module_savingthrow_rollsavingthrow"
     },
@@ -4888,8 +4888,8 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L312",
       "weight": 1.0,
-      "_src": "scripts_module_savingthrow_rendernotesarea",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_savingthrow_rendernotesarea",
       "source": "scripts_i18n_t",
       "target": "scripts_module_savingthrow_rendernotesarea"
     },
@@ -4900,8 +4900,8 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L365",
       "weight": 1.0,
-      "_src": "scripts_module_savingthrow_opensavesettings",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_savingthrow_opensavesettings",
       "source": "scripts_i18n_t",
       "target": "scripts_module_savingthrow_opensavesettings"
     },
@@ -4912,8 +4912,8 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L520",
       "weight": 1.0,
-      "_src": "scripts_module_savingthrow_opencustomtiereditor",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_savingthrow_opencustomtiereditor",
       "source": "scripts_i18n_t",
       "target": "scripts_module_savingthrow_opencustomtiereditor"
     },
@@ -4924,8 +4924,8 @@
       "source_file": "scripts\\module-spacer.js",
       "source_location": "L9",
       "weight": 1.0,
-      "_src": "scripts_module_spacer_renderbody",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_spacer_renderbody",
       "source": "scripts_i18n_t",
       "target": "scripts_module_spacer_renderbody"
     },
@@ -4936,8 +4936,8 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L55",
       "weight": 1.0,
-      "_src": "scripts_module_spells_rollsingleattribute",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_spells_rollsingleattribute",
       "source": "scripts_i18n_t",
       "target": "scripts_module_spells_rollsingleattribute"
     },
@@ -4948,8 +4948,8 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L75",
       "weight": 1.0,
-      "_src": "scripts_module_spells_castspell",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_spells_castspell",
       "source": "scripts_i18n_t",
       "target": "scripts_module_spells_castspell"
     },
@@ -4960,8 +4960,8 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L116",
       "weight": 1.0,
-      "_src": "scripts_module_spells_renderspellsplaylayer",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_spells_renderspellsplaylayer",
       "source": "scripts_i18n_t",
       "target": "scripts_module_spells_renderspellsplaylayer"
     },
@@ -4972,8 +4972,8 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L288",
       "weight": 1.0,
-      "_src": "scripts_module_spells_openspelldetailmodal",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_spells_openspelldetailmodal",
       "source": "scripts_i18n_t",
       "target": "scripts_module_spells_openspelldetailmodal"
     },
@@ -4984,8 +4984,8 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L394",
       "weight": 1.0,
-      "_src": "scripts_module_spells_openspelleditmodal",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_spells_openspelleditmodal",
       "source": "scripts_i18n_t",
       "target": "scripts_module_spells_openspelleditmodal"
     },
@@ -4996,8 +4996,8 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L601",
       "weight": 1.0,
-      "_src": "scripts_module_spells_opencategoryeditmodal",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_spells_opencategoryeditmodal",
       "source": "scripts_i18n_t",
       "target": "scripts_module_spells_opencategoryeditmodal"
     },
@@ -5008,8 +5008,8 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L725",
       "weight": 1.0,
-      "_src": "scripts_module_spells_renderspellseditlayer",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_spells_renderspellseditlayer",
       "source": "scripts_i18n_t",
       "target": "scripts_module_spells_renderspellseditlayer"
     },
@@ -5020,8 +5020,8 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L1011",
       "weight": 1.0,
-      "_src": "scripts_module_spells_openspellsettings",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_spells_openspellsettings",
       "source": "scripts_i18n_t",
       "target": "scripts_module_spells_openspellsettings"
     },
@@ -5032,8 +5032,8 @@
       "source_file": "scripts\\module-stat.js",
       "source_location": "L90",
       "weight": 1.0,
-      "_src": "scripts_module_stat_updaterollablebtn",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_stat_updaterollablebtn",
       "source": "scripts_i18n_t",
       "target": "scripts_module_stat_updaterollablebtn"
     },
@@ -5044,8 +5044,8 @@
       "source_file": "scripts\\module-stat.js",
       "source_location": "L111",
       "weight": 1.0,
-      "_src": "scripts_module_stat_renderstatblock",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_stat_renderstatblock",
       "source": "scripts_i18n_t",
       "target": "scripts_module_stat_renderstatblock"
     },
@@ -5056,8 +5056,8 @@
       "source_file": "scripts\\module-stat.js",
       "source_location": "L151",
       "weight": 1.0,
-      "_src": "scripts_module_stat_renderstatblockedit",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_stat_renderstatblockedit",
       "source": "scripts_i18n_t",
       "target": "scripts_module_stat_renderstatblockedit"
     },
@@ -5068,8 +5068,8 @@
       "source_file": "scripts\\module-stat.js",
       "source_location": "L312",
       "weight": 1.0,
-      "_src": "scripts_module_stat_rollstatcheck",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_stat_rollstatcheck",
       "source": "scripts_i18n_t",
       "target": "scripts_module_stat_rollstatcheck"
     },
@@ -5080,8 +5080,8 @@
       "source_file": "scripts\\module-text.js",
       "source_location": "L14",
       "weight": 1.0,
-      "_src": "scripts_module_text_renderbody",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_text_renderbody",
       "source": "scripts_i18n_t",
       "target": "scripts_module_text_renderbody"
     },
@@ -5092,8 +5092,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L53",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_showconfirm",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_showconfirm",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_showconfirm"
     },
@@ -5104,8 +5104,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L233",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_resolveweapontrait",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_resolveweapontrait",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_resolveweapontrait"
     },
@@ -5116,8 +5116,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L482",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_buildweaponcard",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_buildweaponcard",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_buildweaponcard"
     },
@@ -5128,8 +5128,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L628",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_buildplaceholdercard",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_buildplaceholdercard",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_buildplaceholdercard"
     },
@@ -5140,8 +5140,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L719",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_buildtwocolumnlayout",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_buildtwocolumnlayout",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_buildtwocolumnlayout"
     },
@@ -5152,8 +5152,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L760",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_renderplaybody",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_renderplaybody",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_renderplaybody"
     },
@@ -5164,8 +5164,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L869",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_buildproficiencyranksection",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_buildproficiencyranksection",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_buildproficiencyranksection"
     },
@@ -5176,8 +5176,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L892",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_buildskillsection",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_buildskillsection",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_buildskillsection"
     },
@@ -5188,8 +5188,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L935",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_buildpoolsection",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_buildpoolsection",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_buildpoolsection"
     },
@@ -5200,8 +5200,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L1101",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_buildweaponcategorysection",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_buildweaponcategorysection",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_buildweaponcategorysection"
     },
@@ -5212,8 +5212,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L1154",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_buildgoverningtraitsection",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_buildgoverningtraitsection",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_buildgoverningtraitsection"
     },
@@ -5224,8 +5224,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L1179",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_buildfiringmodessection",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_buildfiringmodessection",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_buildfiringmodessection"
     },
@@ -5236,8 +5236,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L1267",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_buildbasedmgsection",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_buildbasedmgsection",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_buildbasedmgsection"
     },
@@ -5248,8 +5248,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L1312",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_buildaccuracysection",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_buildaccuracysection",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_buildaccuracysection"
     },
@@ -5260,8 +5260,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L1331",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_buildimpalingrow",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_buildimpalingrow",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_buildimpalingrow"
     },
@@ -5272,8 +5272,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L1345",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_buildarmorsavepenrow",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_buildarmorsavepenrow",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_buildarmorsavepenrow"
     },
@@ -5284,8 +5284,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L1385",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_openweaponactionmodal",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_openweaponactionmodal",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_openweaponactionmodal"
     },
@@ -5296,8 +5296,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L1675",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_openweaponeditmodal",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_openweaponeditmodal",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_openweaponeditmodal"
     },
@@ -5308,8 +5308,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L2215",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_openweapontraitpickermodal",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_openweapontraitpickermodal",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_openweapontraitpickermodal"
     },
@@ -5320,8 +5320,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L2527",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_buildenhancementssection",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_buildenhancementssection",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_buildenhancementssection"
     },
@@ -5332,8 +5332,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L2692",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_openenhancementinlineform",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_openenhancementinlineform",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_openenhancementinlineform"
     },
@@ -5344,8 +5344,8 @@
       "source_file": "scripts\\module-weapons.js",
       "source_location": "L2879",
       "weight": 1.0,
-      "_src": "scripts_module_weapons_openenhancementcatalogmodal",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_module_weapons_openenhancementcatalogmodal",
       "source": "scripts_i18n_t",
       "target": "scripts_module_weapons_openenhancementcatalogmodal"
     },
@@ -5356,8 +5356,8 @@
       "source_file": "scripts\\shared.js",
       "source_location": "L360",
       "weight": 1.0,
-      "_src": "scripts_shared_buildpf2erankoptions",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_shared_buildpf2erankoptions",
       "source": "scripts_i18n_t",
       "target": "scripts_shared_buildpf2erankoptions"
     },
@@ -5368,8 +5368,8 @@
       "source_file": "scripts\\shared.js",
       "source_location": "L376",
       "weight": 1.0,
-      "_src": "scripts_shared_rolldualitydice",
-      "_tgt": "scripts_i18n_t",
+      "_src": "scripts_i18n_t",
+      "_tgt": "scripts_shared_rolldualitydice",
       "source": "scripts_i18n_t",
       "target": "scripts_shared_rolldualitydice"
     },
@@ -7900,8 +7900,8 @@
       "source_file": "scripts\\persistence.js",
       "source_location": "L98",
       "weight": 1.0,
-      "_src": "scripts_persistence_deserializecharacter",
-      "_tgt": "scripts_module_core_updateemptystate",
+      "_src": "scripts_module_core_updateemptystate",
+      "_tgt": "scripts_persistence_deserializecharacter",
       "source": "scripts_module_core_updateemptystate",
       "target": "scripts_persistence_deserializecharacter"
     },
@@ -8080,8 +8080,8 @@
       "source_file": "scripts\\settings.js",
       "source_location": "L15",
       "weight": 1.0,
-      "_src": "scripts_settings_setmode",
-      "_tgt": "scripts_module_core_applyplaymode",
+      "_src": "scripts_module_core_applyplaymode",
+      "_tgt": "scripts_settings_setmode",
       "source": "scripts_module_core_applyplaymode",
       "target": "scripts_settings_setmode"
     },
@@ -8092,8 +8092,8 @@
       "source_file": "scripts\\settings.js",
       "source_location": "L20",
       "weight": 1.0,
-      "_src": "scripts_settings_setmode",
-      "_tgt": "scripts_module_core_applylayoutmode",
+      "_src": "scripts_module_core_applylayoutmode",
+      "_tgt": "scripts_settings_setmode",
       "source": "scripts_module_core_applylayoutmode",
       "target": "scripts_settings_setmode"
     },
@@ -8104,8 +8104,8 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L571",
       "weight": 1.0,
-      "_src": "scripts_module_counters_rerendercountermodule",
-      "_tgt": "scripts_module_core_snapmoduleheight",
+      "_src": "scripts_module_core_snapmoduleheight",
+      "_tgt": "scripts_module_counters_rerendercountermodule",
       "source": "scripts_module_core_snapmoduleheight",
       "target": "scripts_module_counters_rerendercountermodule"
     },
@@ -8116,8 +8116,8 @@
       "source_file": "scripts\\module-list.js",
       "source_location": "L930",
       "weight": 1.0,
-      "_src": "scripts_module_list_closemanageattrspanel",
-      "_tgt": "scripts_module_core_snapmoduleheight",
+      "_src": "scripts_module_core_snapmoduleheight",
+      "_tgt": "scripts_module_list_closemanageattrspanel",
       "source": "scripts_module_core_snapmoduleheight",
       "target": "scripts_module_list_closemanageattrspanel"
     },
@@ -8128,8 +8128,8 @@
       "source_file": "scripts\\module-list.js",
       "source_location": "L1506",
       "weight": 1.0,
-      "_src": "scripts_module_list_closeiteminspect",
-      "_tgt": "scripts_module_core_snapmoduleheight",
+      "_src": "scripts_module_core_snapmoduleheight",
+      "_tgt": "scripts_module_list_closeiteminspect",
       "source": "scripts_module_core_snapmoduleheight",
       "target": "scripts_module_list_closeiteminspect"
     },
@@ -8140,8 +8140,8 @@
       "source_file": "scripts\\module-list.js",
       "source_location": "L1670",
       "weight": 1.0,
-      "_src": "scripts_module_list_openiteminspect",
-      "_tgt": "scripts_module_core_snapmoduleheight",
+      "_src": "scripts_module_core_snapmoduleheight",
+      "_tgt": "scripts_module_list_openiteminspect",
       "source": "scripts_module_core_snapmoduleheight",
       "target": "scripts_module_list_openiteminspect"
     },
@@ -8152,8 +8152,8 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L369",
       "weight": 1.0,
-      "_src": "scripts_module_resistance_closeressettingspanel",
-      "_tgt": "scripts_module_core_snapmoduleheight",
+      "_src": "scripts_module_core_snapmoduleheight",
+      "_tgt": "scripts_module_resistance_closeressettingspanel",
       "source": "scripts_module_core_snapmoduleheight",
       "target": "scripts_module_resistance_closeressettingspanel"
     },
@@ -13900,8 +13900,8 @@
       "source_file": "scripts\\shared.js",
       "source_location": "L64",
       "weight": 1.0,
-      "_src": "scripts_shared_togglecheckboxinmarkdown",
-      "_tgt": "scripts_persistence_schedulesave",
+      "_src": "scripts_persistence_schedulesave",
+      "_tgt": "scripts_shared_togglecheckboxinmarkdown",
       "source": "scripts_persistence_schedulesave",
       "target": "scripts_shared_togglecheckboxinmarkdown"
     },
@@ -14248,8 +14248,8 @@
       "source_file": "_DOCS/DICE_MECHANICS.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_dice_api",
-      "_tgt": "cv_talespire_symbiote",
+      "_src": "cv_talespire_symbiote",
+      "_tgt": "cv_dice_api",
       "source": "cv_talespire_symbiote",
       "target": "cv_dice_api"
     },
@@ -14260,8 +14260,8 @@
       "source_file": "_DOCS/COLORS.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_ts_color_vars",
-      "_tgt": "cv_talespire_symbiote",
+      "_src": "cv_talespire_symbiote",
+      "_tgt": "cv_ts_color_vars",
       "source": "cv_talespire_symbiote",
       "target": "cv_ts_color_vars"
     },
@@ -14296,8 +14296,8 @@
       "source_file": "_DOCS/ARCHITECTURE.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_sortablejs",
-      "_tgt": "cv_module_system",
+      "_src": "cv_module_system",
+      "_tgt": "cv_sortablejs",
       "source": "cv_module_system",
       "target": "cv_sortablejs"
     },
@@ -14308,8 +14308,8 @@
       "source_file": "_DOCS/ARCHITECTURE.md",
       "source_location": null,
       "weight": 0.5,
-      "_src": "cv_marked",
-      "_tgt": "cv_module_system",
+      "_src": "cv_module_system",
+      "_tgt": "cv_marked",
       "source": "cv_module_system",
       "target": "cv_marked"
     },
@@ -14332,8 +14332,8 @@
       "source_file": "_DOCS/WEAPON_ENHANCEMENTS.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_attack_archetypes",
-      "_tgt": "cv_cross_module_api",
+      "_src": "cv_cross_module_api",
+      "_tgt": "cv_attack_archetypes",
       "source": "cv_cross_module_api",
       "target": "cv_attack_archetypes"
     },
@@ -14344,8 +14344,8 @@
       "source_file": "_DOCS/ARCHITECTURE.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_schedule_save",
-      "_tgt": "cv_save_blob",
+      "_src": "cv_save_blob",
+      "_tgt": "cv_schedule_save",
       "source": "cv_save_blob",
       "target": "cv_schedule_save"
     },
@@ -14356,8 +14356,8 @@
       "source_file": "_DOCS/PATTERNS.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_migration_pattern",
-      "_tgt": "cv_save_blob",
+      "_src": "cv_save_blob",
+      "_tgt": "cv_migration_pattern",
       "source": "cv_save_blob",
       "target": "cv_migration_pattern"
     },
@@ -14404,8 +14404,8 @@
       "source_file": "_DOCS/DICE_MECHANICS.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_pool_rolling",
-      "_tgt": "cv_dice_api",
+      "_src": "cv_dice_api",
+      "_tgt": "cv_pool_rolling",
       "source": "cv_dice_api",
       "target": "cv_pool_rolling"
     },
@@ -14440,8 +14440,8 @@
       "source_file": "_DOCS/WEAPON_ENHANCEMENTS.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_pool_auto_compute",
-      "_tgt": "cv_pool_rolling",
+      "_src": "cv_pool_rolling",
+      "_tgt": "cv_pool_auto_compute",
       "source": "cv_pool_rolling",
       "target": "cv_pool_auto_compute"
     },
@@ -14536,8 +14536,8 @@
       "source_file": "_DOCS/SUBMODULES/STATS.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_stat_templates",
-      "_tgt": "cv_game_system",
+      "_src": "cv_game_system",
+      "_tgt": "cv_stat_templates",
       "source": "cv_game_system",
       "target": "cv_stat_templates"
     },
@@ -14548,8 +14548,8 @@
       "source_file": "_DOCS/WEAPON_ENHANCEMENTS.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_weapon_traits",
-      "_tgt": "cv_dnd5e",
+      "_src": "cv_dnd5e",
+      "_tgt": "cv_weapon_traits",
       "source": "cv_dnd5e",
       "target": "cv_weapon_traits"
     },
@@ -14560,8 +14560,8 @@
       "source_file": "_DOCS/WEAPON_ENHANCEMENTS.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_weapon_traits",
-      "_tgt": "cv_pf2e",
+      "_src": "cv_pf2e",
+      "_tgt": "cv_weapon_traits",
       "source": "cv_pf2e",
       "target": "cv_weapon_traits"
     },
@@ -14572,8 +14572,8 @@
       "source_file": "_DOCS/WEAPON_ENHANCEMENTS.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_weapon_enhancements",
-      "_tgt": "cv_pf2e",
+      "_src": "cv_pf2e",
+      "_tgt": "cv_weapon_enhancements",
       "source": "cv_pf2e",
       "target": "cv_weapon_enhancements"
     },
@@ -14584,8 +14584,8 @@
       "source_file": "_DOCS/WEAPON_ENHANCEMENTS.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_weapon_enhancements",
-      "_tgt": "cv_sr6",
+      "_src": "cv_sr6",
+      "_tgt": "cv_weapon_enhancements",
       "source": "cv_sr6",
       "target": "cv_weapon_enhancements"
     },
@@ -14596,8 +14596,8 @@
       "source_file": "_DOCS/WEAPON_ENHANCEMENTS.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_weapon_enhancements",
-      "_tgt": "cv_cpred",
+      "_src": "cv_cpred",
+      "_tgt": "cv_weapon_enhancements",
       "source": "cv_cpred",
       "target": "cv_weapon_enhancements"
     },
@@ -14620,8 +14620,8 @@
       "source_file": "_DOCS/WEAPON_ENHANCEMENTS.md",
       "source_location": "Pool Auto-Compute",
       "weight": 1.0,
-      "_src": "cv_pool_auto_compute",
-      "_tgt": "cv_stat_linking",
+      "_src": "cv_stat_linking",
+      "_tgt": "cv_pool_auto_compute",
       "source": "cv_stat_linking",
       "target": "cv_pool_auto_compute"
     },
@@ -14632,8 +14632,8 @@
       "source_file": "_DOCS/SUBMODULES/STATS.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_proficiency_stat_flag",
-      "_tgt": "cv_proficiency_ranks",
+      "_src": "cv_proficiency_ranks",
+      "_tgt": "cv_proficiency_stat_flag",
       "source": "cv_proficiency_ranks",
       "target": "cv_proficiency_stat_flag"
     },
@@ -14656,8 +14656,8 @@
       "source_file": "_DOCS/ARCHITECTURE.md",
       "source_location": null,
       "weight": 1.0,
-      "_src": "cv_dompurify",
-      "_tgt": "cv_marked",
+      "_src": "cv_marked",
+      "_tgt": "cv_dompurify",
       "source": "cv_marked",
       "target": "cv_dompurify"
     }

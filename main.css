@@ -3376,10 +3376,15 @@ select,
     opacity: 0.5;
 }
 
+.companion-container:not(.is-layout) .companion-notes-textarea { display: none; }
+.companion-container.is-layout .companion-notes-display { display: none; }
+
 .companion-notes-display {
     width: 100%;
-    min-height: 40px;
+    min-height: 60px;
     font-size: 12px;
+    padding: 6px;
+    box-sizing: border-box;
 }
 
 .companion-empty-state {

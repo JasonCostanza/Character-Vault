@@ -513,22 +513,20 @@
         notesLabel.textContent = t('companion.notes');
         notesSection.appendChild(notesLabel);
 
-        if (isLayoutMode) {
-            const notesTextarea = document.createElement('textarea');
-            notesTextarea.className = 'companion-notes-textarea';
-            notesTextarea.placeholder = t('companion.notesPlaceholder');
-            notesTextarea.value = companion.notes || '';
-            notesTextarea.addEventListener('input', () => {
-                companion.notes = notesTextarea.value;
-                scheduleSave();
-            });
-            notesSection.appendChild(notesTextarea);
-        } else {
-            const notesDisplay = document.createElement('div');
-            notesDisplay.className = 'companion-notes-display module-text-display';
-            notesDisplay.innerHTML = renderMarkdown(companion.notes || '');
-            notesSection.appendChild(notesDisplay);
-        }
+        const notesTextarea = document.createElement('textarea');
+        notesTextarea.className = 'companion-notes-textarea';
+        notesTextarea.placeholder = t('companion.notesPlaceholder');
+        notesTextarea.value = companion.notes || '';
+        notesTextarea.addEventListener('input', () => {
+            companion.notes = notesTextarea.value;
+            scheduleSave();
+        });
+        notesSection.appendChild(notesTextarea);
+
+        const notesDisplay = document.createElement('div');
+        notesDisplay.className = 'companion-notes-display module-text-display';
+        notesDisplay.innerHTML = renderMarkdown(companion.notes || '');
+        notesSection.appendChild(notesDisplay);
 
         drawerTd.appendChild(notesSection);
         drawerTr.appendChild(drawerTd);
@@ -539,6 +537,10 @@
             chevBtn.title = companion.expanded ? t('companion.collapse') : t('companion.expand');
             chevBtn.classList.toggle('expanded', companion.expanded);
             drawerTr.style.display = companion.expanded ? '' : 'none';
+            if (companion.expanded) {
+                const display = drawerTr.querySelector('.companion-notes-display');
+                if (display) display.innerHTML = renderMarkdown(companion.notes || '');
+            }
             scheduleSave();
         });
 
@@ -555,7 +557,7 @@
         bodyEl.innerHTML = '';
 
         const container = document.createElement('div');
-        container.className = 'companion-container';
+        container.className = 'companion-container' + (isLayoutMode ? ' is-layout' : '');
 
         if (content.companions.length === 0) {
             const empty = document.createElement('div');
@@ -658,25 +660,75 @@
         container.appendChild(table);
         bodyEl.appendChild(container);
 
-        // Init SortableJS for companion rows when in manual sort mode and layout mode
         if (isLayoutMode && content.sortBy === null) {
-            if (tbody._sortable) tbody._sortable.destroy();
-            tbody._sortable = new Sortable(tbody, {
-                handle: '.companion-drag-handle',
-                animation: 150,
-                ghostClass: 'companion-row-ghost',
-                draggable: '.companion-row',
-                onEnd() {
-                    const rows = Array.from(tbody.querySelectorAll('.companion-row'));
-                    const reordered = rows
-                        .map(r => content.companions.find(c => c.id === r.dataset.companionId))
-                        .filter(Boolean);
-                    content.companions = reordered;
-                    // Re-add any companions not in rows (shouldn't happen but safety net)
-                    content.companions.forEach((c, i) => { c.order = i; });
-                    scheduleSave();
-                },
+            initCompanionSortable(tbody, content);
+        }
+    }
+
+    function initCompanionSortable(tbody, content) {
+        if (tbody._sortable) tbody._sortable.destroy();
+        tbody._sortable = new Sortable(tbody, {
+            handle: '.companion-drag-handle',
+            animation: 150,
+            ghostClass: 'companion-row-ghost',
+            draggable: '.companion-row',
+            onEnd() {
+                const rows = Array.from(tbody.querySelectorAll('.companion-row'));
+                const reordered = rows
+                    .map(r => content.companions.find(c => c.id === r.dataset.companionId))
+                    .filter(Boolean);
+                content.companions = reordered;
+                content.companions.forEach((c, i) => { c.order = i; });
+                scheduleSave();
+            },
+        });
+    }
+
+    // ── Sync Mode Without Rebuild ──
+
+    function syncCompanionsMode(bodyEl, data, isLayoutMode) {
+        const content = ensureContent(data);
+        const container = bodyEl.querySelector('.companion-container');
+        if (!container) {
+            renderCompanionsBody(bodyEl, data, isLayoutMode);
+            return;
+        }
+
+        container.classList.toggle('is-layout', isLayoutMode);
+
+        // Update drag handle visibility
+        const showDrag = isLayoutMode && content.sortBy === null;
+        container.querySelectorAll('.companion-drag-handle').forEach(h => {
+            h.style.visibility = showDrag ? '' : 'hidden';
+        });
+
+        // Re-render markdown display for expanded drawers when entering play mode.
+        // Textarea stays in sync via its input handler; collapsed drawers are skipped.
+        if (!isLayoutMode) {
+            const drawerMap = {};
+            container.querySelectorAll('[data-companion-drawer]').forEach(tr => {
+                drawerMap[tr.dataset.companionDrawer] = tr;
             });
+            content.companions.forEach(companion => {
+                if (!companion.expanded) return;
+                const drawerTr = drawerMap[companion.id];
+                if (!drawerTr) return;
+                const display = drawerTr.querySelector('.companion-notes-display');
+                if (display) display.innerHTML = renderMarkdown(companion.notes || '');
+            });
+        }
+
+        // SortableJS: init on layout mode with manual sort, destroy otherwise
+        const tbody = container.querySelector('tbody');
+        if (tbody) {
+            if (isLayoutMode && content.sortBy === null) {
+                if (!tbody._sortable) initCompanionSortable(tbody, content);
+            } else {
+                if (tbody._sortable) {
+                    tbody._sortable.destroy();
+                    tbody._sortable = null;
+                }
+            }
         }
     }
 
@@ -1082,12 +1134,12 @@
 
         onPlayMode(moduleEl, data) {
             const bodyEl = moduleEl.querySelector('.module-body');
-            if (bodyEl) renderCompanionsBody(bodyEl, data, false);
+            if (bodyEl) syncCompanionsMode(bodyEl, data, false);
         },
 
         onLayoutMode(moduleEl, data) {
             const bodyEl = moduleEl.querySelector('.module-body');
-            if (bodyEl) renderCompanionsBody(bodyEl, data, true);
+            if (bodyEl) syncCompanionsMode(bodyEl, data, true);
         },
 
         syncState(data) {

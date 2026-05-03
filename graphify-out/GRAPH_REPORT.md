@@ -1,11 +1,11 @@
 # Graph Report - Character Vault DEV  (2026-05-02)
 
 ## Corpus Check
-- 41 files · ~222,902 words
+- 41 files · ~223,156 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 416 nodes · 894 edges · 26 communities detected
+- 419 nodes · 901 edges · 26 communities detected
 - Extraction: 76% EXTRACTED · 24% INFERRED · 0% AMBIGUOUS · INFERRED: 216 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
@@ -70,7 +70,7 @@
 
 ### Community 0 - "Community 0"
 Cohesion: 0.08
-Nodes (58): refreshModuleLabels(), t(), openCompanionSettings(), onLayoutMode(), onPlayMode(), renderBody(), openSaveSettings(), renderSaveBlockEdit() (+50 more)
+Nodes (59): refreshModuleLabels(), t(), openCompanionSettings(), onLayoutMode(), onPlayMode(), renderBody(), openLevelSettings(), openSaveSettings() (+51 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.08
@@ -89,28 +89,28 @@ Cohesion: 0.3
 Nodes (24): activateSubconditions(), applyConditionFromStaging(), applyTemplate(), buildSortHeader(), closeCondSettingsPanel(), createSettingsAppliedItem(), ensureCondContent(), generateCondId() (+16 more)
 
 ### Community 5 - "Community 5"
+Cohesion: 0.16
+Nodes (12): buildCompanionsDefaultContent(), ensureContent(), getAttrTypeLabel(), getSortedCompanions(), initCompanionSortable(), onLayoutMode(), onPlayMode(), renderBody() (+4 more)
+
+### Community 6 - "Community 6"
 Cohesion: 0.17
 Nodes (15): applyTierPreset(), autoResizeSaveNotesTextarea(), ensureSaveContent(), formatModifier(), getTierForSave(), initSaveSortable(), onLayoutMode(), onPlayMode() (+7 more)
 
-### Community 6 - "Community 6"
+### Community 7 - "Community 7"
 Cohesion: 0.16
 Nodes (18): castSpell(), defaultContent(), extractDiceRoll(), genId(), getAvailableSlots(), onLayoutMode(), onPlayMode(), openCategoryEditModal() (+10 more)
 
-### Community 7 - "Community 7"
+### Community 8 - "Community 8"
 Cohesion: 0.2
 Nodes (14): buildAbilityBody(), formatModifier(), getProficiencyRank(), getProficiencyState(), initAbilitySortable(), onLayoutMode(), onPlayMode(), openAbilitySettings() (+6 more)
 
-### Community 8 - "Community 8"
+### Community 9 - "Community 9"
 Cohesion: 0.2
 Nodes (12): buildIconPicker(), ensureContent(), initCounterSortable(), openCounterCreateModal(), openCounterEditModal(), renderCounterColumnHeaders(), renderCounterRowEdit(), renderCounterRowPlay() (+4 more)
 
-### Community 9 - "Community 9"
+### Community 10 - "Community 10"
 Cohesion: 0.3
 Nodes (17): addResistanceToColumn(), closeResSettingsPanel(), createAssignedItemEl(), ensureResContent(), generateResId(), getAssignedKeys(), getAvailableTypes(), getResIconSvg() (+9 more)
-
-### Community 10 - "Community 10"
-Cohesion: 0.17
-Nodes (10): buildCompanionsDefaultContent(), ensureContent(), getAttrTypeLabel(), getSortedCompanions(), onLayoutMode(), onPlayMode(), renderBody(), renderCompanionsBody() (+2 more)
 
 ### Community 11 - "Community 11"
 Cohesion: 0.26
@@ -133,8 +133,8 @@ Cohesion: 0.23
 Nodes (9): buildEditMode(), buildPlayMode(), hasHealByRoll(), onLayoutMode(), onPlayMode(), openRecoverySettingsModal(), openRestButtonEditModal(), openRestConfirm() (+1 more)
 
 ### Community 16 - "Community 16"
-Cohesion: 0.29
-Nodes (9): ensureLevelContent(), getLevelProgress(), levelUp(), onLayoutMode(), onPlayMode(), openLevelSettings(), openXPModal(), renderBody() (+1 more)
+Cohesion: 0.31
+Nodes (8): ensureLevelContent(), getLevelProgress(), levelUp(), onLayoutMode(), onPlayMode(), openXPModal(), renderBody(), renderLevelBody()
 
 ### Community 17 - "Community 17"
 Cohesion: 0.48
@@ -194,11 +194,11 @@ Nodes (1): Inline SVG Icon System
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `t()` connect `Community 0` to `Community 2`, `Community 3`, `Community 4`, `Community 5`, `Community 6`, `Community 7`, `Community 8`, `Community 9`, `Community 10`, `Community 11`, `Community 12`, `Community 13`, `Community 14`, `Community 15`, `Community 16`?**
-  _High betweenness centrality (0.542) - this node is a cross-community bridge._
-- **Why does `scheduleSave()` connect `Community 4` to `Community 0`, `Community 2`, `Community 3`, `Community 6`, `Community 7`, `Community 8`, `Community 9`, `Community 12`, `Community 13`, `Community 14`, `Community 17`?**
+  _High betweenness centrality (0.545) - this node is a cross-community bridge._
+- **Why does `scheduleSave()` connect `Community 4` to `Community 0`, `Community 2`, `Community 3`, `Community 7`, `Community 8`, `Community 9`, `Community 10`, `Community 12`, `Community 13`, `Community 14`, `Community 17`?**
   _High betweenness centrality (0.059) - this node is a cross-community bridge._
-- **Why does `escapeHtml()` connect `Community 8` to `Community 0`, `Community 2`, `Community 3`, `Community 4`, `Community 5`, `Community 7`, `Community 9`, `Community 11`, `Community 12`, `Community 14`, `Community 15`?**
-  _High betweenness centrality (0.040) - this node is a cross-community bridge._
+- **Why does `escapeHtml()` connect `Community 9` to `Community 0`, `Community 2`, `Community 3`, `Community 4`, `Community 6`, `Community 8`, `Community 10`, `Community 11`, `Community 12`, `Community 14`, `Community 15`?**
+  _High betweenness centrality (0.039) - this node is a cross-community bridge._
 - **Are the 114 inferred relationships involving `t()` (e.g. with `rollAbilityCheck()` and `renderAbilityRow()`) actually correct?**
   _`t()` has 114 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 34 inferred relationships involving `scheduleSave()` (e.g. with `renderAbilityRowEdit()` and `renderEntries()`) actually correct?**

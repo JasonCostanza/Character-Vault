@@ -120,7 +120,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L1",
       "id": "scripts_module_abilities_js",
-      "community": 7,
+      "community": 8,
       "norm_label": "module-abilities.js"
     },
     {
@@ -129,7 +129,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L223",
       "id": "scripts_module_abilities_applyabilitytemplate",
-      "community": 7,
+      "community": 8,
       "norm_label": "applyabilitytemplate()"
     },
     {
@@ -138,7 +138,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L236",
       "id": "scripts_module_abilities_formatmodifier",
-      "community": 7,
+      "community": 8,
       "norm_label": "formatmodifier()"
     },
     {
@@ -147,7 +147,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L241",
       "id": "scripts_module_abilities_getproficiencystate",
-      "community": 7,
+      "community": 8,
       "norm_label": "getproficiencystate()"
     },
     {
@@ -156,7 +156,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L251",
       "id": "scripts_module_abilities_getproficiencyrank",
-      "community": 7,
+      "community": 8,
       "norm_label": "getproficiencyrank()"
     },
     {
@@ -165,7 +165,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L261",
       "id": "scripts_module_abilities_rollabilitycheck",
-      "community": 7,
+      "community": 8,
       "norm_label": "rollabilitycheck()"
     },
     {
@@ -174,7 +174,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L292",
       "id": "scripts_module_abilities_renderabilityrow",
-      "community": 7,
+      "community": 8,
       "norm_label": "renderabilityrow()"
     },
     {
@@ -183,7 +183,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L322",
       "id": "scripts_module_abilities_renderabilityrowedit",
-      "community": 7,
+      "community": 8,
       "norm_label": "renderabilityrowedit()"
     },
     {
@@ -192,7 +192,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L414",
       "id": "scripts_module_abilities_rerenderabilityedits",
-      "community": 7,
+      "community": 8,
       "norm_label": "rerenderabilityedits()"
     },
     {
@@ -201,7 +201,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L423",
       "id": "scripts_module_abilities_initabilitysortable",
-      "community": 7,
+      "community": 8,
       "norm_label": "initabilitysortable()"
     },
     {
@@ -210,7 +210,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L442",
       "id": "scripts_module_abilities_openabilitysettings",
-      "community": 7,
+      "community": 8,
       "norm_label": "openabilitysettings()"
     },
     {
@@ -219,7 +219,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L546",
       "id": "scripts_module_abilities_updateabilitieschainicon",
-      "community": 7,
+      "community": 8,
       "norm_label": "updateabilitieschainicon()"
     },
     {
@@ -228,7 +228,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L562",
       "id": "scripts_module_abilities_buildabilitybody",
-      "community": 7,
+      "community": 8,
       "norm_label": "buildabilitybody()"
     },
     {
@@ -237,7 +237,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L606",
       "id": "scripts_module_abilities_renderbody",
-      "community": 7,
+      "community": 8,
       "norm_label": "renderbody()"
     },
     {
@@ -246,7 +246,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L610",
       "id": "scripts_module_abilities_onplaymode",
-      "community": 7,
+      "community": 8,
       "norm_label": "onplaymode()"
     },
     {
@@ -255,7 +255,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L614",
       "id": "scripts_module_abilities_onlayoutmode",
-      "community": 7,
+      "community": 8,
       "norm_label": "onlayoutmode()"
     },
     {
@@ -264,7 +264,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L618",
       "id": "scripts_module_abilities_syncstate",
-      "community": 7,
+      "community": 8,
       "norm_label": "syncstate()"
     },
     {
@@ -273,7 +273,7 @@
       "source_file": "scripts\\module-abilities.js",
       "source_location": "L633",
       "id": "scripts_module_abilities_refreshlinkeddots",
-      "community": 7,
+      "community": 8,
       "norm_label": "refreshlinkeddots()"
     },
     {
@@ -417,7 +417,7 @@
       "source_file": "scripts\\module-companions.js",
       "source_location": "L1",
       "id": "scripts_module_companions_js",
-      "community": 10,
+      "community": 5,
       "norm_label": "module-companions.js"
     },
     {
@@ -426,7 +426,7 @@
       "source_file": "scripts\\module-companions.js",
       "source_location": "L7",
       "id": "scripts_module_companions_generatecompanionid",
-      "community": 10,
+      "community": 5,
       "norm_label": "generatecompanionid()"
     },
     {
@@ -435,7 +435,7 @@
       "source_file": "scripts\\module-companions.js",
       "source_location": "L11",
       "id": "scripts_module_companions_generateattrid",
-      "community": 10,
+      "community": 5,
       "norm_label": "generateattrid()"
     },
     {
@@ -444,7 +444,7 @@
       "source_file": "scripts\\module-companions.js",
       "source_location": "L17",
       "id": "scripts_module_companions_buildcompanionsdefaultcontent",
-      "community": 10,
+      "community": 5,
       "norm_label": "buildcompanionsdefaultcontent()"
     },
     {
@@ -453,7 +453,7 @@
       "source_file": "scripts\\module-companions.js",
       "source_location": "L41",
       "id": "scripts_module_companions_ensurecontent",
-      "community": 10,
+      "community": 5,
       "norm_label": "ensurecontent()"
     },
     {
@@ -462,7 +462,7 @@
       "source_file": "scripts\\module-companions.js",
       "source_location": "L65",
       "id": "scripts_module_companions_evaluateexpression",
-      "community": 10,
+      "community": 5,
       "norm_label": "evaluateexpression()"
     },
     {
@@ -471,7 +471,7 @@
       "source_file": "scripts\\module-companions.js",
       "source_location": "L80",
       "id": "scripts_module_companions_showconfirm",
-      "community": 10,
+      "community": 5,
       "norm_label": "showconfirm()"
     },
     {
@@ -480,7 +480,7 @@
       "source_file": "scripts\\module-companions.js",
       "source_location": "L138",
       "id": "scripts_module_companions_getsortedcompanions",
-      "community": 10,
+      "community": 5,
       "norm_label": "getsortedcompanions()"
     },
     {
@@ -489,7 +489,7 @@
       "source_file": "scripts\\module-companions.js",
       "source_location": "L176",
       "id": "scripts_module_companions_getdisplayvalue",
-      "community": 10,
+      "community": 5,
       "norm_label": "getdisplayvalue()"
     },
     {
@@ -498,23 +498,32 @@
       "source_file": "scripts\\module-companions.js",
       "source_location": "L192",
       "id": "scripts_module_companions_ishpattr",
-      "community": 10,
+      "community": 5,
       "norm_label": "ishpattr()"
+    },
+    {
+      "label": "applyPairAutoSize()",
+      "file_type": "code",
+      "source_file": "scripts\\module-companions.js",
+      "source_location": "L200",
+      "id": "scripts_module_companions_applypairautosize",
+      "community": 5,
+      "norm_label": "applypairautosize()"
     },
     {
       "label": "makeValueCell()",
       "file_type": "code",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L200",
+      "source_location": "L208",
       "id": "scripts_module_companions_makevaluecell",
-      "community": 10,
+      "community": 5,
       "norm_label": "makevaluecell()"
     },
     {
       "label": "renderCompanionRow()",
       "file_type": "code",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L380",
+      "source_location": "L395",
       "id": "scripts_module_companions_rendercompanionrow",
       "community": 12,
       "norm_label": "rendercompanionrow()"
@@ -523,16 +532,34 @@
       "label": "renderCompanionsBody()",
       "file_type": "code",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L551",
+      "source_location": "L568",
       "id": "scripts_module_companions_rendercompanionsbody",
-      "community": 10,
+      "community": 5,
       "norm_label": "rendercompanionsbody()"
+    },
+    {
+      "label": "initCompanionSortable()",
+      "file_type": "code",
+      "source_file": "scripts\\module-companions.js",
+      "source_location": "L691",
+      "id": "scripts_module_companions_initcompanionsortable",
+      "community": 5,
+      "norm_label": "initcompanionsortable()"
+    },
+    {
+      "label": "syncCompanionsMode()",
+      "file_type": "code",
+      "source_file": "scripts\\module-companions.js",
+      "source_location": "L712",
+      "id": "scripts_module_companions_synccompanionsmode",
+      "community": 5,
+      "norm_label": "synccompanionsmode()"
     },
     {
       "label": "openCompanionSettings()",
       "file_type": "code",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L685",
+      "source_location": "L760",
       "id": "scripts_module_companions_opencompanionsettings",
       "community": 0,
       "norm_label": "opencompanionsettings()"
@@ -541,45 +568,45 @@
       "label": "getAttrTypeLabel()",
       "file_type": "code",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L1063",
+      "source_location": "L1138",
       "id": "scripts_module_companions_getattrtypelabel",
-      "community": 10,
+      "community": 5,
       "norm_label": "getattrtypelabel()"
     },
     {
       "label": "renderBody()",
       "file_type": "code",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L1078",
+      "source_location": "L1153",
       "id": "scripts_module_companions_renderbody",
-      "community": 10,
+      "community": 5,
       "norm_label": "renderbody()"
     },
     {
       "label": "onPlayMode()",
       "file_type": "code",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L1083",
+      "source_location": "L1158",
       "id": "scripts_module_companions_onplaymode",
-      "community": 10,
+      "community": 5,
       "norm_label": "onplaymode()"
     },
     {
       "label": "onLayoutMode()",
       "file_type": "code",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L1088",
+      "source_location": "L1163",
       "id": "scripts_module_companions_onlayoutmode",
-      "community": 10,
+      "community": 5,
       "norm_label": "onlayoutmode()"
     },
     {
       "label": "syncState()",
       "file_type": "code",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L1093",
+      "source_location": "L1168",
       "id": "scripts_module_companions_syncstate",
-      "community": 10,
+      "community": 5,
       "norm_label": "syncstate()"
     },
     {
@@ -1020,7 +1047,7 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L1",
       "id": "scripts_module_counters_js",
-      "community": 8,
+      "community": 9,
       "norm_label": "module-counters.js"
     },
     {
@@ -1029,7 +1056,7 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L6",
       "id": "scripts_module_counters_generatecounterid",
-      "community": 8,
+      "community": 9,
       "norm_label": "generatecounterid()"
     },
     {
@@ -1038,7 +1065,7 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L11",
       "id": "scripts_module_counters_showconfirm",
-      "community": 8,
+      "community": 9,
       "norm_label": "showconfirm()"
     },
     {
@@ -1047,7 +1074,7 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L77",
       "id": "scripts_module_counters_ensurecontent",
-      "community": 8,
+      "community": 9,
       "norm_label": "ensurecontent()"
     },
     {
@@ -1056,7 +1083,7 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L137",
       "id": "scripts_module_counters_getsortedcounters",
-      "community": 8,
+      "community": 9,
       "norm_label": "getsortedcounters()"
     },
     {
@@ -1065,7 +1092,7 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L161",
       "id": "scripts_module_counters_buildiconpicker",
-      "community": 8,
+      "community": 9,
       "norm_label": "buildiconpicker()"
     },
     {
@@ -1074,7 +1101,7 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L205",
       "id": "scripts_module_counters_opencountercreatemodal",
-      "community": 8,
+      "community": 9,
       "norm_label": "opencountercreatemodal()"
     },
     {
@@ -1083,7 +1110,7 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L322",
       "id": "scripts_module_counters_opencountereditmodal",
-      "community": 8,
+      "community": 9,
       "norm_label": "opencountereditmodal()"
     },
     {
@@ -1092,7 +1119,7 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L567",
       "id": "scripts_module_counters_rerendercountermodule",
-      "community": 8,
+      "community": 9,
       "norm_label": "rerendercountermodule()"
     },
     {
@@ -1101,7 +1128,7 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L575",
       "id": "scripts_module_counters_rendercounterrowplay",
-      "community": 8,
+      "community": 9,
       "norm_label": "rendercounterrowplay()"
     },
     {
@@ -1110,7 +1137,7 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L724",
       "id": "scripts_module_counters_rendercounterrowedit",
-      "community": 8,
+      "community": 9,
       "norm_label": "rendercounterrowedit()"
     },
     {
@@ -1119,7 +1146,7 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L825",
       "id": "scripts_module_counters_rendercountercolumnheaders",
-      "community": 8,
+      "community": 9,
       "norm_label": "rendercountercolumnheaders()"
     },
     {
@@ -1128,7 +1155,7 @@
       "source_file": "scripts\\module-counters.js",
       "source_location": "L897",
       "id": "scripts_module_counters_initcountersortable",
-      "community": 8,
+      "community": 9,
       "norm_label": "initcountersortable()"
     },
     {
@@ -1380,7 +1407,7 @@
       "source_file": "scripts\\module-level.js",
       "source_location": "L389",
       "id": "scripts_module_level_openlevelsettings",
-      "community": 16,
+      "community": 0,
       "norm_label": "openlevelsettings()"
     },
     {
@@ -1767,7 +1794,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L1",
       "id": "scripts_module_resistance_js",
-      "community": 9,
+      "community": 10,
       "norm_label": "module-resistance.js"
     },
     {
@@ -1776,7 +1803,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L7",
       "id": "scripts_module_resistance_generateresid",
-      "community": 9,
+      "community": 10,
       "norm_label": "generateresid()"
     },
     {
@@ -1785,7 +1812,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L12",
       "id": "scripts_module_resistance_ensurerescontent",
-      "community": 9,
+      "community": 10,
       "norm_label": "ensurerescontent()"
     },
     {
@@ -1794,7 +1821,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L47",
       "id": "scripts_module_resistance_getresname",
-      "community": 9,
+      "community": 10,
       "norm_label": "getresname()"
     },
     {
@@ -1803,7 +1830,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L59",
       "id": "scripts_module_resistance_getresiconsvg",
-      "community": 9,
+      "community": 10,
       "norm_label": "getresiconsvg()"
     },
     {
@@ -1812,7 +1839,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L72",
       "id": "scripts_module_resistance_getassignedkeys",
-      "community": 9,
+      "community": 10,
       "norm_label": "getassignedkeys()"
     },
     {
@@ -1821,7 +1848,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L82",
       "id": "scripts_module_resistance_getavailabletypes",
-      "community": 9,
+      "community": 10,
       "norm_label": "getavailabletypes()"
     },
     {
@@ -1830,7 +1857,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L101",
       "id": "scripts_module_resistance_sortcolumnalpha",
-      "community": 9,
+      "community": 10,
       "norm_label": "sortcolumnalpha()"
     },
     {
@@ -1839,7 +1866,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L121",
       "id": "scripts_module_resistance_showvalueprompt",
-      "community": 9,
+      "community": 10,
       "norm_label": "showvalueprompt()"
     },
     {
@@ -1848,7 +1875,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L177",
       "id": "scripts_module_resistance_renderplaybody",
-      "community": 9,
+      "community": 10,
       "norm_label": "renderplaybody()"
     },
     {
@@ -1857,7 +1884,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L279",
       "id": "scripts_module_resistance_rendereditbody",
-      "community": 9,
+      "community": 10,
       "norm_label": "rendereditbody()"
     },
     {
@@ -1866,7 +1893,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L355",
       "id": "scripts_module_resistance_closeressettingspanel",
-      "community": 9,
+      "community": 10,
       "norm_label": "closeressettingspanel()"
     },
     {
@@ -1875,7 +1902,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L372",
       "id": "scripts_module_resistance_openressettingspanel",
-      "community": 9,
+      "community": 10,
       "norm_label": "openressettingspanel()"
     },
     {
@@ -1884,7 +1911,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L400",
       "id": "scripts_module_resistance_rendersettingspanelcontent",
-      "community": 9,
+      "community": 10,
       "norm_label": "rendersettingspanelcontent()"
     },
     {
@@ -1893,7 +1920,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L514",
       "id": "scripts_module_resistance_createassigneditemel",
-      "community": 9,
+      "community": 10,
       "norm_label": "createassigneditemel()"
     },
     {
@@ -1902,7 +1929,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L588",
       "id": "scripts_module_resistance_initsettingssortables",
-      "community": 9,
+      "community": 10,
       "norm_label": "initsettingssortables()"
     },
     {
@@ -1911,7 +1938,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L721",
       "id": "scripts_module_resistance_addresistancetocolumn",
-      "community": 9,
+      "community": 10,
       "norm_label": "addresistancetocolumn()"
     },
     {
@@ -1920,7 +1947,7 @@
       "source_file": "scripts\\module-resistance.js",
       "source_location": "L732",
       "id": "scripts_module_resistance_openreswizard",
-      "community": 9,
+      "community": 10,
       "norm_label": "openreswizard()"
     },
     {
@@ -1929,7 +1956,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L1",
       "id": "scripts_module_savingthrow_js",
-      "community": 5,
+      "community": 6,
       "norm_label": "module-savingthrow.js"
     },
     {
@@ -1938,7 +1965,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L6",
       "id": "scripts_module_savingthrow_generatesaveid",
-      "community": 5,
+      "community": 6,
       "norm_label": "generatesaveid()"
     },
     {
@@ -1947,7 +1974,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L37",
       "id": "scripts_module_savingthrow_applysavingthrowtemplate",
-      "community": 5,
+      "community": 6,
       "norm_label": "applysavingthrowtemplate()"
     },
     {
@@ -1956,7 +1983,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L48",
       "id": "scripts_module_savingthrow_applytierpreset",
-      "community": 5,
+      "community": 6,
       "norm_label": "applytierpreset()"
     },
     {
@@ -1965,7 +1992,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L55",
       "id": "scripts_module_savingthrow_ensuresavecontent",
-      "community": 5,
+      "community": 6,
       "norm_label": "ensuresavecontent()"
     },
     {
@@ -1974,7 +2001,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L79",
       "id": "scripts_module_savingthrow_savenotescheckboxproxy",
-      "community": 5,
+      "community": 6,
       "norm_label": "savenotescheckboxproxy()"
     },
     {
@@ -1983,7 +2010,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L91",
       "id": "scripts_module_savingthrow_formatmodifier",
-      "community": 5,
+      "community": 6,
       "norm_label": "formatmodifier()"
     },
     {
@@ -1992,7 +2019,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L96",
       "id": "scripts_module_savingthrow_gettierforsave",
-      "community": 5,
+      "community": 6,
       "norm_label": "gettierforsave()"
     },
     {
@@ -2001,7 +2028,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L102",
       "id": "scripts_module_savingthrow_rendersaveblock",
-      "community": 5,
+      "community": 6,
       "norm_label": "rendersaveblock()"
     },
     {
@@ -2019,7 +2046,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L199",
       "id": "scripts_module_savingthrow_rerendersaveedits",
-      "community": 5,
+      "community": 6,
       "norm_label": "rerendersaveedits()"
     },
     {
@@ -2028,7 +2055,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L208",
       "id": "scripts_module_savingthrow_initsavesortable",
-      "community": 5,
+      "community": 6,
       "norm_label": "initsavesortable()"
     },
     {
@@ -2037,7 +2064,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L227",
       "id": "scripts_module_savingthrow_rollsavingthrow",
-      "community": 5,
+      "community": 6,
       "norm_label": "rollsavingthrow()"
     },
     {
@@ -2046,7 +2073,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L263",
       "id": "scripts_module_savingthrow_entersavequickedit",
-      "community": 5,
+      "community": 6,
       "norm_label": "entersavequickedit()"
     },
     {
@@ -2055,7 +2082,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L295",
       "id": "scripts_module_savingthrow_autoresizesavenotestextarea",
-      "community": 5,
+      "community": 6,
       "norm_label": "autoresizesavenotestextarea()"
     },
     {
@@ -2064,7 +2091,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L300",
       "id": "scripts_module_savingthrow_rendernotesarea",
-      "community": 5,
+      "community": 6,
       "norm_label": "rendernotesarea()"
     },
     {
@@ -2082,7 +2109,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L505",
       "id": "scripts_module_savingthrow_opencustomtiereditor",
-      "community": 5,
+      "community": 6,
       "norm_label": "opencustomtiereditor()"
     },
     {
@@ -2091,7 +2118,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L676",
       "id": "scripts_module_savingthrow_renderbody",
-      "community": 5,
+      "community": 6,
       "norm_label": "renderbody()"
     },
     {
@@ -2100,7 +2127,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L704",
       "id": "scripts_module_savingthrow_onplaymode",
-      "community": 5,
+      "community": 6,
       "norm_label": "onplaymode()"
     },
     {
@@ -2109,7 +2136,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L710",
       "id": "scripts_module_savingthrow_onlayoutmode",
-      "community": 5,
+      "community": 6,
       "norm_label": "onlayoutmode()"
     },
     {
@@ -2118,7 +2145,7 @@
       "source_file": "scripts\\module-savingthrow.js",
       "source_location": "L716",
       "id": "scripts_module_savingthrow_syncstate",
-      "community": 5,
+      "community": 6,
       "norm_label": "syncstate()"
     },
     {
@@ -2127,7 +2154,7 @@
       "source_file": "scripts\\module-spacer.js",
       "source_location": "L1",
       "id": "scripts_module_spacer_js",
-      "community": 8,
+      "community": 9,
       "norm_label": "module-spacer.js"
     },
     {
@@ -2136,7 +2163,7 @@
       "source_file": "scripts\\module-spacer.js",
       "source_location": "L5",
       "id": "scripts_module_spacer_renderbody",
-      "community": 8,
+      "community": 9,
       "norm_label": "renderbody()"
     },
     {
@@ -2145,7 +2172,7 @@
       "source_file": "scripts\\module-spacer.js",
       "source_location": "L17",
       "id": "scripts_module_spacer_onplaymode",
-      "community": 8,
+      "community": 9,
       "norm_label": "onplaymode()"
     },
     {
@@ -2154,7 +2181,7 @@
       "source_file": "scripts\\module-spacer.js",
       "source_location": "L21",
       "id": "scripts_module_spacer_onlayoutmode",
-      "community": 8,
+      "community": 9,
       "norm_label": "onlayoutmode()"
     },
     {
@@ -2163,7 +2190,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L1",
       "id": "scripts_module_spells_js",
-      "community": 6,
+      "community": 7,
       "norm_label": "module-spells.js"
     },
     {
@@ -2172,7 +2199,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L7",
       "id": "scripts_module_spells_isdicenotation",
-      "community": 6,
+      "community": 7,
       "norm_label": "isdicenotation()"
     },
     {
@@ -2181,7 +2208,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L11",
       "id": "scripts_module_spells_extractdiceroll",
-      "community": 6,
+      "community": 7,
       "norm_label": "extractdiceroll()"
     },
     {
@@ -2190,7 +2217,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L16",
       "id": "scripts_module_spells_defaultcontent",
-      "community": 6,
+      "community": 7,
       "norm_label": "defaultcontent()"
     },
     {
@@ -2199,7 +2226,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L20",
       "id": "scripts_module_spells_genid",
-      "community": 6,
+      "community": 7,
       "norm_label": "genid()"
     },
     {
@@ -2208,7 +2235,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L25",
       "id": "scripts_module_spells_getavailableslots",
-      "community": 6,
+      "community": 7,
       "norm_label": "getavailableslots()"
     },
     {
@@ -2217,7 +2244,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L30",
       "id": "scripts_module_spells_spendslot",
-      "community": 6,
+      "community": 7,
       "norm_label": "spendslot()"
     },
     {
@@ -2226,7 +2253,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L36",
       "id": "scripts_module_spells_rollallspelldice",
-      "community": 6,
+      "community": 7,
       "norm_label": "rollallspelldice()"
     },
     {
@@ -2235,7 +2262,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L50",
       "id": "scripts_module_spells_rollsingleattribute",
-      "community": 6,
+      "community": 7,
       "norm_label": "rollsingleattribute()"
     },
     {
@@ -2244,7 +2271,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L66",
       "id": "scripts_module_spells_castspell",
-      "community": 6,
+      "community": 7,
       "norm_label": "castspell()"
     },
     {
@@ -2253,7 +2280,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L103",
       "id": "scripts_module_spells_renderspellsplaylayer",
-      "community": 6,
+      "community": 7,
       "norm_label": "renderspellsplaylayer()"
     },
     {
@@ -2262,7 +2289,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L274",
       "id": "scripts_module_spells_openspelldetailmodal",
-      "community": 6,
+      "community": 7,
       "norm_label": "openspelldetailmodal()"
     },
     {
@@ -2271,7 +2298,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L372",
       "id": "scripts_module_spells_openspelleditmodal",
-      "community": 6,
+      "community": 7,
       "norm_label": "openspelleditmodal()"
     },
     {
@@ -2280,7 +2307,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L579",
       "id": "scripts_module_spells_opencategoryeditmodal",
-      "community": 6,
+      "community": 7,
       "norm_label": "opencategoryeditmodal()"
     },
     {
@@ -2289,7 +2316,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L712",
       "id": "scripts_module_spells_renderspellseditlayer",
-      "community": 6,
+      "community": 7,
       "norm_label": "renderspellseditlayer()"
     },
     {
@@ -2298,7 +2325,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L992",
       "id": "scripts_module_spells_openspellsettings",
-      "community": 6,
+      "community": 7,
       "norm_label": "openspellsettings()"
     },
     {
@@ -2307,7 +2334,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L1099",
       "id": "scripts_module_spells_renderbody",
-      "community": 6,
+      "community": 7,
       "norm_label": "renderbody()"
     },
     {
@@ -2316,7 +2343,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L1116",
       "id": "scripts_module_spells_onplaymode",
-      "community": 6,
+      "community": 7,
       "norm_label": "onplaymode()"
     },
     {
@@ -2325,7 +2352,7 @@
       "source_file": "scripts\\module-spells.js",
       "source_location": "L1121",
       "id": "scripts_module_spells_onlayoutmode",
-      "community": 6,
+      "community": 7,
       "norm_label": "onlayoutmode()"
     },
     {
@@ -3117,7 +3144,7 @@
       "source_file": "scripts\\shared.js",
       "source_location": "L3",
       "id": "scripts_shared_escapehtml",
-      "community": 8,
+      "community": 9,
       "norm_label": "escapehtml()"
     },
     {
@@ -3144,7 +3171,7 @@
       "source_file": "scripts\\shared.js",
       "source_location": "L35",
       "id": "scripts_shared_showtoast",
-      "community": 6,
+      "community": 7,
       "norm_label": "showtoast()"
     },
     {
@@ -6244,6 +6271,18 @@
       "source_location": "L200",
       "weight": 1.0,
       "_src": "scripts_module_companions_js",
+      "_tgt": "scripts_module_companions_applypairautosize",
+      "source": "scripts_module_companions_js",
+      "target": "scripts_module_companions_applypairautosize",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts\\module-companions.js",
+      "source_location": "L208",
+      "weight": 1.0,
+      "_src": "scripts_module_companions_js",
       "_tgt": "scripts_module_companions_makevaluecell",
       "source": "scripts_module_companions_js",
       "target": "scripts_module_companions_makevaluecell",
@@ -6253,7 +6292,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L380",
+      "source_location": "L395",
       "weight": 1.0,
       "_src": "scripts_module_companions_js",
       "_tgt": "scripts_module_companions_rendercompanionrow",
@@ -6265,7 +6304,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L551",
+      "source_location": "L568",
       "weight": 1.0,
       "_src": "scripts_module_companions_js",
       "_tgt": "scripts_module_companions_rendercompanionsbody",
@@ -6277,7 +6316,31 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L685",
+      "source_location": "L691",
+      "weight": 1.0,
+      "_src": "scripts_module_companions_js",
+      "_tgt": "scripts_module_companions_initcompanionsortable",
+      "source": "scripts_module_companions_js",
+      "target": "scripts_module_companions_initcompanionsortable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts\\module-companions.js",
+      "source_location": "L712",
+      "weight": 1.0,
+      "_src": "scripts_module_companions_js",
+      "_tgt": "scripts_module_companions_synccompanionsmode",
+      "source": "scripts_module_companions_js",
+      "target": "scripts_module_companions_synccompanionsmode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts\\module-companions.js",
+      "source_location": "L760",
       "weight": 1.0,
       "_src": "scripts_module_companions_js",
       "_tgt": "scripts_module_companions_opencompanionsettings",
@@ -6289,7 +6352,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L1063",
+      "source_location": "L1138",
       "weight": 1.0,
       "_src": "scripts_module_companions_js",
       "_tgt": "scripts_module_companions_getattrtypelabel",
@@ -6301,7 +6364,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L1078",
+      "source_location": "L1153",
       "weight": 1.0,
       "_src": "scripts_module_companions_js",
       "_tgt": "scripts_module_companions_renderbody",
@@ -6313,7 +6376,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L1083",
+      "source_location": "L1158",
       "weight": 1.0,
       "_src": "scripts_module_companions_js",
       "_tgt": "scripts_module_companions_onplaymode",
@@ -6325,7 +6388,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L1088",
+      "source_location": "L1163",
       "weight": 1.0,
       "_src": "scripts_module_companions_js",
       "_tgt": "scripts_module_companions_onlayoutmode",
@@ -6337,7 +6400,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L1093",
+      "source_location": "L1168",
       "weight": 1.0,
       "_src": "scripts_module_companions_js",
       "_tgt": "scripts_module_companions_syncstate",
@@ -6361,7 +6424,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L552",
+      "source_location": "L569",
       "weight": 1.0,
       "_src": "scripts_module_companions_rendercompanionsbody",
       "_tgt": "scripts_module_companions_ensurecontent",
@@ -6373,7 +6436,19 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L686",
+      "source_location": "L713",
+      "weight": 1.0,
+      "_src": "scripts_module_companions_synccompanionsmode",
+      "_tgt": "scripts_module_companions_ensurecontent",
+      "source": "scripts_module_companions_ensurecontent",
+      "target": "scripts_module_companions_synccompanionsmode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts\\module-companions.js",
+      "source_location": "L761",
       "weight": 1.0,
       "_src": "scripts_module_companions_opencompanionsettings",
       "_tgt": "scripts_module_companions_ensurecontent",
@@ -6385,7 +6460,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L1094",
+      "source_location": "L1169",
       "weight": 1.0,
       "_src": "scripts_module_companions_syncstate",
       "_tgt": "scripts_module_companions_ensurecontent",
@@ -6397,7 +6472,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L652",
+      "source_location": "L677",
       "weight": 1.0,
       "_src": "scripts_module_companions_rendercompanionsbody",
       "_tgt": "scripts_module_companions_getsortedcompanions",
@@ -6421,7 +6496,31 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L1080",
+      "source_location": "L687",
+      "weight": 1.0,
+      "_src": "scripts_module_companions_rendercompanionsbody",
+      "_tgt": "scripts_module_companions_initcompanionsortable",
+      "source": "scripts_module_companions_rendercompanionsbody",
+      "target": "scripts_module_companions_initcompanionsortable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts\\module-companions.js",
+      "source_location": "L716",
+      "weight": 1.0,
+      "_src": "scripts_module_companions_synccompanionsmode",
+      "_tgt": "scripts_module_companions_rendercompanionsbody",
+      "source": "scripts_module_companions_rendercompanionsbody",
+      "target": "scripts_module_companions_synccompanionsmode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts\\module-companions.js",
+      "source_location": "L1155",
       "weight": 1.0,
       "_src": "scripts_module_companions_renderbody",
       "_tgt": "scripts_module_companions_rendercompanionsbody",
@@ -6433,11 +6532,23 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L1085",
+      "source_location": "L748",
+      "weight": 1.0,
+      "_src": "scripts_module_companions_synccompanionsmode",
+      "_tgt": "scripts_module_companions_initcompanionsortable",
+      "source": "scripts_module_companions_initcompanionsortable",
+      "target": "scripts_module_companions_synccompanionsmode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts\\module-companions.js",
+      "source_location": "L1160",
       "weight": 1.0,
       "_src": "scripts_module_companions_onplaymode",
-      "_tgt": "scripts_module_companions_rendercompanionsbody",
-      "source": "scripts_module_companions_rendercompanionsbody",
+      "_tgt": "scripts_module_companions_synccompanionsmode",
+      "source": "scripts_module_companions_synccompanionsmode",
       "target": "scripts_module_companions_onplaymode",
       "confidence_score": 1.0
     },
@@ -6445,11 +6556,11 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "scripts\\module-companions.js",
-      "source_location": "L1090",
+      "source_location": "L1165",
       "weight": 1.0,
       "_src": "scripts_module_companions_onlayoutmode",
-      "_tgt": "scripts_module_companions_rendercompanionsbody",
-      "source": "scripts_module_companions_rendercompanionsbody",
+      "_tgt": "scripts_module_companions_synccompanionsmode",
+      "source": "scripts_module_companions_synccompanionsmode",
       "target": "scripts_module_companions_onlayoutmode",
       "confidence_score": 1.0
     },

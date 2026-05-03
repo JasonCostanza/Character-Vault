@@ -195,12 +195,23 @@
             attr.name.toLowerCase().includes('hp');
     }
 
+    // ── Auto-Size Pair Input (sizes to digit count, min 1 char) ──
+
+    function applyPairAutoSize(input) {
+        const resize = () => { input.style.width = Math.max(1, String(input.value).length) + 'ch'; };
+        resize();
+        input.addEventListener('input', resize);
+    }
+
     // ── Inline Edit for Value Cells ──
 
     function makeValueCell(companion, attr, content, data, bodyEl) {
         const value = companion.values[attr.id] != null ? companion.values[attr.id] : attr.defaultValue;
         const cell = document.createElement('td');
         cell.className = 'companion-cell';
+        if (attr.type === 'number' || attr.type === 'number-pair') {
+            cell.style.textAlign = 'right';
+        }
 
         function renderSpan() {
             cell.innerHTML = '';
@@ -272,24 +283,28 @@
             const wrap = document.createElement('span');
             wrap.style.display = 'flex';
             wrap.style.alignItems = 'center';
+            wrap.style.justifyContent = 'flex-end';
             wrap.style.gap = '2px';
 
             const curInput = document.createElement('input');
             curInput.type = 'text';
             curInput.className = 'companion-inline-input';
+            curInput.style.width = 'auto';
             curInput.value = String(oldCurrent);
-            curInput.style.width = '36px';
+            applyPairAutoSize(curInput);
 
             const sep = document.createElement('span');
             sep.textContent = '/';
             sep.style.color = 'var(--cv-text-muted)';
             sep.style.userSelect = 'none';
+            sep.style.flexShrink = '0';
 
             const maxInput = document.createElement('input');
             maxInput.type = 'text';
-            maxInput.className = 'companion-inline-input';
+            maxInput.className = 'companion-inline-input companion-inline-input--left';
+            maxInput.style.width = 'auto';
             maxInput.value = String(oldMax);
-            maxInput.style.width = '36px';
+            applyPairAutoSize(maxInput);
 
             function commitPair() {
                 const evalCur = evaluateExpression(curInput.value);
@@ -451,7 +466,7 @@
             nameTd.innerHTML = '';
             const input = document.createElement('input');
             input.type = 'text';
-            input.className = 'companion-inline-input';
+            input.className = 'companion-inline-input companion-inline-input--full';
             input.value = companion.name || '';
 
             function commit() {
@@ -620,8 +635,16 @@
 
         // Attribute col headers
         pinnedAttrs.forEach((attr) => {
+            const colClass = attr.type === 'number-pair' ? 'companion-col-number-pair'
+                : attr.type === 'number' ? 'companion-col-number'
+                : attr.type === 'toggle' ? 'companion-col-toggle'
+                : 'companion-col-text';
             const th = document.createElement('th');
-            th.className = 'companion-col-header' + (content.sortBy === attr.id ? ' active-sort' : '');
+            th.className = 'companion-col-header ' + colClass + (content.sortBy === attr.id ? ' active-sort' : '');
+            th.title = attr.name;
+            if (attr.type === 'number' || attr.type === 'number-pair') {
+                th.style.textAlign = 'right';
+            }
             const attrHeaderText = document.createElement('span');
             attrHeaderText.textContent = attr.name;
             th.appendChild(attrHeaderText);

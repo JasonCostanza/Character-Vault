@@ -3161,7 +3161,7 @@ select,
 .companion-table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: auto;
+    table-layout: fixed;
     font-size: 12px;
 }
 
@@ -3182,6 +3182,9 @@ select,
     font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     letter-spacing: 0.05em;
     color: var(--cv-text-muted);
     white-space: nowrap;
@@ -3261,13 +3264,28 @@ select,
     font-family: inherit;
     padding: 2px 0;
     outline: none;
-    min-width: 24px;
     width: 100%;
+    text-align: right;
+    box-sizing: border-box;
 }
 
 .companion-inline-input:focus {
     border-bottom-color: var(--cv-accent);
 }
+
+.companion-inline-input--left {
+    text-align: left;
+}
+
+.companion-inline-input--full {
+    text-align: left;
+}
+
+/* Column widths for table-layout: fixed */
+.companion-col-number { width: 44px; }
+.companion-col-number-pair { width: 68px; }
+.companion-col-text { width: 72px; }
+.companion-col-toggle { width: 32px; }
 
 .companion-drag-handle {
     cursor: grab;

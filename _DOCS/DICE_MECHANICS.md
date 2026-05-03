@@ -151,16 +151,24 @@ When a roll finishes:
 
 **Glitches**: If more 1s than successes, it's a glitch (critical failure).
 
-### Daggerheart (d12 + Proficiency)
+### Daggerheart (2d12 Hope/Fear + Proficiency Damage)
 
-**Roll**: `1d12 + stat + proficiency rank`
+**Action Roll**: `2d12 (Hope die + Fear die) + trait modifier`
 
 **Behavior**:
-- Rolls d12, adds base ability score and proficiency bonus (based on rank).
-- No explicit proficiency tiers; just adds the modifier.
-- Activity Log: `"Rolled Agility check: 18 (rolled 12 + 3 stat + 3 proficiency)"`
+- Two d12s are rolled together — one is the Hope die, one is the Fear die. The GM tracks which outcome applies based on which rolled higher.
+- Add the governing trait modifier (e.g. Agility, Strength) to the total.
+- Proficiency does **not** apply to action rolls.
+- Activity Log: `"Rolled Agility check: 18"`
 
-**Modules**: Stats (d12 checks), Abilities.
+**Damage Roll**: `[proficiency]d[die size]`
+
+- Proficiency multiplies the dice count: proficiency 3 + d8 weapon → 3d8 damage.
+- `daggerheartProficiency` (1–6) is stored once on the weapons module's `data.content`, not per-weapon.
+- Exposed via `window.getCharacterProficiency()` for cross-module access.
+- Applied by `weaponsApplyProficiencyDice(diceStr, proficiency)` before the damage roll is dispatched.
+
+**Modules**: Stats (2d12 action checks), Weapons (proficiency-scaled damage).
 
 ### Call of Cthulhu (Percentile Rolls)
 

@@ -18,7 +18,8 @@ The submodule stores its state on `data.content`:
 data.content = {
   weapons: Weapon[],
   customWeaponTraits: CustomTrait[],
-  enhancementCatalog: Enhancement[]    // Phase 3
+  enhancementCatalog: Enhancement[],   // Phase 3
+  daggerheartProficiency: number | null  // Daggerheart only; 1–6; null treated as 1
 }
 
 Weapon = {
@@ -233,6 +234,29 @@ Event type namespace: `weapons.event.roll`, `weapons.event.damage`, `weapons.eve
 Shields are weapons with `kind: 'shield'`. They carry `acBonus`, `shieldHp`, and `shieldHpMax` alongside the shared fields. Shields do not produce attack rolls.
 
 Shield HP decrement in Phase 1 is **manual** — the player edits the value (Quick Edit supported). A `weapons.event.shield-damage` log entry is emitted when the value decreases, matching the format `"{Shield Name} took 1 damage (10 → 9 HP)"`. There is no incoming-damage hook from other modules in Phase 1.
+
+## Daggerheart Proficiency
+
+Proficiency is a character-wide value (1–6) that multiplies weapon damage dice. It is stored once on the weapons module's `data.content.daggerheartProficiency` — not per-weapon — because it applies equally to all weapons.
+
+**Data field**: `data.content.daggerheartProficiency: number | null` — `null` is treated as 1 by consuming code.
+
+**Cross-module accessor**: `window.getCharacterProficiency()` — finds the first `'weapons'` module in `window.modules` and returns its `content.daggerheartProficiency`, or `null` if not found. Follows the same pattern as `window.getCharacterLevel()`.
+
+**Dice multiplication**: `weaponsApplyProficiencyDice(diceStr, proficiency)` — accepts a `NdM` string and returns `(N * proficiency)dM`. Non-`NdM` patterns (e.g. `1d8+3`) are returned unchanged. Exposed on `window` for vitest coverage.
+
+**Integration points**:
+- `weaponsFormatDamageSummary()` — applies proficiency to the damage summary badge shown on weapon cards (read-only display).
+- `openWeaponActionModal()` damage loop — applies proficiency before building the dice expression sent to `TS.dice.putDiceInTray()`.
+
+**UI**:
+- A compact proficiency row renders **above** the two-column weapon layout, visible only when `window.gameSystem === 'daggerheart'`.
+- Play mode: read-only badge showing `daggerheartProficiency || 1`.
+- Edit mode: number input (`min=1`, `max=6`, `step=1`); clamps live, writes to `content.daggerheartProficiency`, calls `scheduleSave()`.
+
+**Stats module**: The proficiency dot and toggle are hidden in Daggerheart (`renderStatBlock` / `renderStatBlockEdit`) because per-stat proficiency is a 5e concept, not a Daggerheart one.
+
+---
 
 ## Game System Awareness
 

@@ -110,7 +110,7 @@
             if (rank !== 'untrained') {
                 profIndicatorHtml = '<span class="stat-rank-badge" title="' + escapeHtml(t('rank.' + rank)) + '">' + rank.charAt(0).toUpperCase() + '</span>';
             }
-        } else if (stat.proficient) {
+        } else if (stat.proficient && sys !== 'daggerheart') {
             profIndicatorHtml = '<span class="stat-proficiency-dot"></span>';
         }
         block.innerHTML =
@@ -147,7 +147,7 @@
         if (!stat.isProficiencyStat) {
             if (editSys === 'pf2e') {
                 profRowHtml = `<div class="stat-edit-prof-row" data-pf2e-rank-row></div>`;
-            } else {
+            } else if (editSys !== 'daggerheart') {
                 profRowHtml = `<div class="stat-edit-prof-row"><span class="stat-edit-prof-label">${t('stat.proficient')}</span><button class="stat-edit-prof-dot${stat.proficient ? ' active' : ''}" title="${t('stat.proficient')}"></button></div>`;
             }
         }

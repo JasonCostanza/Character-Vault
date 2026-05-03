@@ -266,6 +266,7 @@
         if (!Array.isArray(data.content.weapons)) data.content.weapons = [];
         if (!Array.isArray(data.content.customWeaponTraits)) data.content.customWeaponTraits = [];
         if (!Array.isArray(data.content.enhancementCatalog)) data.content.enhancementCatalog = [];
+        if (data.content.daggerheartProficiency === undefined) data.content.daggerheartProficiency = null;
         data.content.weapons.forEach(function (w) {
             if (!w.id) w.id = generateWeaponId();
             if (typeof w.name !== 'string') w.name = '';
@@ -337,6 +338,13 @@
         return null;
     }
 
+    function weaponsApplyProficiencyDice(diceStr, proficiency) {
+        if (!proficiency || proficiency <= 1) return diceStr || '';
+        var match = (diceStr || '').match(/^(\d+)d(\d+)$/);
+        if (!match) return diceStr || '';
+        return (parseInt(match[1], 10) * proficiency) + 'd' + match[2];
+    }
+
     // ── Damage Summary ──
     function weaponsFormatDamageSummary(weapon, content) {
         if (!weapon.damageInstances || !weapon.damageInstances.length) return '';
@@ -346,6 +354,11 @@
             bonus += typeof window.getAbilityModifier === 'function' ? window.getAbilityModifier(weapon.abilityMod) : 0;
         }
         var dmg = inst.dice || '';
+        if ((window.gameSystem || 'custom') === 'daggerheart') {
+            var dhProf = typeof window.getCharacterProficiency === 'function'
+                ? window.getCharacterProficiency() : null;
+            if (dhProf && dhProf > 1) dmg = weaponsApplyProficiencyDice(dmg, dhProf);
+        }
         if (content && (window.gameSystem || 'custom') === 'pf2e') {
             var strikingBonus = weaponsComputeEnhancementStrikingBonus(weapon, content);
             if (strikingBonus > 0) dmg = weaponsApplyStrikingBonus(dmg, strikingBonus);
@@ -754,6 +767,20 @@
         var moduleEl = bodyEl.closest('.module');
         bodyEl.innerHTML = '';
 
+        if ((window.gameSystem || 'custom') === 'daggerheart') {
+            var profRow = document.createElement('div');
+            profRow.className = 'weapons-proficiency-row';
+            var profLabel = document.createElement('span');
+            profLabel.className = 'weapons-proficiency-label';
+            profLabel.textContent = t('weapons.proficiency');
+            var profValue = document.createElement('span');
+            profValue.className = 'weapons-proficiency-value';
+            profValue.textContent = String(content.daggerheartProficiency || 1);
+            profRow.appendChild(profLabel);
+            profRow.appendChild(profValue);
+            bodyEl.appendChild(profRow);
+        }
+
         if (!content.weapons.length) {
             var empty = document.createElement('div');
             empty.className = 'weapons-empty-state';
@@ -771,10 +798,6 @@
         var content = ensureWeaponsContent(data);
         var moduleEl = bodyEl.closest('.module');
         bodyEl.innerHTML = '';
-
-        var layout = buildTwoColumnLayout(data, false, moduleEl, bodyEl);
-        var mainCol = layout.mainCol;
-        var offCol = layout.offCol;
 
         function makeAddBtn(slot) {
             var btn = document.createElement('button');
@@ -805,11 +828,54 @@
             return btn;
         }
 
-        mainCol.appendChild(makeAddBtn('main'));
-        offCol.appendChild(makeAddBtn('off'));
+        function buildWeaponsSection(container) {
+            container.querySelectorAll('.weapons-column').forEach(function (col) {
+                var s = Sortable.get(col);
+                if (s) s.destroy();
+            });
+            container.innerHTML = '';
+            var layout = buildTwoColumnLayout(data, false, moduleEl, bodyEl);
+            layout.mainCol.appendChild(makeAddBtn('main'));
+            layout.offCol.appendChild(makeAddBtn('off'));
+            container.appendChild(layout.container);
+            initWeaponsSortable(layout.mainCol, layout.offCol, data, bodyEl);
+        }
 
-        bodyEl.appendChild(layout.container);
-        initWeaponsSortable(mainCol, offCol, data, bodyEl);
+        if ((window.gameSystem || 'custom') === 'daggerheart') {
+            var profRow = document.createElement('div');
+            profRow.className = 'weapons-proficiency-row';
+            var profLabel = document.createElement('span');
+            profLabel.className = 'weapons-proficiency-label';
+            profLabel.textContent = t('weapons.proficiency');
+            var profInput = document.createElement('input');
+            profInput.type = 'number';
+            profInput.className = 'weapons-proficiency-input';
+            profInput.min = '1';
+            profInput.max = '6';
+            profInput.step = '1';
+            profInput.value = String(content.daggerheartProficiency || 1);
+            var weaponsSection = document.createElement('div');
+            profInput.addEventListener('change', function () {
+                var val = parseInt(profInput.value, 10);
+                if (isNaN(val) || val < 1) val = 1;
+                if (val > 6) val = 6;
+                profInput.value = String(val);
+                content.daggerheartProficiency = val;
+                scheduleSave();
+                buildWeaponsSection(weaponsSection);
+            });
+            profInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === 'Escape') profInput.blur();
+            });
+            profRow.appendChild(profLabel);
+            profRow.appendChild(profInput);
+            bodyEl.appendChild(profRow);
+            bodyEl.appendChild(weaponsSection);
+            buildWeaponsSection(weaponsSection);
+            return;
+        }
+
+        buildWeaponsSection(bodyEl);
     }
 
     // ── SortableJS ──
@@ -1594,6 +1660,14 @@
                     instBonus += typeof window.getAbilityModifier === 'function' ? window.getAbilityModifier(weapon.abilityMod) : 0;
                 }
                 var diceExpr = (inst.dice || '1d4') + (instBonus !== 0 ? formatBonus(instBonus) : '');
+                if (sys === 'daggerheart') {
+                    var dhProf = typeof window.getCharacterProficiency === 'function'
+                        ? window.getCharacterProficiency() : null;
+                    if (dhProf && dhProf > 1) {
+                        var baseDice = weaponsApplyProficiencyDice(inst.dice || '1d4', dhProf);
+                        diceExpr = baseDice + (instBonus !== 0 ? formatBonus(instBonus) : '');
+                    }
+                }
                 var typeLabel = inst.damageType || '';
                 var btn = document.createElement('button');
                 btn.className = 'btn-secondary weapon-action-btn';
@@ -3051,6 +3125,12 @@
     window.weaponsComputeEnhancementPoolBonus   = weaponsComputeEnhancementPoolBonus;
     window.weaponsComputeEnhancementAttackBonus = weaponsComputeEnhancementAttackBonus;
     window.weaponsComputeEffectivePool          = weaponsComputeEffectivePool;
+    // Daggerheart proficiency
+    window.weaponsApplyProficiencyDice = weaponsApplyProficiencyDice;
+    window.getCharacterProficiency = function () {
+        var mod = window.modules.find(function (m) { return m.type === 'weapons'; });
+        return mod && mod.content ? (mod.content.daggerheartProficiency || null) : null;
+    };
 
     console.log('[CV] Weapons module registered');
 })();

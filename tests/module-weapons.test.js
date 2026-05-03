@@ -327,3 +327,25 @@ describe('weaponsFormatDamageSummary', () => {
     expect(window.weaponsFormatDamageSummary(weapon)).toBe('1d6 slashing');
   });
 });
+
+describe('weaponsApplyProficiencyDice', () => {
+  it('returns dice unchanged when proficiency is 1', () => {
+    expect(window.weaponsApplyProficiencyDice('1d8', 1)).toBe('1d8');
+  });
+
+  it('multiplies dice count by proficiency', () => {
+    expect(window.weaponsApplyProficiencyDice('1d8', 3)).toBe('3d8');
+  });
+
+  it('multiplies an existing multi-die expression', () => {
+    expect(window.weaponsApplyProficiencyDice('2d6', 2)).toBe('4d6');
+  });
+
+  it('returns dice unchanged when proficiency is null', () => {
+    expect(window.weaponsApplyProficiencyDice('1d8', null)).toBe('1d8');
+  });
+
+  it('returns non-NdM pattern unchanged', () => {
+    expect(window.weaponsApplyProficiencyDice('1d8+3', 2)).toBe('1d8+3');
+  });
+});

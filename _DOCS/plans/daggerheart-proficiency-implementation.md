@@ -10,7 +10,7 @@ Per the official Daggerheart character sheet, proficiency belongs visually in th
 
 ## Phase 1: i18n — `scripts/translations.js`
 
-- [ ] Add `weapons.proficiency` (`"Proficiency"`) to all 7 locale blocks, in the `weapons.*` namespace after existing weapons keys
+- [x] Add `weapons.proficiency` (`"Proficiency"`) to all 7 locale blocks, in the `weapons.*` namespace after existing weapons keys
 
 ---
 
@@ -18,13 +18,13 @@ Per the official Daggerheart character sheet, proficiency belongs visually in th
 
 ### `scripts/module-weapons.js`
 
-- [ ] **Content guard** — `ensureWeaponsContent()` (line 262): add after line 268:
+- [x] **Content guard** — `ensureWeaponsContent()` (line 262): add after line 268:
   ```js
   if (data.content.daggerheartProficiency === undefined) data.content.daggerheartProficiency = null;
   ```
   Named `daggerheartProficiency` to distinguish from D&D 5e's `proficient` (boolean), PF2e's `proficiencyRank` (string), and `getProficiencyBonus()` (5e numeric).
 
-- [ ] **Cross-module accessor** — add after existing `window.*` exports (~line 3053):
+- [x] **Cross-module accessor** — add after existing `window.*` exports (~line 3053):
   ```js
   window.getCharacterProficiency = function () {
       var mod = window.modules.find(function (m) { return m.type === 'weapons'; });
@@ -33,7 +33,7 @@ Per the official Daggerheart character sheet, proficiency belongs visually in th
   ```
   Follows the same pattern as `window.getCharacterLevel()`. Returns `null` when not set; consuming code treats `null` as 1.
 
-- [ ] **Dice multiplication helper** — add inside IIFE, before `weaponsFormatDamageSummary` (line 340). Mirrors `weaponsApplyStrikingBonus` (line 397) but multiplies instead of adds:
+- [x] **Dice multiplication helper** — add inside IIFE, before `weaponsFormatDamageSummary` (line 340). Mirrors `weaponsApplyStrikingBonus` (line 397) but multiplies instead of adds:
   ```js
   function weaponsApplyProficiencyDice(diceStr, proficiency) {
       if (!proficiency || proficiency <= 1) return diceStr || '';
@@ -44,7 +44,7 @@ Per the official Daggerheart character sheet, proficiency belongs visually in th
   ```
   Expose on `window` alongside other weapon helpers (~line 3050).
 
-- [ ] **Damage summary** — `weaponsFormatDamageSummary()` (line 341): after `var dmg = inst.dice || '';` (line 348) and before the PF2e striking block (line 349):
+- [x] **Damage summary** — `weaponsFormatDamageSummary()` (line 341): after `var dmg = inst.dice || '';` (line 348) and before the PF2e striking block (line 349):
   ```js
   if ((window.gameSystem || 'custom') === 'daggerheart') {
       var dhProf = typeof window.getCharacterProficiency === 'function'
@@ -53,7 +53,7 @@ Per the official Daggerheart character sheet, proficiency belongs visually in th
   }
   ```
 
-- [ ] **Action modal damage** — `openWeaponActionModal()` damage loop (line 1591): after `var diceExpr = ...` (line 1596), apply multiplication to `inst.dice` before the flat bonus is appended:
+- [x] **Action modal damage** — `openWeaponActionModal()` damage loop (line 1591): after `var diceExpr = ...` (line 1596), apply multiplication to `inst.dice` before the flat bonus is appended:
   ```js
   if (sys === 'daggerheart') {
       var dhProf = typeof window.getCharacterProficiency === 'function'
@@ -67,12 +67,12 @@ Per the official Daggerheart character sheet, proficiency belongs visually in th
 
 ### `scripts/module-stat.js`
 
-- [ ] **Hide proficiency dot** — `renderStatBlock()` (line 113): change `} else if (stat.proficient) {` to:
+- [x] **Hide proficiency dot** — `renderStatBlock()` (line 113): change `} else if (stat.proficient) {` to:
   ```js
   } else if (stat.proficient && sys !== 'daggerheart') {
   ```
 
-- [ ] **Hide proficiency toggle** — `renderStatBlockEdit()` (line 150): change `} else {` to:
+- [x] **Hide proficiency toggle** — `renderStatBlockEdit()` (line 150): change `} else {` to:
   ```js
   } else if (editSys !== 'daggerheart') {
   ```
@@ -85,35 +85,35 @@ Per the official Daggerheart character sheet, proficiency belongs visually in th
 
 Add a compact proficiency row **above** the two-column weapon layout, visible only when `gameSystem === 'daggerheart'`.
 
-- [ ] **Play mode** — `renderPlayBody()` (line 752): before appending the two-column layout, render a row with label + value badge showing `content.daggerheartProficiency || 1`. Static/read-only.
+- [x] **Play mode** — `renderPlayBody()` (line 752): before appending the two-column layout, render a row with label + value badge showing `content.daggerheartProficiency || 1`. Static/read-only.
 
-- [ ] **Edit mode** — `renderEditBody()` (line 770): same position, but render a number input (`min=1`, `max=6`, `step=1`). Input handler clamps to 1–6, writes to `content.daggerheartProficiency`, calls `scheduleSave()`.
+- [x] **Edit mode** — `renderEditBody()` (line 770): same position, but render a number input (`min=1`, `max=6`, `step=1`). Input handler clamps to 1–6, writes to `content.daggerheartProficiency`, calls `scheduleSave()`.
 
 ### `main.css` — within `/* ── Weapons Module ── */`
 
-- [ ] `.weapons-proficiency-row` — flex row, centered, `user-select: none`, small bottom margin
-- [ ] `.weapons-proficiency-label` — small uppercase text, `--cv-text-secondary`
-- [ ] `.weapons-proficiency-value` — badge/pill, `--cv-text-primary`, `--cv-bg-secondary`
-- [ ] `.weapons-proficiency-input` — narrow number input (~40px), matches modal input styles
+- [x] `.weapons-proficiency-row` — flex row, centered, `user-select: none`, small bottom margin
+- [x] `.weapons-proficiency-label` — small uppercase text, `--cv-text-secondary`
+- [x] `.weapons-proficiency-value` — badge/pill, `--cv-text-primary`, `--cv-bg-raised` (token used; plan listed `--cv-bg-secondary` which doesn't exist)
+- [x] `.weapons-proficiency-input` — narrow number input (~40px), matches modal input styles
 
 ---
 
 ## Phase 4: Tests — `tests/module-weapons.test.js`
 
-- [ ] `weaponsApplyProficiencyDice('1d8', 1)` → `'1d8'`
-- [ ] `weaponsApplyProficiencyDice('1d8', 3)` → `'3d8'`
-- [ ] `weaponsApplyProficiencyDice('2d6', 2)` → `'4d6'`
-- [ ] `weaponsApplyProficiencyDice('1d8', null)` → `'1d8'`
-- [ ] `weaponsApplyProficiencyDice('1d8+3', 2)` → `'1d8+3'` (non-`NdM` pattern returned unchanged)
+- [x] `weaponsApplyProficiencyDice('1d8', 1)` → `'1d8'`
+- [x] `weaponsApplyProficiencyDice('1d8', 3)` → `'3d8'`
+- [x] `weaponsApplyProficiencyDice('2d6', 2)` → `'4d6'`
+- [x] `weaponsApplyProficiencyDice('1d8', null)` → `'1d8'`
+- [x] `weaponsApplyProficiencyDice('1d8+3', 2)` → `'1d8+3'` (non-`NdM` pattern returned unchanged)
 
 ---
 
 ## Phase 5: Documentation
 
-- [ ] **`_DOCS/DICE_MECHANICS.md`** — replace incorrect Daggerheart section (lines 154–163):
+- [x] **`_DOCS/DICE_MECHANICS.md`** — replace incorrect Daggerheart section (lines 154–163):
   - Action roll: `2d12 (Hope + Fear) + trait modifier`, proficiency does NOT apply
   - Damage roll: `[proficiency]d[die]`, proficiency multiplies dice count, stored as `daggerheartProficiency`
 
-- [ ] **`_DOCS/ARCHITECTURE.md`** — add `window.getCharacterProficiency()` and `window.weaponsApplyProficiencyDice()` to the `module-weapons.js` row
+- [x] **`_DOCS/ARCHITECTURE.md`** — add `window.getCharacterProficiency()` and `window.weaponsApplyProficiencyDice()` to the `module-weapons.js` row
 
-- [ ] **`_DOCS/SUBMODULES/WEAPONS.md`** — add "Daggerheart Proficiency" section: `data.content.daggerheartProficiency` field, `getCharacterProficiency()` accessor, `weaponsApplyProficiencyDice()` integration
+- [x] **`_DOCS/SUBMODULES/WEAPONS.md`** — add "Daggerheart Proficiency" section: `data.content.daggerheartProficiency` field, `getCharacterProficiency()` accessor, `weaponsApplyProficiencyDice()` integration

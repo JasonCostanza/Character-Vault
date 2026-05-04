@@ -3279,6 +3279,18 @@
         return mod && mod.content ? (mod.content.daggerheartProficiency || null) : null;
     };
 
+    document.addEventListener('cv:stat-values-changed', function (e) {
+        var changedModuleId = e.detail && e.detail.moduleId;
+        (window.modules || []).forEach(function (mod) {
+            if (mod.type !== 'weapons') return;
+            if (!mod.content || mod.content.linkedStatModuleId !== changedModuleId) return;
+            var moduleEl = document.querySelector('.module[data-id="' + mod.id + '"]');
+            if (!moduleEl) return;
+            var bodyEl = moduleEl.querySelector('.module-body');
+            if (bodyEl) renderEditBody(bodyEl, mod);
+        });
+    });
+
     document.addEventListener('cv:stats-changed', function (e) {
         var changedModuleId = e.detail && e.detail.moduleId;
         (window.modules || []).forEach(function (mod) {

@@ -200,10 +200,12 @@
         valInput.addEventListener('input', () => {
             stat.value = parseInt(valInput.value, 10) || 0;
             scheduleSave();
+            document.dispatchEvent(new CustomEvent('cv:stat-values-changed', { detail: { moduleId: data.id } }));
         });
         modInput.addEventListener('input', () => {
             stat.modifier = parseInt(modInput.value, 10) || 0;
             scheduleSave();
+            document.dispatchEvent(new CustomEvent('cv:stat-values-changed', { detail: { moduleId: data.id } }));
         });
 
         [nameInput, valInput, modInput].forEach((inp) => {

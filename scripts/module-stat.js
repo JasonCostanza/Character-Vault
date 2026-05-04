@@ -195,6 +195,7 @@
         nameInput.addEventListener('input', () => {
             stat.name = nameInput.value;
             scheduleSave();
+            document.dispatchEvent(new CustomEvent('cv:stats-changed', { detail: { moduleId: data.id } }));
         });
         valInput.addEventListener('input', () => {
             stat.value = parseInt(valInput.value, 10) || 0;
@@ -225,6 +226,7 @@
             }
             reRenderStatEdits(container, data);
             scheduleSave();
+            document.dispatchEvent(new CustomEvent('cv:stats-changed', { detail: { moduleId: data.id } }));
         });
 
         // Click on block background to select (not on inputs/buttons)
@@ -462,6 +464,18 @@
         const target = (nameMap[key] || key).toUpperCase();
         for (const m of (window.modules || [])) {
             if (m.type !== 'stat' || !m.content || !Array.isArray(m.content.stats)) continue;
+            const stat = m.content.stats.find((s) => s.name && s.name.toUpperCase() === target);
+            if (stat) return stat.modifier || 0;
+        }
+        return 0;
+    };
+
+    window.getAbilityModifierFrom = function (key, moduleId) {
+        if (!key) return 0;
+        const target = key.toUpperCase();
+        for (const m of (window.modules || [])) {
+            if (m.type !== 'stat' || !m.content || !Array.isArray(m.content.stats)) continue;
+            if (moduleId && m.id !== moduleId) continue;
             const stat = m.content.stats.find((s) => s.name && s.name.toUpperCase() === target);
             if (stat) return stat.modifier || 0;
         }

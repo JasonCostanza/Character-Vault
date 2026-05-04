@@ -267,13 +267,14 @@
         if (!Array.isArray(data.content.customWeaponTraits)) data.content.customWeaponTraits = [];
         if (!Array.isArray(data.content.enhancementCatalog)) data.content.enhancementCatalog = [];
         if (data.content.daggerheartProficiency === undefined) data.content.daggerheartProficiency = null;
+        if (data.content.linkedStatModuleId === undefined) data.content.linkedStatModuleId = null;
         data.content.weapons.forEach(function (w) {
             if (!w.id) w.id = generateWeaponId();
             if (typeof w.name !== 'string') w.name = '';
             if (w.slot !== 'main' && w.slot !== 'off') w.slot = 'main';
             if (w.kind !== 'melee' && w.kind !== 'ranged' && w.kind !== 'shield') w.kind = 'melee';
             if (w.icon === undefined) w.icon = null;
-            if (['str', 'dex', 'con', 'int', 'wis', 'cha'].indexOf(w.abilityMod) === -1) w.abilityMod = 'str';
+            if (w.abilityMod !== null && typeof w.abilityMod !== 'string') w.abilityMod = null;
             if (typeof w.proficient !== 'boolean') w.proficient = false;
             if (w.attackBonusOverride === undefined) w.attackBonusOverride = null;
             if (!Array.isArray(w.damageInstances)) w.damageInstances = [];
@@ -309,28 +310,40 @@
         return data.content;
     }
 
+    // ── Linked Stat Module Helpers ──
+    function getLinkedStatNames(data) {
+        var linkedId = data.content ? data.content.linkedStatModuleId : null;
+        if (!linkedId) return [];
+        var linkedMod = (window.modules || []).find(function (m) { return m.id === linkedId; });
+        if (!linkedMod || !linkedMod.content || !Array.isArray(linkedMod.content.stats)) return [];
+        return linkedMod.content.stats
+            .filter(function (s) { return s.name && !s.isProficiencyStat; })
+            .map(function (s) { return s.name; });
+    }
+
     // ── Attack Bonus Computation ──
-    function weaponsComputeAttackBonus(weapon) {
+    function weaponsComputeAttackBonus(weapon, content) {
         if (weapon.attackBonusOverride !== null && weapon.attackBonusOverride !== undefined) {
             return Number(weapon.attackBonusOverride);
         }
 
         var sys = window.gameSystem || 'custom';
+        var linkedId = content ? content.linkedStatModuleId : null;
 
         if (sys === 'dnd5e' || sys === 'custom') {
-            var abilityMod = typeof window.getAbilityModifier === 'function' ? window.getAbilityModifier(weapon.abilityMod) : 0;
+            var abilityMod = typeof window.getAbilityModifierFrom === 'function' ? window.getAbilityModifierFrom(weapon.abilityMod, linkedId) : 0;
             var profBonus = weapon.proficient && typeof window.getProficiencyBonus === 'function' ? window.getProficiencyBonus() : 0;
             return abilityMod + profBonus;
         }
 
         if (sys === 'pf2e') {
-            var abilityMod = typeof window.getAbilityModifier === 'function' ? window.getAbilityModifier(weapon.abilityMod) : 0;
+            var abilityMod = typeof window.getAbilityModifierFrom === 'function' ? window.getAbilityModifierFrom(weapon.abilityMod, linkedId) : 0;
             var profBonus = typeof window.computePf2eProficiencyBonus === 'function' ? window.computePf2eProficiencyBonus(weapon.proficiencyRank) : 0;
             return abilityMod + profBonus;
         }
 
         if (sys === 'daggerheart') {
-            var traitMod = typeof window.getAbilityModifier === 'function' ? window.getAbilityModifier(weapon.governingTrait) : 0;
+            var traitMod = typeof window.getAbilityModifierFrom === 'function' ? window.getAbilityModifierFrom(weapon.governingTrait, linkedId) : 0;
             return traitMod;
         }
 
@@ -351,7 +364,8 @@
         var inst = weapon.damageInstances[0];
         var bonus = Number(inst.flatBonus) || 0;
         if (inst.modFromAbility) {
-            bonus += typeof window.getAbilityModifier === 'function' ? window.getAbilityModifier(weapon.abilityMod) : 0;
+            var linkedId = content ? content.linkedStatModuleId : null;
+            bonus += typeof window.getAbilityModifierFrom === 'function' ? window.getAbilityModifierFrom(weapon.abilityMod, linkedId) : 0;
         }
         var dmg = inst.dice || '';
         if ((window.gameSystem || 'custom') === 'daggerheart') {
@@ -503,7 +517,7 @@
                 nameRow.appendChild(acEl);
             }
         } else {
-            var bonus = weaponsComputeAttackBonus(weapon);
+            var bonus = weaponsComputeAttackBonus(weapon, data.content);
             var bonusEl = document.createElement('span');
             bonusEl.className = 'weapon-bonus' + (weapon.attackBonusOverride !== null ? ' weapon-bonus-override' : '');
             if (bonus !== null) {
@@ -765,6 +779,7 @@
     function renderPlayBody(bodyEl, data) {
         var content = ensureWeaponsContent(data);
         var moduleEl = bodyEl.closest('.module');
+        updateWeaponsChainIcon(moduleEl, data);
         bodyEl.innerHTML = '';
 
         if ((window.gameSystem || 'custom') === 'daggerheart') {
@@ -797,6 +812,7 @@
     function renderEditBody(bodyEl, data) {
         var content = ensureWeaponsContent(data);
         var moduleEl = bodyEl.closest('.module');
+        updateWeaponsChainIcon(moduleEl, data);
         bodyEl.innerHTML = '';
 
         function makeAddBtn(slot) {
@@ -1212,24 +1228,30 @@
         return section;
     }
 
-    function buildGoverningTraitSection(workingWeapon, onDirty) {
+    function buildGoverningTraitSection(workingWeapon, data, onDirty) {
         var section = document.createElement('div');
         section.className = 'weapon-edit-section';
         var row = document.createElement('div');
         row.className = 'weapon-edit-row';
         var field = buildField(t('weapons.governingTrait'));
-        var sel = buildCvSelect(
-            [
-                { value: 'agility',   label: 'Agility'   },
-                { value: 'strength',  label: 'Strength'  },
-                { value: 'finesse',   label: 'Finesse'   },
-                { value: 'instinct',  label: 'Instinct'  },
-                { value: 'presence',  label: 'Presence'  },
-                { value: 'knowledge', label: 'Knowledge' },
-            ],
-            workingWeapon.governingTrait || 'agility',
-            function (v) { workingWeapon.governingTrait = v; onDirty(); }
-        );
+        var linkedStatNames = getLinkedStatNames(data);
+        var sel;
+        if (linkedStatNames.length === 0) {
+            sel = buildCvSelect(
+                [{ value: '', label: t('weapons.linkStatFirst') }],
+                '',
+                function () {}
+            );
+            sel.el.classList.add('cv-select--disabled');
+            var trigger = sel.el.querySelector('.cv-select-trigger');
+            if (trigger) trigger.disabled = true;
+        } else {
+            sel = buildCvSelect(
+                linkedStatNames.map(function (name) { return { value: name, label: name }; }),
+                workingWeapon.governingTrait,
+                function (v) { workingWeapon.governingTrait = v; onDirty(); }
+            );
+        }
         field.appendChild(sel.el);
         row.appendChild(field);
         section.appendChild(row);
@@ -1430,6 +1452,111 @@
         return 'A';
     }
 
+    // ── Module Settings Modal ──
+    function updateWeaponsChainIcon(moduleEl, data) {
+        var indicator = moduleEl.querySelector('.module-weapons-link-indicator');
+        if (!indicator) return;
+        var linkedId = data.content ? data.content.linkedStatModuleId : null;
+        if (!linkedId) {
+            indicator.style.display = 'none';
+            indicator.title = '';
+            return;
+        }
+        var linkedModule = (window.modules || []).find(function (m) { return m.id === linkedId; });
+        var name = linkedModule ? (linkedModule.title || t('type.stat')) : '?';
+        indicator.title = t('weapons.linkedTo', { name: name });
+        indicator.style.display = '';
+    }
+
+    function openWeaponModuleSettings(moduleEl, data) {
+        var existing = document.querySelector('.weapon-settings-overlay');
+        if (existing) existing.remove();
+
+        var overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay weapon-settings-overlay';
+
+        var panel = document.createElement('div');
+        panel.className = 'cv-modal-panel';
+
+        var header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        var title = document.createElement('span');
+        title.className = 'cv-modal-title';
+        title.textContent = t('weapons.settingsTitle');
+        title.setAttribute('data-i18n', 'weapons.settingsTitle');
+        var closeBtn = document.createElement('button');
+        closeBtn.className = 'cv-modal-close';
+        closeBtn.innerHTML = '&times;';
+        closeBtn.title = t('abilities.close');
+        header.appendChild(title);
+        header.appendChild(closeBtn);
+
+        var body = document.createElement('div');
+        body.className = 'cv-modal-body';
+
+        var label = document.createElement('label');
+        label.className = 'cv-modal-label';
+        label.setAttribute('data-i18n', 'weapons.linkedStatModule');
+        label.textContent = t('weapons.linkedStatModule');
+        body.appendChild(label);
+
+        var select = document.createElement('select');
+        select.className = 'ability-settings-select';
+        var noneOpt = document.createElement('option');
+        noneOpt.value = '';
+        noneOpt.setAttribute('data-i18n', 'weapons.noLinkedModule');
+        noneOpt.textContent = t('weapons.noLinkedModule');
+        select.appendChild(noneOpt);
+        (window.modules || []).filter(function (m) { return m.type === 'stat'; }).forEach(function (m) {
+            var opt = document.createElement('option');
+            opt.value = m.id;
+            opt.textContent = m.title || t('type.stat');
+            select.appendChild(opt);
+        });
+        select.value = data.content.linkedStatModuleId || '';
+        body.appendChild(select);
+
+        var footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        var cancelBtn = document.createElement('button');
+        cancelBtn.className = 'btn-secondary';
+        cancelBtn.setAttribute('data-i18n', 'abilities.cancel');
+        cancelBtn.textContent = t('abilities.cancel');
+        var saveBtn = document.createElement('button');
+        saveBtn.className = 'btn-primary';
+        saveBtn.setAttribute('data-i18n', 'abilities.save');
+        saveBtn.textContent = t('abilities.save');
+        footer.appendChild(cancelBtn);
+        footer.appendChild(saveBtn);
+
+        panel.appendChild(header);
+        panel.appendChild(body);
+        panel.appendChild(footer);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+
+        function close() { overlay.remove(); }
+
+        function save() {
+            data.content.linkedStatModuleId = select.value || null;
+            scheduleSave();
+            var bodyEl = moduleEl.querySelector('.module-body');
+            var isPlay = window.isPlayMode;
+            var typeDef = window.MODULE_TYPES && window.MODULE_TYPES['weapons'];
+            if (typeDef && bodyEl) typeDef.renderBody(bodyEl, data, isPlay);
+            updateWeaponsChainIcon(moduleEl, data);
+            close();
+        }
+
+        saveBtn.addEventListener('click', save);
+        cancelBtn.addEventListener('click', close);
+        closeBtn.addEventListener('click', close);
+        overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+        document.addEventListener('keydown', function onKey(e) {
+            if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onKey); }
+        });
+    }
+
     // ── Action Modal (Play Mode) ──
     function openWeaponActionModal(moduleEl, data, weapon) {
         var existing = document.querySelector('.weapon-action-overlay');
@@ -1499,7 +1626,7 @@
             attackCol.appendChild(attackColLabel);
 
             if (archetype === 'A') {
-                var bonus = weaponsComputeAttackBonus(weapon);
+                var bonus = weaponsComputeAttackBonus(weapon, data.content);
                 if (sys === 'pf2e') {
                     var isAgile = weapon.traits && weapon.traits.some(function (tr) { return tr.key === 'pf2e.agile'; });
                     var map2 = isAgile ? -4 : -5;
@@ -1657,7 +1784,7 @@
             weapon.damageInstances.forEach(function (inst) {
                 var instBonus = Number(inst.flatBonus) || 0;
                 if (inst.modFromAbility) {
-                    instBonus += typeof window.getAbilityModifier === 'function' ? window.getAbilityModifier(weapon.abilityMod) : 0;
+                    instBonus += typeof window.getAbilityModifierFrom === 'function' ? window.getAbilityModifierFrom(weapon.abilityMod, data.content.linkedStatModuleId) : 0;
                 }
                 var diceExpr = (inst.dice || '1d4') + (instBonus !== 0 ? formatBonus(instBonus) : '');
                 if (sys === 'daggerheart') {
@@ -1839,11 +1966,24 @@
         rowAbility.className = 'weapon-edit-row weapon-edit-row--paired';
 
         var abilityField = buildField(t('weapons.abilityMod'));
-        var abilitySel = buildCvSelect(
-            ['str', 'dex', 'con', 'int', 'wis', 'cha'].map(function (k) { return { value: k, label: k.toUpperCase() }; }),
-            workingWeapon.abilityMod,
-            function (v) { workingWeapon.abilityMod = v; dirty = true; }
-        );
+        var linkedStatNames = getLinkedStatNames(data);
+        var abilitySel;
+        if (linkedStatNames.length === 0) {
+            abilitySel = buildCvSelect(
+                [{ value: '', label: t('weapons.linkStatFirst') }],
+                '',
+                function () {}
+            );
+            abilitySel.el.classList.add('cv-select--disabled');
+            var trigger = abilitySel.el.querySelector('.cv-select-trigger');
+            if (trigger) trigger.disabled = true;
+        } else {
+            abilitySel = buildCvSelect(
+                linkedStatNames.map(function (name) { return { value: name, label: name }; }),
+                workingWeapon.abilityMod,
+                function (v) { workingWeapon.abilityMod = v; dirty = true; }
+            );
+        }
         abilityField.appendChild(abilitySel.el);
         rowAbility.appendChild(abilityField);
 
@@ -2136,7 +2276,7 @@
         var poolSection         = buildPoolSection(workingWeapon, onDirty);
         var accuracySection     = buildAccuracySection(workingWeapon, onDirty);
         var weaponCatSection    = buildWeaponCategorySection(workingWeapon, onDirty);
-        var governingTraitSection = buildGoverningTraitSection(workingWeapon, onDirty);
+        var governingTraitSection = buildGoverningTraitSection(workingWeapon, data, onDirty);
         var firingModesSection  = buildFiringModesSection(workingWeapon, onDirty);
         var baseDmgSection      = buildBaseDmgSection(workingWeapon, onDirty);
         var impalingRow         = buildImpalingRow(workingWeapon, onDirty);
@@ -2249,7 +2389,13 @@
         }
 
         function close() {
-            if (dirty && !window.confirm(t('weapons.discardChanges'))) return;
+            if (dirty) {
+                showConfirm(t('weapons.discardChanges'), function () {
+                    forceClose();
+                    renderEditBody(bodyEl, data);
+                });
+                return;
+            }
             forceClose();
             renderEditBody(bodyEl, data);
         }
@@ -3127,10 +3273,34 @@
     window.weaponsComputeEffectivePool          = weaponsComputeEffectivePool;
     // Daggerheart proficiency
     window.weaponsApplyProficiencyDice = weaponsApplyProficiencyDice;
+    window.openWeaponModuleSettings = openWeaponModuleSettings;
     window.getCharacterProficiency = function () {
         var mod = window.modules.find(function (m) { return m.type === 'weapons'; });
         return mod && mod.content ? (mod.content.daggerheartProficiency || null) : null;
     };
+
+    document.addEventListener('cv:stats-changed', function (e) {
+        var changedModuleId = e.detail && e.detail.moduleId;
+        (window.modules || []).forEach(function (mod) {
+            if (mod.type !== 'weapons') return;
+            if (!mod.content || mod.content.linkedStatModuleId !== changedModuleId) return;
+            var validNames = getLinkedStatNames(mod);
+            var validSet = {};
+            validNames.forEach(function (n) { validSet[n.toUpperCase()] = true; });
+            var changed = false;
+            (mod.content.weapons || []).forEach(function (w) {
+                if (w.abilityMod && !validSet[w.abilityMod.toUpperCase()]) {
+                    w.abilityMod = null;
+                    changed = true;
+                }
+                if (w.governingTrait && !validSet[w.governingTrait.toUpperCase()]) {
+                    w.governingTrait = null;
+                    changed = true;
+                }
+            });
+            if (changed) scheduleSave();
+        });
+    });
 
     console.log('[CV] Weapons module registered');
 })();

@@ -2229,6 +2229,28 @@ select,
     transform: none;
 }
 
+.module-weapons-link-indicator {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: var(--cv-accent);
+    opacity: 0.65;
+    cursor: default;
+    user-select: none;
+    position: relative;
+}
+
+.module-weapons-link-indicator[title]::after {
+    left: 0;
+    transform: none;
+}
+
+.cv-select--disabled .cv-select-trigger {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 .ability-container {
     display: flex;
     flex-direction: column;

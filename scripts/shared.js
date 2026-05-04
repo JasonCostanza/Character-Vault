@@ -376,7 +376,7 @@
             { name: label + ' (' + t('dice.hope') + ')', roll: '1d12' },
             { name: label + ' (' + t('dice.fear') + ')', roll: '1d12' },
         ];
-        var rollPromise = TS.dice.putDiceInTray(groups);
+        var rollPromise = TS.dice.putDiceInTray(groups, true);
         if (typeof window.logActivity === 'function') {
             var logEntryId = window.logActivity({
                 type: eventType,
@@ -384,7 +384,7 @@
                 sourceModuleId: sourceModuleId,
             });
             rollPromise.then(function (rollId) {
-                if (rollId) window.pendingRolls[rollId] = { logEntryId: logEntryId, dualityRoll: true, modifier: modifier };
+                if (rollId) window.pendingRolls[rollId] = { logEntryId: logEntryId, dualityRoll: true, modifier: modifier, label: label };
             });
         }
     }

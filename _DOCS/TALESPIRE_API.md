@@ -69,6 +69,44 @@ TS.dice.putDiceInTray([
 
 Multiple entries in one call share a single roll ID. They appear as separate dice groups in TaleSpire.
 
+**Optional second parameter — suppress auto-reporting**: Pass `true` as the second argument to suppress TaleSpire's automatic reporting of results to chat. The symbiote is then responsible for calling `TS.dice.sendDiceResult()` to report results manually. Used by duality rolls so only the winning die appears in chat.
+
+```js
+TS.dice.putDiceInTray(groups, true).then(function (rollId) {
+  // Results will NOT auto-appear in TaleSpire chat.
+  // Must call TS.dice.sendDiceResult() in handleRollResult.
+  window.pendingRolls[rollId] = { logEntryId: entry.id, dualityRoll: true };
+});
+```
+
+### `TS.dice.sendDiceResult(resultsGroups, rollId)`
+
+Manually sends dice results to TaleSpire chat. Required when `putDiceInTray` was called with `true` to suppress auto-reporting.
+
+- **Input**:
+  - `resultsGroups` — Array of result group objects, same shape as `event.payload.resultsGroups` entries. Each has `name` and `result`.
+  - `rollId` — The roll ID from the original `putDiceInTray` call.
+- **Returns**: `Promise<void>`
+
+The `result` property can be reconstructed as an addition tree to fold multiple values into one chat bubble:
+
+```js
+winningGroup.result = {
+    operator: '+',
+    operands: [
+        winningGroup.result,      // original die roll (shows as physical die)
+        { value: losingDieFace }, // other die's value (shows as number)
+        { value: modifier }       // modifier, only if nonzero
+    ],
+    total: combinedTotal
+};
+winningGroup.name = '18 Agility Check (with Hope)';
+
+await TS.dice.sendDiceResult([winningGroup], event.payload.rollId);
+```
+
+Used by duality rolls (`rollDualityDice` in `shared.js`) to show only the winning Hope or Fear die in TaleSpire chat.
+
 ### `TS.dice.evaluateDiceResultsGroup(group)`
 
 Evaluates a single dice results group and returns the numeric total.

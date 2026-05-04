@@ -560,6 +560,20 @@
                     var dualityTotal = hopeFace + fearFace + (pending.modifier || 0);
                     console.log('[CV] dualityRoll: hope=' + hopeFace + ' fear=' + fearFace + ' mod=' + pending.modifier + ' total=' + dualityTotal + ' — ' + dualityLabel);
                     entry.message += ' \u2192 ' + dualityTotal + ' \u2014 ' + dualityLabel;
+
+                    // ── Send only the winning result to TaleSpire chat ──
+                    if (typeof TS !== 'undefined' && resultGroups[0] && resultGroups[1]) {
+                        var winningGroup = hopeFace >= fearFace ? resultGroups[0] : resultGroups[1];
+                        var otherValue = hopeFace >= fearFace ? fearFace : hopeFace;
+                        var operands = [winningGroup.result];
+                        operands.push({ value: otherValue });
+                        if ((pending.modifier || 0) !== 0) {
+                            operands.push({ value: pending.modifier });
+                        }
+                        winningGroup.result = { operator: '+', operands: operands, total: dualityTotal };
+                        winningGroup.name = dualityTotal + ' ' + (pending.label || '') + ' (' + dualityLabel + ')';
+                        await TS.dice.sendDiceResult([winningGroup], event.payload.rollId);
+                    }
                     scheduleSave();
                     document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
                         const modData = window.modules.find(function (m) { return m.id === el.dataset.id; });

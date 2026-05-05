@@ -15,3 +15,6 @@ node_modules/
 
 # Kilo Code local settings
 .kilo/
+
+# Design Documents
+_DOCS/

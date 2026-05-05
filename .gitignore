@@ -12,3 +12,6 @@ _DOCS/RESPONSES.md
 
 # Dependencies
 node_modules/
+
+# Kilo Code local settings
+.kilo/

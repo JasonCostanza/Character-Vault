@@ -8479,6 +8479,25 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     flex-shrink: 0;
 }
 
+/* ── Detail Modal Description ── */
+
+.spells-detail-description {
+    margin-bottom: 8px;
+    padding: 8px 10px;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 4px;
+}
+
+.spells-detail-description-text {
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--cv-text);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
 /* ── Detail Modal Attributes ── */
 
 .spells-detail-empty {
@@ -8596,6 +8615,34 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
 .spells-edit-container::-webkit-scrollbar { width: 4px; }
 .spells-edit-container::-webkit-scrollbar-track { background: transparent; }
 .spells-edit-container::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
+
+.spells-desc-textarea {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    user-select: text;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 4px;
+    color: var(--cv-text);
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 6px 8px;
+    resize: none;
+    overflow-y: hidden;
+    min-height: calc(1.5em + 12px);
+    box-sizing: border-box;
+}
+
+.spells-desc-textarea:focus {
+    outline: none;
+    border-color: var(--cv-accent);
+}
+
+.spells-desc-textarea::-webkit-scrollbar { width: 4px; }
+.spells-desc-textarea::-webkit-scrollbar-track { background: transparent; }
+.spells-desc-textarea::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .spells-edit-section {
     display: flex;

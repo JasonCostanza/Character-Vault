@@ -296,6 +296,20 @@
         const body = document.createElement('div');
         body.className = 'cv-modal-body';
 
+        if (spell.description) {
+            const descCard = document.createElement('div');
+            descCard.className = 'spells-detail-description';
+            const descLabel = document.createElement('div');
+            descLabel.className = 'cv-modal-label';
+            descLabel.textContent = t('spells.spellDescription');
+            descCard.appendChild(descLabel);
+            const descText = document.createElement('div');
+            descText.className = 'spells-detail-description-text';
+            descText.textContent = spell.description;
+            descCard.appendChild(descText);
+            body.appendChild(descCard);
+        }
+
         if (!spell.attributes || spell.attributes.length === 0) {
             const empty = document.createElement('div');
             empty.className = 'spells-detail-empty';
@@ -415,6 +429,22 @@
         nameInput.addEventListener('input', () => { workingSpell.name = nameInput.value; dirty = true; });
         body.appendChild(nameLabel);
         body.appendChild(nameInput);
+
+        const descLabel = document.createElement('label');
+        descLabel.className = 'cv-modal-label';
+        descLabel.textContent = t('spells.spellDescription');
+        body.appendChild(descLabel);
+
+        const descTextarea = document.createElement('textarea');
+        descTextarea.className = 'spells-desc-textarea';
+        descTextarea.value = workingSpell.description || '';
+        descTextarea.placeholder = t('spells.spellDescriptionPlaceholder');
+        descTextarea.spellcheck = true;
+        descTextarea.addEventListener('input', () => {
+            descTextarea.style.height = 'auto';
+            descTextarea.style.height = descTextarea.scrollHeight + 'px';
+        });
+        body.appendChild(descTextarea);
 
         const attrsLabel = document.createElement('div');
         attrsLabel.className = 'cv-modal-label';
@@ -536,6 +566,7 @@
                 cat.spells.push({
                     id: workingSpell.id,
                     name: workingSpell.name.trim(),
+                    description: descTextarea.value.trim(),
                     attributes: workingSpell.attributes.map((a) => ({
                         id: a.id || genId('a'),
                         key: a.key,
@@ -548,6 +579,7 @@
                     cat.spells[idx] = {
                         id: spell.id,
                         name: workingSpell.name.trim(),
+                        description: descTextarea.value.trim(),
                         attributes: workingSpell.attributes.map((a) => ({
                             id: a.id || genId('a'),
                             key: a.key,

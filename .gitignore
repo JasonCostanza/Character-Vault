@@ -7,9 +7,6 @@ node_modules/
 # TaleSpire local storage (user save data)
 .localStorage/
 
-# Developer Responses
-_DOCS/RESPONSES.md
-
 # Dependencies
 node_modules/
 
@@ -17,4 +14,4 @@ node_modules/
 .kilo/
 
 # Design Documents
-_DOCS/
+_DOCS

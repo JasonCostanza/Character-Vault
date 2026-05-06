@@ -582,6 +582,29 @@
                     return;
                 }
 
+                if (pending && pending.spellCast) {
+                    if (entry) entry.message += ' \u2192 ' + total;
+
+                    if (pending.autoSpend && pending.slotLevel !== null) {
+                        const spellModData = window.modules.find(m => m.id === pending.moduleId);
+                        if (spellModData && typeof window.spendSlot === 'function') {
+                            window.spendSlot(spellModData, pending.slotLevel);
+                            if (entry) entry.message += ' (' + t('spells.log.slotSpent', { level: pending.slotLevel }) + ')';
+                            const spellModEl = document.querySelector('.module[data-id="' + pending.moduleId + '"]');
+                            if (spellModEl) {
+                                const bodyEl = spellModEl.querySelector('.module-body');
+                                if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, spellModData, window.isPlayMode);
+                            }
+                        }
+                    }
+                    scheduleSave();
+                    document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
+                        const modData = window.modules.find(function (m) { return m.id === el.dataset.id; });
+                        if (modData) renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
+                    });
+                    return;
+                }
+
                 if (entry) {
                     entry.message += ' \u2192 ' + total;
                     scheduleSave();

@@ -887,8 +887,7 @@
         overlay.className = 'cv-modal-overlay spells-settings-overlay';
 
         const panel = document.createElement('div');
-        panel.className = 'cv-modal-panel';
-        panel.style.width = '460px';
+        panel.className = 'cv-modal-panel spells-settings-panel';
 
         const header = document.createElement('div');
         header.className = 'cv-modal-header';
@@ -914,36 +913,83 @@
             else renderSpellsLayout(bodyEl, data);
         }
 
-        // ── Toggles ──
-        function makeSettingsToggle(labelKey, checked, onChange) {
-            const row = makeCvToggle(checked, onChange);
-            row.className = 'spells-settings-toggle-label';
+        // ── Behavior Card ──
+        const behaviorCard = document.createElement('div');
+        behaviorCard.className = 'spells-settings-card';
+
+        const behaviorTitle = document.createElement('div');
+        behaviorTitle.className = 'spells-settings-card-title';
+        behaviorTitle.textContent = t('spells.behaviorTitle');
+        behaviorCard.appendChild(behaviorTitle);
+
+        function makeSettingsToggle(labelKey, descKey, checked, onChange) {
+            const row = document.createElement('div');
+            row.className = 'spells-settings-toggle-row';
+            const textCol = document.createElement('div');
+            textCol.className = 'spells-settings-toggle-text';
             const label = document.createElement('span');
-            label.className = 'cv-toggle-label';
+            label.className = 'spells-settings-toggle-name';
             label.textContent = t(labelKey);
-            row.appendChild(label);
+            textCol.appendChild(label);
+            if (descKey) {
+                const desc = document.createElement('span');
+                desc.className = 'spells-settings-toggle-desc';
+                desc.textContent = t(descKey);
+                textCol.appendChild(desc);
+            }
+            const toggle = makeCvToggle(checked, onChange);
+            row.appendChild(textCol);
+            row.appendChild(toggle);
             return row;
         }
 
-        body.appendChild(makeSettingsToggle('spells.autoSpendSlots', content.autoSpendSlots, (v) => {
+        behaviorCard.appendChild(makeSettingsToggle('spells.autoSpendLabel', 'spells.autoSpendDesc', content.autoSpendSlots, (v) => {
             content.autoSpendSlots = v;
             scheduleSave();
         }));
-        body.appendChild(makeSettingsToggle('spells.showSlotErrors', content.showSlotErrors, (v) => {
+        behaviorCard.appendChild(makeSettingsToggle('spells.showErrorsLabel', 'spells.showErrorsDesc', content.showSlotErrors, (v) => {
             content.showSlotErrors = v;
             scheduleSave();
         }));
 
-        // ── Manage Columns ──
-        const attrSectionLabel = document.createElement('label');
-        attrSectionLabel.className = 'cv-modal-label';
-        attrSectionLabel.style.marginTop = '16px';
-        attrSectionLabel.textContent = t('spells.manageAttributes');
-        body.appendChild(attrSectionLabel);
+        body.appendChild(behaviorCard);
+
+        // ── Tab Bar ──
+        const tabIds = ['columns', 'slots', 'categories'];
+        const tabKeys = { columns: 'spells.tabColumns', slots: 'spells.tabSlots', categories: 'spells.tabCategories' };
+        const panes = {};
+        let activeTab = 'columns';
+
+        const tabBar = document.createElement('div');
+        tabBar.className = 'spells-settings-tabbar';
+
+        const tabBtns = {};
+        tabIds.forEach(id => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'spells-settings-tab' + (id === activeTab ? ' active' : '');
+            btn.textContent = t(tabKeys[id]);
+            btn.addEventListener('click', () => switchTab(id));
+            tabBar.appendChild(btn);
+            tabBtns[id] = btn;
+        });
+        body.appendChild(tabBar);
+
+        function switchTab(id) {
+            activeTab = id;
+            tabIds.forEach(tid => {
+                tabBtns[tid].classList.toggle('active', tid === id);
+                panes[tid].classList.toggle('active', tid === id);
+            });
+        }
+
+        // ── Columns Pane ──
+        const columnsPane = document.createElement('div');
+        columnsPane.className = 'spells-settings-pane active';
 
         const attrListEl = document.createElement('div');
         attrListEl.className = 'spells-attr-list';
-        body.appendChild(attrListEl);
+        columnsPane.appendChild(attrListEl);
 
         function getAttrTypeLabel(type) {
             const labels = { text: t('spells.attrType.text'), number: t('spells.attrType.number'), 'number-pair': t('spells.attrType.numberPair'), toggle: t('spells.attrType.toggle') };
@@ -1038,13 +1084,13 @@
         refreshAttrList();
 
         const addAttrRow = document.createElement('div');
-        addAttrRow.className = 'spells-add-attr-row';
+        addAttrRow.className = 'spells-settings-add-row';
 
         const newAttrInput = document.createElement('input');
         newAttrInput.type = 'text';
         newAttrInput.className = 'cv-modal-input';
         newAttrInput.style.flex = '1';
-        newAttrInput.style.minWidth = '100px';
+        newAttrInput.style.minWidth = '80px';
         newAttrInput.placeholder = t('spells.newAttrName') + '…';
 
         const attrTypeOptions = [
@@ -1056,9 +1102,9 @@
         const attrTypeSelect = buildCvSelect(attrTypeOptions, 'text', function () {});
 
         const addAttrBtn = document.createElement('button');
-        addAttrBtn.className = 'btn-primary';
-        addAttrBtn.textContent = '+';
+        addAttrBtn.className = 'spells-settings-add-btn';
         addAttrBtn.title = t('spells.manageAttributes');
+        addAttrBtn.textContent = '+';
 
         addAttrBtn.addEventListener('click', () => {
             const name = newAttrInput.value.trim();
@@ -1083,20 +1129,19 @@
         addAttrRow.appendChild(newAttrInput);
         addAttrRow.appendChild(attrTypeSelect.el);
         addAttrRow.appendChild(addAttrBtn);
-        body.appendChild(addAttrRow);
+        columnsPane.appendChild(addAttrRow);
 
-        // ── Manage Slot Levels ──
-        const slotSectionLabel = document.createElement('label');
-        slotSectionLabel.className = 'cv-modal-label';
-        slotSectionLabel.style.marginTop = '16px';
-        slotSectionLabel.textContent = t('spells.manageSlots');
-        body.appendChild(slotSectionLabel);
+        panes.columns = columnsPane;
+        body.appendChild(columnsPane);
+
+        // ── Slots Pane ──
+        const slotsPane = document.createElement('div');
+        slotsPane.className = 'spells-settings-pane';
 
         const slotListEl = document.createElement('div');
         slotListEl.className = 'spells-slot-settings-list';
-        body.appendChild(slotListEl);
+        slotsPane.appendChild(slotListEl);
 
-        // forward ref — refreshCatList defined below, used in slot delete handler
         let refreshCatList;
 
         function refreshSlotList() {
@@ -1167,16 +1212,16 @@
         refreshSlotList();
 
         const addSlotRow = document.createElement('div');
-        addSlotRow.className = 'spells-add-slot-row';
+        addSlotRow.className = 'spells-settings-add-row';
 
         const newSlotLevelInput = document.createElement('input');
         newSlotLevelInput.type = 'number';
         newSlotLevelInput.className = 'cv-modal-input';
-        newSlotLevelInput.style.width = '60px';
+        newSlotLevelInput.style.width = '56px';
         newSlotLevelInput.style.flexShrink = '0';
         newSlotLevelInput.min = '1';
         newSlotLevelInput.max = '20';
-        newSlotLevelInput.placeholder = 'Lvl';
+        newSlotLevelInput.placeholder = t('spells.slotLevelPlaceholder');
 
         const newSlotMaxInput = document.createElement('input');
         newSlotMaxInput.type = 'number';
@@ -1186,11 +1231,12 @@
         newSlotMaxInput.min = '0';
         newSlotMaxInput.max = '20';
         newSlotMaxInput.value = '4';
+        newSlotMaxInput.placeholder = t('spells.slotMax');
 
         const addSlotBtn = document.createElement('button');
-        addSlotBtn.className = 'btn-primary';
-        addSlotBtn.textContent = t('spells.addSlotLevel');
-        addSlotBtn.style.whiteSpace = 'nowrap';
+        addSlotBtn.className = 'spells-settings-add-btn';
+        addSlotBtn.title = t('spells.addSlotLevel');
+        addSlotBtn.textContent = '+';
 
         addSlotBtn.addEventListener('click', () => {
             const level = parseInt(newSlotLevelInput.value, 10);
@@ -1210,18 +1256,18 @@
         addSlotRow.appendChild(newSlotLevelInput);
         addSlotRow.appendChild(newSlotMaxInput);
         addSlotRow.appendChild(addSlotBtn);
-        body.appendChild(addSlotRow);
+        slotsPane.appendChild(addSlotRow);
 
-        // ── Manage Categories ──
-        const catSectionLabel = document.createElement('label');
-        catSectionLabel.className = 'cv-modal-label';
-        catSectionLabel.style.marginTop = '16px';
-        catSectionLabel.textContent = t('spells.manageCategories');
-        body.appendChild(catSectionLabel);
+        panes.slots = slotsPane;
+        body.appendChild(slotsPane);
+
+        // ── Categories Pane ──
+        const categoriesPane = document.createElement('div');
+        categoriesPane.className = 'spells-settings-pane';
 
         const catSettingsListEl = document.createElement('div');
         catSettingsListEl.className = 'spells-cat-settings-list';
-        body.appendChild(catSettingsListEl);
+        categoriesPane.appendChild(catSettingsListEl);
 
         function buildSlotOptions() {
             const opts = [{ value: '', label: t('spells.catNoSlot') }];
@@ -1290,7 +1336,7 @@
         refreshCatList();
 
         const addCatRow = document.createElement('div');
-        addCatRow.className = 'spells-add-cat-settings-row';
+        addCatRow.className = 'spells-settings-add-row';
 
         const newCatNameInput = document.createElement('input');
         newCatNameInput.type = 'text';
@@ -1305,9 +1351,9 @@
         });
 
         const addCatBtn = document.createElement('button');
-        addCatBtn.className = 'btn-primary';
-        addCatBtn.textContent = '+';
+        addCatBtn.className = 'spells-settings-add-btn';
         addCatBtn.title = t('spells.addCategoryTitle');
+        addCatBtn.textContent = '+';
 
         addCatBtn.addEventListener('click', () => {
             const name = newCatNameInput.value.trim();
@@ -1325,7 +1371,10 @@
         addCatRow.appendChild(newCatNameInput);
         addCatRow.appendChild(addCatSlotSelect.el);
         addCatRow.appendChild(addCatBtn);
-        body.appendChild(addCatRow);
+        categoriesPane.appendChild(addCatRow);
+
+        panes.categories = categoriesPane;
+        body.appendChild(categoriesPane);
 
         panel.appendChild(body);
 

@@ -8435,8 +8435,137 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
 /* Empty state */
 .spells-empty-state { color: var(--cv-text-muted); font-size: 12px; text-align: center; padding: 16px; user-select: none; }
 
-/* Settings toggle label */
-.spells-settings-toggle-label { font-size: 12px; padding: 4px 0; }
+/* Settings panel width */
+.spells-settings-panel { width: 420px; }
+
+/* Behavior card */
+.spells-settings-card {
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 6px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.spells-settings-card-title {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-muted);
+    margin-bottom: 8px;
+    user-select: none;
+}
+
+.spells-settings-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0;
+}
+
+.spells-settings-toggle-row + .spells-settings-toggle-row {
+    border-top: 1px solid var(--cv-border-subtle);
+}
+
+.spells-settings-toggle-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+.spells-settings-toggle-name {
+    font-size: 12px;
+    color: var(--cv-text);
+    user-select: none;
+}
+
+.spells-settings-toggle-desc {
+    font-size: 10px;
+    color: var(--cv-text-muted);
+    user-select: none;
+}
+
+/* Tab bar */
+.spells-settings-tabbar {
+    display: flex;
+    background: var(--cv-bg-sunken);
+    border-radius: 6px;
+    padding: 3px;
+    gap: 2px;
+}
+
+.spells-settings-tab {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--cv-text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease, color 0.15s ease;
+    font-family: inherit;
+}
+
+.spells-settings-tab:hover { color: var(--cv-text-secondary); }
+
+.spells-settings-tab.active {
+    background: var(--cv-bg-raised);
+    color: var(--cv-text);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Tab panes */
+.spells-settings-pane {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.spells-settings-pane.active {
+    display: flex;
+}
+
+/* Unified add-row at bottom of each pane */
+.spells-settings-add-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--cv-border-subtle);
+}
+
+.spells-settings-add-btn {
+    background: none;
+    border: 1px solid var(--cv-accent);
+    color: var(--cv-accent);
+    border-radius: 4px;
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s ease, color 0.15s ease;
+    font-family: inherit;
+    line-height: 1;
+}
+
+.spells-settings-add-btn:hover {
+    background: var(--cv-accent);
+    color: var(--cv-bg-surface);
+}
 
 /* Layout mode slot bar inputs */
 .spells-slot-max-input {
@@ -8578,6 +8707,13 @@ input[type="number"].cv-input::-webkit-outer-spin-button {
     align-items: center;
     flex-wrap: wrap;
     margin-bottom: 4px;
+}
+
+/* Settings lists within panes */
+.spells-settings-pane > .spells-attr-list,
+.spells-settings-pane > .spells-slot-settings-list,
+.spells-settings-pane > .spells-cat-settings-list {
+    margin-bottom: 0;
 }
 
 .spells-slot-settings-row,

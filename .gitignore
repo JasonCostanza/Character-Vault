@@ -15,3 +15,6 @@ node_modules/
 
 # Design Documents
 _DOCS
+
+# Generic Agent files
+.agents/

@@ -345,12 +345,8 @@
         const drawerContent = document.createElement('div');
         drawerContent.className = 'spells-drawer-content';
         const descDisplay = document.createElement('div');
-        descDisplay.className = 'spells-desc-display';
-        if (typeof TS !== 'undefined' && TS.symbiote && TS.symbiote.diceFinder) {
-            descDisplay.innerHTML = TS.symbiote.diceFinder.getFormattedText(spell.description || '');
-        } else {
-            descDisplay.textContent = spell.description || '';
-        }
+        descDisplay.className = 'spells-desc-display module-text-display';
+        descDisplay.innerHTML = renderMarkdown(spell.description || '');
         drawerContent.appendChild(descDisplay);
         drawerTd.appendChild(drawerContent);
         drawerTr.appendChild(drawerTd);

@@ -45,8 +45,8 @@ Character Vault is a [TaleSpire Symbiote](https://symbiote-docs.talespire.com/#s
 Place the following into `%userprofile%\LocalLow\BouncyRock Entertainment\TaleSpire\Symbiotes\Character Vault`:
 
 - `scripts/` folder and its contents
+- `css/` folder and its contents
 - `main.html`
-- `main.css`
 - `manifest.json`
 
 No build step required -- everything runs as vanilla HTML/CSS/JS.

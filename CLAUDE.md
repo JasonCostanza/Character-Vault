@@ -27,7 +27,12 @@ Character Vault is a TaleSpire Symbiote — a vanilla HTML/CSS/JS character shee
 ## Project Structure
 
 ```
-Root:       manifest.json  main.html  main.css  README.md  LICENSE.txt
+Root:       manifest.json  main.html  README.md  LICENSE.txt
+css/:       tokens.css  components.css  modules.css
+            sub-abilities.css  sub-activity.css  sub-companions.css  sub-condition.css
+            sub-counters.css  sub-health.css  sub-level.css  sub-list.css
+            sub-recovery.css  sub-resistance.css  sub-savingthrow.css  sub-spells.css
+            sub-stat.css  sub-weapons.css
 scripts/:   translations.js  shared.js  i18n.js  theme.js  settings.js
             persistence.js  module-core.js  module-abilities.js  module-activity.js
             module-condition.js  module-counters.js  module-health.js  module-hr.js
@@ -63,7 +68,7 @@ npm run format      # Prettier format scripts/
 7. **Use `escapeHtml()`** (in `shared.js`) when interpolating user-provided strings into HTML.
 8. **Use `null`, not `undefined`**, for intentionally empty values (e.g., `title: null`, `theme: null`) — ensures clean JSON serialization.
 9. **Inline SVG icons only** — Use the curated in-code SVG library to avoid memory bloat from custom image uploads. The "None" option should sit first in icon pickers.
-10. **Module toolbar buttons must have `title` attributes** for custom CSS tooltips (native `title` tooltips don't render in TaleSpire's Chromium). Rightmost buttons need the right-anchored tooltip override (see `.module-delete-btn[title]::after` in `main.css`).
+10. **Module toolbar buttons must have `title` attributes** for custom CSS tooltips (native `title` tooltips don't render in TaleSpire's Chromium). Rightmost buttons need the right-anchored tooltip override (see `.module-delete-btn[title]::after` in `css/modules.css`).
 11. **After exiting plan mode, offer to save the plan** to `_DOCS/plans/` with a descriptive kebab-case filename based on the feature (e.g., `spell-category-collapse.md`). Never use auto-generated random names, and never save plans to `~/.claude/plans`.
 12. **All `.js` files go in `scripts/`** — never create JavaScript files in the project root or any other directory.
 13. **Use SortableJS for all drag-to-reorder** — never write custom pointer/mouse-based drag systems. SortableJS is already loaded via CDN. Follow the existing pattern: `handle`, `animation: 150`, `ghostClass`, `draggable`, and `onEnd`. See `initStatSortable()` or `initListSortable()` as references.
@@ -94,7 +99,9 @@ npm run format      # Prettier format scripts/
 - **`TS.*` API unavailable** when previewing in VS Code — guard calls with `typeof TS !== 'undefined'` or test in TaleSpire directly.
 - **`TS.dice.putDiceInTray()` returns `Promise<string>`**, not `string` — the API docs say `string` but it's async. Always use `.then(rollId => ...)` to capture the rollId. `TS.dice.evaluateDiceResultsGroup()` is also async — use `await`. See `handleRollResult` in `scripts/module-activity.js` for the canonical pattern.
 - **`_localStorage/`** contains user save data — gitignored, never commit.
-- **`window.confirm()` / `window.alert()` / `window.prompt()` are blocked** in TaleSpire's embedded Chromium — they return `false`/`undefined` silently without showing any dialog. **Don't** use them for destructive confirmations or user prompts. **Do** use the custom `showConfirm(message, onConfirm)` DOM dialog pattern instead. Reference implementations: `showConfirm()` in `scripts/module-counters.js` and `scripts/module-activity.js`. The CSS for the dialog lives under the `/* ── Delete Confirm Overlay ── */` section in `main.css`.
+- **`window.confirm()` / `window.alert()` / `window.prompt()` are blocked** in TaleSpire's embedded Chromium — they return `false`/`undefined` silently without showing any dialog. **Don't** use them for destructive confirmations or user prompts. **Do** use the custom `showConfirm(message, onConfirm)` DOM dialog pattern instead. Reference implementations: `showConfirm()` in `scripts/module-counters.js` and `scripts/module-activity.js`. The CSS for the dialog lives under the `/* ── Delete Confirm Overlay ── */` section in `css/modules.css`.
+- If I say something like "write a plan" or "create a plan", I intend these files to go into `_DOCS/plans/` with descriptive kebab-case filenames (e.g., `spell-category-collapse.md`).
+- If we create a phased plan document, I intend to execute each phase in a new context window to control token usage and context size. Mark completed phases clearly in the plan document.
 
 ## Terminology
 

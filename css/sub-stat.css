@@ -1,0 +1,347 @@
+
+/* ── Stat Module ── */
+.stat-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 6px;
+    padding: 6px;
+}
+
+.stat-block {
+    background-color: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    border-radius: 6px;
+    padding: 8px 6px 20px;
+    text-align: center;
+    position: relative;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.stat-block.stat-rollable {
+    cursor: pointer;
+}
+
+.stat-block.stat-rollable:hover {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 1px var(--cv-focus-ring);
+}
+
+.stat-name {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--cv-text-secondary);
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.stat-primary {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: inherit;
+}
+
+.stat-secondary {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 10px;
+    padding: 1px 6px;
+    color: var(--cv-text-secondary);
+    line-height: 1.3;
+}
+
+.stat-proficiency-dot {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--cv-accent);
+}
+
+.stat-rank-badge {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: var(--cv-accent);
+    line-height: 1;
+    user-select: none;
+}
+
+/* Stat layout mode */
+.stat-block-edit {
+    background-color: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    border-radius: 6px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: relative;
+}
+
+.stat-edit-name-row {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.stat-drag-handle {
+    color: var(--cv-text-muted);
+    cursor: grab;
+    font-size: 12px;
+    line-height: 1;
+    padding: 0 2px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    flex-shrink: 0;
+}
+
+.stat-block-edit:hover .stat-drag-handle {
+    opacity: 1;
+}
+
+.stat-drag-handle:active {
+    cursor: grabbing;
+}
+
+.stat-block-edit .stat-edit-name {
+    flex: 1;
+    min-width: 0;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: inherit;
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 3px;
+    padding: 2px 3px;
+    outline: none;
+    font-family: inherit;
+    text-align: center;
+}
+
+.stat-block-edit .stat-edit-name:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+.stat-edit-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.stat-edit-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+}
+
+.stat-edit-field label {
+    font-size: 7px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--cv-text-muted);
+}
+
+.stat-edit-primary-label {
+    color: var(--cv-accent) !important;
+    font-weight: 700 !important;
+}
+
+.stat-edit-field input[type="number"] {
+    width: 100%;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    text-align: center;
+    color: inherit;
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 3px;
+    padding: 1px;
+    outline: none;
+    -moz-appearance: textfield;
+}
+
+.stat-edit-field input[type="number"]::-webkit-inner-spin-button,
+.stat-edit-field input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.stat-edit-field input[type="number"]:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+.stat-edit-prof-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 2px;
+}
+
+.stat-edit-prof-label {
+    font-size: 7px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--cv-text-muted);
+    user-select: none;
+}
+
+.stat-edit-prof-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--cv-text-muted);
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.stat-edit-prof-dot:hover {
+    border-color: var(--cv-accent);
+}
+
+.stat-edit-prof-dot.active {
+    background-color: var(--cv-accent);
+    border-color: var(--cv-accent);
+}
+
+.stat-edit-delete {
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0;
+    transition: color 0.15s ease, opacity 0.15s ease;
+    opacity: 0;
+    flex-shrink: 0;
+}
+
+.stat-block-edit:hover .stat-edit-delete {
+    opacity: 1;
+}
+
+.stat-edit-delete:hover {
+    color: var(--cv-danger);
+}
+
+.stat-edit-delete .icon {
+    width: 12px;
+    height: 12px;
+}
+
+/* Stat block selected state */
+.stat-block-edit.stat-selected {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 1px var(--cv-accent);
+}
+
+.stat-block-edit:not(.stat-selected) {
+    cursor: pointer;
+}
+
+/* Add stat button */
+.stat-add-btn {
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: transparent;
+    border: 1px dashed var(--cv-border);
+    border-radius: 6px;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    transition: border-color 0.15s ease, color 0.15s ease;
+    padding: 0;
+}
+
+.stat-add-btn:hover {
+    border-color: var(--cv-accent);
+    color: var(--cv-accent);
+}
+
+.stat-add-btn .icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Quick-edit inline inputs */
+.stat-quick-input {
+    font-size: 24px;
+    font-weight: 700;
+    font-family: inherit;
+    text-align: center;
+    color: var(--cv-text);
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-accent);
+    border-radius: 3px;
+    outline: none;
+    width: 50px;
+    padding: 0 2px;
+    -moz-appearance: textfield;
+}
+
+.stat-quick-input::-webkit-inner-spin-button,
+.stat-quick-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.stat-quick-input.stat-quick-secondary {
+    font-size: 11px;
+    font-weight: 600;
+    width: 40px;
+    padding: 1px 4px;
+}
+
+/* SortableJS drag ghost for stats */
+.stat-ghost {
+    opacity: 0.3;
+    border: 2px dashed var(--cv-accent);
+    background-color: var(--cv-bg-sunken);
+    box-shadow: none;
+    border-radius: 6px;
+}

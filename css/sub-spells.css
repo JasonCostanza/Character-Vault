@@ -1,0 +1,463 @@
+
+/* ── Spells Module ── */
+
+/* Override default module-body scroll so inner containers can own scrolling */
+.module[data-type="spells"] .module-body {
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Container */
+.spells-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 4px;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
+}
+
+.spells-container::-webkit-scrollbar { width: 4px; }
+.spells-container::-webkit-scrollbar-track { background: transparent; }
+.spells-container::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
+
+/* Slot summary bar */
+.spells-slots-summary { display: flex; align-items: center; gap: 8px; padding: 4px 8px; flex-wrap: wrap; }
+.spells-slots-bar { display: flex; gap: 12px; flex: 1; flex-wrap: wrap; }
+.spells-slot-group { display: flex; align-items: center; gap: 3px; }
+.spells-slot-label { font-size: 11px; color: var(--cv-text-secondary); user-select: none; }
+
+/* Pip dots */
+.spell-pip {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--cv-accent);
+    border: 1px solid var(--cv-accent);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+
+.spell-pip.spent {
+    background-color: transparent;
+    border-color: var(--cv-text-muted);
+}
+
+.spell-pip:hover { opacity: 0.75; }
+
+/* Category blocks */
+.spells-category-block { border: 1px solid var(--cv-border-subtle); border-radius: 4px; overflow: hidden; }
+
+.spells-cat-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    background: var(--cv-bg-raised);
+    user-select: none;
+    cursor: pointer;
+}
+
+.spells-cat-name { font-weight: 600; font-size: 12px; color: var(--cv-text); flex: 1; }
+.spells-cat-pips { display: flex; gap: 2px; }
+.spells-category-ghost { opacity: 0.3; border: 1px dashed var(--cv-accent); }
+
+.spells-cat-collapse-btn {
+    background: none;
+    border: none;
+    color: var(--cv-text-secondary);
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s ease;
+}
+
+.spells-cat-collapse-btn:hover { color: var(--cv-accent); }
+.spells-cat-collapse-btn svg { transition: transform 0.2s ease; }
+.spells-cat-collapse-btn.expanded svg { transform: rotate(90deg); }
+
+.spells-cat-drag-handle {
+    cursor: grab;
+    color: var(--cv-text-secondary);
+    font-size: 12px;
+    user-select: none;
+    opacity: 0.6;
+    padding: 0 2px;
+    display: inline-block;
+}
+
+.spells-cat-drag-handle:hover { opacity: 1; }
+
+/* Table */
+.spells-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.spells-table thead { position: sticky; top: 0; z-index: 2; background: var(--cv-bg-surface); }
+.spells-col-header { font-size: 11px; font-weight: 500; color: var(--cv-text-secondary); padding: 3px 6px; cursor: pointer; user-select: none; white-space: nowrap; text-align: left; }
+.spells-col-header:hover { color: var(--cv-text); }
+.spells-col-header.active-sort { color: var(--cv-accent); }
+.spells-sort-indicator { font-size: 9px; margin-left: 2px; }
+
+/* Rows */
+.spells-row { border-bottom: 1px solid var(--cv-border-subtle); }
+.spells-row:hover { background: var(--cv-bg-raised); }
+.spells-row td { padding: 4px 6px; font-size: 12px; vertical-align: middle; }
+.spells-row-ghost { opacity: 0.3; border: 1px dashed var(--cv-accent); }
+.spells-row-handle { cursor: grab; color: var(--cv-text-muted); font-size: 14px; user-select: none; }
+.spells-name-display { cursor: default; }
+.spells-attr-display { cursor: default; color: var(--cv-text-secondary); }
+
+/* Chevron */
+.spells-chevron-btn { background: none; border: none; color: var(--cv-text-muted); cursor: pointer; padding: 2px; transition: transform 0.15s; }
+.spells-chevron-btn.expanded { transform: rotate(90deg); }
+
+/* Cast button */
+.spells-cast-btn { background: none; border: 1px solid var(--cv-accent); color: var(--cv-accent); border-radius: 3px; padding: 2px 6px; font-size: 10px; cursor: pointer; user-select: none; }
+.spells-cast-btn:hover { background: var(--cv-accent); color: var(--cv-bg-surface); }
+
+/* Drawer */
+.spells-drawer td { padding: 0; }
+.spells-drawer-content { padding: 6px 12px 8px 40px; border-bottom: 1px solid var(--cv-border-subtle); }
+.spells-desc-display { font-size: 12px; color: var(--cv-text-secondary); line-height: 1.4; white-space: pre-wrap; }
+
+.spells-desc-textarea {
+    width: 100%;
+    min-height: 48px;
+    resize: vertical;
+    font-size: 12px;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 3px;
+    padding: 4px 6px;
+    color: var(--cv-text);
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+/* Inline inputs */
+.spells-inline-input { background: transparent; border: none; border-bottom: 1px solid var(--cv-border); color: var(--cv-text); font-size: 12px; padding: 2px 4px; width: 100%; box-sizing: border-box; }
+.spells-inline-input:focus { outline: none; border-bottom-color: var(--cv-accent); }
+
+/* Layout mode add buttons */
+.spells-add-spell-btn,
+.spells-add-cat-btn {
+    background: none;
+    border: 1px dashed var(--cv-border);
+    color: var(--cv-text-muted);
+    border-radius: 3px;
+    padding: 4px 8px;
+    font-size: 11px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.spells-add-spell-btn:hover,
+.spells-add-cat-btn:hover { border-color: var(--cv-accent); color: var(--cv-accent); }
+
+/* Empty state */
+.spells-empty-state { color: var(--cv-text-muted); font-size: 12px; text-align: center; padding: 16px; user-select: none; }
+
+/* Settings panel width */
+.spells-settings-panel { width: 420px; }
+
+/* Behavior card */
+.spells-settings-card {
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 6px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.spells-settings-card-title {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-muted);
+    margin-bottom: 8px;
+    user-select: none;
+}
+
+.spells-settings-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0;
+}
+
+.spells-settings-toggle-row + .spells-settings-toggle-row {
+    border-top: 1px solid var(--cv-border-subtle);
+}
+
+.spells-settings-toggle-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+.spells-settings-toggle-name {
+    font-size: 12px;
+    color: var(--cv-text);
+    user-select: none;
+}
+
+.spells-settings-toggle-desc {
+    font-size: 10px;
+    color: var(--cv-text-muted);
+    user-select: none;
+}
+
+/* Tab bar */
+.spells-settings-tabbar {
+    display: flex;
+    background: var(--cv-bg-sunken);
+    border-radius: 6px;
+    padding: 3px;
+    gap: 2px;
+}
+
+.spells-settings-tab {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--cv-text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease, color 0.15s ease;
+    font-family: inherit;
+}
+
+.spells-settings-tab:hover { color: var(--cv-text-secondary); }
+
+.spells-settings-tab.active {
+    background: var(--cv-bg-raised);
+    color: var(--cv-text);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Tab panes */
+.spells-settings-pane {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.spells-settings-pane.active {
+    display: flex;
+}
+
+/* Unified add-row at bottom of each pane */
+.spells-settings-add-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--cv-border-subtle);
+}
+
+.spells-settings-add-btn {
+    background: none;
+    border: 1px solid var(--cv-accent);
+    color: var(--cv-accent);
+    border-radius: 4px;
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s ease, color 0.15s ease;
+    font-family: inherit;
+    line-height: 1;
+}
+
+.spells-settings-add-btn:hover {
+    background: var(--cv-accent);
+    color: var(--cv-bg-surface);
+}
+
+/* Layout mode slot bar inputs */
+.spells-slot-max-input {
+    width: 36px;
+    text-align: center;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 3px;
+    color: var(--cv-text);
+    font-size: 11px;
+    padding: 1px 3px;
+    box-sizing: border-box;
+    -moz-appearance: textfield;
+    font-family: inherit;
+}
+.spells-slot-max-input::-webkit-outer-spin-button,
+.spells-slot-max-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.spells-slot-max-input:focus { outline: none; border-color: var(--cv-accent); }
+
+/* Layout mode category header */
+.spells-cat-header--layout { cursor: default; }
+.spells-cat-name-input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid transparent;
+    color: var(--cv-text);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 1px 4px;
+    font-family: inherit;
+    user-select: text;
+}
+.spells-cat-name-input:hover { border-bottom-color: var(--cv-border); }
+.spells-cat-name-input:focus { outline: none; border-bottom-color: var(--cv-accent); }
+.spells-cat-slot-select {
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 3px;
+    color: var(--cv-text-secondary);
+    font-size: 10px;
+    padding: 1px 3px;
+    cursor: pointer;
+    max-width: 80px;
+    font-family: inherit;
+    flex-shrink: 0;
+}
+.spells-cat-slot-select:focus { outline: none; border-color: var(--cv-accent); }
+
+/* ── Spells Settings Modal ── */
+.spells-attr-list,
+.spells-slot-settings-list,
+.spells-cat-settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.spells-attr-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+}
+
+.spells-attr-row-name {
+    flex: 1;
+    font-size: 13px;
+    color: var(--cv-text);
+    user-select: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.spells-attr-row-type {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    user-select: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.spells-attr-pin-btn,
+.spells-attr-delete-btn,
+.spells-settings-delete-btn {
+    background: none;
+    border: none;
+    color: var(--cv-text-secondary);
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.spells-attr-pin-btn:hover {
+    color: var(--cv-accent);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.spells-attr-pin-btn.pinned { color: var(--cv-accent); }
+
+.spells-attr-delete-btn:hover,
+.spells-settings-delete-btn:hover {
+    color: var(--cv-danger);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.spells-attr-drag-handle {
+    cursor: grab;
+    color: var(--cv-text-secondary);
+    font-size: 12px;
+    user-select: none;
+    opacity: 0.5;
+    padding: 0 2px;
+    display: inline-block;
+}
+
+.spells-attr-drag-handle:hover { opacity: 1; }
+
+.spells-attr-ghost {
+    opacity: 0.3;
+    border: 1px dashed var(--cv-accent);
+    background: var(--cv-bg-sunken);
+    box-shadow: none;
+}
+
+.spells-add-attr-row,
+.spells-add-slot-row,
+.spells-add-cat-settings-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
+
+/* Settings lists within panes */
+.spells-settings-pane > .spells-attr-list,
+.spells-settings-pane > .spells-slot-settings-list,
+.spells-settings-pane > .spells-cat-settings-list {
+    margin-bottom: 0;
+}
+
+.spells-slot-settings-row,
+.spells-cat-settings-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.spells-slot-settings-label {
+    font-size: 12px;
+    color: var(--cv-text);
+    user-select: none;
+    min-width: 44px;
+}

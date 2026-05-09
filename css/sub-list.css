@@ -1,0 +1,913 @@
+
+/* ── List Module ── */
+
+.module[data-type="list"] .module-body {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px 0;
+}
+
+.list-empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 8px;
+    color: var(--cv-text-secondary);
+    font-size: 12px;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    font-style: italic;
+    user-select: none;
+}
+
+.list-item-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    min-height: 28px;
+    transition: background 0.15s ease;
+}
+
+.list-item-row:hover {
+    background: var(--cv-surface-hover, rgba(255, 255, 255, 0.04));
+}
+
+.list-item-drag-handle {
+    cursor: grab;
+    color: var(--cv-text-secondary);
+    font-size: 12px;
+    user-select: none;
+    flex: 0 0 14px;
+    width: 14px;
+    text-align: center;
+    opacity: 0.5;
+}
+
+.list-item-drag-handle:hover {
+    opacity: 1;
+}
+
+.list-item-ghost {
+    opacity: 0.3;
+    border: 2px dashed var(--cv-accent);
+    background-color: var(--cv-bg-sunken);
+    box-shadow: none;
+    border-radius: 4px;
+}
+
+.list-item-name {
+    flex: 1;
+    font-size: 13px;
+    color: var(--cv-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+}
+
+.list-item-name-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--cv-border);
+    color: var(--cv-text);
+    font-size: 13px;
+    font-family: inherit;
+    padding: 2px 4px;
+    outline: none;
+    min-width: 0;
+}
+
+.list-item-name-input:focus {
+    border-bottom-color: var(--cv-accent);
+}
+
+.list-item-name-input::placeholder {
+    color: var(--cv-text-secondary);
+    opacity: 0.5;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+}
+
+.text-light .list-item-name-input::placeholder {
+    color: var(--cv-text);
+    opacity: 0.4;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+}
+
+.list-item-expand-btn,
+.list-item-delete-btn {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--cv-text-secondary);
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.list-item-expand-btn:hover {
+    color: var(--cv-accent);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.list-item-delete-btn:hover {
+    color: var(--cv-danger);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* ── List Column Headers ── */
+.list-header-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    position: sticky;
+    top: 0;
+    background: var(--cv-bg-module);
+    border-bottom: 1px solid var(--cv-border);
+    z-index: 2;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.list-col-header {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.list-col-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.list-col-name:hover {
+    color: var(--cv-text);
+}
+
+
+.list-col-attr {
+    flex: 0 0 68px;
+    width: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.list-col-attr:hover {
+    color: var(--cv-text);
+}
+
+
+.list-header-row.cols-draggable .list-col-attr {
+    cursor: grab;
+}
+
+.list-col-ghost {
+    opacity: 0.3;
+    border: 2px dashed var(--cv-accent);
+    background-color: transparent;
+}
+
+.list-col-actions {
+    flex: 0 0 20px;
+    width: 20px;
+}
+
+.list-col-handle-spacer {
+    flex: 0 0 14px;
+    width: 14px;
+}
+
+/* Shared active-sort highlight — used by list, counter, and condition column headers */
+.active-sort {
+    color: var(--cv-accent);
+}
+
+.list-sort-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.list-sort-indicator .icon {
+    width: 10px;
+    height: 10px;
+}
+
+/* ── List Attribute Cells ── */
+.list-attr-cell {
+    flex: 0 0 68px;
+    width: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-width: 0;
+}
+
+/* For rows with attribute columns, pin the action button width */
+.list-item-row.has-columns .list-item-delete-btn,
+.list-item-row.has-columns .list-item-expand-btn {
+    flex: 0 0 20px;
+    width: 20px;
+    justify-content: center;
+}
+
+/* Toggle */
+.list-attr-toggle-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.list-attr-toggle-btn.is-on {
+    color: var(--cv-accent);
+    opacity: 1;
+}
+
+.list-attr-toggle-btn.is-off {
+    color: var(--cv-text);
+    opacity: 0.2;
+}
+
+.list-attr-toggle-btn:hover {
+    opacity: 0.75;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* Number */
+.list-attr-number-display,
+.list-attr-pair-display {
+    font-size: 12px;
+    color: var(--cv-text);
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    max-width: 100%;
+}
+
+.list-attr-quantity-display {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cv-accent);
+    cursor: pointer;
+    user-select: none;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(192, 135, 74, 0.05);
+    min-width: 24px;
+    text-align: center;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.list-attr-quantity-display:hover {
+    background: rgba(192, 135, 74, 0.15);
+}
+
+.list-attr-quantity-display:active {
+    transform: scale(0.95);
+}
+
+.list-attr-number-input {
+    width: 100%;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--cv-border);
+    color: var(--cv-text);
+    font-size: 12px;
+    font-family: inherit;
+    text-align: center;
+    padding: 1px 2px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.list-attr-number-input:focus {
+    border-bottom-color: var(--cv-accent);
+}
+
+.list-attr-number-input::-webkit-inner-spin-button,
+.list-attr-number-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Number-pair */
+.list-attr-cell.list-attr-number-pair {
+    gap: 2px;
+}
+
+.list-attr-pair-input {
+    width: 24px;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--cv-border);
+    color: var(--cv-text);
+    font-size: 11px;
+    font-family: inherit;
+    text-align: center;
+    padding: 1px 1px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.list-attr-pair-input:focus {
+    border-bottom-color: var(--cv-accent);
+}
+
+.list-attr-pair-input::-webkit-inner-spin-button,
+.list-attr-pair-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.list-attr-pair-sep {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    user-select: none;
+    flex-shrink: 0;
+}
+
+/* Text */
+.list-attr-text-display {
+    font-size: 12px;
+    color: var(--cv-text);
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    width: 100%;
+}
+
+.list-attr-text-input {
+    width: 100%;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--cv-border);
+    color: var(--cv-text);
+    font-size: 12px;
+    font-family: inherit;
+    text-align: left;
+    padding: 1px 2px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.list-attr-text-input:focus {
+    border-bottom-color: var(--cv-accent);
+}
+
+/* Dropdown */
+.list-attr-dropdown-display {
+    font-size: 12px;
+    color: var(--cv-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.list-attr-dropdown-select {
+    width: 100%;
+    min-width: 0;
+    padding: 1px 18px 1px 2px;
+    font-size: 11px;
+    font-family: inherit;
+    color: var(--cv-text);
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid var(--cv-border);
+    border-radius: 0;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.15s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%236A5A4A' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 2px center;
+    user-select: none;
+}
+
+.list-attr-dropdown-select:hover {
+    border-bottom-color: var(--cv-accent);
+}
+
+.list-attr-dropdown-select:focus {
+    border-bottom-color: var(--cv-accent);
+}
+
+.list-attr-dropdown-select option {
+    background-color: var(--cv-bg-raised);
+    color: var(--cv-text);
+}
+
+/* ── Cross-List Drag Transfer ── */
+.module.list-drop-target {
+    outline: 2px dashed var(--cv-accent);
+    outline-offset: -2px;
+    transition: outline-color 0.15s ease, background 0.15s ease;
+}
+
+.module.list-drop-target .module-body {
+    background: rgba(192, 135, 74, 0.06);
+}
+
+/* ── List Manage Attributes Panel ── */
+.list-manage-modal {
+    width: 360px;
+}
+
+.list-manage-body {
+    gap: 12px;
+}
+
+.list-manage-no-attrs {
+    font-size: 12px;
+    font-style: italic;
+    color: var(--cv-text-secondary);
+    user-select: none;
+    padding: 4px 0;
+}
+
+.list-manage-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.list-manage-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--cv-text-muted);
+    user-select: none;
+}
+
+.list-attr-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 2px;
+    border-bottom: 1px solid var(--cv-border-subtle);
+}
+
+.list-attr-row:last-child {
+    border-bottom: none;
+}
+
+.list-attr-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cv-text-muted);
+}
+
+.list-attr-icon .icon {
+    width: 14px;
+    height: 14px;
+}
+
+.list-attr-name {
+    flex: 1;
+    font-size: 12px;
+    color: var(--cv-text);
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.list-attr-type-badge {
+    flex-shrink: 0;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--cv-text-muted);
+    background: var(--cv-bg-sunken);
+    padding: 2px 5px;
+    border-radius: 3px;
+    user-select: none;
+}
+
+.list-attr-pin-btn,
+.list-attr-delete-btn {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0;
+    color: var(--cv-text-muted);
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.list-attr-pin-btn:hover {
+    color: var(--cv-accent);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.list-attr-pin-btn.pinned {
+    color: var(--cv-accent);
+}
+
+.list-attr-delete-btn:hover {
+    color: var(--cv-danger);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.list-attr-pin-btn .icon,
+.list-attr-delete-btn .icon {
+    width: 14px;
+    height: 14px;
+}
+
+.list-preset-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.list-attr-preset-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-family: inherit;
+    font-weight: 500;
+    color: var(--cv-text-secondary);
+    background: transparent;
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.list-attr-preset-btn:hover {
+    color: var(--cv-accent);
+    border-color: var(--cv-accent-secondary);
+    background: rgba(192, 135, 74, 0.08);
+}
+
+.list-attr-preset-btn .icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.list-custom-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-family: inherit;
+    font-weight: 500;
+    color: var(--cv-text-secondary);
+    background: transparent;
+    border: 1px dashed var(--cv-border);
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.list-custom-btn:hover {
+    color: var(--cv-accent);
+    border-color: var(--cv-accent-secondary);
+    background: rgba(192, 135, 74, 0.08);
+}
+
+.list-custom-btn .icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+/* ── List Inspect Overlay ── */
+
+.list-inspect-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(10, 10, 14, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.list-inspect-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.list-inspect-panel {
+    background: var(--cv-bg-surface);
+    border: 1px solid var(--cv-border);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    width: 90%;
+    max-width: 480px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.list-inspect-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--cv-border-subtle);
+    background: var(--cv-bg-raised);
+    flex-shrink: 0;
+}
+
+.list-inspect-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text);
+}
+
+.list-inspect-close-x {
+    background: none;
+    border: none;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.list-inspect-close-x:hover {
+    color: var(--cv-text);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.list-inspect-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.list-inspect-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.list-inspect-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--cv-text-secondary);
+}
+
+.list-inspect-name-input {
+    width: 100%;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    color: var(--cv-text);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 12px;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.list-inspect-name-input:focus,
+.list-inspect-notes-input:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+.list-inspect-notes-input {
+    width: 100%;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    color: var(--cv-text);
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 8px 12px;
+    min-height: 80px;
+    resize: none;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.list-inspect-attr-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--cv-border-subtle);
+}
+
+.list-inspect-attr-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.list-inspect-attr-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--cv-text-secondary);
+}
+
+.list-inspect-attr-label .icon {
+    width: 12px;
+    height: 12px;
+    opacity: 0.7;
+}
+
+/* Reusing basic attr inputs from grid, but restyling for overlay */
+.list-inspect-attr-item .list-attr-cell {
+    width: 100%;
+}
+
+.list-inspect-attr-item .list-attr-text-input,
+.list-inspect-attr-item .list-attr-number-input,
+.list-inspect-attr-item .list-attr-dropdown-select {
+    width: 100%;
+    padding: 8px;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    color: var(--cv-text);
+    font-size: 13px;
+    outline: none;
+}
+
+.list-inspect-attr-item .list-attr-pair-input {
+    width: 0;
+    flex: 1;
+    padding: 8px;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--cv-text);
+}
+
+.list-inspect-attr-item .list-attr-toggle-btn {
+    width: 100%;
+    height: 34px;
+    border-radius: 4px;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+}
+
+.list-inspect-attr-item .list-attr-toggle-btn.is-on {
+    background: rgba(192, 135, 74, 0.15);
+    border-color: var(--cv-accent-secondary);
+    color: var(--cv-accent);
+}
+
+.list-inspect-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 16px;
+    border-top: 1px solid var(--cv-border-subtle);
+    background: var(--cv-bg-surface);
+    flex-shrink: 0;
+}
+
+.list-inspect-btn-delete {
+    margin-right: auto;
+    background: transparent;
+    border: 1px solid var(--cv-danger);
+    color: var(--cv-danger);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.list-inspect-btn-delete:hover {
+    background: rgba(184, 64, 64, 0.1);
+}
+
+.list-inspect-btn-close {
+    background: transparent;
+    border: 1px solid var(--cv-border);
+    color: var(--cv-text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.list-inspect-btn-close:hover {
+    color: var(--cv-text);
+    border-color: var(--cv-text-muted);
+    background: var(--cv-bg-raised);
+}
+
+.list-inspect-btn-save {
+    background: var(--cv-accent);
+    border: 1px solid var(--cv-accent);
+    color: var(--cv-bg-sunken);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.list-inspect-btn-save:hover {
+    background: var(--cv-accent-hover);
+}

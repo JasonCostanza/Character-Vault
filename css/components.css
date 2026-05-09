@@ -1,0 +1,872 @@
+
+/* ── Toggle Switch ── */
+.cv-toggle {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.cv-toggle input[type="checkbox"] {
+    appearance: none;
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.cv-toggle-track {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 12px;
+    transition: background-color 200ms ease, border-color 200ms ease;
+}
+
+.cv-toggle-track::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    background: var(--cv-text-muted);
+    border-radius: 50%;
+    transition: transform 200ms ease;
+}
+
+.cv-toggle input[type="checkbox"]:checked + .cv-toggle-track {
+    background: var(--cv-accent);
+    border-color: var(--cv-accent);
+}
+
+.cv-toggle input[type="checkbox"]:checked + .cv-toggle-track::before {
+    background: var(--cv-bg);
+    transform: translateX(20px);
+}
+
+.cv-toggle input[type="checkbox"]:disabled + .cv-toggle-track {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.cv-toggle-label {
+    color: var(--cv-text-secondary);
+    margin-left: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.cv-toggle input[type="checkbox"]:disabled ~ .cv-toggle-label {
+    opacity: 0.4;
+}
+
+/* ── Icon System (inline SVG) ── */
+.icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+/* ── Reset ── */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--cv-bg);
+    color: var(--cv-text);
+    font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+}
+
+/* Allow text selection on interactive and content elements */
+input,
+textarea,
+select,
+[contenteditable],
+.module-text-display,
+.save-notes-display {
+    user-select: text;
+}
+
+/* ── Consolidated Button & UI Base Classes ── */
+
+/* Close Button (20x20 transparent icon button) */
+.close-btn {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0;
+    transition: color 0.15s ease;
+}
+
+.close-btn:hover {
+    color: var(--cv-text);
+}
+
+.close-btn .icon {
+    width: 12px;
+    height: 12px;
+}
+
+.close-btn.lg {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+}
+
+/* Icon Button (flexible sizing with modifiers) */
+.icon-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--cv-text-muted);
+    transition: color 0.15s ease, background 0.15s ease;
+    border-radius: 3px;
+}
+
+.icon-btn.sm {
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+}
+
+.icon-btn.md {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.icon-btn.danger:hover {
+    color: var(--cv-danger);
+}
+
+.icon-btn.soft:hover {
+    color: var(--cv-text-secondary);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* Base Button */
+.btn {
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Secondary Button (neutral, muted) */
+.btn-secondary {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--cv-border);
+    background: transparent;
+    color: var(--cv-text-muted);
+}
+
+.btn-secondary:hover {
+    color: var(--cv-text-secondary);
+    background-color: var(--cv-bg-raised);
+}
+
+.btn-secondary.sm {
+    padding: 5px 8px;
+    font-size: 11px;
+    border-radius: 3px;
+}
+
+.btn-secondary.filled {
+    background: var(--cv-bg-raised);
+    border-color: var(--cv-text-muted);
+}
+
+.btn-secondary.filled:hover {
+    background: var(--cv-bg-sunken);
+}
+
+/* Primary Button (accent, highlighted) */
+.btn-primary {
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--cv-accent-secondary);
+    background: rgba(192, 135, 74, 0.1);
+    color: var(--cv-accent);
+}
+
+.btn-primary:hover {
+    background: rgba(192, 135, 74, 0.2);
+    border-color: var(--cv-accent);
+}
+
+.btn-primary.sm {
+    padding: 5px 8px;
+    font-size: 11px;
+    border-radius: 3px;
+}
+
+.btn-primary.wide {
+    padding: 10px 20px;
+}
+
+.btn-primary.solid {
+    background: var(--cv-accent);
+    color: var(--cv-bg-sunken);
+    border: none;
+}
+
+.btn-primary.solid:hover {
+    background: var(--cv-accent-hover);
+}
+
+/* Danger Button (red, destructive) */
+.btn-danger {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--cv-danger);
+    background: rgba(184, 64, 64, 0.1);
+    color: var(--cv-danger);
+}
+
+.btn-danger.sm {
+    padding: 5px 8px;
+    font-size: 11px;
+    border-radius: 3px;
+}
+
+.btn-danger:hover {
+    background: rgba(184, 64, 64, 0.25);
+}
+
+/* Success Button (green) */
+.btn-success {
+    color: var(--cv-success);
+    border: 1px solid var(--cv-success);
+    background: rgba(90, 158, 110, 0.1);
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.btn-success:hover {
+    background: rgba(90, 158, 110, 0.2);
+}
+
+/* Consolidated Title/Heading Styles */
+.heading-fancy {
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cv-accent);
+    user-select: none;
+}
+
+/* ── Top Menu Bar ── */
+#menu-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--cv-bg-sunken);
+    border-bottom: 1px solid var(--cv-border);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+    padding: 3px 6px;
+    flex-shrink: 0;
+    z-index: 100;
+}
+
+#menu-left,
+#menu-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ── Menu Buttons ── */
+.menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--cv-border-subtle);
+    color: var(--cv-text-muted);
+    font-family: inherit;
+    padding: 0;
+    border-radius: 3px;
+    cursor: pointer;
+    line-height: 1;
+    transition: background-color 0.15s ease,
+                border-color 0.15s ease,
+                color 0.15s ease;
+}
+
+/* Icon-only buttons (settings, close) */
+.menu-btn:not(:has(.mode-label)) {
+    padding: 1px;
+}
+
+/* Buttons with text labels (mode toggle) */
+.menu-btn:has(.mode-label) {
+    padding: 1px 6px 1px 1px;
+}
+
+.menu-btn:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: var(--cv-border);
+    color: var(--cv-text-secondary);
+}
+
+/* ── Mode Switcher (Segmented Control) ── */
+#mode-switcher {
+    display: flex;
+    gap: 4px;
+}
+
+#mode-switcher .mode-seg-btn {
+    border-radius: 4px;
+    color: var(--cv-text-muted);
+    background: transparent;
+    border-color: var(--cv-border-subtle);
+}
+
+#mode-switcher .mode-seg-btn.active {
+    color: var(--cv-accent);
+    border-color: var(--cv-accent-secondary);
+    background: rgba(192, 135, 74, 0.12);
+}
+
+#mode-switcher .mode-seg-btn:hover:not(.active) {
+    color: var(--cv-text-secondary);
+    border-color: var(--cv-border);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+#mode-switcher .mode-seg-btn.active:hover {
+    border-color: var(--cv-accent);
+    background: rgba(192, 135, 74, 0.2);
+    color: var(--cv-accent-hover);
+}
+
+.mode-label {
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    font-weight: 600;
+    line-height: 1;
+}
+
+/* ── Main Content Area ── */
+#content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* ── Settings Overlay ── */
+.settings-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background-color: var(--cv-bg);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.settings-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.settings-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 40%,
+        var(--cv-bg-sunken) 100%
+    );
+    pointer-events: none;
+}
+
+.settings-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ── Settings Header ── */
+.settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--cv-border);
+}
+
+
+/* ── Settings Body ── */
+.settings-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 0;
+}
+
+.settings-section {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--cv-border-subtle);
+}
+
+.settings-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.settings-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cv-text-secondary);
+    margin-bottom: 10px;
+}
+
+/* ── Theme Toggle ── */
+.settings-toggle-group {
+    display: flex;
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.settings-theme-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.settings-theme-grid .settings-toggle-btn:nth-child(n+4) {
+    border-top: 1px solid var(--cv-border);
+}
+
+.settings-theme-grid .settings-toggle-btn:nth-child(3n+1),
+.settings-theme-grid .settings-toggle-btn:nth-child(3n+2) {
+    border-right: 1px solid var(--cv-border);
+}
+
+.settings-toggle-btn {
+    flex: 1;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    background-color: var(--cv-bg-sunken);
+    color: var(--cv-text-muted);
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.settings-toggle-btn:hover {
+    color: var(--cv-text-secondary);
+    background-color: var(--cv-bg-surface);
+}
+
+.settings-toggle-btn.active {
+    background-color: var(--cv-accent);
+    color: var(--cv-bg);
+    font-weight: 600;
+}
+
+/* ── Save / Load Buttons ── */
+.settings-btn-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+
+.settings-action-btn--warning {
+    border-color: var(--cv-warning);
+    background: rgba(160, 114, 42, 0.1);
+    color: var(--cv-warning);
+}
+
+.settings-action-btn--warning:hover {
+    background: rgba(160, 114, 42, 0.25);
+    border-color: var(--cv-warning);
+    color: var(--cv-warning);
+}
+
+.settings-dimensions {
+    margin-top: 12px;
+    text-align: left;
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    font-family: monospace;
+    letter-spacing: 0.05em;
+}
+
+/* ── Checkbox Rows (Settings) ── */
+.settings-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--cv-text-secondary);
+}
+
+.settings-tooltip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid var(--cv-border);
+    font-size: 10px;
+    color: var(--cv-text-muted);
+    cursor: help;
+    flex-shrink: 0;
+    position: relative;
+    transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.settings-tooltip:hover {
+    border-color: var(--cv-accent-secondary);
+    color: var(--cv-text-secondary);
+}
+
+.settings-tooltip::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--cv-bg-raised);
+    color: var(--cv-text);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+    line-height: 1.3;
+    white-space: normal;
+    width: max-content;
+    max-width: 200px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 1000;
+}
+
+.settings-tooltip:hover::after {
+    opacity: 1;
+}
+
+/* ── Links ── */
+.settings-links {
+    display: flex;
+    justify-content: center;
+    border-bottom: none;
+}
+
+.settings-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--cv-text-muted);
+    background: none;
+    border: 1px solid var(--cv-border-subtle);
+    text-decoration: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.15s ease,
+                border-color 0.15s ease,
+                background-color 0.15s ease;
+}
+
+.settings-link:hover {
+    color: var(--cv-accent);
+    border-color: var(--cv-accent-secondary);
+    background-color: rgba(192, 135, 74, 0.1);
+}
+
+.settings-link.copied {
+    color: var(--cv-success);
+    border-color: var(--cv-success);
+    background-color: rgba(76, 175, 80, 0.1);
+    pointer-events: none;
+}
+
+/* ── Settings Select ── */
+.settings-select {
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 4px;
+    color: var(--cv-text);
+    font-family: inherit;
+    font-size: 11px;
+    padding: 4px 8px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.settings-select:focus {
+    outline: none;
+    border-color: var(--cv-accent);
+}
+
+/* ── Settings Footer ── */
+.settings-footer {
+    padding: 12px 0;
+    text-align: center;
+    border-top: 1px solid var(--cv-border-subtle);
+}
+
+.settings-version {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    letter-spacing: 0.05em;
+}
+
+/* ── Custom Select (cv-select) ──────────────────────────────────── */
+.cv-select {
+    position: relative;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.cv-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--cv-text);
+    background-color: var(--cv-bg-surface);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    text-align: left;
+}
+
+.cv-select-trigger:hover {
+    border-color: var(--cv-accent);
+}
+
+.cv-select-trigger:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+.cv-select-chevron {
+    flex-shrink: 0;
+    color: var(--cv-text-muted);
+    transition: transform 0.2s ease;
+}
+
+.cv-select.open .cv-select-chevron {
+    transform: rotate(180deg);
+}
+
+.cv-select-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 4px 0;
+    list-style: none;
+    background-color: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    z-index: 210;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.cv-select.open .cv-select-menu {
+    display: block;
+}
+
+.cv-select-option {
+    padding: 7px 12px;
+    font-size: 13px;
+    color: var(--cv-text);
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+}
+
+.cv-select-option:hover {
+    background-color: var(--cv-bg-surface);
+}
+
+.cv-select-option.selected {
+    color: var(--cv-accent);
+}
+
+/* Scrollbar styling for the dropdown menu */
+.cv-select-menu::-webkit-scrollbar {
+    width: 4px;
+}
+.cv-select-menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+.cv-select-menu::-webkit-scrollbar-thumb {
+    background-color: var(--cv-text-muted);
+    border-radius: 2px;
+}
+
+.wizard-layout-row {
+    display: flex;
+    gap: 8px;
+}
+
+.wizard-layout-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 8px;
+    background-color: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+    font-family: inherit;
+    color: var(--cv-text);
+}
+
+.wizard-layout-btn:hover {
+    border-color: var(--cv-accent-secondary);
+    background-color: var(--cv-bg-surface);
+}
+
+.wizard-layout-btn.selected {
+    border-color: var(--cv-accent);
+    background: rgba(192, 135, 74, 0.1);
+}
+
+.wizard-layout-preview {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.wizard-layout-preview-sub {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--cv-text-secondary);
+}
+
+.wizard-layout-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--cv-text-secondary);
+}
+
+.wizard-layout-btn.selected .wizard-layout-label {
+    color: var(--cv-accent);
+}
+
+/* ── Toast Notifications ── */
+#toast-container {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 8px;
+    z-index: 400;
+    pointer-events: none;
+}
+
+.toast {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: inherit;
+    font-weight: 500;
+    white-space: nowrap;
+    user-select: none;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.toast-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-success {
+    background-color: var(--cv-bg-raised);
+    border: 1px solid var(--cv-success);
+    color: var(--cv-success);
+}
+
+.toast-error {
+    background-color: var(--cv-bg-raised);
+    border: 1px solid var(--cv-danger);
+    color: var(--cv-danger);
+}
+
+
+.toast-warning {
+    background-color: var(--cv-bg-raised);
+    border: 1px solid var(--cv-warning);
+    color: var(--cv-warning);
+}

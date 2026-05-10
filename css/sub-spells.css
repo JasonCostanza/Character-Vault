@@ -178,7 +178,6 @@
     padding: 10px 12px;
     display: flex;
     flex-direction: column;
-    gap: 0;
 }
 
 .spells-settings-card-title {
@@ -441,16 +440,6 @@
     border: 1px dashed var(--cv-accent);
     background: var(--cv-bg-sunken);
     box-shadow: none;
-}
-
-.spells-add-attr-row,
-.spells-add-slot-row,
-.spells-add-cat-settings-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 4px;
 }
 
 /* Settings lists within panes */

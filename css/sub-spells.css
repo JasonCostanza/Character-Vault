@@ -269,7 +269,7 @@
 .spells-settings-add-row {
     display: flex;
     gap: 8px;
-    align-items: center;
+    align-items: flex-end;
     flex-wrap: wrap;
     margin-top: 8px;
     padding-top: 8px;
@@ -285,6 +285,19 @@
 .spells-settings-add-row .cv-select-trigger {
     padding: 5px 10px;
     font-size: 12px;
+}
+
+.spells-add-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.spells-add-label {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    user-select: none;
+    line-height: 1;
 }
 
 .spells-settings-add-btn {

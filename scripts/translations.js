@@ -924,6 +924,7 @@
             'spells.tabColumns': 'Columns',
             'spells.tabSlots': 'Slots',
             'spells.tabCategories': 'Categories',
+            'spells.slotLevelColLabel': 'Level',
             'spells.slotLevelPlaceholder': 'Lvl',
 
             // Activity Log submodule
@@ -1661,6 +1662,7 @@
             'spells.tabColumns': 'Columnas',
             'spells.tabSlots': 'Espacios',
             'spells.tabCategories': 'Categorías',
+            'spells.slotLevelColLabel': 'Nivel',
             'spells.slotLevelPlaceholder': 'Niv',
 
             // Counters submodule
@@ -3281,6 +3283,7 @@
             'spells.tabColumns': 'Colonnes',
             'spells.tabSlots': 'Emplacements',
             'spells.tabCategories': 'Catégories',
+            'spells.slotLevelColLabel': 'Niveau',
             'spells.slotLevelPlaceholder': 'Niv',
 
             // Counters submodule
@@ -4071,6 +4074,7 @@
             'spells.tabColumns': 'Spalten',
             'spells.tabSlots': 'Plätze',
             'spells.tabCategories': 'Kategorien',
+            'spells.slotLevelColLabel': 'Stufe',
             'spells.slotLevelPlaceholder': 'Stf',
             'counter.event.change': 'Zähleränderung',
             'counter.event.reset': 'Zähler zurückgesetzt',
@@ -4694,6 +4698,7 @@
             'spells.tabColumns': 'Colonne',
             'spells.tabSlots': 'Slot',
             'spells.tabCategories': 'Categorie',
+            'spells.slotLevelColLabel': 'Livello',
             'spells.slotLevelPlaceholder': 'Liv',
             'counter.event.change': 'Cambio Contatore',
             'counter.event.reset': 'Ripristino Contatore',
@@ -5304,6 +5309,7 @@
             'spells.tabColumns': 'Colunas',
             'spells.tabSlots': 'Espaços',
             'spells.tabCategories': 'Categorias',
+            'spells.slotLevelColLabel': 'Nível',
             'spells.slotLevelPlaceholder': 'Nív',
             'counter.event.change': 'Mudança de Contador',
             'counter.event.reset': 'Redefinição de Contador',
@@ -5914,6 +5920,7 @@
             'spells.tabColumns': 'Столбцы',
             'spells.tabSlots': 'Ячейки',
             'spells.tabCategories': 'Категории',
+            'spells.slotLevelColLabel': 'Уровень',
             'spells.slotLevelPlaceholder': 'Ур.',
             'counter.event.change': 'Изменение Счётчика',
             'counter.event.reset': 'Сброс Счётчика',

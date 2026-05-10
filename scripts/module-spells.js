@@ -1219,6 +1219,10 @@
         newSlotLevelInput.min = '1';
         newSlotLevelInput.max = '20';
         newSlotLevelInput.placeholder = t('spells.slotLevelPlaceholder');
+        newSlotLevelInput.addEventListener('keydown', (e) => {
+            if (['e', 'E', '+', '-', '.'].includes(e.key)) e.preventDefault();
+            if (e.key === 'Enter') addSlotBtn.click();
+        });
 
         const newSlotMaxInput = document.createElement('input');
         newSlotMaxInput.type = 'number';
@@ -1229,6 +1233,10 @@
         newSlotMaxInput.max = '20';
         newSlotMaxInput.value = '4';
         newSlotMaxInput.placeholder = t('spells.slotMax');
+        newSlotMaxInput.addEventListener('keydown', (e) => {
+            if (['e', 'E', '+', '-', '.'].includes(e.key)) e.preventDefault();
+            if (e.key === 'Enter') addSlotBtn.click();
+        });
 
         const addSlotBtn = document.createElement('button');
         addSlotBtn.className = 'spells-settings-add-btn';
@@ -1250,8 +1258,26 @@
             reRender();
         });
 
-        addSlotRow.appendChild(newSlotLevelInput);
-        addSlotRow.appendChild(newSlotMaxInput);
+        const levelCol = document.createElement('div');
+        levelCol.className = 'spells-add-col';
+        const levelColLabel = document.createElement('span');
+        levelColLabel.className = 'spells-add-label';
+        levelColLabel.dataset.i18n = 'spells.slotLevelColLabel';
+        levelColLabel.textContent = t('spells.slotLevelColLabel');
+        levelCol.appendChild(levelColLabel);
+        levelCol.appendChild(newSlotLevelInput);
+
+        const maxCol = document.createElement('div');
+        maxCol.className = 'spells-add-col';
+        const maxColLabel = document.createElement('span');
+        maxColLabel.className = 'spells-add-label';
+        maxColLabel.dataset.i18n = 'spells.slotMax';
+        maxColLabel.textContent = t('spells.slotMax');
+        maxCol.appendChild(maxColLabel);
+        maxCol.appendChild(newSlotMaxInput);
+
+        addSlotRow.appendChild(levelCol);
+        addSlotRow.appendChild(maxCol);
         addSlotRow.appendChild(addSlotBtn);
         slotsPane.appendChild(addSlotRow);
 

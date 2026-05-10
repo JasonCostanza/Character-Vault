@@ -905,6 +905,7 @@
         const bodyEl = moduleEl.querySelector('.module-body');
         function reRender() {
             if (!bodyEl) return;
+            bodyEl.innerHTML = '';
             if (window.isPlayMode) renderSpellsPlay(bodyEl, data);
             else renderSpellsLayout(bodyEl, data);
         }

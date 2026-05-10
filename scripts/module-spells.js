@@ -1232,7 +1232,7 @@
         newSlotMaxInput.min = '0';
         newSlotMaxInput.max = '20';
         newSlotMaxInput.value = '4';
-        newSlotMaxInput.placeholder = t('spells.slotMax');
+        newSlotMaxInput.placeholder = t('spells.slotMaxPlaceholder');
         newSlotMaxInput.addEventListener('keydown', (e) => {
             if (['e', 'E', '+', '-', '.'].includes(e.key)) e.preventDefault();
             if (e.key === 'Enter') addSlotBtn.click();

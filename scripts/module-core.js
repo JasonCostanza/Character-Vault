@@ -325,7 +325,7 @@
 
         if (moduleData.type === 'spells') {
             moduleData.colSpan = 4;
-            moduleData.rowSpan = 3;
+            moduleData.rowSpan = 4;
             moduleData.content = { autoSpendSlots: true, showSlotErrors: true, slotLevels: [], categories: [] };
         }
 

@@ -26,8 +26,8 @@
 .spells-container::-webkit-scrollbar-track { background: transparent; }
 .spells-container::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
-/* Slot summary bar */
-.spells-slots-summary { display: flex; align-items: center; gap: 8px; padding: 4px 8px; flex-wrap: wrap; }
+/* Slot summary bar — lives as a flex-shrink: 0 sibling above .spells-container in .module-body */
+.spells-slots-summary { display: flex; align-items: center; gap: 8px; padding: 4px 8px; flex-wrap: wrap; flex-shrink: 0; }
 .spells-slots-bar { display: flex; gap: 12px; flex: 1; flex-wrap: wrap; }
 .spells-slot-group { display: flex; align-items: center; gap: 3px; }
 .spells-slot-label { font-size: 11px; color: var(--cv-text-secondary); user-select: none; }
@@ -52,7 +52,7 @@
 .spell-pip:hover { opacity: 0.75; }
 
 /* Category blocks */
-.spells-category-block { border: 1px solid var(--cv-border-subtle); border-radius: 4px; overflow: hidden; }
+.spells-category-block { border: 1px solid var(--cv-border-subtle); border-radius: 4px; overflow: hidden; flex-shrink: 0; }
 
 .spells-cat-header {
     display: flex;
@@ -148,6 +148,7 @@
 /* Layout mode add buttons */
 .spells-add-spell-btn,
 .spells-add-cat-btn {
+    flex-shrink: 0;
     background: none;
     border: 1px dashed var(--cv-border);
     color: var(--cv-text-muted);

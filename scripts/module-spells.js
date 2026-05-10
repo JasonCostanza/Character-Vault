@@ -153,9 +153,9 @@
 
     // ── Play Mode (Table Layout) ──
     function renderSpellsPlay(bodyEl, data) {
+        renderSlotSummaryBar(bodyEl, data, bodyEl);
         const container = document.createElement('div');
         container.className = 'spells-container';
-        renderSlotSummaryBar(container, data, bodyEl);
         if (data.content.categories.length === 0) {
             const empty = document.createElement('div');
             empty.className = 'spells-empty-state';
@@ -440,9 +440,9 @@
     }
 
     function renderSpellsLayout(bodyEl, data) {
+        renderSlotSummaryBarLayout(bodyEl, data, bodyEl);
         const container = document.createElement('div');
         container.className = 'spells-container';
-        renderSlotSummaryBarLayout(container, data, bodyEl);
         if (data.content.categories.length === 0) {
             const empty = document.createElement('div');
             empty.className = 'spells-empty-state';

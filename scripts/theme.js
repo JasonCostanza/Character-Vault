@@ -12,6 +12,18 @@
 
     loadTheme();
 
+    function applyUiScale(scale) {
+        document.body.style.zoom = scale;
+    }
+
+    function loadUiScale() {
+        const saved = localStorage.getItem('cv-ui-scale') ?? '1';
+        applyUiScale(saved);
+    }
+
+    loadUiScale();
+
     window.setTheme = setTheme;
     window.loadTheme = loadTheme;
+    window.applyUiScale = applyUiScale;
 })();

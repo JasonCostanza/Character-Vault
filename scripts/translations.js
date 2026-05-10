@@ -37,6 +37,8 @@
             'settings.githubCopied': 'Copied!',
             'settings.gameSystem': 'Game System',
             'settings.gameSystemCustom': 'Custom / Other',
+            'settings.uiScale': 'UI Scale',
+            'settings.uiScaleTip': 'Adjust the size of all UI elements. Useful for high-DPI or 4K displays.',
 
             // Toast Notifications
             'toast.saveSuccess': 'Character saved',
@@ -1264,6 +1266,8 @@
             'settings.githubCopied': '¡Copiado!',
             'settings.gameSystem': 'Sistema de Juego',
             'settings.gameSystemCustom': 'Personalizado / Otro',
+            'settings.uiScale': 'Escala de Interfaz',
+            'settings.uiScaleTip': 'Ajusta el tamaño de todos los elementos de la interfaz. Útil para pantallas de alta resolución o 4K.',
 
             'toast.saveSuccess': 'Personaje guardado',
             'toast.saveFail': 'Error al guardar',
@@ -2462,6 +2466,8 @@
             'settings.githubCopied': 'Copié !',
             'settings.gameSystem': 'Système de Jeu',
             'settings.gameSystemCustom': 'Personnalisé / Autre',
+            'settings.uiScale': "Échelle de l'interface",
+            'settings.uiScaleTip': "Ajuste la taille de tous les éléments de l'interface. Utile pour les écrans haute résolution ou 4K.",
 
             'toast.saveSuccess': 'Personnage sauvegardé',
             'toast.saveFail': 'Échec de la sauvegarde',
@@ -3682,6 +3688,8 @@
             'settings.githubCopied': 'Kopiert!',
             'settings.gameSystem': 'Spielsystem',
             'settings.gameSystemCustom': 'Benutzerdefiniert / Andere',
+            'settings.uiScale': 'Skalierung der Oberfläche',
+            'settings.uiScaleTip': 'Passt die Größe aller Oberflächenelemente an. Nützlich für hochauflösende oder 4K-Bildschirme.',
 
             'toast.saveSuccess': 'Charakter gespeichert',
             'toast.saveFail': 'Speichern fehlgeschlagen',
@@ -4361,6 +4369,8 @@
             'settings.githubCopied': 'Copiato!',
             'settings.gameSystem': 'Sistema di Gioco',
             'settings.gameSystemCustom': 'Personalizzato / Altro',
+            'settings.uiScale': "Scala dell'interfaccia",
+            'settings.uiScaleTip': "Regola la dimensione di tutti gli elementi dell'interfaccia. Utile per display ad alta risoluzione o 4K.",
 
             'toast.saveSuccess': 'Personaggio salvato',
             'toast.saveFail': 'Salvataggio fallito',
@@ -4984,6 +4994,8 @@
             'settings.githubCopied': 'Copiado!',
             'settings.gameSystem': 'Sistema de Jogo',
             'settings.gameSystemCustom': 'Personalizado / Outro',
+            'settings.uiScale': 'Escala da Interface',
+            'settings.uiScaleTip': 'Ajusta o tamanho de todos os elementos da interface. Útil para telas de alta resolução ou 4K.',
 
             'toast.saveSuccess': 'Personagem salvo',
             'toast.saveFail': 'Falha ao salvar',
@@ -5596,6 +5608,8 @@
             'settings.githubCopied': 'Скопировано!',
             'settings.gameSystem': 'Игровая Система',
             'settings.gameSystemCustom': 'Другое / Пользовательское',
+            'settings.uiScale': 'Масштаб интерфейса',
+            'settings.uiScaleTip': 'Настройка размера всех элементов интерфейса. Полезно для экранов с высоким разрешением или 4K.',
 
             'toast.saveSuccess': 'Персонаж сохранён',
             'toast.saveFail': 'Ошибка сохранения',

@@ -62,6 +62,23 @@
 
     updateThemeButtons(localStorage.getItem('cv-theme') ?? 'dark');
 
+    // ── UI Scale ──
+    const uiScaleOptions = [
+        { value: '0.9',  label: '90%' },
+        { value: '1',    label: '100%' },
+        { value: '1.1',  label: '110%' },
+        { value: '1.25', label: '125%' },
+    ];
+    const uiScaleWidget = buildCvSelect(
+        uiScaleOptions,
+        localStorage.getItem('cv-ui-scale') ?? '1',
+        function (val) {
+            localStorage.setItem('cv-ui-scale', val);
+            applyUiScale(val);
+        }
+    );
+    document.getElementById('setting-ui-scale-container').appendChild(uiScaleWidget.el);
+
     // ── Language ──
     const langOptions = [
         { value: 'en',    label: 'English' },
@@ -98,8 +115,9 @@
     ];
     const gameSystemWidget = buildCvSelect(
         gameSystemOptions,
-        window.gameSystem || 'custom',
+        localStorage.getItem('cv-game-system') ?? window.gameSystem ?? 'custom',
         function (val) {
+            localStorage.setItem('cv-game-system', val);
             window.gameSystem = val;
             scheduleSave();
         }

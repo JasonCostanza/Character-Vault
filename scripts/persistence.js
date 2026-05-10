@@ -67,6 +67,7 @@
         // Restore counter (ensure it's at least as high as max existing ID)
         moduleIdCounter = blob.moduleIdCounter || 0;
         window.gameSystem = blob.gameSystem || 'custom';
+        localStorage.setItem('cv-game-system', window.gameSystem);
         if (typeof syncGameSystemUI === 'function') syncGameSystemUI();
         window.activityLog = Array.isArray(blob.activityLog) ? blob.activityLog : [];
 

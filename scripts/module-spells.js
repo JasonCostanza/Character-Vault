@@ -1085,7 +1085,7 @@
         const newAttrInput = document.createElement('input');
         newAttrInput.type = 'text';
         newAttrInput.className = 'cv-modal-input';
-        newAttrInput.style.flex = '1';
+        newAttrInput.style.flex = '0 1 140px';
         newAttrInput.style.minWidth = '80px';
         newAttrInput.placeholder = t('spells.newAttrName') + '…';
 
@@ -1098,9 +1098,9 @@
         const attrTypeSelect = buildCvSelect(attrTypeOptions, 'text', function () {});
 
         const addAttrBtn = document.createElement('button');
-        addAttrBtn.className = 'spells-settings-add-btn';
-        addAttrBtn.title = t('spells.manageAttributes');
-        addAttrBtn.textContent = '+';
+        addAttrBtn.className = 'btn-primary';
+        addAttrBtn.textContent = t('spells.addAttribute');
+        addAttrBtn.style.whiteSpace = 'nowrap';
 
         addAttrBtn.addEventListener('click', () => {
             const name = newAttrInput.value.trim();

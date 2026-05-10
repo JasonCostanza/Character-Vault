@@ -680,9 +680,9 @@ select,
 }
 
 .cv-select-trigger {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto;
     align-items: center;
-    justify-content: space-between;
     width: 100%;
     padding: 8px 12px;
     font-size: 13px;
@@ -694,6 +694,27 @@ select,
     cursor: pointer;
     outline: none;
     text-align: left;
+}
+
+.cv-select-value {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+/* Hidden sizer span — widest option label; keeps trigger width stable */
+.cv-select-sizer {
+    grid-column: 1;
+    grid-row: 1;
+    visibility: hidden;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+}
+
+.cv-select-chevron {
+    grid-column: 2;
+    grid-row: 1;
+    margin-left: 8px;
 }
 
 .cv-select-trigger:hover {
@@ -720,7 +741,7 @@ select,
     position: absolute;
     top: calc(100% + 4px);
     left: 0;
-    right: 0;
+    min-width: 100%;
     margin: 0;
     padding: 4px 0;
     list-style: none;

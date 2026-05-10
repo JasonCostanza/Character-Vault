@@ -139,16 +139,16 @@ describe('weaponsComputeAttackBonus', () => {
   });
 
   it('computes ability mod + proficiency when no override', () => {
-    window.getAbilityModifier = vi.fn().mockReturnValue(3);
+    window.getAbilityModifierFrom = vi.fn().mockReturnValue(3);
     window.getProficiencyBonus = vi.fn().mockReturnValue(2);
     const weapon = { attackBonusOverride: null, abilityMod: 'str', proficient: true };
     expect(window.weaponsComputeAttackBonus(weapon)).toBe(5);
-    expect(window.getAbilityModifier).toHaveBeenCalledWith('str');
+    expect(window.getAbilityModifierFrom).toHaveBeenCalledWith('str', null);
     expect(window.getProficiencyBonus).toHaveBeenCalled();
   });
 
   it('excludes proficiency when proficient is false', () => {
-    window.getAbilityModifier = vi.fn().mockReturnValue(3);
+    window.getAbilityModifierFrom = vi.fn().mockReturnValue(3);
     window.getProficiencyBonus = vi.fn().mockReturnValue(2);
     const weapon = { attackBonusOverride: null, abilityMod: 'dex', proficient: false };
     expect(window.weaponsComputeAttackBonus(weapon)).toBe(3);
@@ -156,7 +156,7 @@ describe('weaponsComputeAttackBonus', () => {
   });
 
   it('returns 0 when helpers are not available', () => {
-    window.getAbilityModifier = undefined;
+    window.getAbilityModifierFrom = undefined;
     window.getProficiencyBonus = undefined;
     const weapon = { attackBonusOverride: null, abilityMod: 'str', proficient: true };
     expect(window.weaponsComputeAttackBonus(weapon)).toBe(0);
@@ -168,28 +168,28 @@ describe('weaponsComputeAttackBonus — PF2e', () => {
   afterEach(() => { window.gameSystem = undefined; });
 
   it('adds abilityMod + (rankBonus + level) for trained', () => {
-    window.getAbilityModifier = vi.fn().mockReturnValue(3);
+    window.getAbilityModifierFrom = vi.fn().mockReturnValue(3);
     window.getCharacterLevel = vi.fn().mockReturnValue(5);
     const weapon = { attackBonusOverride: null, abilityMod: 'str', proficiencyRank: 'trained' };
     expect(window.weaponsComputeAttackBonus(weapon)).toBe(10); // 3 + (2+5)
   });
 
   it('uses expert rank bonus correctly', () => {
-    window.getAbilityModifier = vi.fn().mockReturnValue(2);
+    window.getAbilityModifierFrom = vi.fn().mockReturnValue(2);
     window.getCharacterLevel = vi.fn().mockReturnValue(4);
     const weapon = { attackBonusOverride: null, abilityMod: 'dex', proficiencyRank: 'expert' };
     expect(window.weaponsComputeAttackBonus(weapon)).toBe(10); // 2 + (4+4)
   });
 
   it('returns only abilityMod for untrained (rank bonus = 0)', () => {
-    window.getAbilityModifier = vi.fn().mockReturnValue(2);
+    window.getAbilityModifierFrom = vi.fn().mockReturnValue(2);
     window.getCharacterLevel = vi.fn().mockReturnValue(3);
     const weapon = { attackBonusOverride: null, abilityMod: 'str', proficiencyRank: 'untrained' };
     expect(window.weaponsComputeAttackBonus(weapon)).toBe(2);
   });
 
   it('returns only abilityMod when proficiencyRank is null', () => {
-    window.getAbilityModifier = vi.fn().mockReturnValue(1);
+    window.getAbilityModifierFrom = vi.fn().mockReturnValue(1);
     window.getCharacterLevel = vi.fn().mockReturnValue(4);
     const weapon = { attackBonusOverride: null, abilityMod: 'str', proficiencyRank: null };
     expect(window.weaponsComputeAttackBonus(weapon)).toBe(1);
@@ -206,14 +206,14 @@ describe('weaponsComputeAttackBonus — Daggerheart', () => {
   afterEach(() => { window.gameSystem = undefined; });
 
   it('returns the governing trait modifier', () => {
-    window.getAbilityModifier = vi.fn().mockReturnValue(4);
+    window.getAbilityModifierFrom = vi.fn().mockReturnValue(4);
     const weapon = { attackBonusOverride: null, governingTrait: 'agility' };
     expect(window.weaponsComputeAttackBonus(weapon)).toBe(4);
-    expect(window.getAbilityModifier).toHaveBeenCalledWith('agility');
+    expect(window.getAbilityModifierFrom).toHaveBeenCalledWith('agility', null);
   });
 
   it('returns 0 when getAbilityModifier is unavailable', () => {
-    window.getAbilityModifier = undefined;
+    window.getAbilityModifierFrom = undefined;
     const weapon = { attackBonusOverride: null, governingTrait: 'strength' };
     expect(window.weaponsComputeAttackBonus(weapon)).toBe(0);
   });
@@ -298,17 +298,17 @@ describe('weaponsFormatDamageSummary', () => {
   });
 
   it('adds ability modifier when modFromAbility is true', () => {
-    window.getAbilityModifier = vi.fn().mockReturnValue(4);
+    window.getAbilityModifierFrom = vi.fn().mockReturnValue(4);
     const weapon = {
       damageInstances: [{ dice: '1d8', modFromAbility: true, flatBonus: 0, damageType: 'slashing' }],
       abilityMod: 'str',
     };
     expect(window.weaponsFormatDamageSummary(weapon)).toBe('1d8+4 slashing');
-    expect(window.getAbilityModifier).toHaveBeenCalledWith('str');
+    expect(window.getAbilityModifierFrom).toHaveBeenCalledWith('str', null);
   });
 
   it('combines ability modifier and flat bonus', () => {
-    window.getAbilityModifier = vi.fn().mockReturnValue(2);
+    window.getAbilityModifierFrom = vi.fn().mockReturnValue(2);
     const weapon = {
       damageInstances: [{ dice: '2d6', modFromAbility: true, flatBonus: 1, damageType: 'fire' }],
       abilityMod: 'dex',

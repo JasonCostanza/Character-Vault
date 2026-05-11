@@ -262,11 +262,6 @@
 
 /* ── Weapon Action Modal ── */
 
-.weapon-action-panel {
-    min-width: 280px;
-    max-width: 480px;
-}
-
 .weapon-action-body {
     display: flex;
     flex-direction: column;
@@ -325,11 +320,6 @@
 }
 
 /* ── Weapon Edit Modal ── */
-
-.weapon-edit-panel {
-    min-width: 340px;
-    max-width: 540px;
-}
 
 .weapon-edit-body {
     display: flex;
@@ -652,11 +642,6 @@
 }
 
 /* ── Weapon Trait Picker Modal ── */
-.weapon-trait-picker-dialog {
-    min-width: 300px;
-    max-width: 420px;
-}
-
 .weapon-trait-picker-body {
     display: flex;
     flex-direction: column;
@@ -1076,18 +1061,7 @@
     user-select: none;
 }
 
-/* Enhancement form panel */
-.weapon-enhancement-form-panel {
-    min-width: 300px;
-    max-width: 420px;
-}
-
 /* Enhancement catalog modal */
-.weapon-enhancement-catalog-panel {
-    min-width: 340px;
-    max-width: 480px;
-}
-
 .weapon-enhancement-catalog-body {
     overflow-y: auto;
     scrollbar-gutter: stable;

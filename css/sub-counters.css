@@ -307,10 +307,6 @@
 
 /* ── Counter Modal Overrides ── */
 
-.counter-edit-panel {
-    width: 360px;
-}
-
 .counter-edit-body {
     max-height: 50vh;
 }

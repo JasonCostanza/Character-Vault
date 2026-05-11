@@ -180,10 +180,6 @@
 }
 
 /* ── Health Action Overlay ── */
-.health-action-modal {
-    width: 280px;
-}
-
 .health-action-body {
     align-items: center;
 }

@@ -229,10 +229,6 @@
 }
 
 /* ── Resistance Settings Panel ── */
-.res-settings-modal {
-    width: 480px;
-}
-
 .res-settings-body {
     gap: 12px;
     position: relative;

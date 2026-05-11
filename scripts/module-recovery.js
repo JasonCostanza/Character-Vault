@@ -247,7 +247,6 @@
 
         const panel = document.createElement('div');
         panel.className = 'cv-modal-panel';
-        panel.style.width = '280px';
 
         const header = document.createElement('div');
         header.className = 'cv-modal-header';
@@ -506,7 +505,6 @@
 
         const panel = document.createElement('div');
         panel.className = 'cv-modal-panel';
-        panel.style.width = '280px';
 
         const header = document.createElement('div');
         header.className = 'cv-modal-header';

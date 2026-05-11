@@ -458,10 +458,6 @@
 }
 
 /* ── List Manage Attributes Panel ── */
-.list-manage-modal {
-    width: 360px;
-}
-
 .list-manage-body {
     gap: 12px;
 }

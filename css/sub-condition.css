@@ -281,10 +281,6 @@
 }
 
 /* ── Condition Settings Panel ── */
-.cond-settings-modal {
-    width: 400px;
-}
-
 .cond-settings-body {
     gap: 12px;
     position: relative;

@@ -445,8 +445,15 @@ select,
 .settings-body {
     flex: 1;
     overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
     padding: 20px 0;
 }
+
+.settings-body::-webkit-scrollbar { width: 4px; }
+.settings-body::-webkit-scrollbar-track { background: transparent; }
+.settings-body::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .settings-section {
     margin-bottom: 24px;

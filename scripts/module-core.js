@@ -779,7 +779,7 @@
         }
 
         if (data.type === 'hline') {
-            el.style.alignSelf = 'start';
+            el.style.alignSelf = 'center';
         }
 
         if (data.theme) {

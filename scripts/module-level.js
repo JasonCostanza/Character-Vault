@@ -140,6 +140,7 @@
                 c.level--;
                 renderLevelBody(bodyEl, data, isPlayMode);
                 scheduleSave();
+                document.dispatchEvent(new CustomEvent('cv:level-changed'));
                 if (typeof window.logActivity === 'function') {
                     window.logActivity({ type: 'level.event.levelUp', message: t('level.log.levelChange', { oldLevel: oldLevel, newLevel: c.level }), sourceModuleId: data.id });
                 }
@@ -155,6 +156,7 @@
                 c.level++;
                 renderLevelBody(bodyEl, data, isPlayMode);
                 scheduleSave();
+                document.dispatchEvent(new CustomEvent('cv:level-changed'));
                 if (typeof window.logActivity === 'function') {
                     window.logActivity({ type: 'level.event.levelUp', message: t('level.log.levelChange', { oldLevel: oldLevel, newLevel: c.level }), sourceModuleId: data.id });
                 }
@@ -231,6 +233,7 @@
                         window.snapModuleHeight(moduleEl, data);
                     }
                     scheduleSave();
+                    document.dispatchEvent(new CustomEvent('cv:level-changed'));
                     if (typeof window.logActivity === 'function') {
                         window.logActivity({ type: 'level.event.levelUp', message: t('level.log.levelUp', { level: c.level }), sourceModuleId: data.id });
                     }

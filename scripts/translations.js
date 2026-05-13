@@ -199,6 +199,8 @@
             'stat.toggleRollable': 'Toggle Rollable (select a stat first)',
             'stat.rollableOn': 'Rollable — click to disable',
             'stat.rollableOff': 'Not Rollable — click to enable',
+            'stat.proficiencyAutoComputed': 'Auto-computed from character level',
+            'stat.autoLabel': 'AUTO',
             'stat.event.roll': 'Stat Roll',
             'stat.log.roll': 'Rolled {name} check ({modifier})',
             // List submodule
@@ -1421,6 +1423,8 @@
             'stat.toggleRollable': 'Alternar Lanzable (selecciona una estadística primero)',
             'stat.rollableOn': 'Lanzable — clic para desactivar',
             'stat.rollableOff': 'No Lanzable — clic para activar',
+            'stat.proficiencyAutoComputed': 'Calculado automáticamente desde el nivel del personaje',
+            'stat.autoLabel': 'AUTO',
             'stat.event.roll': 'Tirada de Estadística',
             'stat.log.roll': 'Tirada de prueba de {name} ({modifier})',
 
@@ -2619,6 +2623,8 @@
             'stat.toggleRollable': "Basculer Lançable (sélectionnez une statistique d'abord)",
             'stat.rollableOn': 'Lançable — cliquez pour désactiver',
             'stat.rollableOff': 'Non Lançable — cliquez pour activer',
+            'stat.proficiencyAutoComputed': 'Calculé automatiquement depuis le niveau du personnage',
+            'stat.autoLabel': 'AUTO',
             'stat.event.roll': 'Jet de Stat',
             'stat.log.roll': 'Jet de test de {name} ({modifier})',
 
@@ -3841,6 +3847,8 @@
             'stat.toggleRollable': 'Würfelbar umschalten (zuerst einen Wert auswählen)',
             'stat.rollableOn': 'Würfelbar — klicken zum Deaktivieren',
             'stat.rollableOff': 'Nicht Würfelbar — klicken zum Aktivieren',
+            'stat.proficiencyAutoComputed': 'Automatisch aus Charakterstufe berechnet',
+            'stat.autoLabel': 'AUTO',
             'stat.event.roll': 'Attributwurf',
             'stat.log.roll': 'Attributprobe für {name} ({modifier})',
 
@@ -4487,6 +4495,8 @@
             'stat.toggleRollable': 'Alterna Tirabile (seleziona prima una statistica)',
             'stat.rollableOn': 'Tirabile — clicca per disattivare',
             'stat.rollableOff': 'Non Tirabile — clicca per attivare',
+            'stat.proficiencyAutoComputed': 'Calcolato automaticamente dal livello del personaggio',
+            'stat.autoLabel': 'AUTO',
             'stat.event.roll': 'Tiro di Stat',
             'stat.log.roll': 'Prova di {name} ({modifier})',
 
@@ -5105,6 +5115,8 @@
             'stat.toggleRollable': 'Alternar Rolável (selecione uma estatística primeiro)',
             'stat.rollableOn': 'Rolável — clique para desativar',
             'stat.rollableOff': 'Não Rolável — clique para ativar',
+            'stat.proficiencyAutoComputed': 'Calculado automaticamente a partir do nível do personagem',
+            'stat.autoLabel': 'AUTO',
             'stat.event.roll': 'Rolagem de Estatística',
             'stat.log.roll': 'Teste de {name} rolado ({modifier})',
 
@@ -5719,6 +5731,8 @@
             'stat.toggleRollable': 'Переключить Бросок (сначала выберите характеристику)',
             'stat.rollableOn': 'Бросаемая — нажмите для отключения',
             'stat.rollableOff': 'Не бросаемая — нажмите для включения',
+            'stat.proficiencyAutoComputed': 'Вычислено автоматически на основе уровня персонажа',
+            'stat.autoLabel': 'АВТО',
             'stat.event.roll': 'Бросок Характеристики',
             'stat.log.roll': 'Проверка {name} ({modifier})',
 

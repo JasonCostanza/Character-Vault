@@ -119,10 +119,12 @@
             `<div class="stat-primary">${escapeHtml(String(primaryVal))}</div>` +
             `<div class="stat-secondary">${escapeHtml(String(secondaryVal))}</div>`;
 
+        var isAutoProf = stat.isProficiencyStat && sys === 'dnd5e';
+
         if (isPlayMode && stat.rollable) {
             block.addEventListener('click', (e) => {
                 if (e.ctrlKey) {
-                    enterQuickEdit(block, stat, data);
+                    if (!isAutoProf) enterQuickEdit(block, stat, data);
                     return;
                 }
                 rollStatCheck(stat, data);
@@ -131,7 +133,7 @@
 
         if (isPlayMode && !stat.rollable) {
             block.addEventListener('click', (e) => {
-                if (e.ctrlKey) enterQuickEdit(block, stat, data);
+                if (e.ctrlKey && !isAutoProf) enterQuickEdit(block, stat, data);
             });
         }
 
@@ -143,6 +145,41 @@
         block.className = 'stat-block-edit';
         block.dataset.index = index;
         var editSys = window.gameSystem || 'custom';
+
+        if (stat.isProficiencyStat && editSys === 'dnd5e') {
+            var autoVal = typeof window.getProficiencyBonus === 'function' ? window.getProficiencyBonus() : 2;
+            var deleteSvg = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+            block.innerHTML =
+                `<div class="stat-edit-name-row">` +
+                `<span class="stat-drag-handle" style="visibility:hidden">&#x2807;</span>` +
+                `<input class="stat-edit-name" type="text" value="${escapeHtml(stat.name)}" readonly>` +
+                `<button class="stat-edit-delete" title="${t('stat.deleteStat')}" style="visibility:hidden">${deleteSvg}</button>` +
+                `</div>` +
+                `<div class="stat-edit-row">` +
+                `<div class="stat-edit-field"><label>${t('stat.value')}</label><span class="stat-edit-value-readonly">${autoVal}</span></div>` +
+                `</div>` +
+                `<div class="stat-prof-auto-badge" title="${escapeHtml(t('stat.proficiencyAutoComputed'))}">${t('stat.autoLabel')}</div>`;
+            block.addEventListener('click', (e) => {
+                const target = e.target;
+                if (target.tagName === 'INPUT' || target.tagName === 'BUTTON' || target.closest('button')) return;
+                const container = block.closest('.stat-container');
+                const moduleEl = container && container.closest('.module');
+                if (!moduleEl) return;
+                if (moduleEl._selectedStatIndex === index) {
+                    moduleEl._selectedStatIndex = null;
+                } else {
+                    moduleEl._selectedStatIndex = index;
+                }
+                container.querySelectorAll('.stat-block-edit').forEach((b) => b.classList.remove('stat-selected'));
+                if (moduleEl._selectedStatIndex !== null) {
+                    const sel = container.querySelector(`.stat-block-edit[data-index="${moduleEl._selectedStatIndex}"]`);
+                    if (sel) sel.classList.add('stat-selected');
+                }
+                updateRollableBtn(moduleEl, data);
+            });
+            return block;
+        }
+
         var profRowHtml = '';
         if (!stat.isProficiencyStat) {
             if (editSys === 'pf2e') {
@@ -485,6 +522,11 @@
     };
 
     window.getProficiencyBonus = function () {
+        var sys = window.gameSystem || 'custom';
+        if (sys === 'dnd5e') {
+            var totalLevel = typeof window.getTotalCharacterLevel === 'function' ? window.getTotalCharacterLevel() : null;
+            if (totalLevel !== null) return window.computeDnd5eProficiencyBonus(totalLevel);
+        }
         for (const m of (window.modules || [])) {
             if (m.type !== 'stat' || !m.content || !Array.isArray(m.content.stats)) continue;
             const profStat = m.content.stats.find((s) => s.isProficiencyStat);
@@ -516,4 +558,22 @@
         }
         return Object.keys(names).sort();
     };
+
+    document.addEventListener('cv:level-changed', function () {
+        if ((window.gameSystem || 'custom') !== 'dnd5e') return;
+        var totalLevel = typeof window.getTotalCharacterLevel === 'function' ? window.getTotalCharacterLevel() : null;
+        if (totalLevel === null) return;
+        var newBonus = window.computeDnd5eProficiencyBonus(totalLevel);
+        (window.modules || []).forEach(function (m) {
+            if (m.type !== 'stat' || !m.content || !Array.isArray(m.content.stats)) return;
+            var profStat = m.content.stats.find(function (s) { return s.isProficiencyStat; });
+            if (!profStat || profStat.value === newBonus) return;
+            profStat.value = newBonus;
+            var moduleEl = document.querySelector('.module[data-id="' + m.id + '"]');
+            if (!moduleEl) return;
+            var bodyEl = moduleEl.querySelector('.module-body');
+            var typeDef = window.MODULE_TYPES && window.MODULE_TYPES['stat'];
+            if (typeDef && bodyEl) typeDef.renderBody(bodyEl, m, window.isPlayMode);
+        });
+    });
 })();

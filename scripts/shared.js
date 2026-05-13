@@ -379,6 +379,27 @@
     window.computePf2eProficiencyBonus = computePf2eProficiencyBonus;
     window.buildPf2eRankOptions = buildPf2eRankOptions;
 
+    // ── D&D 5e Proficiency Bonus ──
+    function getTotalCharacterLevel() {
+        var total = 0;
+        var found = false;
+        for (var i = 0; i < (window.modules || []).length; i++) {
+            var m = window.modules[i];
+            if (m.type !== 'level' || !m.content) continue;
+            total += (m.content.level || 0);
+            found = true;
+        }
+        return found ? total : null;
+    }
+
+    function computeDnd5eProficiencyBonus(totalLevel) {
+        if (typeof totalLevel !== 'number' || totalLevel < 1) return 2;
+        return Math.floor((totalLevel - 1) / 4) + 2;
+    }
+
+    window.getTotalCharacterLevel = getTotalCharacterLevel;
+    window.computeDnd5eProficiencyBonus = computeDnd5eProficiencyBonus;
+
     // ── Daggerheart Duality Dice ──
     function rollDualityDice(label, modifier, eventType, logKey, logReplacements, sourceModuleId) {
         if (typeof TS === 'undefined') return;

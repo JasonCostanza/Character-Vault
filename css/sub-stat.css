@@ -236,6 +236,32 @@
     border-color: var(--cv-accent);
 }
 
+.stat-edit-value-readonly {
+    display: block;
+    width: 100%;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    text-align: center;
+    color: var(--cv-text-muted);
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 3px;
+    padding: 1px;
+    user-select: none;
+}
+
+.stat-prof-auto-badge {
+    text-align: center;
+    font-size: 7px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-accent);
+    margin-top: 2px;
+    user-select: none;
+}
+
 .stat-edit-delete {
     width: 14px;
     height: 14px;

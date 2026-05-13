@@ -150,3 +150,72 @@ describe('getGameSystemDisplayName', () => {
     expect(getGameSystemDisplayName('xyz_unknown')).toBeNull();
   });
 });
+
+describe('computeDnd5eProficiencyBonus', () => {
+  it.each([
+    [1, 2], [4, 2],
+    [5, 3], [8, 3],
+    [9, 4], [12, 4],
+    [13, 5], [16, 5],
+    [17, 6], [20, 6],
+    [21, 7],
+  ])('level %i → +%i', (level, expected) => {
+    expect(computeDnd5eProficiencyBonus(level)).toBe(expected);
+  });
+
+  it('returns 2 for level 0', () => {
+    expect(computeDnd5eProficiencyBonus(0)).toBe(2);
+  });
+
+  it('returns 2 for negative levels', () => {
+    expect(computeDnd5eProficiencyBonus(-5)).toBe(2);
+  });
+
+  it('returns 2 for non-number input', () => {
+    expect(computeDnd5eProficiencyBonus('five')).toBe(2);
+    expect(computeDnd5eProficiencyBonus(null)).toBe(2);
+    expect(computeDnd5eProficiencyBonus(undefined)).toBe(2);
+  });
+});
+
+describe('getTotalCharacterLevel', () => {
+  it('returns null when modules is empty', () => {
+    window.modules = [];
+    expect(getTotalCharacterLevel()).toBeNull();
+  });
+
+  it('returns null when no level modules exist', () => {
+    window.modules = [
+      { type: 'stat', content: { stats: [] } },
+      { type: 'health', content: {} },
+    ];
+    expect(getTotalCharacterLevel()).toBeNull();
+  });
+
+  it('returns level from a single level module', () => {
+    window.modules = [{ type: 'level', content: { level: 7 } }];
+    expect(getTotalCharacterLevel()).toBe(7);
+  });
+
+  it('sums levels from multiple level modules (multiclass)', () => {
+    window.modules = [
+      { type: 'level', content: { level: 5 } },
+      { type: 'level', content: { level: 3 } },
+    ];
+    expect(getTotalCharacterLevel()).toBe(8);
+  });
+
+  it('ignores non-level module types', () => {
+    window.modules = [
+      { type: 'level', content: { level: 4 } },
+      { type: 'stat', content: { stats: [] } },
+      { type: 'health', content: {} },
+    ];
+    expect(getTotalCharacterLevel()).toBe(4);
+  });
+
+  it('treats missing content.level as 0', () => {
+    window.modules = [{ type: 'level', content: {} }];
+    expect(getTotalCharacterLevel()).toBe(0);
+  });
+});

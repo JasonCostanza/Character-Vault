@@ -45,6 +45,12 @@ export function setupMinimalDOM() {
           <button id="btn-settings-close" class="menu-btn" title="Close Settings" data-i18n-title="settings.close"></button>
         </div>
         <div class="settings-body">
+          <!-- UI Scale -->
+          <div class="settings-section">
+            <label class="settings-label" data-i18n="settings.uiScale">UI Scale</label>
+            <div id="setting-ui-scale-container"></div>
+          </div>
+
           <!-- Language -->
           <div class="settings-section">
             <label class="settings-label" data-i18n="settings.language">Language</label>

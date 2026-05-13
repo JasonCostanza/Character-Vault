@@ -4,7 +4,16 @@
 
     function migrateData(blob) {
         const migrators = {
-            // Future: 1: (data) => { /* transform */ data.version = 2; return data; }
+            1: function (data) {
+                data.tabs = [{ id: 'tab-1', name: 'Tab 1', order: 0, color: null }];
+                data.activeTabId = 'tab-1';
+                data.tabIdCounter = 1;
+                if (Array.isArray(data.modules)) {
+                    data.modules.forEach(function (m) { m.tabId = 'tab-1'; });
+                }
+                data.version = 2;
+                return data;
+            },
         };
         while (migrators[blob.version]) {
             console.log(`[CV] Migrating save data v${blob.version} → v${blob.version + 1}`);
@@ -25,11 +34,16 @@
     function serializeCharacter() {
         syncModuleState();
         return JSON.stringify({
-            version: 1,
+            version: 2,
             savedAt: new Date().toISOString(),
             moduleIdCounter,
+            tabIdCounter: window.getTabIdCounter(),
             gameSystem: window.gameSystem || 'custom',
             activityLog: window.activityLog || [],
+            tabs: window.tabs.map(function (t) {
+                return { id: t.id, name: t.name, order: t.order, color: t.color || null };
+            }),
+            activeTabId: window.activeTabId,
             modules: modules.map((m) => ({
                 id: m.id,
                 type: m.type,
@@ -39,6 +53,7 @@
                 order: m.order,
                 theme: m.theme || null,
                 textLight: !!m.textLight,
+                tabId: m.tabId || null,
                 content: m.content ?? '',
             })),
         });
@@ -71,7 +86,14 @@
         if (typeof syncGameSystemUI === 'function') syncGameSystemUI();
         window.activityLog = Array.isArray(blob.activityLog) ? blob.activityLog : [];
 
-        // Rebuild modules sorted by order
+        // Restore tab state
+        window.tabs = Array.isArray(blob.tabs) ? blob.tabs : [];
+        window.setTabIdCounter(blob.tabIdCounter || window.tabs.length);
+        const savedTabId = blob.activeTabId;
+        const validTabId = window.tabs.find(function (t) { return t.id === savedTabId; }) ? savedTabId : null;
+        window.activeTabId = validTabId ?? (window.tabs[0]?.id ?? null);
+
+        // Rebuild modules sorted by order (Phase 1: render all; Phase 2 will scope to active tab)
         blob.modules
             .slice()
             .sort((a, b) => a.order - b.order)
@@ -89,6 +111,7 @@
                     order: saved.order ?? 0,
                     theme: saved.theme || null,
                     textLight: !!saved.textLight,
+                    tabId: saved.tabId || null,
                     content: saved.content ?? '',
                 };
                 modules.push(data);
@@ -96,6 +119,7 @@
             });
 
         modules.forEach((m, i) => (m.order = i));
+        if (typeof renderTabBar === 'function') renderTabBar();
         updateEmptyState();
         console.log(`[CV] Loaded ${modules.length} modules`);
         return true;

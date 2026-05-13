@@ -1,0 +1,103 @@
+/* ── Tab Bar ── */
+
+#tab-bar {
+    display: flex;
+    align-items: center;
+    background: var(--cv-bg-surface);
+    border-bottom: 1px solid var(--cv-border);
+    height: 36px;
+    min-height: 36px;
+    flex-shrink: 0;
+    user-select: none;
+    position: relative;
+}
+
+/* ── Tab Scroll Area ── */
+
+#tab-scroll-area {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    overflow-x: auto;
+    padding: 0 6px;
+    height: 100%;
+    min-width: 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
+    scrollbar-gutter: stable;
+}
+
+#tab-scroll-area::-webkit-scrollbar {
+    height: 4px;
+}
+
+#tab-scroll-area::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#tab-scroll-area::-webkit-scrollbar-thumb {
+    background-color: var(--cv-text-muted);
+    border-radius: 2px;
+}
+
+/* ── Tab Items ── */
+
+.tab-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    height: 28px;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 12px;
+    letter-spacing: 0.01em;
+    color: var(--cv-text-muted);
+    background: var(--cv-bg);
+    flex-shrink: 0;
+    border: 1px solid transparent;
+    border-bottom: none;
+    transition: color 120ms ease, background 120ms ease, border-color 120ms ease;
+    position: relative;
+    bottom: -1px;
+}
+
+.tab-item:hover {
+    color: var(--cv-text);
+    background: var(--cv-bg-raised);
+    border-color: var(--cv-border-subtle);
+}
+
+.tab-item.active {
+    color: var(--cv-text);
+    background: var(--cv-bg-raised);
+    border-color: var(--cv-border);
+    box-shadow: inset 0 -2px 0 var(--cv-accent);
+}
+
+/* ── Add Tab Button ── */
+
+#btn-add-tab {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    margin: 0 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 120ms ease, background 120ms ease;
+    user-select: none;
+}
+
+#btn-add-tab:hover {
+    color: var(--cv-text);
+    background: var(--cv-bg-raised);
+}

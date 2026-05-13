@@ -1234,6 +1234,28 @@
 
             'empty.message': 'Click <strong>New Module</strong> to get started',
             'empty.hint': 'Open <strong>Settings</strong> to choose a game system',
+
+            // Tabs
+            'tabs.createNew': 'Create new tab',
+            'tabs.openSettings': 'Tab Settings',
+            'tabs.delete': 'Delete tab',
+            'tabs.settingsTitle': 'Tab Settings',
+            'tabs.rename': 'Rename',
+            'tabs.changeColor': 'Tab color',
+            'tabs.deleteBtn': 'Delete tab',
+            'tabs.nameEmpty': 'Tab name cannot be blank — name reverted.',
+            'tabs.nameDuplicate': 'Tab names must be unique. Please choose a different name.',
+            'tabs.deleteConfirmTitle': 'Delete Tab',
+            'tabs.deleteConfirmMessage': 'What would you like to do with the modules on this tab?',
+            'tabs.deleteModules': 'Delete all modules',
+            'tabs.moveModules': 'Move modules to:',
+            'tabs.deleteConfirm': 'Delete',
+            'tabs.emptyState': 'This tab is empty',
+            'tabs.resetAll': 'Delete all tabs and start fresh',
+            'tabs.resetConfirm': 'This will delete all tabs and all modules. This cannot be undone.',
+            'tabs.addTooltip': 'Add tab',
+            'tabs.colorDefault': 'Default',
+            'tabs.defaultName': 'Tab {n}',
         },
 
         es: {
@@ -2436,6 +2458,28 @@
 
             'empty.message': 'Haz clic en <strong>Nuevo Módulo</strong> para comenzar',
             'empty.hint': 'Abre <strong>Configuración</strong> para elegir un sistema de juego',
+
+            // Tabs
+            'tabs.createNew': 'Crear nueva pestaña',
+            'tabs.openSettings': 'Configuración de pestaña',
+            'tabs.delete': 'Eliminar pestaña',
+            'tabs.settingsTitle': 'Configuración de pestaña',
+            'tabs.rename': 'Renombrar',
+            'tabs.changeColor': 'Color de pestaña',
+            'tabs.deleteBtn': 'Eliminar pestaña',
+            'tabs.nameEmpty': 'El nombre de la pestaña no puede estar vacío — nombre revertido.',
+            'tabs.nameDuplicate': 'Los nombres de pestaña deben ser únicos. Elige un nombre diferente.',
+            'tabs.deleteConfirmTitle': 'Eliminar pestaña',
+            'tabs.deleteConfirmMessage': '¿Qué deseas hacer con los módulos de esta pestaña?',
+            'tabs.deleteModules': 'Eliminar todos los módulos',
+            'tabs.moveModules': 'Mover módulos a:',
+            'tabs.deleteConfirm': 'Eliminar',
+            'tabs.emptyState': 'Esta pestaña está vacía',
+            'tabs.resetAll': 'Eliminar todas las pestañas y empezar de nuevo',
+            'tabs.resetConfirm': 'Esto eliminará todas las pestañas y módulos. No se puede deshacer.',
+            'tabs.addTooltip': 'Añadir pestaña',
+            'tabs.colorDefault': 'Predeterminado',
+            'tabs.defaultName': 'Pestaña {n}',
         },
 
         fr: {
@@ -3660,6 +3704,28 @@
 
             'empty.message': 'Cliquez sur <strong>Nouveau Module</strong> pour commencer',
             'empty.hint': 'Ouvrez <strong>Paramètres</strong> pour choisir un système de jeu',
+
+            // Tabs
+            'tabs.createNew': 'Créer un nouvel onglet',
+            'tabs.openSettings': "Paramètres de l'onglet",
+            'tabs.delete': "Supprimer l'onglet",
+            'tabs.settingsTitle': "Paramètres de l'onglet",
+            'tabs.rename': 'Renommer',
+            'tabs.changeColor': "Couleur de l'onglet",
+            'tabs.deleteBtn': "Supprimer l'onglet",
+            'tabs.nameEmpty': "Le nom de l'onglet ne peut pas être vide — nom rétabli.",
+            'tabs.nameDuplicate': 'Les noms des onglets doivent être uniques. Veuillez choisir un nom différent.',
+            'tabs.deleteConfirmTitle': "Supprimer l'onglet",
+            'tabs.deleteConfirmMessage': 'Que souhaitez-vous faire avec les modules de cet onglet ?',
+            'tabs.deleteModules': 'Supprimer tous les modules',
+            'tabs.moveModules': 'Déplacer les modules vers :',
+            'tabs.deleteConfirm': 'Supprimer',
+            'tabs.emptyState': 'Cet onglet est vide',
+            'tabs.resetAll': 'Supprimer tous les onglets et recommencer',
+            'tabs.resetConfirm': 'Cela supprimera tous les onglets et tous les modules. Cette action est irréversible.',
+            'tabs.addTooltip': 'Ajouter un onglet',
+            'tabs.colorDefault': 'Par défaut',
+            'tabs.defaultName': 'Onglet {n}',
         },
 
         de: {
@@ -4341,6 +4407,28 @@
 
             'empty.message': 'Klicke auf <strong>Neues Modul</strong> um zu beginnen',
             'empty.hint': 'Öffne <strong>Einstellungen</strong> um ein Spielsystem zu wählen',
+
+            // Tabs
+            'tabs.createNew': 'Neuen Tab erstellen',
+            'tabs.openSettings': 'Tab-Einstellungen',
+            'tabs.delete': 'Tab löschen',
+            'tabs.settingsTitle': 'Tab-Einstellungen',
+            'tabs.rename': 'Umbenennen',
+            'tabs.changeColor': 'Tab-Farbe',
+            'tabs.deleteBtn': 'Tab löschen',
+            'tabs.nameEmpty': 'Tab-Name darf nicht leer sein — Name wurde zurückgesetzt.',
+            'tabs.nameDuplicate': 'Tab-Namen müssen eindeutig sein. Bitte wähle einen anderen Namen.',
+            'tabs.deleteConfirmTitle': 'Tab löschen',
+            'tabs.deleteConfirmMessage': 'Was möchtest du mit den Modulen auf diesem Tab tun?',
+            'tabs.deleteModules': 'Alle Module löschen',
+            'tabs.moveModules': 'Module verschieben nach:',
+            'tabs.deleteConfirm': 'Löschen',
+            'tabs.emptyState': 'Dieser Tab ist leer',
+            'tabs.resetAll': 'Alle Tabs löschen und neu beginnen',
+            'tabs.resetConfirm': 'Alle Tabs und alle Module werden gelöscht. Dies kann nicht rückgängig gemacht werden.',
+            'tabs.addTooltip': 'Tab hinzufügen',
+            'tabs.colorDefault': 'Standard',
+            'tabs.defaultName': 'Tab {n}',
         },
 
         it: {
@@ -4970,6 +5058,28 @@
 
             'empty.message': 'Clicca su <strong>Nuovo Modulo</strong> per iniziare',
             'empty.hint': 'Apri <strong>Impostazioni</strong> per scegliere un sistema di gioco',
+
+            // Tabs
+            'tabs.createNew': 'Crea nuova scheda',
+            'tabs.openSettings': 'Impostazioni scheda',
+            'tabs.delete': 'Elimina scheda',
+            'tabs.settingsTitle': 'Impostazioni scheda',
+            'tabs.rename': 'Rinomina',
+            'tabs.changeColor': 'Colore scheda',
+            'tabs.deleteBtn': 'Elimina scheda',
+            'tabs.nameEmpty': 'Il nome della scheda non può essere vuoto — nome ripristinato.',
+            'tabs.nameDuplicate': 'I nomi delle schede devono essere univoci. Scegli un nome diverso.',
+            'tabs.deleteConfirmTitle': 'Elimina scheda',
+            'tabs.deleteConfirmMessage': 'Cosa vuoi fare con i moduli di questa scheda?',
+            'tabs.deleteModules': 'Elimina tutti i moduli',
+            'tabs.moveModules': 'Sposta i moduli in:',
+            'tabs.deleteConfirm': 'Elimina',
+            'tabs.emptyState': 'Questa scheda è vuota',
+            'tabs.resetAll': 'Elimina tutte le schede e ricomincia',
+            'tabs.resetConfirm': 'Verranno eliminati tutti le schede e tutti i moduli. Questa azione non può essere annullata.',
+            'tabs.addTooltip': 'Aggiungi scheda',
+            'tabs.colorDefault': 'Predefinito',
+            'tabs.defaultName': 'Scheda {n}',
         },
 
         'pt-BR': {
@@ -5586,6 +5696,28 @@
 
             'empty.message': 'Clique em <strong>Novo Módulo</strong> para começar',
             'empty.hint': 'Abra <strong>Configurações</strong> para escolher um sistema de jogo',
+
+            // Tabs
+            'tabs.createNew': 'Criar nova aba',
+            'tabs.openSettings': 'Configurações da aba',
+            'tabs.delete': 'Excluir aba',
+            'tabs.settingsTitle': 'Configurações da aba',
+            'tabs.rename': 'Renomear',
+            'tabs.changeColor': 'Cor da aba',
+            'tabs.deleteBtn': 'Excluir aba',
+            'tabs.nameEmpty': 'O nome da aba não pode estar vazio — nome revertido.',
+            'tabs.nameDuplicate': 'Os nomes das abas devem ser únicos. Escolha um nome diferente.',
+            'tabs.deleteConfirmTitle': 'Excluir aba',
+            'tabs.deleteConfirmMessage': 'O que você deseja fazer com os módulos nesta aba?',
+            'tabs.deleteModules': 'Excluir todos os módulos',
+            'tabs.moveModules': 'Mover módulos para:',
+            'tabs.deleteConfirm': 'Excluir',
+            'tabs.emptyState': 'Esta aba está vazia',
+            'tabs.resetAll': 'Excluir todas as abas e começar do zero',
+            'tabs.resetConfirm': 'Isso excluirá todas as abas e todos os módulos. Esta ação não pode ser desfeita.',
+            'tabs.addTooltip': 'Adicionar aba',
+            'tabs.colorDefault': 'Padrão',
+            'tabs.defaultName': 'Aba {n}',
         },
 
         ru: {
@@ -6202,6 +6334,28 @@
 
             'empty.message': 'Нажмите <strong>Новый Модуль</strong> чтобы начать',
             'empty.hint': 'Откройте <strong>Настройки</strong> чтобы выбрать игровую систему',
+
+            // Tabs
+            'tabs.createNew': 'Создать новую вкладку',
+            'tabs.openSettings': 'Настройки вкладки',
+            'tabs.delete': 'Удалить вкладку',
+            'tabs.settingsTitle': 'Настройки вкладки',
+            'tabs.rename': 'Переименовать',
+            'tabs.changeColor': 'Цвет вкладки',
+            'tabs.deleteBtn': 'Удалить вкладку',
+            'tabs.nameEmpty': 'Имя вкладки не может быть пустым — имя восстановлено.',
+            'tabs.nameDuplicate': 'Имена вкладок должны быть уникальными. Выберите другое имя.',
+            'tabs.deleteConfirmTitle': 'Удалить вкладку',
+            'tabs.deleteConfirmMessage': 'Что сделать с модулями на этой вкладке?',
+            'tabs.deleteModules': 'Удалить все модули',
+            'tabs.moveModules': 'Переместить модули в:',
+            'tabs.deleteConfirm': 'Удалить',
+            'tabs.emptyState': 'Эта вкладка пуста',
+            'tabs.resetAll': 'Удалить все вкладки и начать заново',
+            'tabs.resetConfirm': 'Это удалит все вкладки и все модули. Отменить действие невозможно.',
+            'tabs.addTooltip': 'Добавить вкладку',
+            'tabs.colorDefault': 'По умолчанию',
+            'tabs.defaultName': 'Вкладка {n}',
         },
     };
 

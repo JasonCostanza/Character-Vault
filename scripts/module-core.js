@@ -178,6 +178,7 @@
             rowSpan: 2,
             order: window.modules.length,
             theme: wizardState.theme,
+            tabId: window.activeTabId,
             content: '',
         };
 

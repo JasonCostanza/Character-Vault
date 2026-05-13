@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="css/components.css">
     <!-- CSS: Module system -->
     <link rel="stylesheet" href="css/modules.css">
+    <!-- CSS: Tab bar -->
+    <link rel="stylesheet" href="css/tabs.css">
     <!-- CSS: Submodules (alphabetical) -->
     <link rel="stylesheet" href="css/sub-abilities.css">
     <link rel="stylesheet" href="css/sub-activity.css">
@@ -50,6 +52,12 @@
                 </button>
             </div>
         </div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div id="tab-bar">
+        <div id="tab-scroll-area"></div>
+        <button id="btn-add-tab" title="Add tab" data-i18n-title="tabs.addTooltip">+</button>
     </div>
 
     <!-- Main Content Area -->
@@ -318,6 +326,7 @@
     <script src="scripts/theme.js"></script>
     <script src="scripts/settings.js"></script>
     <script src="scripts/persistence.js"></script>
+    <script src="scripts/tabs.js"></script>
     <script src="scripts/module-core.js"></script>
     <script src="scripts/module-activity.js"></script>
     <script src="scripts/module-condition.js"></script>

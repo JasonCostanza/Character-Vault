@@ -122,6 +122,7 @@
             scheduleSave();
         }
     );
+    window.gameSystem = localStorage.getItem('cv-game-system') ?? 'custom';
     document.getElementById('setting-game-system-container').appendChild(gameSystemWidget.el);
 
     window.syncGameSystemUI = function () {

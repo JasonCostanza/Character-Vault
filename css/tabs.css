@@ -20,6 +20,7 @@
     align-items: flex-end;
     gap: 2px;
     overflow-x: auto;
+    overflow-y: hidden;
     padding: 0 6px;
     height: 100%;
     min-width: 0;

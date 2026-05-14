@@ -110,27 +110,29 @@
     background: rgba(184, 64, 64, 0.1);
 }
 
-/* ── Tab Settings Modal ── */
+/* ── Tab Modal Shared Animation ── */
 
-#tab-settings-overlay {
+.cv-tab-overlay {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
-#tab-settings-overlay.open {
+.cv-tab-overlay.open {
     opacity: 1;
     visibility: visible;
 }
 
-#tab-settings-overlay .cv-modal-panel {
+.cv-tab-overlay .cv-modal-panel {
     transform: scale(0.97);
     transition: transform 0.2s ease;
 }
 
-#tab-settings-overlay.open .cv-modal-panel {
+.cv-tab-overlay.open .cv-modal-panel {
     transform: scale(1);
 }
+
+/* ── Tab Settings Modal ── */
 
 .tab-settings-section {
     display: flex;
@@ -153,6 +155,151 @@
 
 .tab-settings-delete {
     width: 100%;
+}
+
+/* ── Tab Delete Modal ── */
+
+.tab-delete-message {
+    font-size: 13px;
+    color: var(--cv-text-secondary);
+    margin-bottom: 16px;
+    line-height: 1.5;
+    user-select: none;
+}
+
+.tab-delete-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tab-delete-radio-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--cv-border-subtle);
+    background: var(--cv-bg);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+    user-select: none;
+}
+
+.tab-delete-radio-option:hover:not(.tab-delete-radio-option--disabled) {
+    border-color: var(--cv-border);
+    background: var(--cv-bg-raised);
+}
+
+.tab-delete-radio-option.selected {
+    border-color: var(--cv-accent);
+    background: var(--cv-bg-raised);
+}
+
+.tab-delete-radio-option--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.tab-delete-radio-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.tab-delete-radio-btn {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--cv-border);
+    background: transparent;
+    position: relative;
+    transition: border-color 0.15s ease;
+}
+
+.tab-delete-radio-option.selected .tab-delete-radio-btn {
+    border-color: var(--cv-accent);
+}
+
+.tab-delete-radio-option.selected .tab-delete-radio-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--cv-accent);
+}
+
+.tab-delete-radio-label {
+    font-size: 13px;
+    color: var(--cv-text);
+}
+
+.tab-delete-move-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tab-delete-select {
+    flex-shrink: 0;
+}
+
+/* ── Tab Reset Confirm ── */
+
+.tab-reset-confirm-text {
+    font-size: 13px;
+    color: var(--cv-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+    user-select: none;
+}
+
+/* ── Tab Drag Handle ── */
+
+.tab-drag-handle {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 12px;
+    cursor: grab;
+    color: var(--cv-text-muted);
+    opacity: 0.35;
+    margin-right: 4px;
+    transition: opacity 0.15s ease;
+    user-select: none;
+}
+
+.tab-item:hover .tab-drag-handle {
+    opacity: 0.7;
+}
+
+.tab-drag-handle:active {
+    cursor: grabbing;
+}
+
+.tab-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Tab Drag Ghost ── */
+
+.tab-ghost {
+    opacity: 0.3;
+    border: 2px dashed var(--cv-accent) !important;
+    background: var(--cv-bg-sunken) !important;
+    border-radius: 4px 4px 0 0 !important;
+    box-shadow: none !important;
 }
 
 /* ── Add Tab Button ── */

@@ -99,6 +99,7 @@ export function setupMinimalDOM() {
           <div class="settings-section">
             <label class="settings-label" data-i18n="settings.troubleshooting">Troubleshooting</label>
             <button id="btn-force-reload" class="settings-action-btn btn-primary settings-action-btn--warning" data-i18n="settings.forceReload">Force Reload</button>
+            <button id="btn-reset-tabs" class="settings-action-btn btn-primary settings-action-btn--warning" data-i18n="tabs.resetAll">Delete all tabs and start fresh</button>
             <div id="window-dimensions" class="settings-dimensions"></div>
           </div>
 
@@ -233,6 +234,22 @@ export function setupMinimalDOM() {
     <!-- List Item Inspect Overlay -->
     <div id="list-inspect-overlay" class="list-inspect-overlay" aria-hidden="true">
       <div id="list-inspect-panel" class="list-inspect-panel"></div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div id="tab-bar">
+      <div id="tab-scroll-area"></div>
+      <button id="btn-add-tab" title="Add tab" data-i18n-title="tabs.addTooltip">+</button>
+    </div>
+
+    <!-- Tab Settings Modal -->
+    <div id="tab-settings-overlay" class="cv-modal-overlay cv-tab-overlay" aria-hidden="true">
+      <div id="tab-settings-panel" class="cv-modal-panel"></div>
+    </div>
+
+    <!-- Tab Delete Modal -->
+    <div id="tab-delete-overlay" class="cv-modal-overlay cv-tab-overlay" aria-hidden="true">
+      <div id="tab-delete-panel" class="cv-modal-panel"></div>
     </div>
   `;
 }

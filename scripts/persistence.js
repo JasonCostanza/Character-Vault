@@ -121,7 +121,6 @@
                 }
             });
 
-        modules.forEach((m, i) => (m.order = i));
         if (typeof renderTabBar === 'function') renderTabBar();
         updateEmptyState();
         console.log(`[CV] Loaded ${modules.length} modules`);

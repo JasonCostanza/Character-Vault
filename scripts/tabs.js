@@ -71,6 +71,9 @@
         window.switchToTab(newTab.id);
     }
 
+    // ── Tab Sortable ──
+    let tabSortable = null;
+
     // ── Context Menu ──
     let activeContextMenu = null;
 
@@ -149,8 +152,9 @@
         .filter(function (d) { return d.color !== null && d.color !== 'custom'; })
         .map(function (d) { return d.color; });
 
-    // Holds the active Escape handler so closeTabSettings can always clean it up
+    // Holds the active Escape/backdrop handlers so closeTabSettings can always clean them up
     let settingsEscapeHandler = null;
+    let settingsBackdropHandler = null;
 
     function closeTabSettings() {
         const overlay = document.getElementById('tab-settings-overlay');
@@ -160,6 +164,10 @@
         if (settingsEscapeHandler) {
             document.removeEventListener('keydown', settingsEscapeHandler);
             settingsEscapeHandler = null;
+        }
+        if (settingsBackdropHandler) {
+            overlay.removeEventListener('click', settingsBackdropHandler);
+            settingsBackdropHandler = null;
         }
     }
 
@@ -293,7 +301,7 @@
         deleteBtn.textContent = t('tabs.deleteBtn');
         deleteBtn.addEventListener('click', function () {
             closeTabSettings();
-            // Phase 4: openTabDeleteConfirm(tabId)
+            window.openTabDeleteConfirm(tabId);
         });
         dangerSection.appendChild(deleteBtn);
         body.appendChild(dangerSection);
@@ -344,12 +352,10 @@
 
         header.querySelector('.cv-modal-close').addEventListener('click', closeTabSettings);
 
-        overlay.addEventListener('click', function onBackdropClick(e) {
-            if (e.target === overlay) {
-                closeTabSettings();
-                overlay.removeEventListener('click', onBackdropClick);
-            }
-        });
+        settingsBackdropHandler = function (e) {
+            if (e.target === overlay) closeTabSettings();
+        };
+        overlay.addEventListener('click', settingsBackdropHandler);
 
         settingsEscapeHandler = function (e) {
             if (e.key === 'Escape') closeTabSettings();
@@ -366,10 +372,212 @@
         updateSwatchSelection(selectedColor);
     };
 
+    // ── Tab Delete Confirmation ──
+
+    let deleteEscapeHandler = null;
+    let deleteBackdropHandler = null;
+
+    function closeTabDeleteConfirm() {
+        const overlay = document.getElementById('tab-delete-overlay');
+        if (!overlay) return;
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden', 'true');
+        if (deleteEscapeHandler) {
+            document.removeEventListener('keydown', deleteEscapeHandler);
+            deleteEscapeHandler = null;
+        }
+        if (deleteBackdropHandler) {
+            overlay.removeEventListener('click', deleteBackdropHandler);
+            deleteBackdropHandler = null;
+        }
+    }
+
+    window.deleteTab = function (tabId, action, destinationTabId) {
+        const tab = window.tabs.find(function (t) { return t.id === tabId; });
+        if (!tab) return;
+
+        if (action === 'delete') {
+            if (tabId === window.activeTabId) {
+                document.querySelectorAll('.module').forEach(function (el) { el.remove(); });
+            }
+            for (let i = window.modules.length - 1; i >= 0; i--) {
+                if (window.modules[i].tabId === tabId) window.modules.splice(i, 1);
+            }
+        } else if (action === 'move') {
+            const destModules = window.modules.filter(function (m) { return m.tabId === destinationTabId; });
+            let nextOrder = destModules.reduce(function (max, m) { return Math.max(max, m.order); }, -1) + 1;
+            window.modules.forEach(function (m) {
+                if (m.tabId === tabId) { m.tabId = destinationTabId; m.order = nextOrder++; }
+            });
+        }
+
+        window.tabs.splice(window.tabs.indexOf(tab), 1);
+        window.tabs.forEach(function (t, i) { t.order = i; });
+
+        const wasActive = tabId === window.activeTabId;
+        if (wasActive) {
+            if (window.tabs.length === 0) {
+                const fresh = window.createTab();
+                window.renderTabBar();
+                window.switchToTab(fresh.id);
+            } else {
+                window.renderTabBar();
+                window.switchToTab(window.tabs[0].id);
+            }
+        } else {
+            window.renderTabBar();
+            window.scheduleSave();
+        }
+    };
+
+    window.openTabDeleteConfirm = function (tabId) {
+        const tab = window.tabs.find(function (t) { return t.id === tabId; });
+        if (!tab) return;
+
+        const tabModules = window.modules.filter(function (m) { return m.tabId === tabId; });
+        if (tabModules.length === 0) {
+            window.deleteTab(tabId, 'delete');
+            return;
+        }
+
+        const otherTabs = window.tabs
+            .filter(function (t) { return t.id !== tabId; })
+            .sort(function (a, b) { return a.order - b.order; });
+
+        const overlay = document.getElementById('tab-delete-overlay');
+        const panel = document.getElementById('tab-delete-panel');
+        if (!overlay || !panel) return;
+
+        panel.innerHTML = '';
+
+        const header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        header.innerHTML =
+            '<h2 class="cv-modal-title">' + escapeHtml(t('tabs.deleteConfirmTitle')) + '</h2>' +
+            '<button type="button" class="cv-modal-close" title="' + escapeHtml(t('wizard.close')) + '">' +
+            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+            '</button>';
+        header.querySelector('.cv-modal-close').addEventListener('click', closeTabDeleteConfirm);
+        panel.appendChild(header);
+
+        const body = document.createElement('div');
+        body.className = 'cv-modal-body';
+
+        const msg = document.createElement('p');
+        msg.className = 'tab-delete-message';
+        msg.textContent = t('tabs.deleteConfirmMessage');
+        body.appendChild(msg);
+
+        const radioGroup = document.createElement('div');
+        radioGroup.className = 'tab-delete-radio-group';
+
+        let selectedAction = 'delete';
+        let selectedDestId = otherTabs.length > 0 ? otherTabs[0].id : null;
+
+        function buildRadioOption(value, labelContent, disabled) {
+            const lbl = document.createElement('label');
+            lbl.className = 'tab-delete-radio-option' + (disabled ? ' tab-delete-radio-option--disabled' : '') + (value === selectedAction ? ' selected' : '');
+
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = 'tab-delete-action';
+            radio.value = value;
+            radio.checked = value === selectedAction;
+            radio.disabled = disabled;
+
+            const circle = document.createElement('span');
+            circle.className = 'tab-delete-radio-btn';
+
+            lbl.appendChild(radio);
+            lbl.appendChild(circle);
+            lbl.appendChild(labelContent);
+            return { el: lbl, radio: radio };
+        }
+
+        const deleteText = document.createElement('span');
+        deleteText.className = 'tab-delete-radio-label';
+        deleteText.textContent = t('tabs.deleteModules');
+        const deleteOpt = buildRadioOption('delete', deleteText, false);
+        radioGroup.appendChild(deleteOpt.el);
+
+        const hasDestinations = otherTabs.length > 0;
+        const moveRow = document.createElement('span');
+        moveRow.className = 'tab-delete-move-row';
+        const moveText = document.createElement('span');
+        moveText.className = 'tab-delete-radio-label';
+        moveText.textContent = t('tabs.moveModules');
+        moveRow.appendChild(moveText);
+
+        if (hasDestinations) {
+            const selectOpts = otherTabs.map(function (ot) { return { value: ot.id, label: ot.name }; });
+            const selectWidget = window.buildCvSelect(selectOpts, otherTabs[0].id, function (val) { selectedDestId = val; });
+            selectWidget.el.classList.add('tab-delete-select');
+            moveRow.appendChild(selectWidget.el);
+        }
+
+        const moveOpt = buildRadioOption('move', moveRow, !hasDestinations);
+        radioGroup.appendChild(moveOpt.el);
+
+        [deleteOpt, moveOpt].forEach(function (opt) {
+            opt.radio.addEventListener('change', function () {
+                selectedAction = opt.radio.value;
+                deleteOpt.el.classList.toggle('selected', selectedAction === 'delete');
+                moveOpt.el.classList.toggle('selected', selectedAction === 'move');
+            });
+        });
+
+        body.appendChild(radioGroup);
+        panel.appendChild(body);
+
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'btn-secondary';
+        cancelBtn.textContent = t('wizard.cancel');
+        cancelBtn.addEventListener('click', closeTabDeleteConfirm);
+
+        const confirmBtn = document.createElement('button');
+        confirmBtn.type = 'button';
+        confirmBtn.className = 'btn-danger';
+        confirmBtn.textContent = t('tabs.deleteConfirm');
+        confirmBtn.addEventListener('click', function () {
+            closeTabDeleteConfirm();
+            if (selectedAction === 'move' && selectedDestId) {
+                window.deleteTab(tabId, 'move', selectedDestId);
+            } else {
+                window.deleteTab(tabId, 'delete');
+            }
+        });
+
+        footer.appendChild(cancelBtn);
+        footer.appendChild(confirmBtn);
+        panel.appendChild(footer);
+
+        deleteBackdropHandler = function (e) {
+            if (e.target === overlay) closeTabDeleteConfirm();
+        };
+        overlay.addEventListener('click', deleteBackdropHandler);
+
+        deleteEscapeHandler = function (e) {
+            if (e.key === 'Escape') closeTabDeleteConfirm();
+        };
+        document.addEventListener('keydown', deleteEscapeHandler);
+
+        overlay.setAttribute('aria-hidden', 'false');
+        requestAnimationFrame(function () { overlay.classList.add('open'); });
+    };
+
     // ── Tab Bar Rendering ──
     window.renderTabBar = function () {
         const scrollArea = document.getElementById('tab-scroll-area');
         if (!scrollArea) return;
+
+        if (tabSortable) {
+            tabSortable.destroy();
+            tabSortable = null;
+        }
 
         scrollArea.innerHTML = '';
 
@@ -378,13 +586,24 @@
             const el = document.createElement('div');
             el.className = 'tab-item' + (tab.id === window.activeTabId ? ' active' : '');
             el.dataset.tabId = tab.id;
-            el.textContent = tab.name;
             el.setAttribute('title', tab.name);
             if (tab.color) {
                 el.style.backgroundColor = tab.color;
             }
 
-            el.addEventListener('click', function () {
+            const handle = document.createElement('div');
+            handle.className = 'tab-drag-handle';
+            handle.setAttribute('aria-hidden', 'true');
+            handle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="8" height="12" viewBox="0 0 8 12" fill="currentColor"><circle cx="2" cy="2.5" r="1.1"/><circle cx="6" cy="2.5" r="1.1"/><circle cx="2" cy="6" r="1.1"/><circle cx="6" cy="6" r="1.1"/><circle cx="2" cy="9.5" r="1.1"/><circle cx="6" cy="9.5" r="1.1"/></svg>';
+            el.appendChild(handle);
+
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'tab-name';
+            nameSpan.textContent = tab.name;
+            el.appendChild(nameSpan);
+
+            el.addEventListener('click', function (e) {
+                if (e.target.closest('.tab-drag-handle')) return;
                 if (tab.id !== window.activeTabId) {
                     window.switchToTab(tab.id);
                 }
@@ -396,13 +615,26 @@
                 showTabContextMenu(e.clientX, e.clientY, [
                     { label: t('tabs.createNew'), action: createAndSwitchTab },
                     { label: t('tabs.openSettings'), action: function () { window.openTabSettings(tab.id); } },
-                    { label: t('tabs.delete'), danger: true, action: function () {
-                        // Phase 4: openTabDeleteConfirm(tab.id)
-                    }},
+                    { label: t('tabs.delete'), danger: true, action: function () { window.openTabDeleteConfirm(tab.id); } },
                 ]);
             });
 
             scrollArea.appendChild(el);
+        });
+
+        tabSortable = new Sortable(scrollArea, {
+            handle: '.tab-drag-handle',
+            animation: 150,
+            ghostClass: 'tab-ghost',
+            draggable: '.tab-item',
+            direction: 'horizontal',
+            onEnd: function () {
+                Array.from(scrollArea.querySelectorAll('.tab-item')).forEach(function (el, i) {
+                    const tab = window.tabs.find(function (t) { return t.id === el.dataset.tabId; });
+                    if (tab) tab.order = i;
+                });
+                window.scheduleSave();
+            },
         });
     };
 

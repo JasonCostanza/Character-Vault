@@ -74,6 +74,9 @@
             'module.deleteModule': 'Delete Module',
             'module.dragResize': 'Drag to resize',
             'module.moreOptions': 'More options',
+            'module.moveToTab': 'Move to Tab',
+            'module.moveToTabNoOtherTabs': 'No other tabs available',
+            'module.moveToTabMoved': 'Moved to {tab}',
 
             // Module type labels
             'type.abilities': 'Abilities',
@@ -1323,6 +1326,9 @@
             'module.deleteModule': 'Eliminar Módulo',
             'module.dragResize': 'Arrastrar para redimensionar',
             'module.moreOptions': 'Más opciones',
+            'module.moveToTab': 'Mover a Pestaña',
+            'module.moveToTabNoOtherTabs': 'No hay otras pestañas disponibles',
+            'module.moveToTabMoved': 'Movido a {tab}',
 
             'type.abilities': 'Habilidades',
             'type.activity': 'Registro de Actividad',
@@ -2547,6 +2553,9 @@
             'module.deleteModule': 'Supprimer le Module',
             'module.dragResize': 'Glisser pour redimensionner',
             'module.moreOptions': "Plus d'options",
+            'module.moveToTab': "Déplacer vers l'onglet",
+            'module.moveToTabNoOtherTabs': 'Aucun autre onglet disponible',
+            'module.moveToTabMoved': 'Déplacé vers {tab}',
 
             'type.abilities': 'Compétences',
             'type.activity': 'Journal d\'Activité',
@@ -3793,6 +3802,9 @@
             'module.deleteModule': 'Modul löschen',
             'module.dragResize': 'Ziehen zum Ändern der Größe',
             'module.moreOptions': 'Mehr Optionen',
+            'module.moveToTab': 'In Tab verschieben',
+            'module.moveToTabNoOtherTabs': 'Keine anderen Tabs verfügbar',
+            'module.moveToTabMoved': 'Verschoben nach {tab}',
 
             'type.abilities': 'Fähigkeiten',
             'type.activity': 'Activity Log',
@@ -4501,6 +4513,9 @@
             'module.deleteModule': 'Elimina Modulo',
             'module.dragResize': 'Trascina per ridimensionare',
             'module.moreOptions': 'Altre opzioni',
+            'module.moveToTab': 'Sposta nella scheda',
+            'module.moveToTabNoOtherTabs': "Nessun'altra scheda disponibile",
+            'module.moveToTabMoved': 'Spostato in {tab}',
 
             // Module type labels
             'type.abilities': 'Abilità',
@@ -5147,6 +5162,9 @@
             'module.deleteModule': 'Excluir Módulo',
             'module.dragResize': 'Arrastar para redimensionar',
             'module.moreOptions': 'Mais opções',
+            'module.moveToTab': 'Mover para Guia',
+            'module.moveToTabNoOtherTabs': 'Nenhuma outra guia disponível',
+            'module.moveToTabMoved': 'Movido para {tab}',
 
             'type.abilities': 'Habilidades',
             'type.activity': 'Activity Log',
@@ -5785,6 +5803,9 @@
             'module.deleteModule': 'Удалить Модуль',
             'module.dragResize': 'Перетащите для изменения размера',
             'module.moreOptions': 'Дополнительные параметры',
+            'module.moveToTab': 'Переместить во вкладку',
+            'module.moveToTabNoOtherTabs': 'Нет других доступных вкладок',
+            'module.moveToTabMoved': 'Перемещено во вкладку {tab}',
 
             'type.abilities': 'Навыки',
             'type.activity': 'Activity Log',

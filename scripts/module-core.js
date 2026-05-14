@@ -1236,6 +1236,97 @@
         closeDeleteConfirm();
     });
 
+    // ── Move to Tab Modal ──
+    function openMoveToTabModal(moduleEl, data) {
+        const otherTabs = window.tabs
+            .filter((tab) => tab.id !== data.tabId)
+            .sort((a, b) => a.order - b.order);
+
+        if (otherTabs.length === 0) {
+            window.showToast(t('module.moveToTabNoOtherTabs'));
+            return;
+        }
+
+        const existing = document.querySelector('.module-movetab-overlay');
+        if (existing) existing.remove();
+
+        const overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay module-movetab-overlay';
+
+        const panel = document.createElement('div');
+        panel.className = 'cv-modal-panel';
+        panel.style.width = '280px';
+
+        const header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        const titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = t('module.moveToTab');
+        const closeXBtn = document.createElement('button');
+        closeXBtn.type = 'button';
+        closeXBtn.className = 'cv-modal-close';
+        closeXBtn.title = t('wizard.close');
+        closeXBtn.innerHTML = window.CV_SVG_CLOSE;
+        header.appendChild(titleEl);
+        header.appendChild(closeXBtn);
+        panel.appendChild(header);
+
+        const body = document.createElement('div');
+        body.className = 'cv-modal-body module-movetab-body';
+        otherTabs.forEach((tab) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'module-movetab-tab-item';
+            btn.textContent = tab.name;
+            btn.addEventListener('click', () => performMove(tab));
+            body.appendChild(btn);
+        });
+        panel.appendChild(body);
+
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'btn-secondary sm';
+        cancelBtn.textContent = t('delete.cancel');
+        cancelBtn.addEventListener('click', close);
+        footer.appendChild(cancelBtn);
+        panel.appendChild(footer);
+
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+
+        function performMove(destTab) {
+            data.order = window.modules.filter((m) => m.tabId === destTab.id).length;
+            data.tabId = destTab.id;
+            const bodyEl = moduleEl.querySelector('.module-body');
+            if (bodyEl) moduleSizeObserver.unobserve(bodyEl);
+            moduleEl.remove();
+            updateEmptyState();
+            scheduleSave();
+            window.showToast(t('module.moveToTabMoved', { tab: destTab.name }));
+            close();
+        }
+
+        function close() {
+            overlay.remove();
+            document.removeEventListener('keydown', keyHandler);
+        }
+
+        closeXBtn.addEventListener('click', close);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) close();
+        });
+
+        const keyHandler = (e) => {
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                close();
+            }
+        };
+        document.addEventListener('keydown', keyHandler);
+    }
+
     // ── Edit/Play Mode Switching ──
     function applyPlayMode() {
         closeOverflowMenu();

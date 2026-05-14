@@ -27,6 +27,13 @@ beforeEach(() => {
   globalThis.renderModule = vi.fn();
   globalThis.updateEmptyState = vi.fn();
 
+  // Tab globals required by serializeCharacter
+  globalThis.tabs = [];
+  globalThis.activeTabId = null;
+  globalThis.getTabIdCounter = vi.fn().mockReturnValue(0);
+  globalThis.setTabIdCounter = vi.fn();
+  globalThis.renderTabBar = vi.fn();
+
   loadScript('scripts/shared.js');
   loadScript('scripts/i18n.js');
   loadScript('scripts/theme.js');

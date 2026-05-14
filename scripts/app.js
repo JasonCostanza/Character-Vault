@@ -6,8 +6,17 @@ window.pendingRolls = {}; // rollId → { logEntryId } — populated by roll sit
     applyTranslations();
     refreshModuleLabels();
 
-    // ── Auto-Load on Startup ──
-    if (chkAutoLoad.checked && typeof TS !== 'undefined') {
-        loadCharacter();
+    async function init() {
+        if (chkAutoLoad.checked && typeof TS !== 'undefined') {
+            await loadCharacter();
+        }
+        // Fresh start or failed load — ensure at least one tab always exists
+        if (window.tabs.length === 0) {
+            const defaultTab = window.createTab();
+            window.activeTabId = defaultTab.id;
+            window.renderTabBar();
+            window.updateEmptyState();
+        }
     }
+    init();
 })();

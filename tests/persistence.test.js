@@ -13,14 +13,21 @@ beforeEach(() => {
   globalThis.updateEmptyState = vi.fn();
   globalThis.chkAutoSave = { checked: false };
 
+  // Tab globals required by serializeCharacter / deserializeCharacter
+  globalThis.tabs = [];
+  globalThis.activeTabId = null;
+  globalThis.getTabIdCounter = vi.fn().mockReturnValue(0);
+  globalThis.setTabIdCounter = vi.fn();
+  globalThis.renderTabBar = vi.fn();
+
   loadScript('scripts/persistence.js');
 });
 
 describe('migrateData', () => {
   it('passes through when no migrators match', () => {
-    const blob = { version: 1, modules: [] };
+    const blob = { version: 2, modules: [] };
     const result = migrateData(blob);
-    expect(result.version).toBe(1);
+    expect(result.version).toBe(2);
     expect(result.modules).toEqual([]);
   });
 });
@@ -46,7 +53,7 @@ describe('serializeCharacter / deserializeCharacter round-trip', () => {
     const json = serializeCharacter();
     const parsed = JSON.parse(json);
 
-    expect(parsed.version).toBe(1);
+    expect(parsed.version).toBe(2);
     expect(parsed.modules).toHaveLength(1);
     expect(parsed.modules[0].id).toBe('module-001');
     expect(parsed.modules[0].content).toBe('Hello world');
@@ -71,7 +78,7 @@ describe('serializeCharacter / deserializeCharacter round-trip', () => {
     const json = serializeCharacter();
     const parsed = JSON.parse(json);
 
-    expect(parsed.version).toBe(1);
+    expect(parsed.version).toBe(2);
     expect(parsed.modules).toEqual([]);
     expect(parsed.moduleIdCounter).toBe(0);
   });

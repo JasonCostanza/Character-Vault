@@ -93,7 +93,8 @@
         const validTabId = window.tabs.find(function (t) { return t.id === savedTabId; }) ? savedTabId : null;
         window.activeTabId = validTabId ?? (window.tabs[0]?.id ?? null);
 
-        // Rebuild modules sorted by order (Phase 1: render all; Phase 2 will scope to active tab)
+        // Push all modules to memory; render only the active tab's modules to the DOM
+        const resolvedActiveTabId = window.activeTabId;
         blob.modules
             .slice()
             .sort((a, b) => a.order - b.order)
@@ -115,7 +116,9 @@
                     content: saved.content ?? '',
                 };
                 modules.push(data);
-                renderModule(data);
+                if (data.tabId === resolvedActiveTabId) {
+                    renderModule(data);
+                }
             });
 
         modules.forEach((m, i) => (m.order = i));

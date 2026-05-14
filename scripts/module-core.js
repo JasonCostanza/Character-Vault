@@ -176,7 +176,7 @@
             title: null,
             colSpan: 2,
             rowSpan: 2,
-            order: window.modules.length,
+            order: window.modules.filter(m => m.tabId === window.activeTabId).length,
             theme: wizardState.theme,
             tabId: window.activeTabId,
             content: '',
@@ -419,7 +419,8 @@
     const emptyState = document.getElementById('empty-state');
 
     function updateEmptyState() {
-        emptyState.style.display = window.modules.length === 0 ? 'flex' : 'none';
+        const tabModuleCount = window.modules.filter(m => m.tabId === window.activeTabId).length;
+        emptyState.style.display = tabModuleCount === 0 ? 'flex' : 'none';
     }
 
     // ── Module Overflow Menu ──
@@ -1162,10 +1163,10 @@
         filter: '#empty-state',
         disabled: window.isPlayMode,
         onEnd(evt) {
-            // Sync the modules array to match the new DOM order
             const orderedIds = Array.from(moduleGrid.querySelectorAll('.module')).map((el) => el.dataset.id);
-            window.modules.sort((a, b) => orderedIds.indexOf(a.id) - orderedIds.indexOf(b.id));
-            window.modules.forEach((m, i) => (m.order = i));
+            const activeModules = window.modules.filter((m) => m.tabId === window.activeTabId);
+            activeModules.sort((a, b) => orderedIds.indexOf(a.id) - orderedIds.indexOf(b.id));
+            activeModules.forEach((m, i) => (m.order = i));
             console.log(`[CV] Module reordered: ${evt.item.dataset.id} → position ${evt.newIndex}`);
             scheduleSave();
         },

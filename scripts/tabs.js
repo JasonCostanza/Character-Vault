@@ -411,6 +411,9 @@
             });
         }
 
+        const sortedBefore = window.tabs.slice().sort(function (a, b) { return a.order - b.order; });
+        const deletedVisualIndex = sortedBefore.findIndex(function (t) { return t.id === tabId; });
+
         window.tabs.splice(window.tabs.indexOf(tab), 1);
         window.tabs.forEach(function (t, i) { t.order = i; });
 
@@ -421,8 +424,11 @@
                 window.renderTabBar();
                 window.switchToTab(fresh.id);
             } else {
+                const nextTabId = deletedVisualIndex > 0
+                    ? sortedBefore[deletedVisualIndex - 1].id
+                    : sortedBefore[1].id;
                 window.renderTabBar();
-                window.switchToTab(window.tabs[0].id);
+                window.switchToTab(nextTabId);
             }
         } else {
             window.renderTabBar();

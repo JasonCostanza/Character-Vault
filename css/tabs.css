@@ -76,6 +76,85 @@
     box-shadow: inset 0 -2px 0 var(--cv-accent);
 }
 
+/* ── Tab Context Menu ── */
+
+.tab-context-menu {
+    position: fixed;
+    z-index: 300;
+    background: var(--cv-bg-surface);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    padding: 4px 0;
+    min-width: 160px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    user-select: none;
+}
+
+.tab-context-item {
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--cv-text);
+    cursor: pointer;
+    transition: background 0.1s ease;
+}
+
+.tab-context-item:hover {
+    background: var(--cv-bg-raised);
+}
+
+.tab-context-item--danger {
+    color: var(--cv-danger);
+}
+
+.tab-context-item--danger:hover {
+    background: rgba(184, 64, 64, 0.1);
+}
+
+/* ── Tab Settings Modal ── */
+
+#tab-settings-overlay {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+#tab-settings-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+#tab-settings-overlay .cv-modal-panel {
+    transform: scale(0.97);
+    transition: transform 0.2s ease;
+}
+
+#tab-settings-overlay.open .cv-modal-panel {
+    transform: scale(1);
+}
+
+.tab-settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.tab-settings-rename {
+    user-select: text;
+}
+
+.tab-settings-hex {
+    user-select: text;
+}
+
+.tab-settings-danger {
+    padding-top: 12px;
+    border-top: 1px solid var(--cv-border-subtle);
+}
+
+.tab-settings-delete {
+    width: 100%;
+}
+
 /* ── Add Tab Button ── */
 
 #btn-add-tab {

@@ -341,6 +341,18 @@
         return label;
     }
 
+    // ── Close All Gameplay Modals ──
+    function closeAllModals() {
+        document.querySelectorAll('.cv-modal-overlay:not(.cv-tab-overlay)').forEach(function (el) {
+            if (el.id) return;
+            if (el._keyHandler) {
+                document.removeEventListener('keydown', el._keyHandler);
+            }
+            el.remove();
+        });
+    }
+
+    window.closeAllModals = closeAllModals;
     window.escapeHtml = escapeHtml;
     window.renderMarkdown = renderMarkdown;
     window.attachCheckboxHandlers = attachCheckboxHandlers;

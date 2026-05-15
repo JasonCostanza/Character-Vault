@@ -283,10 +283,20 @@
         });
     });
 
+    // ── Dice ──
+    const chkDiceCloseModals = document.getElementById('chk-dice-close-modals');
+    chkDiceCloseModals.checked = localStorage.getItem('cv-dice-close-modals') === 'true';
+    window.diceCloseModals = chkDiceCloseModals.checked;
+    chkDiceCloseModals.addEventListener('change', () => {
+        localStorage.setItem('cv-dice-close-modals', chkDiceCloseModals.checked);
+        window.diceCloseModals = chkDiceCloseModals.checked;
+    });
+
     window.settingsOverlay = settingsOverlay;
     window.openSettings = openSettings;
     window.closeSettings = closeSettings;
     window.updateThemeButtons = updateThemeButtons;
     window.chkAutoSave = chkAutoSave;
     window.chkAutoLoad = chkAutoLoad;
+    window.chkDiceCloseModals = chkDiceCloseModals;
 })();

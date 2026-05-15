@@ -95,6 +95,15 @@ export function setupMinimalDOM() {
             </div>
           </div>
 
+          <!-- Dice -->
+          <div class="settings-section">
+            <div class="settings-checkbox-row">
+              <input type="checkbox" id="chk-dice-close-modals">
+              <label for="chk-dice-close-modals" data-i18n="settings.diceCloseModals">Close modals when dice resolve</label>
+              <span class="settings-tooltip" data-tip="Auto-close modals on dice resolve." data-i18n-tip="settings.diceCloseModalsTip">?</span>
+            </div>
+          </div>
+
           <!-- Troubleshooting -->
           <div class="settings-section">
             <label class="settings-label" data-i18n="settings.troubleshooting">Troubleshooting</label>

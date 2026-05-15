@@ -478,6 +478,10 @@
     window.handleRollResult = async function (event) {
         console.log('[CV] handleRollResult', event.kind, event.payload && event.payload.rollId);
         if (event.kind === 'rollResults') {
+            if (window.diceCloseModals && window.closeAllModals) {
+                window.closeAllModals();
+            }
+
             let total = 0;
             if (typeof TS !== 'undefined' && event.payload.resultsGroups) {
                 for (const group of event.payload.resultsGroups) {

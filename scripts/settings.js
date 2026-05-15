@@ -286,10 +286,8 @@
     // ── Dice ──
     const chkDiceCloseModals = document.getElementById('chk-dice-close-modals');
     chkDiceCloseModals.checked = localStorage.getItem('cv-dice-close-modals') === 'true';
-    window.diceCloseModals = chkDiceCloseModals.checked;
     chkDiceCloseModals.addEventListener('change', () => {
         localStorage.setItem('cv-dice-close-modals', chkDiceCloseModals.checked);
-        window.diceCloseModals = chkDiceCloseModals.checked;
     });
 
     window.settingsOverlay = settingsOverlay;

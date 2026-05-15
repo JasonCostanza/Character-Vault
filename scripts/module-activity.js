@@ -478,7 +478,7 @@
     window.handleRollResult = async function (event) {
         console.log('[CV] handleRollResult', event.kind, event.payload && event.payload.rollId);
         if (event.kind === 'rollResults') {
-            if (window.diceCloseModals && window.closeAllModals) {
+            if (window.chkDiceCloseModals && window.chkDiceCloseModals.checked) {
                 window.closeAllModals();
             }
 

@@ -6,7 +6,6 @@
     var MAX_MSG_LENGTH = 480;
 
     // ── Connection State ──
-    var connectedClients = [];   // clientFragment IDs for connected CV peers
     var connectedPlayers = {};   // clientId → { clientId, playerId, playerName }
     var myClient = null;         // own clientFragment (from TS.clients.whoAmI)
     var myPlayer = null;         // own playerFragment (from TS.players.whoAmI)
@@ -16,7 +15,10 @@
     var pendingIncoming = {};    // txnId → { fromClient, fromName, mode, src, data, meta, receivedAt }
 
     // ── Initialization ──
+    var _sweepInterval = null;
+
     function initSync() {
+        if (_sweepInterval !== null) return;
         if (typeof TS === 'undefined') return;
         Promise.all([
             TS.clients.whoAmI(),
@@ -38,7 +40,7 @@
         }).catch(function (err) {
             console.error('[CV Sync] initSync error:', err);
         });
-        setInterval(sweepTimeouts, 5000);
+        _sweepInterval = setInterval(sweepTimeouts, 5000);
     }
 
     function addConnectedClient(clientFragment) {
@@ -49,7 +51,6 @@
             playerId: clientFragment.player ? clientFragment.player.id : null,
             playerName: clientFragment.player ? clientFragment.player.name : 'Unknown'
         };
-        if (connectedClients.indexOf(cid) === -1) connectedClients.push(cid);
     }
 
     // ── Manifest Handlers ──
@@ -66,8 +67,8 @@
         var fromClientId = event.payload.fromClient ? event.payload.fromClient.id : null;
         switch (msg.t) {
             case 'offer':   handleOffer(msg, fromClientId); break;
-            case 'accept':  handleAccept(msg); break;
-            case 'decline': handleDecline(msg); break;
+            case 'accept':  resolveOutgoing(msg.txn, 'transfer.accepted', true); break;
+            case 'decline': resolveOutgoing(msg.txn, 'transfer.declined', false); break;
             case 'cancel':  handleCancel(msg); break;
             case 'ping':    handlePing(fromClientId); break;
             case 'pong':    break;
@@ -86,30 +87,26 @@
                 addConnectedClient(client);
                 updateConnectionIndicator();
                 var name = (connectedPlayers[client.id] || {}).playerName || 'Unknown';
-                showTransferToast(window.t('transfer.connected', { name: name }));
+                window.showToast(window.t('transfer.connected', { name: name }), 'info');
             }).catch(console.error);
         } else if (event.kind === 'clientDisconnected') {
             var clientId = event.payload.clientId;
             var name = (connectedPlayers[clientId] || {}).playerName || 'Unknown';
             delete connectedPlayers[clientId];
-            var idx = connectedClients.indexOf(clientId);
-            if (idx !== -1) connectedClients.splice(idx, 1);
             updateConnectionIndicator();
-            showTransferToast(window.t('transfer.disconnected', { name: name }));
-            // Auto-cancel any outgoing transfers to the disconnected client
+            window.showToast(window.t('transfer.disconnected', { name: name }), 'info');
+            // A disconnected peer can no longer respond; cancel to unblock the sender.
             Object.keys(pendingOutgoing).forEach(function (txnId) {
                 if (pendingOutgoing[txnId].targetClient === clientId) {
                     clearPendingOutgoing(txnId);
-                    showTransferToast(window.t('transfer.cancelled'));
+                    window.showToast(window.t('transfer.cancelled'), 'info');
                 }
             });
         }
     };
 
     // clients.onClientEvent — board-level events (join/leave/mode change)
-    window.handleClientEvent = function (event) {
-        // clientModeChanged will be used in Phase 2 for GM detection
-    };
+    window.handleClientEvent = function (event) {};
 
     // ── Protocol Handlers ──
 
@@ -124,33 +121,23 @@
             meta: msg.meta,
             receivedAt: Date.now()
         };
-        // Phase 1C: show incoming toast + open review modal
         console.log('[CV Sync] Offer received txn:', msg.txn, 'from:', msg.from);
     }
 
-    function handleAccept(msg) {
-        var txn = pendingOutgoing[msg.txn];
+    function resolveOutgoing(txnId, toastKey, removeItem) {
+        var txn = pendingOutgoing[txnId];
         if (!txn) return;
-        if (txn.mode !== 'copy') removeTransferredItem(txn);
+        if (removeItem && txn.mode !== 'copy') removeTransferredItem(txn);
         var name = (connectedPlayers[txn.targetClient] || {}).playerName || 'Player';
-        showTransferToast(window.t('transfer.accepted', { name: name }));
-        clearPendingOutgoing(msg.txn);
-    }
-
-    function handleDecline(msg) {
-        var txn = pendingOutgoing[msg.txn];
-        if (!txn) return;
-        var name = (connectedPlayers[txn.targetClient] || {}).playerName || 'Player';
-        showTransferToast(window.t('transfer.declined', { name: name }));
-        clearPendingOutgoing(msg.txn);
+        window.showToast(window.t(toastKey, { name: name }), 'info');
+        clearPendingOutgoing(txnId);
     }
 
     function handleCancel(msg) {
         var incoming = pendingIncoming[msg.txn];
         if (!incoming) return;
-        showTransferToast(window.t('transfer.cancelledBy', { name: incoming.fromName }));
+        window.showToast(window.t('transfer.cancelledBy', { name: incoming.fromName }), 'info');
         delete pendingIncoming[msg.txn];
-        // Phase 1C: close incoming modal if open for this txn
     }
 
     function handlePing(fromClientId) {
@@ -202,20 +189,20 @@
         var idx = mod.content.items.findIndex(function (it) { return it.id === txn.itemId; });
         if (idx !== -1) {
             mod.content.items.splice(idx, 1);
-            if (typeof window.scheduleSave === 'function') window.scheduleSave();
-            // Phase 1C: re-render the list module
+            window.scheduleSave();
         }
     }
 
     // ── Timeout Sweep ──
 
     function sweepTimeouts() {
+        if (!Object.keys(pendingOutgoing).length && !Object.keys(pendingIncoming).length) return;
         var now = Date.now();
         Object.keys(pendingOutgoing).forEach(function (txnId) {
             var txn = pendingOutgoing[txnId];
             if (txn.state === 'pending' && now - txn.timestamp > SENDER_TIMEOUT_MS) {
                 sendMessage('cancel', txn.targetClient, { txn: txnId });
-                showTransferToast(window.t('transfer.timedOut'));
+                window.showToast(window.t('transfer.timedOut'), 'info');
                 clearPendingOutgoing(txnId);
             }
         });
@@ -224,7 +211,6 @@
             if (now - incoming.receivedAt > RECEIVER_TIMEOUT_MS) {
                 sendMessage('decline', incoming.fromClient, { txn: txnId });
                 delete pendingIncoming[txnId];
-                // Phase 1C: close incoming modal if open
             }
         });
     }
@@ -241,12 +227,6 @@
             indicator.style.display = '';
         } else {
             indicator.style.display = 'none';
-        }
-    }
-
-    function showTransferToast(message) {
-        if (typeof window.showToast === 'function' && message) {
-            window.showToast(message, 'info');
         }
     }
 
@@ -299,21 +279,15 @@
         if (msg.v === undefined || msg.v === null) return false;
         if (!msg.t || typeof msg.t !== 'string') return false;
         if (!msg.txn || typeof msg.txn !== 'string') return false;
-        if (msg.from && typeof msg.from === 'string') msg.from = escapeStr(msg.from);
+        if (msg.from && typeof msg.from === 'string') msg.from = window.escapeHtml(msg.from);
         if (msg.data && typeof msg.data === 'object') sanitizeObject(msg.data);
         return true;
-    }
-
-    function escapeStr(str) {
-        return typeof window.escapeHtml === 'function'
-            ? window.escapeHtml(str)
-            : String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
     function sanitizeObject(obj) {
         if (!obj || typeof obj !== 'object') return;
         Object.keys(obj).forEach(function (key) {
-            if (typeof obj[key] === 'string') obj[key] = escapeStr(obj[key]);
+            if (typeof obj[key] === 'string') obj[key] = window.escapeHtml(obj[key]);
             else if (obj[key] && typeof obj[key] === 'object') sanitizeObject(obj[key]);
         });
     }

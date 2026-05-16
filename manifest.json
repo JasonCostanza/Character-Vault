@@ -29,7 +29,8 @@
                 "onClientEvent": "handleClientEvent"
             },
             "sync": {
-                "onSyncMessage": "handleSyncMessage"
+                "onSyncMessage": "handleSyncMessage",
+                "onClientEvent": "handleSyncClientEvent"
             }
         }
     },

@@ -1,0 +1,34 @@
+/* ── Sync Connection Indicator ── */
+.sync-indicator {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    padding: 0 6px;
+    color: var(--cv-text-muted);
+    font-size: 12px;
+    user-select: none;
+}
+
+.sync-indicator svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+}
+
+/* ── Pending Transfer State (Phase 1B) ── */
+.list-item-pending {
+    opacity: 0.45;
+    pointer-events: none;
+    position: relative;
+}
+
+.list-item-pending::after {
+    content: '⏳';
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    pointer-events: none;
+    opacity: 1;
+}

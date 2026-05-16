@@ -179,8 +179,11 @@
 
     function removePendingUIState(txn) {
         if (!txn.moduleId || !txn.itemId) return;
-        var row = document.querySelector('[data-id="' + txn.moduleId + '"] [data-item-id="' + txn.itemId + '"]');
-        if (row) row.classList.remove('list-item-pending');
+        var row = document.querySelector('[data-module-id="' + txn.moduleId + '"][data-item-id="' + txn.itemId + '"]');
+        if (!row) return;
+        row.classList.remove('list-item-pending');
+        var cancelBtn = row.querySelector('.list-item-cancel-btn');
+        if (cancelBtn) cancelBtn.remove();
     }
 
     function removeTransferredItem(txn) {
@@ -191,6 +194,177 @@
             mod.content.items.splice(idx, 1);
             window.scheduleSave();
         }
+    }
+
+    // ── Player Picker Modal ──
+
+    function openSendToPlayerModal(itemData, srcType, moduleMeta, moduleId, itemId) {
+        if (typeof TS === 'undefined') return;
+
+        var existing = document.querySelector('.transfer-player-overlay');
+        if (existing) existing.remove();
+
+        var players = window.getConnectedPlayers();
+        var itemName = (itemData && itemData.name) ? itemData.name : '';
+
+        var overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay transfer-player-overlay';
+
+        var panel = document.createElement('div');
+        panel.className = 'cv-modal-panel';
+
+        // Header
+        var header = document.createElement('div');
+        header.className = 'cv-modal-header';
+
+        var titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = window.t('transfer.sendToPlayer');
+
+        var closeXBtn = document.createElement('button');
+        closeXBtn.type = 'button';
+        closeXBtn.className = 'cv-modal-close';
+        closeXBtn.title = window.t('transfer.close');
+        closeXBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+
+        header.appendChild(titleEl);
+        header.appendChild(closeXBtn);
+        panel.appendChild(header);
+
+        // Body
+        var body = document.createElement('div');
+        body.className = 'cv-modal-body transfer-picker-body';
+
+        if (itemName) {
+            var itemLabel = document.createElement('div');
+            itemLabel.className = 'transfer-picker-item-name';
+            itemLabel.textContent = window.escapeHtml(itemName);
+            body.appendChild(itemLabel);
+        }
+
+        var selectedClientId = null;
+        var sendBtn = null;
+
+        if (players.length === 0) {
+            var noPlayers = document.createElement('div');
+            noPlayers.className = 'transfer-no-players';
+
+            var noPlayersMsg = document.createElement('p');
+            noPlayersMsg.className = 'transfer-no-players-msg';
+            noPlayersMsg.textContent = window.t('transfer.noPlayersOnline');
+
+            var noPlayersHint = document.createElement('p');
+            noPlayersHint.className = 'transfer-no-players-hint';
+            noPlayersHint.textContent = window.t('transfer.noPlayersHint');
+
+            noPlayers.appendChild(noPlayersMsg);
+            noPlayers.appendChild(noPlayersHint);
+            body.appendChild(noPlayers);
+        } else {
+            var sendToLabel = document.createElement('div');
+            sendToLabel.className = 'cv-modal-label';
+            sendToLabel.textContent = window.t('transfer.sendTo');
+            body.appendChild(sendToLabel);
+
+            var playerList = document.createElement('div');
+            playerList.className = 'transfer-player-list';
+
+            players.forEach(function (player) {
+                var item = document.createElement('div');
+                item.className = 'transfer-player-item';
+                item.dataset.clientId = player.clientId;
+
+                var nameSpan = document.createElement('span');
+                nameSpan.className = 'transfer-player-name';
+                nameSpan.textContent = window.escapeHtml(player.playerName);
+
+                item.appendChild(nameSpan);
+                item.addEventListener('click', function () {
+                    playerList.querySelectorAll('.transfer-player-item').forEach(function (el) {
+                        el.classList.remove('selected');
+                    });
+                    item.classList.add('selected');
+                    selectedClientId = player.clientId;
+                    if (sendBtn) sendBtn.disabled = false;
+                });
+
+                playerList.appendChild(item);
+            });
+
+            body.appendChild(playerList);
+        }
+
+        panel.appendChild(body);
+
+        // Footer
+        var footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+
+        var cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'btn-secondary sm';
+        cancelBtn.textContent = players.length > 0 ? window.t('transfer.cancel') : window.t('transfer.close');
+
+        if (players.length > 0) {
+            sendBtn = document.createElement('button');
+            sendBtn.type = 'button';
+            sendBtn.className = 'btn-primary sm';
+            sendBtn.textContent = window.t('transfer.send');
+            sendBtn.disabled = true;
+            sendBtn.addEventListener('click', function () {
+                if (!selectedClientId) return;
+                var compact = window.compactForTransfer(itemData, srcType, moduleMeta);
+                sendOffer(selectedClientId, compact, srcType, moduleMeta, moduleId, itemId);
+                close();
+            });
+        }
+
+        footer.appendChild(cancelBtn);
+        if (sendBtn) footer.appendChild(sendBtn);
+        panel.appendChild(footer);
+
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+
+        function close() {
+            overlay.remove();
+            document.removeEventListener('keydown', keyHandler);
+        }
+
+        cancelBtn.addEventListener('click', close);
+        closeXBtn.addEventListener('click', close);
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) close();
+        });
+
+        var keyHandler = function (e) {
+            if (e.key === 'Escape') { e.stopPropagation(); close(); }
+        };
+        document.addEventListener('keydown', keyHandler);
+    }
+
+    function sendOffer(targetClientId, compactItem, srcType, moduleMeta, moduleId, itemId) {
+        var txnId = generateTxnId();
+        var metaAttrs = (moduleMeta && moduleMeta.attrs) ? moduleMeta.attrs.map(function (a) {
+            return { name: a.name, type: a.type };
+        }) : [];
+        sendMessage('offer', targetClientId, {
+            txn: txnId,
+            mode: 'move',
+            src: srcType,
+            data: compactItem,
+            meta: { attrs: metaAttrs }
+        });
+        pendingOutgoing[txnId] = {
+            targetClient: targetClientId,
+            mode: 'move',
+            src: srcType,
+            moduleId: moduleId,
+            itemId: itemId,
+            timestamp: Date.now(),
+            state: 'pending'
+        };
+        window.reapplyPendingStates();
     }
 
     // ── Timeout Sweep ──
@@ -240,6 +414,7 @@
     function compactListItem(item, moduleData) {
         var compact = {};
         if (item.name) compact.name = item.name;
+        if (item.notes) compact.notes = item.notes;
 
         var attrs = (moduleData && moduleData.attrs) ? moduleData.attrs : [];
         var idToName = {};
@@ -295,6 +470,37 @@
     // ── Public API ──
     window.initSync = initSync;
     window.getConnectedPlayers = function () { return Object.values(connectedPlayers); };
+
+    window.openSendToPlayerModal = openSendToPlayerModal;
+
+    window.cancelPendingTransfer = function (txnId) {
+        var txn = pendingOutgoing[txnId];
+        if (!txn) return;
+        sendMessage('cancel', txn.targetClient, { txn: txnId });
+        clearPendingOutgoing(txnId);
+        window.showToast(window.t('transfer.cancelled'), 'info');
+    };
+
+    window.reapplyPendingStates = function () {
+        Object.keys(pendingOutgoing).forEach(function (txnId) {
+            var txn = pendingOutgoing[txnId];
+            if (!txn.moduleId || !txn.itemId) return;
+            var row = document.querySelector('[data-module-id="' + txn.moduleId + '"][data-item-id="' + txn.itemId + '"]');
+            if (!row) return;
+            if (!row.classList.contains('list-item-pending')) {
+                row.classList.add('list-item-pending');
+            }
+            if (!row.querySelector('.list-item-cancel-btn')) {
+                var btn = document.createElement('button');
+                btn.className = 'list-item-cancel-btn';
+                btn.textContent = window.t('transfer.cancel');
+                btn.addEventListener('click', (function (tid) {
+                    return function () { window.cancelPendingTransfer(tid); };
+                })(txnId));
+                row.appendChild(btn);
+            }
+        });
+    };
 
     // Pure helpers exposed for vitest (rule 19)
     window.compactForTransfer = compactForTransfer;

@@ -15,20 +15,119 @@
     flex-shrink: 0;
 }
 
-/* ── Pending Transfer State (Phase 1B) ── */
+/* ── Player Picker Modal ── */
+.transfer-picker-body {
+    gap: 10px;
+}
+
+.transfer-picker-item-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cv-text-primary);
+    user-select: none;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--cv-border);
+}
+
+.transfer-player-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 180px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+
+.transfer-player-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--cv-border);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.1s;
+}
+
+.transfer-player-item:hover {
+    background: var(--cv-bg-hover);
+}
+
+.transfer-player-item.selected {
+    border-color: var(--cv-accent);
+    background: var(--cv-accent-subtle);
+}
+
+.transfer-player-name {
+    font-size: 12px;
+    color: var(--cv-text-primary);
+}
+
+.transfer-no-players {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px 0;
+    user-select: none;
+}
+
+.transfer-no-players-msg {
+    font-size: 12px;
+    color: var(--cv-text-primary);
+    margin: 0;
+}
+
+.transfer-no-players-hint {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    margin: 0;
+}
+
+/* ── Pending Transfer State ── */
 .list-item-pending {
     opacity: 0.45;
     pointer-events: none;
     position: relative;
 }
 
-.list-item-pending::after {
-    content: '⏳';
+.list-item-cancel-btn {
+    pointer-events: auto;
     position: absolute;
-    right: 8px;
+    right: 28px;
     top: 50%;
     transform: translateY(-50%);
+    font-size: 10px;
+    padding: 2px 5px;
+    background: var(--cv-bg-surface);
+    border: 1px solid var(--cv-border);
+    border-radius: 3px;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    user-select: none;
+}
+
+.list-item-cancel-btn:hover {
+    color: var(--cv-text-primary);
+    border-color: var(--cv-text-muted);
+}
+
+/* ── List Inspect Send Button ── */
+.list-inspect-btn-send {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     font-size: 11px;
-    pointer-events: none;
-    opacity: 1;
+    padding: 5px 9px;
+    border-radius: 4px;
+    border: 1px solid var(--cv-border);
+    background: transparent;
+    color: var(--cv-text-secondary);
+    cursor: pointer;
+    user-select: none;
+}
+
+.list-inspect-btn-send:hover {
+    background: var(--cv-bg-hover);
+    color: var(--cv-text-primary);
 }

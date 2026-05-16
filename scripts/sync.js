@@ -205,6 +205,7 @@
         if (existing) existing.remove();
 
         var players = window.getConnectedPlayers();
+        var hasPlayers = players.length > 0;
         var itemName = (itemData && itemData.name) ? itemData.name : '';
 
         var overlay = document.createElement('div');
@@ -238,14 +239,14 @@
         if (itemName) {
             var itemLabel = document.createElement('div');
             itemLabel.className = 'transfer-picker-item-name';
-            itemLabel.textContent = window.escapeHtml(itemName);
+            itemLabel.textContent = itemName;
             body.appendChild(itemLabel);
         }
 
         var selectedClientId = null;
         var sendBtn = null;
 
-        if (players.length === 0) {
+        if (!hasPlayers) {
             var noPlayers = document.createElement('div');
             noPlayers.className = 'transfer-no-players';
 
@@ -276,7 +277,7 @@
 
                 var nameSpan = document.createElement('span');
                 nameSpan.className = 'transfer-player-name';
-                nameSpan.textContent = window.escapeHtml(player.playerName);
+                nameSpan.textContent = player.playerName;
 
                 item.appendChild(nameSpan);
                 item.addEventListener('click', function () {
@@ -303,9 +304,9 @@
         var cancelBtn = document.createElement('button');
         cancelBtn.type = 'button';
         cancelBtn.className = 'btn-secondary sm';
-        cancelBtn.textContent = players.length > 0 ? window.t('transfer.cancel') : window.t('transfer.close');
+        cancelBtn.textContent = hasPlayers ? window.t('transfer.cancel') : window.t('transfer.close');
 
-        if (players.length > 0) {
+        if (hasPlayers) {
             sendBtn = document.createElement('button');
             sendBtn.type = 'button';
             sendBtn.className = 'btn-primary sm';
@@ -487,9 +488,7 @@
             if (!txn.moduleId || !txn.itemId) return;
             var row = document.querySelector('[data-module-id="' + txn.moduleId + '"][data-item-id="' + txn.itemId + '"]');
             if (!row) return;
-            if (!row.classList.contains('list-item-pending')) {
-                row.classList.add('list-item-pending');
-            }
+            row.classList.add('list-item-pending');
             if (!row.querySelector('.list-item-cancel-btn')) {
                 var btn = document.createElement('button');
                 btn.className = 'list-item-cancel-btn';

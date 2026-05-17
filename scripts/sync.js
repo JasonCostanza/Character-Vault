@@ -18,6 +18,7 @@
 
     // ── Initialization ──
     var _sweepInterval = null;
+    var _keySeq = 0;
 
     function initSync() {
         if (_sweepInterval !== null) return;
@@ -770,6 +771,23 @@
         window.scheduleSave();
     }
 
+    function mergeByName(catalog, incomingArr, buildEntry) {
+        var remap = {};
+        (incomingArr || []).forEach(function (incoming) {
+            var existing = catalog.find(function (e) {
+                return e.name.toLowerCase() === incoming.name.toLowerCase();
+            });
+            if (existing) {
+                remap[incoming.key] = existing.key;
+            } else {
+                var entry = buildEntry(incoming);
+                catalog.push(entry);
+                remap[incoming.key] = entry.key;
+            }
+        });
+        return remap;
+    }
+
     function insertWeapon(targetModuleId, expandedWeapon, meta) {
         var mod = (window.modules || []).find(function (m) { return m.id === targetModuleId; });
         if (!mod || !mod.content) return;
@@ -777,19 +795,8 @@
         if (!Array.isArray(mod.content.enhancementCatalog)) mod.content.enhancementCatalog = [];
         if (!Array.isArray(mod.content.weapons)) mod.content.weapons = [];
 
-        // Merge custom traits by name (case-insensitive); remap keys on the weapon
-        var traitKeyRemap = {};
-        (meta.customTraits || []).forEach(function (incoming) {
-            var existing = mod.content.customWeaponTraits.find(function (t) {
-                return t.name.toLowerCase() === incoming.name.toLowerCase();
-            });
-            if (existing) {
-                traitKeyRemap[incoming.key] = existing.key;
-            } else {
-                var newKey = 'custom.wt_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
-                mod.content.customWeaponTraits.push({ key: newKey, name: incoming.name, description: incoming.description || '' });
-                traitKeyRemap[incoming.key] = newKey;
-            }
+        var traitKeyRemap = mergeByName(mod.content.customWeaponTraits, meta.customTraits, function (inc) {
+            return { key: 'custom.wt_' + Date.now().toString(36) + '_' + (++_keySeq), name: inc.name, description: inc.description || '' };
         });
         if (Array.isArray(expandedWeapon.traits)) {
             expandedWeapon.traits = expandedWeapon.traits.map(function (tr) {
@@ -797,19 +804,8 @@
             });
         }
 
-        // Merge enhancements by name (case-insensitive); remap keys on the weapon
-        var enhKeyRemap = {};
-        (meta.enhancements || []).forEach(function (incoming) {
-            var existing = mod.content.enhancementCatalog.find(function (e) {
-                return e.name.toLowerCase() === incoming.name.toLowerCase();
-            });
-            if (existing) {
-                enhKeyRemap[incoming.key] = existing.key;
-            } else {
-                var newKey = 'enh_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
-                mod.content.enhancementCatalog.push(Object.assign({}, incoming, { key: newKey }));
-                enhKeyRemap[incoming.key] = newKey;
-            }
+        var enhKeyRemap = mergeByName(mod.content.enhancementCatalog, meta.enhancements, function (inc) {
+            return Object.assign({}, inc, { key: 'enh_' + Date.now().toString(36) + '_' + (++_keySeq) });
         });
         if (Array.isArray(expandedWeapon.attachedEnhancements)) {
             expandedWeapon.attachedEnhancements = expandedWeapon.attachedEnhancements.map(function (k) {

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { loadScript } from './helpers/load-script.js';
 
 // Mock globals that sync.js reads at call time
@@ -354,48 +354,6 @@ describe('expandReceived (weapons)', () => {
     });
 });
 
-// ── truncateWeaponPayload ──
-
-describe('truncateWeaponPayload', () => {
-    it('does not truncate when payload is small', () => {
-        const compact = { name: 'Dagger', slot: 'main', kind: 'melee', notesMarkdown: 'Short' };
-        const meta = { customTraits: [], enhancements: [] };
-        truncateWeaponPayload(compact, meta);
-        expect(compact.truncated).toBeUndefined();
-        expect(compact.notesMarkdown).toBe('Short');
-    });
-
-    it('truncates notesMarkdown when payload is large', () => {
-        const compact = { name: 'Sword', slot: 'main', kind: 'melee', notesMarkdown: 'x'.repeat(500) };
-        const meta = { customTraits: [], enhancements: [] };
-        truncateWeaponPayload(compact, meta);
-        expect(compact.truncated).toBe(true);
-        expect(compact.notesMarkdown.length).toBeLessThan(500);
-        expect(compact.notesMarkdown.endsWith('...')).toBe(true);
-    });
-
-    it('caps traits at 5 when payload is large', () => {
-        const traits = [1, 2, 3, 4, 5, 6].map(function (i) { return { key: 'dnd5e.trait' + i, value: null }; });
-        const compact = { name: 'Sword', slot: 'main', kind: 'melee', traits: traits, notesMarkdown: 'x'.repeat(300) };
-        const meta = { customTraits: [], enhancements: [] };
-        truncateWeaponPayload(compact, meta);
-        expect(compact.traits.length).toBeLessThanOrEqual(5);
-    });
-
-    it('caps enhancements at 3 and prunes attachedEnhancements accordingly', () => {
-        const enhancements = [1, 2, 3, 4].map(function (i) { return { key: 'enh_' + i, name: 'Enh ' + i }; });
-        const compact = {
-            name: 'Sword', slot: 'main', kind: 'melee',
-            attachedEnhancements: ['enh_1', 'enh_2', 'enh_3', 'enh_4'],
-            notesMarkdown: 'x'.repeat(300)
-        };
-        const meta = { customTraits: [], enhancements: enhancements };
-        truncateWeaponPayload(compact, meta);
-        expect(meta.enhancements.length).toBeLessThanOrEqual(3);
-        expect(compact.attachedEnhancements.length).toBeLessThanOrEqual(3);
-    });
-});
-
 // ── compactForTransfer — spells ──
 
 describe('compactForTransfer (spells)', () => {
@@ -617,5 +575,128 @@ describe('insertWeapon', () => {
         expect(inserted.damageInstances[0].dice).toBe('1d6');
         expect(inserted.traits[0].key).toBe('dnd5e.finesse');
         expect(inserted.notesMarkdown).toBe('Elegant.');
+    });
+});
+
+// ── splitIntoChunks ──
+
+describe('splitIntoChunks', () => {
+    it('splits a string into chunks of the specified size', () => {
+        expect(splitIntoChunks('abcdefghij', 3)).toEqual(['abc', 'def', 'ghi', 'j']);
+    });
+
+    it('returns a single chunk when string fits within size', () => {
+        expect(splitIntoChunks('hello', 100)).toEqual(['hello']);
+    });
+
+    it('produces the correct number of chunks for a large payload', () => {
+        const str = 'x'.repeat(900);
+        const chunks = splitIntoChunks(str, 430);
+        expect(chunks).toHaveLength(Math.ceil(900 / 430));
+        expect(chunks[0]).toHaveLength(430);
+        expect(chunks[chunks.length - 1]).toHaveLength(900 % 430 || 430);
+    });
+
+    it('returns empty array for empty string', () => {
+        expect(splitIntoChunks('', 100)).toEqual([]);
+    });
+});
+
+// ── joinChunks ──
+
+describe('joinChunks', () => {
+    it('reassembles chunks in order', () => {
+        const original = 'hello world, this is a test message';
+        const chunks = splitIntoChunks(original, 10);
+        const parts = {};
+        chunks.forEach(function (chunk, i) { parts[i] = chunk; });
+        expect(joinChunks(parts, chunks.length)).toBe(original);
+    });
+
+    it('reassembles out-of-order parts correctly', () => {
+        const parts = { 2: 'ghi', 0: 'abc', 3: 'j', 1: 'def' };
+        expect(joinChunks(parts, 4)).toBe('abcdefghij');
+    });
+
+    it('is idempotent when the same part index is overwritten', () => {
+        const parts = { 0: 'hello ', 1: 'world' };
+        parts[1] = 'world'; // duplicate assignment — same value
+        expect(joinChunks(parts, 2)).toBe('hello world');
+    });
+});
+
+// ── handleChunk (integration) ──
+
+describe('handleChunk', () => {
+    beforeEach(() => {
+        globalThis.TS = { sync: { send: () => Promise.resolve() } };
+        globalThis.showToast = () => {};
+    });
+
+    it('does not fire offer handler until all chunks arrive', () => {
+        const calls = [];
+        globalThis.showToast = (msg) => calls.push(msg);
+
+        const fullMsg = JSON.stringify({ v: 1, t: 'offer', txn: 'txn_hc_001', mode: 'move', src: 'list', from: 'Alice', data: { name: 'Torch' }, meta: { attrs: [] } });
+        const chunks = splitIntoChunks(fullMsg, 30);
+
+        for (let i = 0; i < chunks.length - 1; i++) {
+            handleChunk({ txn: 'txn_hc_001', i: i, n: chunks.length, d: chunks[i] }, 'client_a');
+        }
+        expect(calls).toHaveLength(0);
+
+        handleChunk({ txn: 'txn_hc_001', i: chunks.length - 1, n: chunks.length, d: chunks[chunks.length - 1] }, 'client_a');
+        expect(calls).toHaveLength(1);
+    });
+
+    it('handles out-of-order chunk arrival', () => {
+        const calls = [];
+        globalThis.showToast = (msg) => calls.push(msg);
+
+        const fullMsg = JSON.stringify({ v: 1, t: 'offer', txn: 'txn_hc_002', mode: 'move', src: 'list', from: 'Bob', data: { name: 'Arrow' }, meta: { attrs: [] } });
+        const chunks = splitIntoChunks(fullMsg, 30);
+
+        for (let i = chunks.length - 1; i >= 0; i--) {
+            handleChunk({ txn: 'txn_hc_002', i: i, n: chunks.length, d: chunks[i] }, 'client_b');
+        }
+        expect(calls).toHaveLength(1);
+    });
+
+    it('handles duplicate chunks idempotently — fires offer exactly once', () => {
+        const calls = [];
+        globalThis.showToast = (msg) => calls.push(msg);
+
+        const fullMsg = JSON.stringify({ v: 1, t: 'offer', txn: 'txn_hc_003', mode: 'move', src: 'list', from: 'Carol', data: { name: 'Rope' }, meta: { attrs: [] } });
+        const chunks = splitIntoChunks(fullMsg, 30);
+
+        handleChunk({ txn: 'txn_hc_003', i: 0, n: chunks.length, d: chunks[0] }, 'client_c');
+        handleChunk({ txn: 'txn_hc_003', i: 0, n: chunks.length, d: chunks[0] }, 'client_c'); // duplicate
+        for (let i = 1; i < chunks.length; i++) {
+            handleChunk({ txn: 'txn_hc_003', i: i, n: chunks.length, d: chunks[i] }, 'client_c');
+        }
+        expect(calls).toHaveLength(1);
+    });
+
+    it('discards buffer after 15s timeout — remaining chunks do not reassemble', () => {
+        vi.useFakeTimers();
+        const calls = [];
+        globalThis.showToast = (msg) => calls.push(msg);
+
+        const fullMsg = JSON.stringify({ v: 1, t: 'offer', txn: 'txn_hc_004', mode: 'move', src: 'list', from: 'Dave', data: { name: 'Gem' }, meta: { attrs: [] } });
+        const chunks = splitIntoChunks(fullMsg, 30);
+
+        // Send only the first chunk, then let the buffer expire
+        handleChunk({ txn: 'txn_hc_004', i: 0, n: chunks.length, d: chunks[0] }, 'client_d');
+        expect(calls).toHaveLength(0);
+
+        vi.advanceTimersByTime(16000);
+
+        // Remaining chunks arrive after expiry — new buffer starts from chunk 1, missing chunk 0
+        for (let i = 1; i < chunks.length; i++) {
+            handleChunk({ txn: 'txn_hc_004', i: i, n: chunks.length, d: chunks[i] }, 'client_d');
+        }
+        expect(calls).toHaveLength(0); // offer never reassembled without chunk 0
+
+        vi.useRealTimers();
     });
 });

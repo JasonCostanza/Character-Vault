@@ -4,6 +4,7 @@
     var SENDER_TIMEOUT_MS = 30000;
     var RECEIVER_TIMEOUT_MS = 60000;
     var MAX_MSG_LENGTH = 480;
+    var CHUNK_SIZE = 430;
 
     // ── Connection State ──
     var connectedPlayers = {};   // clientId → { clientId, playerId, playerName }
@@ -19,6 +20,7 @@
     // ── Initialization ──
     var _sweepInterval = null;
     var _keySeq = 0;
+    var _chunkBuffers = {};    // txnId → { n, parts, timer }
 
     function initSync() {
         if (_sweepInterval !== null) return;
@@ -83,6 +85,8 @@
             case 'cancel':  handleCancel(msg); break;
             case 'ping':    handlePing(fromClientId); break;
             case 'pong':    break;
+            case 'chunk':     handleChunk(msg, fromClientId); break;
+            case 'chunk_ack': break;
             default:
                 console.warn('[CV Sync] Unknown message type:', msg.t);
         }
@@ -185,6 +189,10 @@
             fromClient: myClient.id
         }, extraFields || {});
         var json = JSON.stringify(msg);
+        if (type === 'offer' && json.length > MAX_MSG_LENGTH) {
+            sendChunked(targetClient, json);
+            return;
+        }
         if (json.length > MAX_MSG_LENGTH) {
             console.warn('[CV Sync] Message near limit (' + json.length + ' chars), type:', type);
         }
@@ -196,6 +204,63 @@
         var suffix = '';
         for (var i = 0; i < 3; i++) suffix += chars[Math.floor(Math.random() * chars.length)];
         return 'txn_' + Date.now() + '_' + suffix;
+    }
+
+    // ── Chunking ──
+
+    function splitIntoChunks(str, size) {
+        var chunks = [];
+        for (var i = 0; i < str.length; i += size) {
+            chunks.push(str.slice(i, i + size));
+        }
+        return chunks;
+    }
+
+    function joinChunks(parts, n) {
+        var result = '';
+        for (var i = 0; i < n; i++) result += (parts[i] || '');
+        return result;
+    }
+
+    function sendChunked(targetClient, json) {
+        var chunks = splitIntoChunks(json, CHUNK_SIZE);
+        var txnId;
+        try { txnId = JSON.parse(json).txn; } catch (e) { return; }
+        console.log('[CV Sync] Chunking offer ' + txnId + ' into ' + chunks.length + ' parts');
+        chunks.forEach(function (slice, idx) {
+            TS.sync.send(JSON.stringify({
+                v: PROTOCOL_VERSION, t: 'chunk',
+                txn: txnId, i: idx, n: chunks.length, d: slice
+            }), targetClient).catch(console.error);
+        });
+    }
+
+    function handleChunk(msg, fromClientId) {
+        if (!msg.txn || msg.i === undefined || msg.n === undefined || !msg.d) return;
+        var txnId = msg.txn;
+        if (!_chunkBuffers[txnId]) {
+            _chunkBuffers[txnId] = {
+                n: msg.n,
+                parts: {},
+                timer: setTimeout(function () { delete _chunkBuffers[txnId]; }, 15000)
+            };
+        }
+        var buf = _chunkBuffers[txnId];
+        buf.parts[msg.i] = msg.d;
+        if (Object.keys(buf.parts).length === buf.n) {
+            clearTimeout(buf.timer);
+            delete _chunkBuffers[txnId];
+            var fullJson = joinChunks(buf.parts, buf.n);
+            var assembled;
+            try { assembled = JSON.parse(fullJson); } catch (e) {
+                console.warn('[CV Sync] Failed to parse reassembled chunks for txn:', txnId);
+                return;
+            }
+            if (fromClientId) {
+                TS.sync.send(JSON.stringify({ v: PROTOCOL_VERSION, t: 'chunk_ack', txn: txnId }), fromClientId).catch(console.error);
+            }
+            handleOffer(assembled, fromClientId);
+        }
     }
 
     // ── Pending State ──
@@ -450,7 +515,6 @@
         var meta;
         if (srcType === 'weapons') {
             meta = buildWeaponTransferMeta(compactItem, moduleMeta);
-            truncateWeaponPayload(compactItem, meta);
         } else {
             var metaAttrs = (moduleMeta && moduleMeta.attrs) ? moduleMeta.attrs.map(function (a) {
                 return { name: a.name, type: a.type };
@@ -686,35 +750,6 @@
             });
         }
         return { customTraits: customTraits, enhancements: enhancements };
-    }
-
-    function truncateWeaponPayload(compact, meta) {
-        var LIMIT = MAX_MSG_LENGTH - 100;
-        var str = JSON.stringify({ data: compact, meta: meta });
-        if (str.length <= LIMIT) return;
-        console.warn('[CV Sync] Weapon payload too large (' + str.length + ' chars), truncating');
-        if (compact.notesMarkdown && compact.notesMarkdown.length > 200) {
-            compact.notesMarkdown = compact.notesMarkdown.slice(0, 200) + '...';
-            compact.truncated = true;
-        }
-        if (compact.traits && compact.traits.length > 5) {
-            compact.traits = compact.traits.slice(0, 5);
-            compact.truncated = true;
-        }
-        if (meta.enhancements && meta.enhancements.length > 3) {
-            meta.enhancements = meta.enhancements.slice(0, 3);
-            var keptKeys = meta.enhancements.map(function (e) { return e.key; });
-            if (compact.attachedEnhancements) {
-                compact.attachedEnhancements = compact.attachedEnhancements.filter(function (k) {
-                    return keptKeys.indexOf(k) !== -1;
-                });
-            }
-            compact.truncated = true;
-        }
-        str = JSON.stringify({ data: compact, meta: meta });
-        if (str.length > LIMIT && compact.notesMarkdown) {
-            compact.notesMarkdown = compact.notesMarkdown.slice(0, 100) + '...';
-        }
     }
 
     function validateIncoming(msg) {
@@ -1076,12 +1111,6 @@
                 }).join(', ');
                 body.appendChild(traitsEl);
             }
-            if (weaponData.truncated) {
-                var truncEl = document.createElement('div');
-                truncEl.className = 'transfer-truncated-notice';
-                truncEl.textContent = window.t('transfer.truncated');
-                body.appendChild(truncEl);
-            }
         } else if (isSpellTransfer) {
             var spellData = incoming.data || {};
             if (spellData.description) {
@@ -1301,6 +1330,8 @@
     window.insertListItem = insertListItem;
     window.insertWeapon = insertWeapon;
     window.insertSpell = insertSpell;
-    window.truncateWeaponPayload = truncateWeaponPayload;
+    window.splitIntoChunks = splitIntoChunks;
+    window.joinChunks = joinChunks;
+    window.handleChunk = handleChunk;
     window.openIncomingTransferModal = openIncomingTransferModal;
 })();

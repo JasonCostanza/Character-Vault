@@ -63,6 +63,7 @@
         requestAnimationFrame(() => toast.classList.add('toast-visible'));
 
         setTimeout(() => {
+            if (!document.body.contains(toast)) return;
             toast.classList.remove('toast-visible');
             toast.addEventListener('transitionend', () => toast.remove());
         }, action ? 8000 : 2500);

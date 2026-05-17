@@ -591,6 +591,7 @@
         var isMove = incoming.mode !== 'copy';
         var senderDisconnected = !connectedPlayers[incoming.fromClient];
         var disconnectTimer = null;
+        var closeSelectHandler = null;
 
         var overlay = document.createElement('div');
         overlay.className = 'cv-modal-overlay transfer-incoming-overlay';
@@ -613,7 +614,6 @@
         header.appendChild(closeXBtn);
         panel.appendChild(header);
 
-        // Body
         var body = document.createElement('div');
         body.className = 'cv-modal-body';
 
@@ -644,7 +644,7 @@
         body.appendChild(modeLabel);
         body.appendChild(modeValue);
 
-        // Attribute preview (name-keyed values from compact format)
+        // Values are name-keyed (compact format), not attr-ID-keyed
         var attrValues = incoming.data && incoming.data.values ? incoming.data.values : {};
         var attrKeys = Object.keys(attrValues);
         if (attrKeys.length > 0) {
@@ -669,7 +669,6 @@
             body.appendChild(attrsDiv);
         }
 
-        // "Add to:" module selector
         var targetLabel = document.createElement('div');
         targetLabel.className = 'cv-modal-label';
         targetLabel.textContent = window.t('transfer.addTo');
@@ -718,13 +717,13 @@
                 menu.style.minWidth = rect.width + 'px';
                 selectWrapper.classList.toggle('open');
             });
-            document.addEventListener('click', function () { selectWrapper.classList.remove('open'); });
+            closeSelectHandler = function () { selectWrapper.classList.remove('open'); };
+            document.addEventListener('click', closeSelectHandler);
             selectWrapper.appendChild(trigger);
             selectWrapper.appendChild(menu);
             body.appendChild(selectWrapper);
         }
 
-        // Disconnect warning
         var disconnectMsg = document.createElement('div');
         disconnectMsg.className = 'transfer-disconnect-msg';
         disconnectMsg.textContent = window.t('transfer.senderDisconnected');
@@ -733,7 +732,6 @@
 
         panel.appendChild(body);
 
-        // Footer
         var footer = document.createElement('div');
         footer.className = 'cv-modal-footer';
 
@@ -756,6 +754,7 @@
 
         function forceClose() {
             clearTimeout(disconnectTimer);
+            if (closeSelectHandler) document.removeEventListener('click', closeSelectHandler);
             overlay.remove();
             document.removeEventListener('keydown', keyHandler);
             if (activeIncomingModal && activeIncomingModal.txnId === txnId) {
@@ -770,7 +769,7 @@
         }
 
         function accept() {
-            if (!selectedModuleId || senderDisconnected) return;
+            if (!selectedModuleId) return;
             var expanded = expandReceived(incoming.data, incoming.src || 'list');
             insertListItem(selectedModuleId, expanded, (incoming.meta && incoming.meta.attrs) || []);
             sendMessage('accept', incoming.fromClient, { txn: txnId });

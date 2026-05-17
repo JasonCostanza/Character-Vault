@@ -13,6 +13,7 @@
     // ── Transaction Tracking ──
     var pendingOutgoing = {};    // txnId → { targetClient, mode, src, moduleId, itemId, timestamp, state }
     var pendingIncoming = {};    // txnId → { fromClient, fromName, mode, src, data, meta, receivedAt }
+    var activeIncomingModal = null; // { txnId, forceClose, onSenderDisconnected }
 
     // ── Initialization ──
     var _sweepInterval = null;
@@ -102,6 +103,13 @@
                     window.showToast(window.t('transfer.cancelled'), 'info');
                 }
             });
+            // Notify open incoming modal if its sender disconnected
+            if (activeIncomingModal) {
+                var inc = pendingIncoming[activeIncomingModal.txnId];
+                if (inc && inc.fromClient === clientId) {
+                    activeIncomingModal.onSenderDisconnected();
+                }
+            }
         }
     };
 
@@ -121,7 +129,15 @@
             meta: msg.meta,
             receivedAt: Date.now()
         };
-        console.log('[CV Sync] Offer received txn:', msg.txn, 'from:', msg.from);
+        var txnId = msg.txn;
+        var fromName = msg.from || 'Unknown';
+        var itemName = (msg.data && msg.data.name) ? msg.data.name : '';
+        var toastMsg = window.t('transfer.incomingFrom', { name: fromName }) + (itemName ? ' ' + itemName : '');
+        window.showToast(toastMsg, 'info', {
+            label: window.t('transfer.view'),
+            onClick: function () { openIncomingTransferModal(txnId); }
+        });
+        console.log('[CV Sync] Offer received txn:', txnId, 'from:', fromName);
     }
 
     function resolveOutgoing(txnId, toastKey, removeItem) {
@@ -138,6 +154,9 @@
         if (!incoming) return;
         window.showToast(window.t('transfer.cancelledBy', { name: incoming.fromName }), 'info');
         delete pendingIncoming[msg.txn];
+        if (activeIncomingModal && activeIncomingModal.txnId === msg.txn) {
+            activeIncomingModal.forceClose();
+        }
     }
 
     function handlePing(fromClientId) {
@@ -193,6 +212,14 @@
         if (idx !== -1) {
             mod.content.items.splice(idx, 1);
             window.scheduleSave();
+            var moduleEl = document.querySelector('[data-id="' + txn.moduleId + '"]');
+            if (moduleEl) {
+                var bodyEl = moduleEl.querySelector('.module-body');
+                var typeDef = window.MODULE_TYPES && window.MODULE_TYPES['list'];
+                if (bodyEl && typeDef && typeDef.renderBody) {
+                    typeDef.renderBody(bodyEl, mod, window.isPlayMode !== false);
+                }
+            }
         }
     }
 
@@ -386,6 +413,10 @@
             if (now - incoming.receivedAt > RECEIVER_TIMEOUT_MS) {
                 sendMessage('decline', incoming.fromClient, { txn: txnId });
                 delete pendingIncoming[txnId];
+                if (activeIncomingModal && activeIncomingModal.txnId === txnId) {
+                    activeIncomingModal.forceClose();
+                }
+                window.showToast(window.t('transfer.timedOut'), 'info');
             }
         });
     }
@@ -442,6 +473,7 @@
         return {
             id: generateLocalId(),
             name: compact.name || '',
+            notes: compact.notes || '',
             values: compact.values ? Object.assign({}, compact.values) : {}
         };
     }
@@ -466,6 +498,309 @@
             if (typeof obj[key] === 'string') obj[key] = window.escapeHtml(obj[key]);
             else if (obj[key] && typeof obj[key] === 'object') sanitizeObject(obj[key]);
         });
+    }
+
+    // ── Item Insertion ──
+
+    function defaultValueForType(type) {
+        if (type === 'toggle') return false;
+        if (type === 'number') return 0;
+        if (type === 'number-pair') return { current: 0, max: 0 };
+        if (type === 'quantity') return 1;
+        return '';
+    }
+
+    function insertListItem(targetModuleId, expandedItem, metaAttrs) {
+        var mod = (window.modules || []).find(function (m) { return m.id === targetModuleId; });
+        if (!mod || !mod.content) return;
+        if (!Array.isArray(mod.content.attributes)) mod.content.attributes = [];
+        if (!Array.isArray(mod.content.items)) mod.content.items = [];
+
+        // Auto-create missing attributes; give existing items the default value
+        (metaAttrs || []).forEach(function (meta) {
+            var exists = mod.content.attributes.some(function (a) {
+                return a.name.toLowerCase() === meta.name.toLowerCase();
+            });
+            if (!exists) {
+                var newAttr = {
+                    id: 'attr_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+                    name: meta.name,
+                    type: meta.type,
+                    icon: null,
+                    defaultValue: defaultValueForType(meta.type),
+                    pinned: false,
+                    builtIn: false
+                };
+                mod.content.attributes.push(newAttr);
+                mod.content.items.forEach(function (item) {
+                    if (!item.values) item.values = {};
+                    item.values[newAttr.id] = newAttr.defaultValue;
+                });
+            }
+        });
+
+        // Remap name-based values to target module's attribute IDs
+        var nameToId = {};
+        mod.content.attributes.forEach(function (a) { nameToId[a.name.toLowerCase()] = a.id; });
+
+        var remappedValues = {};
+        Object.keys(expandedItem.values || {}).forEach(function (attrName) {
+            var attrId = nameToId[attrName.toLowerCase()];
+            if (attrId) remappedValues[attrId] = expandedItem.values[attrName];
+        });
+
+        var maxOrder = mod.content.items.reduce(function (max, it) {
+            return (it.order != null && it.order > max) ? it.order : max;
+        }, -1);
+
+        mod.content.items.push({
+            id: expandedItem.id,
+            name: expandedItem.name,
+            notes: expandedItem.notes || '',
+            order: maxOrder + 1,
+            values: remappedValues
+        });
+
+        var moduleEl = document.querySelector('[data-id="' + targetModuleId + '"]');
+        if (moduleEl) {
+            var bodyEl = moduleEl.querySelector('.module-body');
+            var typeDef = window.MODULE_TYPES && window.MODULE_TYPES['list'];
+            if (bodyEl && typeDef && typeDef.renderBody) {
+                typeDef.renderBody(bodyEl, mod, true);
+            }
+        }
+
+        window.scheduleSave();
+    }
+
+    // ── Incoming Transfer Modal ──
+
+    function openIncomingTransferModal(txnId) {
+        var incoming = pendingIncoming[txnId];
+        if (!incoming) return;
+
+        var existing = document.querySelector('.transfer-incoming-overlay');
+        if (existing) existing.remove();
+
+        var listModules = (window.modules || []).filter(function (m) { return m.type === 'list'; });
+        var selectedModuleId = listModules.length > 0 ? listModules[0].id : null;
+        var hasListModules = listModules.length > 0;
+
+        var itemName = (incoming.data && incoming.data.name) ? incoming.data.name : '';
+        var fromName = incoming.fromName || 'Unknown';
+        var isMove = incoming.mode !== 'copy';
+        var senderDisconnected = !connectedPlayers[incoming.fromClient];
+        var disconnectTimer = null;
+
+        var overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay transfer-incoming-overlay';
+
+        var panel = document.createElement('div');
+        panel.className = 'cv-modal-panel';
+
+        // Header
+        var header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        var titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = window.t('transfer.incomingTransfer');
+        var closeXBtn = document.createElement('button');
+        closeXBtn.type = 'button';
+        closeXBtn.className = 'cv-modal-close';
+        closeXBtn.title = window.t('transfer.close');
+        closeXBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        header.appendChild(titleEl);
+        header.appendChild(closeXBtn);
+        panel.appendChild(header);
+
+        // Body
+        var body = document.createElement('div');
+        body.className = 'cv-modal-body';
+
+        var fromLabel = document.createElement('div');
+        fromLabel.className = 'cv-modal-label';
+        fromLabel.textContent = window.t('transfer.from');
+        var fromValue = document.createElement('div');
+        fromValue.className = 'transfer-meta-value';
+        fromValue.textContent = fromName;
+        body.appendChild(fromLabel);
+        body.appendChild(fromValue);
+
+        var itemLabel = document.createElement('div');
+        itemLabel.className = 'cv-modal-label';
+        itemLabel.textContent = window.t('transfer.item');
+        var itemValue = document.createElement('div');
+        itemValue.className = 'transfer-meta-value transfer-item-name';
+        itemValue.textContent = itemName;
+        body.appendChild(itemLabel);
+        body.appendChild(itemValue);
+
+        var modeLabel = document.createElement('div');
+        modeLabel.className = 'cv-modal-label';
+        modeLabel.textContent = window.t('transfer.mode');
+        var modeValue = document.createElement('div');
+        modeValue.className = 'transfer-meta-value';
+        modeValue.textContent = isMove ? window.t('transfer.giveDescription') : window.t('transfer.copyDescription');
+        body.appendChild(modeLabel);
+        body.appendChild(modeValue);
+
+        // Attribute preview (name-keyed values from compact format)
+        var attrValues = incoming.data && incoming.data.values ? incoming.data.values : {};
+        var attrKeys = Object.keys(attrValues);
+        if (attrKeys.length > 0) {
+            var attrsDiv = document.createElement('div');
+            attrsDiv.className = 'transfer-attr-preview';
+            attrKeys.forEach(function (attrName) {
+                var row = document.createElement('div');
+                row.className = 'transfer-attr-row';
+                var nameEl = document.createElement('span');
+                nameEl.className = 'transfer-attr-name';
+                nameEl.textContent = attrName;
+                var valEl = document.createElement('span');
+                valEl.className = 'transfer-attr-val';
+                var val = attrValues[attrName];
+                valEl.textContent = (val && typeof val === 'object')
+                    ? (val.current + '/' + val.max)
+                    : String(val);
+                row.appendChild(nameEl);
+                row.appendChild(valEl);
+                attrsDiv.appendChild(row);
+            });
+            body.appendChild(attrsDiv);
+        }
+
+        // "Add to:" module selector
+        var targetLabel = document.createElement('div');
+        targetLabel.className = 'cv-modal-label';
+        targetLabel.textContent = window.t('transfer.addTo');
+        body.appendChild(targetLabel);
+
+        if (!hasListModules) {
+            var noListMsg = document.createElement('div');
+            noListMsg.className = 'transfer-no-list-msg';
+            noListMsg.textContent = window.t('transfer.noListModules');
+            body.appendChild(noListMsg);
+        } else if (listModules.length === 1) {
+            var singleModEl = document.createElement('div');
+            singleModEl.className = 'transfer-meta-value';
+            singleModEl.textContent = listModules[0].title || window.t('type.list');
+            body.appendChild(singleModEl);
+        } else {
+            var selectWrapper = document.createElement('div');
+            selectWrapper.className = 'cv-select';
+            var trigger = document.createElement('button');
+            trigger.type = 'button';
+            trigger.className = 'cv-select-trigger';
+            trigger.innerHTML = '<span class="cv-select-value">' + window.escapeHtml(listModules[0].title || window.t('type.list')) + '</span>' +
+                '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+            var menu = document.createElement('ul');
+            menu.className = 'cv-select-menu';
+            listModules.forEach(function (mod, idx) {
+                var li = document.createElement('li');
+                li.className = 'cv-select-option' + (idx === 0 ? ' selected' : '');
+                li.textContent = mod.title || window.t('type.list');
+                li.addEventListener('click', function () {
+                    selectedModuleId = mod.id;
+                    trigger.querySelector('.cv-select-value').textContent = mod.title || window.t('type.list');
+                    menu.querySelectorAll('.cv-select-option').forEach(function (o) {
+                        o.classList.toggle('selected', o === li);
+                    });
+                    selectWrapper.classList.remove('open');
+                });
+                menu.appendChild(li);
+            });
+            trigger.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var rect = trigger.getBoundingClientRect();
+                menu.style.position = 'fixed';
+                menu.style.top = (rect.bottom + 2) + 'px';
+                menu.style.left = rect.left + 'px';
+                menu.style.minWidth = rect.width + 'px';
+                selectWrapper.classList.toggle('open');
+            });
+            document.addEventListener('click', function () { selectWrapper.classList.remove('open'); });
+            selectWrapper.appendChild(trigger);
+            selectWrapper.appendChild(menu);
+            body.appendChild(selectWrapper);
+        }
+
+        // Disconnect warning
+        var disconnectMsg = document.createElement('div');
+        disconnectMsg.className = 'transfer-disconnect-msg';
+        disconnectMsg.textContent = window.t('transfer.senderDisconnected');
+        disconnectMsg.style.display = senderDisconnected ? '' : 'none';
+        body.appendChild(disconnectMsg);
+
+        panel.appendChild(body);
+
+        // Footer
+        var footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+
+        var declineBtn = document.createElement('button');
+        declineBtn.type = 'button';
+        declineBtn.className = 'btn-secondary sm';
+        declineBtn.textContent = window.t('transfer.decline');
+
+        var acceptBtn = document.createElement('button');
+        acceptBtn.type = 'button';
+        acceptBtn.className = 'btn-primary sm';
+        acceptBtn.textContent = window.t('transfer.accept');
+        acceptBtn.disabled = !hasListModules || senderDisconnected;
+
+        footer.appendChild(declineBtn);
+        footer.appendChild(acceptBtn);
+        panel.appendChild(footer);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+
+        function forceClose() {
+            clearTimeout(disconnectTimer);
+            overlay.remove();
+            document.removeEventListener('keydown', keyHandler);
+            if (activeIncomingModal && activeIncomingModal.txnId === txnId) {
+                activeIncomingModal = null;
+            }
+        }
+
+        function decline() {
+            sendMessage('decline', incoming.fromClient, { txn: txnId });
+            delete pendingIncoming[txnId];
+            forceClose();
+        }
+
+        function accept() {
+            if (!selectedModuleId || senderDisconnected) return;
+            var expanded = expandReceived(incoming.data, incoming.src || 'list');
+            insertListItem(selectedModuleId, expanded, (incoming.meta && incoming.meta.attrs) || []);
+            sendMessage('accept', incoming.fromClient, { txn: txnId });
+            delete pendingIncoming[txnId];
+            window.showToast(window.t('transfer.itemReceived', { item: itemName, name: fromName }), 'info');
+            forceClose();
+        }
+
+        function onSenderDisconnected() {
+            senderDisconnected = true;
+            disconnectMsg.style.display = '';
+            acceptBtn.disabled = true;
+            disconnectTimer = setTimeout(function () {
+                if (document.body.contains(overlay)) decline();
+            }, 5000);
+        }
+
+        activeIncomingModal = { txnId: txnId, forceClose: forceClose, onSenderDisconnected: onSenderDisconnected };
+
+        declineBtn.addEventListener('click', decline);
+        acceptBtn.addEventListener('click', accept);
+        closeXBtn.addEventListener('click', decline);
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) decline();
+        });
+
+        var keyHandler = function (e) {
+            if (e.key === 'Escape') { e.stopPropagation(); decline(); }
+        };
+        document.addEventListener('keydown', keyHandler);
     }
 
     // ── Public API ──
@@ -506,4 +841,6 @@
     window.expandReceived = expandReceived;
     window.validateIncoming = validateIncoming;
     window.generateTxnId = generateTxnId;
+    window.insertListItem = insertListItem;
+    window.openIncomingTransferModal = openIncomingTransferModal;
 })();

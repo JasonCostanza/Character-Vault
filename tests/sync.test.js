@@ -180,6 +180,74 @@ describe('validateIncoming', () => {
     });
 });
 
+// ── insertListItem ──
+
+describe('insertListItem', () => {
+    let mod;
+
+    beforeEach(() => {
+        mod = {
+            id: 'mod_001',
+            type: 'list',
+            content: {
+                attributes: [
+                    { id: 'attr_001', name: 'Weight', type: 'number', defaultValue: 0 }
+                ],
+                items: []
+            }
+        };
+        globalThis.modules = [mod];
+        globalThis.MODULE_TYPES = {}; // no DOM re-render in tests
+    });
+
+    it('adds item to module items array', () => {
+        insertListItem('mod_001', { id: 'item_001', name: 'Torch', notes: '', values: {} }, []);
+        expect(mod.content.items).toHaveLength(1);
+        expect(mod.content.items[0].name).toBe('Torch');
+    });
+
+    it('assigns increasing order values', () => {
+        mod.content.items.push({ id: 'item_pre', name: 'Pre', order: 2, values: {} });
+        insertListItem('mod_001', { id: 'item_002', name: 'Arrow', notes: '', values: {} }, []);
+        expect(mod.content.items[1].order).toBe(3);
+    });
+
+    it('auto-creates missing attributes', () => {
+        insertListItem('mod_001', { id: 'item_003', name: 'Arrow', notes: '', values: { Damage: '1d6' } }, [{ name: 'Damage', type: 'text' }]);
+        const newAttr = mod.content.attributes.find((a) => a.name === 'Damage');
+        expect(newAttr).toBeTruthy();
+        expect(newAttr.type).toBe('text');
+    });
+
+    it('does not duplicate existing attributes (case-insensitive)', () => {
+        insertListItem('mod_001', { id: 'item_004', name: 'Stone', notes: '', values: {} }, [{ name: 'weight', type: 'number' }]);
+        expect(mod.content.attributes.filter((a) => a.name.toLowerCase() === 'weight')).toHaveLength(1);
+    });
+
+    it('gives existing items the default value for auto-created attributes', () => {
+        mod.content.items.push({ id: 'item_pre', name: 'Pre', order: 0, values: {} });
+        insertListItem('mod_001', { id: 'item_005', name: 'Key', notes: '', values: { Damage: '1d4' } }, [{ name: 'Damage', type: 'text' }]);
+        const newAttr = mod.content.attributes.find((a) => a.name === 'Damage');
+        expect(mod.content.items[0].values[newAttr.id]).toBe(''); // default for type 'text'
+    });
+
+    it('remaps name-based values to attribute IDs', () => {
+        insertListItem('mod_001', { id: 'item_006', name: 'Sword', notes: '', values: { Weight: 3 } }, []);
+        expect(mod.content.items[0].values['attr_001']).toBe(3);
+        expect(mod.content.items[0].values['Weight']).toBeUndefined();
+    });
+
+    it('round-trip: expandReceived then insertListItem preserves data', () => {
+        const compact = { name: 'Shield', notes: 'Sturdy shield', values: { Weight: 5 } };
+        const expanded = expandReceived(compact, 'list');
+        insertListItem('mod_001', expanded, [{ name: 'Weight', type: 'number' }]);
+        const inserted = mod.content.items[0];
+        expect(inserted.name).toBe('Shield');
+        expect(inserted.notes).toBe('Sturdy shield');
+        expect(inserted.values['attr_001']).toBe(5);
+    });
+});
+
 // ── generateTxnId ──
 
 describe('generateTxnId', () => {

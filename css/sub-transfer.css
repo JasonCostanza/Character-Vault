@@ -131,3 +131,83 @@
     background: var(--cv-bg-hover);
     color: var(--cv-text-primary);
 }
+
+/* ── Toast Action ── */
+.toast.toast-interactive {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    pointer-events: auto;
+}
+
+.toast-action {
+    pointer-events: auto;
+    flex-shrink: 0;
+    background: transparent;
+    border: 1px solid currentColor;
+    border-radius: 3px;
+    color: inherit;
+    font-size: 11px;
+    font-family: inherit;
+    font-weight: 600;
+    padding: 2px 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.toast-action:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ── Incoming Transfer Modal ── */
+.transfer-meta-value {
+    font-size: 12px;
+    color: var(--cv-text-primary);
+    user-select: none;
+}
+
+.transfer-item-name {
+    font-weight: 600;
+}
+
+.transfer-attr-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 6px 8px;
+    background: var(--cv-bg-sunken);
+    border-radius: 4px;
+    border: 1px solid var(--cv-border);
+    max-height: 120px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+
+.transfer-attr-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+}
+
+.transfer-attr-name {
+    color: var(--cv-text-muted);
+    user-select: none;
+}
+
+.transfer-attr-val {
+    color: var(--cv-text-primary);
+    user-select: none;
+}
+
+.transfer-disconnect-msg {
+    font-size: 11px;
+    color: var(--cv-danger);
+    padding: 4px 0;
+    user-select: none;
+}
+
+.transfer-no-list-msg {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    user-select: none;
+}

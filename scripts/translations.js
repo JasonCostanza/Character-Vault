@@ -1296,6 +1296,8 @@
             'transfer.senderDisconnected': 'Sender disconnected',
             'transfer.offline': 'offline',
             'transfer.online': 'online',
+            'transfer.incomingTransfer': 'Incoming Transfer',
+            'transfer.noListModules': "You don't have an inventory list",
         },
 
         es: {
@@ -2560,6 +2562,8 @@
             'transfer.senderDisconnected': 'El remitente se ha desconectado',
             'transfer.offline': 'desconectado',
             'transfer.online': 'en línea',
+            'transfer.incomingTransfer': 'Transferencia entrante',
+            'transfer.noListModules': 'No tienes una lista de inventario',
         },
 
         fr: {
@@ -3846,6 +3850,8 @@
             'transfer.senderDisconnected': 'L\'expéditeur s\'est déconnecté',
             'transfer.offline': 'hors ligne',
             'transfer.online': 'en ligne',
+            'transfer.incomingTransfer': 'Transfert entrant',
+            'transfer.noListModules': "Vous n'avez pas de liste d'inventaire",
         },
 
         de: {
@@ -4589,6 +4595,8 @@
             'transfer.senderDisconnected': 'Absender getrennt',
             'transfer.offline': 'offline',
             'transfer.online': 'online',
+            'transfer.incomingTransfer': 'Eingehende Übertragung',
+            'transfer.noListModules': 'Du hast keine Inventarliste',
         },
 
         it: {
@@ -5280,6 +5288,8 @@
             'transfer.senderDisconnected': 'Mittente disconnesso',
             'transfer.offline': 'offline',
             'transfer.online': 'online',
+            'transfer.incomingTransfer': 'Trasferimento in arrivo',
+            'transfer.noListModules': 'Non hai una lista inventario',
         },
 
         'pt-BR': {
@@ -5958,6 +5968,8 @@
             'transfer.senderDisconnected': 'Remetente desconectado',
             'transfer.offline': 'offline',
             'transfer.online': 'online',
+            'transfer.incomingTransfer': 'Transferência recebida',
+            'transfer.noListModules': 'Você não tem uma lista de inventário',
         },
 
         ru: {
@@ -6636,6 +6648,8 @@
             'transfer.senderDisconnected': 'Отправитель отключился',
             'transfer.offline': 'не в сети',
             'transfer.online': 'в сети',
+            'transfer.incomingTransfer': 'Входящая передача',
+            'transfer.noListModules': 'У вас нет списка инвентаря',
         },
     };
 

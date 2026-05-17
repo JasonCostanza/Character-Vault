@@ -222,27 +222,19 @@
     function removeTransferredItem(txn) {
         var mod = (window.modules || []).find(function (m) { return m.id === txn.moduleId; });
         if (!mod || !mod.content) return;
-        var moduleType = txn.src;
+        var moduleType = (txn.src === 'weapons' || txn.src === 'spells') ? txn.src : 'list';
 
         if (txn.src === 'weapons') {
             if (!Array.isArray(mod.content.weapons)) return;
-            var idx = mod.content.weapons.findIndex(function (it) { return it.id === txn.itemId; });
-            if (idx === -1) return;
-            mod.content.weapons.splice(idx, 1);
+            if (!spliceById(mod.content.weapons, txn.itemId)) return;
         } else if (txn.src === 'spells') {
-            var removed = false;
-            (mod.content.categories || []).forEach(function (cat) {
-                if (removed) return;
-                var spellIdx = (cat.spells || []).findIndex(function (s) { return s.id === txn.itemId; });
-                if (spellIdx !== -1) { cat.spells.splice(spellIdx, 1); removed = true; }
+            var found = (mod.content.categories || []).some(function (cat) {
+                return spliceById(cat.spells || [], txn.itemId);
             });
-            if (!removed) return;
+            if (!found) return;
         } else {
-            moduleType = 'list';
             if (!Array.isArray(mod.content.items)) return;
-            var idx = mod.content.items.findIndex(function (it) { return it.id === txn.itemId; });
-            if (idx === -1) return;
-            mod.content.items.splice(idx, 1);
+            if (!spliceById(mod.content.items, txn.itemId)) return;
         }
 
         window.scheduleSave();
@@ -551,15 +543,8 @@
         var idToName = {};
         attrs.forEach(function (attr) { idToName[attr.id] = attr.name; });
 
-        if (spell.values && typeof spell.values === 'object') {
-            var compactValues = {};
-            Object.keys(spell.values).forEach(function (attrId) {
-                var val = spell.values[attrId];
-                if (val === null || val === undefined || val === '' || val === false || val === 0) return;
-                compactValues[idToName[attrId] || attrId] = val;
-            });
-            if (Object.keys(compactValues).length > 0) compact.values = compactValues;
-        }
+        var compactValues = compactAttrValues(spell.values, idToName);
+        if (Object.keys(compactValues).length > 0) compact.values = compactValues;
         return compact;
     }
 
@@ -627,15 +612,8 @@
         var idToName = {};
         attrs.forEach(function (attr) { idToName[attr.id] = attr.name; });
 
-        if (item.values && typeof item.values === 'object') {
-            var compactValues = {};
-            Object.keys(item.values).forEach(function (attrId) {
-                var val = item.values[attrId];
-                if (val === null || val === undefined || val === '' || val === false || val === 0) return;
-                compactValues[idToName[attrId] || attrId] = val;
-            });
-            if (Object.keys(compactValues).length > 0) compact.values = compactValues;
-        }
+        var compactValues = compactAttrValues(item.values, idToName);
+        if (Object.keys(compactValues).length > 0) compact.values = compactValues;
         return compact;
     }
 
@@ -767,13 +745,62 @@
         return '';
     }
 
+    function compactAttrValues(values, idToName) {
+        if (!values || typeof values !== 'object') return {};
+        var compactValues = {};
+        Object.keys(values).forEach(function (attrId) {
+            var val = values[attrId];
+            if (val === null || val === undefined || val === '' || val === false || val === 0) return;
+            compactValues[idToName[attrId] || attrId] = val;
+        });
+        return compactValues;
+    }
+
+    function remapByName(attributes, namedValues) {
+        var nameToId = {};
+        attributes.forEach(function (a) { nameToId[a.name.toLowerCase()] = a.id; });
+        var remapped = {};
+        Object.keys(namedValues || {}).forEach(function (attrName) {
+            var attrId = nameToId[attrName.toLowerCase()];
+            if (attrId) remapped[attrId] = namedValues[attrName];
+        });
+        return remapped;
+    }
+
+    function spliceById(arr, id) {
+        var idx = arr.findIndex(function (it) { return it.id === id; });
+        if (idx === -1) return false;
+        arr.splice(idx, 1);
+        return true;
+    }
+
+    function buildAttrPreviewEl(valuesObj, formatFn) {
+        var keys = Object.keys(valuesObj || {});
+        if (!keys.length) return null;
+        var div = document.createElement('div');
+        div.className = 'transfer-attr-preview';
+        keys.forEach(function (name) {
+            var row = document.createElement('div');
+            row.className = 'transfer-attr-row';
+            var nameEl = document.createElement('span');
+            nameEl.className = 'transfer-attr-name';
+            nameEl.textContent = name;
+            var valEl = document.createElement('span');
+            valEl.className = 'transfer-attr-val';
+            valEl.textContent = formatFn ? formatFn(valuesObj[name]) : String(valuesObj[name]);
+            row.appendChild(nameEl);
+            row.appendChild(valEl);
+            div.appendChild(row);
+        });
+        return div;
+    }
+
     function insertListItem(targetModuleId, expandedItem, metaAttrs) {
         var mod = (window.modules || []).find(function (m) { return m.id === targetModuleId; });
         if (!mod || !mod.content) return;
         if (!Array.isArray(mod.content.attributes)) mod.content.attributes = [];
         if (!Array.isArray(mod.content.items)) mod.content.items = [];
 
-        // Auto-create missing attributes; give existing items the default value
         (metaAttrs || []).forEach(function (meta) {
             var exists = mod.content.attributes.some(function (a) {
                 return a.name.toLowerCase() === meta.name.toLowerCase();
@@ -796,15 +823,7 @@
             }
         });
 
-        // Remap name-based values to target module's attribute IDs
-        var nameToId = {};
-        mod.content.attributes.forEach(function (a) { nameToId[a.name.toLowerCase()] = a.id; });
-
-        var remappedValues = {};
-        Object.keys(expandedItem.values || {}).forEach(function (attrName) {
-            var attrId = nameToId[attrName.toLowerCase()];
-            if (attrId) remappedValues[attrId] = expandedItem.values[attrName];
-        });
+        var remappedValues = remapByName(mod.content.attributes, expandedItem.values);
 
         var maxOrder = mod.content.items.reduce(function (max, it) {
             return (it.order != null && it.order > max) ? it.order : max;
@@ -893,20 +912,16 @@
         if (!Array.isArray(mod.content.attributes)) mod.content.attributes = [];
         if (!Array.isArray(mod.content.categories)) mod.content.categories = [];
 
-        // Auto-create missing attributes; give existing spells the default value
         (meta.attrs || []).forEach(function (incoming) {
             var exists = mod.content.attributes.some(function (a) {
                 return a.name.toLowerCase() === incoming.name.toLowerCase();
             });
             if (!exists) {
-                var defVal = incoming.type === 'number-pair' ? { current: 0, max: 0 }
-                    : incoming.type === 'number' ? 0
-                    : incoming.type === 'toggle' ? false : '';
                 var newAttr = {
                     id: 'attr_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
                     name: incoming.name,
                     type: incoming.type,
-                    defaultValue: defVal,
+                    defaultValue: defaultValueForType(incoming.type),
                     pinned: false,
                     builtIn: false
                 };
@@ -920,17 +935,8 @@
             }
         });
 
-        // Remap name-based values to target module's attr IDs
-        var nameToId = {};
-        mod.content.attributes.forEach(function (a) { nameToId[a.name.toLowerCase()] = a.id; });
-        var remappedValues = {};
-        Object.keys(expandedSpell.values || {}).forEach(function (attrName) {
-            var attrId = nameToId[attrName.toLowerCase()];
-            if (attrId) remappedValues[attrId] = expandedSpell.values[attrName];
-        });
-        expandedSpell.values = remappedValues;
+        expandedSpell.values = remapByName(mod.content.attributes, expandedSpell.values);
 
-        // Find or create target category
         var targetCat = null;
         if (meta.categoryName) {
             targetCat = mod.content.categories.find(function (c) {
@@ -1089,51 +1095,14 @@
                 descPreview.appendChild(descText);
                 body.appendChild(descPreview);
             }
-            var spellAttrValues = (spellData.values && typeof spellData.values === 'object') ? spellData.values : {};
-            var spellAttrKeys = Object.keys(spellAttrValues);
-            if (spellAttrKeys.length > 0) {
-                var spellAttrsDiv = document.createElement('div');
-                spellAttrsDiv.className = 'transfer-attr-preview';
-                spellAttrKeys.forEach(function (attrName) {
-                    var row = document.createElement('div');
-                    row.className = 'transfer-attr-row';
-                    var nameEl = document.createElement('span');
-                    nameEl.className = 'transfer-attr-name';
-                    nameEl.textContent = attrName;
-                    var valEl = document.createElement('span');
-                    valEl.className = 'transfer-attr-val';
-                    valEl.textContent = String(spellAttrValues[attrName]);
-                    row.appendChild(nameEl);
-                    row.appendChild(valEl);
-                    spellAttrsDiv.appendChild(row);
-                });
-                body.appendChild(spellAttrsDiv);
-            }
+            var spellAttrEl = buildAttrPreviewEl(spellData.values, String);
+            if (spellAttrEl) body.appendChild(spellAttrEl);
         } else {
             // Values are name-keyed (compact format), not attr-ID-keyed
-            var attrValues = incoming.data && incoming.data.values ? incoming.data.values : {};
-            var attrKeys = Object.keys(attrValues);
-            if (attrKeys.length > 0) {
-                var attrsDiv = document.createElement('div');
-                attrsDiv.className = 'transfer-attr-preview';
-                attrKeys.forEach(function (attrName) {
-                    var row = document.createElement('div');
-                    row.className = 'transfer-attr-row';
-                    var nameEl = document.createElement('span');
-                    nameEl.className = 'transfer-attr-name';
-                    nameEl.textContent = attrName;
-                    var valEl = document.createElement('span');
-                    valEl.className = 'transfer-attr-val';
-                    var val = attrValues[attrName];
-                    valEl.textContent = (val && typeof val === 'object')
-                        ? (val.current + '/' + val.max)
-                        : String(val);
-                    row.appendChild(nameEl);
-                    row.appendChild(valEl);
-                    attrsDiv.appendChild(row);
-                });
-                body.appendChild(attrsDiv);
-            }
+            var listAttrEl = buildAttrPreviewEl(incoming.data && incoming.data.values, function (val) {
+                return (val && typeof val === 'object') ? (val.current + '/' + val.max) : String(val);
+            });
+            if (listAttrEl) body.appendChild(listAttrEl);
         }
 
         var targetLabel = document.createElement('div');
@@ -1141,8 +1110,8 @@
         targetLabel.textContent = window.t('transfer.addTo');
         body.appendChild(targetLabel);
 
-        var typeDefaultLabel = window.t(isWeaponTransfer ? 'type.weapons' : isSpellTransfer ? 'type.spells' : 'type.list');
-        var noModulesKey = isWeaponTransfer ? 'transfer.noWeaponModules' : isSpellTransfer ? 'transfer.noSpellModules' : 'transfer.noListModules';
+        var typeDefaultLabel = window.t('type.' + targetModuleType);
+        var noModulesKey = { weapons: 'transfer.noWeaponModules', spells: 'transfer.noSpellModules', list: 'transfer.noListModules' }[targetModuleType];
         if (!hasTargetModules) {
             var noListMsg = document.createElement('div');
             noListMsg.className = 'transfer-no-list-msg';

@@ -855,6 +855,24 @@
         return div;
     }
 
+    function buildNewTransferModule(type, tabId) {
+        var id = 'module-' + String(++window.moduleIdCounter).padStart(3, '0');
+        var order = (window.modules || []).filter(function (m) { return m.tabId === tabId; }).length;
+        var content, colSpan, rowSpan;
+        if (type === 'weapons') {
+            content = { weapons: [] };
+            colSpan = 4; rowSpan = 2;
+        } else if (type === 'spells') {
+            content = { autoSpendSlots: true, showSlotErrors: true, slotLevels: [], categories: [] };
+            colSpan = 4; rowSpan = 4;
+        } else {
+            content = { attributes: [], items: [], sortBy: null, sortDir: 'asc' };
+            colSpan = 2; rowSpan = 2;
+        }
+        return { id: id, type: type, title: null, colSpan: colSpan, rowSpan: rowSpan,
+                 order: order, theme: null, tabId: tabId, content: content };
+    }
+
     function insertListItem(targetModuleId, expandedItem, metaAttrs) {
         var mod = (window.modules || []).find(function (m) { return m.id === targetModuleId; });
         if (!mod || !mod.content) return;
@@ -1047,7 +1065,7 @@
         var targetModuleType = isWeaponTransfer ? 'weapons' : isSpellTransfer ? 'spells' : 'list';
         var targetModules = (window.modules || []).filter(function (m) { return m.type === targetModuleType; });
         var selectedModuleId = targetModules.length > 0 ? targetModules[0].id : null;
-        var hasTargetModules = targetModules.length > 0;
+        var createOnTabId = window.activeTabId;
 
         var itemName = (incoming.data && incoming.data.name) ? incoming.data.name : '';
         var fromName = incoming.fromName || 'Unknown';
@@ -1166,11 +1184,66 @@
 
         var typeDefaultLabel = window.t('type.' + targetModuleType);
         var noModulesKey = { weapons: 'transfer.noWeaponModules', spells: 'transfer.noSpellModules', list: 'transfer.noListModules' }[targetModuleType];
-        if (!hasTargetModules) {
+        if (!targetModules.length) {
             var noListMsg = document.createElement('div');
             noListMsg.className = 'transfer-no-list-msg';
             noListMsg.textContent = window.t(noModulesKey);
             body.appendChild(noListMsg);
+
+            var createOnLabel = document.createElement('div');
+            createOnLabel.className = 'cv-modal-label';
+            createOnLabel.textContent = window.t('transfer.createOnTab');
+            body.appendChild(createOnLabel);
+
+            var tabs = (window.tabs || []).slice();
+            var activeTab = tabs.find(function (t) { return t.id === window.activeTabId; }) || tabs[0];
+
+            if (tabs.length === 1) {
+                var singleTabEl = document.createElement('div');
+                singleTabEl.className = 'transfer-meta-value';
+                singleTabEl.textContent = activeTab ? activeTab.name : '';
+                body.appendChild(singleTabEl);
+            } else {
+                var tabSelectWrapper = document.createElement('div');
+                tabSelectWrapper.className = 'cv-select';
+                var tabTrigger = document.createElement('button');
+                tabTrigger.type = 'button';
+                tabTrigger.className = 'cv-select-trigger';
+                tabTrigger.innerHTML = '<span class="cv-select-value">' + window.escapeHtml(activeTab ? activeTab.name : '') + '</span>' +
+                    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+                var tabMenu = document.createElement('ul');
+                tabMenu.className = 'cv-select-menu';
+                tabs.forEach(function (tab) {
+                    var li = document.createElement('li');
+                    li.className = 'cv-select-option' + (tab.id === window.activeTabId ? ' selected' : '');
+                    li.textContent = tab.name;
+                    li.addEventListener('click', function () {
+                        createOnTabId = tab.id;
+                        tabTrigger.querySelector('.cv-select-value').textContent = tab.name;
+                        tabMenu.querySelectorAll('.cv-select-option').forEach(function (o) {
+                            o.classList.toggle('selected', o === li);
+                        });
+                        tabSelectWrapper.classList.remove('open');
+                    });
+                    tabMenu.appendChild(li);
+                });
+                tabTrigger.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    var rect = tabTrigger.getBoundingClientRect();
+                    tabMenu.style.position = 'fixed';
+                    tabMenu.style.top = (rect.bottom + 2) + 'px';
+                    tabMenu.style.left = rect.left + 'px';
+                    tabMenu.style.minWidth = rect.width + 'px';
+                    tabSelectWrapper.classList.toggle('open');
+                });
+                closeSelectHandler = function () {
+                    tabSelectWrapper.classList.remove('open');
+                };
+                document.addEventListener('click', closeSelectHandler);
+                tabSelectWrapper.appendChild(tabTrigger);
+                tabSelectWrapper.appendChild(tabMenu);
+                body.appendChild(tabSelectWrapper);
+            }
         } else if (targetModules.length === 1) {
             var singleModEl = document.createElement('div');
             singleModEl.className = 'transfer-meta-value';
@@ -1236,7 +1309,7 @@
         acceptBtn.type = 'button';
         acceptBtn.className = 'btn-primary sm';
         acceptBtn.textContent = window.t('transfer.accept');
-        acceptBtn.disabled = !hasTargetModules || senderDisconnected;
+        acceptBtn.disabled = senderDisconnected;
 
         footer.appendChild(declineBtn);
         footer.appendChild(acceptBtn);
@@ -1261,14 +1334,23 @@
         }
 
         function accept() {
-            if (!selectedModuleId) return;
+            var targetId = selectedModuleId;
+            if (!targetId) {
+                var newMod = buildNewTransferModule(targetModuleType, createOnTabId);
+                window.modules.push(newMod);
+                if (createOnTabId === window.activeTabId) {
+                    window.renderModule(newMod);
+                    window.updateEmptyState();
+                }
+                targetId = newMod.id;
+            }
             var expanded = expandReceived(incoming.data, incoming.src || 'list');
             if (isWeaponTransfer) {
-                insertWeapon(selectedModuleId, expanded, incoming.meta || {});
+                insertWeapon(targetId, expanded, incoming.meta || {});
             } else if (isSpellTransfer) {
-                insertSpell(selectedModuleId, expanded, incoming.meta || {});
+                insertSpell(targetId, expanded, incoming.meta || {});
             } else {
-                insertListItem(selectedModuleId, expanded, (incoming.meta && incoming.meta.attrs) || []);
+                insertListItem(targetId, expanded, (incoming.meta && incoming.meta.attrs) || []);
             }
             sendMessage('accept', incoming.fromClient, { txn: txnId });
             delete pendingIncoming[txnId];

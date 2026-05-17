@@ -28,9 +28,16 @@
         ]).then(function (results) {
             myClient = results[0];
             myPlayer = results[1];
-            isGM = !!(myPlayer && myPlayer.canGM);
-            return TS.sync.getClientsConnected();
-        }).then(function (clients) {
+            return Promise.all([
+                TS.sync.getClientsConnected(),
+                myPlayer ? TS.players.getMoreInfo([myPlayer.id]) : Promise.resolve([])
+            ]);
+        }).then(function (results) {
+            var clients = results[0];
+            var playerInfo = results[1];
+            if (playerInfo && playerInfo[0] && playerInfo[0].rights) {
+                isGM = !!playerInfo[0].rights.canGm;
+            }
             if (clients && clients.cause) {
                 console.error('[CV Sync] getClientsConnected failed:', clients.cause);
                 return;

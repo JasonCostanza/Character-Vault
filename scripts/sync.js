@@ -9,6 +9,7 @@
     var connectedPlayers = {};   // clientId → { clientId, playerId, playerName }
     var myClient = null;         // own clientFragment (from TS.clients.whoAmI)
     var myPlayer = null;         // own playerFragment (from TS.players.whoAmI)
+    var isGM = false;
 
     // ── Transaction Tracking ──
     var pendingOutgoing = {};    // txnId → { targetClient, mode, src, moduleId, itemId, timestamp, state }
@@ -27,6 +28,7 @@
         ]).then(function (results) {
             myClient = results[0];
             myPlayer = results[1];
+            isGM = !!(myPlayer && myPlayer.canGM);
             return TS.sync.getClientsConnected();
         }).then(function (clients) {
             if (clients && clients.cause) {
@@ -192,12 +194,16 @@
 
     function clearPendingOutgoing(txnId) {
         var txn = pendingOutgoing[txnId];
-        if (txn) removePendingUIState(txn);
         delete pendingOutgoing[txnId];
+        if (txn) removePendingUIState(txn);
     }
 
     function removePendingUIState(txn) {
         if (!txn.moduleId || !txn.itemId) return;
+        var stillPending = Object.values(pendingOutgoing).some(function (other) {
+            return other.moduleId === txn.moduleId && other.itemId === txn.itemId;
+        });
+        if (stillPending) return;
         var row = document.querySelector('[data-module-id="' + txn.moduleId + '"][data-item-id="' + txn.itemId + '"]');
         if (!row) return;
         row.classList.remove('list-item-pending');
@@ -234,6 +240,7 @@
         var players = window.getConnectedPlayers();
         var hasPlayers = players.length > 0;
         var itemName = (itemData && itemData.name) ? itemData.name : '';
+        var transferMode = isGM ? 'copy' : 'move';
 
         var overlay = document.createElement('div');
         overlay.className = 'cv-modal-overlay transfer-player-overlay';
@@ -270,8 +277,9 @@
             body.appendChild(itemLabel);
         }
 
-        var selectedClientId = null;
         var sendBtn = null;
+        var selectedClientId = null;         // non-GM single-select
+        var selectedClientIds = new Set();   // GM multi-select
 
         if (!hasPlayers) {
             var noPlayers = document.createElement('div');
@@ -307,19 +315,59 @@
                 nameSpan.textContent = player.playerName;
 
                 item.appendChild(nameSpan);
-                item.addEventListener('click', function () {
-                    playerList.querySelectorAll('.transfer-player-item').forEach(function (el) {
-                        el.classList.remove('selected');
+
+                if (isGM) {
+                    item.addEventListener('click', function () {
+                        if (selectedClientIds.has(player.clientId)) {
+                            selectedClientIds.delete(player.clientId);
+                            item.classList.remove('selected');
+                        } else {
+                            selectedClientIds.add(player.clientId);
+                            item.classList.add('selected');
+                        }
+                        if (sendBtn) sendBtn.disabled = selectedClientIds.size === 0;
                     });
-                    item.classList.add('selected');
-                    selectedClientId = player.clientId;
-                    if (sendBtn) sendBtn.disabled = false;
-                });
+                } else {
+                    item.addEventListener('click', function () {
+                        playerList.querySelectorAll('.transfer-player-item').forEach(function (el) {
+                            el.classList.remove('selected');
+                        });
+                        item.classList.add('selected');
+                        selectedClientId = player.clientId;
+                        if (sendBtn) sendBtn.disabled = false;
+                    });
+                }
 
                 playerList.appendChild(item);
             });
 
             body.appendChild(playerList);
+
+            // Mode toggle
+            var modeLabel = document.createElement('div');
+            modeLabel.className = 'cv-modal-label';
+            modeLabel.textContent = window.t('transfer.modeLabel');
+            body.appendChild(modeLabel);
+
+            var modeRow = document.createElement('div');
+            modeRow.className = 'transfer-mode-row';
+
+            var modeDescEl = document.createElement('span');
+            modeDescEl.className = 'cv-toggle-label';
+            modeDescEl.textContent = transferMode === 'copy'
+                ? window.t('transfer.modeCopy')
+                : window.t('transfer.modeGive');
+
+            var modeToggle = window.makeCvToggle(transferMode === 'copy', function (isCopy) {
+                transferMode = isCopy ? 'copy' : 'move';
+                modeDescEl.textContent = isCopy
+                    ? window.t('transfer.modeCopy')
+                    : window.t('transfer.modeGive');
+            });
+
+            modeRow.appendChild(modeToggle);
+            modeRow.appendChild(modeDescEl);
+            body.appendChild(modeRow);
         }
 
         panel.appendChild(body);
@@ -340,9 +388,15 @@
             sendBtn.textContent = window.t('transfer.send');
             sendBtn.disabled = true;
             sendBtn.addEventListener('click', function () {
-                if (!selectedClientId) return;
                 var compact = window.compactForTransfer(itemData, srcType, moduleMeta);
-                sendOffer(selectedClientId, compact, srcType, moduleMeta, moduleId, itemId);
+                if (isGM) {
+                    selectedClientIds.forEach(function (clientId) {
+                        sendOffer(clientId, compact, srcType, moduleMeta, moduleId, itemId, transferMode);
+                    });
+                } else {
+                    if (!selectedClientId) return;
+                    sendOffer(selectedClientId, compact, srcType, moduleMeta, moduleId, itemId, transferMode);
+                }
                 close();
             });
         }
@@ -371,21 +425,22 @@
         document.addEventListener('keydown', keyHandler);
     }
 
-    function sendOffer(targetClientId, compactItem, srcType, moduleMeta, moduleId, itemId) {
+    function sendOffer(targetClientId, compactItem, srcType, moduleMeta, moduleId, itemId, mode) {
         var txnId = generateTxnId();
+        var transferMode = mode || 'move';
         var metaAttrs = (moduleMeta && moduleMeta.attrs) ? moduleMeta.attrs.map(function (a) {
             return { name: a.name, type: a.type };
         }) : [];
         sendMessage('offer', targetClientId, {
             txn: txnId,
-            mode: 'move',
+            mode: transferMode,
             src: srcType,
             data: compactItem,
             meta: { attrs: metaAttrs }
         });
         pendingOutgoing[txnId] = {
             targetClient: targetClientId,
-            mode: 'move',
+            mode: transferMode,
             src: srcType,
             moduleId: moduleId,
             itemId: itemId,
@@ -817,19 +872,33 @@
     };
 
     window.reapplyPendingStates = function () {
+        var processedRows = new Set();
         Object.keys(pendingOutgoing).forEach(function (txnId) {
             var txn = pendingOutgoing[txnId];
             if (!txn.moduleId || !txn.itemId) return;
             var row = document.querySelector('[data-module-id="' + txn.moduleId + '"][data-item-id="' + txn.itemId + '"]');
             if (!row) return;
             row.classList.add('list-item-pending');
-            if (!row.querySelector('.list-item-cancel-btn')) {
+            var rowKey = txn.moduleId + ':' + txn.itemId;
+            if (!processedRows.has(rowKey) && !row.querySelector('.list-item-cancel-btn')) {
+                processedRows.add(rowKey);
                 var btn = document.createElement('button');
                 btn.className = 'list-item-cancel-btn';
                 btn.textContent = window.t('transfer.cancel');
-                btn.addEventListener('click', (function (tid) {
-                    return function () { window.cancelPendingTransfer(tid); };
-                })(txnId));
+                var mid = txn.moduleId;
+                var iid = txn.itemId;
+                btn.addEventListener('click', function () {
+                    var toCancel = Object.keys(pendingOutgoing).filter(function (tid) {
+                        var t = pendingOutgoing[tid];
+                        return t && t.moduleId === mid && t.itemId === iid;
+                    });
+                    toCancel.forEach(function (tid) {
+                        var t = pendingOutgoing[tid];
+                        if (t) sendMessage('cancel', t.targetClient, { txn: tid });
+                        clearPendingOutgoing(tid);
+                    });
+                    window.showToast(window.t('transfer.cancelled'), 'info');
+                });
                 row.appendChild(btn);
             }
         });

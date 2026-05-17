@@ -84,6 +84,12 @@
     margin: 0;
 }
 
+/* ── Mode Toggle Row ── */
+.transfer-mode-row {
+    display: flex;
+    align-items: center;
+}
+
 /* ── Pending Transfer State ── */
 .list-item-pending {
     opacity: 0.45;

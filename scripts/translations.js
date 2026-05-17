@@ -1299,6 +1299,7 @@
             'transfer.incomingTransfer': 'Incoming Transfer',
             'transfer.noListModules': "You don't have an inventory list",
             'transfer.noWeaponModules': "You don't have a weapons module",
+            'transfer.noSpellModules': "You don't have a spells module",
             'transfer.truncated': '(data truncated)',
         },
 
@@ -2567,6 +2568,7 @@
             'transfer.incomingTransfer': 'Transferencia entrante',
             'transfer.noListModules': 'No tienes una lista de inventario',
             'transfer.noWeaponModules': 'No tienes un módulo de armas',
+            'transfer.noSpellModules': 'No tienes un módulo de hechizos',
             'transfer.truncated': '(datos truncados)',
         },
 
@@ -3857,6 +3859,7 @@
             'transfer.incomingTransfer': 'Transfert entrant',
             'transfer.noListModules': "Vous n'avez pas de liste d'inventaire",
             'transfer.noWeaponModules': "Vous n'avez pas de module d'armes",
+            'transfer.noSpellModules': "Vous n'avez pas de module de sorts",
             'transfer.truncated': '(données tronquées)',
         },
 
@@ -4604,6 +4607,7 @@
             'transfer.incomingTransfer': 'Eingehende Übertragung',
             'transfer.noListModules': 'Du hast keine Inventarliste',
             'transfer.noWeaponModules': 'Du hast kein Waffenmodul',
+            'transfer.noSpellModules': 'Du hast kein Zaubermodul',
             'transfer.truncated': '(Daten gekürzt)',
         },
 
@@ -5299,6 +5303,7 @@
             'transfer.incomingTransfer': 'Trasferimento in arrivo',
             'transfer.noListModules': 'Non hai una lista inventario',
             'transfer.noWeaponModules': 'Non hai un modulo armi',
+            'transfer.noSpellModules': 'Non hai un modulo incantesimi',
             'transfer.truncated': '(dati troncati)',
         },
 
@@ -5981,6 +5986,7 @@
             'transfer.incomingTransfer': 'Transferência recebida',
             'transfer.noListModules': 'Você não tem uma lista de inventário',
             'transfer.noWeaponModules': 'Você não tem um módulo de armas',
+            'transfer.noSpellModules': 'Você não tem um módulo de feitiços',
             'transfer.truncated': '(dados truncados)',
         },
 
@@ -6663,6 +6669,7 @@
             'transfer.incomingTransfer': 'Входящая передача',
             'transfer.noListModules': 'У вас нет списка инвентаря',
             'transfer.noWeaponModules': 'У вас нет модуля оружия',
+            'transfer.noSpellModules': 'У вас нет модуля заклинаний',
             'transfer.truncated': '(данные усечены)',
         },
     };

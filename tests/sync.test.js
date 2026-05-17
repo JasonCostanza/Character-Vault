@@ -396,6 +396,148 @@ describe('truncateWeaponPayload', () => {
     });
 });
 
+// ── compactForTransfer — spells ──
+
+describe('compactForTransfer (spells)', () => {
+    const moduleData = {
+        attrs: [
+            { id: 'attr_s01', name: 'Damage', type: 'text' },
+            { id: 'attr_s02', name: 'Save DC', type: 'number' }
+        ]
+    };
+
+    it('round-trip: compact then expand preserves name and description', () => {
+        const spell = { id: 'sp_001', name: 'Magic Missile', description: 'Three darts.', order: 0, expanded: false, values: {} };
+        const compact = compactForTransfer(spell, 'spells', moduleData);
+        const expanded = expandReceived(compact, 'spells');
+        expect(expanded.name).toBe('Magic Missile');
+        expect(expanded.description).toBe('Three darts.');
+    });
+
+    it('round-trip: remaps attribute IDs to names and back', () => {
+        const spell = { id: 'sp_002', name: 'Fireball', description: '', order: 0, expanded: false, values: { attr_s01: '8d6', attr_s02: 14 } };
+        const compact = compactForTransfer(spell, 'spells', moduleData);
+        expect(compact.values['Damage']).toBe('8d6');
+        expect(compact.values['Save DC']).toBe(14);
+        expect(compact.values['attr_s01']).toBeUndefined();
+    });
+
+    it('strips empty and falsy attribute values', () => {
+        const spell = { id: 'sp_003', name: 'Shield', description: '', order: 0, expanded: false, values: { attr_s01: '', attr_s02: 0 } };
+        const compact = compactForTransfer(spell, 'spells', moduleData);
+        expect(compact.values).toBeUndefined();
+    });
+
+    it('omits the id field', () => {
+        const spell = { id: 'sp_004', name: 'Blink', description: '', order: 0, expanded: false, values: {} };
+        const compact = compactForTransfer(spell, 'spells', moduleData);
+        expect(compact.id).toBeUndefined();
+    });
+
+    it('omits description when empty', () => {
+        const spell = { id: 'sp_005', name: 'Light', description: '', order: 0, expanded: false, values: {} };
+        const compact = compactForTransfer(spell, 'spells', moduleData);
+        expect(compact.description).toBeUndefined();
+    });
+});
+
+// ── expandReceived — spells ──
+
+describe('expandReceived (spells)', () => {
+    it('generates a new id on each call', () => {
+        const compact = { name: 'Cure Wounds', description: 'Heals.' };
+        const a = expandReceived(compact, 'spells');
+        const b = expandReceived(compact, 'spells');
+        expect(a.id).toBeTruthy();
+        expect(b.id).toBeTruthy();
+        expect(a.id).not.toBe(b.id);
+    });
+
+    it('sets expanded to false and order to 0', () => {
+        const compact = { name: 'Sleep', description: '' };
+        const expanded = expandReceived(compact, 'spells');
+        expect(expanded.expanded).toBe(false);
+        expect(expanded.order).toBe(0);
+    });
+
+    it('defaults to empty values when missing', () => {
+        const compact = { name: 'Mage Hand' };
+        expect(expandReceived(compact, 'spells').values).toEqual({});
+    });
+});
+
+// ── insertSpell ──
+
+describe('insertSpell', () => {
+    let mod;
+
+    beforeEach(() => {
+        mod = {
+            id: 'mod_sp_001',
+            type: 'spells',
+            content: {
+                autoSpendSlots: true,
+                showSlotErrors: true,
+                slotLevels: [],
+                categories: [{ id: 'cat_001', name: 'Level 1 Spells', slotLevel: 1, collapsed: false, spells: [] }],
+                attributes: [{ id: 'attr_s01', name: 'Damage', type: 'text', defaultValue: '', pinned: true, builtIn: false }],
+                sortBy: null,
+                sortDir: 'asc'
+            }
+        };
+        globalThis.modules = [mod];
+        globalThis.MODULE_TYPES = {};
+        globalThis.ensureSpellContent = () => {};
+    });
+
+    it('inserts spell into matching category by name', () => {
+        const expanded = expandReceived({ name: 'Magic Missile', description: '' }, 'spells');
+        insertSpell('mod_sp_001', expanded, { attrs: [], categoryName: 'Level 1 Spells', slotLevel: null });
+        expect(mod.content.categories[0].spells).toHaveLength(1);
+        expect(mod.content.categories[0].spells[0].name).toBe('Magic Missile');
+    });
+
+    it('inserts spell into matching category by slotLevel when name fails', () => {
+        const expanded = expandReceived({ name: 'Burning Hands', description: '' }, 'spells');
+        insertSpell('mod_sp_001', expanded, { attrs: [], categoryName: 'Nonexistent', slotLevel: 1 });
+        expect(mod.content.categories[0].spells).toHaveLength(1);
+    });
+
+    it('creates a new category when no match found', () => {
+        const expanded = expandReceived({ name: 'Cantrip X', description: '' }, 'spells');
+        insertSpell('mod_sp_001', expanded, { attrs: [], categoryName: 'Cantrips', slotLevel: null });
+        expect(mod.content.categories).toHaveLength(2);
+        expect(mod.content.categories[1].name).toBe('Cantrips');
+        expect(mod.content.categories[1].spells[0].name).toBe('Cantrip X');
+    });
+
+    it('category name matching is case-insensitive', () => {
+        const expanded = expandReceived({ name: 'Fog Cloud', description: '' }, 'spells');
+        insertSpell('mod_sp_001', expanded, { attrs: [], categoryName: 'level 1 spells', slotLevel: null });
+        expect(mod.content.categories).toHaveLength(1);
+        expect(mod.content.categories[0].spells).toHaveLength(1);
+    });
+
+    it('auto-creates missing attributes', () => {
+        const expanded = expandReceived({ name: 'Ice Storm', description: '', values: { 'Radius': '20ft' } }, 'spells');
+        insertSpell('mod_sp_001', expanded, { attrs: [{ name: 'Radius', type: 'text' }], categoryName: 'Level 1 Spells', slotLevel: null });
+        const newAttr = mod.content.attributes.find((a) => a.name === 'Radius');
+        expect(newAttr).toBeTruthy();
+    });
+
+    it('round-trip: compact + expand + insert preserves spell data', () => {
+        const spell = { id: 'sp_999', name: 'Hold Person', description: 'Paralyzes a target.', order: 0, expanded: false, values: { attr_s01: '—' } };
+        const moduleData = { attrs: mod.content.attributes };
+        const compact = compactForTransfer(spell, 'spells', moduleData);
+        const expanded = expandReceived(compact, 'spells');
+        insertSpell('mod_sp_001', expanded, { attrs: [{ name: 'Damage', type: 'text' }], categoryName: 'Level 1 Spells', slotLevel: null });
+        const inserted = mod.content.categories[0].spells[0];
+        expect(inserted.name).toBe('Hold Person');
+        expect(inserted.description).toBe('Paralyzes a target.');
+        expect(inserted.values['attr_s01']).toBe('—');
+    });
+});
+
 // ── insertWeapon ──
 
 describe('insertWeapon', () => {

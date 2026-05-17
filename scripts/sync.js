@@ -222,17 +222,34 @@
     function removeTransferredItem(txn) {
         var mod = (window.modules || []).find(function (m) { return m.id === txn.moduleId; });
         if (!mod || !mod.content) return;
-        var isWeapons = txn.src === 'weapons';
-        var items = isWeapons ? mod.content.weapons : mod.content.items;
-        if (!Array.isArray(items)) return;
-        var idx = items.findIndex(function (it) { return it.id === txn.itemId; });
-        if (idx === -1) return;
-        items.splice(idx, 1);
+        var moduleType = txn.src;
+
+        if (txn.src === 'weapons') {
+            if (!Array.isArray(mod.content.weapons)) return;
+            var idx = mod.content.weapons.findIndex(function (it) { return it.id === txn.itemId; });
+            if (idx === -1) return;
+            mod.content.weapons.splice(idx, 1);
+        } else if (txn.src === 'spells') {
+            var removed = false;
+            (mod.content.categories || []).forEach(function (cat) {
+                if (removed) return;
+                var spellIdx = (cat.spells || []).findIndex(function (s) { return s.id === txn.itemId; });
+                if (spellIdx !== -1) { cat.spells.splice(spellIdx, 1); removed = true; }
+            });
+            if (!removed) return;
+        } else {
+            moduleType = 'list';
+            if (!Array.isArray(mod.content.items)) return;
+            var idx = mod.content.items.findIndex(function (it) { return it.id === txn.itemId; });
+            if (idx === -1) return;
+            mod.content.items.splice(idx, 1);
+        }
+
         window.scheduleSave();
         var moduleEl = document.querySelector('[data-id="' + txn.moduleId + '"]');
         if (moduleEl) {
             var bodyEl = moduleEl.querySelector('.module-body');
-            var typeDef = window.MODULE_TYPES && window.MODULE_TYPES[isWeapons ? 'weapons' : 'list'];
+            var typeDef = window.MODULE_TYPES && window.MODULE_TYPES[moduleType];
             if (bodyEl && typeDef && typeDef.renderBody) {
                 typeDef.renderBody(bodyEl, mod, window.isPlayMode !== false);
             }
@@ -446,7 +463,15 @@
             var metaAttrs = (moduleMeta && moduleMeta.attrs) ? moduleMeta.attrs.map(function (a) {
                 return { name: a.name, type: a.type };
             }) : [];
-            meta = { attrs: metaAttrs };
+            if (srcType === 'spells') {
+                meta = {
+                    attrs: metaAttrs,
+                    categoryName: (moduleMeta && moduleMeta.categoryName) || null,
+                    slotLevel: (moduleMeta && moduleMeta.slotLevel !== undefined) ? moduleMeta.slotLevel : null
+                };
+            } else {
+                meta = { attrs: metaAttrs };
+            }
         }
         sendMessage('offer', targetClientId, {
             txn: txnId,
@@ -513,7 +538,29 @@
     function compactForTransfer(item, sourceType, moduleData) {
         if (sourceType === 'list') return compactListItem(item, moduleData);
         if (sourceType === 'weapons') return compactWeapon(item);
+        if (sourceType === 'spells') return compactSpell(item, moduleData);
         return Object.assign({}, item);
+    }
+
+    function compactSpell(spell, moduleData) {
+        var compact = {};
+        if (spell.name) compact.name = spell.name;
+        if (spell.description) compact.description = spell.description;
+
+        var attrs = (moduleData && moduleData.attrs) ? moduleData.attrs : [];
+        var idToName = {};
+        attrs.forEach(function (attr) { idToName[attr.id] = attr.name; });
+
+        if (spell.values && typeof spell.values === 'object') {
+            var compactValues = {};
+            Object.keys(spell.values).forEach(function (attrId) {
+                var val = spell.values[attrId];
+                if (val === null || val === undefined || val === '' || val === false || val === 0) return;
+                compactValues[idToName[attrId] || attrId] = val;
+            });
+            if (Object.keys(compactValues).length > 0) compact.values = compactValues;
+        }
+        return compact;
     }
 
     function compactWeapon(weapon) {
@@ -595,7 +642,19 @@
     function expandReceived(compact, sourceType) {
         if (sourceType === 'list') return expandListItem(compact);
         if (sourceType === 'weapons') return expandWeapon(compact);
+        if (sourceType === 'spells') return expandSpell(compact);
         return Object.assign({}, compact);
+    }
+
+    function expandSpell(compact) {
+        return {
+            id: 'sp_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 5),
+            name: compact.name || '',
+            description: compact.description || '',
+            order: 0,
+            expanded: false,
+            values: compact.values ? Object.assign({}, compact.values) : {}
+        };
     }
 
     function expandListItem(compact) {
@@ -827,6 +886,87 @@
         window.scheduleSave();
     }
 
+    function insertSpell(targetModuleId, expandedSpell, meta) {
+        var mod = (window.modules || []).find(function (m) { return m.id === targetModuleId; });
+        if (!mod || !mod.content) return;
+        if (typeof window.ensureSpellContent === 'function') window.ensureSpellContent(mod);
+        if (!Array.isArray(mod.content.attributes)) mod.content.attributes = [];
+        if (!Array.isArray(mod.content.categories)) mod.content.categories = [];
+
+        // Auto-create missing attributes; give existing spells the default value
+        (meta.attrs || []).forEach(function (incoming) {
+            var exists = mod.content.attributes.some(function (a) {
+                return a.name.toLowerCase() === incoming.name.toLowerCase();
+            });
+            if (!exists) {
+                var defVal = incoming.type === 'number-pair' ? { current: 0, max: 0 }
+                    : incoming.type === 'number' ? 0
+                    : incoming.type === 'toggle' ? false : '';
+                var newAttr = {
+                    id: 'attr_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+                    name: incoming.name,
+                    type: incoming.type,
+                    defaultValue: defVal,
+                    pinned: false,
+                    builtIn: false
+                };
+                mod.content.attributes.push(newAttr);
+                mod.content.categories.forEach(function (cat) {
+                    (cat.spells || []).forEach(function (sp) {
+                        if (!sp.values) sp.values = {};
+                        sp.values[newAttr.id] = newAttr.defaultValue;
+                    });
+                });
+            }
+        });
+
+        // Remap name-based values to target module's attr IDs
+        var nameToId = {};
+        mod.content.attributes.forEach(function (a) { nameToId[a.name.toLowerCase()] = a.id; });
+        var remappedValues = {};
+        Object.keys(expandedSpell.values || {}).forEach(function (attrName) {
+            var attrId = nameToId[attrName.toLowerCase()];
+            if (attrId) remappedValues[attrId] = expandedSpell.values[attrName];
+        });
+        expandedSpell.values = remappedValues;
+
+        // Find or create target category
+        var targetCat = null;
+        if (meta.categoryName) {
+            targetCat = mod.content.categories.find(function (c) {
+                return c.name.toLowerCase() === meta.categoryName.toLowerCase();
+            });
+        }
+        if (!targetCat && meta.slotLevel !== null && meta.slotLevel !== undefined) {
+            targetCat = mod.content.categories.find(function (c) { return c.slotLevel === meta.slotLevel; });
+        }
+        if (!targetCat) {
+            targetCat = {
+                id: 'cat_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
+                name: meta.categoryName || '',
+                slotLevel: (meta.slotLevel !== undefined) ? meta.slotLevel : null,
+                collapsed: false,
+                spells: []
+            };
+            mod.content.categories.push(targetCat);
+        }
+        if (!Array.isArray(targetCat.spells)) targetCat.spells = [];
+
+        expandedSpell.order = targetCat.spells.length;
+        targetCat.spells.push(expandedSpell);
+
+        var moduleEl = document.querySelector('[data-id="' + targetModuleId + '"]');
+        if (moduleEl) {
+            var bodyEl = moduleEl.querySelector('.module-body');
+            var typeDef = window.MODULE_TYPES && window.MODULE_TYPES['spells'];
+            if (bodyEl && typeDef && typeDef.renderBody) {
+                typeDef.renderBody(bodyEl, mod, window.isPlayMode !== false);
+            }
+        }
+
+        window.scheduleSave();
+    }
+
     // ── Incoming Transfer Modal ──
 
     function openIncomingTransferModal(txnId) {
@@ -837,7 +977,8 @@
         if (existing) existing.remove();
 
         var isWeaponTransfer = (incoming.src === 'weapons');
-        var targetModuleType = isWeaponTransfer ? 'weapons' : 'list';
+        var isSpellTransfer = (incoming.src === 'spells');
+        var targetModuleType = isWeaponTransfer ? 'weapons' : isSpellTransfer ? 'spells' : 'list';
         var targetModules = (window.modules || []).filter(function (m) { return m.type === targetModuleType; });
         var selectedModuleId = targetModules.length > 0 ? targetModules[0].id : null;
         var hasTargetModules = targetModules.length > 0;
@@ -935,6 +1076,39 @@
                 truncEl.textContent = window.t('transfer.truncated');
                 body.appendChild(truncEl);
             }
+        } else if (isSpellTransfer) {
+            var spellData = incoming.data || {};
+            if (spellData.description) {
+                var descPreview = document.createElement('div');
+                descPreview.className = 'transfer-attr-preview';
+                var descText = document.createElement('div');
+                descText.className = 'transfer-spell-description';
+                var excerpt = spellData.description;
+                if (excerpt.length > 120) excerpt = excerpt.slice(0, 120) + '...';
+                descText.textContent = excerpt;
+                descPreview.appendChild(descText);
+                body.appendChild(descPreview);
+            }
+            var spellAttrValues = (spellData.values && typeof spellData.values === 'object') ? spellData.values : {};
+            var spellAttrKeys = Object.keys(spellAttrValues);
+            if (spellAttrKeys.length > 0) {
+                var spellAttrsDiv = document.createElement('div');
+                spellAttrsDiv.className = 'transfer-attr-preview';
+                spellAttrKeys.forEach(function (attrName) {
+                    var row = document.createElement('div');
+                    row.className = 'transfer-attr-row';
+                    var nameEl = document.createElement('span');
+                    nameEl.className = 'transfer-attr-name';
+                    nameEl.textContent = attrName;
+                    var valEl = document.createElement('span');
+                    valEl.className = 'transfer-attr-val';
+                    valEl.textContent = String(spellAttrValues[attrName]);
+                    row.appendChild(nameEl);
+                    row.appendChild(valEl);
+                    spellAttrsDiv.appendChild(row);
+                });
+                body.appendChild(spellAttrsDiv);
+            }
         } else {
             // Values are name-keyed (compact format), not attr-ID-keyed
             var attrValues = incoming.data && incoming.data.values ? incoming.data.values : {};
@@ -967,11 +1141,12 @@
         targetLabel.textContent = window.t('transfer.addTo');
         body.appendChild(targetLabel);
 
-        var typeDefaultLabel = window.t(isWeaponTransfer ? 'type.weapons' : 'type.list');
+        var typeDefaultLabel = window.t(isWeaponTransfer ? 'type.weapons' : isSpellTransfer ? 'type.spells' : 'type.list');
+        var noModulesKey = isWeaponTransfer ? 'transfer.noWeaponModules' : isSpellTransfer ? 'transfer.noSpellModules' : 'transfer.noListModules';
         if (!hasTargetModules) {
             var noListMsg = document.createElement('div');
             noListMsg.className = 'transfer-no-list-msg';
-            noListMsg.textContent = window.t(isWeaponTransfer ? 'transfer.noWeaponModules' : 'transfer.noListModules');
+            noListMsg.textContent = window.t(noModulesKey);
             body.appendChild(noListMsg);
         } else if (targetModules.length === 1) {
             var singleModEl = document.createElement('div');
@@ -1067,6 +1242,8 @@
             var expanded = expandReceived(incoming.data, incoming.src || 'list');
             if (isWeaponTransfer) {
                 insertWeapon(selectedModuleId, expanded, incoming.meta || {});
+            } else if (isSpellTransfer) {
+                insertSpell(selectedModuleId, expanded, incoming.meta || {});
             } else {
                 insertListItem(selectedModuleId, expanded, (incoming.meta && incoming.meta.attrs) || []);
             }
@@ -1154,6 +1331,7 @@
     window.generateTxnId = generateTxnId;
     window.insertListItem = insertListItem;
     window.insertWeapon = insertWeapon;
+    window.insertSpell = insertSpell;
     window.truncateWeaponPayload = truncateWeaponPayload;
     window.openIncomingTransferModal = openIncomingTransferModal;
 })();

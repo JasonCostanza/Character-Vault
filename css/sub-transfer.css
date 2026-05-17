@@ -233,3 +233,16 @@
     padding: 2px 0;
     user-select: none;
 }
+
+/* ── Spell Transfer Preview ── */
+.transfer-spell-description {
+    font-size: 11px;
+    color: var(--cv-text-secondary);
+    line-height: 1.4;
+    user-select: none;
+}
+
+/* ── Spell Drawer Send Button ── */
+.spells-drawer-send-btn {
+    margin-top: 6px;
+}

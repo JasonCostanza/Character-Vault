@@ -190,7 +190,7 @@
         }, extraFields || {});
         var json = JSON.stringify(msg);
         if (type === 'offer' && json.length > MAX_MSG_LENGTH) {
-            sendChunked(targetClient, json);
+            sendChunked(targetClient, json, msg.txn);
             return;
         }
         if (json.length > MAX_MSG_LENGTH) {
@@ -222,10 +222,9 @@
         return result;
     }
 
-    function sendChunked(targetClient, json) {
+    function sendChunked(targetClient, json, txnId) {
+        if (!txnId) return;
         var chunks = splitIntoChunks(json, CHUNK_SIZE);
-        var txnId;
-        try { txnId = JSON.parse(json).txn; } catch (e) { return; }
         console.log('[CV Sync] Chunking offer ' + txnId + ' into ' + chunks.length + ' parts');
         chunks.forEach(function (slice, idx) {
             TS.sync.send(JSON.stringify({
@@ -242,12 +241,14 @@
             _chunkBuffers[txnId] = {
                 n: msg.n,
                 parts: {},
+                received: 0,
                 timer: setTimeout(function () { delete _chunkBuffers[txnId]; }, 15000)
             };
         }
         var buf = _chunkBuffers[txnId];
+        if (buf.parts[msg.i] === undefined) buf.received++;
         buf.parts[msg.i] = msg.d;
-        if (Object.keys(buf.parts).length === buf.n) {
+        if (buf.received === buf.n) {
             clearTimeout(buf.timer);
             delete _chunkBuffers[txnId];
             var fullJson = joinChunks(buf.parts, buf.n);
@@ -255,9 +256,6 @@
             try { assembled = JSON.parse(fullJson); } catch (e) {
                 console.warn('[CV Sync] Failed to parse reassembled chunks for txn:', txnId);
                 return;
-            }
-            if (fromClientId) {
-                TS.sync.send(JSON.stringify({ v: PROTOCOL_VERSION, t: 'chunk_ack', txn: txnId }), fromClientId).catch(console.error);
             }
             handleOffer(assembled, fromClientId);
         }

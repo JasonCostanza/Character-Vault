@@ -4,6 +4,7 @@
     var SENDER_TIMEOUT_MS = 30000;
     var RECEIVER_TIMEOUT_MS = 60000;
     var MAX_MSG_LENGTH = 480;
+    var WIRE_LIMIT = 500; // TS.sync.send hard cap (1 kB at UTF-16 = 500 JS chars)
 
     // ── Connection State ──
     var connectedPlayers = {};   // clientId → { clientId, playerId, playerName }
@@ -242,12 +243,15 @@
 
     function sendChunked(targetClient, json, txnId) {
         if (!txnId) return;
-        // Probe worst-case envelope (i/n as 99) to compute how many chars the d-value can occupy
-        // when JSON-serialized (including surrounding quotes). 502 - probe.length accounts for
-        // the 2 chars of "" already in the probe.
+        // Measure envelope overhead using worst-case 2-digit i/n values (assumes ≤99 chunks).
+        // d:'' contributes 2 chars (""); full budget for serialized d value =
+        // WIRE_LIMIT - (probe.length - 2) = (WIRE_LIMIT + 2) - probe.length.
         var probe = JSON.stringify({ v: PROTOCOL_VERSION, t: 'chunk', txn: txnId, i: 99, n: 99, d: '' });
-        var dBudget = 502 - probe.length;
+        var dBudget = (WIRE_LIMIT + 2) - probe.length;
         var chunks = splitIntoChunksByEncodedLen(json, dBudget);
+        if (chunks.length > 99) {
+            console.warn('[CV Sync] Chunk count ' + chunks.length + ' exceeds probe assumption of ≤99; wire messages may be oversized');
+        }
         console.log('[CV Sync] Chunking offer ' + txnId + ' into ' + chunks.length + ' parts');
         chunks.forEach(function (slice, idx) {
             TS.sync.send(JSON.stringify({

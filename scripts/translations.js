@@ -1298,6 +1298,8 @@
             'transfer.online': 'online',
             'transfer.incomingTransfer': 'Incoming Transfer',
             'transfer.noListModules': "You don't have an inventory list",
+            'transfer.noWeaponModules': "You don't have a weapons module",
+            'transfer.truncated': '(data truncated)',
         },
 
         es: {
@@ -2564,6 +2566,8 @@
             'transfer.online': 'en línea',
             'transfer.incomingTransfer': 'Transferencia entrante',
             'transfer.noListModules': 'No tienes una lista de inventario',
+            'transfer.noWeaponModules': 'No tienes un módulo de armas',
+            'transfer.truncated': '(datos truncados)',
         },
 
         fr: {
@@ -3852,6 +3856,8 @@
             'transfer.online': 'en ligne',
             'transfer.incomingTransfer': 'Transfert entrant',
             'transfer.noListModules': "Vous n'avez pas de liste d'inventaire",
+            'transfer.noWeaponModules': "Vous n'avez pas de module d'armes",
+            'transfer.truncated': '(données tronquées)',
         },
 
         de: {
@@ -4597,6 +4603,8 @@
             'transfer.online': 'online',
             'transfer.incomingTransfer': 'Eingehende Übertragung',
             'transfer.noListModules': 'Du hast keine Inventarliste',
+            'transfer.noWeaponModules': 'Du hast kein Waffenmodul',
+            'transfer.truncated': '(Daten gekürzt)',
         },
 
         it: {
@@ -5290,6 +5298,8 @@
             'transfer.online': 'online',
             'transfer.incomingTransfer': 'Trasferimento in arrivo',
             'transfer.noListModules': 'Non hai una lista inventario',
+            'transfer.noWeaponModules': 'Non hai un modulo armi',
+            'transfer.truncated': '(dati troncati)',
         },
 
         'pt-BR': {
@@ -5970,6 +5980,8 @@
             'transfer.online': 'online',
             'transfer.incomingTransfer': 'Transferência recebida',
             'transfer.noListModules': 'Você não tem uma lista de inventário',
+            'transfer.noWeaponModules': 'Você não tem um módulo de armas',
+            'transfer.truncated': '(dados truncados)',
         },
 
         ru: {
@@ -6650,6 +6662,8 @@
             'transfer.online': 'в сети',
             'transfer.incomingTransfer': 'Входящая передача',
             'transfer.noListModules': 'У вас нет списка инвентаря',
+            'transfer.noWeaponModules': 'У вас нет модуля оружия',
+            'transfer.truncated': '(данные усечены)',
         },
     };
 

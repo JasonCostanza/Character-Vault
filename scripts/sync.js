@@ -220,18 +220,20 @@
 
     function removeTransferredItem(txn) {
         var mod = (window.modules || []).find(function (m) { return m.id === txn.moduleId; });
-        if (!mod || !mod.content || !mod.content.items) return;
-        var idx = mod.content.items.findIndex(function (it) { return it.id === txn.itemId; });
-        if (idx !== -1) {
-            mod.content.items.splice(idx, 1);
-            window.scheduleSave();
-            var moduleEl = document.querySelector('[data-id="' + txn.moduleId + '"]');
-            if (moduleEl) {
-                var bodyEl = moduleEl.querySelector('.module-body');
-                var typeDef = window.MODULE_TYPES && window.MODULE_TYPES['list'];
-                if (bodyEl && typeDef && typeDef.renderBody) {
-                    typeDef.renderBody(bodyEl, mod, window.isPlayMode !== false);
-                }
+        if (!mod || !mod.content) return;
+        var isWeapons = txn.src === 'weapons';
+        var items = isWeapons ? mod.content.weapons : mod.content.items;
+        if (!Array.isArray(items)) return;
+        var idx = items.findIndex(function (it) { return it.id === txn.itemId; });
+        if (idx === -1) return;
+        items.splice(idx, 1);
+        window.scheduleSave();
+        var moduleEl = document.querySelector('[data-id="' + txn.moduleId + '"]');
+        if (moduleEl) {
+            var bodyEl = moduleEl.querySelector('.module-body');
+            var typeDef = window.MODULE_TYPES && window.MODULE_TYPES[isWeapons ? 'weapons' : 'list'];
+            if (bodyEl && typeDef && typeDef.renderBody) {
+                typeDef.renderBody(bodyEl, mod, window.isPlayMode !== false);
             }
         }
     }
@@ -435,15 +437,22 @@
     function sendOffer(targetClientId, compactItem, srcType, moduleMeta, moduleId, itemId, mode) {
         var txnId = generateTxnId();
         var transferMode = mode || 'move';
-        var metaAttrs = (moduleMeta && moduleMeta.attrs) ? moduleMeta.attrs.map(function (a) {
-            return { name: a.name, type: a.type };
-        }) : [];
+        var meta;
+        if (srcType === 'weapons') {
+            meta = buildWeaponTransferMeta(compactItem, moduleMeta);
+            truncateWeaponPayload(compactItem, meta);
+        } else {
+            var metaAttrs = (moduleMeta && moduleMeta.attrs) ? moduleMeta.attrs.map(function (a) {
+                return { name: a.name, type: a.type };
+            }) : [];
+            meta = { attrs: metaAttrs };
+        }
         sendMessage('offer', targetClientId, {
             txn: txnId,
             mode: transferMode,
             src: srcType,
             data: compactItem,
-            meta: { attrs: metaAttrs }
+            meta: meta
         });
         pendingOutgoing[txnId] = {
             targetClient: targetClientId,
@@ -502,7 +511,63 @@
 
     function compactForTransfer(item, sourceType, moduleData) {
         if (sourceType === 'list') return compactListItem(item, moduleData);
+        if (sourceType === 'weapons') return compactWeapon(item);
         return Object.assign({}, item);
+    }
+
+    function compactWeapon(weapon) {
+        var compact = {};
+        compact.name = weapon.name || '';
+        compact.slot = weapon.slot || 'main';
+        compact.kind = weapon.kind || 'melee';
+        if (weapon.icon) compact.icon = weapon.icon;
+        if (weapon.abilityMod) compact.abilityMod = weapon.abilityMod;
+        if (weapon.proficient) compact.proficient = true;
+        if (weapon.attackBonusOverride !== null && weapon.attackBonusOverride !== undefined) compact.attackBonusOverride = weapon.attackBonusOverride;
+        if (weapon.twoHanded) compact.twoHanded = true;
+        if (weapon.range) compact.range = weapon.range;
+        if (weapon.ammoCount !== null && weapon.ammoCount !== undefined) compact.ammoCount = weapon.ammoCount;
+        if (weapon.notesMarkdown) compact.notesMarkdown = weapon.notesMarkdown;
+        if (weapon.acBonus !== null && weapon.acBonus !== undefined) compact.acBonus = weapon.acBonus;
+        if (weapon.shieldHp !== null && weapon.shieldHp !== undefined) compact.shieldHp = weapon.shieldHp;
+        if (weapon.shieldHpMax !== null && weapon.shieldHpMax !== undefined) compact.shieldHpMax = weapon.shieldHpMax;
+        if (Array.isArray(weapon.damageInstances) && weapon.damageInstances.length) {
+            compact.damageInstances = weapon.damageInstances.map(function (inst) {
+                var ci = {};
+                if (inst.dice) ci.dice = inst.dice;
+                if (inst.modFromAbility) ci.modFromAbility = true;
+                if (inst.flatBonus) ci.flatBonus = inst.flatBonus;
+                if (inst.damageType) ci.damageType = inst.damageType;
+                return ci;
+            });
+        }
+        if (Array.isArray(weapon.traits) && weapon.traits.length) {
+            compact.traits = weapon.traits.map(function (tr) {
+                var ct = { key: tr.key };
+                if (tr.value !== null && tr.value !== undefined) ct.value = tr.value;
+                return ct;
+            });
+        }
+        if (Array.isArray(weapon.attachedEnhancements) && weapon.attachedEnhancements.length) {
+            compact.attachedEnhancements = weapon.attachedEnhancements.slice();
+        }
+        if (Array.isArray(weapon.firingModes) && weapon.firingModes.length) {
+            compact.firingModes = weapon.firingModes.map(function (fm) {
+                var cfm = { name: fm.name, ammoCost: fm.ammoCost };
+                if (fm.diceModifier !== null && fm.diceModifier !== undefined) cfm.diceModifier = fm.diceModifier;
+                if (fm.damageBonus !== null && fm.damageBonus !== undefined) cfm.damageBonus = fm.damageBonus;
+                return cfm;
+            });
+        }
+        var optionals = ['proficiencyRank', 'skillName', 'skillValue', 'poolAttribute', 'poolSkill', 'poolSize',
+                         'weaponCategory', 'cpredStat', 'cpredSkillValue', 'governingTrait', 'baseDamageFlat',
+                         'damageCategory', 'impaling', 'armorSavePenalty', 'poolAdjustment', 'accuracy'];
+        optionals.forEach(function (f) {
+            var v = weapon[f];
+            if (v !== null && v !== undefined && v !== false && v !== 0 && v !== '') compact[f] = v;
+        });
+        if (weapon.poolAutoCompute) compact.poolAutoCompute = true;
+        return compact;
     }
 
     function compactListItem(item, moduleData) {
@@ -528,6 +593,7 @@
 
     function expandReceived(compact, sourceType) {
         if (sourceType === 'list') return expandListItem(compact);
+        if (sourceType === 'weapons') return expandWeapon(compact);
         return Object.assign({}, compact);
     }
 
@@ -542,6 +608,75 @@
 
     function generateLocalId() {
         return 'item_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+    }
+
+    function expandWeapon(compact) {
+        var defaults = {
+            name: '', slot: 'main', kind: 'melee', icon: null, abilityMod: null,
+            proficient: false, attackBonusOverride: null, damageInstances: [], range: null,
+            ammoCount: null, traits: [], notesMarkdown: '', twoHanded: false,
+            acBonus: null, shieldHp: null, shieldHpMax: null, proficiencyRank: null,
+            skillName: null, skillValue: null, poolAttribute: null, poolSkill: null,
+            poolSize: null, weaponCategory: null, cpredStat: null, cpredSkillValue: null,
+            governingTrait: null, baseDamageFlat: null, damageCategory: null,
+            firingModes: null, impaling: null, armorSavePenalty: null,
+            attachedEnhancements: null, poolAdjustment: null, poolAutoCompute: false,
+            accuracy: null, linkedStatModuleId: null
+        };
+        return Object.assign({}, defaults, compact, { id: generateWeaponLocalId() });
+    }
+
+    function generateWeaponLocalId() {
+        return 'wpn_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+    }
+
+    function buildWeaponTransferMeta(compact, moduleContent) {
+        var customTraits = [];
+        if (Array.isArray(compact.traits) && moduleContent && Array.isArray(moduleContent.customWeaponTraits)) {
+            compact.traits.forEach(function (tr) {
+                if (tr.key && tr.key.indexOf('custom.') === 0) {
+                    var found = moduleContent.customWeaponTraits.find(function (ct) { return ct.key === tr.key; });
+                    if (found) customTraits.push(found);
+                }
+            });
+        }
+        var enhancements = [];
+        if (Array.isArray(compact.attachedEnhancements) && moduleContent && Array.isArray(moduleContent.enhancementCatalog)) {
+            compact.attachedEnhancements.forEach(function (key) {
+                var found = moduleContent.enhancementCatalog.find(function (e) { return e.key === key; });
+                if (found) enhancements.push(found);
+            });
+        }
+        return { customTraits: customTraits, enhancements: enhancements };
+    }
+
+    function truncateWeaponPayload(compact, meta) {
+        var LIMIT = MAX_MSG_LENGTH - 100;
+        var str = JSON.stringify({ data: compact, meta: meta });
+        if (str.length <= LIMIT) return;
+        console.warn('[CV Sync] Weapon payload too large (' + str.length + ' chars), truncating');
+        if (compact.notesMarkdown && compact.notesMarkdown.length > 200) {
+            compact.notesMarkdown = compact.notesMarkdown.slice(0, 200) + '...';
+            compact.truncated = true;
+        }
+        if (compact.traits && compact.traits.length > 5) {
+            compact.traits = compact.traits.slice(0, 5);
+            compact.truncated = true;
+        }
+        if (meta.enhancements && meta.enhancements.length > 3) {
+            meta.enhancements = meta.enhancements.slice(0, 3);
+            var keptKeys = meta.enhancements.map(function (e) { return e.key; });
+            if (compact.attachedEnhancements) {
+                compact.attachedEnhancements = compact.attachedEnhancements.filter(function (k) {
+                    return keptKeys.indexOf(k) !== -1;
+                });
+            }
+            compact.truncated = true;
+        }
+        str = JSON.stringify({ data: compact, meta: meta });
+        if (str.length > LIMIT && compact.notesMarkdown) {
+            compact.notesMarkdown = compact.notesMarkdown.slice(0, 100) + '...';
+        }
     }
 
     function validateIncoming(msg) {
@@ -635,6 +770,67 @@
         window.scheduleSave();
     }
 
+    function insertWeapon(targetModuleId, expandedWeapon, meta) {
+        var mod = (window.modules || []).find(function (m) { return m.id === targetModuleId; });
+        if (!mod || !mod.content) return;
+        if (!Array.isArray(mod.content.customWeaponTraits)) mod.content.customWeaponTraits = [];
+        if (!Array.isArray(mod.content.enhancementCatalog)) mod.content.enhancementCatalog = [];
+        if (!Array.isArray(mod.content.weapons)) mod.content.weapons = [];
+
+        // Merge custom traits by name (case-insensitive); remap keys on the weapon
+        var traitKeyRemap = {};
+        (meta.customTraits || []).forEach(function (incoming) {
+            var existing = mod.content.customWeaponTraits.find(function (t) {
+                return t.name.toLowerCase() === incoming.name.toLowerCase();
+            });
+            if (existing) {
+                traitKeyRemap[incoming.key] = existing.key;
+            } else {
+                var newKey = 'custom.wt_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+                mod.content.customWeaponTraits.push({ key: newKey, name: incoming.name, description: incoming.description || '' });
+                traitKeyRemap[incoming.key] = newKey;
+            }
+        });
+        if (Array.isArray(expandedWeapon.traits)) {
+            expandedWeapon.traits = expandedWeapon.traits.map(function (tr) {
+                return { key: traitKeyRemap[tr.key] || tr.key, value: tr.value !== undefined ? tr.value : null };
+            });
+        }
+
+        // Merge enhancements by name (case-insensitive); remap keys on the weapon
+        var enhKeyRemap = {};
+        (meta.enhancements || []).forEach(function (incoming) {
+            var existing = mod.content.enhancementCatalog.find(function (e) {
+                return e.name.toLowerCase() === incoming.name.toLowerCase();
+            });
+            if (existing) {
+                enhKeyRemap[incoming.key] = existing.key;
+            } else {
+                var newKey = 'enh_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+                mod.content.enhancementCatalog.push(Object.assign({}, incoming, { key: newKey }));
+                enhKeyRemap[incoming.key] = newKey;
+            }
+        });
+        if (Array.isArray(expandedWeapon.attachedEnhancements)) {
+            expandedWeapon.attachedEnhancements = expandedWeapon.attachedEnhancements.map(function (k) {
+                return enhKeyRemap[k] || k;
+            });
+        }
+
+        mod.content.weapons.push(expandedWeapon);
+
+        var moduleEl = document.querySelector('[data-id="' + targetModuleId + '"]');
+        if (moduleEl) {
+            var bodyEl = moduleEl.querySelector('.module-body');
+            var typeDef = window.MODULE_TYPES && window.MODULE_TYPES['weapons'];
+            if (bodyEl && typeDef && typeDef.renderBody) {
+                typeDef.renderBody(bodyEl, mod, window.isPlayMode !== false);
+            }
+        }
+
+        window.scheduleSave();
+    }
+
     // ── Incoming Transfer Modal ──
 
     function openIncomingTransferModal(txnId) {
@@ -644,9 +840,11 @@
         var existing = document.querySelector('.transfer-incoming-overlay');
         if (existing) existing.remove();
 
-        var listModules = (window.modules || []).filter(function (m) { return m.type === 'list'; });
-        var selectedModuleId = listModules.length > 0 ? listModules[0].id : null;
-        var hasListModules = listModules.length > 0;
+        var isWeaponTransfer = (incoming.src === 'weapons');
+        var targetModuleType = isWeaponTransfer ? 'weapons' : 'list';
+        var targetModules = (window.modules || []).filter(function (m) { return m.type === targetModuleType; });
+        var selectedModuleId = targetModules.length > 0 ? targetModules[0].id : null;
+        var hasTargetModules = targetModules.length > 0;
 
         var itemName = (incoming.data && incoming.data.name) ? incoming.data.name : '';
         var fromName = incoming.fromName || 'Unknown';
@@ -706,29 +904,66 @@
         body.appendChild(modeLabel);
         body.appendChild(modeValue);
 
-        // Values are name-keyed (compact format), not attr-ID-keyed
-        var attrValues = incoming.data && incoming.data.values ? incoming.data.values : {};
-        var attrKeys = Object.keys(attrValues);
-        if (attrKeys.length > 0) {
-            var attrsDiv = document.createElement('div');
-            attrsDiv.className = 'transfer-attr-preview';
-            attrKeys.forEach(function (attrName) {
-                var row = document.createElement('div');
-                row.className = 'transfer-attr-row';
-                var nameEl = document.createElement('span');
-                nameEl.className = 'transfer-attr-name';
-                nameEl.textContent = attrName;
-                var valEl = document.createElement('span');
-                valEl.className = 'transfer-attr-val';
-                var val = attrValues[attrName];
-                valEl.textContent = (val && typeof val === 'object')
-                    ? (val.current + '/' + val.max)
-                    : String(val);
-                row.appendChild(nameEl);
-                row.appendChild(valEl);
-                attrsDiv.appendChild(row);
-            });
-            body.appendChild(attrsDiv);
+        if (isWeaponTransfer) {
+            var weaponData = incoming.data || {};
+            if (Array.isArray(weaponData.damageInstances) && weaponData.damageInstances.length) {
+                var dmgDiv = document.createElement('div');
+                dmgDiv.className = 'transfer-attr-preview';
+                weaponData.damageInstances.forEach(function (inst) {
+                    var row = document.createElement('div');
+                    row.className = 'transfer-attr-row';
+                    var nameEl = document.createElement('span');
+                    nameEl.className = 'transfer-attr-name';
+                    nameEl.textContent = inst.damageType || '—';
+                    var valEl = document.createElement('span');
+                    valEl.className = 'transfer-attr-val';
+                    valEl.textContent = inst.dice || '';
+                    row.appendChild(nameEl);
+                    row.appendChild(valEl);
+                    dmgDiv.appendChild(row);
+                });
+                body.appendChild(dmgDiv);
+            }
+            if (Array.isArray(weaponData.traits) && weaponData.traits.length) {
+                var traitsEl = document.createElement('div');
+                traitsEl.className = 'transfer-meta-value transfer-weapon-traits';
+                traitsEl.textContent = weaponData.traits.map(function (tr) {
+                    var key = tr.key || '';
+                    return key.split('.').pop();
+                }).join(', ');
+                body.appendChild(traitsEl);
+            }
+            if (weaponData.truncated) {
+                var truncEl = document.createElement('div');
+                truncEl.className = 'transfer-truncated-notice';
+                truncEl.textContent = window.t('transfer.truncated');
+                body.appendChild(truncEl);
+            }
+        } else {
+            // Values are name-keyed (compact format), not attr-ID-keyed
+            var attrValues = incoming.data && incoming.data.values ? incoming.data.values : {};
+            var attrKeys = Object.keys(attrValues);
+            if (attrKeys.length > 0) {
+                var attrsDiv = document.createElement('div');
+                attrsDiv.className = 'transfer-attr-preview';
+                attrKeys.forEach(function (attrName) {
+                    var row = document.createElement('div');
+                    row.className = 'transfer-attr-row';
+                    var nameEl = document.createElement('span');
+                    nameEl.className = 'transfer-attr-name';
+                    nameEl.textContent = attrName;
+                    var valEl = document.createElement('span');
+                    valEl.className = 'transfer-attr-val';
+                    var val = attrValues[attrName];
+                    valEl.textContent = (val && typeof val === 'object')
+                        ? (val.current + '/' + val.max)
+                        : String(val);
+                    row.appendChild(nameEl);
+                    row.appendChild(valEl);
+                    attrsDiv.appendChild(row);
+                });
+                body.appendChild(attrsDiv);
+            }
         }
 
         var targetLabel = document.createElement('div');
@@ -736,15 +971,16 @@
         targetLabel.textContent = window.t('transfer.addTo');
         body.appendChild(targetLabel);
 
-        if (!hasListModules) {
+        var typeDefaultLabel = window.t(isWeaponTransfer ? 'type.weapons' : 'type.list');
+        if (!hasTargetModules) {
             var noListMsg = document.createElement('div');
             noListMsg.className = 'transfer-no-list-msg';
-            noListMsg.textContent = window.t('transfer.noListModules');
+            noListMsg.textContent = window.t(isWeaponTransfer ? 'transfer.noWeaponModules' : 'transfer.noListModules');
             body.appendChild(noListMsg);
-        } else if (listModules.length === 1) {
+        } else if (targetModules.length === 1) {
             var singleModEl = document.createElement('div');
             singleModEl.className = 'transfer-meta-value';
-            singleModEl.textContent = listModules[0].title || window.t('type.list');
+            singleModEl.textContent = targetModules[0].title || typeDefaultLabel;
             body.appendChild(singleModEl);
         } else {
             var selectWrapper = document.createElement('div');
@@ -752,17 +988,17 @@
             var trigger = document.createElement('button');
             trigger.type = 'button';
             trigger.className = 'cv-select-trigger';
-            trigger.innerHTML = '<span class="cv-select-value">' + window.escapeHtml(listModules[0].title || window.t('type.list')) + '</span>' +
+            trigger.innerHTML = '<span class="cv-select-value">' + window.escapeHtml(targetModules[0].title || typeDefaultLabel) + '</span>' +
                 '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
             var menu = document.createElement('ul');
             menu.className = 'cv-select-menu';
-            listModules.forEach(function (mod, idx) {
+            targetModules.forEach(function (mod, idx) {
                 var li = document.createElement('li');
                 li.className = 'cv-select-option' + (idx === 0 ? ' selected' : '');
-                li.textContent = mod.title || window.t('type.list');
+                li.textContent = mod.title || typeDefaultLabel;
                 li.addEventListener('click', function () {
                     selectedModuleId = mod.id;
-                    trigger.querySelector('.cv-select-value').textContent = mod.title || window.t('type.list');
+                    trigger.querySelector('.cv-select-value').textContent = mod.title || typeDefaultLabel;
                     menu.querySelectorAll('.cv-select-option').forEach(function (o) {
                         o.classList.toggle('selected', o === li);
                     });
@@ -806,7 +1042,7 @@
         acceptBtn.type = 'button';
         acceptBtn.className = 'btn-primary sm';
         acceptBtn.textContent = window.t('transfer.accept');
-        acceptBtn.disabled = !hasListModules || senderDisconnected;
+        acceptBtn.disabled = !hasTargetModules || senderDisconnected;
 
         footer.appendChild(declineBtn);
         footer.appendChild(acceptBtn);
@@ -833,7 +1069,11 @@
         function accept() {
             if (!selectedModuleId) return;
             var expanded = expandReceived(incoming.data, incoming.src || 'list');
-            insertListItem(selectedModuleId, expanded, (incoming.meta && incoming.meta.attrs) || []);
+            if (isWeaponTransfer) {
+                insertWeapon(selectedModuleId, expanded, incoming.meta || {});
+            } else {
+                insertListItem(selectedModuleId, expanded, (incoming.meta && incoming.meta.attrs) || []);
+            }
             sendMessage('accept', incoming.fromClient, { txn: txnId });
             delete pendingIncoming[txnId];
             window.showToast(window.t('transfer.itemReceived', { item: itemName, name: fromName }), 'info');
@@ -917,5 +1157,7 @@
     window.validateIncoming = validateIncoming;
     window.generateTxnId = generateTxnId;
     window.insertListItem = insertListItem;
+    window.insertWeapon = insertWeapon;
+    window.truncateWeaponPayload = truncateWeaponPayload;
     window.openIncomingTransferModal = openIncomingTransferModal;
 })();

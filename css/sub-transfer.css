@@ -217,3 +217,19 @@
     color: var(--cv-text-muted);
     user-select: none;
 }
+
+/* ── Weapon Transfer Preview ── */
+.transfer-weapon-traits {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    font-style: italic;
+    padding-top: 2px;
+    user-select: none;
+}
+
+.transfer-truncated-notice {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    padding: 2px 0;
+    user-select: none;
+}

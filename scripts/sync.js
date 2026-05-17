@@ -4,7 +4,6 @@
     var SENDER_TIMEOUT_MS = 30000;
     var RECEIVER_TIMEOUT_MS = 60000;
     var MAX_MSG_LENGTH = 480;
-    var CHUNK_SIZE = 430;
 
     // ── Connection State ──
     var connectedPlayers = {};   // clientId → { clientId, playerId, playerName }
@@ -216,6 +215,25 @@
         return chunks;
     }
 
+    function splitIntoChunksByEncodedLen(str, maxEncodedLen) {
+        var chunks = [];
+        var i = 0;
+        while (i < str.length) {
+            var lo = 1, hi = str.length - i;
+            while (lo < hi) {
+                var mid = Math.ceil((lo + hi) / 2);
+                if (JSON.stringify(str.slice(i, i + mid)).length <= maxEncodedLen) {
+                    lo = mid;
+                } else {
+                    hi = mid - 1;
+                }
+            }
+            chunks.push(str.slice(i, i + lo));
+            i += lo;
+        }
+        return chunks;
+    }
+
     function joinChunks(parts, n) {
         var result = '';
         for (var i = 0; i < n; i++) result += (parts[i] || '');
@@ -224,7 +242,12 @@
 
     function sendChunked(targetClient, json, txnId) {
         if (!txnId) return;
-        var chunks = splitIntoChunks(json, CHUNK_SIZE);
+        // Probe worst-case envelope (i/n as 99) to compute how many chars the d-value can occupy
+        // when JSON-serialized (including surrounding quotes). 502 - probe.length accounts for
+        // the 2 chars of "" already in the probe.
+        var probe = JSON.stringify({ v: PROTOCOL_VERSION, t: 'chunk', txn: txnId, i: 99, n: 99, d: '' });
+        var dBudget = 502 - probe.length;
+        var chunks = splitIntoChunksByEncodedLen(json, dBudget);
         console.log('[CV Sync] Chunking offer ' + txnId + ' into ' + chunks.length + ' parts');
         chunks.forEach(function (slice, idx) {
             TS.sync.send(JSON.stringify({
@@ -1329,6 +1352,7 @@
     window.insertWeapon = insertWeapon;
     window.insertSpell = insertSpell;
     window.splitIntoChunks = splitIntoChunks;
+    window.splitIntoChunksByEncodedLen = splitIntoChunksByEncodedLen;
     window.joinChunks = joinChunks;
     window.handleChunk = handleChunk;
     window.openIncomingTransferModal = openIncomingTransferModal;

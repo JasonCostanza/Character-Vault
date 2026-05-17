@@ -602,6 +602,66 @@ describe('splitIntoChunks', () => {
     });
 });
 
+// ── splitIntoChunksByEncodedLen ──
+
+describe('splitIntoChunksByEncodedLen', () => {
+    it('returns empty array for empty string', () => {
+        expect(splitIntoChunksByEncodedLen('', 50)).toEqual([]);
+    });
+
+    it('returns single chunk when string encodes within budget', () => {
+        const str = 'hello';
+        const chunks = splitIntoChunksByEncodedLen(str, 100);
+        expect(chunks).toEqual(['hello']);
+    });
+
+    it('each chunk JSON.stringify length stays within budget for plain ASCII', () => {
+        const str = 'x'.repeat(200);
+        const budget = 50; // JSON.stringify('x'.repeat(48)) = 50 chars (48 + 2 quotes)
+        const chunks = splitIntoChunksByEncodedLen(str, budget);
+        chunks.forEach(chunk => {
+            expect(JSON.stringify(chunk).length).toBeLessThanOrEqual(budget);
+        });
+        expect(chunks.join('')).toBe(str);
+    });
+
+    it('each chunk stays within budget for strings with many double-quotes', () => {
+        // JSON.stringify expands " → \" so encoded length > raw length
+        const str = ('"key":"value",').repeat(20); // dense with quotes and colons
+        const budget = 50;
+        const chunks = splitIntoChunksByEncodedLen(str, budget);
+        chunks.forEach(chunk => {
+            expect(JSON.stringify(chunk).length).toBeLessThanOrEqual(budget);
+        });
+        expect(chunks.join('')).toBe(str);
+    });
+
+    it('round-trips correctly with joinChunks', () => {
+        const original = '{"v":1,"t":"offer","from":"Player","items":[{"name":"Sword","desc":"A long description here"}]}';
+        const budget = 30;
+        const chunks = splitIntoChunksByEncodedLen(original, budget);
+        const parts = {};
+        chunks.forEach((chunk, i) => { parts[i] = chunk; });
+        expect(joinChunks(parts, chunks.length)).toBe(original);
+    });
+
+    it('produces chunks whose full wire envelope stays under 500 chars', () => {
+        // Simulate a realistic offer JSON with many special chars
+        const txnId = 'txn_1779032951762_abc';
+        const offerJson = JSON.stringify({
+            v: 1, t: 'offer', from: 'Player', txn: txnId,
+            items: [{ name: 'Sword of Fire', desc: '"A blade that burns." Special chars: \\ and more \\' }]
+        });
+        const probe = JSON.stringify({ v: 1, t: 'chunk', txn: txnId, i: 99, n: 99, d: '' });
+        const dBudget = 502 - probe.length;
+        const chunks = splitIntoChunksByEncodedLen(offerJson, dBudget);
+        chunks.forEach((slice, idx) => {
+            const wire = JSON.stringify({ v: 1, t: 'chunk', txn: txnId, i: idx, n: chunks.length, d: slice });
+            expect(wire.length).toBeLessThanOrEqual(500);
+        });
+    });
+});
+
 // ── joinChunks ──
 
 describe('joinChunks', () => {

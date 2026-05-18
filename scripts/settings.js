@@ -198,7 +198,7 @@
             }, 1500);
         } catch (err) {
             console.error('[CV] Failed to copy GitHub URL:', err);
-            showToast('Failed to copy URL', 'error');
+            showToast(t('settings.githubCopyFail'), 'error');
         } finally {
             document.body.removeChild(tempInput);
         }

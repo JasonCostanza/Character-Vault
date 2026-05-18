@@ -32,22 +32,41 @@
     }
 
     // ── Toast Notifications ──
-    function showToast(message, type = 'success') {
+    function showToast(message, type = 'success', action) {
         const container = document.getElementById('toast-container');
         if (!container) return;
 
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
-        toast.textContent = message;
+
+        if (action) {
+            toast.classList.add('toast-interactive');
+            const msgSpan = document.createElement('span');
+            msgSpan.textContent = message;
+            const actionBtn = document.createElement('button');
+            actionBtn.className = 'toast-action';
+            actionBtn.textContent = action.label;
+            actionBtn.addEventListener('click', () => {
+                action.onClick();
+                toast.classList.remove('toast-visible');
+                toast.addEventListener('transitionend', () => toast.remove());
+            });
+            toast.appendChild(msgSpan);
+            toast.appendChild(actionBtn);
+        } else {
+            toast.textContent = message;
+        }
+
         container.appendChild(toast);
 
         // Trigger enter animation
         requestAnimationFrame(() => toast.classList.add('toast-visible'));
 
         setTimeout(() => {
+            if (!document.body.contains(toast)) return;
             toast.classList.remove('toast-visible');
             toast.addEventListener('transitionend', () => toast.remove());
-        }, 2500);
+        }, action ? 8000 : 2500);
     }
 
     function toggleCheckboxInMarkdown(data, moduleEl, index, checked) {

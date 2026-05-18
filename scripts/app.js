@@ -20,3 +20,10 @@ window.pendingRolls = {}; // rollId → { logEntryId } — populated by roll sit
     }
     init();
 })();
+
+window.onStateChangeEvent = function (event) {
+    console.log('[CV] State change event:', event);
+    if (event && event.kind === 'hasInitialized') {
+        initSync();
+    }
+};

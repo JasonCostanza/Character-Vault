@@ -348,6 +348,22 @@
         descDisplay.className = 'spells-desc-display module-text-display';
         descDisplay.innerHTML = renderMarkdown(spell.description || '');
         drawerContent.appendChild(descDisplay);
+        if (typeof TS !== 'undefined' && typeof window.openSendToPlayerModal === 'function') {
+            const sendBtn = document.createElement('button');
+            sendBtn.type = 'button';
+            sendBtn.className = 'list-inspect-btn-send spells-drawer-send-btn';
+            sendBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>' + t('transfer.sendToPlayer');
+            sendBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const moduleMeta = {
+                    attrs: data.content.attributes,
+                    categoryName: cat.name,
+                    slotLevel: cat.slotLevel
+                };
+                window.openSendToPlayerModal(spell, 'spells', moduleMeta, data.id, spell.id);
+            });
+            drawerContent.appendChild(sendBtn);
+        }
         drawerTd.appendChild(drawerContent);
         drawerTr.appendChild(drawerTd);
         chevBtn.addEventListener('click', () => {

@@ -10,7 +10,6 @@
     var connectedPlayers = {};   // clientId → { clientId, playerId, playerName }
     var myClient = null;         // own clientFragment (from TS.clients.whoAmI)
     var myPlayer = null;         // own playerFragment (from TS.players.whoAmI)
-    var isGM = false;
 
     // ── Transaction Tracking ──
     var pendingOutgoing = {};    // txnId → { targetClient, mode, src, moduleId, itemId, timestamp, state }
@@ -31,16 +30,8 @@
         ]).then(function (results) {
             myClient = results[0];
             myPlayer = results[1];
-            return Promise.all([
-                TS.sync.getClientsConnected(),
-                myPlayer ? TS.players.getMoreInfo([myPlayer.id]) : Promise.resolve([])
-            ]);
-        }).then(function (results) {
-            var clients = results[0];
-            var playerInfo = results[1];
-            if (playerInfo && playerInfo[0] && playerInfo[0].rights) {
-                isGM = !!playerInfo[0].rights.canGm;
-            }
+            return TS.sync.getClientsConnected();
+        }).then(function (clients) {
             if (clients && clients.cause) {
                 console.error('[CV Sync] getClientsConnected failed:', clients.cause);
                 return;
@@ -349,7 +340,7 @@
         var players = window.getConnectedPlayers();
         var hasPlayers = players.length > 0;
         var itemName = (itemData && itemData.name) ? itemData.name : '';
-        var transferMode = isGM ? 'copy' : 'move';
+        var transferMode = 'copy';
 
         var overlay = document.createElement('div');
         overlay.className = 'cv-modal-overlay transfer-player-overlay';
@@ -387,8 +378,7 @@
         }
 
         var sendBtn = null;
-        var selectedClientId = null;         // non-GM single-select
-        var selectedClientIds = new Set();   // GM multi-select
+        var selectedClientIds = new Set();
 
         if (!hasPlayers) {
             var noPlayers = document.createElement('div');
@@ -425,27 +415,16 @@
 
                 item.appendChild(nameSpan);
 
-                if (isGM) {
-                    item.addEventListener('click', function () {
-                        if (selectedClientIds.has(player.clientId)) {
-                            selectedClientIds.delete(player.clientId);
-                            item.classList.remove('selected');
-                        } else {
-                            selectedClientIds.add(player.clientId);
-                            item.classList.add('selected');
-                        }
-                        if (sendBtn) sendBtn.disabled = selectedClientIds.size === 0;
-                    });
-                } else {
-                    item.addEventListener('click', function () {
-                        playerList.querySelectorAll('.transfer-player-item').forEach(function (el) {
-                            el.classList.remove('selected');
-                        });
+                item.addEventListener('click', function () {
+                    if (selectedClientIds.has(player.clientId)) {
+                        selectedClientIds.delete(player.clientId);
+                        item.classList.remove('selected');
+                    } else {
+                        selectedClientIds.add(player.clientId);
                         item.classList.add('selected');
-                        selectedClientId = player.clientId;
-                        if (sendBtn) sendBtn.disabled = false;
-                    });
-                }
+                    }
+                    if (sendBtn) sendBtn.disabled = selectedClientIds.size === 0;
+                });
 
                 playerList.appendChild(item);
             });
@@ -498,14 +477,9 @@
             sendBtn.disabled = true;
             sendBtn.addEventListener('click', function () {
                 var compact = window.compactForTransfer(itemData, srcType, moduleMeta);
-                if (isGM) {
-                    selectedClientIds.forEach(function (clientId) {
-                        sendOffer(clientId, compact, srcType, moduleMeta, moduleId, itemId, transferMode);
-                    });
-                } else {
-                    if (!selectedClientId) return;
-                    sendOffer(selectedClientId, compact, srcType, moduleMeta, moduleId, itemId, transferMode);
-                }
+                selectedClientIds.forEach(function (clientId) {
+                    sendOffer(clientId, compact, srcType, moduleMeta, moduleId, itemId, transferMode);
+                });
                 close();
             });
         }
@@ -536,7 +510,7 @@
 
     function sendOffer(targetClientId, compactItem, srcType, moduleMeta, moduleId, itemId, mode) {
         var txnId = generateTxnId();
-        var transferMode = mode || 'move';
+        var transferMode = mode || 'copy';
         var meta;
         if (srcType === 'weapons') {
             meta = buildWeaponTransferMeta(compactItem, moduleMeta);

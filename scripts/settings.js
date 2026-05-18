@@ -207,7 +207,7 @@
                     return;
                 }
                 console.log('[CV] Import validation passed');
-                showToast('Validation OK', 'success');
+                handleValidImport(result.blob, result.unknownCount);
             });
             reader.addEventListener('error', function () {
                 cleanup();
@@ -298,6 +298,112 @@
         dismissBtn.addEventListener('click', close);
         overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
         document.addEventListener('keydown', onEscape);
+    }
+
+    function handleValidImport(blob, unknownCount) {
+        const hasData = window.modules.length > 0
+            || window.tabs.length > 1
+            || (window.activityLog && window.activityLog.length > 0);
+        if (!hasData) {
+            applyOverwrite(blob, unknownCount);
+        } else {
+            openImportDialog(blob, unknownCount);
+        }
+    }
+
+    function openImportDialog(blob, unknownCount) {
+        const tabCount = (blob.tabs || []).length;
+        const moduleCount = (blob.modules || []).length;
+        const system = window.getGameSystemDisplayName(blob.gameSystem || 'custom');
+        const desc = t('import.dialogDesc', { tabs: tabCount, modules: moduleCount, system: system });
+
+        const overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay cv-tab-overlay';
+
+        const panel = document.createElement('div');
+        panel.className = 'cv-modal-panel';
+        panel.style.maxWidth = '420px';
+        panel.style.width = '90%';
+
+        const header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        const titleEl = document.createElement('h2');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = t('import.dialogTitle');
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'cv-modal-close';
+        closeBtn.setAttribute('title', t('wizard.close'));
+        closeBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        header.appendChild(titleEl);
+        header.appendChild(closeBtn);
+
+        const body = document.createElement('div');
+        body.className = 'cv-modal-body';
+        const descEl = document.createElement('p');
+        descEl.className = 'tab-reset-confirm-text';
+        descEl.textContent = desc;
+        body.appendChild(descEl);
+
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'btn-secondary';
+        cancelBtn.textContent = t('wizard.cancel');
+        const addAsTabBtn = document.createElement('button');
+        addAsTabBtn.type = 'button';
+        addAsTabBtn.className = 'btn-primary';
+        addAsTabBtn.textContent = t('import.addAsTab');
+        const overwriteBtn = document.createElement('button');
+        overwriteBtn.type = 'button';
+        overwriteBtn.className = 'btn-danger';
+        overwriteBtn.textContent = t('import.overwrite');
+        footer.appendChild(cancelBtn);
+        footer.appendChild(addAsTabBtn);
+        footer.appendChild(overwriteBtn);
+
+        panel.appendChild(header);
+        panel.appendChild(body);
+        panel.appendChild(footer);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+        requestAnimationFrame(function () { overlay.classList.add('open'); });
+
+        function close() {
+            overlay.classList.remove('open');
+            document.removeEventListener('keydown', onEscape);
+            setTimeout(function () { document.body.removeChild(overlay); }, 200);
+        }
+
+        function onEscape(e) {
+            if (e.key === 'Escape') close();
+        }
+
+        closeBtn.addEventListener('click', close);
+        cancelBtn.addEventListener('click', close);
+        overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+        document.addEventListener('keydown', onEscape);
+
+        addAsTabBtn.addEventListener('click', function () {
+            close();
+            console.log('[CV] Import: Add as New Tab — placeholder (Phase 4)');
+        });
+
+        overwriteBtn.addEventListener('click', function () {
+            close();
+            applyOverwrite(blob, unknownCount);
+        });
+    }
+
+    function applyOverwrite(blob, unknownCount) {
+        window.deserializeCharacter(JSON.stringify(blob));
+        scheduleSave();
+        if (unknownCount > 0) {
+            showToast(t('toast.importSuccessSkipped', { count: unknownCount }), 'warning');
+        } else {
+            showToast(t('toast.importSuccess'), 'success');
+        }
     }
 
     // ── Force Reload ──

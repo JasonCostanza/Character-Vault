@@ -312,8 +312,8 @@
     }
 
     function openImportDialog(blob, unknownCount) {
-        const tabCount = (blob.tabs || []).length;
-        const moduleCount = (blob.modules || []).length;
+        const tabCount = blob.tabs?.length ?? 0;
+        const moduleCount = blob.modules?.length ?? 0;
         const system = window.getGameSystemDisplayName(blob.gameSystem || 'custom');
         const desc = t('import.dialogDesc', { tabs: tabCount, modules: moduleCount, system: system });
 
@@ -387,7 +387,6 @@
 
         addAsTabBtn.addEventListener('click', function () {
             close();
-            console.log('[CV] Import: Add as New Tab — placeholder (Phase 4)');
         });
 
         overwriteBtn.addEventListener('click', function () {

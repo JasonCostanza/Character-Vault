@@ -3,7 +3,7 @@
     // ── Module State ──
     window.modules = [];
     window.moduleIdCounter = 0;
-    window.gameSystem = 'custom';
+    window.gameSystem = window.gameSystem || 'custom';
 
     function generateModuleId() {
         return `module-${String(++window.moduleIdCounter).padStart(3, '0')}`;

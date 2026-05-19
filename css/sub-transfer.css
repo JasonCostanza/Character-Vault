@@ -227,6 +227,156 @@
     user-select: none;
 }
 
+/* ── Pending Offers Badge ── */
+.pending-offers-btn {
+    position: relative;
+    opacity: 0.4;
+    transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.pending-offers-btn:hover {
+    opacity: 0.7;
+}
+
+.pending-offers-btn.has-offers {
+    opacity: 1;
+    color: var(--cv-accent);
+}
+
+.pending-offers-btn.has-offers:hover {
+    opacity: 1;
+    color: var(--cv-accent);
+}
+
+.pending-offers-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 14px;
+    height: 14px;
+    padding: 0 3px;
+    border-radius: 7px;
+    background: var(--cv-danger);
+    color: var(--cv-text);
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 14px;
+    text-align: center;
+    user-select: none;
+    pointer-events: none;
+    box-sizing: border-box;
+    display: none;
+}
+
+.pending-offers-btn.has-offers .pending-offers-count {
+    display: block;
+}
+
+/* ── Pending Offers Dropdown ── */
+.pending-offers-dropdown {
+    position: fixed;
+    z-index: 150;
+    background: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    border-radius: 5px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55), 0 1px 4px rgba(0, 0, 0, 0.3);
+    min-width: 240px;
+    max-width: 300px;
+    max-height: 320px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.pending-offers-dropdown-header {
+    padding: 6px 10px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cv-text-muted);
+    border-bottom: 1px solid var(--cv-border-subtle);
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.pending-offers-list {
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
+}
+
+.pending-offers-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--cv-border-subtle);
+    transition: background 0.1s ease;
+    user-select: none;
+}
+
+.pending-offers-item:last-child {
+    border-bottom: none;
+}
+
+.pending-offers-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.pending-offers-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.pending-offers-item-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cv-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+}
+
+.pending-offers-item-meta {
+    font-size: 10px;
+    color: var(--cv-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+}
+
+.pending-offers-item-mode {
+    flex-shrink: 0;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 5px;
+    border-radius: 3px;
+    border: 1px solid;
+    user-select: none;
+}
+
+.pending-offers-item-mode.mode-move {
+    color: var(--cv-warning);
+    border-color: var(--cv-warning);
+    background: transparent;
+}
+
+.pending-offers-item-mode.mode-copy {
+    color: var(--cv-text-muted);
+    border-color: var(--cv-border);
+    background: transparent;
+}
+
 .transfer-truncated-notice {
     font-size: 11px;
     color: var(--cv-text-muted);

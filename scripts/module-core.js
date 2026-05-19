@@ -1549,4 +1549,5 @@
     window.THEME_SWATCHES = THEME_SWATCHES;
     window.buildSwatchPanel = buildSwatchPanel;
     window.sortable = sortable;
+    window.generateModuleId = generateModuleId;
 })();

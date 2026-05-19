@@ -452,4 +452,24 @@
     }
 
     window.rollDualityDice = rollDualityDice;
+
+    // ── Clipboard ──
+    function copyTextToClipboard(text) {
+        const el = document.createElement('input');
+        el.type = 'text';
+        el.value = text;
+        el.style.position = 'fixed';
+        el.style.opacity = '0';
+        document.body.appendChild(el);
+        el.select();
+        try {
+            return document.execCommand('copy');
+        } catch (err) {
+            return false;
+        } finally {
+            document.body.removeChild(el);
+        }
+    }
+
+    window.copyTextToClipboard = copyTextToClipboard;
 })();

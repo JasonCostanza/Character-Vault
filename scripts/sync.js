@@ -15,6 +15,9 @@
     var pendingOutgoing = {};    // txnId → { targetClient, mode, src, moduleId, itemId, timestamp, state }
     var pendingIncoming = {};    // txnId → { fromClient, fromName, mode, src, data, meta, receivedAt }
     var activeIncomingModal = null; // { txnId, forceClose, onSenderDisconnected }
+    var _offersDropdownEl = null;
+    var _offersOutsideHandler = null;
+    var _offersEscapeHandler = null;
 
     // ── Initialization ──
     var _sweepInterval = null;
@@ -142,6 +145,7 @@
             label: window.t('transfer.view'),
             onClick: function () { openIncomingTransferModal(txnId); }
         });
+        updatePendingOffersUI();
         console.log('[CV Sync] Offer received txn:', txnId, 'from:', fromName);
     }
 
@@ -159,6 +163,7 @@
         if (!incoming) return;
         window.showToast(window.t('transfer.cancelledBy', { name: incoming.fromName }), 'info');
         delete pendingIncoming[msg.txn];
+        updatePendingOffersUI();
         if (activeIncomingModal && activeIncomingModal.txnId === msg.txn) {
             activeIncomingModal.forceClose();
         }
@@ -560,17 +565,20 @@
                 clearPendingOutgoing(txnId);
             }
         });
+        var expiredAny = false;
         Object.keys(pendingIncoming).forEach(function (txnId) {
             var incoming = pendingIncoming[txnId];
             if (now - incoming.receivedAt > RECEIVER_TIMEOUT_MS) {
                 sendMessage('decline', incoming.fromClient, { txn: txnId });
                 delete pendingIncoming[txnId];
+                expiredAny = true;
                 if (activeIncomingModal && activeIncomingModal.txnId === txnId) {
                     activeIncomingModal.forceClose();
                 }
                 window.showToast(window.t('transfer.timedOut'), 'info');
             }
         });
+        if (expiredAny) updatePendingOffersUI();
     }
 
     // ── Connection Indicator ──
@@ -586,6 +594,105 @@
         } else {
             indicator.style.display = 'none';
         }
+    }
+
+    // ── Pending Offers Badge ──
+
+    function updatePendingOffersUI() {
+        var btn = document.getElementById('pending-offers-btn');
+        var countEl = document.getElementById('pending-offers-count');
+        if (!btn || !countEl) return;
+        var count = Object.keys(pendingIncoming).length;
+        if (count === 0) {
+            btn.classList.remove('has-offers');
+            countEl.textContent = '';
+            closeOffersDropdown();
+            return;
+        }
+        btn.classList.add('has-offers');
+        countEl.textContent = count > 9 ? '9+' : String(count);
+        if (_offersDropdownEl) renderOffersDropdownContents(_offersDropdownEl);
+    }
+
+    function closeOffersDropdown() {
+        if (!_offersDropdownEl) return;
+        _offersDropdownEl.remove();
+        _offersDropdownEl = null;
+        if (_offersOutsideHandler) {
+            document.removeEventListener('click', _offersOutsideHandler, true);
+            _offersOutsideHandler = null;
+        }
+        if (_offersEscapeHandler) {
+            document.removeEventListener('keydown', _offersEscapeHandler);
+            _offersEscapeHandler = null;
+        }
+    }
+
+    function openOffersDropdown() {
+        if (_offersDropdownEl) { closeOffersDropdown(); return; }
+        var btn = document.getElementById('pending-offers-btn');
+        if (!btn) return;
+        var panel = document.createElement('div');
+        panel.className = 'pending-offers-dropdown';
+        renderOffersDropdownContents(panel);
+        document.body.appendChild(panel);
+        _offersDropdownEl = panel;
+        var rect = btn.getBoundingClientRect();
+        panel.style.top = (rect.bottom + 4) + 'px';
+        panel.style.left = rect.left + 'px';
+        _offersOutsideHandler = function (e) {
+            if (panel.contains(e.target) || btn.contains(e.target)) return;
+            closeOffersDropdown();
+        };
+        document.addEventListener('click', _offersOutsideHandler, true);
+        _offersEscapeHandler = function (e) {
+            if (e.key === 'Escape') { e.stopPropagation(); closeOffersDropdown(); }
+        };
+        document.addEventListener('keydown', _offersEscapeHandler);
+    }
+
+    function renderOffersDropdownContents(panel) {
+        panel.innerHTML = '';
+        var header = document.createElement('div');
+        header.className = 'pending-offers-dropdown-header';
+        header.textContent = window.t('transfer.pendingOffersHeader');
+        panel.appendChild(header);
+        var list = document.createElement('div');
+        list.className = 'pending-offers-list';
+        Object.keys(pendingIncoming).forEach(function (txnId) {
+            var offer = pendingIncoming[txnId];
+            var itemName = (offer.data && offer.data.name) ? offer.data.name : window.t('transfer.unknownItem');
+            var isMove = offer.mode !== 'copy';
+            var item = document.createElement('div');
+            item.className = 'pending-offers-item';
+            var info = document.createElement('div');
+            info.className = 'pending-offers-item-info';
+            var nameEl = document.createElement('div');
+            nameEl.className = 'pending-offers-item-name';
+            nameEl.textContent = itemName;
+            var metaEl = document.createElement('div');
+            metaEl.className = 'pending-offers-item-meta';
+            metaEl.textContent = window.t('transfer.from') + ' ' + offer.fromName;
+            info.appendChild(nameEl);
+            info.appendChild(metaEl);
+            var modeEl = document.createElement('span');
+            modeEl.className = 'pending-offers-item-mode ' + (isMove ? 'mode-move' : 'mode-copy');
+            modeEl.textContent = isMove ? window.t('transfer.giveDescription') : window.t('transfer.copyDescription');
+            var viewBtn = document.createElement('button');
+            viewBtn.type = 'button';
+            viewBtn.className = 'btn-primary sm';
+            viewBtn.textContent = window.t('transfer.view');
+            viewBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                closeOffersDropdown();
+                openIncomingTransferModal(txnId);
+            });
+            item.appendChild(info);
+            item.appendChild(modeEl);
+            item.appendChild(viewBtn);
+            list.appendChild(item);
+        });
+        panel.appendChild(list);
     }
 
     // ── Compact Format (pure — exposed on window for vitest) ──
@@ -1304,6 +1411,7 @@
         function decline() {
             sendMessage('decline', incoming.fromClient, { txn: txnId });
             delete pendingIncoming[txnId];
+            updatePendingOffersUI();
             forceClose();
         }
 
@@ -1328,6 +1436,7 @@
             }
             sendMessage('accept', incoming.fromClient, { txn: txnId });
             delete pendingIncoming[txnId];
+            updatePendingOffersUI();
             window.showToast(window.t('transfer.itemReceived', { item: itemName, name: fromName }), 'info');
             forceClose();
         }
@@ -1416,4 +1525,10 @@
     window.joinChunks = joinChunks;
     window.handleChunk = handleChunk;
     window.openIncomingTransferModal = openIncomingTransferModal;
+
+    var _pendingOffersBtn = document.getElementById('pending-offers-btn');
+    if (_pendingOffersBtn) {
+        _pendingOffersBtn.title = window.t('transfer.pendingOffersTitle');
+        _pendingOffersBtn.addEventListener('click', function (e) { e.stopPropagation(); openOffersDropdown(); });
+    }
 })();

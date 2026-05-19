@@ -83,6 +83,15 @@ export function setupMinimalDOM() {
               <button id="btn-save" class="settings-action-btn btn-primary" data-i18n="settings.save">Save</button>
               <button id="btn-load" class="settings-action-btn btn-primary" data-i18n="settings.load">Load</button>
             </div>
+          </div>
+
+          <!-- Export / Import -->
+          <div class="settings-section">
+            <label class="settings-label" data-i18n="settings.exportImport">Export / Import</label>
+            <div class="settings-btn-row">
+              <button id="btn-export" class="settings-action-btn btn-primary" data-i18n="settings.export">Export</button>
+              <button id="btn-import" class="settings-action-btn btn-primary" data-i18n="settings.import">Import</button>
+            </div>
             <div class="settings-checkbox-row">
               <input type="checkbox" id="chk-auto-save">
               <label for="chk-auto-save" data-i18n="settings.autoSave">Save automatically</label>

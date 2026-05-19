@@ -59,10 +59,10 @@
         });
     }
 
-    function deserializeCharacter(jsonStr) {
+    function deserializeCharacter(input) {
         let blob;
         try {
-            blob = JSON.parse(jsonStr);
+            blob = typeof input === 'string' ? JSON.parse(input) : input;
         } catch (e) {
             console.error('[CV] Failed to parse save data:', e);
             return false;

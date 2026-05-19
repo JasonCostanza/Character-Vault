@@ -155,6 +155,297 @@
     chkAutoSave.checked = localStorage.getItem('cv-auto-save') === 'true';
     chkAutoLoad.checked = localStorage.getItem('cv-auto-load') === 'true';
 
+    // ── Export / Import ──
+    const btnExport = document.getElementById('btn-export');
+
+    btnExport.addEventListener('click', () => {
+        const ok = copyTextToClipboard(serializeCharacter());
+        if (ok) {
+            console.log('[CV] Character data copied to clipboard');
+            showToast(t('toast.exportSuccess'), 'success');
+        } else {
+            console.error('[CV] Failed to copy character data to clipboard');
+            showToast(t('toast.exportFail'), 'error');
+        }
+    });
+
+    document.getElementById('btn-import').addEventListener('click', function () {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        input.style.cssText = 'position:fixed;opacity:0';
+        document.body.appendChild(input);
+
+        function cleanup() {
+            if (document.body.contains(input)) document.body.removeChild(input);
+        }
+
+        function onWindowFocus() {
+            setTimeout(cleanup, 200);
+        }
+
+        input.addEventListener('cancel', cleanup);
+        window.addEventListener('focus', onWindowFocus, { once: true });
+        input.click();
+
+        input.addEventListener('change', function () {
+            window.removeEventListener('focus', onWindowFocus);
+            const file = input.files[0];
+            if (!file) {
+                cleanup();
+                return;
+            }
+            const reader = new FileReader();
+            reader.addEventListener('load', function () {
+                cleanup();
+                const result = validateImportData(reader.result);
+                if (!result.ok) {
+                    showToast(t(result.error), 'error', {
+                        label: t('import.viewError'),
+                        onClick: function () { openImportErrorModal(result.detail); },
+                    });
+                    return;
+                }
+                console.log('[CV] Import validation passed');
+                handleValidImport(result.blob, result.unknownCount);
+            });
+            reader.addEventListener('error', function () {
+                cleanup();
+                showToast(t('import.errorInvalidJson'), 'error');
+            });
+            reader.readAsText(file);
+        });
+    });
+
+    function validateImportData(jsonStr) {
+        let blob;
+        try {
+            blob = JSON.parse(jsonStr);
+        } catch (err) {
+            return { ok: false, error: 'import.errorInvalidJson', detail: String(err) };
+        }
+        if (!blob.version || !Number.isInteger(blob.version)) {
+            return { ok: false, error: 'import.errorNotCV', detail: 'Missing version field' };
+        }
+        if (!Array.isArray(blob.modules)) {
+            return { ok: false, error: 'import.errorNotCV', detail: 'Missing modules array' };
+        }
+        if (blob.version > 2) {
+            return { ok: false, error: 'import.errorNewerVersion', detail: `File version: ${blob.version}, app supports: 2` };
+        }
+        if (blob.version < 2) {
+            window.migrateData(blob);
+        }
+        const unknownCount = blob.modules.filter(function (m) { return !window.MODULE_TYPES[m.type]; }).length;
+        return { ok: true, blob: blob, unknownCount: unknownCount };
+    }
+
+    function openImportErrorModal(detail) {
+        const overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay cv-tab-overlay';
+
+        const panel = document.createElement('div');
+        panel.className = 'cv-modal-panel';
+        panel.style.maxWidth = '420px';
+        panel.style.width = '90%';
+
+        const header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        const titleEl = document.createElement('h2');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = t('import.errorTitle');
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'cv-modal-close';
+        closeBtn.setAttribute('title', t('wizard.close'));
+        closeBtn.innerHTML = CV_SVG_CLOSE;
+        header.appendChild(titleEl);
+        header.appendChild(closeBtn);
+
+        const body = document.createElement('div');
+        body.className = 'cv-modal-body';
+        const pre = document.createElement('pre');
+        pre.className = 'import-error-detail';
+        pre.textContent = detail;
+        body.appendChild(pre);
+
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        const dismissBtn = document.createElement('button');
+        dismissBtn.type = 'button';
+        dismissBtn.className = 'btn-secondary';
+        dismissBtn.textContent = t('wizard.close');
+        footer.appendChild(dismissBtn);
+
+        panel.appendChild(header);
+        panel.appendChild(body);
+        panel.appendChild(footer);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+        requestAnimationFrame(function () { overlay.classList.add('open'); });
+
+        function close() {
+            overlay.classList.remove('open');
+            document.removeEventListener('keydown', onEscape);
+            setTimeout(function () { document.body.removeChild(overlay); }, 200);
+        }
+
+        function onEscape(e) {
+            if (e.key === 'Escape') close();
+        }
+
+        closeBtn.addEventListener('click', close);
+        dismissBtn.addEventListener('click', close);
+        overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+        document.addEventListener('keydown', onEscape);
+    }
+
+    function handleValidImport(blob, unknownCount) {
+        const hasData = window.modules.length > 0
+            || window.tabs.length > 1
+            || (window.activityLog && window.activityLog.length > 0);
+        if (!hasData) {
+            applyOverwrite(blob, unknownCount);
+        } else {
+            openImportDialog(blob, unknownCount);
+        }
+    }
+
+    function openImportDialog(blob, unknownCount) {
+        const tabCount = blob.tabs?.length ?? 0;
+        const moduleCount = blob.modules?.length ?? 0;
+        const system = window.getGameSystemDisplayName(blob.gameSystem || 'custom');
+        const desc = t('import.dialogDesc', { tabs: tabCount, modules: moduleCount, system: system });
+
+        const overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay cv-tab-overlay';
+
+        const panel = document.createElement('div');
+        panel.className = 'cv-modal-panel';
+        panel.style.maxWidth = '420px';
+        panel.style.width = '90%';
+
+        const header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        const titleEl = document.createElement('h2');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = t('import.dialogTitle');
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'cv-modal-close';
+        closeBtn.setAttribute('title', t('wizard.close'));
+        closeBtn.innerHTML = CV_SVG_CLOSE;
+        header.appendChild(titleEl);
+        header.appendChild(closeBtn);
+
+        const body = document.createElement('div');
+        body.className = 'cv-modal-body';
+        const descEl = document.createElement('p');
+        descEl.className = 'tab-reset-confirm-text';
+        descEl.textContent = desc;
+        body.appendChild(descEl);
+
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'btn-secondary';
+        cancelBtn.textContent = t('wizard.cancel');
+        const addAsTabBtn = document.createElement('button');
+        addAsTabBtn.type = 'button';
+        addAsTabBtn.className = 'btn-primary';
+        addAsTabBtn.textContent = t('import.addAsTab');
+        const overwriteBtn = document.createElement('button');
+        overwriteBtn.type = 'button';
+        overwriteBtn.className = 'btn-danger';
+        overwriteBtn.textContent = t('import.overwrite');
+        footer.appendChild(cancelBtn);
+        footer.appendChild(addAsTabBtn);
+        footer.appendChild(overwriteBtn);
+
+        panel.appendChild(header);
+        panel.appendChild(body);
+        panel.appendChild(footer);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+        requestAnimationFrame(function () { overlay.classList.add('open'); });
+
+        function close() {
+            overlay.classList.remove('open');
+            document.removeEventListener('keydown', onEscape);
+            setTimeout(function () { document.body.removeChild(overlay); }, 200);
+        }
+
+        function onEscape(e) {
+            if (e.key === 'Escape') close();
+        }
+
+        closeBtn.addEventListener('click', close);
+        cancelBtn.addEventListener('click', close);
+        overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+        document.addEventListener('keydown', onEscape);
+
+        addAsTabBtn.addEventListener('click', function () {
+            close();
+            applyAddAsNewTab(blob, unknownCount);
+        });
+
+        overwriteBtn.addEventListener('click', function () {
+            close();
+            applyOverwrite(blob, unknownCount);
+        });
+    }
+
+    function showImportToast(unknownCount) {
+        if (unknownCount > 0) {
+            showToast(t('toast.importSuccessSkipped', { count: unknownCount }), 'warning');
+        } else {
+            showToast(t('toast.importSuccess'), 'success');
+        }
+    }
+
+    function applyAddAsNewTab(blob, unknownCount) {
+        const idMap = {};
+        (blob.tabs || []).forEach(function (tab) { idMap[tab.id] = window.generateTabId(); });
+        (blob.modules || []).forEach(function (mod) { idMap[mod.id] = window.generateModuleId(); });
+
+        const importedTabName = blob.tabs?.[0]?.name || 'Imported';
+        const newTab = window.createTab(importedTabName);
+        const newTabId = newTab.id;
+
+        let orderCounter = 0;
+        const validModules = (blob.modules || []).filter(function (m) { return window.MODULE_TYPES[m.type]; });
+        validModules.forEach(function (saved) {
+            const data = {
+                id: idMap[saved.id],
+                type: saved.type,
+                title: saved.title ?? null,
+                colSpan: saved.colSpan ?? 2,
+                rowSpan: saved.rowSpan ?? null,
+                order: orderCounter++,
+                theme: saved.theme ?? null,
+                textLight: !!saved.textLight,
+                tabId: newTabId,
+                content: saved.content ?? '',
+            };
+            if (data.content && typeof data.content === 'object' && data.content.linkedStatModuleId && idMap[data.content.linkedStatModuleId]) {
+                data.content.linkedStatModuleId = idMap[data.content.linkedStatModuleId];
+            }
+            window.modules.push(data);
+        });
+
+        window.renderTabBar();
+        window.switchToTab(newTabId);
+
+        showImportToast(unknownCount);
+    }
+
+    function applyOverwrite(blob, unknownCount) {
+        window.deserializeCharacter(blob);
+        scheduleSave();
+        showImportToast(unknownCount);
+    }
+
     // ── Force Reload ──
     document.getElementById('btn-force-reload').addEventListener('click', () => {
         location.reload();
@@ -171,36 +462,20 @@
     updateDimensions();
 
     // ── GitHub Link (copy to clipboard) ──
-    document.getElementById('btn-github-link').addEventListener('click', () => {
-        const btn = document.getElementById('btn-github-link');
-        const url = 'https://github.com/JasonCostanza/Character-Vault';
-
-        // Create temporary input to copy text (fallback for TaleSpire's embedded browser)
-        const tempInput = document.createElement('input');
-        tempInput.type = 'text';
-        tempInput.value = url;
-        tempInput.style.position = 'fixed';
-        tempInput.style.opacity = '0';
-        document.body.appendChild(tempInput);
-        tempInput.select();
-
-        try {
-            document.execCommand('copy');
+    document.getElementById('btn-github-link').addEventListener('click', function () {
+        const btn = this;
+        const ok = copyTextToClipboard('https://github.com/JasonCostanza/Character-Vault');
+        if (ok) {
             console.log('[CV] GitHub URL copied to clipboard');
-            const svgIcon = btn.querySelector('svg');
-            // Show checkmark icon and "Copied!" text
             btn.classList.add('copied');
-            if (svgIcon) svgIcon.style.display = 'none';
             btn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ${t('settings.githubCopied')}`;
             setTimeout(() => {
                 btn.classList.remove('copied');
                 btn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> ${t('settings.github')}`;
             }, 1500);
-        } catch (err) {
-            console.error('[CV] Failed to copy GitHub URL:', err);
+        } else {
+            console.error('[CV] Failed to copy GitHub URL');
             showToast(t('settings.githubCopyFail'), 'error');
-        } finally {
-            document.body.removeChild(tempInput);
         }
     });
 
@@ -297,4 +572,5 @@
     window.chkAutoSave = chkAutoSave;
     window.chkAutoLoad = chkAutoLoad;
     window.chkDiceCloseModals = chkDiceCloseModals;
+    window.validateImportData = validateImportData;
 })();

@@ -258,7 +258,7 @@
         closeBtn.type = 'button';
         closeBtn.className = 'cv-modal-close';
         closeBtn.setAttribute('title', t('wizard.close'));
-        closeBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeBtn.innerHTML = CV_SVG_CLOSE;
         header.appendChild(titleEl);
         header.appendChild(closeBtn);
 
@@ -334,7 +334,7 @@
         closeBtn.type = 'button';
         closeBtn.className = 'cv-modal-close';
         closeBtn.setAttribute('title', t('wizard.close'));
-        closeBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeBtn.innerHTML = CV_SVG_CLOSE;
         header.appendChild(titleEl);
         header.appendChild(closeBtn);
 
@@ -419,11 +419,11 @@
             const data = {
                 id: idMap[saved.id],
                 type: saved.type,
-                title: saved.title || null,
+                title: saved.title ?? null,
                 colSpan: saved.colSpan ?? 2,
-                rowSpan: saved.rowSpan || null,
+                rowSpan: saved.rowSpan ?? null,
                 order: orderCounter++,
-                theme: saved.theme || null,
+                theme: saved.theme ?? null,
                 textLight: !!saved.textLight,
                 tabId: newTabId,
                 content: saved.content ?? '',
@@ -441,7 +441,7 @@
     }
 
     function applyOverwrite(blob, unknownCount) {
-        window.deserializeCharacter(JSON.stringify(blob));
+        window.deserializeCharacter(blob);
         scheduleSave();
         showImportToast(unknownCount);
     }
@@ -462,8 +462,8 @@
     updateDimensions();
 
     // ── GitHub Link (copy to clipboard) ──
-    document.getElementById('btn-github-link').addEventListener('click', () => {
-        const btn = document.getElementById('btn-github-link');
+    document.getElementById('btn-github-link').addEventListener('click', function () {
+        const btn = this;
         const ok = copyTextToClipboard('https://github.com/JasonCostanza/Character-Vault');
         if (ok) {
             console.log('[CV] GitHub URL copied to clipboard');
@@ -475,7 +475,7 @@
             }, 1500);
         } else {
             console.error('[CV] Failed to copy GitHub URL');
-            showToast('Failed to copy URL', 'error');
+            showToast(t('settings.githubCopyFail'), 'error');
         }
     });
 

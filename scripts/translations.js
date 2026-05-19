@@ -1322,6 +1322,9 @@
             'transfer.noSpellModules': "You don't have a spells module",
             'transfer.createOnTab': 'Create on:',
             'transfer.truncated': '(data truncated)',
+            'transfer.pendingOffersTitle': 'Pending incoming offers',
+            'transfer.pendingOffersHeader': 'Pending Offers',
+            'transfer.unknownItem': 'Unknown item',
         },
 
         es: {
@@ -2611,6 +2614,9 @@
             'transfer.noSpellModules': 'No tienes un módulo de hechizos',
             'transfer.createOnTab': 'Crear en:',
             'transfer.truncated': '(datos truncados)',
+            'transfer.pendingOffersTitle': 'Ofertas entrantes pendientes',
+            'transfer.pendingOffersHeader': 'Ofertas Pendientes',
+            'transfer.unknownItem': 'Elemento desconocido',
         },
 
         fr: {
@@ -3922,6 +3928,9 @@
             'transfer.noSpellModules': "Vous n'avez pas de module de sorts",
             'transfer.createOnTab': 'Créer sur :',
             'transfer.truncated': '(données tronquées)',
+            'transfer.pendingOffersTitle': 'Offres entrantes en attente',
+            'transfer.pendingOffersHeader': 'Offres en Attente',
+            'transfer.unknownItem': 'Objet inconnu',
         },
 
         de: {
@@ -4690,6 +4699,9 @@
             'transfer.noSpellModules': 'Du hast kein Zaubermodul',
             'transfer.createOnTab': 'Erstellen auf:',
             'transfer.truncated': '(Daten gekürzt)',
+            'transfer.pendingOffersTitle': 'Ausstehende eingehende Angebote',
+            'transfer.pendingOffersHeader': 'Ausstehende Angebote',
+            'transfer.unknownItem': 'Unbekanntes Objekt',
         },
 
         it: {
@@ -5406,6 +5418,9 @@
             'transfer.noSpellModules': 'Non hai un modulo incantesimi',
             'transfer.createOnTab': 'Crea su:',
             'transfer.truncated': '(dati troncati)',
+            'transfer.pendingOffersTitle': 'Offerte in arrivo in sospeso',
+            'transfer.pendingOffersHeader': 'Offerte in Sospeso',
+            'transfer.unknownItem': 'Oggetto sconosciuto',
         },
 
         'pt-BR': {
@@ -6109,6 +6124,9 @@
             'transfer.noSpellModules': 'Você não tem um módulo de feitiços',
             'transfer.createOnTab': 'Criar em:',
             'transfer.truncated': '(dados truncados)',
+            'transfer.pendingOffersTitle': 'Ofertas recebidas pendentes',
+            'transfer.pendingOffersHeader': 'Ofertas Pendentes',
+            'transfer.unknownItem': 'Item desconhecido',
         },
 
         ru: {
@@ -6812,6 +6830,9 @@
             'transfer.noSpellModules': 'У вас нет модуля заклинаний',
             'transfer.createOnTab': 'Создать на:',
             'transfer.truncated': '(данные усечены)',
+            'transfer.pendingOffersTitle': 'Ожидающие входящие предложения',
+            'transfer.pendingOffersHeader': 'Ожидающие предложения',
+            'transfer.unknownItem': 'Неизвестный предмет',
         },
     };
 

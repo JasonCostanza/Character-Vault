@@ -38,7 +38,7 @@
             'settings.github': 'GitHub',
             'settings.githubTitle': 'Copy GitHub link to clipboard',
             'settings.githubCopied': 'Copied!',
-            'settings.githubCopyFail': 'Failed to copy URL',
+            'settings.githubCopyFail': 'Failed to copy link',
             'settings.gameSystem': 'Game System',
             'settings.gameSystemCustom': 'Custom / Other',
             'settings.uiScale': 'UI Scale',

@@ -382,7 +382,7 @@
             presetRow.style.display = workingTiersEnabled ? '' : 'none';
             dirty = true;
         });
-        enableToggle.className = 'save-settings-checkbox-label';
+        enableToggle.classList.add('save-settings-checkbox-label');
         const enableLabel = document.createElement('span');
         enableLabel.className = 'cv-toggle-label';
         enableLabel.textContent = t('save.enableTiers');

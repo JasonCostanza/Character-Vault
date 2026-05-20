@@ -1161,6 +1161,7 @@
         }
         moduleSizeObserver.observe(bodyEl);
         snapModuleHeight(el, data);
+        if (!_batchMode) applyLayout();
     }
 
     // ── Module Drag & Drop (SortableJS) ──
@@ -1172,11 +1173,21 @@
         dragClass: 'module-drag-active',
         filter: '#empty-state',
         disabled: window.isPlayMode,
+        onStart() {
+            _dragging = true;
+            moduleGrid.querySelectorAll('.module').forEach((el) => {
+                const data = window.modules.find((m) => m.id === el.dataset.id);
+                el.style.gridColumn = `span ${data ? data.colSpan : 1}`;
+                el.style.gridRow = `span ${data ? getRowSpan(data) : 1}`;
+            });
+        },
         onEnd(evt) {
+            _dragging = false;
             const orderedIds = Array.from(moduleGrid.querySelectorAll('.module')).map((el) => el.dataset.id);
             const activeModules = window.modules.filter((m) => m.tabId === window.activeTabId);
             activeModules.sort((a, b) => orderedIds.indexOf(a.id) - orderedIds.indexOf(b.id));
             activeModules.forEach((m, i) => (m.order = i));
+            applyLayout();
             console.log(`[CV] Module reordered: ${evt.item.dataset.id} → position ${evt.newIndex}`);
             scheduleSave();
         },
@@ -1215,6 +1226,7 @@
         }
         window.modules = window.modules.filter((m) => m.id !== moduleId);
         window.modules.forEach((m, i) => (m.order = i));
+        applyLayout();
         updateEmptyState();
         console.log(`[CV] Module deleted: ${moduleId}`);
         scheduleSave();
@@ -1302,6 +1314,7 @@
             const bodyEl = moduleEl.querySelector('.module-body');
             if (bodyEl) moduleSizeObserver.unobserve(bodyEl);
             moduleEl.remove();
+            applyLayout();
             updateEmptyState();
             scheduleSave();
             window.showToast(t('module.moveToTabMoved', { tab: destTab.name }));
@@ -1330,6 +1343,7 @@
     // ── Edit/Play Mode Switching ──
     function applyPlayMode() {
         closeOverflowMenu();
+        _batchMode = true;
         document.querySelectorAll('.module').forEach((mod) => {
             const type = mod.dataset.type;
             const data = window.modules.find((m) => m.id === mod.dataset.id);
@@ -1365,9 +1379,12 @@
             // Re-snap auto-height after mode switch (play blocks are shorter)
             if (data) snapModuleHeight(mod, data);
         });
+        _batchMode = false;
+        applyLayout();
     }
 
     function applyLayoutMode() {
+        _batchMode = true;
         document.querySelectorAll('.module').forEach((mod) => {
             const type = mod.dataset.type;
             const data = window.modules.find((m) => m.id === mod.dataset.id);
@@ -1405,6 +1422,8 @@
             // Re-snap auto-height after mode switch (edit blocks are taller)
             if (data) snapModuleHeight(mod, data);
         });
+        _batchMode = false;
+        applyLayout();
     }
 
     // ── Module Size Constants ──
@@ -1414,6 +1433,9 @@
 
     // ── Auto-Snap Height to Grid Rows ──
     let _snapping = false;
+    let _layingOut = false;
+    let _batchMode = false;
+    let _dragging = false;
 
     function snapModuleHeight(el, data) {
         if (data.rowSpan !== null) return;
@@ -1429,9 +1451,84 @@
         _snapping = false;
     }
 
+    // ── Grid Layout Algorithm ──
+
+    function getRowSpan(data) {
+        if (data.rowSpan !== null) return data.rowSpan;
+        const el = moduleGrid.querySelector(`.module[data-id="${data.id}"]`);
+        if (el) {
+            const match = (el.style.gridRow || '').match(/span\s+(\d+)/);
+            if (match) return parseInt(match[1], 10);
+        }
+        return 1;
+    }
+
+    function computeLayout(moduleDataList) {
+        const results = [];
+        const occupied = [];
+
+        function isOccupied(row, col) {
+            return !!(occupied[row] && occupied[row][col]);
+        }
+
+        function markOccupied(rowStart, colStart, colSpan, rowSpan) {
+            for (let r = rowStart; r < rowStart + rowSpan; r++) {
+                if (!occupied[r]) occupied[r] = [];
+                for (let c = colStart; c < colStart + colSpan; c++) {
+                    occupied[r][c] = true;
+                }
+            }
+        }
+
+        for (const data of moduleDataList) {
+            const colSpan = data.colSpan;
+            const rowSpan = getRowSpan(data);
+            let placed = false;
+
+            for (let row = 1; !placed; row++) {
+                for (let col = 1; col <= GRID_COLUMNS - colSpan + 1; col++) {
+                    let fits = true;
+                    outer: for (let r = row; r < row + rowSpan; r++) {
+                        for (let c = col; c < col + colSpan; c++) {
+                            if (isOccupied(r, c)) {
+                                fits = false;
+                                break outer;
+                            }
+                        }
+                    }
+                    if (fits) {
+                        markOccupied(row, col, colSpan, rowSpan);
+                        results.push({ id: data.id, colStart: col, rowStart: row, colSpan, rowSpan });
+                        placed = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return results;
+    }
+
+    function applyLayout() {
+        if (_dragging || _batchMode) return;
+        const tabModules = window.modules
+            .filter((m) => m.tabId === window.activeTabId)
+            .sort((a, b) => a.order - b.order);
+        const positions = computeLayout(tabModules);
+        _layingOut = true;
+        for (const pos of positions) {
+            const el = moduleGrid.querySelector(`.module[data-id="${pos.id}"]`);
+            if (!el) continue;
+            el.style.gridColumn = `${pos.colStart} / span ${pos.colSpan}`;
+            el.style.gridRow = `${pos.rowStart} / span ${pos.rowSpan}`;
+        }
+        _layingOut = false;
+    }
+
     // ── ResizeObserver for Size Classes ──
     const moduleSizeObserver = new ResizeObserver((entries) => {
-        if (_snapping) return; // avoid re-entrancy from snapModuleHeight
+        if (_snapping || _layingOut || _dragging) return; // avoid re-entrancy
+        let needsLayout = false;
         for (const entry of entries) {
             const w = entry.contentBoxSize?.[0]?.inlineSize ?? entry.contentRect.width;
             const mod = entry.target.closest('.module');
@@ -1442,12 +1539,13 @@
             else if (w < 350) size = 'md';
             mod.dataset.size = size;
 
-            // Re-snap auto-height modules when body size changes
             const data = window.modules.find((m) => m.id === mod.dataset.id);
             if (data && data.rowSpan === null) {
                 snapModuleHeight(mod, data);
+                needsLayout = true;
             }
         }
+        if (needsLayout) applyLayout();
     });
 
     // ── Module Resize Handle ──
@@ -1462,6 +1560,7 @@
 
             // Only allow resize in layout mode
             if (window.isPlayMode) return;
+            if (moduleEl.classList.contains('module-resizing')) return;
 
             const grid = document.getElementById('module-grid');
             const gridRect = grid.getBoundingClientRect();
@@ -1491,29 +1590,31 @@
             }
             badge.textContent = `${startColSpan} col × ${startRowSpan} row`;
 
+            let _layoutRaf = 0;
+
             function onMouseMove(e) {
                 // Calculate new colSpan from drag delta (avoids stale position after grid reflow)
                 const deltaX = e.clientX - startX;
                 const colDelta = Math.round(deltaX / (colWidth + GRID_GAP));
-                let newColSpan = startColSpan + colDelta;
-                newColSpan = Math.max(1, Math.min(GRID_COLUMNS, newColSpan));
+                const newColSpan = Math.max(1, Math.min(GRID_COLUMNS, startColSpan + colDelta));
 
-                if (newColSpan !== data.colSpan) {
-                    data.colSpan = newColSpan;
-                    moduleEl.style.gridColumn = `span ${newColSpan}`;
-                }
-
-                // Calculate new rowSpan from drag delta (avoids stale moduleTop after grid reflow)
+                // Calculate new rowSpan from drag delta
                 const deltaY = e.clientY - startY;
                 const rowDelta = Math.sign(deltaY) * Math.round(Math.abs(deltaY) / (rowHeight + GRID_GAP));
-                let newRowSpan = startRowSpan + rowDelta;
-                newRowSpan = Math.max(1, newRowSpan);
+                const newRowSpan = Math.max(1, startRowSpan + rowDelta);
 
-                moduleEl.style.gridRow = `span ${newRowSpan}`;
+                const changed = newColSpan !== data.colSpan || newRowSpan !== data.rowSpan;
+                data.colSpan = newColSpan;
                 data.rowSpan = newRowSpan;
 
-                // Update resize badge
                 badge.textContent = `${data.colSpan} col × ${data.rowSpan} row`;
+
+                if (changed && !_layoutRaf) {
+                    _layoutRaf = requestAnimationFrame(() => {
+                        _layoutRaf = 0;
+                        applyLayout();
+                    });
+                }
             }
 
             function onMouseUp() {
@@ -1522,6 +1623,8 @@
                 if (badge) badge.remove();
                 document.removeEventListener('mousemove', onMouseMove);
                 document.removeEventListener('mouseup', onMouseUp);
+                cancelAnimationFrame(_layoutRaf);
+                applyLayout();
                 console.log(`[CV] Module resized: ${data.id} → ${data.colSpan} cols, ${data.rowSpan || '?'} rows`);
                 scheduleSave();
             }
@@ -1539,6 +1642,8 @@
     window.openDeleteConfirm = openDeleteConfirm;
     window.applyPlayMode = applyPlayMode;
     window.applyLayoutMode = applyLayoutMode;
+    window.applyLayout = applyLayout;
+    window.setLayoutBatchMode = (val) => { _batchMode = val; };
     window.GRID_COLUMNS = GRID_COLUMNS;
     window.GRID_GAP = GRID_GAP;
     window.ROW_H = ROW_H;

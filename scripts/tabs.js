@@ -48,7 +48,9 @@
         const tabModules = window.modules
             .filter(function (m) { return m.tabId === tabId; })
             .sort(function (a, b) { return a.order - b.order; });
+        if (window.setLayoutBatchMode) window.setLayoutBatchMode(true);
         tabModules.forEach(function (data) { window.renderModule(data); });
+        if (window.setLayoutBatchMode) window.setLayoutBatchMode(false);
 
         if (window.isPlayMode) {
             window.applyPlayMode();

@@ -647,12 +647,12 @@
         return card;
     }
 
-    function buildPlaceholderCard() {
+    function buildPlaceholderCard(weapon) {
         var card = document.createElement('div');
         card.className = 'weapon-card weapon-placeholder';
         var lbl = document.createElement('span');
         lbl.className = 'weapon-name';
-        lbl.textContent = t('weapons.twoHandedOccupied');
+        lbl.textContent = weapon && weapon.name ? weapon.name : t('weapons.twoHandedOccupied');
         card.appendChild(lbl);
         return card;
     }
@@ -763,10 +763,10 @@
         });
 
         mainWeapons.forEach(function (w) { mainCol.appendChild(buildWeaponCard(w, data, isPlayMode, moduleEl, bodyEl)); });
-        offTwoHanded.forEach(function () { mainCol.appendChild(buildPlaceholderCard()); });
+        offTwoHanded.forEach(function (w) { mainCol.appendChild(buildPlaceholderCard(w)); });
 
         offWeapons.forEach(function (w) { offCol.appendChild(buildWeaponCard(w, data, isPlayMode, moduleEl, bodyEl)); });
-        mainTwoHanded.forEach(function () { offCol.appendChild(buildPlaceholderCard()); });
+        mainTwoHanded.forEach(function (w) { offCol.appendChild(buildPlaceholderCard(w)); });
 
         container.appendChild(mainCol);
         container.appendChild(divider);

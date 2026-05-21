@@ -255,6 +255,7 @@
         if (existing) existing.remove();
 
         const c = data.content;
+        const isMilestone = c.levelingSystem === 'milestone';
 
         const overlay = document.createElement('div');
         overlay.className = 'cv-modal-overlay level-set-overlay';
@@ -295,7 +296,14 @@
         const warning = document.createElement('div');
         warning.className = 'level-set-warning';
         warning.textContent = t('level.setLevelWarning');
+        if (isMilestone) warning.style.display = 'none';
         body.appendChild(warning);
+
+        const errorEl = document.createElement('div');
+        errorEl.className = 'level-set-error';
+        errorEl.textContent = t('level.setLevelError');
+        errorEl.style.display = 'none';
+        body.appendChild(errorEl);
 
         const footer = document.createElement('div');
         footer.className = 'cv-modal-footer';
@@ -332,9 +340,18 @@
                 closeModal();
                 return;
             }
+
+            if (!isMilestone) {
+                const xpForLevel = newLevel === 1 ? 0 : c.xpThresholds[newLevel - 2];
+                if (xpForLevel === undefined) {
+                    errorEl.style.display = '';
+                    return;
+                }
+                c.currentXP = xpForLevel;
+            }
+
             const oldLevel = c.level;
             c.level = newLevel;
-            c.currentXP = 0;
             closeModal();
             const bodyEl = moduleEl.querySelector('.module-body');
             const isPlay = window.isPlayMode;
@@ -353,6 +370,9 @@
             }
         }
 
+        input.addEventListener('input', () => {
+            errorEl.style.display = 'none';
+        });
         closeBtn.addEventListener('click', closeModal);
         cancelBtn.addEventListener('click', closeModal);
         confirmBtn.addEventListener('click', confirm);

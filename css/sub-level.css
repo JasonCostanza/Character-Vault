@@ -308,3 +308,11 @@
     line-height: 1.4;
     user-select: none;
 }
+
+.level-set-error {
+    font-size: 10px;
+    color: var(--cv-danger);
+    text-align: center;
+    line-height: 1.4;
+    user-select: none;
+}

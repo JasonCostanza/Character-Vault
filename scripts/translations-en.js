@@ -336,7 +336,8 @@ window.CV_TRANSLATIONS.en = {
             'level.log.xpLoss': 'Lost {amount} XP ({oldXP} → {newXP})',
             'level.setLevelTitle': 'Set Level',
             'level.setLevelPlaceholder': 'Level',
-            'level.setLevelWarning': 'Experience will be reset to 0. This cannot be undone.',
+            'level.setLevelWarning': 'Experience will be set to the minimum for the chosen level.',
+            'level.setLevelError': 'No experience threshold is defined for this level.',
             'level.confirm': 'Confirm',
 
             // Resistance submodule

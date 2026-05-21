@@ -551,7 +551,8 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'level.log.xpLoss': 'Perdeu {amount} XP ({oldXP} → {newXP})',
             'level.setLevelTitle': 'Definir Nível',
             'level.setLevelPlaceholder': 'Nível',
-            'level.setLevelWarning': 'A experiência será redefinida para 0. Esta ação não pode ser desfeita.',
+            'level.setLevelWarning': 'A experiência será definida no mínimo para o nível escolhido.',
+            'level.setLevelError': 'Nenhum limiar de experiência está definido para este nível.',
             'level.confirm': 'Confirmar',
             // Conditions submodule — UI
             'type.condition': 'Condições',

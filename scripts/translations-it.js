@@ -560,7 +560,8 @@ window.CV_TRANSLATIONS['it'] = {
             'level.log.xpLoss': 'Persi {amount} XP ({oldXP} → {newXP})',
             'level.setLevelTitle': 'Imposta Livello',
             'level.setLevelPlaceholder': 'Livello',
-            'level.setLevelWarning': "L'esperienza verrà azzerata. Questa azione non può essere annullata.",
+            'level.setLevelWarning': "L'esperienza verrà impostata al minimo per il livello scelto.",
+            'level.setLevelError': 'Nessuna soglia di esperienza è definita per questo livello.',
             'level.confirm': 'Conferma',
 
             // Conditions submodule — UI

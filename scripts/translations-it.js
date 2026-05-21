@@ -558,6 +558,10 @@ window.CV_TRANSLATIONS['it'] = {
             'level.log.levelChange': 'Livello modificato ({oldLevel} → {newLevel})',
             'level.log.xpGain': 'Guadagnati {amount} XP ({oldXP} → {newXP})',
             'level.log.xpLoss': 'Persi {amount} XP ({oldXP} → {newXP})',
+            'level.setLevelTitle': 'Imposta Livello',
+            'level.setLevelPlaceholder': 'Livello',
+            'level.setLevelWarning': "L'esperienza verrà azzerata. Questa azione non può essere annullata.",
+            'level.confirm': 'Conferma',
 
             // Conditions submodule — UI
             'cond.moduleSettings': 'Impostazioni Condizioni',

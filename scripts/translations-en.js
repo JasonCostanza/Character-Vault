@@ -334,6 +334,10 @@ window.CV_TRANSLATIONS.en = {
             'level.log.levelChange': 'Level changed ({oldLevel} → {newLevel})',
             'level.log.xpGain': 'Gained {amount} XP ({oldXP} → {newXP})',
             'level.log.xpLoss': 'Lost {amount} XP ({oldXP} → {newXP})',
+            'level.setLevelTitle': 'Set Level',
+            'level.setLevelPlaceholder': 'Level',
+            'level.setLevelWarning': 'Experience will be reset to 0. This cannot be undone.',
+            'level.confirm': 'Confirm',
 
             // Resistance submodule
             'res.moduleSettings': 'Module Settings',

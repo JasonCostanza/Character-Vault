@@ -549,6 +549,10 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'level.log.levelChange': 'Nível alterado ({oldLevel} → {newLevel})',
             'level.log.xpGain': 'Ganhou {amount} XP ({oldXP} → {newXP})',
             'level.log.xpLoss': 'Perdeu {amount} XP ({oldXP} → {newXP})',
+            'level.setLevelTitle': 'Definir Nível',
+            'level.setLevelPlaceholder': 'Nível',
+            'level.setLevelWarning': 'A experiência será redefinida para 0. Esta ação não pode ser desfeita.',
+            'level.confirm': 'Confirmar',
             // Conditions submodule — UI
             'type.condition': 'Condições',
             'cond.moduleSettings': 'Configurações de Condições',

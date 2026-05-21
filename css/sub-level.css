@@ -22,6 +22,7 @@
     font-weight: 700;
     color: var(--cv-text);
     line-height: 1;
+    cursor: pointer;
 }
 
 .level-label {
@@ -297,4 +298,13 @@
 
 .level-toggle-row {
     font-size: 12px;
+}
+
+.level-set-warning {
+    font-size: 10px;
+    font-style: italic;
+    color: var(--cv-text-muted);
+    text-align: center;
+    line-height: 1.4;
+    user-select: none;
 }

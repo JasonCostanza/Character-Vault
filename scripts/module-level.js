@@ -119,6 +119,10 @@
         const numEl = document.createElement('div');
         numEl.className = 'level-number';
         numEl.textContent = c.level;
+        numEl.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openSetLevelModal(bodyEl.closest('.module'), data);
+        });
 
         display.appendChild(levelLabel);
         display.appendChild(numEl);
@@ -243,6 +247,122 @@
         }
 
         bodyEl.appendChild(wrap);
+    }
+
+    // ── Set Level Modal ──
+    function openSetLevelModal(moduleEl, data) {
+        const existing = document.querySelector('.level-set-overlay');
+        if (existing) existing.remove();
+
+        const c = data.content;
+
+        const overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay level-set-overlay';
+
+        const panel = document.createElement('div');
+        panel.className = 'cv-modal-panel';
+        panel.style.width = '280px';
+
+        const header = document.createElement('div');
+        header.className = 'cv-modal-header';
+
+        const titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = t('level.setLevelTitle');
+        titleEl.style.userSelect = 'none';
+
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'cv-modal-close';
+        closeBtn.title = t('level.cancel');
+        closeBtn.innerHTML = CV_SVG_CLOSE;
+
+        header.appendChild(titleEl);
+        header.appendChild(closeBtn);
+
+        const body = document.createElement('div');
+        body.className = 'cv-modal-body';
+
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.className = 'cv-modal-input cv-modal-num';
+        input.min = '1';
+        input.placeholder = t('level.setLevelPlaceholder');
+        input.value = c.level;
+        input.spellcheck = false;
+        input.autocomplete = 'off';
+        body.appendChild(input);
+
+        const warning = document.createElement('div');
+        warning.className = 'level-set-warning';
+        warning.textContent = t('level.setLevelWarning');
+        body.appendChild(warning);
+
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'btn-secondary sm';
+        cancelBtn.textContent = t('level.cancel');
+        cancelBtn.style.userSelect = 'none';
+
+        const confirmBtn = document.createElement('button');
+        confirmBtn.className = 'btn-primary sm';
+        confirmBtn.textContent = t('level.confirm');
+        confirmBtn.style.userSelect = 'none';
+
+        footer.appendChild(cancelBtn);
+        footer.appendChild(confirmBtn);
+
+        panel.appendChild(header);
+        panel.appendChild(body);
+        panel.appendChild(footer);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+
+        input.focus();
+        input.select();
+
+        function closeModal() {
+            overlay.remove();
+        }
+
+        function confirm() {
+            const newLevel = parseInt(input.value, 10);
+            if (isNaN(newLevel) || newLevel < 1 || newLevel === c.level) {
+                closeModal();
+                return;
+            }
+            const oldLevel = c.level;
+            c.level = newLevel;
+            c.currentXP = 0;
+            closeModal();
+            const bodyEl = moduleEl.querySelector('.module-body');
+            const isPlay = window.isPlayMode;
+            renderLevelBody(bodyEl, data, isPlay);
+            if (typeof window.snapModuleHeight === 'function') {
+                window.snapModuleHeight(moduleEl, data);
+            }
+            scheduleSave();
+            document.dispatchEvent(new CustomEvent('cv:level-changed'));
+            if (typeof window.logActivity === 'function') {
+                window.logActivity({
+                    type: 'level.event.levelUp',
+                    message: t('level.log.levelChange', { oldLevel: oldLevel, newLevel: newLevel }),
+                    sourceModuleId: data.id,
+                });
+            }
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+        confirmBtn.addEventListener('click', confirm);
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') confirm();
+            if (e.key === 'Escape') closeModal();
+        });
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeModal();
+        });
     }
 
     // ── XP Modal ──

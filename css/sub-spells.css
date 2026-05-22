@@ -489,3 +489,64 @@
     user-select: none;
     min-width: 44px;
 }
+
+/* ── Spellcasting Settings Card ── */
+.spells-settings-link-row,
+.spells-settings-ability-row,
+.spells-settings-rank-row,
+.spells-settings-override-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 5px 0;
+}
+
+.spells-settings-link-row + .spells-settings-ability-row,
+.spells-settings-ability-row + .spells-settings-rank-row,
+.spells-settings-ability-row + .spells-settings-override-row,
+.spells-settings-rank-row + .spells-settings-override-row {
+    border-top: 1px solid var(--cv-border-subtle);
+}
+
+.spells-settings-field-label {
+    font-size: 12px;
+    color: var(--cv-text);
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.spells-settings-override-pair {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+.spells-settings-override-input {
+    width: 52px;
+    font-size: 12px;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 3px;
+    color: var(--cv-text);
+    padding: 3px 5px;
+    text-align: center;
+    font-family: inherit;
+    -moz-appearance: textfield;
+}
+
+.spells-settings-override-input::-webkit-outer-spin-button,
+.spells-settings-override-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+.spells-settings-override-input:focus {
+    outline: none;
+    border-color: var(--cv-accent);
+}
+
+.spells-settings-computed-preview {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    padding: 4px 0 2px;
+    user-select: none;
+    text-align: right;
+}

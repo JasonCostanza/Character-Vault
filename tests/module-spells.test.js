@@ -348,6 +348,189 @@ describe('getSortedSpells', () => {
   });
 });
 
+describe('spellsIsSupported', () => {
+  it.each(['dnd5e', 'pf2e', 'custom'])('returns true for %s', (sys) => {
+    expect(spellsIsSupported(sys)).toBe(true);
+  });
+
+  it.each(['coc', 'vtm', 'sr6', 'cpred', 'mothership', 'daggerheart'])('returns false for %s', (sys) => {
+    expect(spellsIsSupported(sys)).toBe(false);
+  });
+});
+
+describe('spellsComputeAttackBonus', () => {
+  beforeEach(() => {
+    window.getAbilityModifierFrom = vi.fn().mockReturnValue(3);
+    window.getProficiencyBonus = vi.fn().mockReturnValue(2);
+    window.computePf2eProficiencyBonus = vi.fn().mockReturnValue(4);
+    window.gameSystem = 'dnd5e';
+  });
+
+  it('returns the override directly when set', () => {
+    expect(spellsComputeAttackBonus({ spellAttackOverride: 7, spellDCOverride: null, spellcastingAbility: 'Wisdom', linkedStatModuleId: null, spellProficiencyRank: 'untrained' })).toBe(7);
+  });
+
+  it('computes 5e formula: ability mod + prof bonus', () => {
+    window.gameSystem = 'dnd5e';
+    const content = { spellAttackOverride: null, spellDCOverride: null, spellcastingAbility: 'Wisdom', linkedStatModuleId: 'mod1', spellProficiencyRank: 'untrained' };
+    expect(spellsComputeAttackBonus(content)).toBe(5); // 3 + 2
+    expect(window.getAbilityModifierFrom).toHaveBeenCalledWith('Wisdom', 'mod1');
+  });
+
+  it('computes pf2e formula: ability mod + pf2e prof bonus', () => {
+    window.gameSystem = 'pf2e';
+    const content = { spellAttackOverride: null, spellDCOverride: null, spellcastingAbility: 'Intelligence', linkedStatModuleId: 'mod1', spellProficiencyRank: 'expert' };
+    expect(spellsComputeAttackBonus(content)).toBe(7); // 3 + 4
+    expect(window.computePf2eProficiencyBonus).toHaveBeenCalledWith('expert');
+  });
+
+  it('returns null for unsupported systems', () => {
+    window.gameSystem = 'vtm';
+    const content = { spellAttackOverride: null, spellDCOverride: null, spellcastingAbility: 'Wits', linkedStatModuleId: null, spellProficiencyRank: 'untrained' };
+    expect(spellsComputeAttackBonus(content)).toBeNull();
+  });
+
+  it('uses 0 for ability mod when no casting ability is set', () => {
+    window.gameSystem = 'dnd5e';
+    const content = { spellAttackOverride: null, spellDCOverride: null, spellcastingAbility: null, linkedStatModuleId: null, spellProficiencyRank: 'untrained' };
+    expect(spellsComputeAttackBonus(content)).toBe(2); // 0 + 2
+  });
+
+  it('uses 0 for ability mod when getAbilityModifierFrom returns null', () => {
+    window.gameSystem = 'dnd5e';
+    window.getAbilityModifierFrom = vi.fn().mockReturnValue(null);
+    const content = { spellAttackOverride: null, spellDCOverride: null, spellcastingAbility: 'Wisdom', linkedStatModuleId: 'mod1', spellProficiencyRank: 'untrained' };
+    expect(spellsComputeAttackBonus(content)).toBe(2); // 0 + 2
+  });
+
+  it('falls through to computed when spellAttackOverride is empty string', () => {
+    window.gameSystem = 'dnd5e';
+    const content = { spellAttackOverride: '', spellDCOverride: null, spellcastingAbility: 'Wisdom', linkedStatModuleId: 'mod1', spellProficiencyRank: 'untrained' };
+    expect(spellsComputeAttackBonus(content)).toBe(5); // computes 3+2, not Number('')=0
+  });
+
+  it('uses fallback proficiency 2 when getProficiencyBonus is not a function', () => {
+    window.gameSystem = 'dnd5e';
+    window.getProficiencyBonus = undefined;
+    const content = { spellAttackOverride: null, spellDCOverride: null, spellcastingAbility: null, linkedStatModuleId: null, spellProficiencyRank: 'untrained' };
+    expect(spellsComputeAttackBonus(content)).toBe(2); // 0 + 2 fallback
+  });
+
+  it('uses fallback 0 when getAbilityModifierFrom is not a function', () => {
+    window.gameSystem = 'dnd5e';
+    window.getAbilityModifierFrom = undefined;
+    const content = { spellAttackOverride: null, spellDCOverride: null, spellcastingAbility: 'Wisdom', linkedStatModuleId: 'mod1', spellProficiencyRank: 'untrained' };
+    expect(spellsComputeAttackBonus(content)).toBe(2); // 0 ability + 2 prof
+  });
+});
+
+describe('spellsComputeSpellDC', () => {
+  beforeEach(() => {
+    window.getAbilityModifierFrom = vi.fn().mockReturnValue(3);
+    window.getProficiencyBonus = vi.fn().mockReturnValue(2);
+    window.computePf2eProficiencyBonus = vi.fn().mockReturnValue(4);
+    window.gameSystem = 'dnd5e';
+  });
+
+  function baseContent(overrides = {}) {
+    return { spellAttackOverride: null, spellDCOverride: null, spellcastingAbility: 'Wisdom', linkedStatModuleId: 'mod1', spellProficiencyRank: 'untrained', ...overrides };
+  }
+
+  it('uses base 8 for 5e: 8 + attack (3+2=5) = 13', () => {
+    window.gameSystem = 'dnd5e';
+    expect(spellsComputeSpellDC(baseContent())).toBe(13);
+  });
+
+  it('uses base 10 for pf2e: 10 + attack (3+4=7) = 17', () => {
+    window.gameSystem = 'pf2e';
+    expect(spellsComputeSpellDC(baseContent({ spellProficiencyRank: 'expert' }))).toBe(17);
+  });
+
+  it('returns the DC override directly when set', () => {
+    expect(spellsComputeSpellDC(baseContent({ spellDCOverride: 20 }))).toBe(20);
+  });
+
+  it('returns null for unsupported systems', () => {
+    window.gameSystem = 'coc';
+    expect(spellsComputeSpellDC(baseContent())).toBeNull();
+  });
+
+  it('falls through to computed when spellDCOverride is empty string', () => {
+    window.gameSystem = 'dnd5e';
+    expect(spellsComputeSpellDC(baseContent({ spellDCOverride: '' }))).toBe(13); // 8 + 5
+  });
+});
+
+describe('spellsFormatAttackBonus and spellsFormatDC', () => {
+  beforeEach(() => {
+    window.getAbilityModifierFrom = vi.fn().mockReturnValue(3);
+    window.getProficiencyBonus = vi.fn().mockReturnValue(2);
+    window.computePf2eProficiencyBonus = vi.fn().mockReturnValue(0);
+    window.gameSystem = 'dnd5e';
+  });
+
+  function baseContent(overrides = {}) {
+    return { spellAttackOverride: null, spellDCOverride: null, spellcastingAbility: 'Wisdom', linkedStatModuleId: 'mod1', spellProficiencyRank: 'untrained', ...overrides };
+  }
+
+  it('formats positive attack bonus with leading +', () => {
+    expect(spellsFormatAttackBonus(baseContent())).toBe('+5');
+  });
+
+  it('formats negative attack bonus without leading +', () => {
+    window.getAbilityModifierFrom = vi.fn().mockReturnValue(-4);
+    window.getProficiencyBonus = vi.fn().mockReturnValue(2);
+    expect(spellsFormatAttackBonus(baseContent())).toBe('-2');
+  });
+
+  it('formats DC as plain number string', () => {
+    expect(spellsFormatDC(baseContent())).toBe('13');
+  });
+
+  it('returns -- for unsupported system', () => {
+    window.gameSystem = 'vtm';
+    expect(spellsFormatAttackBonus(baseContent())).toBe('--');
+    expect(spellsFormatDC(baseContent())).toBe('--');
+  });
+});
+
+describe('ensureSpellContent — new Phase 1 fields', () => {
+  it('migrates missing linkedStatModuleId to null', () => {
+    const data = { content: { autoSpendSlots: true, showSlotErrors: true, slotLevels: [], categories: [], attributes: [], sortBy: null, sortDir: 'asc' } };
+    ensureSpellContent(data);
+    expect(data.content.linkedStatModuleId).toBeNull();
+  });
+
+  it('migrates missing spellcastingAbility to null', () => {
+    const data = { content: { autoSpendSlots: true, showSlotErrors: true, slotLevels: [], categories: [], attributes: [], sortBy: null, sortDir: 'asc' } };
+    ensureSpellContent(data);
+    expect(data.content.spellcastingAbility).toBeNull();
+  });
+
+  it('migrates missing spellProficiencyRank to untrained', () => {
+    const data = { content: { autoSpendSlots: true, showSlotErrors: true, slotLevels: [], categories: [], attributes: [], sortBy: null, sortDir: 'asc' } };
+    ensureSpellContent(data);
+    expect(data.content.spellProficiencyRank).toBe('untrained');
+  });
+
+  it('migrates missing overrides to null', () => {
+    const data = { content: { autoSpendSlots: true, showSlotErrors: true, slotLevels: [], categories: [], attributes: [], sortBy: null, sortDir: 'asc' } };
+    ensureSpellContent(data);
+    expect(data.content.spellAttackOverride).toBeNull();
+    expect(data.content.spellDCOverride).toBeNull();
+  });
+
+  it('preserves existing override values', () => {
+    const data = { content: { autoSpendSlots: true, showSlotErrors: true, slotLevels: [], categories: [], attributes: [], sortBy: null, sortDir: 'asc', spellAttackOverride: 9, spellDCOverride: 18, spellProficiencyRank: 'master', spellcastingAbility: 'Intelligence', linkedStatModuleId: 'abc' } };
+    ensureSpellContent(data);
+    expect(data.content.spellAttackOverride).toBe(9);
+    expect(data.content.spellDCOverride).toBe(18);
+    expect(data.content.spellProficiencyRank).toBe('master');
+    expect(data.content.spellcastingAbility).toBe('Intelligence');
+    expect(data.content.linkedStatModuleId).toBe('abc');
+  });
+});
+
 describe('castSpell', () => {
   function makeModuleEl() {
     const el = document.createElement('div');

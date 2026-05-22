@@ -14,7 +14,7 @@
     }
 
     function defaultContent() {
-        return { autoSpendSlots: true, showSlotErrors: true, slotLevels: [], categories: [], attributes: [], sortBy: null, sortDir: 'asc' };
+        return { autoSpendSlots: true, showSlotErrors: true, slotLevels: [], categories: [], attributes: [], sortBy: null, sortDir: 'asc', linkedStatModuleId: null, spellcastingAbility: null, spellProficiencyRank: 'untrained', spellAttackOverride: null, spellDCOverride: null };
     }
 
     function migrateContent(content) {
@@ -70,6 +70,11 @@
             if (c.sortBy === undefined) c.sortBy = null;
             if (!c.sortDir) c.sortDir = 'asc';
         }
+        if (c.linkedStatModuleId === undefined)  c.linkedStatModuleId = null;
+        if (c.spellcastingAbility === undefined) c.spellcastingAbility = null;
+        if (c.spellProficiencyRank === undefined) c.spellProficiencyRank = 'untrained';
+        if (c.spellAttackOverride === undefined) c.spellAttackOverride = null;
+        if (c.spellDCOverride === undefined)     c.spellDCOverride = null;
     }
 
     function getSortedSpells(content, spells) {
@@ -106,6 +111,66 @@
             return 0;
         });
         return sorted;
+    }
+
+    // ── Linked Stat Module Helpers ──
+    function getLinkedStatNames(data) {
+        var linkedId = data.content ? data.content.linkedStatModuleId : null;
+        if (!linkedId) return [];
+        var linkedMod = (window.modules || []).find(function (m) { return m.id === linkedId; });
+        if (!linkedMod || !linkedMod.content || !Array.isArray(linkedMod.content.stats)) return [];
+        return linkedMod.content.stats
+            .filter(function (s) { return s.name && !s.isProficiencyStat; })
+            .map(function (s) { return s.name; });
+    }
+
+    // ── Spell Attack / DC Computation ──
+    function spellsIsSupported(sys) {
+        return sys === 'dnd5e' || sys === 'pf2e' || sys === 'custom';
+    }
+
+    function spellsComputeAttackBonus(content) {
+        var sys = window.gameSystem || 'custom';
+        if (!spellsIsSupported(sys)) return null;
+        if (content.spellAttackOverride !== null && content.spellAttackOverride !== undefined && content.spellAttackOverride !== '') {
+            return Number(content.spellAttackOverride);
+        }
+        var abilityMod = 0;
+        if (content.spellcastingAbility) {
+            var mod = typeof window.getAbilityModifierFrom === 'function'
+                ? window.getAbilityModifierFrom(content.spellcastingAbility, content.linkedStatModuleId)
+                : null;
+            abilityMod = (mod !== null && mod !== undefined) ? Number(mod) : 0;
+        }
+        var profBonus = sys === 'pf2e'
+            ? (typeof window.computePf2eProficiencyBonus === 'function' ? window.computePf2eProficiencyBonus(content.spellProficiencyRank || 'untrained') : 0)
+            : (typeof window.getProficiencyBonus === 'function' ? window.getProficiencyBonus() : 2);
+        return abilityMod + profBonus;
+    }
+
+    function spellsComputeSpellDC(content) {
+        var sys = window.gameSystem || 'custom';
+        if (!spellsIsSupported(sys)) return null;
+        if (content.spellDCOverride !== null && content.spellDCOverride !== undefined && content.spellDCOverride !== '') {
+            return Number(content.spellDCOverride);
+        }
+        // DC uses the full attack value including any attack override — spell attack and DC always move together.
+        var attack = spellsComputeAttackBonus(content);
+        if (attack === null) return null;
+        var base = sys === 'pf2e' ? 10 : 8;
+        return base + attack;
+    }
+
+    function spellsFormatAttackBonus(content) {
+        var val = spellsComputeAttackBonus(content);
+        if (val === null) return '--';
+        return (val >= 0 ? '+' : '') + val;
+    }
+
+    function spellsFormatDC(content) {
+        var val = spellsComputeSpellDC(content);
+        if (val === null) return '--';
+        return String(val);
     }
 
     // ── Play Mode Helpers ──
@@ -967,6 +1032,195 @@
 
         body.appendChild(behaviorCard);
 
+        // ── Spellcasting Card ──
+        {
+            const spellcastCard = document.createElement('div');
+            spellcastCard.className = 'spells-settings-card';
+
+            const spellcastTitle = document.createElement('div');
+            spellcastTitle.className = 'spells-settings-card-title';
+            spellcastTitle.textContent = t('spells.spellcastingTitle');
+            spellcastCard.appendChild(spellcastTitle);
+
+            const previewEl = document.createElement('div');
+            previewEl.className = 'spells-settings-computed-preview';
+
+            let rankRow;
+
+            function refreshPreview() {
+                const liveSys = window.gameSystem || 'custom';
+                spellcastCard.style.display = spellsIsSupported(liveSys) ? '' : 'none';
+                if (rankRow) rankRow.style.display = liveSys === 'pf2e' ? '' : 'none';
+                const attack = spellsFormatAttackBonus(content);
+                const dc = spellsFormatDC(content);
+                previewEl.textContent = t('spells.computedPreview', { attack, dc });
+            }
+
+            // Linked stat module row
+            const linkRow = document.createElement('div');
+            linkRow.className = 'spells-settings-link-row';
+            const linkLabel = document.createElement('span');
+            linkLabel.className = 'spells-settings-field-label';
+            linkLabel.textContent = t('spells.linkedStatModule');
+
+            const statModOptions = [{ value: '', label: t('spells.noLinkedModule') }];
+            (window.modules || []).filter(m => m.type === 'stat').forEach(m => {
+                statModOptions.push({ value: m.id, label: m.title || t('type.stat') });
+            });
+
+            const abilitySelectWrapper = document.createElement('div');
+
+            function buildAbilitySelect() {
+                abilitySelectWrapper.innerHTML = '';
+                const names = getLinkedStatNames(data);
+                const opts = names.length > 0
+                    ? names.map(n => ({ value: n, label: n }))
+                    : [{ value: '', label: t('spells.linkStatFirst') }];
+                const currentVal = content.spellcastingAbility || '';
+                const sel = buildCvSelect(opts, currentVal, (val) => {
+                    content.spellcastingAbility = val || null;
+                    scheduleSave();
+                    reRender();
+                    refreshPreview();
+                });
+                if (names.length === 0) {
+                    sel.el.style.opacity = '0.5';
+                    sel.el.style.pointerEvents = 'none';
+                }
+                abilitySelectWrapper.appendChild(sel.el);
+            }
+
+            buildAbilitySelect();
+
+            const statModSelect = buildCvSelect(statModOptions, content.linkedStatModuleId || '', (val) => {
+                content.linkedStatModuleId = val || null;
+                if (content.spellcastingAbility) {
+                    const validNames = getLinkedStatNames(data);
+                    const found = validNames.some(n => n.toUpperCase() === content.spellcastingAbility.toUpperCase());
+                    if (!found) content.spellcastingAbility = null;
+                }
+                scheduleSave();
+                reRender();
+                buildAbilitySelect();
+                refreshPreview();
+            });
+
+            linkRow.appendChild(linkLabel);
+            linkRow.appendChild(statModSelect.el);
+            spellcastCard.appendChild(linkRow);
+
+            // Casting ability row
+            const abilityRow = document.createElement('div');
+            abilityRow.className = 'spells-settings-ability-row';
+            const abilityLabel = document.createElement('span');
+            abilityLabel.className = 'spells-settings-field-label';
+            abilityLabel.textContent = t('spells.spellcastingAbility');
+            abilityRow.appendChild(abilityLabel);
+            abilityRow.appendChild(abilitySelectWrapper);
+            spellcastCard.appendChild(abilityRow);
+
+            // PF2e proficiency rank row — always built; refreshPreview() shows/hides it
+            rankRow = document.createElement('div');
+            rankRow.className = 'spells-settings-rank-row';
+            rankRow.style.display = 'none';
+            const rankLabel = document.createElement('span');
+            rankLabel.className = 'spells-settings-field-label';
+            rankLabel.textContent = t('spells.spellProficiency');
+            const pillBar = document.createElement('div');
+            pillBar.className = 'stat-rank-pills';
+            const ranks = [
+                { value: 'untrained', letter: 'U' },
+                { value: 'trained', letter: 'T' },
+                { value: 'expert', letter: 'E' },
+                { value: 'master', letter: 'M' },
+                { value: 'legendary', letter: 'L' },
+            ];
+            ranks.forEach(r => {
+                const pill = document.createElement('button');
+                pill.type = 'button';
+                pill.className = 'stat-rank-pill' + ((content.spellProficiencyRank || 'untrained') === r.value ? ' active' : '');
+                pill.textContent = r.letter;
+                pill.title = t('rank.' + r.value);
+                pill.addEventListener('click', () => {
+                    content.spellProficiencyRank = r.value;
+                    pillBar.querySelectorAll('.stat-rank-pill').forEach(p => p.classList.remove('active'));
+                    pill.classList.add('active');
+                    scheduleSave();
+                    reRender();
+                    refreshPreview();
+                });
+                pillBar.appendChild(pill);
+            });
+            rankRow.appendChild(rankLabel);
+            rankRow.appendChild(pillBar);
+            spellcastCard.appendChild(rankRow);
+
+            // Override row
+            const overrideRow = document.createElement('div');
+            overrideRow.className = 'spells-settings-override-row';
+            const overrideHintLabel = document.createElement('span');
+            overrideHintLabel.className = 'spells-settings-field-label';
+            overrideHintLabel.textContent = t('spells.overrideHint');
+
+            const overridePair = document.createElement('div');
+            overridePair.className = 'spells-settings-override-pair';
+
+            const attackCol = document.createElement('div');
+            attackCol.className = 'spells-add-col';
+            const attackColLabel = document.createElement('span');
+            attackColLabel.className = 'spells-add-label';
+            attackColLabel.textContent = t('spells.spellAttackOverride');
+            const attackInput = document.createElement('input');
+            attackInput.type = 'number';
+            attackInput.className = 'spells-settings-override-input';
+            attackInput.placeholder = '--';
+            if (content.spellAttackOverride !== null && content.spellAttackOverride !== undefined) {
+                attackInput.value = String(content.spellAttackOverride);
+            }
+            attackInput.addEventListener('change', () => {
+                const v = attackInput.value.trim();
+                content.spellAttackOverride = v === '' ? null : Number(v);
+                scheduleSave();
+                reRender();
+                refreshPreview();
+            });
+            attackCol.appendChild(attackColLabel);
+            attackCol.appendChild(attackInput);
+
+            const dcCol = document.createElement('div');
+            dcCol.className = 'spells-add-col';
+            const dcColLabel = document.createElement('span');
+            dcColLabel.className = 'spells-add-label';
+            dcColLabel.textContent = t('spells.spellDCOverride');
+            const dcInput = document.createElement('input');
+            dcInput.type = 'number';
+            dcInput.className = 'spells-settings-override-input';
+            dcInput.placeholder = '--';
+            if (content.spellDCOverride !== null && content.spellDCOverride !== undefined) {
+                dcInput.value = String(content.spellDCOverride);
+            }
+            dcInput.addEventListener('change', () => {
+                const v = dcInput.value.trim();
+                content.spellDCOverride = v === '' ? null : Number(v);
+                scheduleSave();
+                reRender();
+                refreshPreview();
+            });
+            dcCol.appendChild(dcColLabel);
+            dcCol.appendChild(dcInput);
+
+            overridePair.appendChild(attackCol);
+            overridePair.appendChild(dcCol);
+            overrideRow.appendChild(overrideHintLabel);
+            overrideRow.appendChild(overridePair);
+            spellcastCard.appendChild(overrideRow);
+
+            refreshPreview();
+            spellcastCard.appendChild(previewEl);
+
+            body.appendChild(spellcastCard);
+        }
+
         // ── Tab Bar ──
         const tabIds = ['columns', 'slots', 'categories'];
         const tabKeys = { columns: 'spells.tabColumns', slots: 'spells.tabSlots', categories: 'spells.tabCategories' };
@@ -1464,6 +1718,11 @@
     window.getSortedSpells = getSortedSpells;
     window.migrateSpellContent = migrateContent;
     window.ensureSpellContent = ensureContent;
+    window.spellsIsSupported = spellsIsSupported;
+    window.spellsComputeAttackBonus = spellsComputeAttackBonus;
+    window.spellsComputeSpellDC = spellsComputeSpellDC;
+    window.spellsFormatAttackBonus = spellsFormatAttackBonus;
+    window.spellsFormatDC = spellsFormatDC;
 
     // ── Registration ──
     registerModuleType('spells', {

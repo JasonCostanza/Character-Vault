@@ -1894,4 +1894,43 @@
             this.renderBody(bodyEl, data, false);
         },
     });
+
+    // ── Reactive Stat Listeners ──
+
+    document.addEventListener('cv:stat-values-changed', function (e) {
+        var changedModuleId = e.detail && e.detail.moduleId;
+        (window.modules || []).forEach(function (mod) {
+            if (mod.type !== 'spells') return;
+            if (!mod.content || mod.content.linkedStatModuleId !== changedModuleId) return;
+            var moduleEl = document.querySelector('.module[data-id="' + mod.id + '"]');
+            if (!moduleEl) return;
+            var bodyEl = moduleEl.querySelector('.module-body');
+            if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, mod, window.isPlayMode);
+        });
+    });
+
+    document.addEventListener('cv:stats-changed', function (e) {
+        var changedModuleId = e.detail && e.detail.moduleId;
+        (window.modules || []).forEach(function (mod) {
+            if (mod.type !== 'spells') return;
+            if (!mod.content || mod.content.linkedStatModuleId !== changedModuleId) return;
+            var changed = false;
+            var validNames = getLinkedStatNames(mod);
+            if (mod.content.spellcastingAbility) {
+                var found = validNames.some(function (n) {
+                    return n.toUpperCase() === mod.content.spellcastingAbility.toUpperCase();
+                });
+                if (!found) {
+                    mod.content.spellcastingAbility = null;
+                    scheduleSave();
+                    changed = true;
+                }
+            }
+            if (!changed) return;
+            var moduleEl = document.querySelector('.module[data-id="' + mod.id + '"]');
+            if (!moduleEl) return;
+            var bodyEl = moduleEl.querySelector('.module-body');
+            if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, mod, window.isPlayMode);
+        });
+    });
 })();

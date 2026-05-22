@@ -107,9 +107,7 @@
         var profIndicatorHtml = '';
         if (sys === 'pf2e') {
             var rank = stat.proficiencyRank || 'untrained';
-            if (rank !== 'untrained') {
-                profIndicatorHtml = '<span class="stat-rank-badge" title="' + escapeHtml(t('rank.' + rank)) + '">' + rank.charAt(0).toUpperCase() + '</span>';
-            }
+            profIndicatorHtml = '<span class="stat-rank-badge" title="' + escapeHtml(t('rank.' + rank)) + '">' + rank.charAt(0).toUpperCase() + '</span>';
         } else if (stat.proficient && sys !== 'daggerheart') {
             profIndicatorHtml = '<span class="stat-proficiency-dot"></span>';
         }
@@ -217,16 +215,30 @@
         }
 
         if (rankRow) {
-            var rankLabel = document.createElement('span');
-            rankLabel.className = 'stat-edit-prof-label';
-            rankLabel.textContent = t('stat.proficiencyRank');
-            rankRow.appendChild(rankLabel);
-            var rankSel = window.buildCvSelect(
-                window.buildPf2eRankOptions(),
-                stat.proficiencyRank || 'untrained',
-                function (v) { stat.proficiencyRank = v; scheduleSave(); }
-            );
-            rankRow.appendChild(rankSel.el);
+            var pillBar = document.createElement('div');
+            pillBar.className = 'stat-rank-pills';
+            var ranks = [
+                { value: 'untrained', letter: 'U' },
+                { value: 'trained', letter: 'T' },
+                { value: 'expert', letter: 'E' },
+                { value: 'master', letter: 'M' },
+                { value: 'legendary', letter: 'L' },
+            ];
+            ranks.forEach(function (r) {
+                var pill = document.createElement('button');
+                pill.className = 'stat-rank-pill' + ((stat.proficiencyRank || 'untrained') === r.value ? ' active' : '');
+                pill.textContent = r.letter;
+                pill.title = t('rank.' + r.value);
+                pill.dataset.rank = r.value;
+                pill.addEventListener('click', function () {
+                    stat.proficiencyRank = r.value;
+                    pillBar.querySelectorAll('.stat-rank-pill').forEach(function (p) { p.classList.remove('active'); });
+                    pill.classList.add('active');
+                    scheduleSave();
+                });
+                pillBar.appendChild(pill);
+            });
+            rankRow.appendChild(pillBar);
         }
 
         nameInput.addEventListener('input', () => {

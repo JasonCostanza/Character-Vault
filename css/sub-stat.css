@@ -71,7 +71,7 @@
 
 .stat-rank-badge {
     position: absolute;
-    top: 3px;
+    bottom: 3px;
     left: 3px;
     width: 14px;
     height: 14px;
@@ -214,6 +214,46 @@
     letter-spacing: 0.03em;
     color: var(--cv-text-muted);
     user-select: none;
+}
+
+.stat-rank-pills {
+    display: flex;
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--cv-border-subtle);
+}
+
+.stat-rank-pill {
+    flex: 1;
+    padding: 3px 4px;
+    font-size: 8px;
+    font-weight: 600;
+    font-family: inherit;
+    text-align: center;
+    color: var(--cv-text-muted);
+    background: var(--cv-bg-sunken);
+    border: none;
+    border-right: 1px solid var(--cv-border-subtle);
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    user-select: none;
+    line-height: 1.2;
+    min-width: 0;
+}
+
+.stat-rank-pill:last-child {
+    border-right: none;
+}
+
+.stat-rank-pill:hover {
+    background: var(--cv-bg-raised);
+    color: var(--cv-text-secondary);
+}
+
+.stat-rank-pill.active {
+    background: var(--cv-accent);
+    color: var(--cv-bg);
 }
 
 .stat-edit-prof-dot {

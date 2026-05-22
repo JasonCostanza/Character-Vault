@@ -612,6 +612,11 @@
         });
     }
 
+    function autoResizeTextarea(el) {
+        el.style.height = 'auto';
+        el.style.height = el.scrollHeight + 'px';
+    }
+
     function renderSpellsLayout(bodyEl, data) {
         renderSlotSummaryBarLayout(bodyEl, data, bodyEl);
         const container = document.createElement('div');
@@ -994,6 +999,7 @@
         textarea.placeholder = t('spells.descPlaceholder');
         textarea.addEventListener('input', () => {
             spell.description = textarea.value;
+            autoResizeTextarea(textarea);
             scheduleSave();
         });
         drawerContent.appendChild(textarea);
@@ -1003,10 +1009,12 @@
             spell.expanded = !spell.expanded;
             chevBtn.classList.toggle('expanded', spell.expanded);
             drawerTr.style.display = spell.expanded ? '' : 'none';
+            if (spell.expanded) autoResizeTextarea(textarea);
             scheduleSave();
         });
         tbody.appendChild(tr);
         tbody.appendChild(drawerTr);
+        if (spell.expanded) requestAnimationFrame(() => autoResizeTextarea(textarea));
     }
 
     function initSpellSortable(tbody, data, cat, bodyEl) {

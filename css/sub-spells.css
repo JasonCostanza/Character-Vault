@@ -139,7 +139,8 @@
 .spells-desc-textarea {
     width: 100%;
     min-height: 48px;
-    resize: vertical;
+    resize: none;
+    overflow: hidden;
     font-size: 12px;
     background: var(--cv-bg-sunken);
     border: 1px solid var(--cv-border);

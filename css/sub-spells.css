@@ -3,7 +3,7 @@
 
 /* Override default module-body scroll so inner containers can own scrolling */
 .module[data-type="spells"] .module-body {
-    overflow-y: hidden;
+    overflow: visible;
     display: flex;
     flex-direction: column;
 }
@@ -128,7 +128,7 @@
 }
 
 /* Category blocks */
-.spells-category-block { border: 1px solid var(--cv-border-subtle); border-radius: 4px; overflow: hidden; flex-shrink: 0; }
+.spells-category-block { border: 1px solid var(--cv-border-subtle); border-radius: 4px; flex-shrink: 0; }
 
 .spells-cat-header {
     display: flex;
@@ -136,6 +136,7 @@
     gap: 6px;
     padding: 4px 8px;
     background: var(--cv-bg-raised);
+    border-radius: 3px 3px 0 0;
     user-select: none;
     cursor: pointer;
 }

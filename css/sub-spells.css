@@ -29,27 +29,103 @@
 /* Slot summary bar — lives as a flex-shrink: 0 sibling above .spells-container in .module-body */
 .spells-slots-summary { display: flex; align-items: center; gap: 8px; padding: 4px 8px; flex-wrap: wrap; flex-shrink: 0; }
 .spells-slots-bar { display: flex; gap: 12px; flex: 1; flex-wrap: wrap; }
-.spells-slot-group { display: flex; align-items: center; gap: 3px; }
+.spells-slot-group { display: flex; align-items: center; gap: 5px; }
 .spells-slot-label { font-size: 11px; color: var(--cv-text-secondary); user-select: none; }
 
-/* Pip dots */
-.spell-pip {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: var(--cv-accent);
-    border: 1px solid var(--cv-accent);
+/* Slot pills */
+.spell-slot-pills {
+    display: flex;
+    border-radius: 4px;
+    border: 1px solid var(--cv-border-subtle);
+}
+
+.spell-slot-pill {
+    position: relative;
+    min-width: 18px;
+    padding: 2px 4px;
+    font-size: 9px;
+    font-weight: 700;
+    font-family: inherit;
+    text-align: center;
+    color: var(--cv-bg);
+    background: var(--cv-accent);
+    border: none;
+    border-right: 1px solid var(--cv-border-subtle);
     cursor: pointer;
-    flex-shrink: 0;
-    transition: background-color 0.12s ease, border-color 0.12s ease;
+    transition: background-color 0.12s ease, color 0.12s ease;
+    user-select: none;
+    line-height: 1.4;
 }
 
-.spell-pip.spent {
-    background-color: transparent;
-    border-color: var(--cv-text-muted);
+.spell-slot-pill:first-child { border-radius: 3px 0 0 3px; }
+.spell-slot-pill:last-child { border-right: none; border-radius: 0 3px 3px 0; }
+
+.spell-slot-pill.spent {
+    background: var(--cv-bg-sunken);
+    color: var(--cv-text-muted);
 }
 
-.spell-pip:hover { opacity: 0.75; }
+.spell-slot-pill:hover { opacity: 0.75; }
+
+/* Slot pill hover tooltip */
+.spell-slot-tooltip {
+    position: absolute;
+    bottom: calc(100% + 7px);
+    left: 50%;
+    transform: translateX(-50%) translateY(3px);
+    white-space: nowrap;
+    font-size: 10px;
+    font-weight: 800;
+    font-family: inherit;
+    letter-spacing: 0.04em;
+    padding: 3px 6px;
+    border-radius: 3px;
+    border: 1px solid;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.1s ease, transform 0.1s ease, visibility 0s linear 0.1s;
+    z-index: 350;
+    background: var(--cv-bg);
+    --_tt-color: var(--cv-text);
+    --_tt-border: var(--cv-border);
+    color: var(--_tt-color);
+    border-color: var(--_tt-border);
+}
+
+.spell-slot-pill:hover .spell-slot-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    transition: opacity 0.1s ease, transform 0.1s ease, visibility 0s linear 0s;
+}
+
+.spell-slot-tooltip::after {
+    content: '';
+    position: absolute;
+    top: calc(100% - 3px);
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 6px;
+    height: 6px;
+    background: var(--cv-bg);
+    border-right: 1px solid var(--_tt-border);
+    border-bottom: 1px solid var(--_tt-border);
+}
+
+.spell-slot-tooltip--spend {
+    --_tt-color: var(--cv-danger);
+    --_tt-border: var(--cv-danger);
+    color: var(--_tt-color);
+    border-color: var(--_tt-border);
+}
+
+.spell-slot-tooltip--recover {
+    --_tt-color: var(--cv-accent);
+    --_tt-border: var(--cv-accent);
+    color: var(--_tt-color);
+    border-color: var(--_tt-border);
+}
 
 /* Category blocks */
 .spells-category-block { border: 1px solid var(--cv-border-subtle); border-radius: 4px; overflow: hidden; flex-shrink: 0; }

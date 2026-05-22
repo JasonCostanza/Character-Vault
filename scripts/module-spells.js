@@ -200,6 +200,26 @@
         });
     }
 
+    function computeSlotDelta(slotIndex, sl) {
+        const isSpent = slotIndex >= sl.max - sl.spent;
+        const newSpent = isSpent ? (sl.max - 1 - slotIndex) : (sl.max - slotIndex);
+        return newSpent - sl.spent;
+    }
+
+    function makeSlotTooltip(slotIndex, sl) {
+        const delta = computeSlotDelta(slotIndex, sl);
+        if (delta === 0) return null;
+        const tip = document.createElement('span');
+        if (delta > 0) {
+            tip.className = 'spell-slot-tooltip spell-slot-tooltip--spend';
+            tip.textContent = `-${delta}`;
+        } else {
+            tip.className = 'spell-slot-tooltip spell-slot-tooltip--recover';
+            tip.textContent = `+${Math.abs(delta)}`;
+        }
+        return tip;
+    }
+
     function updatePipSpent(slotIndex, sl, bodyEl, data) {
         if (slotIndex >= sl.max - sl.spent) {
             sl.spent = sl.max - 1 - slotIndex;
@@ -273,15 +293,20 @@
             label.className = 'spells-slot-label';
             label.textContent = t('spells.slotLevelLabel', { n: sl.level });
             group.appendChild(label);
+            const pillBar = document.createElement('div');
+            pillBar.className = 'spell-slot-pills';
             for (let i = 0; i < sl.max; i++) {
-                const pip = document.createElement('button');
+                const pill = document.createElement('button');
                 const isSpent = i >= sl.max - sl.spent;
-                pip.className = 'spell-pip' + (isSpent ? ' spent' : '');
-                pip.textContent = isSpent ? '○' : '●';
+                pill.className = 'spell-slot-pill' + (isSpent ? ' spent' : '');
+                pill.textContent = String(i + 1);
                 const slotIndex = i;
-                pip.addEventListener('click', () => updatePipSpent(slotIndex, sl, bodyEl, data));
-                group.appendChild(pip);
+                pill.addEventListener('click', () => updatePipSpent(slotIndex, sl, bodyEl, data));
+                const tip = makeSlotTooltip(i, sl);
+                if (tip) pill.appendChild(tip);
+                pillBar.appendChild(pill);
             }
+            group.appendChild(pillBar);
             bar.appendChild(group);
         });
         const sys = window.gameSystem || 'custom';
@@ -411,15 +436,20 @@
             if (sl) {
                 const pipsDiv = document.createElement('div');
                 pipsDiv.className = 'spells-cat-pips';
+                const catPillBar = document.createElement('div');
+                catPillBar.className = 'spell-slot-pills';
                 for (let i = 0; i < sl.max; i++) {
-                    const pip = document.createElement('button');
+                    const pill = document.createElement('button');
                     const isSpent = i >= sl.max - sl.spent;
-                    pip.className = 'spell-pip' + (isSpent ? ' spent' : '');
-                    pip.textContent = isSpent ? '○' : '●';
+                    pill.className = 'spell-slot-pill' + (isSpent ? ' spent' : '');
+                    pill.textContent = String(i + 1);
                     const slotIndex = i;
-                    pip.addEventListener('click', (e) => { e.stopPropagation(); updatePipSpent(slotIndex, sl, bodyEl, data); });
-                    pipsDiv.appendChild(pip);
+                    pill.addEventListener('click', (e) => { e.stopPropagation(); updatePipSpent(slotIndex, sl, bodyEl, data); });
+                    const catTip = makeSlotTooltip(i, sl);
+                    if (catTip) pill.appendChild(catTip);
+                    catPillBar.appendChild(pill);
                 }
+                pipsDiv.appendChild(catPillBar);
                 header.appendChild(pipsDiv);
             }
         }

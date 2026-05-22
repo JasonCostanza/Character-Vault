@@ -782,8 +782,12 @@
             cat.spells = cat.spells || [];
             cat.spells.push(newSpell);
             scheduleSave();
+            const prevContainer = bodyEl.querySelector('.spells-container');
+            const spellsScrollTop = prevContainer ? prevContainer.scrollTop : 0;
             bodyEl.innerHTML = '';
             renderSpellsLayout(bodyEl, data);
+            const newContainer = bodyEl.querySelector('.spells-container');
+            if (newContainer) newContainer.scrollTop = spellsScrollTop;
         });
         block.appendChild(addSpellBtn);
         container.appendChild(block);

@@ -550,3 +550,75 @@
     user-select: none;
     text-align: right;
 }
+
+/* ── Spell Bonus Strip (summary bar) ── */
+.spells-bonus-strip {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    padding: 2px 0 2px;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.spells-bonus-chip {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--cv-text-secondary);
+    background: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 10px;
+    padding: 1px 8px;
+    user-select: none;
+    cursor: default;
+    white-space: nowrap;
+}
+
+.spells-bonus-chip--override {
+    color: var(--cv-accent);
+    border-color: var(--cv-accent);
+}
+
+/* ── Category Header Bonus Badges ── */
+.spells-cat-bonus-badges {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-right: 4px;
+}
+
+.spells-cat-bonus-badge {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--cv-text-muted);
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 8px;
+    padding: 0 5px;
+    user-select: none;
+    cursor: default;
+    white-space: nowrap;
+    line-height: 16px;
+}
+
+.spells-cat-bonus-badge--override {
+    color: var(--cv-accent);
+    border-color: var(--cv-accent);
+}
+
+/* ── Quick Edit Input ── */
+.spell-bonus-quick-edit-input {
+    width: 48px;
+    font-size: 11px;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-accent);
+    border-radius: 3px;
+    color: var(--cv-text);
+    padding: 1px 4px;
+    text-align: center;
+    font-family: inherit;
+    -moz-appearance: textfield;
+}
+
+.spell-bonus-quick-edit-input::-webkit-outer-spin-button,
+.spell-bonus-quick-edit-input::-webkit-inner-spin-button { -webkit-appearance: none; }

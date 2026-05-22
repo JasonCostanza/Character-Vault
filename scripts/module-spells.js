@@ -174,6 +174,32 @@
     }
 
     // ── Play Mode Helpers ──
+    function enterSpellBonusQuickEdit(chipEl, overrideKey, content, data, bodyEl) {
+        var committed = false;
+        var input = document.createElement('input');
+        input.type = 'number';
+        input.className = 'spell-bonus-quick-edit-input';
+        input.value = content[overrideKey] !== null && content[overrideKey] !== undefined ? content[overrideKey] : '';
+        chipEl.textContent = '';
+        chipEl.appendChild(input);
+        input.focus();
+        input.select();
+        function commit() {
+            if (committed) return;
+            committed = true;
+            var raw = input.value.trim();
+            content[overrideKey] = raw === '' ? null : Number(raw);
+            scheduleSave();
+            bodyEl.innerHTML = '';
+            renderSpellsPlay(bodyEl, data);
+        }
+        input.addEventListener('blur', commit);
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); commit(); }
+            if (e.key === 'Escape') { committed = true; bodyEl.innerHTML = ''; renderSpellsPlay(bodyEl, data); }
+        });
+    }
+
     function updatePipSpent(slotIndex, sl, bodyEl, data) {
         if (slotIndex >= sl.max - sl.spent) {
             sl.spent = sl.max - 1 - slotIndex;
@@ -258,6 +284,40 @@
             }
             bar.appendChild(group);
         });
+        const sys = window.gameSystem || 'custom';
+        if (spellsIsSupported(sys)) {
+            const attack = spellsComputeAttackBonus(data.content);
+            const dc = spellsComputeSpellDC(data.content);
+            if (attack !== null || dc !== null) {
+                const bonusStrip = document.createElement('div');
+                bonusStrip.className = 'spells-bonus-strip';
+                if (attack !== null) {
+                    const isOverride = data.content.spellAttackOverride !== null && data.content.spellAttackOverride !== undefined && data.content.spellAttackOverride !== '';
+                    const attackChip = document.createElement('span');
+                    attackChip.className = 'spells-bonus-chip' + (isOverride ? ' spells-bonus-chip--override' : '');
+                    attackChip.dataset.type = 'attack';
+                    attackChip.textContent = spellsFormatAttackBonus(data.content) + ' ' + t('spells.attackLabel');
+                    if (isOverride) attackChip.title = t('spells.bonusOverrideIndicator');
+                    attackChip.addEventListener('click', function (e) {
+                        if (e.ctrlKey) { e.stopPropagation(); enterSpellBonusQuickEdit(attackChip, 'spellAttackOverride', data.content, data, bodyEl); }
+                    });
+                    bonusStrip.appendChild(attackChip);
+                }
+                if (dc !== null) {
+                    const isDCOverride = data.content.spellDCOverride !== null && data.content.spellDCOverride !== undefined && data.content.spellDCOverride !== '';
+                    const dcChip = document.createElement('span');
+                    dcChip.className = 'spells-bonus-chip' + (isDCOverride ? ' spells-bonus-chip--override' : '');
+                    dcChip.dataset.type = 'dc';
+                    dcChip.textContent = t('spells.dcLabel') + ' ' + spellsFormatDC(data.content);
+                    if (isDCOverride) dcChip.title = t('spells.bonusOverrideIndicator');
+                    dcChip.addEventListener('click', function (e) {
+                        if (e.ctrlKey) { e.stopPropagation(); enterSpellBonusQuickEdit(dcChip, 'spellDCOverride', data.content, data, bodyEl); }
+                    });
+                    bonusStrip.appendChild(dcChip);
+                }
+                summary.appendChild(bonusStrip);
+            }
+        }
         summary.appendChild(bar);
         const restoreBtn = document.createElement('button');
         restoreBtn.className = 'btn-secondary sm';
@@ -314,6 +374,38 @@
         catName.textContent = cat.name || t('spells.unnamedCategory');
         header.appendChild(collapseBtn);
         header.appendChild(catName);
+        const catSys = window.gameSystem || 'custom';
+        if (spellsIsSupported(catSys)) {
+            const catAttack = spellsComputeAttackBonus(data.content);
+            const catDC = spellsComputeSpellDC(data.content);
+            if (catAttack !== null || catDC !== null) {
+                const badgesDiv = document.createElement('div');
+                badgesDiv.className = 'spells-cat-bonus-badges';
+                if (catAttack !== null) {
+                    const isOverride = data.content.spellAttackOverride !== null && data.content.spellAttackOverride !== undefined && data.content.spellAttackOverride !== '';
+                    const attackBadge = document.createElement('span');
+                    attackBadge.className = 'spells-cat-bonus-badge' + (isOverride ? ' spells-cat-bonus-badge--override' : '');
+                    attackBadge.dataset.type = 'attack';
+                    attackBadge.textContent = spellsFormatAttackBonus(data.content);
+                    attackBadge.addEventListener('click', function (e) {
+                        if (e.ctrlKey) { e.stopPropagation(); enterSpellBonusQuickEdit(attackBadge, 'spellAttackOverride', data.content, data, bodyEl); }
+                    });
+                    badgesDiv.appendChild(attackBadge);
+                }
+                if (catDC !== null) {
+                    const isDCOverride = data.content.spellDCOverride !== null && data.content.spellDCOverride !== undefined && data.content.spellDCOverride !== '';
+                    const dcBadge = document.createElement('span');
+                    dcBadge.className = 'spells-cat-bonus-badge' + (isDCOverride ? ' spells-cat-bonus-badge--override' : '');
+                    dcBadge.dataset.type = 'dc';
+                    dcBadge.textContent = t('spells.dcLabel') + ' ' + spellsFormatDC(data.content);
+                    dcBadge.addEventListener('click', function (e) {
+                        if (e.ctrlKey) { e.stopPropagation(); enterSpellBonusQuickEdit(dcBadge, 'spellDCOverride', data.content, data, bodyEl); }
+                    });
+                    badgesDiv.appendChild(dcBadge);
+                }
+                header.appendChild(badgesDiv);
+            }
+        }
         if (cat.slotLevel !== null) {
             const sl = data.content.slotLevels.find((s) => s.level === cat.slotLevel);
             if (sl) {
@@ -340,7 +432,7 @@
         }
         collapseBtn.addEventListener('click', toggleCollapse);
         header.addEventListener('click', (e) => {
-            if (e.target.closest('.spells-cat-pips')) return;
+            if (e.target.closest('.spells-cat-pips') || e.target.closest('.spells-cat-collapse-btn') || e.target.closest('.spells-cat-bonus-badges')) return;
             toggleCollapse();
         });
         blockEl.appendChild(header);
@@ -603,6 +695,34 @@
             group.appendChild(removeBtn);
             bar.appendChild(group);
         });
+        const lSys = window.gameSystem || 'custom';
+        if (spellsIsSupported(lSys)) {
+            const lAttack = spellsComputeAttackBonus(data.content);
+            const lDC = spellsComputeSpellDC(data.content);
+            if (lAttack !== null || lDC !== null) {
+                const lBonusStrip = document.createElement('div');
+                lBonusStrip.className = 'spells-bonus-strip';
+                if (lAttack !== null) {
+                    const isOverride = data.content.spellAttackOverride !== null && data.content.spellAttackOverride !== undefined && data.content.spellAttackOverride !== '';
+                    const lAttackChip = document.createElement('span');
+                    lAttackChip.className = 'spells-bonus-chip' + (isOverride ? ' spells-bonus-chip--override' : '');
+                    lAttackChip.dataset.type = 'attack';
+                    lAttackChip.textContent = spellsFormatAttackBonus(data.content) + ' ' + t('spells.attackLabel');
+                    if (isOverride) lAttackChip.title = t('spells.bonusOverrideIndicator');
+                    lBonusStrip.appendChild(lAttackChip);
+                }
+                if (lDC !== null) {
+                    const isDCOverride = data.content.spellDCOverride !== null && data.content.spellDCOverride !== undefined && data.content.spellDCOverride !== '';
+                    const lDCChip = document.createElement('span');
+                    lDCChip.className = 'spells-bonus-chip' + (isDCOverride ? ' spells-bonus-chip--override' : '');
+                    lDCChip.dataset.type = 'dc';
+                    lDCChip.textContent = t('spells.dcLabel') + ' ' + spellsFormatDC(data.content);
+                    if (isDCOverride) lDCChip.title = t('spells.bonusOverrideIndicator');
+                    lBonusStrip.appendChild(lDCChip);
+                }
+                summary.appendChild(lBonusStrip);
+            }
+        }
         summary.appendChild(bar);
         const addSlotBtn = document.createElement('button');
         addSlotBtn.className = 'btn-secondary sm';
@@ -706,6 +826,32 @@
         });
         addInlineInputKeys(nameInput, () => cat.name || '');
         header.appendChild(nameInput);
+        const lCatSys = window.gameSystem || 'custom';
+        if (spellsIsSupported(lCatSys)) {
+            const lCatAttack = spellsComputeAttackBonus(data.content);
+            const lCatDC = spellsComputeSpellDC(data.content);
+            if (lCatAttack !== null || lCatDC !== null) {
+                const lCatBadges = document.createElement('div');
+                lCatBadges.className = 'spells-cat-bonus-badges';
+                if (lCatAttack !== null) {
+                    const isOverride = data.content.spellAttackOverride !== null && data.content.spellAttackOverride !== undefined && data.content.spellAttackOverride !== '';
+                    const lCatAttackBadge = document.createElement('span');
+                    lCatAttackBadge.className = 'spells-cat-bonus-badge' + (isOverride ? ' spells-cat-bonus-badge--override' : '');
+                    lCatAttackBadge.dataset.type = 'attack';
+                    lCatAttackBadge.textContent = spellsFormatAttackBonus(data.content);
+                    lCatBadges.appendChild(lCatAttackBadge);
+                }
+                if (lCatDC !== null) {
+                    const isDCOverride = data.content.spellDCOverride !== null && data.content.spellDCOverride !== undefined && data.content.spellDCOverride !== '';
+                    const lCatDCBadge = document.createElement('span');
+                    lCatDCBadge.className = 'spells-cat-bonus-badge' + (isDCOverride ? ' spells-cat-bonus-badge--override' : '');
+                    lCatDCBadge.dataset.type = 'dc';
+                    lCatDCBadge.textContent = t('spells.dcLabel') + ' ' + spellsFormatDC(data.content);
+                    lCatBadges.appendChild(lCatDCBadge);
+                }
+                header.appendChild(lCatBadges);
+            }
+        }
         const slotSelect = document.createElement('select');
         slotSelect.className = 'spells-cat-slot-select';
         slotSelect.title = t('spells.categorySlot');

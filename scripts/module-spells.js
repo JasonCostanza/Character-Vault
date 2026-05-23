@@ -14,7 +14,7 @@
     }
 
     function defaultContent() {
-        return { autoSpendSlots: true, showSlotErrors: true, slotLevels: [], categories: [], attributes: [], sortBy: null, sortDir: 'asc', linkedStatModuleId: null, spellcastingAbility: null, spellProficiencyRank: 'untrained', spellAttackOverride: null, spellDCOverride: null };
+        return { autoSpendSlots: true, showSlotErrors: true, resourcePools: [], categories: [], attributes: [], sortBy: null, sortDir: 'asc', linkedStatModuleId: null, spellcastingAbility: null, spellProficiencyRank: 'untrained', spellAttackOverride: null, spellDCOverride: null, casterType: null };
     }
 
     function migrateContent(content) {
@@ -60,7 +60,17 @@
         const c = data.content;
         if (c.autoSpendSlots === undefined) c.autoSpendSlots = true;
         if (c.showSlotErrors === undefined) c.showSlotErrors = true;
-        if (!Array.isArray(c.slotLevels)) c.slotLevels = [];
+        if (!Array.isArray(c.resourcePools)) {
+            c.resourcePools = (c.slotLevels || []).map(sl => ({
+                id: sl.id,
+                type: 'spell-slot',
+                level: sl.level,
+                name: null,
+                max: sl.max,
+                spent: sl.spent
+            }));
+            delete c.slotLevels;
+        }
         if (!Array.isArray(c.categories)) c.categories = [];
         const needsMigration = !Array.isArray(c.attributes) ||
             c.categories.some(cat => (cat.spells || []).some(spell => Array.isArray(spell.attributes)));
@@ -75,6 +85,25 @@
         if (c.spellProficiencyRank === undefined) c.spellProficiencyRank = 'untrained';
         if (c.spellAttackOverride === undefined) c.spellAttackOverride = null;
         if (c.spellDCOverride === undefined)     c.spellDCOverride = null;
+        // Migrate categories: slotLevel → resourcePoolId
+        c.categories.forEach(cat => {
+            if (!('resourcePoolId' in cat)) {
+                if (cat.slotLevel == null) {
+                    cat.resourcePoolId = null;
+                } else {
+                    const pool = c.resourcePools.find(p => p.type === 'spell-slot' && p.level === cat.slotLevel);
+                    cat.resourcePoolId = pool ? pool.id : null;
+                }
+                delete cat.slotLevel;
+            }
+            (cat.spells || []).forEach(spell => {
+                if (spell.slotCost === undefined) spell.slotCost = null;
+                if (spell.canUpcast === undefined) spell.canUpcast = false;
+                if (spell.preparedCount === undefined) spell.preparedCount = 0;
+                if (spell.castsUsed === undefined) spell.castsUsed = 0;
+            });
+        });
+        if (c.casterType === undefined) c.casterType = null;
     }
 
     function getSortedSpells(content, spells) {
@@ -285,13 +314,13 @@
         summary.className = 'spells-slots-summary';
         const bar = document.createElement('div');
         bar.className = 'spells-slots-bar';
-        const sorted = data.content.slotLevels.slice().sort((a, b) => a.level - b.level);
+        const sorted = data.content.resourcePools.slice().sort((a, b) => (a.level ?? Infinity) - (b.level ?? Infinity));
         sorted.forEach((sl) => {
             const group = document.createElement('div');
             group.className = 'spells-slot-group';
             const label = document.createElement('span');
             label.className = 'spells-slot-label';
-            label.textContent = t('spells.slotLevelLabel', { n: sl.level });
+            label.textContent = getPoolLabel(sl);
             group.appendChild(label);
             const pillBar = document.createElement('div');
             pillBar.className = 'spell-slot-pills';
@@ -348,7 +377,7 @@
         restoreBtn.className = 'btn-secondary sm';
         restoreBtn.textContent = t('spells.restoreAll');
         restoreBtn.addEventListener('click', () => {
-            data.content.slotLevels.forEach((sl) => { sl.spent = 0; });
+            data.content.resourcePools.forEach((pool) => { pool.spent = 0; });
             scheduleSave();
             bodyEl.innerHTML = '';
             renderSpellsPlay(bodyEl, data);
@@ -431,8 +460,8 @@
                 header.appendChild(badgesDiv);
             }
         }
-        if (cat.slotLevel !== null) {
-            const sl = data.content.slotLevels.find((s) => s.level === cat.slotLevel);
+        if (cat.resourcePoolId !== null) {
+            const sl = data.content.resourcePools.find((p) => p.id === cat.resourcePoolId);
             if (sl) {
                 const pipsDiv = document.createElement('div');
                 pipsDiv.className = 'spells-cat-pips';
@@ -545,7 +574,7 @@
                 const moduleMeta = {
                     attrs: data.content.attributes,
                     categoryName: cat.name,
-                    slotLevel: cat.slotLevel
+                    resourcePoolId: cat.resourcePoolId
                 };
                 window.openSendToPlayerModal(spell, 'spells', moduleMeta, data.id, spell.id);
             });
@@ -568,14 +597,26 @@
     }
 
     // ── Slot Helpers ──
-    function getAvailableSlots(data, slotLevel) {
-        const sl = data.content.slotLevels.find((s) => s.level === slotLevel);
-        return sl ? Math.max(0, sl.max - sl.spent) : 0;
+    function getPoolLabel(pool) {
+        if (!pool) return '?';
+        if (pool.type === 'spell-slot') return t('spells.slotLevelLabel', { n: pool.level });
+        return pool.name || t('spells.customPool');
     }
 
-    function spendSlot(data, slotLevel) {
-        const sl = data.content.slotLevels.find((s) => s.level === slotLevel);
-        if (sl && sl.spent < sl.max) sl.spent++;
+    function resolveSlotCost(spell) {
+        if (spell.slotCost === null || spell.slotCost === undefined) return 1;
+        return Math.max(0, Number(spell.slotCost) || 0);
+    }
+
+    function getAvailableSlots(data, poolId) {
+        const pool = data.content.resourcePools.find(p => p.id === poolId);
+        return pool ? Math.max(0, pool.max - pool.spent) : 0;
+    }
+
+    function spendSlot(data, poolId, cost = 1) {
+        if (cost <= 0) return;
+        const pool = data.content.resourcePools.find(p => p.id === poolId);
+        if (pool) pool.spent = Math.min(pool.max, pool.spent + cost);
     }
 
     // ── Cast Logic ──
@@ -584,11 +625,14 @@
         if (!cat) return;
 
         const content = data.content;
-        if (cat.slotLevel !== null && content.autoSpendSlots) {
-            const available = getAvailableSlots(data, cat.slotLevel);
-            if (available <= 0) {
+        const cost = resolveSlotCost(spell);
+
+        if (cat.resourcePoolId !== null && content.autoSpendSlots && cost > 0) {
+            const available = getAvailableSlots(data, cat.resourcePoolId);
+            if (available < cost) {
                 if (content.showSlotErrors) {
-                    showToast(t('spells.noSlotsError', { level: t('spells.slotLevelLabel', { n: cat.slotLevel }) }), 'error');
+                    const pool = content.resourcePools.find(p => p.id === cat.resourcePoolId);
+                    showToast(t('spells.noSlotsError', { level: getPoolLabel(pool) }), 'error');
                 }
                 return;
             }
@@ -624,12 +668,21 @@
                         logEntryId,
                         spellCast: true,
                         moduleId: data.id,
-                        catId: catId,
-                        slotLevel: cat.slotLevel,
+                        catId,
+                        poolId: cat.resourcePoolId,
+                        slotCost: cost,
                         autoSpend: content.autoSpendSlots,
                     };
                 }
             });
+        } else if (cat.resourcePoolId !== null && content.autoSpendSlots && cost > 0) {
+            spendSlot(data, cat.resourcePoolId, cost);
+            scheduleSave();
+            const spellModEl = document.querySelector('.module[data-id="' + data.id + '"]');
+            if (spellModEl) {
+                const bodyEl = spellModEl.querySelector('.module-body');
+                if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, data, true);
+            }
         }
     }
 
@@ -668,7 +721,7 @@
         addCatBtn.className = 'spells-add-cat-btn';
         addCatBtn.textContent = t('spells.addCategory');
         addCatBtn.addEventListener('click', () => {
-            const newCat = { id: genId('cat'), name: '', slotLevel: null, collapsed: false, spells: [] };
+            const newCat = { id: genId('cat'), name: '', resourcePoolId: null, collapsed: false, spells: [] };
             data.content.categories.push(newCat);
             scheduleSave();
             bodyEl.innerHTML = '';
@@ -683,24 +736,38 @@
         summary.className = 'spells-slots-summary';
         const bar = document.createElement('div');
         bar.className = 'spells-slots-bar';
-        const sorted = data.content.slotLevels.slice().sort((a, b) => a.level - b.level);
-        sorted.forEach((sl) => {
+        const sortedPools = data.content.resourcePools.slice().sort((a, b) => (a.level ?? Infinity) - (b.level ?? Infinity));
+        sortedPools.forEach((pool) => {
             const group = document.createElement('div');
             group.className = 'spells-slot-group';
-            const label = document.createElement('span');
-            label.className = 'spells-slot-label';
-            label.textContent = t('spells.slotLevelLabel', { n: sl.level });
+            if (pool.type === 'spell-slot') {
+                const label = document.createElement('span');
+                label.className = 'spells-slot-label';
+                label.textContent = getPoolLabel(pool);
+                group.appendChild(label);
+            } else {
+                const nameIn = document.createElement('input');
+                nameIn.type = 'text';
+                nameIn.className = 'spells-slot-name-input';
+                nameIn.value = pool.name || '';
+                nameIn.placeholder = getPoolLabel(pool);
+                nameIn.addEventListener('blur', () => {
+                    pool.name = nameIn.value.trim() || null;
+                    scheduleSave();
+                });
+                group.appendChild(nameIn);
+            }
             const maxIn = document.createElement('input');
             maxIn.type = 'number';
             maxIn.className = 'spells-slot-max-input';
-            maxIn.value = sl.max;
+            maxIn.value = pool.max;
             maxIn.min = 0;
             maxIn.max = 99;
             maxIn.title = t('spells.slotMax');
             maxIn.addEventListener('change', () => {
                 const v = Math.max(0, Math.min(99, parseInt(maxIn.value, 10) || 0));
-                sl.max = v;
-                sl.spent = Math.min(sl.spent, sl.max);
+                pool.max = v;
+                pool.spent = Math.min(pool.spent, pool.max);
                 maxIn.value = v;
                 scheduleSave();
             });
@@ -709,23 +776,22 @@
             removeBtn.title = t('spells.removeSlotLevel');
             removeBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
             removeBtn.addEventListener('click', () => {
-                const inUse = data.content.categories.some((cat) => cat.slotLevel === sl.level);
+                const inUse = data.content.categories.some((cat) => cat.resourcePoolId === pool.id);
                 if (inUse) {
                     showConfirm(t('spells.removeSlotLevelConfirm'), () => {
-                        data.content.categories.forEach((cat) => { if (cat.slotLevel === sl.level) cat.slotLevel = null; });
-                        data.content.slotLevels = data.content.slotLevels.filter((x) => x.id !== sl.id);
+                        data.content.categories.forEach((cat) => { if (cat.resourcePoolId === pool.id) cat.resourcePoolId = null; });
+                        data.content.resourcePools = data.content.resourcePools.filter((x) => x.id !== pool.id);
                         scheduleSave();
                         bodyEl.innerHTML = '';
                         renderSpellsLayout(bodyEl, data);
                     });
                 } else {
-                    data.content.slotLevels = data.content.slotLevels.filter((x) => x.id !== sl.id);
+                    data.content.resourcePools = data.content.resourcePools.filter((x) => x.id !== pool.id);
                     scheduleSave();
                     bodyEl.innerHTML = '';
                     renderSpellsLayout(bodyEl, data);
                 }
             });
-            group.appendChild(label);
             group.appendChild(maxIn);
             group.appendChild(removeBtn);
             bar.appendChild(group);
@@ -763,13 +829,34 @@
         addSlotBtn.className = 'btn-secondary sm';
         addSlotBtn.textContent = t('spells.addSlotLevel');
         addSlotBtn.addEventListener('click', () => {
-            const nextLevel = data.content.slotLevels.reduce((m, sl) => Math.max(m, sl.level), 0) + 1;
-            data.content.slotLevels.push({ id: genId('sl'), level: nextLevel, max: 4, spent: 0 });
+            const spellSlotPools = data.content.resourcePools.filter(p => p.type === 'spell-slot');
+            const nextLevel = spellSlotPools.reduce((m, p) => Math.max(m, p.level), 0) + 1;
+            data.content.resourcePools.push({ id: genId('rp'), type: 'spell-slot', level: nextLevel, name: null, max: 4, spent: 0 });
             scheduleSave();
             bodyEl.innerHTML = '';
             renderSpellsLayout(bodyEl, data);
         });
         summary.appendChild(addSlotBtn);
+        const addFocusBtn = document.createElement('button');
+        addFocusBtn.className = 'btn-secondary sm';
+        addFocusBtn.textContent = t('spells.addFocusPool');
+        addFocusBtn.addEventListener('click', () => {
+            data.content.resourcePools.push({ id: genId('rp'), type: 'focus', level: null, name: '', max: 3, spent: 0 });
+            scheduleSave();
+            bodyEl.innerHTML = '';
+            renderSpellsLayout(bodyEl, data);
+        });
+        summary.appendChild(addFocusBtn);
+        const addCustomBtn = document.createElement('button');
+        addCustomBtn.className = 'btn-secondary sm';
+        addCustomBtn.textContent = t('spells.addCustomPool');
+        addCustomBtn.addEventListener('click', () => {
+            data.content.resourcePools.push({ id: genId('rp'), type: 'custom', level: null, name: '', max: 3, spent: 0 });
+            scheduleSave();
+            bodyEl.innerHTML = '';
+            renderSpellsLayout(bodyEl, data);
+        });
+        summary.appendChild(addCustomBtn);
         container.appendChild(summary);
     }
 
@@ -898,15 +985,15 @@
         noneOpt.value = '';
         noneOpt.textContent = t('spells.slotNone');
         slotSelect.appendChild(noneOpt);
-        data.content.slotLevels.slice().sort((a, b) => a.level - b.level).forEach((sl) => {
+        data.content.resourcePools.slice().sort((a, b) => (a.level ?? Infinity) - (b.level ?? Infinity)).forEach((pool) => {
             const opt = document.createElement('option');
-            opt.value = String(sl.level);
-            opt.textContent = t('spells.slotLevelLabel', { n: sl.level });
+            opt.value = pool.id;
+            opt.textContent = getPoolLabel(pool);
             slotSelect.appendChild(opt);
         });
-        slotSelect.value = cat.slotLevel !== null ? String(cat.slotLevel) : '';
+        slotSelect.value = cat.resourcePoolId ?? '';
         slotSelect.addEventListener('change', () => {
-            cat.slotLevel = slotSelect.value === '' ? null : Number(slotSelect.value);
+            cat.resourcePoolId = slotSelect.value === '' ? null : slotSelect.value;
             scheduleSave();
         });
         header.appendChild(slotSelect);
@@ -1033,6 +1120,26 @@
             scheduleSave();
         });
         drawerContent.appendChild(textarea);
+        const slotCostRow = document.createElement('div');
+        slotCostRow.className = 'spells-drawer-field-row';
+        const slotCostLabel = document.createElement('label');
+        slotCostLabel.className = 'spells-drawer-field-label';
+        slotCostLabel.textContent = t('spells.slotCost');
+        const slotCostInput = document.createElement('input');
+        slotCostInput.type = 'number';
+        slotCostInput.className = 'spells-inline-input';
+        slotCostInput.style.width = '56px';
+        slotCostInput.min = '0';
+        slotCostInput.placeholder = '1';
+        slotCostInput.value = spell.slotCost !== null && spell.slotCost !== undefined ? String(spell.slotCost) : '';
+        slotCostInput.addEventListener('blur', () => {
+            const raw = slotCostInput.value.trim();
+            spell.slotCost = raw === '' ? null : Math.max(0, Number(raw) || 0);
+            scheduleSave();
+        });
+        slotCostRow.appendChild(slotCostLabel);
+        slotCostRow.appendChild(slotCostInput);
+        drawerContent.appendChild(slotCostRow);
         drawerTd.appendChild(drawerContent);
         drawerTr.appendChild(drawerTd);
         chevBtn.addEventListener('click', () => {
@@ -1601,13 +1708,35 @@
 
         function refreshSlotList() {
             slotListEl.innerHTML = '';
-            content.slotLevels.forEach((sl) => {
+            content.resourcePools.forEach((pool) => {
                 const row = document.createElement('div');
                 row.className = 'spells-slot-settings-row';
 
-                const levelLabel = document.createElement('span');
-                levelLabel.className = 'spells-slot-settings-label';
-                levelLabel.textContent = t('spells.slotLevelLabel', { n: sl.level });
+                const badge = document.createElement('span');
+                badge.className = 'pool-type-badge pool-type-badge--' + pool.type;
+                badge.textContent = t('spells.poolType.' + (pool.type === 'spell-slot' ? 'spellSlot' : pool.type));
+                row.appendChild(badge);
+
+                if (pool.type === 'spell-slot') {
+                    const levelLabel = document.createElement('span');
+                    levelLabel.className = 'spells-slot-settings-label';
+                    levelLabel.textContent = getPoolLabel(pool);
+                    row.appendChild(levelLabel);
+                } else {
+                    const nameInput = document.createElement('input');
+                    nameInput.type = 'text';
+                    nameInput.className = 'cv-modal-input';
+                    nameInput.style.flex = '1';
+                    nameInput.style.minWidth = '0';
+                    nameInput.value = pool.name || '';
+                    nameInput.placeholder = getPoolLabel(pool);
+                    nameInput.addEventListener('blur', () => {
+                        pool.name = nameInput.value.trim() || null;
+                        scheduleSave();
+                        reRender();
+                    });
+                    row.appendChild(nameInput);
+                }
 
                 const maxInput = document.createElement('input');
                 maxInput.type = 'number';
@@ -1616,13 +1745,15 @@
                 maxInput.style.flexShrink = '0';
                 maxInput.min = '0';
                 maxInput.max = '20';
-                maxInput.value = String(sl.max);
+                maxInput.value = String(pool.max);
                 maxInput.addEventListener('change', () => {
                     const val = Math.max(0, Math.min(20, parseInt(maxInput.value, 10) || 0));
                     maxInput.value = String(val);
-                    sl.max = val;
-                    if (sl.spent > sl.max) sl.spent = sl.max;
-                    window.logActivity && window.logActivity({ type: 'spells.event.slot', message: t('spells.log.modifySlot', { level: sl.level, max: val }), sourceModuleId: data.id });
+                    pool.max = val;
+                    if (pool.spent > pool.max) pool.spent = pool.max;
+                    if (pool.type === 'spell-slot') {
+                        window.logActivity && window.logActivity({ type: 'spells.event.slot', message: t('spells.log.modifySlot', { level: pool.level, max: val }), sourceModuleId: data.id });
+                    }
                     scheduleSave();
                     reRender();
                 });
@@ -1632,11 +1763,13 @@
                 deleteBtn.title = t('spells.removeSlotLevel');
                 deleteBtn.innerHTML = SVG_TRASH;
                 deleteBtn.addEventListener('click', () => {
-                    const usedByCats = content.categories.some(c => c.slotLevel === sl.level);
+                    const usedByCats = content.categories.some(c => c.resourcePoolId === pool.id);
                     const doDelete = () => {
-                        if (usedByCats) content.categories.forEach(cat => { if (cat.slotLevel === sl.level) cat.slotLevel = null; });
-                        content.slotLevels = content.slotLevels.filter(s => s.level !== sl.level);
-                        window.logActivity && window.logActivity({ type: 'spells.event.slot', message: t('spells.log.removeSlot', { level: sl.level }), sourceModuleId: data.id });
+                        if (usedByCats) content.categories.forEach(cat => { if (cat.resourcePoolId === pool.id) cat.resourcePoolId = null; });
+                        content.resourcePools = content.resourcePools.filter(p => p.id !== pool.id);
+                        if (pool.type === 'spell-slot') {
+                            window.logActivity && window.logActivity({ type: 'spells.event.slot', message: t('spells.log.removeSlot', { level: pool.level }), sourceModuleId: data.id });
+                        }
                         scheduleSave();
                         refreshSlotList();
                         if (refreshCatList) refreshCatList();
@@ -1649,13 +1782,12 @@
                     }
                 });
 
-                row.appendChild(levelLabel);
                 row.appendChild(maxInput);
                 row.appendChild(deleteBtn);
                 slotListEl.appendChild(row);
             });
 
-            if (content.slotLevels.length === 0) {
+            if (content.resourcePools.length === 0) {
                 const empty = document.createElement('div');
                 empty.className = 'spells-empty-state';
                 empty.style.padding = '8px 0';
@@ -1703,10 +1835,10 @@
         addSlotBtn.addEventListener('click', () => {
             const level = parseInt(newSlotLevelInput.value, 10);
             if (!level || level < 1 || level > 20) return;
-            if (content.slotLevels.some(s => s.level === level)) return;
+            if (content.resourcePools.some(p => p.type === 'spell-slot' && p.level === level)) return;
             const max = Math.max(0, Math.min(20, parseInt(newSlotMaxInput.value, 10) || 0));
-            content.slotLevels.push({ id: genId('sl'), level, max, spent: 0 });
-            content.slotLevels.sort((a, b) => a.level - b.level);
+            content.resourcePools.push({ id: genId('rp'), type: 'spell-slot', level, name: null, max, spent: 0 });
+            content.resourcePools.sort((a, b) => (a.level ?? Infinity) - (b.level ?? Infinity));
             newSlotLevelInput.value = '';
             window.logActivity && window.logActivity({ type: 'spells.event.slot', message: t('spells.log.addSlot', { level }), sourceModuleId: data.id });
             scheduleSave();
@@ -1751,8 +1883,8 @@
 
         function buildSlotOptions() {
             const opts = [{ value: '', label: t('spells.catNoSlot') }];
-            content.slotLevels.slice().sort((a, b) => a.level - b.level).forEach(sl => {
-                opts.push({ value: String(sl.level), label: t('spells.slotLevelLabel', { n: sl.level }) });
+            content.resourcePools.slice().sort((a, b) => (a.level ?? Infinity) - (b.level ?? Infinity)).forEach(pool => {
+                opts.push({ value: pool.id, label: getPoolLabel(pool) });
             });
             return opts;
         }
@@ -1775,9 +1907,9 @@
                     if (trimmed) { cat.name = trimmed; scheduleSave(); reRender(); }
                 });
 
-                const currentSlotVal = (cat.slotLevel !== null && cat.slotLevel !== undefined) ? String(cat.slotLevel) : '';
+                const currentSlotVal = cat.resourcePoolId ?? '';
                 const slotSelect = buildCvSelect(buildSlotOptions(), currentSlotVal, (val) => {
-                    cat.slotLevel = val === '' ? null : parseInt(val, 10);
+                    cat.resourcePoolId = val === '' ? null : val;
                     scheduleSave();
                     reRender();
                 });
@@ -1825,9 +1957,9 @@
         newCatNameInput.style.minWidth = '0';
         newCatNameInput.placeholder = t('spells.categoryNamePlaceholder');
 
-        let newCatSlotLevel = null;
+        let newCatPoolId = null;
         const addCatSlotSelect = buildCvSelect(buildSlotOptions(), '', (val) => {
-            newCatSlotLevel = val === '' ? null : parseInt(val, 10);
+            newCatPoolId = val === '' ? null : val;
         });
 
         const addCatBtn = document.createElement('button');
@@ -1838,9 +1970,9 @@
         addCatBtn.addEventListener('click', () => {
             const name = newCatNameInput.value.trim();
             if (!name) return;
-            content.categories.push({ id: genId('cat'), name, slotLevel: newCatSlotLevel, collapsed: false, spells: [] });
+            content.categories.push({ id: genId('cat'), name, resourcePoolId: newCatPoolId, collapsed: false, spells: [] });
             newCatNameInput.value = '';
-            newCatSlotLevel = null;
+            newCatPoolId = null;
             scheduleSave();
             refreshCatList();
             reRender();
@@ -1889,7 +2021,7 @@
     window.restoreAllSpellSlots = function (moduleId) {
         const data = window.modules.find(m => m.id === moduleId);
         if (!data || data.type !== 'spells') return;
-        data.content.slotLevels.forEach(sl => { sl.spent = 0; });
+        data.content.resourcePools.forEach(pool => { pool.spent = 0; });
         const el = document.querySelector(`.module[data-id="${moduleId}"]`);
         if (el && window.isPlayMode) {
             const bodyEl = el.querySelector('.module-body');
@@ -1902,6 +2034,8 @@
     window.spellsDefaultContent = defaultContent;
     window.getAvailableSlots = getAvailableSlots;
     window.spendSlot = spendSlot;
+    window.resolveSlotCost = resolveSlotCost;
+    window.getPoolLabel = getPoolLabel;
     window.castSpell = castSpell;
     window.getSortedSpells = getSortedSpells;
     window.migrateSpellContent = migrateContent;

@@ -709,3 +709,64 @@
 
 .spell-bonus-quick-edit-input::-webkit-outer-spin-button,
 .spell-bonus-quick-edit-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+/* ── Pool Type Badge ── */
+.pool-type-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    padding: 1px 5px;
+    user-select: none;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+.pool-type-badge--spell-slot {
+    color: var(--cv-accent);
+    background: color-mix(in srgb, var(--cv-accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--cv-accent) 30%, transparent);
+}
+.pool-type-badge--focus {
+    color: var(--cv-text-secondary);
+    background: color-mix(in srgb, var(--cv-text-secondary) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--cv-text-secondary) 30%, transparent);
+}
+.pool-type-badge--custom {
+    color: var(--cv-text-muted);
+    background: color-mix(in srgb, var(--cv-text-muted) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--cv-text-muted) 30%, transparent);
+}
+
+/* ── Pool Name Input (layout bar) ── */
+.spells-slot-name-input {
+    font-size: 11px;
+    font-family: inherit;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 3px;
+    color: var(--cv-text);
+    padding: 2px 5px;
+    width: 80px;
+    min-width: 0;
+}
+.spells-slot-name-input:focus {
+    outline: none;
+    border-color: var(--cv-accent);
+}
+
+/* ── Spell Drawer Field Row (slot cost) ── */
+.spells-drawer-field-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 6px;
+    margin-top: 4px;
+    border-top: 1px solid var(--cv-border-subtle);
+}
+.spells-drawer-field-label {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    user-select: none;
+    flex-shrink: 0;
+}

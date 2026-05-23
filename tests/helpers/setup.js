@@ -81,6 +81,13 @@ globalThis.CV_TRANSLATIONS = {
     'settings.title': 'Settings',
     'toast.saveSuccess': 'Character saved!',
     'greeting': 'Hello {name}, welcome to {place}!',
+    'spells.slotLevelLabel': 'Lvl {n}',
+    'spells.customPool': 'Custom Pool',
+    'spells.noSlotsError': 'No {level} slots remaining',
+    'spells.unnamed': 'Unnamed',
+    'spells.log.cast': 'Cast {name}',
+    'spells.log.slotSpent': 'Lvl {level} slot spent',
+    'spells.catNoSlot': 'None',
   },
   es: {
     'menu.settings': 'Configuracion',

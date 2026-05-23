@@ -589,11 +589,13 @@
                 if (pending && pending.spellCast) {
                     if (entry) entry.message += ' \u2192 ' + total;
 
-                    if (pending.autoSpend && pending.slotLevel !== null) {
+                    if (pending.autoSpend && pending.poolId !== null) {
                         const spellModData = window.modules.find(m => m.id === pending.moduleId);
                         if (spellModData && typeof window.spendSlot === 'function') {
-                            window.spendSlot(spellModData, pending.slotLevel);
-                            if (entry) entry.message += ' (' + t('spells.log.slotSpent', { level: pending.slotLevel }) + ')';
+                            window.spendSlot(spellModData, pending.poolId, pending.slotCost ?? 1);
+                            const pool = spellModData.content.resourcePools.find(p => p.id === pending.poolId);
+                            const poolLabel = typeof window.getPoolLabel === 'function' ? window.getPoolLabel(pool) : (pending.poolId);
+                            if (entry && pool) entry.message += ' (' + t('spells.log.slotSpent', { level: poolLabel }) + ')';
                             const spellModEl = document.querySelector('.module[data-id="' + pending.moduleId + '"]');
                             if (spellModEl) {
                                 const bodyEl = spellModEl.querySelector('.module-body');

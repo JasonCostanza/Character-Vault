@@ -809,6 +809,7 @@ window.CV_TRANSLATIONS['fr'] = {
             'spells.poolType.custom': 'Personnalisé',
             'spells.customPool': 'Réserve personnalisée',
             'spells.slotCost': "Coût d'emplacement",
+            'spells.allowUpcast': "Autoriser l'amélioration",
             'spells.removeSlotLevelConfirm': "Ce niveau est utilisé par une ou plusieurs catégories. Elles seront définies sans emplacement. Supprimer quand même\u00a0?",
             'spells.slotLevelLabel': 'Niv {n}',
             'spells.slotMax': 'Emplacements max',

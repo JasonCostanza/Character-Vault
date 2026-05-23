@@ -755,7 +755,7 @@
     border-color: var(--cv-accent);
 }
 
-/* ── Spell Drawer Field Row (slot cost) ── */
+/* ── Spell Drawer Field Row (slot cost, upcast toggle) ── */
 .spells-drawer-field-row {
     display: flex;
     align-items: center;
@@ -770,3 +770,26 @@
     user-select: none;
     flex-shrink: 0;
 }
+
+/* ── Upcast level picker ── */
+.spell-upcast-picker {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    justify-content: flex-end;
+}
+.spell-upcast-pill {
+    position: relative;
+    min-width: 18px;
+    height: 20px;
+    padding: 0 5px;
+    border: 1px solid var(--cv-accent);
+    border-radius: 3px;
+    background: none;
+    color: var(--cv-accent);
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+}
+.spell-upcast-pill:hover { background: var(--cv-accent); color: var(--cv-bg-surface); }

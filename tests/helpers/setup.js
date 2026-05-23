@@ -88,6 +88,7 @@ globalThis.CV_TRANSLATIONS = {
     'spells.log.cast': 'Cast {name}',
     'spells.log.slotSpent': 'Lvl {level} slot spent',
     'spells.catNoSlot': 'None',
+    'spells.allowUpcast': 'Allow Upcasting',
   },
   es: {
     'menu.settings': 'Configuracion',

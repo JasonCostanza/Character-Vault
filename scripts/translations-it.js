@@ -395,6 +395,7 @@ window.CV_TRANSLATIONS['it'] = {
             'spells.poolType.custom': 'Personalizzato',
             'spells.customPool': 'Riserva personalizzata',
             'spells.slotCost': 'Costo slot',
+            'spells.allowUpcast': 'Permetti potenziamento',
             'spells.removeSlotLevelConfirm': 'Questo livello è usato da una o più categorie. Verranno impostate su nessuno slot. Rimuovere comunque?',
             'spells.slotLevelLabel': 'Livello {n}',
             'spells.slotMax': 'Max slot',

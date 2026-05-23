@@ -765,6 +765,7 @@ window.CV_TRANSLATIONS['de'] = {
             'spells.poolType.custom': 'Eigener',
             'spells.customPool': 'Eigener Pool',
             'spells.slotCost': 'Platzkosten',
+            'spells.allowUpcast': 'Aufwertung erlauben',
             'spells.removeSlotLevelConfirm': 'Diese Stufe wird von einer oder mehreren Kategorien verwendet. Diese werden auf keinen Schlitz gesetzt. Trotzdem entfernen?',
             'spells.slotLevelLabel': 'Stufe {n}',
             'spells.slotMax': 'Max. Slots',

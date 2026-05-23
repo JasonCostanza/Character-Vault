@@ -127,6 +127,10 @@ describe('resolveSlotCost', () => {
   it('clamps non-numeric strings to 0', () => {
     expect(resolveSlotCost({ slotCost: 'abc' })).toBe(0);
   });
+
+  it('returns 1 when slotCost is empty string', () => {
+    expect(resolveSlotCost({ slotCost: '' })).toBe(1);
+  });
 });
 
 describe('getPoolLabel', () => {
@@ -694,5 +698,31 @@ describe('castSpell', () => {
     castSpell(makeModuleEl(), data, { id: 's1', name: 'Fireball', values: {} }, 'nonexistent');
     expect(window.logActivity).not.toHaveBeenCalled();
     expect(scheduleSave).not.toHaveBeenCalled();
+  });
+
+  it('spends from overridePoolId pool, ignoring cat.resourcePoolId', () => {
+    const data = makeData(
+      {},
+      [
+        { id: 'rp1', type: 'spell-slot', level: 1, name: null, max: 3, spent: 0 },
+        { id: 'rp2', type: 'spell-slot', level: 2, name: null, max: 2, spent: 0 },
+      ]
+    );
+    castSpell(makeModuleEl(), data, { id: 's1', name: 'Fireball', values: {}, slotCost: null }, 'cat1', 'rp2');
+    expect(data.content.resourcePools[0].spent).toBe(0);
+    expect(data.content.resourcePools[1].spent).toBe(1);
+  });
+
+  it('blocks cast when overridePoolId pool is depleted', () => {
+    const data = makeData(
+      {},
+      [
+        { id: 'rp1', type: 'spell-slot', level: 1, name: null, max: 3, spent: 0 },
+        { id: 'rp2', type: 'spell-slot', level: 2, name: null, max: 2, spent: 2 },
+      ]
+    );
+    castSpell(makeModuleEl(), data, { id: 's1', name: 'Fireball', values: {}, slotCost: null }, 'cat1', 'rp2');
+    expect(showToast).toHaveBeenCalled();
+    expect(window.logActivity).not.toHaveBeenCalled();
   });
 });

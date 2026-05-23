@@ -881,6 +881,7 @@ window.CV_TRANSLATIONS.en = {
             'spells.poolType.custom': 'Custom',
             'spells.customPool': 'Custom Pool',
             'spells.slotCost': 'Slot Cost',
+            'spells.allowUpcast': 'Allow Upcasting',
             'spells.removeSlotLevelConfirm': 'This slot level is used by one or more categories. Those categories will be set to no slot. Remove anyway?',
             'spells.slotLevelLabel': 'Lvl {n}',
             'spells.slotMax': 'Max Slots',

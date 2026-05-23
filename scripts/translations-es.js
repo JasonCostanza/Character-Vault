@@ -385,6 +385,7 @@ window.CV_TRANSLATIONS['es'] = {
             'spells.poolType.custom': 'Personalizado',
             'spells.customPool': 'Reserva personalizada',
             'spells.slotCost': 'Coste de espacio',
+            'spells.allowUpcast': 'Permitir escalar nivel',
             'spells.removeSlotLevelConfirm': 'Este nivel es usado por una o más categorías. Se establecerán en sin espacio. ¿Eliminar de todas formas?',
             'spells.slotLevelLabel': 'Niv {n}',
             'spells.slotMax': 'Máx. espacios',

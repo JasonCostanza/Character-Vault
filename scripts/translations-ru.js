@@ -386,6 +386,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'spells.poolType.custom': 'Пользовательский',
             'spells.customPool': 'Пользовательский пул',
             'spells.slotCost': 'Стоимость ячейки',
+            'spells.allowUpcast': 'Разрешить усиление',
             'spells.removeSlotLevelConfirm': 'Этот уровень используется в одной или нескольких категориях. Они будут переключены на «без ячейки». Удалить всё равно?',
             'spells.slotLevelLabel': 'Ур. {n}',
             'spells.slotMax': 'Макс. ячеек',

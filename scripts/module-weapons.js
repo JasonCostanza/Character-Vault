@@ -1833,20 +1833,18 @@
         panel.appendChild(header);
         panel.appendChild(body);
 
-        if (typeof TS !== 'undefined') {
-            var actionFooter = document.createElement('div');
-            actionFooter.className = 'cv-modal-footer';
-            var sendBtn = document.createElement('button');
-            sendBtn.type = 'button';
-            sendBtn.className = 'list-inspect-btn-send';
-            sendBtn.textContent = window.t('transfer.sendToPlayer');
-            sendBtn.addEventListener('click', function () {
-                forceClose();
-                window.openSendToPlayerModal(weapon, 'weapons', data.content, data.id, weapon.id);
-            });
-            actionFooter.appendChild(sendBtn);
-            panel.appendChild(actionFooter);
-        }
+        var actionFooter = document.createElement('div');
+        actionFooter.className = 'cv-modal-footer';
+        var sendBtn = document.createElement('button');
+        sendBtn.type = 'button';
+        sendBtn.className = 'list-inspect-btn-send';
+        sendBtn.textContent = window.t('transfer.sendToPlayer');
+        sendBtn.addEventListener('click', function () {
+            forceClose();
+            window.openSendToPlayerModal(weapon, 'weapons', data.content, data.id, weapon.id);
+        });
+        actionFooter.appendChild(sendBtn);
+        panel.appendChild(actionFooter);
 
         overlay.appendChild(panel);
         document.body.appendChild(overlay);
@@ -2374,7 +2372,7 @@
         cancelBtn.addEventListener('click', close);
         footerRight.appendChild(cancelBtn);
 
-        if (isExistingWeapon && typeof TS !== 'undefined') {
+        if (isExistingWeapon) {
             var sendToPlayerBtn = document.createElement('button');
             sendToPlayerBtn.type = 'button';
             sendToPlayerBtn.className = 'list-inspect-btn-send';

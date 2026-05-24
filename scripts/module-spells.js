@@ -381,7 +381,7 @@
         restoreBtn.addEventListener('click', () => {
             data.content.resourcePools.forEach((pool) => { pool.spent = 0; });
             data.content.categories.forEach((cat) => {
-                (cat.spells || []).forEach((spell) => { spell.preparedCount = 0; spell.castsUsed = 0; });
+                (cat.spells || []).forEach((spell) => { spell.castsUsed = 0; });
             });
             scheduleSave();
             bodyEl.innerHTML = '';
@@ -664,7 +664,7 @@
                     const allUpcastPools = data.content.resourcePools.filter(p =>
                         p.type === 'spell-slot' && p.level >= basePool.level && getAvailableSlots(data, p.id) >= upcastCost
                     ).sort((a, b) => a.level - b.level);
-                    if (allUpcastPools.length > 1) {
+                    if (allUpcastPools.length >= 1) {
                         const picker = document.createElement('div');
                         picker.className = 'spell-upcast-picker';
                         allUpcastPools.forEach(pool => {
@@ -708,23 +708,21 @@
         descDisplay.className = 'spells-desc-display module-text-display';
         descDisplay.innerHTML = renderMarkdown(spell.description || '');
         drawerContent.appendChild(descDisplay);
-        if (typeof TS !== 'undefined' && typeof window.openSendToPlayerModal === 'function') {
-            const sendBtn = document.createElement('button');
-            sendBtn.type = 'button';
-            sendBtn.className = 'list-inspect-btn-send spells-drawer-send-btn';
-            sendBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>' + t('transfer.sendToPlayer');
-            sendBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const srcPool = (data.content.resourcePools || []).find(p => p.id === cat.resourcePoolId);
-                const moduleMeta = {
-                    attrs: data.content.attributes,
-                    categoryName: cat.name,
-                    poolDescriptor: srcPool ? { type: srcPool.type, level: srcPool.level ?? null, name: srcPool.name ?? null } : null
-                };
-                window.openSendToPlayerModal(spell, 'spells', moduleMeta, data.id, spell.id);
-            });
-            drawerContent.appendChild(sendBtn);
-        }
+        const sendBtn = document.createElement('button');
+        sendBtn.type = 'button';
+        sendBtn.className = 'list-inspect-btn-send spells-drawer-send-btn';
+        sendBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>' + t('transfer.sendToPlayer');
+        sendBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const srcPool = (data.content.resourcePools || []).find(p => p.id === cat.resourcePoolId);
+            const moduleMeta = {
+                attrs: data.content.attributes,
+                categoryName: cat.name,
+                poolDescriptor: srcPool ? { type: srcPool.type, level: srcPool.level ?? null, name: srcPool.name ?? null } : null
+            };
+            window.openSendToPlayerModal(spell, 'spells', moduleMeta, data.id, spell.id);
+        });
+        drawerContent.appendChild(sendBtn);
         drawerTd.appendChild(drawerContent);
         drawerTr.appendChild(drawerTd);
         chevBtn.addEventListener('click', () => {
@@ -2234,7 +2232,7 @@
         if (!data || data.type !== 'spells') return;
         data.content.resourcePools.forEach(pool => { pool.spent = 0; });
         data.content.categories.forEach(cat => {
-            (cat.spells || []).forEach(spell => { spell.preparedCount = 0; spell.castsUsed = 0; });
+            (cat.spells || []).forEach(spell => { spell.castsUsed = 0; });
         });
         const el = document.querySelector(`.module[data-id="${moduleId}"]`);
         if (el && window.isPlayMode) {

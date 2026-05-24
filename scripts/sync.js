@@ -1115,7 +1115,7 @@
                 var pool = (mod.content.resourcePools || []).find(function (p) { return p.id === c.resourcePoolId; });
                 if (!pool) return false;
                 if (pd.type === 'spell-slot') return pool.type === 'spell-slot' && pool.level === pd.level;
-                return pool.type === pd.type && pd.name !== null && pool.name === pd.name;
+                return pool.type === pd.type && pool.name === pd.name;
             });
         }
         // Backward compat: old clients may send slotLevel integer

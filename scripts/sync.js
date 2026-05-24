@@ -1113,7 +1113,7 @@
                 var pool = (mod.content.resourcePools || []).find(function (p) { return p.id === c.resourcePoolId; });
                 if (!pool) return false;
                 if (poolDesc.type === 'spell-slot') return pool.type === 'spell-slot' && pool.level === poolDesc.level;
-                return pool.type === poolDesc.type && pool.name === poolDesc.name;
+                return pool.type === poolDesc.type && poolDesc.name !== null && pool.name === poolDesc.name;
             });
         }
         if (!targetCat && meta.slotLevel != null) {
@@ -1127,19 +1127,19 @@
         }
         if (!targetCat) {
             var newPoolId = null;
-            var poolDesc = meta.poolDescriptor || (meta.slotLevel != null ? { type: 'spell-slot', level: meta.slotLevel, name: null } : null);
-            if (poolDesc) {
+            var poolDesc2 = meta.poolDescriptor || (meta.slotLevel != null ? { type: 'spell-slot', level: meta.slotLevel, name: null } : null);
+            if (poolDesc2) {
                 if (!Array.isArray(mod.content.resourcePools)) mod.content.resourcePools = [];
                 var matchingPool = mod.content.resourcePools.find(function (p) {
-                    if (poolDesc.type === 'spell-slot') return p.type === 'spell-slot' && p.level === poolDesc.level;
-                    return p.type === poolDesc.type && p.name === poolDesc.name;
+                    if (poolDesc2.type === 'spell-slot') return p.type === 'spell-slot' && p.level === poolDesc2.level;
+                    return p.type === poolDesc2.type && poolDesc2.name !== null && p.name === poolDesc2.name;
                 });
                 if (!matchingPool) {
                     matchingPool = {
                         id: 'rp_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
-                        type: poolDesc.type,
-                        level: poolDesc.level !== undefined ? poolDesc.level : null,
-                        name: poolDesc.name !== undefined ? poolDesc.name : null,
+                        type: poolDesc2.type,
+                        level: poolDesc2.level !== undefined ? poolDesc2.level : null,
+                        name: poolDesc2.name !== undefined ? poolDesc2.name : null,
                         max: 4,
                         spent: 0
                     };

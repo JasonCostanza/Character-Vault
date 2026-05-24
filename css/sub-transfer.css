@@ -184,6 +184,9 @@
     background: var(--cv-bg-sunken);
     border-radius: 4px;
     border: 1px solid var(--cv-border);
+    max-height: 120px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
 }
 
 .transfer-attr-row {

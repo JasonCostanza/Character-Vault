@@ -407,10 +407,7 @@
                 prepBtn.addEventListener('click', () => {
                     _prepModeModules.add(data.id);
                     data.content.categories.forEach(cat => {
-                        (cat.spells || []).forEach(spell => {
-                            spell.preparedCount = Math.max(0, (spell.preparedCount || 0) - (spell.castsUsed || 0));
-                            spell.castsUsed = 0;
-                        });
+                        (cat.spells || []).forEach(spell => { spell.castsUsed = 0; });
                     });
                     scheduleSave();
                     bodyEl.innerHTML = '';
@@ -664,13 +661,13 @@
                     : null;
                 const upcastCost = resolveSlotCost(spell);
                 if (spell.canUpcast && basePool && basePool.type === 'spell-slot' && data.content.autoSpendSlots && upcastCost > 0) {
-                    const eligiblePools = data.content.resourcePools.filter(p =>
-                        p.type === 'spell-slot' && p.level > basePool.level && getAvailableSlots(data, p.id) >= upcastCost
-                    );
-                    if (eligiblePools.length > 0) {
+                    const allUpcastPools = data.content.resourcePools.filter(p =>
+                        p.type === 'spell-slot' && p.level >= basePool.level && getAvailableSlots(data, p.id) >= upcastCost
+                    ).sort((a, b) => a.level - b.level);
+                    if (allUpcastPools.length > 1) {
                         const picker = document.createElement('div');
                         picker.className = 'spell-upcast-picker';
-                        eligiblePools.forEach(pool => {
+                        allUpcastPools.forEach(pool => {
                             const pill = document.createElement('button');
                             pill.className = 'spell-upcast-pill';
                             pill.title = getPoolLabel(pool);
@@ -718,10 +715,11 @@
             sendBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>' + t('transfer.sendToPlayer');
             sendBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
+                const srcPool = (data.content.resourcePools || []).find(p => p.id === cat.resourcePoolId);
                 const moduleMeta = {
                     attrs: data.content.attributes,
                     categoryName: cat.name,
-                    resourcePoolId: cat.resourcePoolId
+                    poolDescriptor: srcPool ? { type: srcPool.type, level: srcPool.level ?? null, name: srcPool.name ?? null } : null
                 };
                 window.openSendToPlayerModal(spell, 'spells', moduleMeta, data.id, spell.id);
             });
@@ -2236,7 +2234,7 @@
         if (!data || data.type !== 'spells') return;
         data.content.resourcePools.forEach(pool => { pool.spent = 0; });
         data.content.categories.forEach(cat => {
-            (cat.spells || []).forEach(spell => { spell.castsUsed = 0; });
+            (cat.spells || []).forEach(spell => { spell.preparedCount = 0; spell.castsUsed = 0; });
         });
         const el = document.querySelector(`.module[data-id="${moduleId}"]`);
         if (el && window.isPlayMode) {

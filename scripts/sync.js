@@ -527,7 +527,7 @@
                 meta = {
                     attrs: metaAttrs,
                     categoryName: (moduleMeta && moduleMeta.categoryName) || null,
-                    slotLevel: (moduleMeta && moduleMeta.slotLevel !== undefined) ? moduleMeta.slotLevel : null
+                    poolDescriptor: (moduleMeta && moduleMeta.poolDescriptor) || null
                 };
             } else {
                 meta = { attrs: metaAttrs };
@@ -708,6 +708,8 @@
         var compact = {};
         if (spell.name) compact.name = spell.name;
         if (spell.description) compact.description = spell.description;
+        if (spell.slotCost !== null && spell.slotCost !== undefined) compact.slotCost = spell.slotCost;
+        if (spell.canUpcast) compact.canUpcast = true;
 
         var attrs = (moduleData && moduleData.attrs) ? moduleData.attrs : [];
         var idToName = {};
@@ -801,6 +803,10 @@
             description: compact.description || '',
             order: 0,
             expanded: false,
+            slotCost: compact.slotCost !== undefined ? compact.slotCost : null,
+            canUpcast: compact.canUpcast || false,
+            preparedCount: 0,
+            castsUsed: 0,
             values: compact.values ? Object.assign({}, compact.values) : {}
         };
     }
@@ -944,7 +950,7 @@
             content = { weapons: [] };
             colSpan = 4; rowSpan = 2;
         } else if (type === 'spells') {
-            content = { autoSpendSlots: true, showSlotErrors: true, slotLevels: [], categories: [] };
+            content = { autoSpendSlots: true, showSlotErrors: true, resourcePools: [], categories: [], casterType: null };
             colSpan = 4; rowSpan = 4;
         } else {
             content = { attributes: [], items: [], sortBy: null, sortDir: 'asc' };
@@ -1102,14 +1108,54 @@
                 return c.name.toLowerCase() === meta.categoryName.toLowerCase();
             });
         }
-        if (!targetCat && meta.slotLevel !== null && meta.slotLevel !== undefined) {
-            targetCat = mod.content.categories.find(function (c) { return c.slotLevel === meta.slotLevel; });
+        // Pool-descriptor match: type+level for spell-slot, type+name for focus/custom
+        if (!targetCat && meta.poolDescriptor) {
+            var pd = meta.poolDescriptor;
+            targetCat = mod.content.categories.find(function (c) {
+                var pool = (mod.content.resourcePools || []).find(function (p) { return p.id === c.resourcePoolId; });
+                if (!pool) return false;
+                if (pd.type === 'spell-slot') return pool.type === 'spell-slot' && pool.level === pd.level;
+                return pool.type === pd.type && pd.name !== null && pool.name === pd.name;
+            });
+        }
+        // Backward compat: old clients may send slotLevel integer
+        if (!targetCat && meta.slotLevel != null) {
+            targetCat = mod.content.categories.find(function (c) {
+                // Migrated receiver: match via resourcePoolId → pool.level
+                if (c.resourcePoolId) {
+                    var pool = (mod.content.resourcePools || []).find(function (p) { return p.id === c.resourcePoolId; });
+                    return pool && pool.type === 'spell-slot' && pool.level === meta.slotLevel;
+                }
+                // Un-migrated receiver: match directly on legacy c.slotLevel
+                return c.slotLevel === meta.slotLevel;
+            });
         }
         if (!targetCat) {
+            var newPoolId = null;
+            var pd2 = meta.poolDescriptor || (meta.slotLevel != null ? { type: 'spell-slot', level: meta.slotLevel, name: null } : null);
+            if (pd2) {
+                if (!Array.isArray(mod.content.resourcePools)) mod.content.resourcePools = [];
+                var matchingPool = mod.content.resourcePools.find(function (p) {
+                    if (pd2.type === 'spell-slot') return p.type === 'spell-slot' && p.level === pd2.level;
+                    return p.type === pd2.type && p.name === pd2.name;
+                });
+                if (!matchingPool) {
+                    matchingPool = {
+                        id: 'rp_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
+                        type: pd2.type,
+                        level: pd2.level !== undefined ? pd2.level : null,
+                        name: pd2.name !== undefined ? pd2.name : null,
+                        max: 4,
+                        spent: 0
+                    };
+                    mod.content.resourcePools.push(matchingPool);
+                }
+                newPoolId = matchingPool.id;
+            }
             targetCat = {
                 id: 'cat_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
                 name: meta.categoryName || '',
-                slotLevel: (meta.slotLevel !== undefined) ? meta.slotLevel : null,
+                resourcePoolId: newPoolId,
                 collapsed: false,
                 spells: []
             };

@@ -555,7 +555,6 @@
     // ── Timeout Sweep ──
 
     function sweepTimeouts() {
-        if (!Object.keys(pendingOutgoing).length && !Object.keys(pendingIncoming).length) return;
         var now = Date.now();
         Object.keys(pendingOutgoing).forEach(function (txnId) {
             var txn = pendingOutgoing[txnId];
@@ -1108,43 +1107,39 @@
                 return c.name.toLowerCase() === meta.categoryName.toLowerCase();
             });
         }
-        // Pool-descriptor match: type+level for spell-slot, type+name for focus/custom
         if (!targetCat && meta.poolDescriptor) {
-            var pd = meta.poolDescriptor;
+            var poolDesc = meta.poolDescriptor;
             targetCat = mod.content.categories.find(function (c) {
                 var pool = (mod.content.resourcePools || []).find(function (p) { return p.id === c.resourcePoolId; });
                 if (!pool) return false;
-                if (pd.type === 'spell-slot') return pool.type === 'spell-slot' && pool.level === pd.level;
-                return pool.type === pd.type && pool.name === pd.name;
+                if (poolDesc.type === 'spell-slot') return pool.type === 'spell-slot' && pool.level === poolDesc.level;
+                return pool.type === poolDesc.type && pool.name === poolDesc.name;
             });
         }
-        // Backward compat: old clients may send slotLevel integer
         if (!targetCat && meta.slotLevel != null) {
             targetCat = mod.content.categories.find(function (c) {
-                // Migrated receiver: match via resourcePoolId → pool.level
                 if (c.resourcePoolId) {
                     var pool = (mod.content.resourcePools || []).find(function (p) { return p.id === c.resourcePoolId; });
                     return pool && pool.type === 'spell-slot' && pool.level === meta.slotLevel;
                 }
-                // Un-migrated receiver: match directly on legacy c.slotLevel
                 return c.slotLevel === meta.slotLevel;
             });
         }
         if (!targetCat) {
             var newPoolId = null;
-            var pd2 = meta.poolDescriptor || (meta.slotLevel != null ? { type: 'spell-slot', level: meta.slotLevel, name: null } : null);
-            if (pd2) {
+            var poolDesc = meta.poolDescriptor || (meta.slotLevel != null ? { type: 'spell-slot', level: meta.slotLevel, name: null } : null);
+            if (poolDesc) {
                 if (!Array.isArray(mod.content.resourcePools)) mod.content.resourcePools = [];
                 var matchingPool = mod.content.resourcePools.find(function (p) {
-                    if (pd2.type === 'spell-slot') return p.type === 'spell-slot' && p.level === pd2.level;
-                    return p.type === pd2.type && p.name === pd2.name;
+                    if (poolDesc.type === 'spell-slot') return p.type === 'spell-slot' && p.level === poolDesc.level;
+                    return p.type === poolDesc.type && p.name === poolDesc.name;
                 });
                 if (!matchingPool) {
                     matchingPool = {
                         id: 'rp_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
-                        type: pd2.type,
-                        level: pd2.level !== undefined ? pd2.level : null,
-                        name: pd2.name !== undefined ? pd2.name : null,
+                        type: poolDesc.type,
+                        level: poolDesc.level !== undefined ? poolDesc.level : null,
+                        name: poolDesc.name !== undefined ? poolDesc.name : null,
                         max: 4,
                         spent: 0
                     };
@@ -1187,9 +1182,16 @@
         var existing = document.querySelector('.transfer-incoming-overlay');
         if (existing) existing.remove();
 
-        var isWeaponTransfer = (incoming.src === 'weapons');
-        var isSpellTransfer = (incoming.src === 'spells');
-        var targetModuleType = isWeaponTransfer ? 'weapons' : isSpellTransfer ? 'spells' : 'list';
+        var isWeaponTransfer = incoming.src === 'weapons';
+        var isSpellTransfer = incoming.src === 'spells';
+        var targetModuleType;
+        if (isWeaponTransfer) {
+            targetModuleType = 'weapons';
+        } else if (isSpellTransfer) {
+            targetModuleType = 'spells';
+        } else {
+            targetModuleType = 'list';
+        }
         var targetModules = (window.modules || []).filter(function (m) { return m.type === targetModuleType; });
         var selectedModuleId = targetModules.length > 0 ? targetModules[0].id : null;
         var createOnTabId = window.activeTabId;
@@ -1281,6 +1283,12 @@
                 }).join(', ');
                 body.appendChild(traitsEl);
             }
+            if (weaponData.notesMarkdown && weaponData.notesMarkdown.trim()) {
+                var notesPreview = document.createElement('div');
+                notesPreview.className = 'transfer-attr-preview transfer-weapon-notes';
+                notesPreview.innerHTML = window.renderMarkdown(weaponData.notesMarkdown);
+                body.appendChild(notesPreview);
+            }
         } else if (isSpellTransfer) {
             var spellData = incoming.data || {};
             if (spellData.description) {
@@ -1288,9 +1296,7 @@
                 descPreview.className = 'transfer-attr-preview';
                 var descText = document.createElement('div');
                 descText.className = 'transfer-spell-description';
-                var excerpt = spellData.description;
-                if (excerpt.length > 120) excerpt = excerpt.slice(0, 120) + '...';
-                descText.textContent = excerpt;
+                descText.textContent = spellData.description;
                 descPreview.appendChild(descText);
                 body.appendChild(descPreview);
             }
@@ -1302,6 +1308,12 @@
                 return (val && typeof val === 'object') ? (val.current + '/' + val.max) : String(val);
             });
             if (listAttrEl) body.appendChild(listAttrEl);
+            if (incoming.data && incoming.data.notes && incoming.data.notes.trim()) {
+                var listNotesEl = document.createElement('div');
+                listNotesEl.className = 'transfer-attr-preview transfer-list-notes';
+                listNotesEl.textContent = incoming.data.notes;
+                body.appendChild(listNotesEl);
+            }
         }
 
         var targetLabel = document.createElement('div');

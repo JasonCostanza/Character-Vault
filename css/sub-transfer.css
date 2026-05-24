@@ -184,9 +184,6 @@
     background: var(--cv-bg-sunken);
     border-radius: 4px;
     border: 1px solid var(--cv-border);
-    max-height: 120px;
-    overflow-y: auto;
-    scrollbar-gutter: stable;
 }
 
 .transfer-attr-row {
@@ -243,10 +240,6 @@
     color: var(--cv-accent);
 }
 
-.pending-offers-btn.has-offers:hover {
-    opacity: 1;
-    color: var(--cv-accent);
-}
 
 .pending-offers-count {
     position: absolute;
@@ -377,12 +370,6 @@
     background: transparent;
 }
 
-.transfer-truncated-notice {
-    font-size: 11px;
-    color: var(--cv-text-muted);
-    padding: 2px 0;
-    user-select: none;
-}
 
 /* ── Spell Transfer Preview ── */
 .transfer-spell-description {
@@ -395,4 +382,28 @@
 /* ── Spell Drawer Send Button ── */
 .spells-drawer-send-btn {
     margin-top: 6px;
+}
+
+/* ── Transfer Notes ── */
+.transfer-weapon-notes {
+    font-size: 11px;
+    color: var(--cv-text-secondary);
+    line-height: 1.4;
+    user-select: text;
+}
+
+.transfer-weapon-notes p {
+    margin: 0 0 4px;
+}
+
+.transfer-weapon-notes p:last-child {
+    margin-bottom: 0;
+}
+
+.transfer-list-notes {
+    font-size: 11px;
+    color: var(--cv-text-secondary);
+    line-height: 1.4;
+    white-space: pre-wrap;
+    user-select: text;
 }

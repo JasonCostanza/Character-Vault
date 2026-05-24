@@ -2,6 +2,7 @@
 (function () {
     // ── Constants ──
     const DICE_REGEX = /\b\d+d\d+([+-]\d+)?\b/i;
+    const _prepModeModules = new Set();
 
     // ── Helpers ──
     function isDiceNotation(val) {
@@ -293,7 +294,8 @@
 
     // ── Play Mode (Table Layout) ──
     function renderSpellsPlay(bodyEl, data) {
-        renderSlotSummaryBar(bodyEl, data, bodyEl);
+        const preparationMode = _prepModeModules.has(data.id);
+        renderSlotSummaryBar(bodyEl, data, bodyEl, preparationMode);
         const container = document.createElement('div');
         container.className = 'spells-container';
         if (data.content.categories.length === 0) {
@@ -303,13 +305,13 @@
             container.appendChild(empty);
         } else {
             data.content.categories.forEach((cat) => {
-                renderCategoryBlock(container, cat, data, bodyEl);
+                renderCategoryBlock(container, cat, data, bodyEl, preparationMode);
             });
         }
         bodyEl.appendChild(container);
     }
 
-    function renderSlotSummaryBar(container, data, bodyEl) {
+    function renderSlotSummaryBar(container, data, bodyEl, preparationMode) {
         const summary = document.createElement('div');
         summary.className = 'spells-slots-summary';
         const bar = document.createElement('div');
@@ -378,15 +380,42 @@
         restoreBtn.textContent = t('spells.restoreAll');
         restoreBtn.addEventListener('click', () => {
             data.content.resourcePools.forEach((pool) => { pool.spent = 0; });
+            data.content.categories.forEach((cat) => {
+                (cat.spells || []).forEach((spell) => { spell.preparedCount = 0; spell.castsUsed = 0; });
+            });
             scheduleSave();
             bodyEl.innerHTML = '';
             renderSpellsPlay(bodyEl, data);
         });
         summary.appendChild(restoreBtn);
+        if (data.content.casterType === 'prepared') {
+            if (preparationMode) {
+                const doneBtn = document.createElement('button');
+                doneBtn.className = 'btn-secondary sm';
+                doneBtn.textContent = t('spells.donePreparing');
+                doneBtn.addEventListener('click', () => {
+                    _prepModeModules.delete(data.id);
+                    scheduleSave();
+                    bodyEl.innerHTML = '';
+                    renderSpellsPlay(bodyEl, data);
+                });
+                summary.appendChild(doneBtn);
+            } else {
+                const prepBtn = document.createElement('button');
+                prepBtn.className = 'btn-secondary sm';
+                prepBtn.textContent = t('spells.prepareSpells');
+                prepBtn.addEventListener('click', () => {
+                    _prepModeModules.add(data.id);
+                    bodyEl.innerHTML = '';
+                    renderSpellsPlay(bodyEl, data);
+                });
+                summary.appendChild(prepBtn);
+            }
+        }
         container.appendChild(summary);
     }
 
-    function renderCategoryBlock(container, cat, data, bodyEl) {
+    function renderCategoryBlock(container, cat, data, bodyEl, preparationMode) {
         const block = document.createElement('div');
         block.className = 'spells-category-block';
         block.dataset.catId = cat.id;
@@ -399,7 +428,7 @@
         const tbody = document.createElement('tbody');
         const sorted = getSortedSpells(data.content, cat.spells || []);
         sorted.forEach((spell) => {
-            renderSpellRow(spell, cat, data, tbody, bodyEl, pinnedAttrs);
+            renderSpellRow(spell, cat, data, tbody, bodyEl, pinnedAttrs, preparationMode);
         });
         if ((cat.spells || []).length === 0) {
             const emptyTr = document.createElement('tr');
@@ -517,7 +546,7 @@
         thead.appendChild(tr);
     }
 
-    function renderSpellRow(spell, cat, data, tbody, bodyEl, pinnedAttrs) {
+    function renderSpellRow(spell, cat, data, tbody, bodyEl, pinnedAttrs, preparationMode) {
         const tr = document.createElement('tr');
         tr.className = 'spells-row';
         tr.dataset.spellId = spell.id;
@@ -542,44 +571,83 @@
             tr.appendChild(td);
         });
         const castTd = document.createElement('td');
-        let showedPicker = false;
-        const basePool = cat.resourcePoolId != null
-            ? data.content.resourcePools.find(p => p.id === cat.resourcePoolId)
-            : null;
-        const upcastCost = resolveSlotCost(spell);
-        if (spell.canUpcast && basePool && basePool.type === 'spell-slot' && data.content.autoSpendSlots && upcastCost > 0) {
-            const eligiblePools = data.content.resourcePools.filter(p =>
-                p.type === 'spell-slot' && p.level >= basePool.level && getAvailableSlots(data, p.id) >= upcastCost
-            );
-            const isJustBasePool = eligiblePools.length === 1 && eligiblePools[0].id === cat.resourcePoolId;
-            if (eligiblePools.length > 0 && !isJustBasePool) {
-                const picker = document.createElement('div');
-                picker.className = 'spell-upcast-picker';
-                eligiblePools.forEach(pool => {
-                    const pill = document.createElement('button');
-                    pill.className = 'spell-upcast-pill';
-                    pill.title = getPoolLabel(pool);
-                    pill.textContent = String(pool.level);
-                    pill.addEventListener('click', () => {
-                        const moduleEl = tbody.closest('.module');
-                        if (moduleEl) castSpell(moduleEl, data, spell, cat.id, pool.id);
-                    });
-                    picker.appendChild(pill);
-                });
-                castTd.appendChild(picker);
-                showedPicker = true;
-            }
-        }
-        if (!showedPicker) {
-            const castBtn = document.createElement('button');
-            castBtn.className = 'spells-cast-btn';
-            castBtn.title = t('spells.castBtn');
-            castBtn.textContent = '⚡';
-            castBtn.addEventListener('click', () => {
-                const moduleEl = tbody.closest('.module');
-                if (moduleEl) castSpell(moduleEl, data, spell, cat.id);
+        if (preparationMode) {
+            const stepper = document.createElement('div');
+            stepper.className = 'spell-prepare-stepper';
+            const downBtn = document.createElement('button');
+            downBtn.className = 'spell-prepare-step-btn';
+            downBtn.textContent = '−';
+            const countEl = document.createElement('span');
+            countEl.className = 'spell-prepare-count';
+            countEl.textContent = String(spell.preparedCount || 0);
+            const upBtn = document.createElement('button');
+            upBtn.className = 'spell-prepare-step-btn';
+            upBtn.textContent = '+';
+            downBtn.addEventListener('click', () => {
+                spell.preparedCount = Math.max(0, (spell.preparedCount || 0) - 1);
+                countEl.textContent = String(spell.preparedCount);
             });
-            castTd.appendChild(castBtn);
+            upBtn.addEventListener('click', () => {
+                spell.preparedCount = (spell.preparedCount || 0) + 1;
+                countEl.textContent = String(spell.preparedCount);
+            });
+            stepper.appendChild(downBtn);
+            stepper.appendChild(countEl);
+            stepper.appendChild(upBtn);
+            castTd.appendChild(stepper);
+        } else {
+            const isPrepared = data.content.casterType === 'prepared';
+            const preparedCount = spell.preparedCount || 0;
+            const castsUsed = spell.castsUsed || 0;
+            const prepDisabled = isPrepared && (preparedCount === 0 || castsUsed >= preparedCount);
+            if (prepDisabled) {
+                const castBtn = document.createElement('button');
+                castBtn.className = 'spells-cast-btn' + (preparedCount === 0 ? ' spell-unprepared' : ' spell-exhausted');
+                castBtn.title = preparedCount === 0 ? t('spells.notPreparedError') : t('spells.preparedExhaustedError');
+                castBtn.textContent = preparedCount === 0 ? '⚡' : '0';
+                castBtn.disabled = true;
+                castTd.appendChild(castBtn);
+            } else {
+                const castLabel = isPrepared ? String(preparedCount - castsUsed) : '⚡';
+                let showedPicker = false;
+                const basePool = cat.resourcePoolId != null
+                    ? data.content.resourcePools.find(p => p.id === cat.resourcePoolId)
+                    : null;
+                const upcastCost = resolveSlotCost(spell);
+                if (spell.canUpcast && basePool && basePool.type === 'spell-slot' && data.content.autoSpendSlots && upcastCost > 0) {
+                    const eligiblePools = data.content.resourcePools.filter(p =>
+                        p.type === 'spell-slot' && p.level > basePool.level && getAvailableSlots(data, p.id) >= upcastCost
+                    );
+                    if (eligiblePools.length > 0) {
+                        const picker = document.createElement('div');
+                        picker.className = 'spell-upcast-picker';
+                        eligiblePools.forEach(pool => {
+                            const pill = document.createElement('button');
+                            pill.className = 'spell-upcast-pill';
+                            pill.title = getPoolLabel(pool);
+                            pill.textContent = String(pool.level);
+                            pill.addEventListener('click', () => {
+                                const moduleEl = tbody.closest('.module');
+                                if (moduleEl) castSpell(moduleEl, data, spell, cat.id, pool.id);
+                            });
+                            picker.appendChild(pill);
+                        });
+                        castTd.appendChild(picker);
+                        showedPicker = true;
+                    }
+                }
+                if (!showedPicker) {
+                    const castBtn = document.createElement('button');
+                    castBtn.className = 'spells-cast-btn';
+                    castBtn.title = t('spells.castBtn');
+                    castBtn.textContent = castLabel;
+                    castBtn.addEventListener('click', () => {
+                        const moduleEl = tbody.closest('.module');
+                        if (moduleEl) castSpell(moduleEl, data, spell, cat.id);
+                    });
+                    castTd.appendChild(castBtn);
+                }
+            }
         }
         tr.appendChild(castTd);
         const drawerTr = document.createElement('tr');
@@ -650,6 +718,12 @@
         if (pool) pool.spent = Math.min(pool.max, pool.spent + cost);
     }
 
+    function findSpellInModule(data, catId, spellId) {
+        const cat = (data.content.categories || []).find(c => c.id === catId);
+        if (!cat) return null;
+        return (cat.spells || []).find(s => s.id === spellId) || null;
+    }
+
     // ── Cast Logic ──
     function castSpell(moduleEl, data, spell, catId, overridePoolId) {
         const cat = data.content.categories.find((c) => c.id === catId);
@@ -666,6 +740,17 @@
                     const pool = content.resourcePools.find(p => p.id === poolId);
                     showToast(t('spells.noSlotsError', { level: getPoolLabel(pool) }), 'error');
                 }
+                return;
+            }
+        }
+
+        if (content.casterType === 'prepared') {
+            if (spell.preparedCount === 0) {
+                showToast(t('spells.notPreparedError'), 'error');
+                return;
+            }
+            if ((spell.castsUsed || 0) >= spell.preparedCount) {
+                showToast(t('spells.preparedExhaustedError'), 'error');
                 return;
             }
         }
@@ -701,19 +786,31 @@
                         spellCast: true,
                         moduleId: data.id,
                         catId,
+                        spellId: spell.id,
                         poolId,
                         slotCost: cost,
                         autoSpend: content.autoSpendSlots,
+                        preparedCast: content.casterType === 'prepared',
                     };
                 }
             });
-        } else if (poolId != null && content.autoSpendSlots && cost > 0) {
-            spendSlot(data, poolId, cost);
-            scheduleSave();
-            const spellModEl = document.querySelector('.module[data-id="' + data.id + '"]');
-            if (spellModEl) {
-                const bodyEl = spellModEl.querySelector('.module-body');
-                if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, data, true);
+        } else {
+            let needsRerender = false;
+            if (poolId != null && content.autoSpendSlots && cost > 0) {
+                spendSlot(data, poolId, cost);
+                needsRerender = true;
+            }
+            if (content.casterType === 'prepared') {
+                spell.castsUsed = (spell.castsUsed || 0) + 1;
+                needsRerender = true;
+            }
+            if (needsRerender) {
+                scheduleSave();
+                const spellModEl = document.querySelector('.module[data-id="' + data.id + '"]');
+                if (spellModEl) {
+                    const bodyEl = spellModEl.querySelector('.module-body');
+                    if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, data, true);
+                }
             }
         }
     }
@@ -1368,6 +1465,28 @@
             content.showSlotErrors = v;
             scheduleSave();
         }));
+
+        const casterTypeRow = document.createElement('div');
+        casterTypeRow.className = 'spells-settings-toggle-row';
+        const casterTypeTextCol = document.createElement('div');
+        casterTypeTextCol.className = 'spells-settings-toggle-text';
+        const casterTypeNameEl = document.createElement('span');
+        casterTypeNameEl.className = 'spells-settings-toggle-name';
+        casterTypeNameEl.textContent = t('spells.casterType');
+        casterTypeTextCol.appendChild(casterTypeNameEl);
+        const casterTypeOptions = [
+            { value: '', label: t('spells.casterType.none') },
+            { value: 'prepared', label: t('spells.casterType.prepared') },
+            { value: 'spontaneous', label: t('spells.casterType.spontaneous') },
+        ];
+        const casterTypeSelect = buildCvSelect(casterTypeOptions, content.casterType || '', (val) => {
+            content.casterType = val === '' ? null : val;
+            scheduleSave();
+            reRender();
+        });
+        casterTypeRow.appendChild(casterTypeTextCol);
+        casterTypeRow.appendChild(casterTypeSelect.el);
+        behaviorCard.appendChild(casterTypeRow);
 
         body.appendChild(behaviorCard);
 
@@ -2066,6 +2185,9 @@
         const data = window.modules.find(m => m.id === moduleId);
         if (!data || data.type !== 'spells') return;
         data.content.resourcePools.forEach(pool => { pool.spent = 0; });
+        data.content.categories.forEach(cat => {
+            (cat.spells || []).forEach(spell => { spell.preparedCount = 0; spell.castsUsed = 0; });
+        });
         const el = document.querySelector(`.module[data-id="${moduleId}"]`);
         if (el && window.isPlayMode) {
             const bodyEl = el.querySelector('.module-body');
@@ -2073,6 +2195,7 @@
         }
     };
 
+    window.findSpellInModule = findSpellInModule;
     window.isDiceNotation = isDiceNotation;
     window.extractDiceRoll = extractDiceRoll;
     window.spellsDefaultContent = defaultContent;

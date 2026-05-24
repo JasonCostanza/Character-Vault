@@ -793,3 +793,39 @@
     user-select: none;
 }
 .spell-upcast-pill:hover { background: var(--cv-accent); color: var(--cv-bg-surface); }
+
+/* ── Preparation mode stepper ── */
+.spell-prepare-stepper {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    justify-content: flex-end;
+}
+.spell-prepare-step-btn {
+    width: 18px;
+    height: 20px;
+    border: 1px solid var(--cv-border);
+    border-radius: 3px;
+    background: none;
+    color: var(--cv-text-muted);
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+}
+.spell-prepare-step-btn:hover { color: var(--cv-accent); border-color: var(--cv-accent); }
+.spell-prepare-count {
+    min-width: 16px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--cv-text);
+    user-select: none;
+}
+
+/* ── Prepared caster spell states ── */
+.spells-cast-btn.spell-unprepared,
+.spells-cast-btn.spell-exhausted {
+    opacity: 0.35;
+    cursor: not-allowed;
+}

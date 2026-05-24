@@ -725,4 +725,73 @@ describe('castSpell', () => {
     expect(showToast).toHaveBeenCalled();
     expect(window.logActivity).not.toHaveBeenCalled();
   });
+
+  it('blocks cast for prepared caster when preparedCount is 0', () => {
+    const data = makeData();
+    data.content.casterType = 'prepared';
+    const spell = { id: 's1', name: 'Fireball', values: {}, slotCost: null, preparedCount: 0, castsUsed: 0, canUpcast: false };
+    castSpell(makeModuleEl(), data, spell, 'cat1');
+    expect(showToast).toHaveBeenCalledWith('This spell is not prepared.', 'error');
+    expect(window.logActivity).not.toHaveBeenCalled();
+  });
+
+  it('blocks cast for prepared caster when castsUsed >= preparedCount', () => {
+    const data = makeData();
+    data.content.casterType = 'prepared';
+    const spell = { id: 's1', name: 'Fireball', values: {}, slotCost: null, preparedCount: 2, castsUsed: 2, canUpcast: false };
+    castSpell(makeModuleEl(), data, spell, 'cat1');
+    expect(showToast).toHaveBeenCalledWith('No prepared uses remaining.', 'error');
+    expect(window.logActivity).not.toHaveBeenCalled();
+  });
+
+  it('allows cast for prepared caster when castsUsed < preparedCount', () => {
+    const data = makeData();
+    data.content.casterType = 'prepared';
+    const spell = { id: 's1', name: 'Fireball', values: {}, slotCost: null, preparedCount: 3, castsUsed: 1, canUpcast: false };
+    castSpell(makeModuleEl(), data, spell, 'cat1');
+    expect(window.logActivity).toHaveBeenCalled();
+  });
+
+  it('increments castsUsed on no-dice cast for prepared caster', () => {
+    const data = makeData();
+    data.content.casterType = 'prepared';
+    const spell = { id: 's1', name: 'Cantrip', values: {}, slotCost: null, preparedCount: 2, castsUsed: 0, canUpcast: false };
+    castSpell(makeModuleEl(), data, spell, 'cat1');
+    expect(spell.castsUsed).toBe(1);
+    expect(scheduleSave).toHaveBeenCalled();
+  });
+
+  it('increments castsUsed even for free-category spells (no pool) in prepared mode', () => {
+    const data = makeData({ resourcePoolId: null }, []);
+    data.content.casterType = 'prepared';
+    const spell = { id: 's1', name: 'Cantrip', values: {}, slotCost: null, preparedCount: 1, castsUsed: 0, canUpcast: false };
+    castSpell(makeModuleEl(), data, spell, 'cat1');
+    expect(spell.castsUsed).toBe(1);
+  });
+});
+
+describe('findSpellInModule', () => {
+  function makeModuleData(spells = []) {
+    return {
+      content: {
+        categories: [{ id: 'cat1', spells }],
+      },
+    };
+  }
+
+  it('returns the spell when found', () => {
+    const spell = { id: 'sp1', name: 'Fireball' };
+    const data = makeModuleData([spell]);
+    expect(findSpellInModule(data, 'cat1', 'sp1')).toBe(spell);
+  });
+
+  it('returns null for missing category', () => {
+    const data = makeModuleData([{ id: 'sp1', name: 'Fireball' }]);
+    expect(findSpellInModule(data, 'bad-cat', 'sp1')).toBeNull();
+  });
+
+  it('returns null for missing spell', () => {
+    const data = makeModuleData([{ id: 'sp1', name: 'Fireball' }]);
+    expect(findSpellInModule(data, 'cat1', 'bad-spell')).toBeNull();
+  });
 });

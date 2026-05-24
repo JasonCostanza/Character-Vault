@@ -1291,7 +1291,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'transfer.accepted': '{name} принял передачу',
             'transfer.itemRemoved': '{item} отправлен {name}',
             'transfer.itemReceived': 'Получено {item} от {name}',
-            'transfer.sendToPlayer': 'Отправить игроку',
+            'transfer.sendToPlayer': 'Поделиться',
             'transfer.noPlayersOnline': 'Другие экземпляры Character Vault не обнаружены.',
             'transfer.noPlayersHint': 'Другие игроки должны иметь открытый Character Vault для получения предметов.',
             'transfer.sendTo': 'Отправить:',

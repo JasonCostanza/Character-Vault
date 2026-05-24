@@ -1299,7 +1299,7 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'transfer.accepted': '{name} aceitou a transferência',
             'transfer.itemRemoved': '{item} enviado para {name}',
             'transfer.itemReceived': 'Você recebeu {item} de {name}',
-            'transfer.sendToPlayer': 'Enviar ao jogador',
+            'transfer.sendToPlayer': 'Compartilhar',
             'transfer.noPlayersOnline': 'Nenhuma outra instância do Character Vault detectada.',
             'transfer.noPlayersHint': 'Os outros jogadores precisam ter o Character Vault aberto para receber itens.',
             'transfer.sendTo': 'Enviar para:',

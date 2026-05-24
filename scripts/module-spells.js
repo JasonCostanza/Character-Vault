@@ -406,6 +406,13 @@
                 prepBtn.textContent = t('spells.prepareSpells');
                 prepBtn.addEventListener('click', () => {
                     _prepModeModules.add(data.id);
+                    data.content.categories.forEach(cat => {
+                        (cat.spells || []).forEach(spell => {
+                            spell.preparedCount = Math.max(0, (spell.preparedCount || 0) - (spell.castsUsed || 0));
+                            spell.castsUsed = 0;
+                        });
+                    });
+                    scheduleSave();
                     bodyEl.innerHTML = '';
                     renderSpellsPlay(bodyEl, data);
                 });
@@ -646,7 +653,7 @@
                 const castBtn = document.createElement('button');
                 castBtn.className = 'spells-cast-btn' + (preparedCount === 0 ? ' spell-unprepared' : ' spell-exhausted');
                 castBtn.title = preparedCount === 0 ? t('spells.notPreparedError') : t('spells.preparedExhaustedError');
-                castBtn.textContent = preparedCount === 0 ? '⚡' : '0';
+                castBtn.textContent = '0';
                 castBtn.disabled = true;
                 castTd.appendChild(castBtn);
             } else {

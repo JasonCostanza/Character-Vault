@@ -527,7 +527,7 @@
                 meta = {
                     attrs: metaAttrs,
                     categoryName: (moduleMeta && moduleMeta.categoryName) || null,
-                    slotLevel: (moduleMeta && moduleMeta.slotLevel !== undefined) ? moduleMeta.slotLevel : null
+                    poolDescriptor: (moduleMeta && moduleMeta.poolDescriptor) || null
                 };
             } else {
                 meta = { attrs: metaAttrs };
@@ -555,7 +555,6 @@
     // ── Timeout Sweep ──
 
     function sweepTimeouts() {
-        if (!Object.keys(pendingOutgoing).length && !Object.keys(pendingIncoming).length) return;
         var now = Date.now();
         Object.keys(pendingOutgoing).forEach(function (txnId) {
             var txn = pendingOutgoing[txnId];
@@ -708,6 +707,8 @@
         var compact = {};
         if (spell.name) compact.name = spell.name;
         if (spell.description) compact.description = spell.description;
+        if (spell.slotCost !== null && spell.slotCost !== undefined) compact.slotCost = spell.slotCost;
+        if (spell.canUpcast) compact.canUpcast = true;
 
         var attrs = (moduleData && moduleData.attrs) ? moduleData.attrs : [];
         var idToName = {};
@@ -801,6 +802,10 @@
             description: compact.description || '',
             order: 0,
             expanded: false,
+            slotCost: compact.slotCost !== undefined ? compact.slotCost : null,
+            canUpcast: compact.canUpcast || false,
+            preparedCount: 0,
+            castsUsed: 0,
             values: compact.values ? Object.assign({}, compact.values) : {}
         };
     }
@@ -944,7 +949,7 @@
             content = { weapons: [] };
             colSpan = 4; rowSpan = 2;
         } else if (type === 'spells') {
-            content = { autoSpendSlots: true, showSlotErrors: true, slotLevels: [], categories: [] };
+            content = { autoSpendSlots: true, showSlotErrors: true, resourcePools: [], categories: [], casterType: null };
             colSpan = 4; rowSpan = 4;
         } else {
             content = { attributes: [], items: [], sortBy: null, sortDir: 'asc' };
@@ -1102,14 +1107,50 @@
                 return c.name.toLowerCase() === meta.categoryName.toLowerCase();
             });
         }
-        if (!targetCat && meta.slotLevel !== null && meta.slotLevel !== undefined) {
-            targetCat = mod.content.categories.find(function (c) { return c.slotLevel === meta.slotLevel; });
+        if (!targetCat && meta.poolDescriptor) {
+            var poolDesc = meta.poolDescriptor;
+            targetCat = mod.content.categories.find(function (c) {
+                var pool = (mod.content.resourcePools || []).find(function (p) { return p.id === c.resourcePoolId; });
+                if (!pool) return false;
+                if (poolDesc.type === 'spell-slot') return pool.type === 'spell-slot' && pool.level === poolDesc.level;
+                return pool.type === poolDesc.type && poolDesc.name !== null && pool.name === poolDesc.name;
+            });
+        }
+        if (!targetCat && meta.slotLevel != null) {
+            targetCat = mod.content.categories.find(function (c) {
+                if (c.resourcePoolId) {
+                    var pool = (mod.content.resourcePools || []).find(function (p) { return p.id === c.resourcePoolId; });
+                    return pool && pool.type === 'spell-slot' && pool.level === meta.slotLevel;
+                }
+                return c.slotLevel === meta.slotLevel;
+            });
         }
         if (!targetCat) {
+            var newPoolId = null;
+            var poolDesc2 = meta.poolDescriptor || (meta.slotLevel != null ? { type: 'spell-slot', level: meta.slotLevel, name: null } : null);
+            if (poolDesc2) {
+                if (!Array.isArray(mod.content.resourcePools)) mod.content.resourcePools = [];
+                var matchingPool = mod.content.resourcePools.find(function (p) {
+                    if (poolDesc2.type === 'spell-slot') return p.type === 'spell-slot' && p.level === poolDesc2.level;
+                    return p.type === poolDesc2.type && poolDesc2.name !== null && p.name === poolDesc2.name;
+                });
+                if (!matchingPool) {
+                    matchingPool = {
+                        id: 'rp_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
+                        type: poolDesc2.type,
+                        level: poolDesc2.level !== undefined ? poolDesc2.level : null,
+                        name: poolDesc2.name !== undefined ? poolDesc2.name : null,
+                        max: 4,
+                        spent: 0
+                    };
+                    mod.content.resourcePools.push(matchingPool);
+                }
+                newPoolId = matchingPool.id;
+            }
             targetCat = {
                 id: 'cat_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
                 name: meta.categoryName || '',
-                slotLevel: (meta.slotLevel !== undefined) ? meta.slotLevel : null,
+                resourcePoolId: newPoolId,
                 collapsed: false,
                 spells: []
             };
@@ -1141,9 +1182,16 @@
         var existing = document.querySelector('.transfer-incoming-overlay');
         if (existing) existing.remove();
 
-        var isWeaponTransfer = (incoming.src === 'weapons');
-        var isSpellTransfer = (incoming.src === 'spells');
-        var targetModuleType = isWeaponTransfer ? 'weapons' : isSpellTransfer ? 'spells' : 'list';
+        var isWeaponTransfer = incoming.src === 'weapons';
+        var isSpellTransfer = incoming.src === 'spells';
+        var targetModuleType;
+        if (isWeaponTransfer) {
+            targetModuleType = 'weapons';
+        } else if (isSpellTransfer) {
+            targetModuleType = 'spells';
+        } else {
+            targetModuleType = 'list';
+        }
         var targetModules = (window.modules || []).filter(function (m) { return m.type === targetModuleType; });
         var selectedModuleId = targetModules.length > 0 ? targetModules[0].id : null;
         var createOnTabId = window.activeTabId;
@@ -1235,6 +1283,12 @@
                 }).join(', ');
                 body.appendChild(traitsEl);
             }
+            if (weaponData.notesMarkdown && weaponData.notesMarkdown.trim()) {
+                var notesPreview = document.createElement('div');
+                notesPreview.className = 'transfer-attr-preview transfer-weapon-notes';
+                notesPreview.innerHTML = window.renderMarkdown(weaponData.notesMarkdown);
+                body.appendChild(notesPreview);
+            }
         } else if (isSpellTransfer) {
             var spellData = incoming.data || {};
             if (spellData.description) {
@@ -1242,9 +1296,7 @@
                 descPreview.className = 'transfer-attr-preview';
                 var descText = document.createElement('div');
                 descText.className = 'transfer-spell-description';
-                var excerpt = spellData.description;
-                if (excerpt.length > 120) excerpt = excerpt.slice(0, 120) + '...';
-                descText.textContent = excerpt;
+                descText.textContent = spellData.description;
                 descPreview.appendChild(descText);
                 body.appendChild(descPreview);
             }
@@ -1256,6 +1308,12 @@
                 return (val && typeof val === 'object') ? (val.current + '/' + val.max) : String(val);
             });
             if (listAttrEl) body.appendChild(listAttrEl);
+            if (incoming.data && incoming.data.notes && incoming.data.notes.trim()) {
+                var listNotesEl = document.createElement('div');
+                listNotesEl.className = 'transfer-attr-preview transfer-list-notes';
+                listNotesEl.textContent = incoming.data.notes;
+                body.appendChild(listNotesEl);
+            }
         }
 
         var targetLabel = document.createElement('div');

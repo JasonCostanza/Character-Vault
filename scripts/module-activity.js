@@ -589,16 +589,27 @@
                 if (pending && pending.spellCast) {
                     if (entry) entry.message += ' \u2192 ' + total;
 
-                    if (pending.autoSpend && pending.slotLevel !== null) {
-                        const spellModData = window.modules.find(m => m.id === pending.moduleId);
+                    const spellModData = window.modules.find(m => m.id === pending.moduleId);
+                    let needsSpellRender = false;
+                    if (pending.autoSpend && pending.poolId !== null && (pending.slotCost ?? 1) > 0) {
                         if (spellModData && typeof window.spendSlot === 'function') {
-                            window.spendSlot(spellModData, pending.slotLevel);
-                            if (entry) entry.message += ' (' + t('spells.log.slotSpent', { level: pending.slotLevel }) + ')';
-                            const spellModEl = document.querySelector('.module[data-id="' + pending.moduleId + '"]');
-                            if (spellModEl) {
-                                const bodyEl = spellModEl.querySelector('.module-body');
-                                if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, spellModData, window.isPlayMode);
-                            }
+                            window.spendSlot(spellModData, pending.poolId, pending.slotCost ?? 1);
+                            const pool = spellModData.content.resourcePools.find(p => p.id === pending.poolId);
+                            const poolLabel = typeof window.getPoolLabel === 'function' ? window.getPoolLabel(pool) : (pending.poolId);
+                            if (entry && pool) entry.message += ' (' + t('spells.log.slotSpent', { level: poolLabel }) + ')';
+                            needsSpellRender = true;
+                        }
+                    }
+                    if (pending.preparedCast && spellModData && typeof window.findSpellInModule === 'function') {
+                        const foundSpell = window.findSpellInModule(spellModData, pending.catId, pending.spellId);
+                        if (foundSpell) foundSpell.castsUsed = (foundSpell.castsUsed || 0) + 1;
+                        needsSpellRender = true;
+                    }
+                    if (needsSpellRender && spellModData) {
+                        const spellModEl = document.querySelector('.module[data-id="' + pending.moduleId + '"]');
+                        if (spellModEl) {
+                            const bodyEl = spellModEl.querySelector('.module-body');
+                            if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, spellModData, window.isPlayMode);
                         }
                     }
                     scheduleSave();

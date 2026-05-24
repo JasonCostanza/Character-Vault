@@ -327,7 +327,7 @@
         if (moduleData.type === 'spells') {
             moduleData.colSpan = 4;
             moduleData.rowSpan = 4;
-            moduleData.content = { autoSpendSlots: true, showSlotErrors: true, slotLevels: [], categories: [] };
+            moduleData.content = { autoSpendSlots: true, showSlotErrors: true, resourcePools: [], casterType: null, categories: [] };
         }
 
         if (moduleData.type === 'activity') {

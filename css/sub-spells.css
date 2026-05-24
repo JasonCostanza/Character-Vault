@@ -709,3 +709,153 @@
 
 .spell-bonus-quick-edit-input::-webkit-outer-spin-button,
 .spell-bonus-quick-edit-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+/* ── Pool Type Badge ── */
+.pool-type-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    padding: 1px 5px;
+    user-select: none;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+.pool-type-badge--spell-slot {
+    color: var(--cv-accent);
+    background: color-mix(in srgb, var(--cv-accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--cv-accent) 30%, transparent);
+}
+.pool-type-badge--focus {
+    color: var(--cv-text-secondary);
+    background: color-mix(in srgb, var(--cv-text-secondary) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--cv-text-secondary) 30%, transparent);
+}
+.pool-type-badge--custom {
+    color: var(--cv-text-muted);
+    background: color-mix(in srgb, var(--cv-text-muted) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--cv-text-muted) 30%, transparent);
+}
+
+/* ── Pool Name Input (layout bar) ── */
+.spells-slot-name-input {
+    font-size: 11px;
+    font-family: inherit;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 3px;
+    color: var(--cv-text);
+    padding: 2px 5px;
+    width: 80px;
+    min-width: 0;
+}
+.spells-slot-name-input:focus {
+    outline: none;
+    border-color: var(--cv-accent);
+}
+
+/* ── Spell Drawer Field Row (slot cost, upcast toggle) ── */
+.spells-drawer-field-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 6px;
+    margin-top: 4px;
+    border-top: 1px solid var(--cv-border-subtle);
+}
+.spells-drawer-field-label {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    user-select: none;
+    flex-shrink: 0;
+}
+
+/* ── Upcast level picker ── */
+.spell-upcast-picker {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    justify-content: flex-end;
+}
+.spell-upcast-pill {
+    position: relative;
+    min-width: 18px;
+    height: 20px;
+    padding: 0 5px;
+    border: 1px solid var(--cv-accent);
+    border-radius: 3px;
+    background: none;
+    color: var(--cv-accent);
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+}
+.spell-upcast-pill:hover { background: var(--cv-accent); color: var(--cv-bg-surface); }
+
+/* ── Preparation mode stepper ── */
+.spell-prepare-stepper {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    justify-content: flex-end;
+}
+.spell-prepare-step-btn {
+    width: 18px;
+    height: 20px;
+    border: 1px solid var(--cv-border);
+    border-radius: 3px;
+    background: none;
+    color: var(--cv-text-muted);
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+}
+.spell-prepare-step-btn:hover { color: var(--cv-accent); border-color: var(--cv-accent); }
+.spell-prepare-count {
+    min-width: 16px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--cv-text);
+    user-select: none;
+}
+
+/* ── Preparation mode bulk actions ── */
+.spell-prep-bulk-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    border-left: 1px solid var(--cv-border-subtle);
+    padding-left: 6px;
+    margin-left: 2px;
+}
+.spell-prep-bulk-btn {
+    background: none;
+    border: none;
+    padding: 2px 5px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: color 0.12s ease, background 0.12s ease;
+    user-select: none;
+    line-height: 16px;
+    white-space: nowrap;
+}
+.spell-prep-bulk-btn--prepare { color: var(--cv-accent); }
+.spell-prep-bulk-btn--prepare:hover { background: color-mix(in srgb, var(--cv-accent) 15%, transparent); }
+.spell-prep-bulk-btn--unprepare { color: var(--cv-text-muted); }
+.spell-prep-bulk-btn--unprepare:hover { color: var(--cv-text-secondary); background: color-mix(in srgb, var(--cv-text-muted) 12%, transparent); }
+.spell-prep-bulk-divider { width: 1px; height: 10px; background: var(--cv-border-subtle); flex-shrink: 0; margin: 0 1px; }
+
+/* ── Prepared caster spell states ── */
+.spells-cast-btn.spell-unprepared,
+.spells-cast-btn.spell-exhausted {
+    opacity: 0.35;
+    cursor: not-allowed;
+}

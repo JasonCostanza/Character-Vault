@@ -158,8 +158,8 @@
     // ── Export / Import ──
     const btnExport = document.getElementById('btn-export');
 
-    btnExport.addEventListener('click', () => {
-        const ok = copyTextToClipboard(serializeCharacter());
+    btnExport.addEventListener('click', async () => {
+        const ok = await copyTextToClipboard(serializeCharacter());
         if (ok) {
             console.log('[CV] Character data copied to clipboard');
             showToast(t('toast.exportSuccess'), 'success');
@@ -462,9 +462,9 @@
     updateDimensions();
 
     // ── GitHub Link (copy to clipboard) ──
-    document.getElementById('btn-github-link').addEventListener('click', function () {
+    document.getElementById('btn-github-link').addEventListener('click', async function () {
         const btn = this;
-        const ok = copyTextToClipboard('https://github.com/JasonCostanza/Character-Vault');
+        const ok = await copyTextToClipboard('https://github.com/JasonCostanza/Character-Vault');
         if (ok) {
             console.log('[CV] GitHub URL copied to clipboard');
             btn.classList.add('copied');

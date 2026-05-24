@@ -88,10 +88,11 @@ describe('extractDiceRoll', () => {
 describe('spellsDefaultContent', () => {
   it('returns an object with the expected shape', () => {
     const c = spellsDefaultContent();
-    expect(Array.isArray(c.slotLevels)).toBe(true);
+    expect(Array.isArray(c.resourcePools)).toBe(true);
     expect(Array.isArray(c.categories)).toBe(true);
     expect(typeof c.autoSpendSlots).toBe('boolean');
     expect(typeof c.showSlotErrors).toBe('boolean');
+    expect(c.casterType).toBeNull();
   });
 
   it('returns a fresh object each call — not a shared reference', () => {
@@ -102,53 +103,122 @@ describe('spellsDefaultContent', () => {
   });
 });
 
+describe('resolveSlotCost', () => {
+  it('returns 1 when slotCost is null', () => {
+    expect(resolveSlotCost({ slotCost: null })).toBe(1);
+  });
+
+  it('returns 1 when slotCost is undefined', () => {
+    expect(resolveSlotCost({})).toBe(1);
+  });
+
+  it('returns 0 when slotCost is 0', () => {
+    expect(resolveSlotCost({ slotCost: 0 })).toBe(0);
+  });
+
+  it('returns N when slotCost is a positive number', () => {
+    expect(resolveSlotCost({ slotCost: 2 })).toBe(2);
+  });
+
+  it('clamps negative values to 0', () => {
+    expect(resolveSlotCost({ slotCost: -3 })).toBe(0);
+  });
+
+  it('clamps non-numeric strings to 0', () => {
+    expect(resolveSlotCost({ slotCost: 'abc' })).toBe(0);
+  });
+
+  it('returns 1 when slotCost is empty string', () => {
+    expect(resolveSlotCost({ slotCost: '' })).toBe(1);
+  });
+});
+
+describe('getPoolLabel', () => {
+  it('returns "?" for null/undefined', () => {
+    expect(getPoolLabel(null)).toBe('?');
+    expect(getPoolLabel(undefined)).toBe('?');
+  });
+
+  it('formats spell-slot pools with level', () => {
+    expect(getPoolLabel({ type: 'spell-slot', level: 3, name: null })).toBe('Lvl 3');
+  });
+
+  it('returns pool name for focus type with a name', () => {
+    expect(getPoolLabel({ type: 'focus', level: null, name: 'Ki Points' })).toBe('Ki Points');
+  });
+
+  it('falls back to customPool label for focus type with no name', () => {
+    expect(getPoolLabel({ type: 'focus', level: null, name: '' })).toBe('Custom Pool');
+  });
+
+  it('returns pool name for custom type with a name', () => {
+    expect(getPoolLabel({ type: 'custom', level: null, name: 'Luck' })).toBe('Luck');
+  });
+
+  it('falls back to customPool label for custom type with null name', () => {
+    expect(getPoolLabel({ type: 'custom', level: null, name: null })).toBe('Custom Pool');
+  });
+});
+
 describe('getAvailableSlots', () => {
-  function makeData(slotLevels) {
-    return { content: { slotLevels } };
+  function makeData(resourcePools) {
+    return { content: { resourcePools } };
   }
 
-  it('returns remaining slots for a normal level', () => {
-    const data = makeData([{ level: 1, max: 4, spent: 1 }]);
-    expect(getAvailableSlots(data, 1)).toBe(3);
+  it('returns remaining slots for a known pool', () => {
+    const data = makeData([{ id: 'rp1', type: 'spell-slot', level: 1, name: null, max: 4, spent: 1 }]);
+    expect(getAvailableSlots(data, 'rp1')).toBe(3);
   });
 
   it('returns 0 when all slots are spent', () => {
-    const data = makeData([{ level: 1, max: 3, spent: 3 }]);
-    expect(getAvailableSlots(data, 1)).toBe(0);
+    const data = makeData([{ id: 'rp1', type: 'spell-slot', level: 1, name: null, max: 3, spent: 3 }]);
+    expect(getAvailableSlots(data, 'rp1')).toBe(0);
   });
 
   it('clamps to 0 when spent exceeds max', () => {
-    const data = makeData([{ level: 1, max: 2, spent: 5 }]);
-    expect(getAvailableSlots(data, 1)).toBe(0);
+    const data = makeData([{ id: 'rp1', type: 'spell-slot', level: 1, name: null, max: 2, spent: 5 }]);
+    expect(getAvailableSlots(data, 'rp1')).toBe(0);
   });
 
-  it('returns 0 for a level that does not exist', () => {
+  it('returns 0 for a pool id that does not exist', () => {
     const data = makeData([]);
-    expect(getAvailableSlots(data, 3)).toBe(0);
+    expect(getAvailableSlots(data, 'rp_missing')).toBe(0);
   });
 });
 
 describe('spendSlot', () => {
-  function makeData(slotLevels) {
-    return { content: { slotLevels } };
+  function makeData(resourcePools) {
+    return { content: { resourcePools } };
   }
 
-  it('increments the spent count', () => {
-    const data = makeData([{ level: 1, max: 4, spent: 0 }]);
-    spendSlot(data, 1);
-    expect(data.content.slotLevels[0].spent).toBe(1);
+  it('spends 1 by default', () => {
+    const data = makeData([{ id: 'rp1', type: 'spell-slot', level: 1, name: null, max: 4, spent: 0 }]);
+    spendSlot(data, 'rp1');
+    expect(data.content.resourcePools[0].spent).toBe(1);
   });
 
-  it('does not increment beyond max', () => {
-    const data = makeData([{ level: 1, max: 2, spent: 2 }]);
-    spendSlot(data, 1);
-    expect(data.content.slotLevels[0].spent).toBe(2);
+  it('spends the given cost', () => {
+    const data = makeData([{ id: 'rp1', type: 'spell-slot', level: 1, name: null, max: 4, spent: 0 }]);
+    spendSlot(data, 'rp1', 2);
+    expect(data.content.resourcePools[0].spent).toBe(2);
   });
 
-  it('is a no-op for a missing slot level', () => {
-    const data = makeData([{ level: 2, max: 3, spent: 0 }]);
-    spendSlot(data, 99);
-    expect(data.content.slotLevels[0].spent).toBe(0);
+  it('clamps spent to max', () => {
+    const data = makeData([{ id: 'rp1', type: 'spell-slot', level: 1, name: null, max: 2, spent: 1 }]);
+    spendSlot(data, 'rp1', 10);
+    expect(data.content.resourcePools[0].spent).toBe(2);
+  });
+
+  it('is a no-op when cost is 0', () => {
+    const data = makeData([{ id: 'rp1', type: 'spell-slot', level: 1, name: null, max: 4, spent: 1 }]);
+    spendSlot(data, 'rp1', 0);
+    expect(data.content.resourcePools[0].spent).toBe(1);
+  });
+
+  it('is a no-op for a missing pool id', () => {
+    const data = makeData([{ id: 'rp1', type: 'spell-slot', level: 2, name: null, max: 3, spent: 0 }]);
+    spendSlot(data, 'rp_missing');
+    expect(data.content.resourcePools[0].spent).toBe(0);
   });
 });
 
@@ -233,13 +303,29 @@ describe('ensureSpellContent', () => {
   it('replaces null content with defaultContent shape', () => {
     const data = { content: null };
     ensureSpellContent(data);
-    expect(Array.isArray(data.content.slotLevels)).toBe(true);
+    expect(Array.isArray(data.content.resourcePools)).toBe(true);
     expect(Array.isArray(data.content.attributes)).toBe(true);
     expect(data.content.sortBy).toBeNull();
+    expect(data.content.casterType).toBeNull();
+  });
+
+  it('migrates legacy slotLevels to resourcePools', () => {
+    const data = { content: { slotLevels: [{ id: 'sl1', level: 1, max: 4, spent: 1 }], categories: [], attributes: [], sortBy: null, sortDir: 'asc' } };
+    ensureSpellContent(data);
+    expect(data.content.slotLevels).toBeUndefined();
+    expect(data.content.resourcePools).toHaveLength(1);
+    expect(data.content.resourcePools[0]).toMatchObject({ id: 'sl1', type: 'spell-slot', level: 1, max: 4, spent: 1 });
+  });
+
+  it('migrates category slotLevel to resourcePoolId', () => {
+    const data = { content: { slotLevels: [{ id: 'sl1', level: 1, max: 4, spent: 0 }], categories: [{ id: 'cat1', name: 'C', slotLevel: 1, collapsed: false, spells: [] }], attributes: [], sortBy: null, sortDir: 'asc' } };
+    ensureSpellContent(data);
+    expect(data.content.categories[0].slotLevel).toBeUndefined();
+    expect(data.content.categories[0].resourcePoolId).toBe('sl1');
   });
 
   it('fills in missing boolean fields', () => {
-    const data = { content: { slotLevels: [], categories: [], attributes: [], sortBy: null, sortDir: 'asc' } };
+    const data = { content: { resourcePools: [], categories: [], attributes: [], sortBy: null, sortDir: 'asc' } };
     ensureSpellContent(data);
     expect(data.content.autoSpendSlots).toBe(true);
     expect(data.content.showSlotErrors).toBe(true);
@@ -250,9 +336,9 @@ describe('ensureSpellContent', () => {
       content: {
         autoSpendSlots: true,
         showSlotErrors: true,
-        slotLevels: [],
+        resourcePools: [],
         categories: [
-          { id: 'cat1', name: 'C', slotLevel: null, collapsed: false,
+          { id: 'cat1', name: 'C', resourcePoolId: null, collapsed: false,
             spells: [{ id: 'sp1', name: 'A', attributes: [{ key: 'Dmg', value: '1d6' }] }] },
         ],
       },
@@ -264,11 +350,29 @@ describe('ensureSpellContent', () => {
     expect(data.content.categories[0].spells[0].attributes).toBeUndefined();
   });
 
+  it('adds new spell fields to existing spells', () => {
+    const data = {
+      content: {
+        autoSpendSlots: true, showSlotErrors: true,
+        resourcePools: [], categories: [
+          { id: 'cat1', name: 'C', resourcePoolId: null, collapsed: false,
+            spells: [{ id: 'sp1', name: 'A', values: {} }] },
+        ], attributes: [], sortBy: null, sortDir: 'asc',
+      },
+    };
+    ensureSpellContent(data);
+    const spell = data.content.categories[0].spells[0];
+    expect(spell.slotCost).toBeNull();
+    expect(spell.canUpcast).toBe(false);
+    expect(spell.preparedCount).toBe(0);
+    expect(spell.castsUsed).toBe(0);
+  });
+
   it('does not overwrite valid sortBy when content is already migrated', () => {
     const data = {
       content: {
         autoSpendSlots: true, showSlotErrors: true,
-        slotLevels: [], categories: [], attributes: [],
+        resourcePools: [], categories: [], attributes: [],
         sortBy: '__name__', sortDir: 'desc',
       },
     };
@@ -541,15 +645,15 @@ describe('castSpell', () => {
     return el;
   }
 
-  function makeData(catOverrides = {}, slotLevels = [{ level: 1, max: 3, spent: 0 }]) {
+  function makeData(catOverrides = {}, resourcePools = [{ id: 'rp1', type: 'spell-slot', level: 1, name: null, max: 3, spent: 0 }]) {
     return {
       id: 'mod1',
       content: {
         autoSpendSlots: true,
         showSlotErrors: true,
-        slotLevels,
+        resourcePools,
         attributes: [],
-        categories: [{ id: 'cat1', slotLevel: 1, spells: [], ...catOverrides }],
+        categories: [{ id: 'cat1', resourcePoolId: 'rp1', spells: [], ...catOverrides }],
       },
     };
   }
@@ -561,31 +665,31 @@ describe('castSpell', () => {
   });
 
   it('blocks cast and shows a toast when no slots remain and showSlotErrors is true', () => {
-    const data = makeData({}, [{ level: 1, max: 2, spent: 2 }]);
-    castSpell(makeModuleEl(), data, { id: 's1', name: 'Fireball', values: {} }, 'cat1');
+    const data = makeData({}, [{ id: 'rp1', type: 'spell-slot', level: 1, name: null, max: 2, spent: 2 }]);
+    castSpell(makeModuleEl(), data, { id: 's1', name: 'Fireball', values: {}, slotCost: null }, 'cat1');
     expect(showToast).toHaveBeenCalled();
     expect(window.logActivity).not.toHaveBeenCalled();
   });
 
-  it('does not spend a slot immediately — defers to roll resolution', () => {
+  it('spends a slot immediately when there are no dice rolls (no-dice fix)', () => {
     const data = makeData();
-    castSpell(makeModuleEl(), data, { id: 's1', name: 'Fireball', values: {} }, 'cat1');
-    expect(data.content.slotLevels[0].spent).toBe(0);
+    castSpell(makeModuleEl(), data, { id: 's1', name: 'Cantrip', values: {}, slotCost: null }, 'cat1');
+    expect(data.content.resourcePools[0].spent).toBe(1);
     expect(window.logActivity).toHaveBeenCalled();
-    expect(scheduleSave).not.toHaveBeenCalled();
+    expect(scheduleSave).toHaveBeenCalled();
   });
 
   it('logs activity when autoSpendSlots is false', () => {
     const data = makeData();
     data.content.autoSpendSlots = false;
-    castSpell(makeModuleEl(), data, { id: 's1', name: 'Fireball', values: {} }, 'cat1');
+    castSpell(makeModuleEl(), data, { id: 's1', name: 'Fireball', values: {}, slotCost: null }, 'cat1');
     expect(window.logActivity).toHaveBeenCalled();
-    expect(data.content.slotLevels[0].spent).toBe(0);
+    expect(data.content.resourcePools[0].spent).toBe(0);
   });
 
-  it('logs activity for cantrips (slotLevel null) without slot pre-check', () => {
-    const data = makeData({ slotLevel: null }, []);
-    castSpell(makeModuleEl(), data, { id: 's1', name: 'Light', values: {} }, 'cat1');
+  it('logs activity for cantrips (resourcePoolId null) without slot pre-check', () => {
+    const data = makeData({ resourcePoolId: null }, []);
+    castSpell(makeModuleEl(), data, { id: 's1', name: 'Light', values: {}, slotCost: null }, 'cat1');
     expect(window.logActivity).toHaveBeenCalled();
   });
 
@@ -594,5 +698,100 @@ describe('castSpell', () => {
     castSpell(makeModuleEl(), data, { id: 's1', name: 'Fireball', values: {} }, 'nonexistent');
     expect(window.logActivity).not.toHaveBeenCalled();
     expect(scheduleSave).not.toHaveBeenCalled();
+  });
+
+  it('spends from overridePoolId pool, ignoring cat.resourcePoolId', () => {
+    const data = makeData(
+      {},
+      [
+        { id: 'rp1', type: 'spell-slot', level: 1, name: null, max: 3, spent: 0 },
+        { id: 'rp2', type: 'spell-slot', level: 2, name: null, max: 2, spent: 0 },
+      ]
+    );
+    castSpell(makeModuleEl(), data, { id: 's1', name: 'Fireball', values: {}, slotCost: null }, 'cat1', 'rp2');
+    expect(data.content.resourcePools[0].spent).toBe(0);
+    expect(data.content.resourcePools[1].spent).toBe(1);
+  });
+
+  it('blocks cast when overridePoolId pool is depleted', () => {
+    const data = makeData(
+      {},
+      [
+        { id: 'rp1', type: 'spell-slot', level: 1, name: null, max: 3, spent: 0 },
+        { id: 'rp2', type: 'spell-slot', level: 2, name: null, max: 2, spent: 2 },
+      ]
+    );
+    castSpell(makeModuleEl(), data, { id: 's1', name: 'Fireball', values: {}, slotCost: null }, 'cat1', 'rp2');
+    expect(showToast).toHaveBeenCalled();
+    expect(window.logActivity).not.toHaveBeenCalled();
+  });
+
+  it('blocks cast for prepared caster when preparedCount is 0', () => {
+    const data = makeData();
+    data.content.casterType = 'prepared';
+    const spell = { id: 's1', name: 'Fireball', values: {}, slotCost: null, preparedCount: 0, castsUsed: 0, canUpcast: false };
+    castSpell(makeModuleEl(), data, spell, 'cat1');
+    expect(showToast).toHaveBeenCalledWith('This spell is not prepared.', 'error');
+    expect(window.logActivity).not.toHaveBeenCalled();
+  });
+
+  it('blocks cast for prepared caster when castsUsed >= preparedCount', () => {
+    const data = makeData();
+    data.content.casterType = 'prepared';
+    const spell = { id: 's1', name: 'Fireball', values: {}, slotCost: null, preparedCount: 2, castsUsed: 2, canUpcast: false };
+    castSpell(makeModuleEl(), data, spell, 'cat1');
+    expect(showToast).toHaveBeenCalledWith('No prepared uses remaining.', 'error');
+    expect(window.logActivity).not.toHaveBeenCalled();
+  });
+
+  it('allows cast for prepared caster when castsUsed < preparedCount', () => {
+    const data = makeData();
+    data.content.casterType = 'prepared';
+    const spell = { id: 's1', name: 'Fireball', values: {}, slotCost: null, preparedCount: 3, castsUsed: 1, canUpcast: false };
+    castSpell(makeModuleEl(), data, spell, 'cat1');
+    expect(window.logActivity).toHaveBeenCalled();
+  });
+
+  it('increments castsUsed on no-dice cast for prepared caster', () => {
+    const data = makeData();
+    data.content.casterType = 'prepared';
+    const spell = { id: 's1', name: 'Cantrip', values: {}, slotCost: null, preparedCount: 2, castsUsed: 0, canUpcast: false };
+    castSpell(makeModuleEl(), data, spell, 'cat1');
+    expect(spell.castsUsed).toBe(1);
+    expect(scheduleSave).toHaveBeenCalled();
+  });
+
+  it('increments castsUsed even for free-category spells (no pool) in prepared mode', () => {
+    const data = makeData({ resourcePoolId: null }, []);
+    data.content.casterType = 'prepared';
+    const spell = { id: 's1', name: 'Cantrip', values: {}, slotCost: null, preparedCount: 1, castsUsed: 0, canUpcast: false };
+    castSpell(makeModuleEl(), data, spell, 'cat1');
+    expect(spell.castsUsed).toBe(1);
+  });
+});
+
+describe('findSpellInModule', () => {
+  function makeModuleData(spells = []) {
+    return {
+      content: {
+        categories: [{ id: 'cat1', spells }],
+      },
+    };
+  }
+
+  it('returns the spell when found', () => {
+    const spell = { id: 'sp1', name: 'Fireball' };
+    const data = makeModuleData([spell]);
+    expect(findSpellInModule(data, 'cat1', 'sp1')).toBe(spell);
+  });
+
+  it('returns null for missing category', () => {
+    const data = makeModuleData([{ id: 'sp1', name: 'Fireball' }]);
+    expect(findSpellInModule(data, 'bad-cat', 'sp1')).toBeNull();
+  });
+
+  it('returns null for missing spell', () => {
+    const data = makeModuleData([{ id: 'sp1', name: 'Fireball' }]);
+    expect(findSpellInModule(data, 'cat1', 'bad-spell')).toBeNull();
   });
 });

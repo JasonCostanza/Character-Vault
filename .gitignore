@@ -13,6 +13,9 @@ node_modules/
 # Kilo Code local settings
 .kilo/
 
+# Pi Coding Agent
+.pi/
+
 # Design Documents
 _DOCS
 

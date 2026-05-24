@@ -1914,6 +1914,7 @@
         slotsPane.appendChild(slotListEl);
 
         let refreshCatList;
+        let refreshAddCatSelect;
 
         function refreshSlotList() {
             slotListEl.innerHTML = '';
@@ -1982,6 +1983,7 @@
                         scheduleSave();
                         refreshSlotList();
                         if (refreshCatList) refreshCatList();
+                        if (refreshAddCatSelect) refreshAddCatSelect();
                         reRender();
                     };
                     if (usedByCats) {
@@ -2053,6 +2055,7 @@
             scheduleSave();
             refreshSlotList();
             if (refreshCatList) refreshCatList();
+            if (refreshAddCatSelect) refreshAddCatSelect();
             reRender();
         });
 
@@ -2167,9 +2170,17 @@
         newCatNameInput.placeholder = t('spells.categoryNamePlaceholder');
 
         let newCatPoolId = null;
-        const addCatSlotSelect = buildCvSelect(buildSlotOptions(), '', (val) => {
+        let addCatSlotSelectEl = buildCvSelect(buildSlotOptions(), '', (val) => {
             newCatPoolId = val === '' ? null : val;
-        });
+        }).el;
+
+        refreshAddCatSelect = function () {
+            const newSelect = buildCvSelect(buildSlotOptions(), newCatPoolId ?? '', (val) => {
+                newCatPoolId = val === '' ? null : val;
+            });
+            addCatSlotSelectEl.replaceWith(newSelect.el);
+            addCatSlotSelectEl = newSelect.el;
+        };
 
         const addCatBtn = document.createElement('button');
         addCatBtn.className = 'spells-settings-add-btn';
@@ -2190,7 +2201,7 @@
         newCatNameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') addCatBtn.click(); });
 
         addCatRow.appendChild(newCatNameInput);
-        addCatRow.appendChild(addCatSlotSelect.el);
+        addCatRow.appendChild(addCatSlotSelectEl);
         addCatRow.appendChild(addCatBtn);
         categoriesPane.appendChild(addCatRow);
 

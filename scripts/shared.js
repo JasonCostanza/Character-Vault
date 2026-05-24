@@ -454,7 +454,15 @@
     window.rollDualityDice = rollDualityDice;
 
     // ── Clipboard ──
-    function copyTextToClipboard(text) {
+    async function copyTextToClipboard(text) {
+        if (navigator.clipboard?.writeText) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch {
+                // fall through to legacy approach
+            }
+        }
         const el = document.createElement('input');
         el.type = 'text';
         el.value = text;
@@ -464,7 +472,7 @@
         el.select();
         try {
             return document.execCommand('copy');
-        } catch (err) {
+        } catch {
             return false;
         } finally {
             document.body.removeChild(el);

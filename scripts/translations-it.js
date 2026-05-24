@@ -402,6 +402,8 @@ window.CV_TRANSLATIONS['it'] = {
             'spells.casterType.spontaneous': 'Spontaneo',
             'spells.prepareSpells': 'Preparare incantesimi',
             'spells.donePreparing': 'Fatto',
+            'spells.prepareAll': 'Prep. tutto',
+            'spells.unprepareAll': 'Cancella tutto',
             'spells.notPreparedError': "Questo incantesimo non è preparato.",
             'spells.preparedExhaustedError': 'Nessun uso preparato rimasto.',
             'spells.removeSlotLevelConfirm': 'Questo livello è usato da una o più categorie. Verranno impostate su nessuno slot. Rimuovere comunque?',

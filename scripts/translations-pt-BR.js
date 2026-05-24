@@ -392,6 +392,8 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'spells.casterType.spontaneous': 'Espontâneo',
             'spells.prepareSpells': 'Preparar magias',
             'spells.donePreparing': 'Concluído',
+            'spells.prepareAll': 'Prep. tudo',
+            'spells.unprepareAll': 'Limpar tudo',
             'spells.notPreparedError': 'Esta magia não está preparada.',
             'spells.preparedExhaustedError': 'Sem usos preparados restantes.',
             'spells.removeSlotLevelConfirm': 'Este nível é usado por uma ou mais categorias. Elas serão definidas como sem espaço. Remover mesmo assim?',

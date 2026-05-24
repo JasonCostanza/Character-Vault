@@ -888,6 +888,8 @@ window.CV_TRANSLATIONS.en = {
             'spells.casterType.spontaneous': 'Spontaneous',
             'spells.prepareSpells': 'Prepare Spells',
             'spells.donePreparing': 'Done Preparing',
+            'spells.prepareAll': 'Prep All',
+            'spells.unprepareAll': 'Clear All',
             'spells.notPreparedError': 'This spell is not prepared.',
             'spells.preparedExhaustedError': 'No prepared uses remaining.',
             'spells.removeSlotLevelConfirm': 'This slot level is used by one or more categories. Those categories will be set to no slot. Remove anyway?',

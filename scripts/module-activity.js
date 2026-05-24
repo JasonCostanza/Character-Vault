@@ -591,7 +591,7 @@
 
                     const spellModData = window.modules.find(m => m.id === pending.moduleId);
                     let needsSpellRender = false;
-                    if (pending.autoSpend && pending.poolId !== null) {
+                    if (pending.autoSpend && pending.poolId !== null && (pending.slotCost ?? 1) > 0) {
                         if (spellModData && typeof window.spendSlot === 'function') {
                             window.spendSlot(spellModData, pending.poolId, pending.slotCost ?? 1);
                             const pool = spellModData.content.resourcePools.find(p => p.id === pending.poolId);

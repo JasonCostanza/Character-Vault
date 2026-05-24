@@ -772,6 +772,8 @@ window.CV_TRANSLATIONS['de'] = {
             'spells.casterType.spontaneous': 'Spontan',
             'spells.prepareSpells': 'Zauber vorbereiten',
             'spells.donePreparing': 'Fertig',
+            'spells.prepareAll': 'Alle vorb.',
+            'spells.unprepareAll': 'Alle löschen',
             'spells.notPreparedError': 'Dieser Zauber ist nicht vorbereitet.',
             'spells.preparedExhaustedError': 'Keine vorbereiteten Einsätze übrig.',
             'spells.removeSlotLevelConfirm': 'Diese Stufe wird von einer oder mehreren Kategorien verwendet. Diese werden auf keinen Schlitz gesetzt. Trotzdem entfernen?',

@@ -823,6 +823,36 @@
     user-select: none;
 }
 
+/* ── Preparation mode bulk actions ── */
+.spell-prep-bulk-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    border-left: 1px solid var(--cv-border-subtle);
+    padding-left: 6px;
+    margin-left: 2px;
+}
+.spell-prep-bulk-btn {
+    background: none;
+    border: none;
+    padding: 2px 5px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: color 0.12s ease, background 0.12s ease;
+    user-select: none;
+    line-height: 16px;
+    white-space: nowrap;
+}
+.spell-prep-bulk-btn--prepare { color: var(--cv-accent); }
+.spell-prep-bulk-btn--prepare:hover { background: color-mix(in srgb, var(--cv-accent) 15%, transparent); }
+.spell-prep-bulk-btn--unprepare { color: var(--cv-text-muted); }
+.spell-prep-bulk-btn--unprepare:hover { color: var(--cv-text-secondary); background: color-mix(in srgb, var(--cv-text-muted) 12%, transparent); }
+.spell-prep-bulk-divider { width: 1px; height: 10px; background: var(--cv-border-subtle); flex-shrink: 0; margin: 0 1px; }
+
 /* ── Prepared caster spell states ── */
 .spells-cast-btn.spell-unprepared,
 .spells-cast-btn.spell-exhausted {

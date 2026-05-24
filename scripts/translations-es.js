@@ -392,6 +392,8 @@ window.CV_TRANSLATIONS['es'] = {
             'spells.casterType.spontaneous': 'Espontáneo',
             'spells.prepareSpells': 'Preparar conjuros',
             'spells.donePreparing': 'Listo',
+            'spells.prepareAll': 'Prep. todo',
+            'spells.unprepareAll': 'Limpiar todo',
             'spells.notPreparedError': 'Este conjuro no está preparado.',
             'spells.preparedExhaustedError': 'No quedan usos preparados.',
             'spells.removeSlotLevelConfirm': 'Este nivel es usado por una o más categorías. Se establecerán en sin espacio. ¿Eliminar de todas formas?',

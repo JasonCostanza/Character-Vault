@@ -419,7 +419,7 @@
         const block = document.createElement('div');
         block.className = 'spells-category-block';
         block.dataset.catId = cat.id;
-        renderCategoryHeader(block, cat, data, bodyEl);
+        renderCategoryHeader(block, cat, data, bodyEl, preparationMode);
         const pinnedAttrs = data.content.attributes.filter((a) => a.pinned);
         const table = document.createElement('table');
         table.className = 'spells-table';
@@ -446,7 +446,7 @@
         container.appendChild(block);
     }
 
-    function renderCategoryHeader(blockEl, cat, data, bodyEl) {
+    function renderCategoryHeader(blockEl, cat, data, bodyEl, preparationMode) {
         const header = document.createElement('div');
         header.className = 'spells-cat-header';
         const collapseBtn = document.createElement('button');
@@ -511,6 +511,48 @@
                 header.appendChild(pipsDiv);
             }
         }
+        if (preparationMode) {
+            const bulkActions = document.createElement('div');
+            bulkActions.className = 'spell-prep-bulk-actions';
+            const prepAllBtn = document.createElement('button');
+            prepAllBtn.className = 'spell-prep-bulk-btn spell-prep-bulk-btn--prepare';
+            prepAllBtn.textContent = t('spells.prepareAll');
+            prepAllBtn.title = t('spells.prepareAll');
+            prepAllBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                (cat.spells || []).forEach((spell) => {
+                    if ((spell.preparedCount || 0) === 0) spell.preparedCount = 1;
+                    const row = blockEl.querySelector(`tr[data-spell-id="${spell.id}"]`);
+                    if (row) {
+                        const countEl = row.querySelector('.spell-prepare-count');
+                        if (countEl) countEl.textContent = String(spell.preparedCount);
+                    }
+                });
+                scheduleSave();
+            });
+            const bulkDivider = document.createElement('span');
+            bulkDivider.className = 'spell-prep-bulk-divider';
+            const unprepAllBtn = document.createElement('button');
+            unprepAllBtn.className = 'spell-prep-bulk-btn spell-prep-bulk-btn--unprepare';
+            unprepAllBtn.textContent = t('spells.unprepareAll');
+            unprepAllBtn.title = t('spells.unprepareAll');
+            unprepAllBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                (cat.spells || []).forEach((spell) => {
+                    spell.preparedCount = 0;
+                    const row = blockEl.querySelector(`tr[data-spell-id="${spell.id}"]`);
+                    if (row) {
+                        const countEl = row.querySelector('.spell-prepare-count');
+                        if (countEl) countEl.textContent = '0';
+                    }
+                });
+                scheduleSave();
+            });
+            bulkActions.appendChild(prepAllBtn);
+            bulkActions.appendChild(bulkDivider);
+            bulkActions.appendChild(unprepAllBtn);
+            header.appendChild(bulkActions);
+        }
         function toggleCollapse() {
             cat.collapsed = !cat.collapsed;
             collapseBtn.classList.toggle('expanded', !cat.collapsed);
@@ -520,7 +562,7 @@
         }
         collapseBtn.addEventListener('click', toggleCollapse);
         header.addEventListener('click', (e) => {
-            if (e.target.closest('.spells-cat-pips') || e.target.closest('.spells-cat-collapse-btn') || e.target.closest('.spells-cat-bonus-badges')) return;
+            if (e.target.closest('.spells-cat-pips') || e.target.closest('.spells-cat-collapse-btn') || e.target.closest('.spells-cat-bonus-badges') || e.target.closest('.spell-prep-bulk-actions')) return;
             toggleCollapse();
         });
         blockEl.appendChild(header);
@@ -970,7 +1012,7 @@
         addFocusBtn.className = 'btn-secondary sm';
         addFocusBtn.textContent = t('spells.addFocusPool');
         addFocusBtn.addEventListener('click', () => {
-            data.content.resourcePools.push({ id: genId('rp'), type: 'focus', level: null, name: '', max: 3, spent: 0 });
+            data.content.resourcePools.push({ id: genId('rp'), type: 'focus', level: null, name: null, max: 3, spent: 0 });
             scheduleSave();
             bodyEl.innerHTML = '';
             renderSpellsLayout(bodyEl, data);
@@ -980,7 +1022,7 @@
         addCustomBtn.className = 'btn-secondary sm';
         addCustomBtn.textContent = t('spells.addCustomPool');
         addCustomBtn.addEventListener('click', () => {
-            data.content.resourcePools.push({ id: genId('rp'), type: 'custom', level: null, name: '', max: 3, spent: 0 });
+            data.content.resourcePools.push({ id: genId('rp'), type: 'custom', level: null, name: null, max: 3, spent: 0 });
             scheduleSave();
             bodyEl.innerHTML = '';
             renderSpellsLayout(bodyEl, data);
@@ -1259,6 +1301,7 @@
         slotCostInput.className = 'spells-inline-input';
         slotCostInput.style.width = '56px';
         slotCostInput.min = '0';
+        slotCostInput.step = '1';
         slotCostInput.placeholder = '1';
         slotCostInput.value = spell.slotCost !== null && spell.slotCost !== undefined ? String(spell.slotCost) : '';
         slotCostInput.addEventListener('blur', () => {
@@ -2186,7 +2229,7 @@
         if (!data || data.type !== 'spells') return;
         data.content.resourcePools.forEach(pool => { pool.spent = 0; });
         data.content.categories.forEach(cat => {
-            (cat.spells || []).forEach(spell => { spell.preparedCount = 0; spell.castsUsed = 0; });
+            (cat.spells || []).forEach(spell => { spell.castsUsed = 0; });
         });
         const el = document.querySelector(`.module[data-id="${moduleId}"]`);
         if (el && window.isPlayMode) {

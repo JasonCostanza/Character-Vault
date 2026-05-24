@@ -816,6 +816,8 @@ window.CV_TRANSLATIONS['fr'] = {
             'spells.casterType.spontaneous': 'Spontané',
             'spells.prepareSpells': 'Préparer les sorts',
             'spells.donePreparing': 'Terminé',
+            'spells.prepareAll': 'Tout prép.',
+            'spells.unprepareAll': 'Tout effacer',
             'spells.notPreparedError': "Ce sort n'est pas préparé.",
             'spells.preparedExhaustedError': "Plus d'utilisations préparées.",
             'spells.removeSlotLevelConfirm': "Ce niveau est utilisé par une ou plusieurs catégories. Elles seront définies sans emplacement. Supprimer quand même\u00a0?",

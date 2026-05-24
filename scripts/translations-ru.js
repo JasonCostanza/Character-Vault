@@ -393,6 +393,8 @@ window.CV_TRANSLATIONS['ru'] = {
             'spells.casterType.spontaneous': 'Спонтанный',
             'spells.prepareSpells': 'Подготовить заклинания',
             'spells.donePreparing': 'Готово',
+            'spells.prepareAll': 'Подг. все',
+            'spells.unprepareAll': 'Очистить все',
             'spells.notPreparedError': 'Это заклинание не подготовлено.',
             'spells.preparedExhaustedError': 'Не осталось подготовленных использований.',
             'spells.removeSlotLevelConfirm': 'Этот уровень используется в одной или нескольких категориях. Они будут переключены на «без ячейки». Удалить всё равно?',

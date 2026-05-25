@@ -175,13 +175,17 @@
                 <!-- Troubleshooting -->
                 <div class="settings-section">
                     <label class="settings-label" data-i18n="settings.troubleshooting">Troubleshooting</label>
-                    <button id="btn-force-reload" class="settings-action-btn btn-primary settings-action-btn--warning" data-i18n="settings.forceReload">Force Reload</button>
-                    <button id="btn-reset-tabs" class="settings-action-btn btn-primary settings-action-btn--warning" data-i18n="tabs.resetAll">Delete all tabs</button>
+                    <div class="settings-btn-row">
+                        <button id="btn-force-reload" class="settings-action-btn btn-primary settings-action-btn--warning" data-i18n="settings.forceReload">Force Reload</button>
+                    </div>
+                    <div class="settings-btn-row">
+                        <button id="btn-reset-tabs" class="settings-action-btn btn-primary settings-action-btn--warning" data-i18n="tabs.resetAll">Delete all tabs</button>
+                    </div>
                     <div id="window-dimensions" class="settings-dimensions"></div>
                 </div>
 
                 <!-- Developer -->
-                <div class="settings-section">
+                <div id="settings-developer" class="settings-section">
                     <label class="settings-label" data-i18n="settings.debugSection">Developer</label>
                     <div class="settings-btn-row">
                         <button id="btn-debug-weapon" class="settings-action-btn btn-secondary" data-i18n="settings.debugSimulateWeapon">Simulate Weapon Share</button>
@@ -206,7 +210,7 @@
 
             <!-- Footer -->
             <div class="settings-footer">
-                <span class="settings-version">v0.1</span>
+                <span id="settings-version" class="settings-version">v0.1</span>
             </div>
 
         </div>

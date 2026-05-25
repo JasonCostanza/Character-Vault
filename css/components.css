@@ -221,7 +221,7 @@ select,
 }
 
 .btn-primary:hover {
-    background: rgba(192, 135, 74, 0.2);
+    background: color-mix(in srgb, var(--cv-accent) 20%, transparent);
     border-color: var(--cv-accent);
 }
 
@@ -434,9 +434,6 @@ select,
     flex-direction: column;
     height: 100%;
     width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 0 24px;
 }
 
 /* ── Settings Header ── */
@@ -444,7 +441,7 @@ select,
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 0;
+    padding: 16px 24px;
     border-bottom: 1px solid var(--cv-border);
 }
 
@@ -456,7 +453,7 @@ select,
     scrollbar-gutter: stable;
     scrollbar-width: thin;
     scrollbar-color: var(--cv-text-muted) transparent;
-    padding: 20px 0;
+    padding: 20px 24px;
 }
 
 .settings-body::-webkit-scrollbar { width: 4px; }
@@ -555,12 +552,12 @@ select,
 
 .settings-action-btn--warning {
     border-color: var(--cv-warning);
-    background: rgba(160, 114, 42, 0.1);
+    background: color-mix(in srgb, var(--cv-warning) 10%, transparent);
     color: var(--cv-warning);
 }
 
 .settings-action-btn--warning:hover {
-    background: rgba(160, 114, 42, 0.25);
+    background: color-mix(in srgb, var(--cv-warning) 25%, transparent);
     border-color: var(--cv-warning);
     color: var(--cv-warning);
 }
@@ -631,11 +628,16 @@ select,
     opacity: 1;
 }
 
+.settings-checkbox-row .settings-tooltip::after {
+    right: 0;
+    left: auto;
+    transform: none;
+}
+
 /* ── Links ── */
 .settings-links {
     display: flex;
     justify-content: center;
-    border-bottom: none;
 }
 
 .settings-link {
@@ -661,13 +663,13 @@ select,
 .settings-link:hover {
     color: var(--cv-accent);
     border-color: var(--cv-accent-secondary);
-    background-color: rgba(192, 135, 74, 0.1);
+    background-color: color-mix(in srgb, var(--cv-accent) 10%, transparent);
 }
 
 .settings-link.copied {
     color: var(--cv-success);
     border-color: var(--cv-success);
-    background-color: rgba(76, 175, 80, 0.1);
+    background-color: color-mix(in srgb, var(--cv-success) 10%, transparent);
     pointer-events: none;
 }
 
@@ -678,7 +680,7 @@ select,
     border-radius: 4px;
     color: var(--cv-text);
     font-family: inherit;
-    font-size: 11px;
+    font-size: 13px;
     padding: 4px 8px;
     cursor: pointer;
     width: 100%;
@@ -691,7 +693,7 @@ select,
 
 /* ── Settings Footer ── */
 .settings-footer {
-    padding: 12px 0;
+    padding: 12px 24px;
     text-align: center;
     border-top: 1px solid var(--cv-border-subtle);
 }

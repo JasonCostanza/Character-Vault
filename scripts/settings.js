@@ -558,6 +558,17 @@
         });
     });
 
+    // ── Version & Easter Egg ──
+    const versionEl = document.getElementById('settings-version');
+    const devSection = document.getElementById('settings-developer');
+    versionEl.textContent = 'v' + window.CV_VERSION;
+    devSection.style.display = 'none';
+    let _versionClicks = 0;
+    versionEl.addEventListener('click', function () {
+        _versionClicks++;
+        if (_versionClicks >= 5) devSection.style.display = '';
+    });
+
     // ── Debug ──
     document.getElementById('btn-debug-weapon').addEventListener('click', function () {
         if (typeof window.debugSimulateIncoming === 'function') window.debugSimulateIncoming('weapons');

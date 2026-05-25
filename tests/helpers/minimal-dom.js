@@ -121,6 +121,20 @@ export function setupMinimalDOM() {
             <div id="window-dimensions" class="settings-dimensions"></div>
           </div>
 
+          <!-- Developer -->
+          <div id="settings-developer" class="settings-section">
+            <label class="settings-label" data-i18n="settings.debugSection">Developer</label>
+            <div class="settings-btn-row">
+              <button id="btn-debug-weapon" class="settings-action-btn btn-secondary" data-i18n="settings.debugSimulateWeapon">Simulate Weapon Share</button>
+            </div>
+            <div class="settings-btn-row">
+              <button id="btn-debug-spell" class="settings-action-btn btn-secondary" data-i18n="settings.debugSimulateSpell">Simulate Spell Share</button>
+            </div>
+            <div class="settings-btn-row">
+              <button id="btn-debug-item" class="settings-action-btn btn-secondary" data-i18n="settings.debugSimulateItem">Simulate Item Share</button>
+            </div>
+          </div>
+
           <!-- Links -->
           <div class="settings-section settings-links">
             <button id="btn-github-link" class="settings-link" title="GitHub Repository" data-i18n="settings.github" data-i18n-title="settings.githubTitle">
@@ -129,7 +143,7 @@ export function setupMinimalDOM() {
           </div>
         </div>
         <div class="settings-footer">
-          <span class="settings-version">v0.1</span>
+          <span id="settings-version" class="settings-version">v0.1</span>
         </div>
       </div>
     </div>

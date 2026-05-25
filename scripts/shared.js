@@ -1,5 +1,7 @@
 // ── Shared Utilities ──
 (function () {
+    const CV_VERSION = '0.1';
+
     function escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
@@ -480,4 +482,5 @@
     }
 
     window.copyTextToClipboard = copyTextToClipboard;
+    window.CV_VERSION = CV_VERSION;
 })();

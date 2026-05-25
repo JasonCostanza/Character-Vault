@@ -1523,6 +1523,80 @@
         document.addEventListener('keydown', keyHandler);
     }
 
+    // ── Debug Simulation ──
+
+    window.debugSimulateIncoming = function (type) {
+        var txnId = generateTxnId();
+        var debugClientId = 'debug-client-' + Date.now();
+        var data, meta;
+
+        if (type === 'weapons') {
+            data = {
+                name: 'Flamebrand Longsword',
+                slot: 'main',
+                kind: 'melee',
+                abilityMod: 'STR',
+                proficient: true,
+                range: '5 ft',
+                damageInstances: [
+                    { dice: '1d8', damageType: 'Slashing', modFromAbility: true },
+                    { dice: '1d6', damageType: 'Fire' }
+                ],
+                traits: [
+                    { key: 'versatile', value: '1d10' },
+                    { key: 'finesse' }
+                ],
+                notesMarkdown: 'A blade wreathed in magical flames. Grants +1 to attack rolls against undead.'
+            };
+            meta = { customTraits: [], enhancements: [] };
+        } else if (type === 'spells') {
+            data = {
+                name: 'Fireball',
+                description: 'A bright streak flashes from your pointing finger to a point you choose within range, then blossoms into a fiery explosion.',
+                slotCost: 1,
+                canUpcast: true,
+                values: { 'Damage': '8d6', 'Range': '150 ft', 'Save': 'DEX' }
+            };
+            meta = {
+                attrs: [
+                    { name: 'Damage', type: 'text' },
+                    { name: 'Range', type: 'text' },
+                    { name: 'Save', type: 'text' }
+                ],
+                categoryName: 'Level 3',
+                poolDescriptor: null
+            };
+        } else {
+            data = {
+                name: 'Healing Potion',
+                notes: 'A small vial filled with a red, magical liquid that restores 2d4+2 HP.',
+                values: { 'Weight': 0.5, 'Quantity': 3, 'Value': '50 gp' }
+            };
+            meta = {
+                attrs: [
+                    { name: 'Weight', type: 'number' },
+                    { name: 'Quantity', type: 'number' },
+                    { name: 'Value', type: 'text' }
+                ]
+            };
+        }
+
+        connectedPlayers[debugClientId] = { clientId: debugClientId, playerId: 'debug-player', playerName: 'Debug Player' };
+        pendingIncoming[txnId] = {
+            fromClient: debugClientId,
+            fromName: 'Debug Player',
+            mode: 'copy',
+            src: type,
+            data: data,
+            meta: meta,
+            receivedAt: Date.now()
+        };
+        updatePendingOffersUI();
+        openIncomingTransferModal(txnId);
+        delete connectedPlayers[debugClientId];
+        console.log('[CV Sync] Debug: simulated incoming', type, 'txn:', txnId);
+    };
+
     // ── Public API ──
     window.initSync = initSync;
     window.getConnectedPlayers = function () { return Object.values(connectedPlayers); };

@@ -558,6 +558,17 @@
         });
     });
 
+    // ── Debug ──
+    document.getElementById('btn-debug-weapon').addEventListener('click', function () {
+        if (typeof window.debugSimulateIncoming === 'function') window.debugSimulateIncoming('weapons');
+    });
+    document.getElementById('btn-debug-spell').addEventListener('click', function () {
+        if (typeof window.debugSimulateIncoming === 'function') window.debugSimulateIncoming('spells');
+    });
+    document.getElementById('btn-debug-item').addEventListener('click', function () {
+        if (typeof window.debugSimulateIncoming === 'function') window.debugSimulateIncoming('list');
+    });
+
     // ── Dice ──
     const chkDiceCloseModals = document.getElementById('chk-dice-close-modals');
     chkDiceCloseModals.checked = localStorage.getItem('cv-dice-close-modals') === 'true';

@@ -36,7 +36,13 @@
     max-height: 180px;
     overflow-y: auto;
     scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
 }
+
+.transfer-player-list::-webkit-scrollbar { width: 4px; }
+.transfer-player-list::-webkit-scrollbar-track { background: transparent; }
+.transfer-player-list::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .transfer-player-item {
     display: flex;
@@ -187,7 +193,13 @@
     max-height: 120px;
     overflow-y: auto;
     scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
 }
+
+.transfer-attr-preview::-webkit-scrollbar { width: 4px; }
+.transfer-attr-preview::-webkit-scrollbar-track { background: transparent; }
+.transfer-attr-preview::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .transfer-attr-row {
     display: flex;

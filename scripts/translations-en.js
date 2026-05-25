@@ -1317,7 +1317,7 @@ window.CV_TRANSLATIONS.en = {
             'tabs.moveModules': 'Move modules to:',
             'tabs.deleteConfirm': 'Delete',
             'tabs.emptyState': 'This tab is empty',
-            'tabs.resetAll': 'Delete all tabs and start fresh',
+            'tabs.resetAll': 'Delete all tabs',
             'tabs.resetConfirm': 'This will delete all tabs and all modules. This cannot be undone.',
             'tabs.addTooltip': 'Add tab',
             'tabs.colorDefault': 'Default',

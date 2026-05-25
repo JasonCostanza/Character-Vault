@@ -1307,7 +1307,7 @@ window.CV_TRANSLATIONS['fr'] = {
             'tabs.moveModules': 'Déplacer les modules vers :',
             'tabs.deleteConfirm': 'Supprimer',
             'tabs.emptyState': 'Cet onglet est vide',
-            'tabs.resetAll': 'Supprimer tous les onglets et recommencer',
+            'tabs.resetAll': 'Supprimer tous les onglets',
             'tabs.resetConfirm': 'Cela supprimera tous les onglets et tous les modules. Cette action est irréversible.',
             'tabs.addTooltip': 'Ajouter un onglet',
             'tabs.colorDefault': 'Par défaut',

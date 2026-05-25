@@ -1315,7 +1315,7 @@ window.CV_TRANSLATIONS['it'] = {
             'tabs.moveModules': 'Sposta i moduli in:',
             'tabs.deleteConfirm': 'Elimina',
             'tabs.emptyState': 'Questa scheda è vuota',
-            'tabs.resetAll': 'Elimina tutte le schede e ricomincia',
+            'tabs.resetAll': 'Elimina tutte le schede',
             'tabs.resetConfirm': 'Verranno eliminati tutti le schede e tutti i moduli. Questa azione non può essere annullata.',
             'tabs.addTooltip': 'Aggiungi scheda',
             'tabs.colorDefault': 'Predefinito',

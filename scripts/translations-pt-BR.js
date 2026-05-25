@@ -1287,7 +1287,7 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'tabs.moveModules': 'Mover módulos para:',
             'tabs.deleteConfirm': 'Excluir',
             'tabs.emptyState': 'Esta aba está vazia',
-            'tabs.resetAll': 'Excluir todas as abas e começar do zero',
+            'tabs.resetAll': 'Excluir todas as abas',
             'tabs.resetConfirm': 'Isso excluirá todas as abas e todos os módulos. Esta ação não pode ser desfeita.',
             'tabs.addTooltip': 'Adicionar aba',
             'tabs.colorDefault': 'Padrão',

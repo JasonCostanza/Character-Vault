@@ -951,7 +951,7 @@ window.CV_TRANSLATIONS['es'] = {
             'tabs.moveModules': 'Mover módulos a:',
             'tabs.deleteConfirm': 'Eliminar',
             'tabs.emptyState': 'Esta pestaña está vacía',
-            'tabs.resetAll': 'Eliminar todas las pestañas y empezar de nuevo',
+            'tabs.resetAll': 'Eliminar todas las pestañas',
             'tabs.resetConfirm': 'Esto eliminará todas las pestañas y módulos. No se puede deshacer.',
             'tabs.addTooltip': 'Añadir pestaña',
             'tabs.colorDefault': 'Predeterminado',

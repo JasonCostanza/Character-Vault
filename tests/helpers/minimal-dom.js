@@ -117,7 +117,7 @@ export function setupMinimalDOM() {
           <div class="settings-section">
             <label class="settings-label" data-i18n="settings.troubleshooting">Troubleshooting</label>
             <button id="btn-force-reload" class="settings-action-btn btn-primary settings-action-btn--warning" data-i18n="settings.forceReload">Force Reload</button>
-            <button id="btn-reset-tabs" class="settings-action-btn btn-primary settings-action-btn--warning" data-i18n="tabs.resetAll">Delete all tabs and start fresh</button>
+            <button id="btn-reset-tabs" class="settings-action-btn btn-primary settings-action-btn--warning" data-i18n="tabs.resetAll">Delete all tabs</button>
             <div id="window-dimensions" class="settings-dimensions"></div>
           </div>
 

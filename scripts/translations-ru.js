@@ -1279,7 +1279,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'tabs.moveModules': 'Переместить модули в:',
             'tabs.deleteConfirm': 'Удалить',
             'tabs.emptyState': 'Эта вкладка пуста',
-            'tabs.resetAll': 'Удалить все вкладки и начать заново',
+            'tabs.resetAll': 'Удалить все вкладки',
             'tabs.resetConfirm': 'Это удалит все вкладки и все модули. Отменить действие невозможно.',
             'tabs.addTooltip': 'Добавить вкладку',
             'tabs.colorDefault': 'По умолчанию',

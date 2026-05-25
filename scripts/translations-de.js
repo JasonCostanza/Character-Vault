@@ -1255,7 +1255,7 @@ window.CV_TRANSLATIONS['de'] = {
             'tabs.moveModules': 'Module verschieben nach:',
             'tabs.deleteConfirm': 'Löschen',
             'tabs.emptyState': 'Dieser Tab ist leer',
-            'tabs.resetAll': 'Alle Tabs löschen und neu beginnen',
+            'tabs.resetAll': 'Alle Tabs löschen',
             'tabs.resetConfirm': 'Alle Tabs und alle Module werden gelöscht. Dies kann nicht rückgängig gemacht werden.',
             'tabs.addTooltip': 'Tab hinzufügen',
             'tabs.colorDefault': 'Standard',

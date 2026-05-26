@@ -1,6 +1,6 @@
 // ── Shared Utilities ──
 (function () {
-    const CV_VERSION = '0.1';
+    const CV_VERSION = '0.1 Beta';
 
     function escapeHtml(text) {
         const div = document.createElement('div');

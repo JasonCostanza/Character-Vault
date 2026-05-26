@@ -1,3 +1,12 @@
+---
+name: Bug report
+about: Create a report to help track down issues
+title: ''
+labels: bug
+assignees: ''
+
+---
+
 **Version**
 <!-- Go to Settings, buttom of the window. E.g "v0.1 Beta" -->
 

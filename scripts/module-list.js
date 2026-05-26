@@ -4,6 +4,7 @@
     'use strict';
 
     const pendingAddEntries = new Map();
+    let activeColumnPicker = null;
 
     // ── ID Generation ──
     function generateListId(prefix) {
@@ -25,6 +26,10 @@
     // ── Preset Icon SVGs ──
     // ── List Icon Library — references shared CV_ICONS ──
     const LIST_ICON_SVG = CV_ICONS;
+
+    const CV_SVG_EYE_OPEN = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+    const CV_SVG_EYE_CLOSED = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+    const CV_SVG_COLUMNS = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="18" rx="1"/><rect x="13" y="3" width="8" height="18" rx="1"/></svg>';
 
     // ── Attribute Wizard Icon Library ──
     const ATTR_WIZARD_ICONS = [
@@ -436,6 +441,108 @@
         return cell;
     }
 
+    // ── Column Picker ──
+
+    function handleColumnPickerOutsideClick(e) {
+        if (!activeColumnPicker) return;
+        if (activeColumnPicker.popover.contains(e.target)) return;
+        if (activeColumnPicker.anchorEl === e.target || activeColumnPicker.anchorEl.contains(e.target)) return;
+        closeColumnPicker();
+    }
+
+    function closeColumnPicker(skipRender) {
+        if (!activeColumnPicker) return;
+        const { popover, bodyEl, data, isPlayMode, onKeyDown } = activeColumnPicker;
+        document.removeEventListener('keydown', onKeyDown);
+        document.removeEventListener('click', handleColumnPickerOutsideClick);
+        popover.remove();
+        activeColumnPicker = null;
+        if (!skipRender) {
+            renderListBody(bodyEl, data, isPlayMode);
+            snapModuleHeight(bodyEl.closest('.module'), data);
+        }
+    }
+
+    function openColumnPicker(anchorEl, content, bodyEl, data, isPlayMode) {
+        if (activeColumnPicker) closeColumnPicker();
+
+        const popover = document.createElement('div');
+        popover.className = 'list-col-picker-popover';
+
+        const pickerHeader = document.createElement('div');
+        pickerHeader.className = 'list-col-picker-header';
+        pickerHeader.textContent = t('list.columns');
+        popover.appendChild(pickerHeader);
+
+        const list = document.createElement('div');
+        list.className = 'list-col-picker-list';
+
+        if (content.attributes.length === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'list-col-picker-empty';
+            empty.textContent = t('list.noAttrs');
+            list.appendChild(empty);
+        } else {
+            content.attributes.forEach(function (attr) {
+                const row = document.createElement('div');
+                row.className = 'list-col-picker-row';
+
+                const iconEl = document.createElement('span');
+                iconEl.className = 'list-col-picker-icon';
+                if (attr.icon && LIST_ICON_SVG[attr.icon]) {
+                    iconEl.innerHTML = LIST_ICON_SVG[attr.icon];
+                }
+                row.appendChild(iconEl);
+
+                const nameEl = document.createElement('span');
+                nameEl.className = 'list-col-picker-name';
+                nameEl.textContent = attr.name;
+                row.appendChild(nameEl);
+
+                const visBtn = document.createElement('button');
+                visBtn.className = 'list-attr-visibility-btn' + (attr.pinned ? ' visible' : '');
+                visBtn.title = escapeHtml(t('list.columnVisible'));
+                visBtn.innerHTML = attr.pinned ? CV_SVG_EYE_OPEN : CV_SVG_EYE_CLOSED;
+                visBtn.addEventListener('click', function () {
+                    attr.pinned = !attr.pinned;
+                    visBtn.classList.toggle('visible', attr.pinned);
+                    visBtn.innerHTML = attr.pinned ? CV_SVG_EYE_OPEN : CV_SVG_EYE_CLOSED;
+                    scheduleSave();
+                });
+                row.appendChild(visBtn);
+
+                list.appendChild(row);
+            });
+        }
+
+        popover.appendChild(list);
+        document.body.appendChild(popover);
+
+        // Position below anchor, right-aligned, clamped to viewport
+        const rect = anchorEl.getBoundingClientRect();
+        const popW = popover.getBoundingClientRect().width || 200;
+        let top = rect.bottom + 4;
+        let left = rect.right - popW;
+        const vpW = window.innerWidth;
+        const vpH = window.innerHeight;
+        if (left < 4) left = 4;
+        if (left + popW > vpW - 4) left = vpW - popW - 4;
+        if (top + 280 > vpH - 4) top = rect.top - 4 - Math.min(280, vpH - 8);
+        if (top < 4) top = 4;
+        popover.style.top = top + 'px';
+        popover.style.left = left + 'px';
+
+        const onKeyDown = function (e) {
+            if (e.key === 'Escape') closeColumnPicker();
+        };
+        document.addEventListener('keydown', onKeyDown);
+        activeColumnPicker = { popover, bodyEl, data, isPlayMode, onKeyDown, anchorEl };
+
+        requestAnimationFrame(function () {
+            document.addEventListener('click', handleColumnPickerOutsideClick);
+        });
+    }
+
     // ── Column Headers ──
     function renderColumnHeaders(content, bodyEl, data, isPlayMode, isSorted) {
         const pinnedAttrs = content.attributes.filter(function (a) {
@@ -531,10 +638,26 @@
             headerRow.appendChild(colHeader);
         });
 
-        // Actions spacer — matches delete/expand button width
-        const actionsSpacer = document.createElement('div');
-        actionsSpacer.className = 'list-col-header list-col-actions';
-        headerRow.appendChild(actionsSpacer);
+        // Column picker button (when attributes exist) or plain actions spacer
+        if (content.attributes.length > 0) {
+            const pickerBtn = document.createElement('button');
+            pickerBtn.className = 'list-col-picker-btn';
+            pickerBtn.title = escapeHtml(t('list.columns'));
+            pickerBtn.innerHTML = CV_SVG_COLUMNS;
+            pickerBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                if (activeColumnPicker && activeColumnPicker.anchorEl === pickerBtn) {
+                    closeColumnPicker();
+                } else {
+                    openColumnPicker(pickerBtn, content, bodyEl, data, isPlayMode);
+                }
+            });
+            headerRow.appendChild(pickerBtn);
+        } else {
+            const actionsSpacer = document.createElement('div');
+            actionsSpacer.className = 'list-col-header list-col-actions';
+            headerRow.appendChild(actionsSpacer);
+        }
 
         return headerRow;
     }
@@ -705,6 +828,12 @@
     // ── Render List Body ──
     function renderListBody(bodyEl, data, isPlayMode) {
         const content = ensureContent(data);
+        if (activeColumnPicker && activeColumnPicker.bodyEl === bodyEl) {
+            document.removeEventListener('keydown', activeColumnPicker.onKeyDown);
+            document.removeEventListener('click', handleColumnPickerOutsideClick);
+            activeColumnPicker.popover.remove();
+            activeColumnPicker = null;
+        }
         const moduleEl = bodyEl.closest('.module');
         // Destroy any existing SortableJS before clearing, so orphaned instances
         // don't linger in the group registry and interfere with future transfers
@@ -921,6 +1050,7 @@
     // ── Manage Attributes Panel ──
 
     function closeManageAttrsPanel(moduleEl, data) {
+        closeColumnPicker(true);
         const overlay = document.querySelector('.list-manage-overlay');
         if (!overlay) return;
         overlay.remove();
@@ -1019,19 +1149,17 @@
                 );
                 row.appendChild(typeBadge);
 
-                // Pin toggle
-                const pinBtn = document.createElement('button');
-                pinBtn.className = 'list-attr-pin-btn' + (attr.pinned ? ' pinned' : '');
-                pinBtn.title = escapeHtml(t('list.pinnedLabel'));
-                pinBtn.innerHTML = attr.pinned
-                    ? '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v6l-2 4h4v7l1 2 1-2v-7h4l-2-4V4"/><line x1="8" y1="4" x2="16" y2="4"/></svg>'
-                    : '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v6l-2 4h4v7l1 2 1-2v-7h4l-2-4V4"/><line x1="8" y1="4" x2="16" y2="4"/></svg>';
-                pinBtn.addEventListener('click', function () {
+                // Column visibility toggle
+                const visBtn = document.createElement('button');
+                visBtn.className = 'list-attr-visibility-btn' + (attr.pinned ? ' visible' : '');
+                visBtn.title = escapeHtml(t('list.columnVisible'));
+                visBtn.innerHTML = attr.pinned ? CV_SVG_EYE_OPEN : CV_SVG_EYE_CLOSED;
+                visBtn.addEventListener('click', function () {
                     attr.pinned = !attr.pinned;
                     scheduleSave();
                     renderManagePanelContent(panel, moduleEl, data, content);
                 });
-                row.appendChild(pinBtn);
+                row.appendChild(visBtn);
 
                 // Delete button
                 const deleteBtn = document.createElement('button');

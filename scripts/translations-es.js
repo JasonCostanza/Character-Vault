@@ -242,7 +242,8 @@ window.CV_TRANSLATIONS['es'] = {
             'list.removeAttrTitle': 'Eliminar Atributo',
             'list.removeAttrConfirm':
                 'Todos los datos almacenados en "{name}" se eliminarán permanentemente de cada elemento de esta lista. Esta acción no se puede deshacer.',
-            'list.pinnedLabel': 'Fijado',
+            'list.columnVisible': 'Mostrar columna',
+            'list.columns': 'Columnas',
             'list.createCustom': 'Crear Personalizado',
             'list.attrWizardTitle': 'Nuevo Atributo',
             'list.attrName': 'Nombre',

@@ -241,7 +241,8 @@ window.CV_TRANSLATIONS['de'] = {
             'list.removeAttrTitle': 'Attribut Entfernen',
             'list.removeAttrConfirm':
                 'Alle in "{name}" gespeicherten Daten werden dauerhaft aus jedem Element dieser Liste gelöscht. Dies kann nicht rückgängig gemacht werden.',
-            'list.pinnedLabel': 'Angeheftet',
+            'list.columnVisible': 'Spalte anzeigen',
+            'list.columns': 'Spalten',
             'list.createCustom': 'Benutzerdefiniert Erstellen',
             'list.attrWizardTitle': 'Neues Attribut',
             'list.attrName': 'Name',

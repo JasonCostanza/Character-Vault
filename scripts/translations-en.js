@@ -251,7 +251,8 @@ window.CV_TRANSLATIONS.en = {
             'list.removeAttrTitle': 'Remove Attribute',
             'list.removeAttrConfirm':
                 'All data stored in "{name}" will be permanently deleted from every item in this list. This cannot be undone.',
-            'list.pinnedLabel': 'Pinned',
+            'list.columnVisible': 'Show column',
+            'list.columns': 'Columns',
             'list.createCustom': 'Create Custom',
             'list.attrWizardTitle': 'New Attribute',
             'list.attrName': 'Name',

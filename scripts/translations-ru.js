@@ -243,7 +243,8 @@ window.CV_TRANSLATIONS['ru'] = {
             'list.removeAttrTitle': 'Удалить Атрибут',
             'list.removeAttrConfirm':
                 'Все данные, хранящиеся в "{name}", будут безвозвратно удалены из каждого элемента этого списка. Это действие необратимо.',
-            'list.pinnedLabel': 'Закреплено',
+            'list.columnVisible': 'Показать столбец',
+            'list.columns': 'Столбцы',
             'list.createCustom': 'Создать Пользовательский',
             'list.attrWizardTitle': 'Новый Атрибут',
             'list.attrName': 'Название',

@@ -11,6 +11,10 @@ assignees: ''
 <!-- Go to Settings, bouttom of the window. E.g "v0.1 Beta" -->
 
 
+**Game System**
+<!-- Which of the supported game systems are you using? Settings > Game System. -->
+
+
 **Describe the bug**
 <!-- A clear and concise description of what the bug is. -->
 

@@ -1,6 +1,6 @@
 {
     "manifestVersion": 1,
-    "name": "Character Vault",
+    "name": "Character Vault BETA",
     "entryPoint": "/main.html",
     "summary": "A character sheet engine for RPGs.",
     "descriptionFilePath": "/README.md",

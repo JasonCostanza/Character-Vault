@@ -1,0 +1,434 @@
+/* ══════════════════════════════════════════════════════════════
+   BIO MODULE — Sub-Tab Bar
+   ══════════════════════════════════════════════════════════════ */
+.bio-tab-bar {
+    display: flex;
+    gap: 0;
+    background: var(--cv-bg-sunken);
+    border-bottom: 1px solid var(--cv-border-subtle);
+    padding: 0 8px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.bio-tab {
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    border: none;
+    background: none;
+    position: relative;
+    transition: color 0.15s ease;
+    font-family: inherit;
+    user-select: none;
+}
+
+.bio-tab:hover {
+    color: var(--cv-text-secondary);
+}
+
+.bio-tab.active {
+    color: var(--cv-accent);
+}
+
+.bio-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 8px;
+    right: 8px;
+    height: 2px;
+    background: var(--cv-accent);
+    border-radius: 1px 1px 0 0;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BIO MODULE — Tab Content
+   ══════════════════════════════════════════════════════════════ */
+.bio-tab-content {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ── Portrait ── */
+.bio-portrait-area {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.bio-portrait-frame {
+    width: 110px;
+    height: 110px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    border: 1px solid var(--cv-border);
+    background: var(--cv-bg-sunken);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bio-portrait-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.bio-portrait-placeholder {
+    color: var(--cv-text-muted);
+    opacity: 0.4;
+}
+
+.bio-portrait-placeholder svg {
+    width: 48px;
+    height: 48px;
+}
+
+/* Edit mode overlay controls */
+.bio-portrait-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    gap: 0;
+    background: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.bio-portrait-frame:hover .bio-portrait-controls {
+    opacity: 1;
+}
+
+.bio-portrait-btn {
+    flex: 1;
+    padding: 4px 0;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--cv-text-secondary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.1s ease;
+    user-select: none;
+}
+
+.bio-portrait-btn:hover {
+    color: var(--cv-accent);
+}
+
+.bio-portrait-btn.danger:hover {
+    color: var(--cv-danger);
+}
+
+.bio-portrait-btn + .bio-portrait-btn {
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ── Portrait-adjacent identity fields ── */
+.bio-identity-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+/* ── Field Rows ── */
+.bio-field-row {
+    display: flex;
+    gap: 6px;
+}
+
+.bio-field-row.wrap {
+    flex-wrap: wrap;
+}
+
+/* ── Labeled Field (Edit Mode) ── */
+.bio-field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.bio-field.w2 { flex: 2; }
+.bio-field.w3 { flex: 3; }
+.bio-field.fixed-sm { flex: 0 0 70px; }
+.bio-field.fixed-md { flex: 0 0 100px; }
+
+.bio-field-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-muted);
+    padding-left: 2px;
+    user-select: none;
+}
+
+.bio-field-input {
+    width: 100%;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 3px;
+    padding: 4px 6px;
+    font-size: 12px;
+    color: var(--cv-text);
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s ease;
+    box-sizing: border-box;
+}
+
+.bio-field-input:focus {
+    border-color: var(--cv-accent);
+}
+
+.bio-field-input::placeholder {
+    color: var(--cv-text-muted);
+    opacity: 0.6;
+}
+
+textarea.bio-field-input {
+    resize: none;
+    line-height: 1.5;
+    min-height: 0;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
+}
+
+textarea.bio-field-input[data-key="biography"] {
+    resize: vertical;
+    min-height: 60px;
+}
+
+textarea.bio-field-input::-webkit-scrollbar { width: 4px; }
+textarea.bio-field-input::-webkit-scrollbar-track { background: transparent; }
+textarea.bio-field-input::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
+
+/* ── Section Divider ── */
+.bio-section-divider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0 2px;
+    user-select: none;
+}
+
+.bio-section-divider::before,
+.bio-section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--cv-border-subtle);
+}
+
+.bio-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--cv-text-muted);
+    white-space: nowrap;
+}
+
+/* ── Collapsible Section Header ── */
+.bio-collapse-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0 2px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.bio-collapse-header::before,
+.bio-collapse-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--cv-border-subtle);
+}
+
+.bio-collapse-chevron {
+    width: 12px;
+    height: 12px;
+    color: var(--cv-text-muted);
+    transition: transform 0.2s ease, color 0.15s ease;
+    flex-shrink: 0;
+}
+
+.bio-collapse-header:hover .bio-collapse-chevron {
+    color: var(--cv-text-secondary);
+}
+
+.bio-collapse-header.expanded .bio-collapse-chevron {
+    transform: rotate(90deg);
+}
+
+/* ── Personality Fields Grid ── */
+.bio-personality-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BIO MODULE — Play Mode
+   ══════════════════════════════════════════════════════════════ */
+
+/* Portrait in play mode — no controls overlay */
+.bio-portrait-frame.play-mode .bio-portrait-controls {
+    display: none;
+}
+
+/* Play mode: value replaces input, same box dimensions */
+.bio-field-value {
+    width: 100%;
+    padding: 4px 6px;
+    font-size: 12px;
+    color: var(--cv-text);
+    line-height: 1.5;
+    min-height: 25px;
+    word-break: break-word;
+    user-select: text;
+}
+
+/* Play mode: name rendered larger */
+.bio-field-value.name {
+    font-size: 15px;
+    font-weight: 600;
+    padding: 2px 6px;
+}
+
+/* Play mode: textarea-style blocks */
+.bio-field-value.block {
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
+
+/* Play mode biography (markdown rendered) */
+.bio-biography-display {
+    font-size: 13px;
+    color: var(--cv-text);
+    line-height: 1.6;
+    word-wrap: break-word;
+    user-select: text;
+}
+
+.bio-biography-display p { margin-bottom: 8px; }
+.bio-biography-display p:last-child { margin-bottom: 0; }
+.bio-biography-display strong { color: var(--cv-text); font-weight: 600; }
+.bio-biography-display em { color: var(--cv-text-secondary); }
+.bio-biography-display ul,
+.bio-biography-display ol { padding-left: 18px; margin-bottom: 8px; }
+.bio-biography-display li { margin-bottom: 2px; }
+
+/* Play mode personality block */
+.bio-play-personality-block {
+    padding: 6px 8px;
+    background: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border-subtle);
+    border-radius: 4px;
+}
+
+.bio-play-personality-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-accent);
+    margin-bottom: 3px;
+    user-select: none;
+}
+
+.bio-play-personality-text {
+    font-size: 12px;
+    color: var(--cv-text-secondary);
+    line-height: 1.5;
+    user-select: text;
+}
+
+/* Play mode textarea blocks (Allies, Likes, etc.) */
+.bio-play-block {
+    padding: 1px 0;
+}
+
+.bio-play-block-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-muted);
+    margin-bottom: 2px;
+    user-select: none;
+}
+
+.bio-play-block-text {
+    font-size: 12px;
+    color: var(--cv-text-secondary);
+    line-height: 1.5;
+    white-space: pre-wrap;
+    user-select: text;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SYSTEM-GATED SECTION
+   ══════════════════════════════════════════════════════════════ */
+.bio-system-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0 2px;
+    user-select: none;
+}
+
+.bio-system-header::before {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--cv-accent-secondary);
+    opacity: 0.4;
+}
+
+.bio-system-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--cv-accent-secondary);
+    opacity: 0.4;
+}
+
+.bio-system-name {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--cv-accent);
+    white-space: nowrap;
+}
+
+/* ── Error message for portrait ── */
+.bio-portrait-error {
+    font-size: 10px;
+    color: var(--cv-danger);
+    padding: 2px 0;
+}

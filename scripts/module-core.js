@@ -336,6 +336,12 @@
             moduleData.content = { sortOrder: 'newest', hiddenEventTypes: [], showTimestamps: true, maxEntries: 200 };
         }
 
+        if (moduleData.type === 'bio') {
+            moduleData.colSpan = 2;
+            moduleData.rowSpan = 4;
+            moduleData.content = buildBioDefaultContent();
+        }
+
         if (moduleData.type === 'recovery') {
             const sys = window.gameSystem || 'custom';
             moduleData.colSpan = 1;

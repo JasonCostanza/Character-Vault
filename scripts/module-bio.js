@@ -58,6 +58,7 @@
             occupation: '', ideologyBeliefs: '', culturalOrigin: '',
             community: '', lifestyle: '',
             clan: '', generation: '', sire: '', predatorType: '', ambition: '', desire: '',
+            fieldSizes: {},
         };
     }
 
@@ -314,6 +315,19 @@
                 data[input.dataset.key] = input.value;
                 scheduleSave();
             });
+            if (input.tagName === 'TEXTAREA') {
+                const savedH = data.fieldSizes?.[input.dataset.key];
+                if (savedH) input.style.height = savedH;
+                input.addEventListener('mouseup', () => {
+                    const h = input.style.height;
+                    const current = data.fieldSizes?.[input.dataset.key] || null;
+                    if (h && h !== current) {
+                        if (!data.fieldSizes) data.fieldSizes = {};
+                        data.fieldSizes[input.dataset.key] = h;
+                        scheduleSave();
+                    }
+                });
+            }
         });
     }
 
@@ -539,6 +553,19 @@
                 data[input.dataset.key] = input.value;
                 scheduleSave();
             });
+            if (input.tagName === 'TEXTAREA') {
+                const savedH = data.fieldSizes?.[input.dataset.key];
+                if (savedH) input.style.height = savedH;
+                input.addEventListener('mouseup', () => {
+                    const h = input.style.height;
+                    const current = data.fieldSizes?.[input.dataset.key] || null;
+                    if (h && h !== current) {
+                        if (!data.fieldSizes) data.fieldSizes = {};
+                        data.fieldSizes[input.dataset.key] = h;
+                        scheduleSave();
+                    }
+                });
+            }
         });
     }
 

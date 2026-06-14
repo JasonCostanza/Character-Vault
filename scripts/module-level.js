@@ -37,6 +37,16 @@
         }
     }
 
+    // ── Level from XP ──
+    function getLevelFromXP(xp, thresholds) {
+        let level = 1;
+        for (let i = 0; i < thresholds.length; i++) {
+            if (xp >= thresholds[i]) level = i + 2;
+            else break;
+        }
+        return level;
+    }
+
     // ── Content Shape Guard ──
     function ensureLevelContent(data) {
         if (!data.content || typeof data.content !== 'object') {
@@ -433,19 +443,36 @@
         subBtn.textContent = t('level.subtractXp');
         subBtn.style.userSelect = 'none';
 
+        const setBtn = document.createElement('button');
+        setBtn.className = 'level-system-btn';
+        setBtn.textContent = t('level.setToXp');
+        setBtn.style.userSelect = 'none';
+
         addBtn.addEventListener('click', () => {
             mode = 'add';
             addBtn.classList.add('active');
             subBtn.classList.remove('active');
+            setBtn.classList.remove('active');
+            input.placeholder = t('level.xpModalPlaceholder');
         });
         subBtn.addEventListener('click', () => {
             mode = 'subtract';
             subBtn.classList.add('active');
             addBtn.classList.remove('active');
+            setBtn.classList.remove('active');
+            input.placeholder = t('level.xpModalPlaceholder');
+        });
+        setBtn.addEventListener('click', () => {
+            mode = 'set';
+            setBtn.classList.add('active');
+            addBtn.classList.remove('active');
+            subBtn.classList.remove('active');
+            input.placeholder = t('level.xpModalPlaceholderSetTo');
         });
 
         modeRow.appendChild(addBtn);
         modeRow.appendChild(subBtn);
+        modeRow.appendChild(setBtn);
         body.appendChild(modeRow);
 
         const input = document.createElement('input');
@@ -485,6 +512,30 @@
         }
 
         function confirm() {
+            if (mode === 'set') {
+                const targetXP = evaluateXPExpression(input.value);
+                if (targetXP === null || targetXP < 0) { closeModal(); return; }
+                c.currentXP = targetXP;
+                c.level = getLevelFromXP(targetXP, c.xpThresholds);
+                const newLevel = c.level;
+                closeModal();
+                const bodyElSet = moduleEl.querySelector('.module-body');
+                renderLevelBody(bodyElSet, data, isPlayMode);
+                if (typeof window.snapModuleHeight === 'function') {
+                    window.snapModuleHeight(moduleEl, data);
+                }
+                scheduleSave();
+                document.dispatchEvent(new CustomEvent('cv:level-changed'));
+                if (typeof window.logActivity === 'function') {
+                    window.logActivity({
+                        type: 'level.event.xp',
+                        message: t('level.log.xpSet', { newXP: targetXP, level: newLevel }),
+                        sourceModuleId: data.id,
+                    });
+                }
+                return;
+            }
+
             const amount = evaluateXPExpression(input.value);
             if (amount === null || amount <= 0) {
                 closeModal();
@@ -902,9 +953,10 @@
         return mod && mod.content ? (mod.content.className || null) : null;
     };
 
-    // Expose for module-core.js
+    // Expose for module-core.js and tests
     window.openLevelSettings = openLevelSettings;
     window.LEVEL_XP_TEMPLATES = LEVEL_XP_TEMPLATES;
+    window.getLevelFromXP = getLevelFromXP;
 
     console.log('[CV] module-level.js loaded');
 })();

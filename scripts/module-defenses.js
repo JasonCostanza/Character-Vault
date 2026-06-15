@@ -69,7 +69,6 @@
         const notesEl = document.createElement('div');
         notesEl.className = 'def-notes';
         notesEl.textContent = def.notes || '';
-        row.after(notesEl);
 
         // Row click — toggle notes or quick-edit
         row.addEventListener('click', function (e) {
@@ -300,7 +299,7 @@
     }
 
     // ── SortableJS Drag-to-Reorder ──
-    function initDefenseSortable(container, data, bodyEl, moduleEl) {
+    function initDefenseSortable(container, data) {
         if (container._sortable) container._sortable.destroy();
         container._sortable = new Sortable(container, {
             handle: '.def-drag-handle',
@@ -350,7 +349,7 @@
                     container.appendChild(renderEditRow(def, index, data, bodyEl, moduleEl));
                 });
                 if (content.defenses.length > 1) {
-                    initDefenseSortable(container, data, bodyEl, moduleEl);
+                    initDefenseSortable(container, data);
                 }
             }
 

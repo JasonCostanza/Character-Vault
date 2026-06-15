@@ -400,6 +400,16 @@
             if (sysName) moduleData.title = sysName + ' ' + t('type.companions');
         }
 
+        if (moduleData.type === 'defenses') {
+            moduleData.content = {
+                defenses: [
+                    { id: generateDefenseId(), name: 'AC', value: 10, icon: 'shield', showSign: false, notes: '' }
+                ]
+            };
+            moduleData.colSpan = 1;
+            moduleData.rowSpan = null;
+        }
+
         lastWizardType = moduleData.type;
         window.modules.push(moduleData);
         renderModule(moduleData);
@@ -545,6 +555,11 @@
                 sel: '.module-companions-settings-btn',
                 label: t('companion.settings'),
                 icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
+            },
+            {
+                sel: '.module-def-add-btn',
+                label: t('def.addDefense'),
+                icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
             },
             {
                 sel: '.module-movetab-btn',
@@ -832,6 +847,7 @@
             ${data.type === 'level' ? `<button class="module-toolbar-btn module-level-settings-btn" title="${t('level.settings')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'activity' ? `<button class="module-activity-settings-btn module-toolbar-btn" title="${t('activity.settings')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'companions' ? `<button class="module-toolbar-btn module-companions-settings-btn" title="${t('companion.settings')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
+            ${data.type === 'defenses' ? `<button class="module-toolbar-btn module-def-add-btn" title="${t('def.addDefense')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>` : ''}
             ${data.type !== 'hline' && data.type !== 'spacer' ? `<button class="module-toolbar-btn module-theme-btn" title="${t('module.changeTheme')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.37 2.63a2.12 2.12 0 0 1 3 3L14 13l-4 1 1-4 7.37-7.37z"/><path d="M9 3.5a7.5 7.5 0 1 0 5.59 12.5"/><path d="M7.5 16.5c0 1.38-1.12 2.5-2.5 2.5S2.5 19.38 2.5 18c0-2 2.5-3 2.5-3s2.5 1 2.5 3z"/></svg></button>` : ''}
             <button class="module-toolbar-btn module-movetab-btn" title="${t('module.moveToTab')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="4" width="7" height="16" rx="1"/><line x1="3" y1="12" x2="14" y2="12"/><polyline points="10 8 14 12 10 16"/></svg></button>
             <button class="module-toolbar-btn module-delete-btn" title="${t('module.deleteModule')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
@@ -1131,6 +1147,29 @@
             });
         }
 
+        // Add Defense button (defenses modules only)
+        const defAddBtn = el.querySelector('.module-def-add-btn');
+        if (defAddBtn) {
+            defAddBtn.addEventListener('click', () => {
+                if (!data.content) data.content = { defenses: [] };
+                if (!Array.isArray(data.content.defenses)) data.content.defenses = [];
+                data.content.defenses.push({
+                    id: generateDefenseId(),
+                    name: '',
+                    value: 0,
+                    icon: null,
+                    showSign: false,
+                    notes: ''
+                });
+                const bodyEl = el.querySelector('.module-body');
+                MODULE_TYPES['defenses'].renderBody(bodyEl, data, false);
+                snapModuleHeight(el, data);
+                scheduleSave();
+                const inputs = bodyEl.querySelectorAll('.def-name-input');
+                if (inputs.length) inputs[inputs.length - 1].focus();
+            });
+        }
+
         // Theme button (opens swatch popover)
         const themeBtn = el.querySelector('.module-theme-btn');
         if (themeBtn) {
@@ -1368,6 +1407,8 @@
             if (moveToTabBtnPlay) moveToTabBtnPlay.style.display = 'none';
             const rollableBtnPlay = mod.querySelector('.module-rollable-btn');
             if (rollableBtnPlay) rollableBtnPlay.style.display = 'none';
+            const defAddBtnPlay = mod.querySelector('.module-def-add-btn');
+            if (defAddBtnPlay) defAddBtnPlay.style.display = 'none';
             // Clear stat selection when entering play mode
             mod._selectedStatIndex = null;
             // Title: show label, hide input
@@ -1415,6 +1456,8 @@
             if (themeBtnEdit) themeBtnEdit.style.display = '';
             const moveToTabBtnEdit = mod.querySelector('.module-movetab-btn');
             if (moveToTabBtnEdit) moveToTabBtnEdit.style.display = '';
+            const defAddBtnEdit = mod.querySelector('.module-def-add-btn');
+            if (defAddBtnEdit) defAddBtnEdit.style.display = '';
             // Title: show input, hide label
             const titleInput = mod.querySelector('.module-title-input');
             const titleLabel = mod.querySelector('.module-type-label');

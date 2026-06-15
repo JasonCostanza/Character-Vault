@@ -107,6 +107,7 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'type.stat': 'Estatística',
             'type.health': 'Saúde',
             'type.counters': 'Contadores',
+            'type.defenses': 'Defesas',
             'type.level': 'Nível',
             'type.list': 'Lista',
             'type.recovery': 'Recuperação',
@@ -546,6 +547,16 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'counter.log.increment': '{name} incrementado ({oldVal} → {newVal})',
             'counter.log.decrement': '{name} decrementado ({oldVal} → {newVal})',
             'counter.log.reset': '{name} redefinido para {value}',
+
+            // Defenses submodule
+            'def.addDefense': 'Adicionar Defesa',
+            'def.emptyTitle': 'Nenhuma defesa adicionada ainda.',
+            'def.emptyHint': 'Mude para o modo Edição para adicionar valores de defesa.',
+            'def.notesPlaceholder': 'Notas (opcional)',
+            'def.showSign': 'Mostrar sinal +/-',
+            'def.deleteDefense': 'Excluir defesa',
+            'def.changeIcon': 'Alterar ícone',
+            'def.noIcon': 'Sem ícone',
             // Level submodule
             'level.classNameLabel': 'Nome da Classe',
             'level.classNamePlaceholder': 'ex. Guerreiro, Ladino, Bruxo',

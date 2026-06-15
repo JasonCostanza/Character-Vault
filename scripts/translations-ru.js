@@ -108,6 +108,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'type.stat': 'Характеристика',
             'type.health': 'Здоровье',
             'type.counters': 'Счётчики',
+            'type.defenses': 'Защита',
             'type.level': 'Уровень',
             'type.list': 'Список',
             'type.recovery': 'Восстановление',
@@ -544,6 +545,16 @@ window.CV_TRANSLATIONS['ru'] = {
             'counter.log.increment': '{name} увеличен ({oldVal} → {newVal})',
             'counter.log.decrement': '{name} уменьшен ({oldVal} → {newVal})',
             'counter.log.reset': '{name} сброшен до {value}',
+
+            // Defenses submodule
+            'def.addDefense': 'Добавить Защиту',
+            'def.emptyTitle': 'Защитные значения ещё не добавлены.',
+            'def.emptyHint': 'Переключитесь в режим Редактирования, чтобы добавить значения.',
+            'def.notesPlaceholder': 'Заметки (необязательно)',
+            'def.showSign': 'Показывать знак +/-',
+            'def.deleteDefense': 'Удалить защиту',
+            'def.changeIcon': 'Изменить значок',
+            'def.noIcon': 'Без значка',
             // Level submodule
             'level.classNameLabel': 'Название Класса',
             'level.classNamePlaceholder': 'напр. Воин, Следопыт, Колдун',

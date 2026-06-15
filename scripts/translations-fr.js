@@ -106,6 +106,7 @@ window.CV_TRANSLATIONS['fr'] = {
             'type.stat': 'Statistique',
             'type.health': 'Santé',
             'type.counters': 'Compteurs',
+            'type.defenses': 'Défenses',
             'type.list': 'Liste',
             'type.recovery': 'Récupération',
             'type.companions': 'Compagnons',
@@ -971,6 +972,16 @@ window.CV_TRANSLATIONS['fr'] = {
             'counter.log.increment': '{name} incrémenté ({oldVal} → {newVal})',
             'counter.log.decrement': '{name} décrémenté ({oldVal} → {newVal})',
             'counter.log.reset': '{name} réinitialisé à {value}',
+
+            // Defenses submodule
+            'def.addDefense': 'Ajouter une Défense',
+            'def.emptyTitle': 'Aucune défense ajoutée pour l\'instant.',
+            'def.emptyHint': 'Passez en mode Édition pour ajouter des valeurs de défense.',
+            'def.notesPlaceholder': 'Notes (optionnel)',
+            'def.showSign': 'Afficher le signe +/-',
+            'def.deleteDefense': 'Supprimer la défense',
+            'def.changeIcon': 'Changer l\'icône',
+            'def.noIcon': 'Pas d\'icône',
 
             // Recovery submodule
             'recovery.longRest': 'Repos Long',

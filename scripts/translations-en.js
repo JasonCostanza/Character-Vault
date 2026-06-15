@@ -115,6 +115,7 @@ window.CV_TRANSLATIONS.en = {
             'type.stat': 'Stat',
             'type.health': 'Health',
             'type.counters': 'Counters',
+            'type.defenses': 'Defenses',
             'type.level': 'Level',
             'type.list': 'List',
             'type.recovery': 'Recovery',
@@ -798,6 +799,16 @@ window.CV_TRANSLATIONS.en = {
             'cond.dh.stunnedDesc': 'Restrained and unable to take actions.',
             'cond.dh.vulnerable': 'Vulnerable',
             'cond.dh.vulnerableDesc': 'Defenses are weakened. Attacks against deal extra damage.',
+
+            // Defenses submodule
+            'def.addDefense': 'Add Defense',
+            'def.emptyTitle': 'No defenses added yet.',
+            'def.emptyHint': 'Switch to Edit mode to add defense values.',
+            'def.notesPlaceholder': 'Notes (optional)',
+            'def.showSign': 'Show +/- sign',
+            'def.deleteDefense': 'Delete defense',
+            'def.changeIcon': 'Change icon',
+            'def.noIcon': 'No icon',
 
             // Counters submodule
             'counter.addCounter': 'Add Counter',

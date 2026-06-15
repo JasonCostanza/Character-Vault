@@ -21,10 +21,37 @@
         return data.content;
     }
 
-    // ── Value Formatting ──
-    function formatDefenseValue(value, showSign) {
-        if (showSign) return window.formatModifier(value);
-        return String(value);
+    // ── Inline Quick-Edit Helper ──
+    function attachQuickEdit(el, inputType, getValue, setValue, width, data, bodyEl) {
+        el.addEventListener('click', function (e) {
+            if (!e.ctrlKey && !e.metaKey) return;
+            e.stopPropagation();
+
+            const input = document.createElement('input');
+            input.type = inputType;
+            input.className = 'def-quick-input';
+            input.value = getValue();
+            if (width) input.style.width = width;
+            el.replaceWith(input);
+            input.focus();
+            input.select();
+
+            let committed = false;
+            function commitOnce() {
+                if (committed) return;
+                committed = true;
+                setValue(input.value);
+                scheduleSave();
+                MODULE_TYPES['defenses'].renderBody(bodyEl, data, true);
+            }
+
+            input.addEventListener('keydown', function (ev) {
+                if (ev.key === 'Enter' || ev.key === 'Escape') commitOnce();
+            });
+            input.addEventListener('blur', function () {
+                setTimeout(commitOnce, 50);
+            });
+        });
     }
 
     // ── Play Mode Row ──
@@ -62,7 +89,7 @@
         // Value
         const valueEl = document.createElement('span');
         valueEl.className = 'def-value';
-        valueEl.textContent = formatDefenseValue(def.value, def.showSign);
+        valueEl.textContent = def.showSign ? window.formatModifier(def.value) : String(def.value);
         row.appendChild(valueEl);
 
         // Notes (hidden by default)
@@ -78,72 +105,21 @@
             indicator.textContent = isOpen ? '▾' : '▸';
         });
 
-        // Ctrl+Click on value — inline quick-edit
-        valueEl.addEventListener('click', function (e) {
-            if (!e.ctrlKey && !e.metaKey) return;
-            e.stopPropagation();
+        attachQuickEdit(valueEl, 'number',
+            function () { return def.value; },
+            function (v) { def.value = parseInt(v, 10) || 0; },
+            '50px', data, bodyEl);
 
-            const input = document.createElement('input');
-            input.type = 'number';
-            input.className = 'def-quick-input';
-            input.value = def.value;
-            input.style.width = '50px';
-            valueEl.replaceWith(input);
-            input.focus();
-            input.select();
-
-            let committed = false;
-            function commitOnce() {
-                if (committed) return;
-                committed = true;
-                def.value = parseInt(input.value, 10) || 0;
-                scheduleSave();
-                MODULE_TYPES['defenses'].renderBody(bodyEl, data, true);
-            }
-
-            input.addEventListener('keydown', function (ev) {
-                if (ev.key === 'Enter' || ev.key === 'Escape') commitOnce();
-            });
-            input.addEventListener('blur', function () {
-                setTimeout(commitOnce, 50);
-            });
-        });
-
-        // Ctrl+Click on name — inline quick-edit
-        nameEl.addEventListener('click', function (e) {
-            if (!e.ctrlKey && !e.metaKey) return;
-            e.stopPropagation();
-
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.className = 'def-quick-input';
-            input.value = def.name;
-            nameEl.replaceWith(input);
-            input.focus();
-            input.select();
-
-            let committed = false;
-            function commitOnce() {
-                if (committed) return;
-                committed = true;
-                def.name = input.value;
-                scheduleSave();
-                MODULE_TYPES['defenses'].renderBody(bodyEl, data, true);
-            }
-
-            input.addEventListener('keydown', function (ev) {
-                if (ev.key === 'Enter' || ev.key === 'Escape') commitOnce();
-            });
-            input.addEventListener('blur', function () {
-                setTimeout(commitOnce, 50);
-            });
-        });
+        attachQuickEdit(nameEl, 'text',
+            function () { return def.name; },
+            function (v) { def.name = v; },
+            null, data, bodyEl);
 
         return { row, notesEl };
     }
 
     // ── Edit Mode Row ──
-    function renderEditRow(def, index, data, bodyEl, moduleEl) {
+    function renderEditRow(def, data, bodyEl, moduleEl) {
         const row = document.createElement('div');
         row.className = 'def-edit-row';
         row.dataset.id = def.id;
@@ -214,7 +190,6 @@
             const idx = data.content.defenses.findIndex(function (d) { return d.id === def.id; });
             if (idx !== -1) data.content.defenses.splice(idx, 1);
             MODULE_TYPES['defenses'].renderBody(bodyEl, data, false);
-            snapModuleHeight(moduleEl, data);
             scheduleSave();
         });
         row.appendChild(deleteBtn);
@@ -345,8 +320,8 @@
                     container.appendChild(notesEl);
                 });
             } else {
-                content.defenses.forEach(function (def, index) {
-                    container.appendChild(renderEditRow(def, index, data, bodyEl, moduleEl));
+                content.defenses.forEach(function (def) {
+                    container.appendChild(renderEditRow(def, data, bodyEl, moduleEl));
                 });
                 if (content.defenses.length > 1) {
                     initDefenseSortable(container, data);
@@ -370,6 +345,5 @@
 
     // ── Window Exports ──
     window.ensureDefenseContent = ensureContent;
-    window.formatDefenseValue = formatDefenseValue;
     window.generateDefenseId = generateDefenseId;
 })();

@@ -3,6 +3,7 @@ node_modules/
 
 # Claude Code local settings
 .claude/
+.superpowers/
 
 # TaleSpire local storage (user save data)
 .localStorage/

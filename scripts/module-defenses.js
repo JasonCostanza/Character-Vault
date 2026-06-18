@@ -87,11 +87,11 @@
         actions.className = 'delete-confirm-actions';
         const cancelBtn = document.createElement('button');
         cancelBtn.className = 'delete-confirm-cancel';
-        cancelBtn.textContent = t('module.cancel');
+        cancelBtn.textContent = t('delete.cancel');
         cancelBtn.addEventListener('click', function () { overlay.remove(); });
         const confirmBtn = document.createElement('button');
         confirmBtn.className = 'delete-confirm-yes';
-        confirmBtn.textContent = t('module.delete');
+        confirmBtn.textContent = t('delete.confirm');
         confirmBtn.addEventListener('click', function () {
             overlay.remove();
             onConfirm();

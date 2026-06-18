@@ -155,17 +155,47 @@
 
     // ── Play Mode: Spotlight ──
 
-    function renderSpotlight(container, content, data, bodyEl) {
-        if (!content.defenses.length) return;
+    function refreshSpotlightState(spotlight, content) {
         const def = content.defenses[0];
         const activeQDs = getActiveQDs(content);
         const buffed = activeQDs.length > 0;
-        const displayValue = computeSpotlightValue(content);
+
+        const valueEl = spotlight.querySelector('.def-spotlight-value');
+        if (valueEl) {
+            valueEl.textContent = fmtDefValue(computeSpotlightValue(content), def.showSign);
+            valueEl.classList.toggle('buffed', buffed);
+        }
+
+        const oldBase = spotlight.querySelector('.def-spotlight-base');
+        const oldBadges = spotlight.querySelector('.def-spotlight-badges');
+        if (oldBase) oldBase.remove();
+        if (oldBadges) oldBadges.remove();
+
+        if (buffed) {
+            const baseEl = document.createElement('span');
+            baseEl.className = 'def-spotlight-base';
+            baseEl.textContent = t('def.base', { value: String(def.value) });
+            spotlight.appendChild(baseEl);
+
+            const badges = document.createElement('div');
+            badges.className = 'def-spotlight-badges';
+            activeQDs.forEach(function (qd) {
+                const badge = document.createElement('span');
+                badge.className = 'def-spotlight-badge';
+                badge.textContent = qd.name + ' ' + formatModifier(qd.modifier);
+                badges.appendChild(badge);
+            });
+            spotlight.appendChild(badges);
+        }
+    }
+
+    function renderSpotlight(container, content, data, bodyEl) {
+        if (!content.defenses.length) return;
+        const def = content.defenses[0];
 
         const section = document.createElement('div');
         section.className = 'def-spotlight';
 
-        // Icon
         if (def.icon && CV_ICONS[def.icon]) {
             const iconEl = document.createElement('span');
             iconEl.className = 'def-spotlight-icon';
@@ -173,10 +203,8 @@
             section.appendChild(iconEl);
         }
 
-        // Value
         const valueEl = document.createElement('span');
-        valueEl.className = 'def-spotlight-value' + (buffed ? ' buffed' : '');
-        valueEl.textContent = fmtDefValue(displayValue, def.showSign);
+        valueEl.className = 'def-spotlight-value';
         valueEl.addEventListener('click', function (e) {
             if (!e.ctrlKey && !e.metaKey) return;
             e.stopPropagation();
@@ -188,30 +216,12 @@
         });
         section.appendChild(valueEl);
 
-        // Label
         const labelEl = document.createElement('span');
         labelEl.className = 'def-spotlight-label';
         labelEl.textContent = def.name;
         section.appendChild(labelEl);
 
-        // Base value (only when buffed)
-        if (buffed) {
-            const baseEl = document.createElement('span');
-            baseEl.className = 'def-spotlight-base';
-            baseEl.textContent = t('def.base', { value: String(def.value) });
-            section.appendChild(baseEl);
-
-            // Modifier badges
-            const badges = document.createElement('div');
-            badges.className = 'def-spotlight-badges';
-            activeQDs.forEach(function (qd) {
-                const badge = document.createElement('span');
-                badge.className = 'def-spotlight-badge';
-                badge.textContent = qd.name + ' ' + formatModifier(qd.modifier);
-                badges.appendChild(badge);
-            });
-            section.appendChild(badges);
-        }
+        refreshSpotlightState(section, content);
 
         container.appendChild(section);
     }
@@ -266,6 +276,7 @@
     function renderQDButtons(container, content, data, bodyEl) {
         if (!content.quickDefenses.length) return;
 
+        const spotlightEl = container.querySelector('.def-spotlight');
         const strip = document.createElement('div');
         const colSpan = data.colSpan || 2;
         strip.className = 'def-qd-strip' + (colSpan <= 1 ? ' compact' : '');
@@ -304,8 +315,9 @@
 
             btn.addEventListener('click', function () {
                 qd.active = !qd.active;
+                btn.classList.toggle('active', qd.active);
+                if (spotlightEl) refreshSpotlightState(spotlightEl, content);
                 scheduleSave();
-                MODULE_TYPES['defenses'].renderBody(bodyEl, data, true);
             });
 
             strip.appendChild(btn);

@@ -21,8 +21,8 @@
     line-height: 1; cursor: default;
 }
 .def-spotlight-value.buffed {
-    color: #6ee7b7;
-    text-shadow: 0 0 8px rgba(110, 231, 183, 0.4);
+    color: var(--cv-accent);
+    text-shadow: 0 0 8px color-mix(in srgb, var(--cv-accent) 40%, transparent);
 }
 
 .def-spotlight-label {
@@ -41,8 +41,9 @@
 
 .def-spotlight-badge {
     font-size: 0.7em; padding: 2px 8px; border-radius: 10px;
-    background: rgba(110, 231, 183, 0.15); color: #6ee7b7;
-    border: 1px solid rgba(110, 231, 183, 0.3);
+    background: color-mix(in srgb, var(--cv-accent) 15%, transparent);
+    color: var(--cv-accent);
+    border: 1px solid var(--cv-accent-secondary);
     white-space: nowrap;
 }
 
@@ -89,9 +90,9 @@
 }
 .def-qd-btn:hover { background: var(--cv-surface-hover); }
 .def-qd-btn.active {
-    background: rgba(110, 231, 183, 0.1);
-    border-color: rgba(110, 231, 183, 0.4);
-    color: #6ee7b7;
+    background: color-mix(in srgb, var(--cv-accent) 10%, transparent);
+    border-color: var(--cv-accent-secondary);
+    color: var(--cv-accent);
 }
 
 .def-qd-icon {
@@ -129,8 +130,9 @@
     pointer-events: none;
 }
 .def-qd-btn.active .def-qd-compact-badge {
-    background: rgba(110, 231, 183, 0.2); color: #6ee7b7;
-    border-color: rgba(110, 231, 183, 0.4);
+    background: color-mix(in srgb, var(--cv-accent) 20%, transparent);
+    color: var(--cv-accent);
+    border-color: var(--cv-accent-secondary);
 }
 .def-qd-strip.compact .def-qd-compact-badge { display: block; }
 .def-qd-strip.compact .def-qd-btn { position: relative; }

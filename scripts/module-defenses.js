@@ -2,15 +2,20 @@
 (function () {
     'use strict';
 
+    // ── Shared SVG Fragments ──
+
+    var SVG_NO_ICON = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>';
+    var SVG_CLOSE = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    var SVG_PLUS = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+
     // ── ID Generation ──
 
-    function generateDefenseId() {
-        return 'def_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    function generateId(prefix) {
+        return prefix + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
     }
 
-    function generateQDId() {
-        return 'qd_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    }
+    function generateDefenseId() { return generateId('def'); }
+    function generateQDId() { return generateId('qd'); }
 
     // ── Default Content Builder ──
 
@@ -50,6 +55,19 @@
             if (qd.icon === undefined) qd.icon = null;
         });
         return data.content;
+    }
+
+    // ── Formatting Helpers ──
+
+    function fmtMod(n) {
+        return n >= 0 ? '+' + n : String(n);
+    }
+
+    function fmtDefValue(value, showSign) {
+        if (!showSign) return String(value);
+        return typeof window.formatModifier === 'function'
+            ? window.formatModifier(value)
+            : fmtMod(value);
     }
 
     // ── Computed Values ──
@@ -189,7 +207,8 @@
     function renderSpotlight(container, content, data, bodyEl) {
         if (!content.defenses.length) return;
         const def = content.defenses[0];
-        const buffed = isBuffed(content);
+        const activeQDs = getActiveQDs(content);
+        const buffed = activeQDs.length > 0;
         const displayValue = computeSpotlightValue(content);
 
         const section = document.createElement('div');
@@ -206,9 +225,7 @@
         // Value
         const valueEl = document.createElement('span');
         valueEl.className = 'def-spotlight-value' + (buffed ? ' buffed' : '');
-        valueEl.textContent = def.showSign
-            ? (typeof window.formatModifier === 'function' ? window.formatModifier(displayValue) : (displayValue >= 0 ? '+' + displayValue : String(displayValue)))
-            : String(displayValue);
+        valueEl.textContent = fmtDefValue(displayValue, def.showSign);
         valueEl.addEventListener('click', function (e) {
             if (!e.ctrlKey && !e.metaKey) return;
             e.stopPropagation();
@@ -236,11 +253,10 @@
             // Modifier badges
             const badges = document.createElement('div');
             badges.className = 'def-spotlight-badges';
-            getActiveQDs(content).forEach(function (qd) {
+            activeQDs.forEach(function (qd) {
                 const badge = document.createElement('span');
                 badge.className = 'def-spotlight-badge';
-                const modStr = qd.modifier >= 0 ? '+' + qd.modifier : String(qd.modifier);
-                badge.textContent = qd.name + ' ' + modStr;
+                badge.textContent = qd.name + ' ' + fmtMod(qd.modifier);
                 badges.appendChild(badge);
             });
             section.appendChild(badges);
@@ -276,9 +292,7 @@
 
             const valueEl = document.createElement('span');
             valueEl.className = 'def-secondary-value';
-            valueEl.textContent = def.showSign
-                ? (typeof window.formatModifier === 'function' ? window.formatModifier(def.value) : (def.value >= 0 ? '+' + def.value : String(def.value)))
-                : String(def.value);
+            valueEl.textContent = fmtDefValue(def.value, def.showSign);
             valueEl.addEventListener('click', function (e) {
                 if (!e.ctrlKey && !e.metaKey) return;
                 e.stopPropagation();
@@ -298,7 +312,7 @@
 
     // ── Play Mode: Quick Defense Buttons ──
 
-    function renderQDButtons(container, content, data, bodyEl, moduleEl) {
+    function renderQDButtons(container, content, data, bodyEl) {
         if (!content.quickDefenses.length) return;
 
         const strip = document.createElement('div');
@@ -326,17 +340,15 @@
 
                 const modEl = document.createElement('span');
                 modEl.className = 'def-qd-mod';
-                modEl.textContent = qd.modifier >= 0 ? '+' + qd.modifier : String(qd.modifier);
+                modEl.textContent = fmtMod(qd.modifier);
                 btn.appendChild(modEl);
             } else {
-                const modStr = qd.modifier >= 0 ? '+' + qd.modifier : String(qd.modifier);
-                btn.title = qd.name + ' ' + modStr;
+                btn.title = qd.name + ' ' + fmtMod(qd.modifier);
             }
 
-            // Compact mode badge (visible only via CSS when strip is .compact)
             const compactBadge = document.createElement('span');
             compactBadge.className = 'def-qd-compact-badge';
-            compactBadge.textContent = qd.modifier >= 0 ? '+' + qd.modifier : String(qd.modifier);
+            compactBadge.textContent = fmtMod(qd.modifier);
             btn.appendChild(compactBadge);
 
             btn.addEventListener('click', function () {
@@ -353,7 +365,7 @@
 
     // ── Layout Mode: Edit Row ──
 
-    function renderEditRow(def, data, bodyEl, moduleEl) {
+    function renderEditRow(def, data, bodyEl) {
         const row = document.createElement('div');
         row.className = 'def-edit-row';
         row.dataset.id = def.id;
@@ -372,7 +384,7 @@
         if (def.icon && CV_ICONS[def.icon]) {
             iconBtn.innerHTML = CV_ICONS[def.icon];
         } else {
-            iconBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>';
+            iconBtn.innerHTML = SVG_NO_ICON;
         }
         iconBtn.addEventListener('click', function () {
             openDefenseIconPicker(iconBtn, def.icon, function (newIcon) {
@@ -423,7 +435,7 @@
         deleteBtn.type = 'button';
         deleteBtn.className = 'def-delete-btn';
         deleteBtn.title = t('def.deleteDefense');
-        deleteBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        deleteBtn.innerHTML = SVG_CLOSE;
         deleteBtn.addEventListener('click', function () {
             showConfirm(t('def.confirmDelete', { name: def.name || t('def.unnamed') }), function () {
                 const idx = data.content.defenses.findIndex(function (d) { return d.id === def.id; });
@@ -439,11 +451,10 @@
 
     // ── Layout Mode: Add Defense Row ──
 
-    function renderAddRow(data, bodyEl, moduleEl) {
+    function renderAddRow(data, bodyEl) {
         const row = document.createElement('div');
         row.className = 'def-add-row';
-        row.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'
-            + '<span>' + escapeHtml(t('def.addDefense')) + '</span>';
+        row.innerHTML = SVG_PLUS + '<span>' + escapeHtml(t('def.addDefense')) + '</span>';
         row.addEventListener('click', function () {
             data.content.defenses.push({
                 id: generateDefenseId(),
@@ -504,7 +515,7 @@
         if (qd.icon && CV_ICONS[qd.icon]) {
             iconBtn.innerHTML = CV_ICONS[qd.icon];
         } else {
-            iconBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>';
+            iconBtn.innerHTML = SVG_NO_ICON;
         }
         iconBtn.addEventListener('click', function () {
             openDefenseIconPicker(iconBtn, qd.icon, function (newIcon) {
@@ -548,7 +559,7 @@
         deleteBtn.type = 'button';
         deleteBtn.className = 'def-qd-delete-btn';
         deleteBtn.title = t('def.deleteQD');
-        deleteBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        deleteBtn.innerHTML = SVG_CLOSE;
         deleteBtn.addEventListener('click', function () {
             const idx = content.quickDefenses.findIndex(function (q) { return q.id === qd.id; });
             if (idx !== -1) content.quickDefenses.splice(idx, 1);
@@ -581,8 +592,7 @@
         // Add QD row
         const addRow = document.createElement('div');
         addRow.className = 'def-qd-add-row';
-        addRow.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'
-            + '<span>' + escapeHtml(t('def.addQD')) + '</span>';
+        addRow.innerHTML = SVG_PLUS + '<span>' + escapeHtml(t('def.addQD')) + '</span>';
         addRow.addEventListener('click', function () {
             content.quickDefenses.push({
                 id: generateQDId(),
@@ -642,7 +652,7 @@
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
         closeXBtn.title = t('def.close');
-        closeXBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeXBtn.innerHTML = SVG_CLOSE;
         header.appendChild(titleEl);
         header.appendChild(closeXBtn);
         panel.appendChild(header);
@@ -705,15 +715,15 @@
             } else if (isPlayMode) {
                 renderSpotlight(container, content, data, bodyEl);
                 renderSecondaryRows(container, content, data, bodyEl);
-                renderQDButtons(container, content, data, bodyEl, moduleEl);
+                renderQDButtons(container, content, data, bodyEl);
             } else {
                 content.defenses.forEach(function (def) {
-                    container.appendChild(renderEditRow(def, data, bodyEl, moduleEl));
+                    container.appendChild(renderEditRow(def, data, bodyEl));
                 });
                 if (content.defenses.length > 1) {
                     initDefenseSortable(container, data);
                 }
-                container.appendChild(renderAddRow(data, bodyEl, moduleEl));
+                container.appendChild(renderAddRow(data, bodyEl));
             }
 
             bodyEl.appendChild(container);

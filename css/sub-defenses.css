@@ -119,6 +119,22 @@
 .def-qd-strip.compact .def-qd-label { display: none; }
 .def-qd-strip.compact .def-qd-mod { display: none; }
 
+.def-qd-compact-badge {
+    display: none;
+    position: absolute; bottom: -2px; right: -2px;
+    font-size: 0.6em; font-weight: 700; line-height: 1;
+    padding: 1px 3px; border-radius: 6px;
+    background: var(--cv-bg-surface); color: var(--cv-text-muted);
+    border: 1px solid var(--cv-border-subtle);
+    pointer-events: none;
+}
+.def-qd-btn.active .def-qd-compact-badge {
+    background: rgba(110, 231, 183, 0.2); color: #6ee7b7;
+    border-color: rgba(110, 231, 183, 0.4);
+}
+.def-qd-strip.compact .def-qd-compact-badge { display: block; }
+.def-qd-strip.compact .def-qd-btn { position: relative; }
+
 /* ── Layout Mode: Edit Rows ── */
 .def-edit-row {
     display: flex; align-items: center; padding: 4px; gap: 6px;

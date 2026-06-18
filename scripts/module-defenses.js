@@ -333,6 +333,12 @@
                 btn.title = qd.name + ' ' + modStr;
             }
 
+            // Compact mode badge (visible only via CSS when strip is .compact)
+            const compactBadge = document.createElement('span');
+            compactBadge.className = 'def-qd-compact-badge';
+            compactBadge.textContent = qd.modifier >= 0 ? '+' + qd.modifier : String(qd.modifier);
+            btn.appendChild(compactBadge);
+
             btn.addEventListener('click', function () {
                 qd.active = !qd.active;
                 scheduleSave();
@@ -711,6 +717,7 @@
             }
 
             bodyEl.appendChild(container);
+            if (typeof snapModuleHeight === 'function') snapModuleHeight(moduleEl, data);
         },
 
         onPlayMode: function (moduleEl, data) {

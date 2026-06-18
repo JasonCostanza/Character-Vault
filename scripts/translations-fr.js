@@ -974,14 +974,23 @@ window.CV_TRANSLATIONS['fr'] = {
             'counter.log.reset': '{name} réinitialisé à {value}',
 
             // Defenses submodule
-            'def.addDefense': 'Ajouter une Défense',
-            'def.emptyTitle': 'Aucune défense ajoutée pour l\'instant.',
-            'def.emptyHint': 'Passez en mode Édition pour ajouter des valeurs de défense.',
-            'def.notesPlaceholder': 'Notes (optionnel)',
+            'def.addDefense': 'Ajouter une défense',
+            'def.emptyTitle': 'Aucune défense configurée',
+            'def.emptyHint': 'Passez en mode Disposition pour ajouter des valeurs de défense',
             'def.showSign': 'Afficher le signe +/-',
             'def.deleteDefense': 'Supprimer la défense',
+            'def.confirmDelete': 'Supprimer {name} ?',
+            'def.unnamed': 'Sans nom',
             'def.changeIcon': 'Changer l\'icône',
-            'def.noIcon': 'Pas d\'icône',
+            'def.noIcon': 'Aucune icône',
+            'def.base': 'Base : {value}',
+            'def.modLabel': 'Mod',
+            'def.close': 'Fermer',
+            'def.qdSettings': 'Paramètres de défense rapide',
+            'def.addQD': 'Ajouter une défense rapide',
+            'def.deleteQD': 'Supprimer la défense rapide',
+            'def.qdEmptyTitle': 'Aucune défense rapide configurée.',
+            'def.qdEmptyHint': 'Ajoutez des modificateurs activables pour ajuster votre valeur de défense principale.',
 
             // Recovery submodule
             'recovery.longRest': 'Repos Long',

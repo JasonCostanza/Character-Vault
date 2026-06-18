@@ -802,13 +802,22 @@ window.CV_TRANSLATIONS.en = {
 
             // Defenses submodule
             'def.addDefense': 'Add Defense',
-            'def.emptyTitle': 'No defenses added yet.',
-            'def.emptyHint': 'Switch to Edit mode to add defense values.',
-            'def.notesPlaceholder': 'Notes (optional)',
+            'def.emptyTitle': 'No defenses configured',
+            'def.emptyHint': 'Switch to Layout mode to add defense values',
             'def.showSign': 'Show +/- sign',
             'def.deleteDefense': 'Delete defense',
+            'def.confirmDelete': 'Delete {name}?',
+            'def.unnamed': 'Unnamed',
             'def.changeIcon': 'Change icon',
             'def.noIcon': 'No icon',
+            'def.base': 'Base: {value}',
+            'def.modLabel': 'Mod',
+            'def.close': 'Close',
+            'def.qdSettings': 'Quick Defense Settings',
+            'def.addQD': 'Add Quick Defense',
+            'def.deleteQD': 'Delete quick defense',
+            'def.qdEmptyTitle': 'No quick defenses configured.',
+            'def.qdEmptyHint': 'Add modifiers that can be toggled on and off to adjust your spotlight defense value.',
 
             // Counters submodule
             'counter.addCounter': 'Add Counter',

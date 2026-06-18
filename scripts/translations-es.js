@@ -548,14 +548,23 @@ window.CV_TRANSLATIONS['es'] = {
             'counter.log.reset': '{name} restablecido a {value}',
 
             // Defenses submodule
-            'def.addDefense': 'Añadir Defensa',
-            'def.emptyTitle': 'No hay defensas añadidas todavía.',
-            'def.emptyHint': 'Cambia al modo Edición para añadir valores de defensa.',
-            'def.notesPlaceholder': 'Notas (opcional)',
+            'def.addDefense': 'Agregar defensa',
+            'def.emptyTitle': 'Sin defensas configuradas',
+            'def.emptyHint': 'Cambia al modo Diseño para agregar valores de defensa',
             'def.showSign': 'Mostrar signo +/-',
             'def.deleteDefense': 'Eliminar defensa',
+            'def.confirmDelete': '¿Eliminar {name}?',
+            'def.unnamed': 'Sin nombre',
             'def.changeIcon': 'Cambiar icono',
             'def.noIcon': 'Sin icono',
+            'def.base': 'Base: {value}',
+            'def.modLabel': 'Mod',
+            'def.close': 'Cerrar',
+            'def.qdSettings': 'Configuración de defensa rápida',
+            'def.addQD': 'Agregar defensa rápida',
+            'def.deleteQD': 'Eliminar defensa rápida',
+            'def.qdEmptyTitle': 'Sin defensas rápidas configuradas.',
+            'def.qdEmptyHint': 'Agrega modificadores que se activan y desactivan para ajustar tu valor de defensa principal.',
 
             // Level submodule
             'level.classNameLabel': 'Nombre de Clase',

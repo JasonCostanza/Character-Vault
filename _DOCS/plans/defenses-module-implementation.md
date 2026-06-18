@@ -29,7 +29,7 @@
 
 ## Phase 1 — Module Script ▸ `scripts/module-defenses.js`
 
-> **Status:** PENDING
+> **Status:** ✅ COMPLETE
 > **Overwrites:** `scripts/module-defenses.js`
 > **Commit:** `feat(defenses): rewrite module with spotlight, QD buttons, and settings modal`
 
@@ -852,7 +852,7 @@ git commit -m "feat(defenses): rewrite module with spotlight, QD buttons, and se
 
 ## Phase 2 — CSS + Integration ▸ `css/sub-defenses.css`, `scripts/module-core.js`, locale files
 
-> **Status:** PENDING
+> **Status:** ✅ COMPLETE
 > **Overwrites:** `css/sub-defenses.css`
 > **Modifies:** `scripts/module-core.js`, all 7 `scripts/translations-*.js` files
 > **Commit:** `feat(defenses): add CSS, update toolbar/wizard, and locale keys`
@@ -1494,7 +1494,7 @@ git commit -m "feat(defenses): add CSS, update toolbar/wizard, and locale keys"
 
 ## Phase 3 — Tests ▸ `tests/module-defenses.test.js`
 
-> **Status:** PENDING
+> **Status:** ✅ COMPLETE
 > **Creates:** `tests/module-defenses.test.js`
 > **Commit:** `test(defenses): add unit tests for pure functions`
 

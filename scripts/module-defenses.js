@@ -4,7 +4,6 @@
 
     // ── Shared SVG Fragments ──
 
-    var SVG_NO_ICON = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>';
     var SVG_CLOSE = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
     var SVG_PLUS = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
 
@@ -384,7 +383,7 @@
         if (def.icon && CV_ICONS[def.icon]) {
             iconBtn.innerHTML = CV_ICONS[def.icon];
         } else {
-            iconBtn.innerHTML = SVG_NO_ICON;
+            iconBtn.innerHTML = CV_ICONS['none'];
         }
         iconBtn.addEventListener('click', function () {
             openDefenseIconPicker(iconBtn, def.icon, function (newIcon) {
@@ -515,7 +514,7 @@
         if (qd.icon && CV_ICONS[qd.icon]) {
             iconBtn.innerHTML = CV_ICONS[qd.icon];
         } else {
-            iconBtn.innerHTML = SVG_NO_ICON;
+            iconBtn.innerHTML = CV_ICONS['none'];
         }
         iconBtn.addEventListener('click', function () {
             openDefenseIconPicker(iconBtn, qd.icon, function (newIcon) {

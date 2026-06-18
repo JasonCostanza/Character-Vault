@@ -28,10 +28,17 @@ export default [
                 renderMarkdown: 'readonly',
                 attachCheckboxHandlers: 'readonly',
                 showToast: 'readonly',
+                showConfirm: 'readonly',
                 toggleCheckboxInMarkdown: 'readonly',
+                generateId: 'readonly',
+                formatModifier: 'readonly',
+                makeCvToggle: 'readonly',
+                buildCvSelect: 'readonly',
+                closeAllModals: 'readonly',
                 CV_ICONS: 'readonly',
                 CV_SVG_SORT_UP: 'readonly',
                 CV_SVG_SORT_DOWN: 'readonly',
+                CV_SVG_CLOSE: 'readonly',
 
                 // ── i18n.js ──
                 currentLang: 'writable',

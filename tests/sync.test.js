@@ -14,6 +14,7 @@ globalThis.escapeHtml = (str) =>
         .replace(/"/g, '&quot;');
 
 beforeEach(() => {
+    loadScript('scripts/shared.js');
     loadScript('scripts/sync.js');
 });
 

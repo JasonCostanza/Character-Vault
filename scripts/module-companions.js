@@ -75,64 +75,6 @@
         }
     }
 
-    // ── Custom Confirm Dialog ──
-
-    function showConfirm(options, onConfirm) {
-        const message = typeof options === 'string' ? options : options.message;
-        const titleText = (typeof options === 'object' && options.title) || t('companion.deleteTitle');
-
-        const overlay = document.createElement('div');
-        overlay.className = 'delete-confirm-overlay';
-        overlay.setAttribute('aria-hidden', 'true');
-
-        const panel = document.createElement('div');
-        panel.className = 'delete-confirm-panel';
-
-        const title = document.createElement('div');
-        title.className = 'delete-confirm-title';
-        title.style.userSelect = 'none';
-        title.textContent = titleText;
-
-        const msg = document.createElement('div');
-        msg.className = 'delete-confirm-msg';
-        msg.style.userSelect = 'none';
-        msg.textContent = message;
-
-        const actions = document.createElement('div');
-        actions.className = 'delete-confirm-actions';
-
-        const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'delete-confirm-cancel btn-secondary';
-        cancelBtn.textContent = (typeof options === 'object' && options.cancelText) || t('delete.cancel');
-
-        const confirmBtn = document.createElement('button');
-        confirmBtn.className = 'delete-confirm-delete';
-        confirmBtn.textContent = (typeof options === 'object' && options.confirmText) || t('delete.confirm');
-
-        actions.appendChild(cancelBtn);
-        actions.appendChild(confirmBtn);
-        panel.appendChild(title);
-        panel.appendChild(msg);
-        panel.appendChild(actions);
-        overlay.appendChild(panel);
-        document.body.appendChild(overlay);
-
-        function close() {
-            overlay.classList.remove('open');
-            overlay.setAttribute('aria-hidden', 'true');
-            setTimeout(() => overlay.remove(), 200);
-        }
-
-        cancelBtn.addEventListener('click', close);
-        confirmBtn.addEventListener('click', () => { onConfirm(); close(); });
-        overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
-
-        requestAnimationFrame(() => {
-            overlay.classList.add('open');
-            overlay.setAttribute('aria-hidden', 'false');
-        });
-    }
-
     // ── Sort Helpers ──
 
     function getSortedCompanions(content) {

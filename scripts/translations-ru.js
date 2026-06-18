@@ -84,6 +84,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'wizard.swatchSlate': 'Сланцевый',
             'wizard.swatchCustom': 'Свой Цвет',
 
+            'confirm.title': 'Подтвердить',
             'delete.title': 'Удалить Модуль',
             'delete.message': 'Вы уверены? Это действие нельзя отменить.',
             'delete.cancel': 'Отмена',

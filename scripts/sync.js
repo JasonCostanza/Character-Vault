@@ -797,7 +797,7 @@
 
     function expandSpell(compact) {
         return {
-            id: 'sp_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 5),
+            id: generateId('sp'),
             name: compact.name || '',
             description: compact.description || '',
             order: 0,
@@ -971,7 +971,7 @@
             });
             if (!exists) {
                 var newAttr = {
-                    id: 'attr_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+                    id: generateId('attr'),
                     name: meta.name,
                     type: meta.type,
                     icon: null,
@@ -1082,7 +1082,7 @@
             });
             if (!exists) {
                 var newAttr = {
-                    id: 'attr_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+                    id: generateId('attr'),
                     name: incoming.name,
                     type: incoming.type,
                     defaultValue: defaultValueForType(incoming.type),
@@ -1136,7 +1136,7 @@
                 });
                 if (!matchingPool) {
                     matchingPool = {
-                        id: 'rp_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
+                        id: generateId('rp'),
                         type: poolDesc2.type,
                         level: poolDesc2.level !== undefined ? poolDesc2.level : null,
                         name: poolDesc2.name !== undefined ? poolDesc2.name : null,
@@ -1148,7 +1148,7 @@
                 newPoolId = matchingPool.id;
             }
             targetCat = {
-                id: 'cat_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
+                id: generateId('cat'),
                 name: meta.categoryName || '',
                 resourcePoolId: newPoolId,
                 collapsed: false,

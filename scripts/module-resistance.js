@@ -3,11 +3,6 @@
 (function () {
     'use strict';
 
-    // ── ID Generation ──
-    function generateResId() {
-        return 'res_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    }
-
     // ── Content Shape Guard ──
     function ensureResContent(data) {
         if (!data.content || typeof data.content === 'string') {
@@ -720,7 +715,7 @@
 
     function addResistanceToColumn(content, typeKey, column, value) {
         content[column].push({
-            id: generateResId(),
+            id: generateId('res'),
             typeKey: typeKey,
             value: value,
             active: true,
@@ -865,7 +860,7 @@
         createBtn.disabled = true;
         createBtn.addEventListener('click', function () {
             if (!wizardName) return;
-            const customKey = 'custom_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+            const customKey = generateId('custom');
             content.customTypes.push({
                 key: customKey,
                 name: wizardName,
@@ -933,7 +928,7 @@
     window.getAvailableTypes = getAvailableTypes;
     window.sortColumnAlpha = sortColumnAlpha;
     window.addResistanceToColumn = addResistanceToColumn;
-    window.generateResId = generateResId;
+    window.generateResId = function () { return generateId('res'); };
 
     console.log('[CV] Resistance module registered');
 })();

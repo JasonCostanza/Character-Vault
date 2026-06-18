@@ -84,6 +84,7 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'wizard.swatchSlate': 'Ardósia',
             'wizard.swatchCustom': 'Cor Personalizada',
 
+            'confirm.title': 'Confirmar',
             'delete.title': 'Excluir Módulo',
             'delete.message': 'Tem certeza? Isso não pode ser desfeito.',
             'delete.cancel': 'Cancelar',

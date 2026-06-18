@@ -25,7 +25,7 @@
                 if (Array.isArray(spell.attributes)) {
                     spell.attributes.forEach(a => {
                         if (a.key && !keySet.has(a.key)) {
-                            keySet.set(a.key, genId('attr'));
+                            keySet.set(a.key, generateId('attr'));
                         }
                     });
                 }
@@ -735,10 +735,6 @@
         tbody.appendChild(drawerTr);
     }
 
-    function genId(prefix) {
-        return prefix + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
-    }
-
     // ── Slot Helpers ──
     function getPoolLabel(pool) {
         if (!pool) return '?';
@@ -895,7 +891,7 @@
         addCatBtn.className = 'spells-add-cat-btn';
         addCatBtn.textContent = t('spells.addCategory');
         addCatBtn.addEventListener('click', () => {
-            const newCat = { id: genId('cat'), name: '', resourcePoolId: null, collapsed: false, spells: [] };
+            const newCat = { id: generateId('cat'), name: '', resourcePoolId: null, collapsed: false, spells: [] };
             data.content.categories.push(newCat);
             scheduleSave();
             bodyEl.innerHTML = '';
@@ -1005,7 +1001,7 @@
         addSlotBtn.addEventListener('click', () => {
             const spellSlotPools = data.content.resourcePools.filter(p => p.type === 'spell-slot');
             const nextLevel = spellSlotPools.reduce((m, p) => Math.max(m, p.level), 0) + 1;
-            data.content.resourcePools.push({ id: genId('rp'), type: 'spell-slot', level: nextLevel, name: null, max: 4, spent: 0 });
+            data.content.resourcePools.push({ id: generateId('rp'), type: 'spell-slot', level: nextLevel, name: null, max: 4, spent: 0 });
             scheduleSave();
             bodyEl.innerHTML = '';
             renderSpellsLayout(bodyEl, data);
@@ -1015,7 +1011,7 @@
         addFocusBtn.className = 'btn-secondary sm';
         addFocusBtn.textContent = t('spells.addFocusPool');
         addFocusBtn.addEventListener('click', () => {
-            data.content.resourcePools.push({ id: genId('rp'), type: 'focus', level: null, name: null, max: 3, spent: 0 });
+            data.content.resourcePools.push({ id: generateId('rp'), type: 'focus', level: null, name: null, max: 3, spent: 0 });
             scheduleSave();
             bodyEl.innerHTML = '';
             renderSpellsLayout(bodyEl, data);
@@ -1025,7 +1021,7 @@
         addCustomBtn.className = 'btn-secondary sm';
         addCustomBtn.textContent = t('spells.addCustomPool');
         addCustomBtn.addEventListener('click', () => {
-            data.content.resourcePools.push({ id: genId('rp'), type: 'custom', level: null, name: null, max: 3, spent: 0 });
+            data.content.resourcePools.push({ id: generateId('rp'), type: 'custom', level: null, name: null, max: 3, spent: 0 });
             scheduleSave();
             bodyEl.innerHTML = '';
             renderSpellsLayout(bodyEl, data);
@@ -1068,7 +1064,7 @@
         if (cat.collapsed) addSpellBtn.style.display = 'none';
         addSpellBtn.addEventListener('click', () => {
             const newSpell = {
-                id: genId('sp'),
+                id: generateId('sp'),
                 name: '',
                 description: '',
                 order: (cat.spells || []).length,
@@ -1384,49 +1380,6 @@
                 scheduleSave();
             },
         });
-    }
-
-    // ── Confirm Dialog ──
-    function showConfirm(options, onConfirm) {
-        const message = typeof options === 'string' ? options : options.message;
-        const titleText = (typeof options === 'object' && options.title) || t('spells.delete');
-        const overlay = document.createElement('div');
-        overlay.className = 'delete-confirm-overlay';
-        overlay.setAttribute('aria-hidden', 'true');
-        const panel = document.createElement('div');
-        panel.className = 'delete-confirm-panel';
-        const titleEl = document.createElement('div');
-        titleEl.className = 'delete-confirm-title';
-        titleEl.style.userSelect = 'none';
-        titleEl.textContent = titleText;
-        const msgEl = document.createElement('div');
-        msgEl.className = 'delete-confirm-msg';
-        msgEl.style.userSelect = 'none';
-        msgEl.textContent = message;
-        const actions = document.createElement('div');
-        actions.className = 'delete-confirm-actions';
-        const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'delete-confirm-cancel btn-secondary';
-        cancelBtn.textContent = t('delete.cancel');
-        const confirmBtn = document.createElement('button');
-        confirmBtn.className = 'delete-confirm-delete';
-        confirmBtn.textContent = t('delete.confirm');
-        actions.appendChild(cancelBtn);
-        actions.appendChild(confirmBtn);
-        panel.appendChild(titleEl);
-        panel.appendChild(msgEl);
-        panel.appendChild(actions);
-        overlay.appendChild(panel);
-        document.body.appendChild(overlay);
-        function close() {
-            overlay.classList.remove('open');
-            overlay.setAttribute('aria-hidden', 'true');
-            setTimeout(() => overlay.remove(), 200);
-        }
-        cancelBtn.addEventListener('click', close);
-        confirmBtn.addEventListener('click', () => { onConfirm(); close(); });
-        overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
-        requestAnimationFrame(() => { overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); });
     }
 
     // ── Settings Modal ──
@@ -1882,7 +1835,7 @@
             if (!name) return;
             const type = attrTypeSelect.getValue();
             const defaultValue = type === 'number-pair' ? { current: 0, max: 0 } : type === 'number' ? 0 : type === 'toggle' ? false : '';
-            const newAttr = { id: genId('attr'), name, type, defaultValue, pinned: true, builtIn: false };
+            const newAttr = { id: generateId('attr'), name, type, defaultValue, pinned: true, builtIn: false };
             content.attributes.push(newAttr);
             content.categories.forEach(cat => {
                 (cat.spells || []).forEach(spell => {
@@ -2048,7 +2001,7 @@
             if (!level || level < 1 || level > 20) return;
             if (content.resourcePools.some(p => p.type === 'spell-slot' && p.level === level)) return;
             const max = Math.max(0, Math.min(20, parseInt(newSlotMaxInput.value, 10) || 0));
-            content.resourcePools.push({ id: genId('rp'), type: 'spell-slot', level, name: null, max, spent: 0 });
+            content.resourcePools.push({ id: generateId('rp'), type: 'spell-slot', level, name: null, max, spent: 0 });
             content.resourcePools.sort((a, b) => (a.level ?? Infinity) - (b.level ?? Infinity));
             newSlotLevelInput.value = '';
             window.logActivity && window.logActivity({ type: 'spells.event.slot', message: t('spells.log.addSlot', { level }), sourceModuleId: data.id });
@@ -2190,7 +2143,7 @@
         addCatBtn.addEventListener('click', () => {
             const name = newCatNameInput.value.trim();
             if (!name) return;
-            content.categories.push({ id: genId('cat'), name, resourcePoolId: newCatPoolId, collapsed: false, spells: [] });
+            content.categories.push({ id: generateId('cat'), name, resourcePoolId: newCatPoolId, collapsed: false, spells: [] });
             newCatNameInput.value = '';
             newCatPoolId = null;
             scheduleSave();

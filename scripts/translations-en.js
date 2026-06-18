@@ -90,6 +90,7 @@ window.CV_TRANSLATIONS.en = {
             'wizard.swatchCustom': 'Custom Color',
 
             // Delete confirmation
+            'confirm.title': 'Confirm',
             'delete.title': 'Delete Module',
             'delete.message': 'Are you sure? This cannot be undone.',
             'delete.cancel': 'Cancel',

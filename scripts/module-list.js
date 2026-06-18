@@ -6,11 +6,6 @@
     const pendingAddEntries = new Map();
     let activeColumnPicker = null;
 
-    // ── ID Generation ──
-    function generateListId(prefix) {
-        return prefix + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    }
-
     // ── Content Shape Guard ──
     function ensureContent(data) {
         if (!data.content || typeof data.content === 'string') {
@@ -1023,7 +1018,7 @@
             values[attr.id] = attr.defaultValue;
         });
         const newItem = {
-            id: generateListId('item'),
+            id: generateId('item'),
             name: '',
             notes: '',
             order: content.items.length,
@@ -1229,7 +1224,7 @@
                             ? JSON.parse(JSON.stringify(preset.defaultValue))
                             : preset.defaultValue;
                     const newAttr = {
-                        id: generateListId('attr'),
+                        id: generateId('attr'),
                         name: t('list.' + preset.key),
                         type: preset.type,
                         icon: preset.icon,
@@ -1520,7 +1515,7 @@
             }
 
             const newAttr = {
-                id: generateListId('attr'),
+                id: generateId('attr'),
                 name: name,
                 type: selectedType,
                 icon: selectedIcon,

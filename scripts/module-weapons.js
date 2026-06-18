@@ -35,42 +35,6 @@
         if (_chipTooltipEl) _chipTooltipEl.classList.remove('is-visible');
     }
 
-    // ── Confirmation Dialog ──
-    function showConfirm(message, onConfirm) {
-        var overlay = document.createElement('div');
-        overlay.className = 'delete-confirm-overlay';
-        overlay.setAttribute('aria-hidden', 'true');
-        var panel = document.createElement('div');
-        panel.className = 'delete-confirm-panel';
-        var msg = document.createElement('div');
-        msg.className = 'delete-confirm-msg';
-        msg.style.userSelect = 'none';
-        msg.textContent = message;
-        var actions = document.createElement('div');
-        actions.className = 'delete-confirm-actions';
-        var cancelBtn = document.createElement('button');
-        cancelBtn.className = 'delete-confirm-cancel btn-secondary';
-        cancelBtn.textContent = t('delete.cancel');
-        var confirmBtn = document.createElement('button');
-        confirmBtn.className = 'delete-confirm-delete';
-        confirmBtn.textContent = t('delete.confirm');
-        actions.appendChild(cancelBtn);
-        actions.appendChild(confirmBtn);
-        panel.appendChild(msg);
-        panel.appendChild(actions);
-        overlay.appendChild(panel);
-        document.body.appendChild(overlay);
-        function close() {
-            overlay.classList.remove('open');
-            overlay.setAttribute('aria-hidden', 'true');
-            setTimeout(function () { overlay.remove(); }, 200);
-        }
-        cancelBtn.addEventListener('click', close);
-        confirmBtn.addEventListener('click', function () { onConfirm(); close(); });
-        overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
-        requestAnimationFrame(function () { overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); });
-    }
-
     // ── Weapon Trait Definitions (D&D 5e 2014) ──
     var WEAPON_TRAITS_DND5E = [
         { key: 'dnd5e.ammunition', nameKey: 'weapons.trait.dnd5e.ammunition', descKey: 'weapons.trait.dnd5e.ammunitionDesc', takesValue: true  },
@@ -253,11 +217,6 @@
         return { key: key, name: key, description: '', takesValue: false, isCustom: false };
     }
 
-    // ── ID Generation ──
-    function generateWeaponId() {
-        return 'wpn_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    }
-
     // ── Content Shape Guard ──
     function ensureWeaponsContent(data) {
         if (!data.content || typeof data.content === 'string') {
@@ -269,7 +228,7 @@
         if (data.content.daggerheartProficiency === undefined) data.content.daggerheartProficiency = null;
         if (data.content.linkedStatModuleId === undefined) data.content.linkedStatModuleId = null;
         data.content.weapons.forEach(function (w) {
-            if (!w.id) w.id = generateWeaponId();
+            if (!w.id) w.id = generateId('wpn');
             if (typeof w.name !== 'string') w.name = '';
             if (w.slot !== 'main' && w.slot !== 'off') w.slot = 'main';
             if (w.kind !== 'melee' && w.kind !== 'ranged' && w.kind !== 'shield') w.kind = 'melee';
@@ -821,7 +780,7 @@
             btn.textContent = t('weapons.addWeapon');
             btn.addEventListener('click', function () {
                 var newWeapon = {
-                    id: generateWeaponId(),
+                    id: generateId('wpn'),
                     name: '',
                     slot: slot,
                     kind: 'melee',
@@ -3276,7 +3235,7 @@
     });
 
     // ── Window Exports ──
-    window.generateWeaponId = generateWeaponId;
+    window.generateWeaponId = function () { return generateId('wpn'); };
     window.ensureWeaponsContent = ensureWeaponsContent;
     window.weaponsComputeAttackBonus = weaponsComputeAttackBonus;
     window.weaponsFormatDamageSummary = weaponsFormatDamageSummary;

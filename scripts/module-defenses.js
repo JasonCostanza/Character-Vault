@@ -7,12 +7,6 @@
     var SVG_CLOSE = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
     var SVG_PLUS = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
 
-    // ── ID Generation ──
-
-    function generateId(prefix) {
-        return prefix + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    }
-
     function generateDefenseId() { return generateId('def'); }
     function generateQDId() { return generateId('qd'); }
 
@@ -58,15 +52,9 @@
 
     // ── Formatting Helpers ──
 
-    function fmtMod(n) {
-        return n >= 0 ? '+' + n : String(n);
-    }
-
     function fmtDefValue(value, showSign) {
         if (!showSign) return String(value);
-        return typeof window.formatModifier === 'function'
-            ? window.formatModifier(value)
-            : fmtMod(value);
+        return formatModifier(value);
     }
 
     // ── Computed Values ──
@@ -86,42 +74,6 @@
 
     function isBuffed(content) {
         return getActiveQDs(content).length > 0;
-    }
-
-    // ── Confirmation Dialog ──
-
-    function showConfirm(message, onConfirm) {
-        const overlay = document.createElement('div');
-        overlay.className = 'delete-confirm-overlay';
-        overlay.setAttribute('aria-hidden', 'true');
-        const panel = document.createElement('div');
-        panel.className = 'delete-confirm-panel';
-        const msg = document.createElement('div');
-        msg.className = 'delete-confirm-msg';
-        msg.style.userSelect = 'none';
-        msg.textContent = message;
-        const actions = document.createElement('div');
-        actions.className = 'delete-confirm-actions';
-        const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'delete-confirm-cancel';
-        cancelBtn.textContent = t('delete.cancel');
-        cancelBtn.addEventListener('click', function () { overlay.remove(); });
-        const confirmBtn = document.createElement('button');
-        confirmBtn.className = 'delete-confirm-yes';
-        confirmBtn.textContent = t('delete.confirm');
-        confirmBtn.addEventListener('click', function () {
-            overlay.remove();
-            onConfirm();
-        });
-        actions.appendChild(cancelBtn);
-        actions.appendChild(confirmBtn);
-        panel.appendChild(msg);
-        panel.appendChild(actions);
-        overlay.appendChild(panel);
-        overlay.addEventListener('click', function (e) {
-            if (e.target === overlay) overlay.remove();
-        });
-        document.body.appendChild(overlay);
     }
 
     // ── Icon Picker Popover ──
@@ -255,7 +207,7 @@
             activeQDs.forEach(function (qd) {
                 const badge = document.createElement('span');
                 badge.className = 'def-spotlight-badge';
-                badge.textContent = qd.name + ' ' + fmtMod(qd.modifier);
+                badge.textContent = qd.name + ' ' + formatModifier(qd.modifier);
                 badges.appendChild(badge);
             });
             section.appendChild(badges);
@@ -339,15 +291,15 @@
 
                 const modEl = document.createElement('span');
                 modEl.className = 'def-qd-mod';
-                modEl.textContent = fmtMod(qd.modifier);
+                modEl.textContent = formatModifier(qd.modifier);
                 btn.appendChild(modEl);
             } else {
-                btn.title = qd.name + ' ' + fmtMod(qd.modifier);
+                btn.title = qd.name + ' ' + formatModifier(qd.modifier);
             }
 
             const compactBadge = document.createElement('span');
             compactBadge.className = 'def-qd-compact-badge';
-            compactBadge.textContent = fmtMod(qd.modifier);
+            compactBadge.textContent = formatModifier(qd.modifier);
             btn.appendChild(compactBadge);
 
             btn.addEventListener('click', function () {

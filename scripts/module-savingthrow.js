@@ -2,11 +2,6 @@
 (function () {
     'use strict';
 
-    // ── ID Generation ──
-    function generateSaveId() {
-        return 'save_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    }
-
     // ── Templates ──
     const SAVE_TEMPLATES = {
         dnd5e: ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma'],
@@ -38,7 +33,7 @@
         const names = SAVE_TEMPLATES[key];
         if (!names) return [];
         return names.map((name) => ({
-            id: generateSaveId(),
+            id: generateId('save'),
             name,
             value: 0,
             proficiencyTier: null,
@@ -88,11 +83,6 @@
     }
 
     // ── Helpers ──
-    function formatModifier(n) {
-        const val = parseInt(n, 10) || 0;
-        return val >= 0 ? `+${val}` : `${val}`;
-    }
-
     function getTierForSave(save, tiers) {
         if (!save.proficiencyTier) return null;
         return tiers.find((tier) => tier.name === save.proficiencyTier) || null;
@@ -729,7 +719,6 @@
 
     window.applySavingThrowTemplate = applySavingThrowTemplate;
     window.applyTierPreset = applyTierPreset;
-    window.formatModifier = formatModifier;
     window.ensureSaveContent = ensureSaveContent;
     window.getTierForSave = getTierForSave;
     window.saveNotesCheckboxProxy = saveNotesCheckboxProxy;

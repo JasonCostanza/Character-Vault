@@ -404,7 +404,7 @@
             const sys = window.gameSystem || 'custom';
             moduleData.content = typeof window.buildDefensesDefaultContent === 'function'
                 ? window.buildDefensesDefaultContent(sys)
-                : { defenses: [{ id: generateDefenseId(), name: 'AC', value: 10, icon: 'shield', showSign: false }], quickDefenses: [] };
+                : { defenses: [{ id: generateId('def'), name: 'AC', value: 10, icon: 'shield', showSign: false }], quickDefenses: [] };
             moduleData.colSpan = 2;
             moduleData.rowSpan = 2;
         }
@@ -1080,7 +1080,7 @@
         if (saveAddBtn) {
             saveAddBtn.addEventListener('click', () => {
                 data.content.saves.push({
-                    id: 'save_' + Date.now().toString(36),
+                    id: generateId('save'),
                     name: '',
                     value: 0,
                     proficiencyTier: null,

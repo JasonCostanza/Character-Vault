@@ -3,11 +3,6 @@
 (function () {
     'use strict';
 
-    // ── ID Generation ──
-    function generateCondId() {
-        return 'cond_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    }
-
     // ── Content Shape Guard ──
     function ensureCondContent(data) {
         if (!data.content || typeof data.content === 'string') {
@@ -1655,7 +1650,7 @@
                     const subDef = getTemplateDef(subKey, content.template);
                     if (subDef) {
                         content.applied.push({
-                            id: generateCondId(),
+                            id: generateId('cond'),
                             typeKey: subKey,
                             type: subDef.type,
                             value: subDef.type === 'value' ? 1 : 0,
@@ -2710,7 +2705,7 @@
         tpl.conditions.forEach(function (def) {
             if (!existingKeys[def.key]) {
                 content.staging.push({
-                    id: generateCondId(),
+                    id: generateId('cond'),
                     typeKey: def.key,
                     type: def.type,
                     value: 0,
@@ -2934,7 +2929,7 @@
         createBtn.disabled = true;
         createBtn.addEventListener('click', function () {
             if (!wizardName) return;
-            const customKey = 'custom_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+            const customKey = generateId('custom');
             content.customConditions.push({
                 key: customKey,
                 name: wizardName,
@@ -2947,7 +2942,7 @@
             });
             // Add to staging
             content.staging.push({
-                id: generateCondId(),
+                id: generateId('cond'),
                 typeKey: customKey,
                 type: wizardType,
                 value: 0,

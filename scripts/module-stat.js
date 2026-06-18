@@ -75,11 +75,6 @@
     }
 
     // ── Stat Module Helpers ──
-    function formatModifier(mod) {
-        const n = parseInt(mod, 10) || 0;
-        return n >= 0 ? `+${n}` : `${n}`;
-    }
-
     function updateRollableBtn(moduleEl, data) {
         const btn = moduleEl.querySelector('.module-rollable-btn');
         if (!btn) return;

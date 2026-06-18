@@ -88,6 +88,7 @@ window.CV_TRANSLATIONS['it'] = {
             'wizard.swatchCustom': 'Colore Personalizzato',
 
             // Delete confirmation
+            'confirm.title': 'Conferma',
             'delete.title': 'Elimina Modulo',
             'delete.message': 'Sei sicuro? Questa azione non può essere annullata.',
             'delete.cancel': 'Annulla',

@@ -2,77 +2,6 @@
 (function () {
     'use strict';
 
-    // ── ID Generation ──
-    function generateCounterId() {
-        return 'counter_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    }
-
-    // ── Confirmation Dialog ──
-    function showConfirm(options, onConfirm) {
-        const message = typeof options === 'string' ? options : options.message;
-        const titleText = options.title || t('counter.delete');
-
-        const overlay = document.createElement('div');
-        overlay.className = 'delete-confirm-overlay';
-        overlay.setAttribute('aria-hidden', 'true');
-
-        const panel = document.createElement('div');
-        panel.className = 'delete-confirm-panel';
-
-        const title = document.createElement('div');
-        title.className = 'delete-confirm-title';
-        title.style.userSelect = 'none';
-        title.textContent = titleText;
-
-        const msg = document.createElement('div');
-        msg.className = 'delete-confirm-msg';
-        msg.style.userSelect = 'none';
-        msg.textContent = message;
-
-        const actions = document.createElement('div');
-        actions.className = 'delete-confirm-actions';
-
-        const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'delete-confirm-cancel btn-secondary';
-        cancelBtn.textContent = options.cancelText || t('delete.cancel');
-
-        const confirmBtn = document.createElement('button');
-        confirmBtn.className = 'delete-confirm-delete';
-        confirmBtn.textContent = options.confirmText || t('delete.confirm');
-
-        actions.appendChild(cancelBtn);
-        actions.appendChild(confirmBtn);
-        panel.appendChild(title);
-        panel.appendChild(msg);
-        panel.appendChild(actions);
-        overlay.appendChild(panel);
-        document.body.appendChild(overlay);
-
-        function close() {
-            overlay.classList.remove('open');
-            overlay.setAttribute('aria-hidden', 'true');
-            setTimeout(function () {
-                overlay.remove();
-            }, 200);
-        }
-
-        cancelBtn.addEventListener('click', close);
-        confirmBtn.addEventListener('click', function () {
-            onConfirm();
-            close();
-        });
-
-        // Close on overlay click
-        overlay.addEventListener('click', function (e) {
-            if (e.target === overlay) close();
-        });
-
-        requestAnimationFrame(function () {
-            overlay.classList.add('open');
-            overlay.setAttribute('aria-hidden', 'false');
-        });
-    }
-
     // ── Content Shape Guard ──
     function ensureContent(data) {
         if (!data.content || typeof data.content === 'string') {
@@ -299,7 +228,7 @@
 
         function doCreate() {
             const counter = {
-                id: generateCounterId(),
+                id: generateId('counter'),
                 name: modalState.name.trim() || t('counter.unnamed'),
                 icon: modalState.icon,
                 value: 0,

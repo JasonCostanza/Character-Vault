@@ -84,6 +84,7 @@ window.CV_TRANSLATIONS['de'] = {
             'wizard.swatchSlate': 'Schiefer',
             'wizard.swatchCustom': 'Benutzerdefiniert',
 
+            'confirm.title': 'Bestätigen',
             'delete.title': 'Modul löschen',
             'delete.message': 'Bist du sicher? Dies kann nicht rückgängig gemacht werden.',
             'delete.cancel': 'Abbrechen',

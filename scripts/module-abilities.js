@@ -233,11 +233,6 @@
     }
 
     // ── Ability Helpers ──
-    function formatModifier(mod) {
-        const n = parseInt(mod, 10) || 0;
-        return n >= 0 ? `+${n}` : `${n}`;
-    }
-
     function getProficiencyState(ability, data) {
         if (!data.content.linkedStatModuleId || !ability.linkedStat) {
             return ability.proficiency;

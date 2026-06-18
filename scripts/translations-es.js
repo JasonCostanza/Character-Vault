@@ -84,6 +84,7 @@ window.CV_TRANSLATIONS['es'] = {
             'wizard.swatchSlate': 'Pizarra',
             'wizard.swatchCustom': 'Color Personalizado',
 
+            'confirm.title': 'Confirmar',
             'delete.title': 'Eliminar Módulo',
             'delete.message': '¿Estás seguro? Esto no se puede deshacer.',
             'delete.cancel': 'Cancelar',

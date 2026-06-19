@@ -3,6 +3,9 @@
 (function () {
     'use strict';
 
+    const DEFAULT_COL_WIDTH = 68;
+    const MIN_COL_WIDTH = 40;
+
     const pendingAddEntries = new Map();
     let activeColumnPicker = null;
 
@@ -538,6 +541,87 @@
         });
     }
 
+    // ── Column Width Helpers ──
+    function applyColWidth(el, width) {
+        const w = (width || DEFAULT_COL_WIDTH) + 'px';
+        el.style.flex = '0 0 ' + w;
+        el.style.width = w;
+    }
+
+    function applyAttrWidthEverywhere(colHeader, attr, bodyEl) {
+        const w = attr.width || DEFAULT_COL_WIDTH;
+        applyColWidth(colHeader, w);
+        const cells = bodyEl.querySelectorAll('.list-attr-cell[data-attr-id="' + attr.id + '"]');
+        cells.forEach(function (cell) { applyColWidth(cell, w); });
+    }
+
+    function initColResizeHandle(colHeader, attr, bodyEl, data) {
+        const handle = document.createElement('div');
+        handle.className = 'list-col-resize-handle';
+        colHeader.appendChild(handle);
+
+        const moduleEl = bodyEl.closest('.module');
+
+        handle.addEventListener('dblclick', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            delete attr.width;
+            applyAttrWidthEverywhere(colHeader, attr, bodyEl);
+            if (moduleEl) snapModuleHeight(moduleEl, data);
+            scheduleSave();
+        });
+
+        handle.addEventListener('mousedown', function (e) {
+            if (e.button !== 0) return;
+            e.preventDefault();
+            e.stopPropagation();
+
+            const startX = e.clientX;
+            const startWidth = attr.width || DEFAULT_COL_WIDTH;
+            const cells = Array.from(bodyEl.querySelectorAll('.list-attr-cell[data-attr-id="' + attr.id + '"]'));
+
+            handle.classList.add('resizing');
+            const container = bodyEl.querySelector('.list-container');
+            if (container) container.classList.add('col-resizing');
+
+            let _raf = 0;
+
+            function applyWidth() {
+                const w = attr.width || DEFAULT_COL_WIDTH;
+                applyColWidth(colHeader, w);
+                cells.forEach(function (cell) { applyColWidth(cell, w); });
+            }
+
+            function onMouseMove(ev) {
+                const delta = ev.clientX - startX;
+                const newWidth = Math.max(MIN_COL_WIDTH, Math.round(startWidth + delta));
+                if (newWidth !== (attr.width || DEFAULT_COL_WIDTH)) {
+                    attr.width = newWidth;
+                    if (!_raf) {
+                        _raf = requestAnimationFrame(function () {
+                            _raf = 0;
+                            applyWidth();
+                        });
+                    }
+                }
+            }
+
+            function onMouseUp() {
+                handle.classList.remove('resizing');
+                if (container) container.classList.remove('col-resizing');
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+                cancelAnimationFrame(_raf);
+                applyWidth();
+                if (moduleEl) snapModuleHeight(moduleEl, data);
+                scheduleSave();
+            }
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+    }
+
     // ── Column Headers ──
     function renderColumnHeaders(content, bodyEl, data, isPlayMode, isSorted) {
         const pinnedAttrs = content.attributes.filter(function (a) {
@@ -629,6 +713,11 @@
                 scheduleSave();
                 renderListBody(bodyEl, data, isPlayMode);
             });
+
+            applyColWidth(colHeader, attr.width);
+            if (!isPlayMode) {
+                initColResizeHandle(colHeader, attr, bodyEl, data);
+            }
 
             headerRow.appendChild(colHeader);
         });
@@ -797,6 +886,7 @@
         if (!headerRow) return;
         headerRow._colSortable = new Sortable(headerRow, {
             draggable: '.list-col-attr',
+            filter: '.list-col-resize-handle',
             animation: 150,
             ghostClass: 'list-col-ghost',
             onEnd: function () {
@@ -889,28 +979,6 @@
                     nameSpan.className = 'list-item-name';
                     nameSpan.textContent = item.name || t('list.itemName');
                     row.appendChild(nameSpan);
-
-                    // Pinned attribute value cells
-                    pinnedAttrs.forEach((attr) => {
-                        const val =
-                            item.values && item.values[attr.id] != null ? item.values[attr.id] : attr.defaultValue;
-                        row.appendChild(renderAttrValue(attr, val, true, item, function (newVal) {
-                            if (!item.values) item.values = {};
-                            item.values[attr.id] = newVal;
-                            scheduleSave();
-                        }, buildAttrOnLog(item, attr, data)));
-                    });
-
-                    // Expand button
-                    const expandBtn = document.createElement('button');
-                    expandBtn.className = 'list-item-expand-btn';
-                    expandBtn.title = escapeHtml(t('list.inspectTitle'));
-                    expandBtn.innerHTML =
-                        '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>';
-                    expandBtn.addEventListener('click', function () {
-                        openItemInspect(moduleEl, data, item.id);
-                    });
-                    row.appendChild(expandBtn);
                 } else {
                     // Drag handle — only when not sorted
                     if (!isSorted) {
@@ -957,19 +1025,34 @@
                         }
                     });
                     row.appendChild(nameInput);
+                }
 
-                    // Pinned attribute value cells
-                    pinnedAttrs.forEach((attr) => {
-                        const val =
-                            item.values && item.values[attr.id] != null ? item.values[attr.id] : attr.defaultValue;
-                        const attrCell = renderAttrValue(attr, val, false, item, function (newVal) {
-                            if (!item.values) item.values = {};
-                            item.values[attr.id] = newVal;
-                            scheduleSave();
-                        }, buildAttrOnLog(item, attr, data));
-                        row.appendChild(attrCell);
+                // Pinned attribute value cells
+                pinnedAttrs.forEach((attr) => {
+                    const val =
+                        item.values && item.values[attr.id] != null ? item.values[attr.id] : attr.defaultValue;
+                    const attrCell = renderAttrValue(attr, val, isPlayMode, item, function (newVal) {
+                        if (!item.values) item.values = {};
+                        item.values[attr.id] = newVal;
+                        scheduleSave();
+                    }, buildAttrOnLog(item, attr, data));
+                    attrCell.dataset.attrId = attr.id;
+                    applyColWidth(attrCell, attr.width);
+                    row.appendChild(attrCell);
+                });
+
+                if (isPlayMode) {
+                    // Expand button
+                    const expandBtn = document.createElement('button');
+                    expandBtn.className = 'list-item-expand-btn';
+                    expandBtn.title = escapeHtml(t('list.inspectTitle'));
+                    expandBtn.innerHTML =
+                        '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>';
+                    expandBtn.addEventListener('click', function () {
+                        openItemInspect(moduleEl, data, item.id);
                     });
-
+                    row.appendChild(expandBtn);
+                } else {
                     // Delete button
                     const deleteBtn = document.createElement('button');
                     deleteBtn.className = 'list-item-delete-btn';

@@ -1,6 +1,6 @@
 {
     "manifestVersion": 1,
-    "name": "Character Vault BETA",
+    "name": "Character Vault DEV",
     "entryPoint": "/main.html",
     "summary": "A character sheet engine for RPGs.",
     "descriptionFilePath": "/README.md",
@@ -8,9 +8,7 @@
     "license": "GPLv3 + Common Clause",
     "about": {
         "website": "https://github.com/jasoncostanza/character-vault",
-        "authors": [
-            "Jason Costanza"
-        ]
+        "authors": ["Jason Costanza"]
     },
     "api": {
         "version": "0.1",
@@ -36,14 +34,7 @@
     },
     "environment": {
         "webViewBackgroundColor": "#000000",
-        "capabilities": [
-            "runInBackground"
-        ],
-        "extras": [
-            "fonts",
-            "icons",
-            "colorStyles",
-            "diceFinder"
-        ]
+        "capabilities": ["runInBackground"],
+        "extras": ["fonts", "icons", "colorStyles", "diceFinder"]
     }
 }

@@ -606,13 +606,39 @@
         return card;
     }
 
-    function buildPlaceholderCard(weapon) {
+    function buildPlaceholderCard(weapon, data) {
         var card = document.createElement('div');
         card.className = 'weapon-card weapon-placeholder';
-        var lbl = document.createElement('span');
-        lbl.className = 'weapon-name';
-        lbl.textContent = weapon && weapon.name ? weapon.name : t('weapons.twoHandedOccupied');
-        card.appendChild(lbl);
+
+        if (weapon.icon && CV_ICONS[weapon.icon]) {
+            var iconEl = document.createElement('span');
+            iconEl.className = 'weapon-card-icon';
+            iconEl.innerHTML = CV_ICONS[weapon.icon];
+            card.appendChild(iconEl);
+        }
+
+        var info = document.createElement('div');
+        info.className = 'weapon-card-info';
+
+        var nameRow = document.createElement('div');
+        nameRow.className = 'weapon-card-name-row';
+        var nameEl = document.createElement('span');
+        nameEl.className = 'weapon-name';
+        nameEl.textContent = weapon.name || t('weapons.twoHandedOccupied');
+        nameRow.appendChild(nameEl);
+        info.appendChild(nameRow);
+
+        if (weapon.kind !== 'shield') {
+            var dmgText = weaponsFormatDamageSummary(weapon, data.content);
+            if (dmgText) {
+                var dmgEl = document.createElement('div');
+                dmgEl.className = 'weapon-damage-summary';
+                dmgEl.textContent = dmgText;
+                info.appendChild(dmgEl);
+            }
+        }
+
+        card.appendChild(info);
         return card;
     }
 
@@ -722,10 +748,10 @@
         });
 
         mainWeapons.forEach(function (w) { mainCol.appendChild(buildWeaponCard(w, data, isPlayMode, moduleEl, bodyEl)); });
-        offTwoHanded.forEach(function (w) { mainCol.appendChild(buildPlaceholderCard(w)); });
+        offTwoHanded.forEach(function (w) { mainCol.appendChild(buildPlaceholderCard(w, data)); });
 
         offWeapons.forEach(function (w) { offCol.appendChild(buildWeaponCard(w, data, isPlayMode, moduleEl, bodyEl)); });
-        mainTwoHanded.forEach(function (w) { offCol.appendChild(buildPlaceholderCard(w)); });
+        mainTwoHanded.forEach(function (w) { offCol.appendChild(buildPlaceholderCard(w, data)); });
 
         container.appendChild(mainCol);
         container.appendChild(divider);

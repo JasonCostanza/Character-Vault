@@ -415,6 +415,7 @@
             body.appendChild(restoreField);
         }
 
+        buildCommonSettingsSection(body, moduleEl, data);
         panel.appendChild(body);
 
         const footer = document.createElement('div');

@@ -624,6 +624,7 @@
         const body = document.createElement('div');
         body.className = 'cv-modal-body';
         renderQDModalBody(body, content, data, moduleEl);
+        buildCommonSettingsSection(body, moduleEl, data);
         panel.appendChild(body);
 
         // Footer

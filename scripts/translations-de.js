@@ -98,6 +98,7 @@ window.CV_TRANSLATIONS['de'] = {
             'module.moveToTab': 'In Tab verschieben',
             'module.moveToTabNoOtherTabs': 'Keine anderen Tabs verfügbar',
             'module.moveToTabMoved': 'Verschoben nach {tab}',
+            'module.appearance': 'Erscheinungsbild',
 
             'type.abilities': 'Fähigkeiten',
             'type.activity': 'Aktivitätsprotokoll',
@@ -330,6 +331,9 @@ window.CV_TRANSLATIONS['de'] = {
             'level.incrementLevel': 'Stufe erhöhen',
             'res.moduleSettings': 'Moduleinstellungen',
             'res.toggleLayout': 'Layout Umschalten',
+            'res.layout': 'Layout',
+            'res.layoutColumns': 'Spalten',
+            'res.layoutRows': 'Zeilen',
             'res.immunities': 'Immunitäten',
             'res.resistances': 'Resistenzen',
             'res.weaknesses': 'Schwächen',

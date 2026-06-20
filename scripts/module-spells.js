@@ -2160,6 +2160,7 @@
 
         panes.categories = categoriesPane;
         body.appendChild(categoriesPane);
+        buildCommonSettingsSection(body, moduleEl, data);
 
         panel.appendChild(body);
 

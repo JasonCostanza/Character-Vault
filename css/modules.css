@@ -1608,6 +1608,8 @@
 
 /* ── Move to Tab Modal ── */
 .module-movetab-body {
+    display: flex;
+    flex-direction: column;
     padding: 4px 0;
     gap: 2px;
 }
@@ -1629,4 +1631,33 @@
 
 .module-movetab-tab-item:hover {
     background: var(--cv-bg-hover);
+}
+
+/* ── Common Settings Section ── */
+.cv-settings-divider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0 8px;
+    color: var(--cv-text-muted);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    user-select: none;
+}
+
+.cv-settings-divider::before,
+.cv-settings-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--cv-border);
+}
+
+.cv-settings-no-tabs {
+    font-size: 11px;
+    color: var(--cv-text-muted);
+    padding: 4px 0;
+    user-select: none;
 }

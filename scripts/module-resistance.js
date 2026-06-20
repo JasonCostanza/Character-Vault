@@ -500,6 +500,32 @@
         stagingSection.appendChild(createBtn);
 
         body.appendChild(stagingSection);
+
+        // ── Layout ──
+        const layoutLabel = document.createElement('div');
+        layoutLabel.className = 'cv-modal-label';
+        layoutLabel.textContent = t('res.layout');
+        body.appendChild(layoutLabel);
+
+        const layoutSelectWidget = buildCvSelect(
+            [
+                { value: 'columns', label: t('res.layoutColumns') },
+                { value: 'rows', label: t('res.layoutRows') },
+            ],
+            content.layout || 'columns',
+            function (val) {
+                content.layout = val;
+                const bodyEl = moduleEl.querySelector('.module-body');
+                if (bodyEl && window.MODULE_TYPES[data.type]) {
+                    window.MODULE_TYPES[data.type].renderBody(bodyEl, data, window.isPlayMode);
+                }
+                window.snapModuleHeight(moduleEl, data);
+                scheduleSave();
+            }
+        );
+        body.appendChild(layoutSelectWidget.el);
+
+        buildCommonSettingsSection(body, moduleEl, data);
         panel.appendChild(body);
 
         // ── Init SortableJS ──

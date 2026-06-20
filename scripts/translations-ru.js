@@ -98,6 +98,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'module.moveToTab': 'Переместить во вкладку',
             'module.moveToTabNoOtherTabs': 'Нет других доступных вкладок',
             'module.moveToTabMoved': 'Перемещено во вкладку {tab}',
+            'module.appearance': 'Внешний вид',
 
             'type.abilities': 'Навыки',
             'type.activity': 'Журнал Активности',
@@ -298,6 +299,9 @@ window.CV_TRANSLATIONS['ru'] = {
             // Resistance submodule
             'res.moduleSettings': 'Настройки Модуля',
             'res.toggleLayout': 'Переключить Макет',
+            'res.layout': 'Макет',
+            'res.layoutColumns': 'Колонки',
+            'res.layoutRows': 'Строки',
             'res.immunities': 'Иммунитеты',
             'res.resistances': 'Сопротивления',
             'res.weaknesses': 'Уязвимости',

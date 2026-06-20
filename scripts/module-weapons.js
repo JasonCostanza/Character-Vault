@@ -1500,6 +1500,7 @@
         });
         select.value = data.content.linkedStatModuleId || '';
         body.appendChild(select);
+        buildCommonSettingsSection(body, moduleEl, data);
 
         var footer = document.createElement('div');
         footer.className = 'cv-modal-footer';

@@ -340,6 +340,7 @@
             );
         });
         body.appendChild(clearBtn);
+        buildCommonSettingsSection(body, moduleEl, data);
 
         // Footer
         const footer = document.createElement('div');

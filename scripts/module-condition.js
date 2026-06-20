@@ -2456,6 +2456,7 @@
         stagingSection.appendChild(createBtn);
 
         body.appendChild(stagingSection);
+        buildCommonSettingsSection(body, moduleEl, data);
         panel.appendChild(body);
 
         // Init SortableJS

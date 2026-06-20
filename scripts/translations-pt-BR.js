@@ -98,6 +98,7 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'module.moveToTab': 'Mover para Guia',
             'module.moveToTabNoOtherTabs': 'Nenhuma outra guia disponível',
             'module.moveToTabMoved': 'Movido para {tab}',
+            'module.appearance': 'Aparência',
 
             'type.abilities': 'Habilidades',
             'type.activity': 'Registro de Atividade',
@@ -297,6 +298,9 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             // Resistance submodule
             'res.moduleSettings': 'Configurações do Módulo',
             'res.toggleLayout': 'Alternar Layout',
+            'res.layout': 'Layout',
+            'res.layoutColumns': 'Colunas',
+            'res.layoutRows': 'Linhas',
             'res.immunities': 'Imunidades',
             'res.resistances': 'Resistências',
             'res.weaknesses': 'Fraquezas',

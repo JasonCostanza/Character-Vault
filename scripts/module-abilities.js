@@ -488,6 +488,7 @@
 
         body.appendChild(fieldLabel);
         body.appendChild(select);
+        buildCommonSettingsSection(body, moduleEl, data);
 
         const footer = document.createElement('div');
         footer.className = 'cv-modal-footer';

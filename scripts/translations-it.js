@@ -103,6 +103,7 @@ window.CV_TRANSLATIONS['it'] = {
             'module.moveToTab': 'Sposta nella scheda',
             'module.moveToTabNoOtherTabs': "Nessun'altra scheda disponibile",
             'module.moveToTabMoved': 'Spostato in {tab}',
+            'module.appearance': 'Aspetto',
 
             // Module type labels
             'type.abilities': 'Abilità',
@@ -306,6 +307,9 @@ window.CV_TRANSLATIONS['it'] = {
             // Resistance submodule
             'res.moduleSettings': 'Impostazioni Modulo',
             'res.toggleLayout': 'Cambia Layout',
+            'res.layout': 'Layout',
+            'res.layoutColumns': 'Colonne',
+            'res.layoutRows': 'Righe',
             'res.immunities': 'Immunità',
             'res.resistances': 'Resistenze',
             'res.weaknesses': 'Debolezze',

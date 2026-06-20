@@ -661,7 +661,7 @@
                 data.theme = sw.color || null;
                 moduleEl.style.backgroundColor = sw.color || '';
                 scheduleSave();
-                onClose();
+                if (onClose) onClose();
             });
             row.appendChild(btn);
         });
@@ -714,7 +714,7 @@
         });
 
         hexInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') onClose();
+            if (e.key === 'Enter' && onClose) onClose();
         });
 
         hexInput.addEventListener('click', (e) => e.stopPropagation());
@@ -1311,7 +1311,10 @@
             btn.type = 'button';
             btn.className = 'module-movetab-tab-item';
             btn.textContent = tab.name;
-            btn.addEventListener('click', () => performMove(tab));
+            btn.addEventListener('click', () => {
+                performModuleMove(moduleEl, data, tab);
+                close();
+            });
             body.appendChild(btn);
         });
         panel.appendChild(body);
@@ -1328,19 +1331,6 @@
 
         overlay.appendChild(panel);
         document.body.appendChild(overlay);
-
-        function performMove(destTab) {
-            data.order = window.modules.filter((m) => m.tabId === destTab.id).length;
-            data.tabId = destTab.id;
-            const bodyEl = moduleEl.querySelector('.module-body');
-            if (bodyEl) moduleSizeObserver.unobserve(bodyEl);
-            moduleEl.remove();
-            applyLayout();
-            updateEmptyState();
-            scheduleSave();
-            window.showToast(t('module.moveToTabMoved', { tab: destTab.name }));
-            close();
-        }
 
         function close() {
             overlay.remove();
@@ -1652,6 +1642,18 @@
         });
     }
 
+    function performModuleMove(moduleEl, data, destTab) {
+        data.order = window.modules.filter((m) => m.tabId === destTab.id).length;
+        data.tabId = destTab.id;
+        const bodyEl = moduleEl.querySelector('.module-body');
+        if (bodyEl) moduleSizeObserver.unobserve(bodyEl);
+        moduleEl.remove();
+        applyLayout();
+        updateEmptyState();
+        scheduleSave();
+        window.showToast(t('module.moveToTabMoved', { tab: destTab.name }));
+    }
+
     window.MODULE_TYPES = MODULE_TYPES;
     window.registerModuleType = registerModuleType;
     window.moduleGrid = moduleGrid;
@@ -1671,6 +1673,7 @@
     window.closeWizard = closeWizard;
     window.THEME_SWATCHES = THEME_SWATCHES;
     window.buildSwatchPanel = buildSwatchPanel;
+    window.performModuleMove = performModuleMove;
     window.sortable = sortable;
     window.generateModuleId = generateModuleId;
 })();

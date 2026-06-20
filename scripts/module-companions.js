@@ -1050,6 +1050,7 @@
         addAttrRow.appendChild(typeSelectWidget.el);
         addAttrRow.appendChild(addAttrBtn);
         body.appendChild(addAttrRow);
+        buildCommonSettingsSection(body, moduleEl, data);
 
         panel.appendChild(body);
 

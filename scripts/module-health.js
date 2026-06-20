@@ -143,6 +143,10 @@
             `<button class="health-action-ok btn-primary">${escapeHtml(t('health.ok'))}</button>` +
             `</div>`;
 
+        if (mode === 'maxmod') {
+            buildCommonSettingsSection(panel.querySelector('.cv-modal-body'), moduleEl, data);
+        }
+
         const input = panel.querySelector('.health-action-input');
         const closeBtn = panel.querySelector('.cv-modal-close');
         const cancelBtn = panel.querySelector('.health-action-cancel');

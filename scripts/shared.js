@@ -555,4 +555,57 @@
 
     window.copyTextToClipboard = copyTextToClipboard;
     window.CV_VERSION = CV_VERSION;
+
+    // ── Common Settings Section ──
+    // Appends theme + move-to-tab controls to any module settings modal body.
+    function buildCommonSettingsSection(container, moduleEl, data) {
+        const divider = document.createElement('div');
+        divider.className = 'cv-settings-divider';
+        const dividerLabel = document.createElement('span');
+        dividerLabel.textContent = t('module.appearance');
+        divider.appendChild(dividerLabel);
+        container.appendChild(divider);
+
+        // Theme
+        const themeLabel = document.createElement('div');
+        themeLabel.className = 'cv-modal-label';
+        themeLabel.textContent = t('module.changeTheme');
+        container.appendChild(themeLabel);
+
+        window.buildSwatchPanel(container, moduleEl, data, null);
+
+        // Move to Tab
+        const tabLabel = document.createElement('div');
+        tabLabel.className = 'cv-modal-label';
+        tabLabel.textContent = t('module.moveToTab');
+        container.appendChild(tabLabel);
+
+        const otherTabs = (window.tabs || [])
+            .filter(function (tab) { return tab.id !== data.tabId; })
+            .sort(function (a, b) { return a.order - b.order; });
+
+        if (otherTabs.length === 0) {
+            const noTabsMsg = document.createElement('div');
+            noTabsMsg.className = 'cv-settings-no-tabs';
+            noTabsMsg.textContent = t('module.moveToTabNoOtherTabs');
+            container.appendChild(noTabsMsg);
+        } else {
+            const tabRow = document.createElement('div');
+            tabRow.className = 'module-movetab-body';
+            otherTabs.forEach(function (tab) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'module-movetab-tab-item';
+                btn.textContent = tab.name;
+                btn.addEventListener('click', function () {
+                    window.performModuleMove(moduleEl, data, tab);
+                    window.closeAllModals();
+                });
+                tabRow.appendChild(btn);
+            });
+            container.appendChild(tabRow);
+        }
+    }
+
+    window.buildCommonSettingsSection = buildCommonSettingsSection;
 })();

@@ -230,10 +230,10 @@
         if (!Array.isArray(blob.modules)) {
             return { ok: false, error: 'import.errorNotCV', detail: 'Missing modules array' };
         }
-        if (blob.version > 2) {
-            return { ok: false, error: 'import.errorNewerVersion', detail: `File version: ${blob.version}, app supports: 2` };
+        if (blob.version > 3) {
+            return { ok: false, error: 'import.errorNewerVersion', detail: `File version: ${blob.version}, app supports: 3` };
         }
-        if (blob.version < 2) {
+        if (blob.version < 3) {
             window.migrateData(blob);
         }
         const unknownCount = blob.modules.filter(function (m) { return !window.MODULE_TYPES[m.type]; }).length;
@@ -420,7 +420,7 @@
                 id: idMap[saved.id],
                 type: saved.type,
                 title: saved.title ?? null,
-                colSpan: saved.colSpan ?? 2,
+                colSpan: saved.colSpan ?? 4,
                 rowSpan: saved.rowSpan ?? null,
                 order: orderCounter++,
                 theme: saved.theme ?? null,

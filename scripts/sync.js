@@ -947,13 +947,13 @@
         var content, colSpan, rowSpan;
         if (type === 'weapons') {
             content = { weapons: [] };
-            colSpan = 4; rowSpan = 2;
+            colSpan = window.GRID_COLUMNS; rowSpan = 2;
         } else if (type === 'spells') {
             content = { autoSpendSlots: true, showSlotErrors: true, resourcePools: [], categories: [], casterType: null };
-            colSpan = 4; rowSpan = 4;
+            colSpan = window.GRID_COLUMNS; rowSpan = 4;
         } else {
             content = { attributes: [], items: [], sortBy: null, sortDir: 'asc' };
-            colSpan = 2; rowSpan = 2;
+            colSpan = window.GRID_COLUMNS / 2; rowSpan = 2;
         }
         return { id: id, type: type, title: null, colSpan: colSpan, rowSpan: rowSpan,
                  order: order, theme: null, tabId: tabId, content: content };

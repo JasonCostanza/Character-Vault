@@ -278,8 +278,8 @@
 
         const spotlightEl = container.querySelector('.def-spotlight');
         const strip = document.createElement('div');
-        const colSpan = data.colSpan || 2;
-        strip.className = 'def-qd-strip' + (colSpan <= 1 ? ' compact' : '');
+        const colSpan = data.colSpan ?? 4;
+        strip.className = 'def-qd-strip' + (colSpan <= 2 ? ' compact' : '');
 
         content.quickDefenses.forEach(function (qd) {
             const btn = document.createElement('button');

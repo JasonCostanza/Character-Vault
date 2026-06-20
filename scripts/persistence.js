@@ -14,6 +14,17 @@
                 data.version = 2;
                 return data;
             },
+            2: function (data) {
+                if (Array.isArray(data.modules)) {
+                    data.modules.forEach(function (m) {
+                        if (typeof m.colSpan === 'number') {
+                            m.colSpan = Math.min(8, m.colSpan * 2);
+                        }
+                    });
+                }
+                data.version = 3;
+                return data;
+            },
         };
         while (migrators[blob.version]) {
             console.log(`[CV] Migrating save data v${blob.version} → v${blob.version + 1}`);
@@ -34,7 +45,7 @@
     function serializeCharacter() {
         syncModuleState();
         return JSON.stringify({
-            version: 2,
+            version: 3,
             savedAt: new Date().toISOString(),
             moduleIdCounter,
             tabIdCounter: window.getTabIdCounter(),
@@ -107,7 +118,7 @@
                     id: saved.id,
                     type: saved.type,
                     title: saved.title || null,
-                    colSpan: saved.colSpan ?? 2,
+                    colSpan: saved.colSpan ?? 4,
                     rowSpan: saved.rowSpan || null,
                     order: saved.order ?? 0,
                     theme: saved.theme || null,

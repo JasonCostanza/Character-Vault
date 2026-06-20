@@ -25,10 +25,26 @@ beforeEach(() => {
 
 describe('migrateData', () => {
   it('passes through when no migrators match', () => {
-    const blob = { version: 2, modules: [] };
+    const blob = { version: 3, modules: [] };
     const result = migrateData(blob);
-    expect(result.version).toBe(2);
+    expect(result.version).toBe(3);
     expect(result.modules).toEqual([]);
+  });
+
+  it('migrates v2 to v3 by doubling colSpan', () => {
+    const blob = {
+      version: 2,
+      modules: [
+        { id: 'm1', colSpan: 1 },
+        { id: 'm2', colSpan: 2 },
+        { id: 'm3', colSpan: 4 },
+      ],
+    };
+    const result = migrateData(blob);
+    expect(result.version).toBe(3);
+    expect(result.modules[0].colSpan).toBe(2);
+    expect(result.modules[1].colSpan).toBe(4);
+    expect(result.modules[2].colSpan).toBe(8);
   });
 });
 
@@ -53,7 +69,7 @@ describe('serializeCharacter / deserializeCharacter round-trip', () => {
     const json = serializeCharacter();
     const parsed = JSON.parse(json);
 
-    expect(parsed.version).toBe(2);
+    expect(parsed.version).toBe(3);
     expect(parsed.modules).toHaveLength(1);
     expect(parsed.modules[0].id).toBe('module-001');
     expect(parsed.modules[0].content).toBe('Hello world');
@@ -78,7 +94,7 @@ describe('serializeCharacter / deserializeCharacter round-trip', () => {
     const json = serializeCharacter();
     const parsed = JSON.parse(json);
 
-    expect(parsed.version).toBe(2);
+    expect(parsed.version).toBe(3);
     expect(parsed.modules).toEqual([]);
     expect(parsed.moduleIdCounter).toBe(0);
   });

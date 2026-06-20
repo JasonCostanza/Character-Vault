@@ -174,7 +174,7 @@
             id: generateModuleId(),
             type: wizardState.type,
             title: null,
-            colSpan: 2,
+            colSpan: GRID_COLUMNS / 2,
             rowSpan: 2,
             order: window.modules.filter(m => m.tabId === window.activeTabId).length,
             theme: wizardState.theme,
@@ -190,12 +190,11 @@
             if (sysName && templateAbilities.length > 0) {
                 moduleData.title = sysName + ' ' + t('type.abilities');
             }
-            moduleData.colSpan = 2;
             moduleData.rowSpan = null;
         }
 
         if (moduleData.type === 'hline') {
-            moduleData.colSpan = 4;
+            moduleData.colSpan = GRID_COLUMNS;
             moduleData.rowSpan = null;
             moduleData.theme = null;
         }
@@ -208,7 +207,7 @@
 
         if (moduleData.type === 'health') {
             moduleData.content = { currentHP: 0, maxHP: 0, tempHP: 0, maxHPModifier: 0 };
-            moduleData.colSpan = 1;
+            moduleData.colSpan = 2;
             moduleData.rowSpan = null;
         }
 
@@ -222,13 +221,13 @@
             }
             const statCount = templateStats.length;
             if (statCount === 0) {
-                moduleData.colSpan = 2;
+                moduleData.colSpan = 4;
                 moduleData.rowSpan = 2;
             } else {
                 // Estimate stat blocks per row based on minmax(70px,1fr) auto-fit at typical widths
-                const sPerRow = (cols) => (cols === 2 ? 3 : cols === 3 ? 5 : 6);
-                let targetCols = 4;
-                for (let cols = 2; cols <= 4; cols++) {
+                const sPerRow = (cols) => (cols === 4 ? 3 : cols === 6 ? 5 : 6);
+                let targetCols = GRID_COLUMNS;
+                for (let cols = GRID_COLUMNS / 2; cols <= GRID_COLUMNS; cols += 2) {
                     if (sPerRow(cols) >= statCount) {
                         targetCols = cols;
                         break;
@@ -241,19 +240,16 @@
         }
 
         if (moduleData.type === 'list') {
-            moduleData.colSpan = 2;
             moduleData.rowSpan = 2;
             moduleData.content = { attributes: [], items: [], sortBy: null, sortDir: 'asc' };
         }
 
         if (moduleData.type === 'counters') {
-            moduleData.colSpan = 2;
             moduleData.rowSpan = 2;
             moduleData.content = { counters: [], sortBy: 'custom', sortDir: 'asc' };
         }
 
         if (moduleData.type === 'resistance') {
-            moduleData.colSpan = 2;
             moduleData.rowSpan = null;
             moduleData.content = {
                 layout: 'columns',
@@ -266,7 +262,6 @@
 
         if (moduleData.type === 'condition') {
             const sys = window.gameSystem || 'custom';
-            moduleData.colSpan = 2;
             moduleData.rowSpan = null;
             moduleData.content = {
                 template: sys,
@@ -301,14 +296,14 @@
                 moduleData.title = sysName + ' ' + t('type.savingthrow');
             }
             const saveCount = templateSaves.length;
-            moduleData.colSpan = saveCount <= 3 ? 2 : saveCount <= 6 ? 3 : 4;
+            moduleData.colSpan = saveCount <= 3 ? GRID_COLUMNS / 2 : saveCount <= 6 ? 6 : GRID_COLUMNS;
             moduleData.rowSpan = null;
         }
 
         if (moduleData.type === 'level') {
             const sys = window.gameSystem || 'custom';
             const xpTpl = window.LEVEL_XP_TEMPLATES && window.LEVEL_XP_TEMPLATES[sys];
-            moduleData.colSpan = 1;
+            moduleData.colSpan = 2;
             moduleData.rowSpan = null;
             moduleData.content = {
                 level: 1,
@@ -325,26 +320,24 @@
         }
 
         if (moduleData.type === 'spells') {
-            moduleData.colSpan = 4;
+            moduleData.colSpan = GRID_COLUMNS;
             moduleData.rowSpan = 4;
             moduleData.content = { autoSpendSlots: true, showSlotErrors: true, resourcePools: [], casterType: null, categories: [] };
         }
 
         if (moduleData.type === 'activity') {
-            moduleData.colSpan = 2;
             moduleData.rowSpan = 3;
             moduleData.content = { sortOrder: 'newest', hiddenEventTypes: [], showTimestamps: true, maxEntries: 200 };
         }
 
         if (moduleData.type === 'bio') {
-            moduleData.colSpan = 2;
             moduleData.rowSpan = 4;
             moduleData.content = buildBioDefaultContent();
         }
 
         if (moduleData.type === 'recovery') {
             const sys = window.gameSystem || 'custom';
-            moduleData.colSpan = 1;
+            moduleData.colSpan = 2;
             moduleData.rowSpan = null;
             if (sys === 'dnd5e') {
                 moduleData.content = {
@@ -385,13 +378,13 @@
 
         if (moduleData.type === 'weapons') {
             moduleData.content = { weapons: [] };
-            moduleData.colSpan = 4;
+            moduleData.colSpan = GRID_COLUMNS;
             moduleData.rowSpan = 2;
         }
 
         if (moduleData.type === 'companions') {
             const sys = window.gameSystem || 'custom';
-            moduleData.colSpan = 4;
+            moduleData.colSpan = GRID_COLUMNS;
             moduleData.rowSpan = null;
             moduleData.content = typeof window.buildCompanionsDefaultContent === 'function'
                 ? window.buildCompanionsDefaultContent(sys)
@@ -405,7 +398,6 @@
             moduleData.content = typeof window.buildDefensesDefaultContent === 'function'
                 ? window.buildDefensesDefaultContent(sys)
                 : { defenses: [{ id: generateId('def'), name: 'AC', value: 10, icon: 'shield', showSign: false }], quickDefenses: [] };
-            moduleData.colSpan = 2;
             moduleData.rowSpan = 2;
         }
 
@@ -1456,9 +1448,9 @@
     }
 
     // ── Module Size Constants ──
-    const GRID_COLUMNS = 4;
+    const GRID_COLUMNS = 8;
     const GRID_GAP = 8;
-    const ROW_H = 80;
+    const ROW_H = 66;
 
     // ── Auto-Snap Height to Grid Rows ──
     let _snapping = false;
@@ -1604,9 +1596,6 @@
                 data.rowSpan ||
                 Math.max(1, Math.round((moduleEl.getBoundingClientRect().height + GRID_GAP) / (ROW_H + GRID_GAP)));
 
-            // Fixed row height independent of column width
-            const rowHeight = ROW_H;
-
             moduleEl.classList.add('module-resizing');
             handle.classList.add('resizing');
 
@@ -1629,7 +1618,7 @@
 
                 // Calculate new rowSpan from drag delta
                 const deltaY = e.clientY - startY;
-                const rowDelta = Math.sign(deltaY) * Math.round(Math.abs(deltaY) / (rowHeight + GRID_GAP));
+                const rowDelta = Math.sign(deltaY) * Math.round(Math.abs(deltaY) / (ROW_H + GRID_GAP));
                 const newRowSpan = Math.max(1, startRowSpan + rowDelta);
 
                 const changed = newColSpan !== data.colSpan || newRowSpan !== data.rowSpan;

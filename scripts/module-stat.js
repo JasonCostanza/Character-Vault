@@ -74,22 +74,6 @@
         }));
     }
 
-    // ── Stat Module Helpers ──
-    function updateRollableBtn(moduleEl, data) {
-        const btn = moduleEl.querySelector('.module-rollable-btn');
-        if (!btn) return;
-        const idx = moduleEl._selectedStatIndex;
-        if (idx === null || idx === undefined || !data.content.stats[idx]) {
-            btn.classList.remove('active');
-            btn.classList.add('disabled');
-            btn.title = t('stat.toggleRollable');
-        } else {
-            btn.classList.remove('disabled');
-            btn.classList.toggle('active', data.content.stats[idx].rollable);
-            btn.title = data.content.stats[idx].rollable ? t('stat.rollableOn') : t('stat.rollableOff');
-        }
-    }
-
     function renderStatBlock(stat, index, data, isPlayMode) {
         const isLargeStat = data.content.layout === 'large-stat';
         const primaryVal = isLargeStat ? stat.value : formatModifier(stat.modifier);
@@ -168,7 +152,6 @@
                     const sel = container.querySelector(`.stat-block-edit[data-index="${moduleEl._selectedStatIndex}"]`);
                     if (sel) sel.classList.add('stat-selected');
                 }
-                updateRollableBtn(moduleEl, data);
             });
             return block;
         }
@@ -265,10 +248,8 @@
             const moduleEl = container.closest('.module');
             if (moduleEl && moduleEl._selectedStatIndex === index) {
                 moduleEl._selectedStatIndex = null;
-                updateRollableBtn(moduleEl, data);
             } else if (moduleEl && moduleEl._selectedStatIndex > index) {
                 moduleEl._selectedStatIndex--;
-                updateRollableBtn(moduleEl, data);
             }
             reRenderStatEdits(container, data);
             scheduleSave();
@@ -304,7 +285,6 @@
                 );
                 if (selectedBlock) selectedBlock.classList.add('stat-selected');
             }
-            updateRollableBtn(moduleEl, data);
         });
 
         return block;
@@ -636,7 +616,6 @@
 
     window.STAT_TEMPLATES = STAT_TEMPLATES;
     window.applyStatTemplate = applyStatTemplate;
-    window.updateRollableBtn = updateRollableBtn;
 
     window.getAbilityModifier = function (key) {
         if (!key) return 0;

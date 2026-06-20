@@ -199,17 +199,6 @@
     border-color: var(--cv-success);
 }
 
-.module-theme-popover {
-    position: fixed;
-    z-index: 150;
-    background: var(--cv-bg-raised);
-    border: 1px solid var(--cv-border);
-    border-radius: 6px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-    padding: 4px 0;
-    min-width: 160px;
-}
-
 .module-delete-btn:hover {
     color: var(--cv-danger);
     background: rgba(184, 64, 64, 0.12);

@@ -435,7 +435,6 @@
 
     function openOverflowMenu(moduleEl, overflowBtn) {
         closeOverflowMenu();
-        closeThemePopover();
 
         const menu = document.createElement('div');
         menu.className = 'module-overflow-menu';
@@ -462,24 +461,9 @@
                 icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>',
             },
             {
-                sel: '.module-stat-eyedropper-btn',
-                label: t('stat.eyedropper'),
-                icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>',
-            },
-            {
                 sel: '.module-addstat-btn',
                 label: t('stat.addStat'),
                 icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
-            },
-            {
-                sel: '.module-rollable-btn',
-                label: t('stat.toggleRollable'),
-                icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 20 7 20 17 12 22 4 17 4 7"/><text x="12" y="15" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor" stroke="none">20</text></svg>',
-            },
-            {
-                sel: '.module-swaplayout-btn',
-                label: t('stat.swapLayout'),
-                icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 3 3 7 7 11"/><line x1="3" y1="7" x2="21" y2="7"/><polyline points="17 13 21 17 17 21"/><line x1="21" y1="17" x2="3" y2="17"/></svg>',
             },
             {
                 sel: '.module-counter-add-btn',
@@ -532,11 +516,6 @@
                 icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
             },
             {
-                sel: '.module-res-layout-btn',
-                label: t('res.toggleLayout'),
-                icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>',
-            },
-            {
                 sel: '.module-copy-btn',
                 label: t('module.copyClipboard'),
                 icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
@@ -568,32 +547,12 @@
                 icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
             },
             {
-                sel: '.module-movetab-btn',
-                label: t('module.moveToTab'),
-                icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="4" width="7" height="16" rx="1"/><line x1="3" y1="12" x2="14" y2="12"/><polyline points="10 8 14 12 10 16"/></svg>',
-            },
-            {
                 sel: '.module-delete-btn',
                 label: t('module.deleteModule'),
                 icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>',
                 cls: 'danger',
             },
         ];
-
-        // Add "Change Theme" item for modules that support theming
-        const moduleType = moduleEl.dataset.type;
-        if (moduleType !== 'hline' && moduleType !== 'spacer') {
-            const themeIcon =
-                '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.37 2.63a2.12 2.12 0 0 1 3 3L14 13l-4 1 1-4 7.37-7.37z"/><path d="M9 3.5a7.5 7.5 0 1 0 5.59 12.5"/><path d="M7.5 16.5c0 1.38-1.12 2.5-2.5 2.5S2.5 19.38 2.5 18c0-2 2.5-3 2.5-3s2.5 1 2.5 3z"/></svg>';
-            const themeItem = document.createElement('button');
-            themeItem.className = 'module-overflow-menu-item';
-            themeItem.innerHTML = themeIcon + `<span>${escapeHtml(t('module.changeTheme'))}</span>`;
-            themeItem.addEventListener('click', (e) => {
-                e.stopPropagation();
-                showThemeSwatchPanel(menu, moduleEl);
-            });
-            menu.appendChild(themeItem);
-        }
 
         btnDefs.forEach((def) => {
             const realBtn = moduleEl.querySelector(def.sel);
@@ -738,63 +697,6 @@
         container.appendChild(row);
     }
 
-    function showThemeSwatchPanel(menu, moduleEl) {
-        const data = window.modules.find((m) => m.id === moduleEl.dataset.id);
-        if (!data) return;
-        menu.innerHTML = '';
-        buildSwatchPanel(menu, moduleEl, data, closeOverflowMenu);
-    }
-
-    // ── Theme Popover (header button) ──
-    let activeThemePopover = null;
-
-    function openThemePopover(moduleEl, anchorBtn) {
-        closeThemePopover();
-        const data = window.modules.find((m) => m.id === moduleEl.dataset.id);
-        if (!data) return;
-
-        const popover = document.createElement('div');
-        closeOverflowMenu();
-        popover.className = 'module-theme-popover';
-
-        buildSwatchPanel(popover, moduleEl, data, closeThemePopover);
-        document.body.appendChild(popover);
-
-        // Position below the anchor button
-        const rect = anchorBtn.getBoundingClientRect();
-        popover.style.top = rect.bottom + 4 + 'px';
-        popover.style.left = rect.left + 'px';
-
-        // Clamp to viewport
-        const popRect = popover.getBoundingClientRect();
-        if (popRect.right > window.innerWidth) {
-            popover.style.left = window.innerWidth - popRect.width - 4 + 'px';
-        }
-        if (popRect.bottom > window.innerHeight) {
-            popover.style.top = rect.top - popRect.height - 4 + 'px';
-        }
-
-        activeThemePopover = popover;
-
-        requestAnimationFrame(() => {
-            document.addEventListener('click', handleThemePopoverOutsideClick);
-        });
-    }
-
-    function closeThemePopover() {
-        if (activeThemePopover) {
-            activeThemePopover.remove();
-            activeThemePopover = null;
-            document.removeEventListener('click', handleThemePopoverOutsideClick);
-        }
-    }
-
-    function handleThemePopoverOutsideClick(e) {
-        if (activeThemePopover && !activeThemePopover.contains(e.target)) {
-            closeThemePopover();
-        }
-    }
-
     function renderModule(data) {
         const typeDef = MODULE_TYPES[data.type];
         if (!typeDef) {
@@ -834,9 +736,6 @@
             ${data.type === 'health' ? `<button class="module-toolbar-btn module-health-eyedropper-btn" title="${t('health.eyedropper')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></button>` : ''}
             ${data.type === 'stat' ? `<button class="module-toolbar-btn module-stat-settings-btn" title="${t('stat.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'stat' ? `<button class="module-toolbar-btn module-addstat-btn" title="${t('stat.addStat')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>` : ''}
-            ${data.type === 'stat' ? `<button class="module-toolbar-btn module-stat-eyedropper-btn" title="${t('stat.eyedropper')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></button>` : ''}
-            ${data.type === 'stat' ? `<button class="module-toolbar-btn module-rollable-btn disabled" title="${t('stat.toggleRollable')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 20 7 20 17 12 22 4 17 4 7"/><text x="12" y="15" text-anchor="middle" font-size="9" font-weight="700" fill="currentColor" stroke="none">20</text></svg></button>` : ''}
-            ${data.type === 'stat' ? `<button class="module-toolbar-btn module-swaplayout-btn" title="${t('stat.swapLayout')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 3 3 7 7 11"/><line x1="3" y1="7" x2="21" y2="7"/><polyline points="17 13 21 17 17 21"/><line x1="21" y1="17" x2="3" y2="17"/></svg></button>` : ''}
             ${data.type === 'text' ? `<button class="module-toolbar-btn module-text-settings-btn" title="${t('text.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'text' ? `<button class="module-toolbar-btn module-copy-btn" title="${t('module.copyClipboard')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>` : ''}
             ${data.type === 'counters' ? `<button class="module-toolbar-btn module-counter-settings-btn" title="${t('counter.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
@@ -851,14 +750,11 @@
             ${data.type === 'savingthrow' ? `<button class="module-toolbar-btn module-save-settings-btn" title="${t('save.moduleSettings')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'recovery' ? `<button class="module-toolbar-btn module-recovery-settings-btn" title="${t('recovery.moduleSettings')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'resistance' ? `<button class="module-toolbar-btn module-res-settings-btn" title="${t('res.moduleSettings')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
-            ${data.type === 'resistance' ? `<button class="module-toolbar-btn module-res-layout-btn" title="${t('res.toggleLayout')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>` : ''}
             ${data.type === 'spells' ? `<button class="module-toolbar-btn module-spells-settings-btn" title="${t('spells.settings')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'level' ? `<button class="module-toolbar-btn module-level-settings-btn" title="${t('level.settings')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'activity' ? `<button class="module-activity-settings-btn module-toolbar-btn" title="${t('activity.settings')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'companions' ? `<button class="module-toolbar-btn module-companions-settings-btn" title="${t('companion.settings')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
             ${data.type === 'defenses' ? `<button class="module-toolbar-btn module-def-settings-btn" title="${t('def.qdSettings')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>` : ''}
-            ${data.type !== 'hline' && data.type !== 'spacer' ? `<button class="module-toolbar-btn module-theme-btn" title="${t('module.changeTheme')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.37 2.63a2.12 2.12 0 0 1 3 3L14 13l-4 1 1-4 7.37-7.37z"/><path d="M9 3.5a7.5 7.5 0 1 0 5.59 12.5"/><path d="M7.5 16.5c0 1.38-1.12 2.5-2.5 2.5S2.5 19.38 2.5 18c0-2 2.5-3 2.5-3s2.5 1 2.5 3z"/></svg></button>` : ''}
-            <button class="module-toolbar-btn module-movetab-btn" title="${t('module.moveToTab')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="4" width="7" height="16" rx="1"/><line x1="3" y1="12" x2="14" y2="12"/><polyline points="10 8 14 12 10 16"/></svg></button>
             <button class="module-toolbar-btn module-delete-btn" title="${t('module.deleteModule')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
         </div>
         <div class="module-body"></div>
@@ -867,10 +763,6 @@
 
         el.querySelector('.module-delete-btn').addEventListener('click', () => {
             openDeleteConfirm(data.id);
-        });
-
-        el.querySelector('.module-movetab-btn').addEventListener('click', () => {
-            openMoveToTabModal(el, data);
         });
 
         // Add ability button (abilities modules only)
@@ -929,81 +821,11 @@
             });
         }
 
-        // Rollable toggle (stat modules only — toggles rollable on selected stat)
-        const rollableBtn = el.querySelector('.module-rollable-btn');
-        if (rollableBtn) {
-            rollableBtn.addEventListener('click', () => {
-                const idx = el._selectedStatIndex;
-                if (idx === null || idx === undefined || !data.content.stats[idx]) return;
-                data.content.stats[idx].rollable = !data.content.stats[idx].rollable;
-                updateRollableBtn(el, data);
-                scheduleSave();
-            });
-        }
-
-        // Swap layout toggle (stat modules only)
-        const swapLayoutBtn = el.querySelector('.module-swaplayout-btn');
-        if (swapLayoutBtn) {
-            swapLayoutBtn.addEventListener('click', () => {
-                data.content.layout = data.content.layout === 'large-stat' ? 'large-modifier' : 'large-stat';
-                const bodyEl = el.querySelector('.module-body');
-                const isPlay = window.isPlayMode;
-                typeDef.renderBody(bodyEl, data, isPlay);
-                snapModuleHeight(el, data);
-                scheduleSave();
-            });
-        }
-
         // Max HP Modifier button (health modules only)
         const healthMaxModBtn = el.querySelector('.module-health-maxmod-btn');
         if (healthMaxModBtn) {
             healthMaxModBtn.addEventListener('click', () => {
                 openHealthActionOverlay(el, data, 'maxmod');
-            });
-        }
-
-        // Eyedropper button (stat modules only — pull stats from selected creature)
-        const statEyedropperBtn = el.querySelector('.module-stat-eyedropper-btn');
-        if (statEyedropperBtn) {
-            statEyedropperBtn.addEventListener('click', async () => {
-                try {
-                    const selected = await TS.creatures.getSelectedCreatures();
-                    if (!selected || selected.length === 0) {
-                        console.warn('[CV] Stat Eyedropper: no creature selected on the board.');
-                        return;
-                    }
-                    const moreInfo = await TS.creatures.getMoreInfo(selected);
-                    const creature = moreInfo[0];
-                    if (creature && creature.stats) {
-                        const boardStats = creature.stats;
-                        if (data.content.stats.length === 0) {
-                            // Empty module: pull all 8 slots
-                            data.content.stats = boardStats.map((s) => ({
-                                name: s.name || t('stat.unnamed'),
-                                value: s.value || 0,
-                                modifier: 0,
-                                proficient: false,
-                                rollable: true,
-                            }));
-                        } else {
-                            // Populated: update existing by name
-                            boardStats.forEach((bs) => {
-                                const existing = data.content.stats.find(
-                                    (es) => es.name.toLowerCase() === bs.name.toLowerCase()
-                                );
-                                if (existing) {
-                                    existing.value = bs.value;
-                                }
-                            });
-                        }
-                        const bodyEl = el.querySelector('.module-body');
-                        const isPlay = window.isPlayMode;
-                        typeDef.renderBody(bodyEl, data, isPlay);
-                        scheduleSave();
-                    }
-                } catch (e) {
-                    console.warn('[CV] Stat Eyedropper failed:', e);
-                }
             });
         }
 
@@ -1143,19 +965,6 @@
             });
         }
 
-        // Layout toggle button (resistance modules only)
-        const resLayoutBtn = el.querySelector('.module-res-layout-btn');
-        if (resLayoutBtn) {
-            resLayoutBtn.addEventListener('click', () => {
-                data.content.layout = data.content.layout === 'columns' ? 'rows' : 'columns';
-                const bodyEl = el.querySelector('.module-body');
-                const isPlay = window.isPlayMode;
-                typeDef.renderBody(bodyEl, data, isPlay);
-                snapModuleHeight(el, data);
-                scheduleSave();
-            });
-        }
-
         // Settings button (level modules only)
         const levelSettingsBtn = el.querySelector('.module-level-settings-btn');
         if (levelSettingsBtn) {
@@ -1185,15 +994,6 @@
         if (defSettingsBtn) {
             defSettingsBtn.addEventListener('click', () => {
                 if (typeof window.openDefenseSettingsModal === 'function') window.openDefenseSettingsModal(el, data);
-            });
-        }
-
-        // Theme button (opens swatch popover)
-        const themeBtn = el.querySelector('.module-theme-btn');
-        if (themeBtn) {
-            themeBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                openThemePopover(el, themeBtn);
             });
         }
 
@@ -1359,88 +1159,6 @@
         overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
     }
 
-    // ── Move to Tab Modal ──
-    function openMoveToTabModal(moduleEl, data) {
-        const otherTabs = window.tabs
-            .filter((tab) => tab.id !== data.tabId)
-            .sort((a, b) => a.order - b.order);
-
-        if (otherTabs.length === 0) {
-            window.showToast(t('module.moveToTabNoOtherTabs'));
-            return;
-        }
-
-        const existing = document.querySelector('.module-movetab-overlay');
-        if (existing) existing.remove();
-
-        const overlay = document.createElement('div');
-        overlay.className = 'cv-modal-overlay module-movetab-overlay';
-
-        const panel = document.createElement('div');
-        panel.className = 'cv-modal-panel';
-        panel.style.width = '280px';
-
-        const header = document.createElement('div');
-        header.className = 'cv-modal-header';
-        const titleEl = document.createElement('span');
-        titleEl.className = 'cv-modal-title';
-        titleEl.textContent = t('module.moveToTab');
-        const closeXBtn = document.createElement('button');
-        closeXBtn.type = 'button';
-        closeXBtn.className = 'cv-modal-close';
-        closeXBtn.title = t('wizard.close');
-        closeXBtn.innerHTML = window.CV_SVG_CLOSE;
-        header.appendChild(titleEl);
-        header.appendChild(closeXBtn);
-        panel.appendChild(header);
-
-        const body = document.createElement('div');
-        body.className = 'cv-modal-body module-movetab-body';
-        otherTabs.forEach((tab) => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'module-movetab-tab-item';
-            btn.textContent = tab.name;
-            btn.addEventListener('click', () => {
-                performModuleMove(moduleEl, data, tab);
-                close();
-            });
-            body.appendChild(btn);
-        });
-        panel.appendChild(body);
-
-        const footer = document.createElement('div');
-        footer.className = 'cv-modal-footer';
-        const cancelBtn = document.createElement('button');
-        cancelBtn.type = 'button';
-        cancelBtn.className = 'btn-secondary sm';
-        cancelBtn.textContent = t('delete.cancel');
-        cancelBtn.addEventListener('click', close);
-        footer.appendChild(cancelBtn);
-        panel.appendChild(footer);
-
-        overlay.appendChild(panel);
-        document.body.appendChild(overlay);
-
-        function close() {
-            overlay.remove();
-            document.removeEventListener('keydown', keyHandler);
-        }
-
-        closeXBtn.addEventListener('click', close);
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) close();
-        });
-
-        const keyHandler = (e) => {
-            if (e.key === 'Escape') {
-                e.stopPropagation();
-                close();
-            }
-        };
-        document.addEventListener('keydown', keyHandler);
-    }
-
     // ── Edit/Play Mode Switching ──
     function setDisplay(parent, sel, val) {
         const el = parent.querySelector(sel);
@@ -1455,8 +1173,7 @@
             const data = window.modules.find((m) => m.id === mod.dataset.id);
             // Apply header/toolbar play state first so auto-height modules measure final chrome
             ['.module-drag-handle', '.module-resize-handle', '.module-delete-btn',
-             '.module-overflow-btn', '.module-theme-btn', '.module-movetab-btn',
-             '.module-rollable-btn', '.module-stat-settings-btn', '.module-text-settings-btn',
+             '.module-overflow-btn', '.module-stat-settings-btn', '.module-text-settings-btn',
              '.module-counter-settings-btn', '.module-list-manage-btn',
             ].forEach((sel) => setDisplay(mod, sel, 'none'));
             // Clear stat selection when entering play mode
@@ -1487,16 +1204,9 @@
             const data = window.modules.find((m) => m.id === mod.dataset.id);
             // Apply header/toolbar edit state first so auto-height modules measure final chrome
             ['.module-drag-handle', '.module-resize-handle', '.module-delete-btn',
-             '.module-overflow-btn', '.module-theme-btn', '.module-movetab-btn',
-             '.module-stat-settings-btn', '.module-text-settings-btn',
+             '.module-overflow-btn', '.module-stat-settings-btn', '.module-text-settings-btn',
              '.module-counter-settings-btn', '.module-list-manage-btn',
             ].forEach((sel) => setDisplay(mod, sel, ''));
-            const rollableBtn = mod.querySelector('.module-rollable-btn');
-            if (rollableBtn) {
-                rollableBtn.style.display = '';
-                rollableBtn.classList.add('disabled');
-                rollableBtn.classList.remove('active');
-            }
             // Clear stat selection when entering layout mode
             mod._selectedStatIndex = null;
             // Title: show input, hide label
@@ -1750,7 +1460,6 @@
     window.initResizeHandle = initResizeHandle;
     window.openWizard = openWizard;
     window.closeWizard = closeWizard;
-    window.THEME_SWATCHES = THEME_SWATCHES;
     window.buildSwatchPanel = buildSwatchPanel;
     window.performModuleMove = performModuleMove;
     window.sortable = sortable;

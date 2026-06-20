@@ -1353,6 +1353,7 @@
         customSection.appendChild(customBtn);
         body.appendChild(customSection);
 
+        buildCommonSettingsSection(body, moduleEl, data);
         panel.appendChild(body);
     }
 

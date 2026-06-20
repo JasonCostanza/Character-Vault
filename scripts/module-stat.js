@@ -495,6 +495,145 @@
         },
     });
 
+    // ── Stat Settings Modal ──
+    function openStatSettingsModal(moduleEl, data) {
+        const existing = document.querySelector('.stat-settings-overlay');
+        if (existing) { existing.remove(); return; }
+
+        const overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay stat-settings-overlay';
+
+        const panel = document.createElement('div');
+        panel.className = 'cv-modal-panel';
+
+        const header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        const titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = t('stat.moduleSettings');
+        const closeXBtn = document.createElement('button');
+        closeXBtn.type = 'button';
+        closeXBtn.className = 'cv-modal-close';
+        closeXBtn.title = t('module.close');
+        closeXBtn.innerHTML = window.CV_SVG_CLOSE;
+        header.appendChild(titleEl);
+        header.appendChild(closeXBtn);
+        panel.appendChild(header);
+
+        const body = document.createElement('div');
+        body.className = 'cv-modal-body';
+
+        // ── Get From Board ──
+        const getFromBoardBtn = document.createElement('button');
+        getFromBoardBtn.type = 'button';
+        getFromBoardBtn.className = 'btn-secondary sm';
+        getFromBoardBtn.textContent = t('stat.eyedropper');
+        getFromBoardBtn.addEventListener('click', async function () {
+            try {
+                const selected = await TS.creatures.getSelectedCreatures();
+                if (!selected || selected.length === 0) {
+                    console.warn('[CV] Stat Eyedropper: no creature selected on the board.');
+                    return;
+                }
+                const moreInfo = await TS.creatures.getMoreInfo(selected);
+                const creature = moreInfo[0];
+                if (creature && creature.stats) {
+                    const boardStats = creature.stats;
+                    if (data.content.stats.length === 0) {
+                        data.content.stats = boardStats.map(function (s) {
+                            return { name: s.name || t('stat.unnamed'), value: s.value || 0, modifier: 0, proficient: false, rollable: true };
+                        });
+                    } else {
+                        boardStats.forEach(function (bs) {
+                            const existing = data.content.stats.find(function (es) { return es.name.toLowerCase() === bs.name.toLowerCase(); });
+                            if (existing) existing.value = bs.value;
+                        });
+                    }
+                    const bodyEl = moduleEl.querySelector('.module-body');
+                    const typeDef = window.MODULE_TYPES && window.MODULE_TYPES['stat'];
+                    if (typeDef && bodyEl) typeDef.renderBody(bodyEl, data, window.isPlayMode);
+                    scheduleSave();
+                    window.showToast(t('stat.getFromBoardSuccess'));
+                }
+            } catch (e) {
+                console.warn('[CV] Stat Eyedropper failed:', e);
+            }
+        });
+        body.appendChild(getFromBoardBtn);
+
+        // ── Display Layout ──
+        const layoutLabel = document.createElement('div');
+        layoutLabel.className = 'cv-modal-label';
+        layoutLabel.textContent = t('stat.layoutLabel');
+        body.appendChild(layoutLabel);
+
+        const layoutSelect = window.buildCvSelect(
+            [
+                { value: 'large-stat', label: t('stat.largeStat') },
+                { value: 'large-modifier', label: t('stat.largeModifier') },
+            ],
+            data.content.layout || 'large-stat',
+            function (val) {
+                data.content.layout = val;
+                const bodyEl = moduleEl.querySelector('.module-body');
+                const typeDef = window.MODULE_TYPES && window.MODULE_TYPES['stat'];
+                if (typeDef && bodyEl) typeDef.renderBody(bodyEl, data, window.isPlayMode);
+                window.snapModuleHeight(moduleEl, data);
+                scheduleSave();
+            }
+        );
+        body.appendChild(layoutSelect.el);
+
+        // ── Rollable Stats ──
+        const rollableLabel = document.createElement('div');
+        rollableLabel.className = 'cv-modal-label';
+        rollableLabel.textContent = t('stat.rollableStats');
+        body.appendChild(rollableLabel);
+
+        const rollableList = document.createElement('div');
+        rollableList.className = 'stat-settings-rollable-list';
+        data.content.stats.forEach(function (stat) {
+            if (stat.isProficiencyStat) return;
+            const row = document.createElement('div');
+            row.className = 'stat-settings-rollable-row';
+
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'cv-toggle-label';
+            nameSpan.textContent = stat.name || t('stat.unnamed');
+            row.appendChild(nameSpan);
+
+            const toggle = window.makeCvToggle(!!stat.rollable, function (checked) {
+                stat.rollable = checked;
+                scheduleSave();
+            });
+            row.appendChild(toggle);
+            rollableList.appendChild(row);
+        });
+        body.appendChild(rollableList);
+
+        buildCommonSettingsSection(body, moduleEl, data);
+        panel.appendChild(body);
+
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'btn-secondary sm';
+        closeBtn.textContent = t('module.close');
+        closeBtn.addEventListener('click', closeModal);
+        footer.appendChild(closeBtn);
+        panel.appendChild(footer);
+
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+
+        function closeModal() { overlay.remove(); }
+        closeXBtn.addEventListener('click', closeModal);
+        overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+    }
+
+    window.openStatSettingsModal = openStatSettingsModal;
+
     window.STAT_TEMPLATES = STAT_TEMPLATES;
     window.applyStatTemplate = applyStatTemplate;
     window.updateRollableBtn = updateRollableBtn;

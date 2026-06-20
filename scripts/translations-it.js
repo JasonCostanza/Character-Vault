@@ -104,6 +104,7 @@ window.CV_TRANSLATIONS['it'] = {
             'module.moveToTabNoOtherTabs': "Nessun'altra scheda disponibile",
             'module.moveToTabMoved': 'Spostato in {tab}',
             'module.appearance': 'Aspetto',
+            'module.close': 'Chiudi',
 
             // Module type labels
             'type.abilities': 'Abilità',
@@ -187,6 +188,7 @@ window.CV_TRANSLATIONS['it'] = {
 
             // Text box submodule
             'text.placeholder': 'Scrivi le tue note...',
+            'text.moduleSettings': 'Impostazioni Modulo',
 
             // Health submodule
             'health.currentHP': 'PF Attuali',
@@ -234,6 +236,9 @@ window.CV_TRANSLATIONS['it'] = {
             'stat.proficiencyAutoComputed': 'Calcolato automaticamente dal livello del personaggio',
             'stat.autoLabel': 'AUTO',
             'stat.eyedropper': 'Prendi dalla Plancia',
+            'stat.moduleSettings': 'Impostazioni Modulo',
+            'stat.rollableStats': 'Stats Rollabili',
+            'stat.getFromBoardSuccess': 'Stat importate dalla plancia',
             'stat.event.roll': 'Tiro di Stat',
             'stat.log.roll': 'Prova di {name} ({modifier})',
 
@@ -241,6 +246,7 @@ window.CV_TRANSLATIONS['it'] = {
             'list.addItem': 'Aggiungi Elemento',
             'list.deleteItem': 'Elimina Elemento',
             'list.manageAttrs': 'Gestisci Attributi',
+            'list.moduleSettings': 'Impostazioni Modulo',
             'list.emptyState': 'Nessun elemento ancora',
             'list.itemName': 'Elemento senza nome',
             'list.colName': 'Nome',
@@ -558,6 +564,7 @@ window.CV_TRANSLATIONS['it'] = {
 
             // Counters submodule
             'counter.addCounter': 'Aggiungi Contatore',
+            'counter.moduleSettings': 'Impostazioni Modulo',
             'counter.createTitle': 'Nuovo Contatore',
             'counter.editTitle': 'Modifica Contatore',
             'counter.name': 'Nome',
@@ -1088,7 +1095,7 @@ window.CV_TRANSLATIONS['it'] = {
             'recovery.action.restoreAllSpellSlots': 'Slot incantesimo ripristinati',
             'recovery.action.restoreHitDice': 'Dadi Vita ripristinati',
             'recovery.log.rest': '{buttonName}: {details}',
-            'recovery.moduleSettings': 'Impostazioni Dadi Vita',
+            'recovery.moduleSettings': 'Impostazioni Modulo',
             'recovery.noHealByRollConfigured': 'Nessun pulsante di riposo usa un tiro con Dadi Vita.',
             'recovery.close': 'Chiudi',
 // Weapons submodule

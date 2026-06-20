@@ -106,6 +106,7 @@ window.CV_TRANSLATIONS.en = {
             'module.moveToTabNoOtherTabs': 'No other tabs available',
             'module.moveToTabMoved': 'Moved to {tab}',
             'module.appearance': 'Appearance',
+            'module.close': 'Close',
 
             // Module type labels
             'type.abilities': 'Abilities',
@@ -188,6 +189,7 @@ window.CV_TRANSLATIONS.en = {
 
             // Text box submodule
             'text.placeholder': 'Write your notes...',
+            'text.moduleSettings': 'Module Settings',
 
             // Health submodule
             'health.currentHP': 'Current HP',
@@ -216,6 +218,9 @@ window.CV_TRANSLATIONS.en = {
             'health.log.tempAdjust': 'Adjusted temp HP ({oldTemp} → {newTemp})',
             'health.log.adjust': '{field} adjusted ({oldVal} → {newVal})',
             'stat.eyedropper': 'Get from Board',
+            'stat.moduleSettings': 'Module Settings',
+            'stat.rollableStats': 'Rollable Stats',
+            'stat.getFromBoardSuccess': 'Stats imported from board',
 
             // Stat submodule
             'stat.addStat': 'Add Stat',
@@ -241,6 +246,7 @@ window.CV_TRANSLATIONS.en = {
             'list.addItem': 'Add Item',
             'list.deleteItem': 'Delete Item',
             'list.manageAttrs': 'Manage Attributes',
+            'list.moduleSettings': 'Module Settings',
             'list.emptyState': 'No items yet',
             'list.itemName': 'Unnamed Item',
             'list.colName': 'Name',
@@ -826,6 +832,7 @@ window.CV_TRANSLATIONS.en = {
 
             // Counters submodule
             'counter.addCounter': 'Add Counter',
+            'counter.moduleSettings': 'Module Settings',
             'counter.createTitle': 'New Counter',
             'counter.editTitle': 'Edit Counter',
             'counter.name': 'Name',
@@ -1089,7 +1096,7 @@ window.CV_TRANSLATIONS.en = {
             'recovery.action.restoreAllSpellSlots': 'Restored spell slots',
             'recovery.action.restoreHitDice': 'Restored Hit Dice',
             'recovery.log.rest': '{buttonName}: {details}',
-            'recovery.moduleSettings': 'Hit Dice Settings',
+            'recovery.moduleSettings': 'Module Settings',
             'recovery.noHealByRollConfigured': 'No rest buttons use a Hit Dice roll action.',
             'recovery.close': 'Close',
 

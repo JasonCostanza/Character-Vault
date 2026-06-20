@@ -99,6 +99,7 @@ window.CV_TRANSLATIONS['de'] = {
             'module.moveToTabNoOtherTabs': 'Keine anderen Tabs verfügbar',
             'module.moveToTabMoved': 'Verschoben nach {tab}',
             'module.appearance': 'Erscheinungsbild',
+            'module.close': 'Schließen',
 
             'type.abilities': 'Fähigkeiten',
             'type.activity': 'Aktivitätsprotokoll',
@@ -179,6 +180,7 @@ window.CV_TRANSLATIONS['de'] = {
             'abilities.log.roll': 'Fertigkeitsprobe für {name} ({modifier})',
 
             'text.placeholder': 'Schreibe deine Notizen...',
+            'text.moduleSettings': 'Moduleinstellungen',
 
             'health.currentHP': 'Aktuelle TP',
             'health.maxHP': 'Maximale TP',
@@ -206,6 +208,9 @@ window.CV_TRANSLATIONS['de'] = {
             'health.log.tempAdjust': 'Temporäre TP angepasst ({oldTemp} → {newTemp})',
             'health.log.adjust': '{field} angepasst ({oldVal} → {newVal})',
             'stat.eyedropper': 'Vom Spielfeld holen',
+            'stat.moduleSettings': 'Moduleinstellungen',
+            'stat.rollableStats': 'Würfelbare Werte',
+            'stat.getFromBoardSuccess': 'Werte vom Spielfeld importiert',
 
             'stat.addStat': 'Wert hinzufügen',
             'stat.deleteStat': 'Wert löschen',
@@ -231,6 +236,7 @@ window.CV_TRANSLATIONS['de'] = {
             'list.addItem': 'Element Hinzufügen',
             'list.deleteItem': 'Element Löschen',
             'list.manageAttrs': 'Attribute Verwalten',
+            'list.moduleSettings': 'Moduleinstellungen',
             'list.emptyState': 'Noch keine Elemente',
             'list.itemName': 'Unbenanntes Element',
             'list.colName': 'Name',
@@ -892,6 +898,7 @@ window.CV_TRANSLATIONS['de'] = {
             'spells.dcLabel': 'SW',
             'spells.bonusOverrideIndicator': 'Manuelle Überschreibung aktiv',
             'counter.addCounter': 'Zähler hinzufügen',
+            'counter.moduleSettings': 'Moduleinstellungen',
             'counter.createTitle': 'Neuer Zähler',
             'counter.editTitle': 'Zähler bearbeiten',
             'counter.name': 'Name',
@@ -1031,7 +1038,7 @@ window.CV_TRANSLATIONS['de'] = {
             'recovery.action.restoreAllSpellSlots': 'Zauberslots wiederhergestellt',
             'recovery.action.restoreHitDice': 'Trefferwürfel wiederhergestellt',
             'recovery.log.rest': '{buttonName}: {details}',
-            'recovery.moduleSettings': 'Trefferwürfel-Einstellungen',
+            'recovery.moduleSettings': 'Moduleinstellungen',
             'recovery.noHealByRollConfigured': 'Keine Rast-Schaltfläche verwendet eine Trefferwürfelwurf-Aktion.',
             'recovery.close': 'Schließen',
             'type.weapons': 'Waffen',

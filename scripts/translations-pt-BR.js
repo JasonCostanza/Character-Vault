@@ -99,6 +99,7 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'module.moveToTabNoOtherTabs': 'Nenhuma outra guia disponível',
             'module.moveToTabMoved': 'Movido para {tab}',
             'module.appearance': 'Aparência',
+            'module.close': 'Fechar',
 
             'type.abilities': 'Habilidades',
             'type.activity': 'Registro de Atividade',
@@ -179,6 +180,7 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'abilities.log.roll': 'Teste de {name} rolado ({modifier})',
 
             'text.placeholder': 'Escreva suas anotações...',
+            'text.moduleSettings': 'Configurações do Módulo',
 
             'health.currentHP': 'HP Atual',
             'health.maxHP': 'HP Máximo',
@@ -224,6 +226,9 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'stat.proficiencyAutoComputed': 'Calculado automaticamente a partir do nível do personagem',
             'stat.autoLabel': 'AUTO',
             'stat.eyedropper': 'Obter do Tabuleiro',
+            'stat.moduleSettings': 'Configurações do Módulo',
+            'stat.rollableStats': 'Atributos Roláveis',
+            'stat.getFromBoardSuccess': 'Atributos importados do tabuleiro',
             'stat.event.roll': 'Rolagem de Estatística',
             'stat.log.roll': 'Teste de {name} rolado ({modifier})',
 
@@ -231,6 +236,7 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'list.addItem': 'Adicionar Item',
             'list.deleteItem': 'Excluir Item',
             'list.manageAttrs': 'Gerenciar Atributos',
+            'list.moduleSettings': 'Configurações do Módulo',
             'list.emptyState': 'Nenhum item ainda',
             'list.itemName': 'Item sem nome',
             'list.colName': 'Nome',
@@ -512,6 +518,7 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'spells.catNoSlot': 'Nenhum (truque)',
 
             'counter.addCounter': 'Adicionar Contador',
+            'counter.moduleSettings': 'Configurações do Módulo',
             'counter.createTitle': 'Novo Contador',
             'counter.editTitle': 'Editar Contador',
             'counter.name': 'Nome',
@@ -1058,7 +1065,7 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'recovery.action.restoreAllSpellSlots': 'Espaços de magia restaurados',
             'recovery.action.restoreHitDice': 'Dados de Vida restaurados',
             'recovery.log.rest': '{buttonName}: {details}',
-            'recovery.moduleSettings': 'Configurações de Dados de Vida',
+            'recovery.moduleSettings': 'Configurações do Módulo',
             'recovery.noHealByRollConfigured': 'Nenhum botão de descanso usa uma ação de rolagem de Dados de Vida.',
             'recovery.close': 'Fechar',
 

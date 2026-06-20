@@ -99,6 +99,7 @@ window.CV_TRANSLATIONS['es'] = {
             'module.moveToTabNoOtherTabs': 'No hay otras pestañas disponibles',
             'module.moveToTabMoved': 'Movido a {tab}',
             'module.appearance': 'Apariencia',
+            'module.close': 'Cerrar',
 
             'type.abilities': 'Habilidades',
             'type.activity': 'Registro de Actividad',
@@ -180,6 +181,7 @@ window.CV_TRANSLATIONS['es'] = {
             'abilities.log.roll': 'Tirada de prueba de {name} ({modifier})',
 
             'text.placeholder': 'Escribe tus notas...',
+            'text.moduleSettings': 'Configuración del Módulo',
 
             'health.currentHP': 'HP Actual',
             'health.maxHP': 'HP Máximo',
@@ -207,6 +209,9 @@ window.CV_TRANSLATIONS['es'] = {
             'health.log.tempAdjust': 'HP temporal ajustado ({oldTemp} → {newTemp})',
             'health.log.adjust': '{field} ajustado ({oldVal} → {newVal})',
             'stat.eyedropper': 'Obtener del Tablero',
+            'stat.moduleSettings': 'Configuración del Módulo',
+            'stat.rollableStats': 'Stats Lanzables',
+            'stat.getFromBoardSuccess': 'Stats importadas del tablero',
 
             'stat.addStat': 'Agregar Estadística',
             'stat.deleteStat': 'Eliminar Estadística',
@@ -232,6 +237,7 @@ window.CV_TRANSLATIONS['es'] = {
             'list.addItem': 'Agregar Elemento',
             'list.deleteItem': 'Eliminar Elemento',
             'list.manageAttrs': 'Gestionar Atributos',
+            'list.moduleSettings': 'Configuración del Módulo',
             'list.emptyState': 'Sin elementos aún',
             'list.itemName': 'Elemento sin nombre',
             'list.colName': 'Nombre',
@@ -512,6 +518,7 @@ window.CV_TRANSLATIONS['es'] = {
 
             // Counters submodule
             'counter.addCounter': 'Agregar Contador',
+            'counter.moduleSettings': 'Configuración del Módulo',
             'counter.createTitle': 'Nuevo Contador',
             'counter.editTitle': 'Editar Contador',
             'counter.name': 'Nombre',
@@ -722,7 +729,7 @@ window.CV_TRANSLATIONS['es'] = {
             'recovery.action.restoreAllSpellSlots': 'Espacios de conjuro restaurados',
             'recovery.action.restoreHitDice': 'Dados de Golpe restaurados',
             'recovery.log.rest': '{buttonName}: {details}',
-            'recovery.moduleSettings': 'Ajustes de Dados de Golpe',
+            'recovery.moduleSettings': 'Configuración del Módulo',
             'recovery.noHealByRollConfigured': 'Ningún botón de descanso usa una acción de tirada de Dados de Golpe.',
             'recovery.close': 'Cerrar',
 

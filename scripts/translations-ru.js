@@ -99,6 +99,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'module.moveToTabNoOtherTabs': 'Нет других доступных вкладок',
             'module.moveToTabMoved': 'Перемещено во вкладку {tab}',
             'module.appearance': 'Внешний вид',
+            'module.close': 'Закрыть',
 
             'type.abilities': 'Навыки',
             'type.activity': 'Журнал Активности',
@@ -180,6 +181,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'abilities.log.roll': 'Проверка {name} ({modifier})',
 
             'text.placeholder': 'Пишите заметки...',
+            'text.moduleSettings': 'Настройки Модуля',
 
             'health.currentHP': 'Текущие ОЗ',
             'health.maxHP': 'Макс. ОЗ',
@@ -208,6 +210,9 @@ window.CV_TRANSLATIONS['ru'] = {
             'health.log.adjust': '{field} скорректировано ({oldVal} → {newVal})',
 
             'stat.eyedropper': 'Получить с Доски',
+            'stat.moduleSettings': 'Настройки Модуля',
+            'stat.rollableStats': 'Бросаемые Статы',
+            'stat.getFromBoardSuccess': 'Статы импортированы с доски',
             'stat.addStat': 'Добавить Характеристику',
             'stat.deleteStat': 'Удалить Характеристику',
             'stat.unnamed': 'Без Имени',
@@ -232,6 +237,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'list.addItem': 'Добавить Элемент',
             'list.deleteItem': 'Удалить Элемент',
             'list.manageAttrs': 'Управление Атрибутами',
+            'list.moduleSettings': 'Настройки Модуля',
             'list.emptyState': 'Пока нет элементов',
             'list.itemName': 'Безымянный элемент',
             'list.colName': 'Имя',
@@ -511,6 +517,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'spells.dcLabel': 'Сл.',
             'spells.bonusOverrideIndicator': 'Активно ручное переопределение',
             'counter.addCounter': 'Добавить Счётчик',
+            'counter.moduleSettings': 'Настройки Модуля',
             'counter.createTitle': 'Новый Счётчик',
             'counter.editTitle': 'Редактировать Счётчик',
             'counter.name': 'Название',
@@ -1052,7 +1059,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'recovery.action.restoreAllSpellSlots': 'Ячейки заклинаний восстановлены',
             'recovery.action.restoreHitDice': 'Кости Хитов восстановлены',
             'recovery.log.rest': '{buttonName}: {details}',
-            'recovery.moduleSettings': 'Настройки Костей Хитов',
+            'recovery.moduleSettings': 'Настройки Модуля',
             'recovery.noHealByRollConfigured': 'Ни одна кнопка отдыха не использует бросок Костей Хитов.',
             'recovery.close': 'Закрыть',
 

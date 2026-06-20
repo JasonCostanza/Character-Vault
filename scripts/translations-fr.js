@@ -99,6 +99,7 @@ window.CV_TRANSLATIONS['fr'] = {
             'module.moveToTabNoOtherTabs': 'Aucun autre onglet disponible',
             'module.moveToTabMoved': 'Déplacé vers {tab}',
             'module.appearance': 'Apparence',
+            'module.close': 'Fermer',
 
             'type.abilities': 'Compétences',
             'type.activity': 'Journal d\'Activité',
@@ -178,6 +179,7 @@ window.CV_TRANSLATIONS['fr'] = {
             'abilities.log.roll': 'Jet de test de {name} ({modifier})',
 
             'text.placeholder': 'Écrivez vos notes...',
+            'text.moduleSettings': 'Paramètres du Module',
 
             'health.currentHP': 'PV Actuels',
             'health.maxHP': 'PV Maximum',
@@ -205,6 +207,9 @@ window.CV_TRANSLATIONS['fr'] = {
             'health.log.tempAdjust': 'PV temporaires ajustés ({oldTemp} → {newTemp})',
             'health.log.adjust': '{field} ajusté ({oldVal} → {newVal})',
             'stat.eyedropper': 'Récupérer du Plateau',
+            'stat.moduleSettings': 'Paramètres du Module',
+            'stat.rollableStats': 'Stats Lançables',
+            'stat.getFromBoardSuccess': 'Stats importées depuis le plateau',
 
             'stat.addStat': 'Ajouter une Statistique',
             'stat.deleteStat': 'Supprimer la Statistique',
@@ -230,6 +235,7 @@ window.CV_TRANSLATIONS['fr'] = {
             'list.addItem': 'Ajouter un Élément',
             'list.deleteItem': "Supprimer l'Élément",
             'list.manageAttrs': 'Gérer les Attributs',
+            'list.moduleSettings': 'Paramètres du Module',
             'list.emptyState': 'Aucun élément',
             'list.itemName': 'Élément sans nom',
             'list.colName': 'Nom',
@@ -938,6 +944,7 @@ window.CV_TRANSLATIONS['fr'] = {
 
             // Counters submodule
             'counter.addCounter': 'Ajouter un Compteur',
+            'counter.moduleSettings': 'Paramètres du Module',
             'counter.createTitle': 'Nouveau Compteur',
             'counter.editTitle': 'Modifier le Compteur',
             'counter.name': 'Nom',
@@ -1039,7 +1046,7 @@ window.CV_TRANSLATIONS['fr'] = {
             'recovery.action.restoreAllSpellSlots': 'Emplacements de sort restaurés',
             'recovery.action.restoreHitDice': 'Dés de Vie restaurés',
             'recovery.log.rest': '{buttonName}: {details}',
-            'recovery.moduleSettings': 'Paramètres des Dés de Vie',
+            'recovery.moduleSettings': 'Paramètres du Module',
             'recovery.noHealByRollConfigured': 'Aucun bouton de repos n\'utilise d\'action de lancer de Dés de Vie.',
             'recovery.close': 'Fermer',
 

@@ -569,12 +569,6 @@
         divider.appendChild(dividerLabel);
         container.appendChild(divider);
 
-        // Theme
-        const themeLabel = document.createElement('div');
-        themeLabel.className = 'cv-modal-label';
-        themeLabel.textContent = t('module.changeTheme');
-        container.appendChild(themeLabel);
-
         window.buildSwatchPanel(container, moduleEl, data, null);
 
         // Move to Tab
@@ -602,7 +596,6 @@
                 btn.textContent = tab.name;
                 btn.addEventListener('click', function () {
                     window.performModuleMove(moduleEl, data, tab);
-                    window.closeAllModals();
                 });
                 tabRow.appendChild(btn);
             });

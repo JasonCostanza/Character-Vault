@@ -1441,6 +1441,7 @@
         updateEmptyState();
         scheduleSave();
         window.showToast(t('module.moveToTabMoved', { tab: destTab.name }));
+        window.closeAllModals();
     }
 
     window.MODULE_TYPES = MODULE_TYPES;

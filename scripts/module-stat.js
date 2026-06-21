@@ -495,7 +495,7 @@
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
         closeXBtn.title = t('module.close');
-        closeXBtn.innerHTML = window.CV_SVG_CLOSE;
+        closeXBtn.innerHTML = CV_SVG_CLOSE;
         header.appendChild(titleEl);
         header.appendChild(closeXBtn);
         panel.appendChild(header);
@@ -572,8 +572,7 @@
 
         const rollableList = document.createElement('div');
         rollableList.className = 'stat-settings-rollable-list';
-        data.content.stats.forEach(function (stat) {
-            if (stat.isProficiencyStat) return;
+        data.content.stats.filter(function (stat) { return !stat.isProficiencyStat; }).forEach(function (stat) {
             const row = document.createElement('div');
             row.className = 'stat-settings-rollable-row';
 

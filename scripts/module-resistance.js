@@ -350,6 +350,7 @@
     function closeResSettingsPanel(moduleEl, data) {
         const overlay = document.querySelector('.res-settings-overlay');
         if (!overlay) return;
+        if (overlay._keyHandler) document.removeEventListener('keydown', overlay._keyHandler);
         // Destroy any SortableJS instances
         overlay.querySelectorAll('.res-column-list, .res-staging-grid').forEach(function (el) {
             if (el._sortable) {
@@ -384,12 +385,14 @@
             if (e.target === overlay) closeResSettingsPanel(moduleEl, data);
         });
 
-        // Close on Escape
-        overlay.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') closeResSettingsPanel(moduleEl, data);
-        });
-        overlay.setAttribute('tabindex', '-1');
-        overlay.focus();
+        const keyHandler = function (e) {
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                closeResSettingsPanel(moduleEl, data);
+            }
+        };
+        overlay._keyHandler = keyHandler;
+        document.addEventListener('keydown', keyHandler);
     }
 
     function renderSettingsPanelContent(panel, moduleEl, data, content) {
@@ -401,7 +404,7 @@
 
         const title = document.createElement('span');
         title.className = 'cv-modal-title';
-        title.textContent = t('res.moduleSettings');
+        title.textContent = t('res.settingsTitle');
         header.appendChild(title);
 
         const closeBtn = document.createElement('button');
@@ -527,6 +530,17 @@
 
         buildCommonSettingsSection(body, moduleEl, data);
         panel.appendChild(body);
+
+        // ── Footer ──
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        const footerCloseBtn = document.createElement('button');
+        footerCloseBtn.type = 'button';
+        footerCloseBtn.className = 'btn-secondary sm';
+        footerCloseBtn.textContent = t('res.close');
+        footerCloseBtn.addEventListener('click', function () { closeResSettingsPanel(moduleEl, data); });
+        footer.appendChild(footerCloseBtn);
+        panel.appendChild(footer);
 
         // ── Init SortableJS ──
         initSettingsSortables(panel, moduleEl, data, content);

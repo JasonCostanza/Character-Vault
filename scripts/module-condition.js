@@ -2278,6 +2278,7 @@
     function closeCondSettingsPanel(moduleEl, data) {
         const overlay = document.querySelector('.cond-settings-overlay');
         if (!overlay) return;
+        if (overlay._keyHandler) document.removeEventListener('keydown', overlay._keyHandler);
         overlay.querySelectorAll('.cond-applied-settings-list, .cond-staging-grid').forEach(function (el) {
             if (el._sortable) {
                 el._sortable.destroy();
@@ -2310,12 +2311,14 @@
             if (e.target === overlay) closeCondSettingsPanel(moduleEl, data);
         });
 
-        // Close on Escape
-        overlay.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') closeCondSettingsPanel(moduleEl, data);
-        });
-        overlay.setAttribute('tabindex', '-1');
-        overlay.focus();
+        const keyHandler = function (e) {
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                closeCondSettingsPanel(moduleEl, data);
+            }
+        };
+        overlay._keyHandler = keyHandler;
+        document.addEventListener('keydown', keyHandler);
     }
 
     function renderSettingsPanelContent(panel, moduleEl, data, content) {
@@ -2458,6 +2461,17 @@
         body.appendChild(stagingSection);
         buildCommonSettingsSection(body, moduleEl, data);
         panel.appendChild(body);
+
+        // ── Footer ──
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        const footerCloseBtn = document.createElement('button');
+        footerCloseBtn.type = 'button';
+        footerCloseBtn.className = 'btn-secondary sm';
+        footerCloseBtn.textContent = t('cond.close');
+        footerCloseBtn.addEventListener('click', function () { closeCondSettingsPanel(moduleEl, data); });
+        footer.appendChild(footerCloseBtn);
+        panel.appendChild(footer);
 
         // Init SortableJS
         initCondSettingsSortables(panel, moduleEl, data, content);

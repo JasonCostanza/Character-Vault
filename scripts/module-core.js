@@ -456,11 +456,6 @@
                 icon: CV_SVG_GEAR,
             },
             {
-                sel: '.module-health-eyedropper-btn',
-                label: t('health.eyedropper'),
-                icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>',
-            },
-            {
                 sel: '.module-addstat-btn',
                 label: t('stat.addStat'),
                 icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
@@ -733,7 +728,6 @@
             <input class="module-title-input" type="text" value="${escapeHtml(displayTitle)}" placeholder="${escapeHtml(t(typeDef.label))}" style="${isPlayMode ? 'display:none' : ''}" />
             <button class="module-overflow-btn" title="${t('module.moreOptions')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button>
             ${data.type === 'health' ? `<button class="module-toolbar-btn module-health-maxmod-btn" title="${t('health.moduleSettings')}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'health' ? `<button class="module-toolbar-btn module-health-eyedropper-btn" title="${t('health.eyedropper')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></button>` : ''}
             ${data.type === 'stat' ? `<button class="module-toolbar-btn module-stat-settings-btn" title="${t('stat.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${CV_SVG_GEAR}</button>` : ''}
             ${data.type === 'stat' ? `<button class="module-toolbar-btn module-addstat-btn" title="${t('stat.addStat')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>` : ''}
             ${data.type === 'text' ? `<button class="module-toolbar-btn module-text-settings-btn" title="${t('text.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${CV_SVG_GEAR}</button>` : ''}
@@ -825,34 +819,7 @@
         const healthMaxModBtn = el.querySelector('.module-health-maxmod-btn');
         if (healthMaxModBtn) {
             healthMaxModBtn.addEventListener('click', () => {
-                openHealthActionOverlay(el, data, 'maxmod');
-            });
-        }
-
-        // Eyedropper button (health modules only — pull HP from selected creature)
-        const healthEyedropperBtn = el.querySelector('.module-health-eyedropper-btn');
-        if (healthEyedropperBtn) {
-            healthEyedropperBtn.addEventListener('click', async () => {
-                try {
-                    const selected = await TS.creatures.getSelectedCreatures();
-                    if (!selected || selected.length === 0) {
-                        console.warn('[CV] Eyedropper: no creature selected on the board.');
-                        return;
-                    }
-                    const moreInfo = await TS.creatures.getMoreInfo(selected);
-                    const creature = moreInfo[0];
-                    if (creature && creature.hp) {
-                        data.content.currentHP = creature.hp.value;
-                        data.content.maxHP = creature.hp.max;
-                        const bodyEl = el.querySelector('.module-body');
-                        const isPlay = window.isPlayMode;
-                        typeDef.renderBody(bodyEl, data, isPlay);
-                        snapModuleHeight(el, data);
-                        scheduleSave();
-                    }
-                } catch (e) {
-                    console.warn('[CV] Eyedropper failed — TS creature API may not be available:', e);
-                }
+                openHealthSettingsModal(el, data);
             });
         }
 
@@ -911,7 +878,7 @@
         const textSettingsBtn = el.querySelector('.module-text-settings-btn');
         if (textSettingsBtn) {
             textSettingsBtn.addEventListener('click', () => {
-                openSimpleSettingsModal(el, data, 'text-settings-overlay', 'text.moduleSettings');
+                openSimpleSettingsModal(el, data, 'text-settings-overlay', 'text.settingsTitle');
             });
         }
 
@@ -919,7 +886,7 @@
         const counterSettingsBtn = el.querySelector('.module-counter-settings-btn');
         if (counterSettingsBtn) {
             counterSettingsBtn.addEventListener('click', () => {
-                openSimpleSettingsModal(el, data, 'counter-settings-overlay', 'counter.moduleSettings');
+                openSimpleSettingsModal(el, data, 'counter-settings-overlay', 'counter.settingsTitle');
             });
         }
 
@@ -1154,7 +1121,17 @@
         overlay.appendChild(panel);
         document.body.appendChild(overlay);
 
-        function closeModal() { overlay.remove(); }
+        function closeModal() {
+            document.removeEventListener('keydown', keyHandler);
+            overlay.remove();
+        }
+        const keyHandler = (e) => {
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                closeModal();
+            }
+        };
+        document.addEventListener('keydown', keyHandler);
         closeXBtn.addEventListener('click', closeModal);
         overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
     }

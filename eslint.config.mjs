@@ -101,6 +101,7 @@ export default [
 
                 // ── module-health.js ──
                 openHealthActionOverlay: 'readonly',
+                openHealthSettingsModal: 'readonly',
 
                 // ── module-abilities.js ──
                 ABILITY_TEMPLATES: 'readonly',

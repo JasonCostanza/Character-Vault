@@ -106,7 +106,7 @@
         overlay.className = 'cv-modal-overlay health-action-overlay';
 
         const panel = document.createElement('div');
-        panel.className = 'cv-modal-panel health-action-modal';
+        panel.className = 'cv-modal-panel';
 
         let titleKey;
         switch (mode) {
@@ -119,13 +119,7 @@
             case 'temp':
                 titleKey = 'health.setTempHP';
                 break;
-            case 'maxmod':
-                titleKey = 'health.moduleSettings';
-                break;
         }
-
-        const subHeading =
-            mode === 'maxmod' ? `<div class="health-action-subheading">${escapeHtml(t('health.maxHPMod'))}</div>` : '';
 
         panel.innerHTML =
             `<div class="cv-modal-header">` +
@@ -135,7 +129,6 @@
             `</button>` +
             `</div>` +
             `<div class="cv-modal-body health-action-body">` +
-            subHeading +
             `<input type="text" class="health-action-input" placeholder="0" spellcheck="false" autocomplete="off">` +
             `</div>` +
             `<div class="cv-modal-footer">` +
@@ -143,19 +136,13 @@
             `<button class="health-action-ok btn-primary">${escapeHtml(t('health.ok'))}</button>` +
             `</div>`;
 
-        const body = panel.querySelector('.cv-modal-body');
-        if (mode === 'maxmod') {
-            buildCommonSettingsSection(body, moduleEl, data);
-        }
-
         const input = panel.querySelector('.health-action-input');
         const closeBtn = panel.querySelector('.cv-modal-close');
         const cancelBtn = panel.querySelector('.health-action-cancel');
         const okBtn = panel.querySelector('.health-action-ok');
 
         // Pre-fill for setters
-        if (mode === 'maxmod') input.value = data.content.maxHPModifier || '';
-        else if (mode === 'temp') input.value = data.content.tempHP || '';
+        if (mode === 'temp') input.value = data.content.tempHP || '';
 
         function confirm() {
             const result = evaluateHealthExpression(input.value);
@@ -176,9 +163,6 @@
                     break;
                 case 'temp':
                     data.content.tempHP = Math.max(0, result);
-                    break;
-                case 'maxmod':
-                    data.content.maxHPModifier = result;
                     break;
             }
 
@@ -233,6 +217,131 @@
     function closeHealthActionOverlay(moduleEl) {
         const existing = document.querySelector('.health-action-overlay');
         if (existing) existing.remove();
+    }
+
+    // ── Health Settings Modal ──
+
+    function openHealthSettingsModal(moduleEl, data) {
+        const existing = document.querySelector('.health-settings-overlay');
+        if (existing) { existing.remove(); return; }
+
+        const overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay health-settings-overlay';
+
+        const panel = document.createElement('div');
+        panel.className = 'cv-modal-panel';
+
+        const header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        const titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = t('health.settingsTitle');
+        const closeXBtn = document.createElement('button');
+        closeXBtn.type = 'button';
+        closeXBtn.className = 'cv-modal-close';
+        closeXBtn.title = t('module.close');
+        closeXBtn.innerHTML = CV_SVG_CLOSE;
+        header.appendChild(titleEl);
+        header.appendChild(closeXBtn);
+        panel.appendChild(header);
+
+        const body = document.createElement('div');
+        body.className = 'cv-modal-body';
+
+        // ── Get From Board ──
+        const getFromBoardBtn = document.createElement('button');
+        getFromBoardBtn.type = 'button';
+        getFromBoardBtn.className = 'btn-secondary sm';
+        getFromBoardBtn.textContent = t('health.eyedropper');
+        getFromBoardBtn.addEventListener('click', async function () {
+            try {
+                const selected = await TS.creatures.getSelectedCreatures();
+                if (!selected || selected.length === 0) {
+                    console.warn('[CV] Eyedropper: no creature selected on the board.');
+                    return;
+                }
+                const moreInfo = await TS.creatures.getMoreInfo(selected);
+                const creature = moreInfo[0];
+                if (creature && creature.hp) {
+                    data.content.currentHP = creature.hp.value;
+                    data.content.maxHP = creature.hp.max;
+                    syncHealthLayersFromData(moduleEl, data);
+                    window.snapModuleHeight(moduleEl, data);
+                    scheduleSave();
+                    closeModal();
+                    window.showToast(t('health.getFromBoardSuccess'));
+                }
+            } catch (e) {
+                console.warn('[CV] Eyedropper failed — TS creature API may not be available:', e);
+            }
+        });
+        body.appendChild(getFromBoardBtn);
+
+        // ── Max HP Modifier ──
+        const modLabel = document.createElement('div');
+        modLabel.className = 'cv-modal-label';
+        modLabel.textContent = t('health.maxHPMod');
+        body.appendChild(modLabel);
+
+        const modInput = document.createElement('input');
+        modInput.type = 'text';
+        modInput.className = 'health-action-input';
+        modInput.placeholder = '0';
+        modInput.spellcheck = false;
+        modInput.autocomplete = 'off';
+        modInput.value = data.content.maxHPModifier || '';
+
+        function applyModifier() {
+            const raw = modInput.value.trim();
+            const result = raw === '' ? 0 : evaluateHealthExpression(raw);
+            if (result !== null) {
+                data.content.maxHPModifier = result;
+                modInput.value = result || '';
+                syncHealthLayersFromData(moduleEl, data);
+                window.snapModuleHeight(moduleEl, data);
+                scheduleSave();
+            } else {
+                modInput.value = data.content.maxHPModifier || '';
+            }
+        }
+
+        modInput.addEventListener('blur', applyModifier);
+        modInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') modInput.blur();
+        });
+        body.appendChild(modInput);
+
+        buildCommonSettingsSection(body, moduleEl, data);
+        panel.appendChild(body);
+
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'btn-secondary sm';
+        closeBtn.textContent = t('module.close');
+        closeBtn.addEventListener('click', closeModal);
+        footer.appendChild(closeBtn);
+        panel.appendChild(footer);
+
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+        modInput.focus();
+        modInput.select();
+
+        function closeModal() {
+            document.removeEventListener('keydown', keyHandler);
+            overlay.remove();
+        }
+        const keyHandler = (e) => {
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                closeModal();
+            }
+        };
+        document.addEventListener('keydown', keyHandler);
+        closeXBtn.addEventListener('click', closeModal);
+        overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
     }
 
     function buildPlayLayer(bodyEl, data) {
@@ -610,4 +719,5 @@
 
     // Expose for cross-file access (module-core.js)
     window.openHealthActionOverlay = openHealthActionOverlay;
+    window.openHealthSettingsModal = openHealthSettingsModal;
 })();

@@ -184,13 +184,6 @@
     align-items: center;
 }
 
-.health-action-subheading {
-    font-size: 10px;
-    font-weight: 500;
-    color: var(--cv-text-muted);
-    user-select: none;
-}
-
 .health-action-input {
     width: 100%;
     max-width: 120px;
@@ -210,8 +203,6 @@
     border-color: var(--cv-accent);
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
-
-
 
 /* ── Layout Mode: Inline Inputs ── */
 .health-inline-input {

@@ -104,6 +104,7 @@ window.CV_TRANSLATIONS['it'] = {
             'module.moveToTabNoOtherTabs': "Nessun'altra scheda disponibile",
             'module.moveToTabMoved': 'Spostato in {tab}',
             'module.appearance': 'Aspetto',
+            'module.cancel': 'Annulla',
             'module.close': 'Chiudi',
 
             // Module type labels
@@ -189,6 +190,7 @@ window.CV_TRANSLATIONS['it'] = {
             // Text box submodule
             'text.placeholder': 'Scrivi le tue note...',
             'text.moduleSettings': 'Impostazioni Modulo',
+            'text.settingsTitle': 'Impostazioni Casella di Testo',
 
             // Health submodule
             'health.currentHP': 'PF Attuali',
@@ -202,10 +204,12 @@ window.CV_TRANSLATIONS['it'] = {
             'health.healing': 'Cura',
             'health.setTempHP': 'Imposta PF Temporanei',
             'health.moduleSettings': 'Impostazioni Modulo',
+            'health.settingsTitle': 'Impostazioni Salute',
             'health.maxHPMod': 'Modificatore PF Max',
             'health.ok': 'OK',
             'health.cancel': 'Annulla',
             'health.eyedropper': 'Prendi dalla Plancia',
+            'health.getFromBoardSuccess': 'HP importati dalla plancia',
             'health.event.heal': 'Cura',
             'health.event.damage': 'Danno',
             'health.event.tempHP': 'PF Temporanei',
@@ -237,6 +241,7 @@ window.CV_TRANSLATIONS['it'] = {
             'stat.autoLabel': 'AUTO',
             'stat.eyedropper': 'Prendi dalla Plancia',
             'stat.moduleSettings': 'Impostazioni Modulo',
+            'stat.settingsTitle': 'Impostazioni Statistiche',
             'stat.rollableStats': 'Stats Rollabili',
             'stat.getFromBoardSuccess': 'Stat importate dalla plancia',
             'stat.event.roll': 'Tiro di Stat',
@@ -312,6 +317,7 @@ window.CV_TRANSLATIONS['it'] = {
 
             // Resistance submodule
             'res.moduleSettings': 'Impostazioni Modulo',
+            'res.settingsTitle': 'Impostazioni Resistenze',
             'res.toggleLayout': 'Cambia Layout',
             'res.layout': 'Layout',
             'res.layoutColumns': 'Colonne',
@@ -391,7 +397,6 @@ window.CV_TRANSLATIONS['it'] = {
             'save.noProficiency': 'Nessuno',
             'save.cancel': 'Annulla',
             'save.close': 'Chiudi',
-            'save.discardChanges': 'Scartare le modifiche non salvate?',
             'save.event.roll': 'Tiro Salvezza',
             'save.log.roll': 'Tiro salvezza di {name} ({modifier})',
 
@@ -467,7 +472,6 @@ window.CV_TRANSLATIONS['it'] = {
             'spells.cancel': 'Annulla',
             'spells.close': 'Chiudi',
             'spells.delete': 'Elimina',
-            'spells.discardChanges': 'Scartare le modifiche non salvate?',
             'spells.expand': 'Espandi',
             'spells.collapse': 'Comprimi',
             'spells.event.cast': 'Lancio Incantesimo',
@@ -557,7 +561,6 @@ window.CV_TRANSLATIONS['it'] = {
             'level.barStyleSolid': 'Solida',
             'level.barStyleSeg10': 'Segmentata (10%)',
             'level.barStyleSeg25': 'Segmentata (25%)',
-            'level.discardChanges': 'Hai modifiche non salvate. Scartare?',
             'level.maxLevelReached': 'Livello massimo raggiunto',
             'level.decrementLevel': 'Diminuisci Livello',
             'level.incrementLevel': 'Aumenta Livello',
@@ -565,6 +568,7 @@ window.CV_TRANSLATIONS['it'] = {
             // Counters submodule
             'counter.addCounter': 'Aggiungi Contatore',
             'counter.moduleSettings': 'Impostazioni Modulo',
+            'counter.settingsTitle': 'Impostazioni Contatori',
             'counter.createTitle': 'Nuovo Contatore',
             'counter.editTitle': 'Modifica Contatore',
             'counter.name': 'Nome',
@@ -1096,7 +1100,7 @@ window.CV_TRANSLATIONS['it'] = {
             'recovery.action.restoreHitDice': 'Dadi Vita ripristinati',
             'recovery.log.rest': '{buttonName}: {details}',
             'recovery.moduleSettings': 'Impostazioni Modulo',
-            'recovery.noHealByRollConfigured': 'Nessun pulsante di riposo usa un tiro con Dadi Vita.',
+            'recovery.settingsTitle': 'Impostazioni Recupero',
             'recovery.close': 'Chiudi',
 // Weapons submodule
             'type.weapons': 'Armi',
@@ -1107,7 +1111,6 @@ window.CV_TRANSLATIONS['it'] = {
             'weapons.editWeapon': 'Modifica Arma',
             'weapons.deleteWeapon': 'Elimina Arma',
             'weapons.deleteConfirm': 'Eliminare quest\'arma? Questa azione è irreversibile.',
-            'weapons.discardChanges': 'Hai modifiche non salvate. Annullare?',
             'weapons.unnamed': 'Senza Nome',
             'weapons.name': 'Nome',
             'weapons.icon': 'Icona',
@@ -1331,6 +1334,9 @@ window.CV_TRANSLATIONS['it'] = {
             'dice.criticalWithHope': 'Critico — con Speranza',
 
             // Common
+            'common.cancel': 'Annulla',
+            'common.save': 'Salva',
+            'common.close': 'Chiudi',
             'common.discardChanges': 'Hai modifiche non salvate. Scartare?',
 
             'empty.message': 'Clicca su <strong>Nuovo Modulo</strong> per iniziare',

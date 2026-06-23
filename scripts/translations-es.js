@@ -99,6 +99,7 @@ window.CV_TRANSLATIONS['es'] = {
             'module.moveToTabNoOtherTabs': 'No hay otras pestañas disponibles',
             'module.moveToTabMoved': 'Movido a {tab}',
             'module.appearance': 'Apariencia',
+            'module.cancel': 'Cancelar',
             'module.close': 'Cerrar',
 
             'type.abilities': 'Habilidades',
@@ -182,6 +183,7 @@ window.CV_TRANSLATIONS['es'] = {
 
             'text.placeholder': 'Escribe tus notas...',
             'text.moduleSettings': 'Configuración del Módulo',
+            'text.settingsTitle': 'Ajustes de Cuadro de Texto',
 
             'health.currentHP': 'HP Actual',
             'health.maxHP': 'HP Máximo',
@@ -194,10 +196,12 @@ window.CV_TRANSLATIONS['es'] = {
             'health.healing': 'Curación',
             'health.setTempHP': 'Establecer HP Temporal',
             'health.moduleSettings': 'Ajustes del Módulo',
+            'health.settingsTitle': 'Ajustes de Salud',
             'health.maxHPMod': 'Modificador HP Máximo',
             'health.ok': 'Aceptar',
             'health.cancel': 'Cancelar',
             'health.eyedropper': 'Obtener del Tablero',
+            'health.getFromBoardSuccess': 'HP importados del tablero',
             'health.event.heal': 'Curación',
             'health.event.damage': 'Daño',
             'health.event.tempHP': 'HP Temporal',
@@ -210,6 +214,7 @@ window.CV_TRANSLATIONS['es'] = {
             'health.log.adjust': '{field} ajustado ({oldVal} → {newVal})',
             'stat.eyedropper': 'Obtener del Tablero',
             'stat.moduleSettings': 'Configuración del Módulo',
+            'stat.settingsTitle': 'Ajustes de Estadísticas',
             'stat.rollableStats': 'Stats Lanzables',
             'stat.getFromBoardSuccess': 'Stats importadas del tablero',
 
@@ -303,6 +308,7 @@ window.CV_TRANSLATIONS['es'] = {
 
             // Resistance submodule
             'res.moduleSettings': 'Configuración del Módulo',
+            'res.settingsTitle': 'Ajustes de Resistencias',
             'res.toggleLayout': 'Alternar Diseño',
             'res.layout': 'Diseño',
             'res.layoutColumns': 'Columnas',
@@ -381,7 +387,6 @@ window.CV_TRANSLATIONS['es'] = {
             'save.noProficiency': 'Ninguno',
             'save.cancel': 'Cancelar',
             'save.close': 'Cerrar',
-            'save.discardChanges': '¿Descartar cambios no guardados?',
             'save.event.roll': 'Tirada de Salvación',
             'save.log.roll': 'Tirada de salvación de {name} ({modifier})',
 
@@ -457,7 +462,6 @@ window.CV_TRANSLATIONS['es'] = {
             'spells.cancel': 'Cancelar',
             'spells.close': 'Cerrar',
             'spells.delete': 'Eliminar',
-            'spells.discardChanges': '¿Descartar cambios no guardados?',
             'spells.expand': 'Expandir',
             'spells.collapse': 'Contraer',
             'spells.event.cast': 'Lanzamiento de Hechizo',
@@ -519,6 +523,7 @@ window.CV_TRANSLATIONS['es'] = {
             // Counters submodule
             'counter.addCounter': 'Agregar Contador',
             'counter.moduleSettings': 'Configuración del Módulo',
+            'counter.settingsTitle': 'Ajustes de Contadores',
             'counter.createTitle': 'Nuevo Contador',
             'counter.editTitle': 'Editar Contador',
             'counter.name': 'Nombre',
@@ -609,7 +614,6 @@ window.CV_TRANSLATIONS['es'] = {
             'level.barStyleSolid': 'Sólida',
             'level.barStyleSeg10': 'Segmentada (10%)',
             'level.barStyleSeg25': 'Segmentada (25%)',
-            'level.discardChanges': 'Tienes cambios sin guardar. ¿Descartar?',
             'level.maxLevelReached': 'Nivel máximo alcanzado',
             'level.decrementLevel': 'Bajar Nivel',
             'level.incrementLevel': 'Subir Nivel',
@@ -730,7 +734,7 @@ window.CV_TRANSLATIONS['es'] = {
             'recovery.action.restoreHitDice': 'Dados de Golpe restaurados',
             'recovery.log.rest': '{buttonName}: {details}',
             'recovery.moduleSettings': 'Configuración del Módulo',
-            'recovery.noHealByRollConfigured': 'Ningún botón de descanso usa una acción de tirada de Dados de Golpe.',
+            'recovery.settingsTitle': 'Ajustes de Recuperación',
             'recovery.close': 'Cerrar',
 
             // Weapons submodule
@@ -742,7 +746,6 @@ window.CV_TRANSLATIONS['es'] = {
             'weapons.editWeapon': 'Editar Arma',
             'weapons.deleteWeapon': 'Eliminar Arma',
             'weapons.deleteConfirm': '¿Eliminar esta arma? Esto no se puede deshacer.',
-            'weapons.discardChanges': 'Tienes cambios sin guardar. ¿Descartar?',
             'weapons.unnamed': 'Sin Nombre',
             'weapons.name': 'Nombre',
             'weapons.icon': 'Icono',
@@ -967,6 +970,9 @@ window.CV_TRANSLATIONS['es'] = {
             'dice.criticalWithHope': 'Crítico — con Esperanza',
 
             // Common
+            'common.cancel': 'Cancelar',
+            'common.save': 'Guardar',
+            'common.close': 'Cerrar',
             'common.discardChanges': '¿Hay cambios sin guardar. ¿Descartar?',
 
             'empty.message': 'Haz clic en <strong>Nuevo Módulo</strong> para comenzar',

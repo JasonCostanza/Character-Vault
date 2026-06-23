@@ -1471,8 +1471,8 @@
         title.setAttribute('data-i18n', 'weapons.settingsTitle');
         var closeBtn = document.createElement('button');
         closeBtn.className = 'cv-modal-close';
-        closeBtn.innerHTML = '&times;';
-        closeBtn.title = t('abilities.close');
+        closeBtn.innerHTML = CV_SVG_CLOSE;
+        closeBtn.title = t('weapons.close');
         header.appendChild(title);
         header.appendChild(closeBtn);
 
@@ -1486,7 +1486,7 @@
         body.appendChild(label);
 
         var select = document.createElement('select');
-        select.className = 'ability-settings-select';
+        select.className = 'weapons-linked-select';
         var noneOpt = document.createElement('option');
         noneOpt.value = '';
         noneOpt.setAttribute('data-i18n', 'weapons.noLinkedModule');
@@ -1505,13 +1505,11 @@
         var footer = document.createElement('div');
         footer.className = 'cv-modal-footer';
         var cancelBtn = document.createElement('button');
-        cancelBtn.className = 'btn-secondary';
-        cancelBtn.setAttribute('data-i18n', 'abilities.cancel');
-        cancelBtn.textContent = t('abilities.cancel');
+        cancelBtn.className = 'btn-secondary sm';
+        cancelBtn.textContent = t('weapons.cancel');
         var saveBtn = document.createElement('button');
-        saveBtn.className = 'btn-primary';
-        saveBtn.setAttribute('data-i18n', 'abilities.save');
-        saveBtn.textContent = t('abilities.save');
+        saveBtn.className = 'btn-primary sm';
+        saveBtn.textContent = t('weapons.save');
         footer.appendChild(cancelBtn);
         footer.appendChild(saveBtn);
 
@@ -2402,7 +2400,7 @@
 
         function close() {
             if (dirty) {
-                showConfirm(t('weapons.discardChanges'), function () {
+                showConfirm(t('common.discardChanges'), function () {
                     forceClose();
                     renderEditBody(bodyEl, data);
                 });

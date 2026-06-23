@@ -99,6 +99,7 @@ window.CV_TRANSLATIONS['fr'] = {
             'module.moveToTabNoOtherTabs': 'Aucun autre onglet disponible',
             'module.moveToTabMoved': 'Déplacé vers {tab}',
             'module.appearance': 'Apparence',
+            'module.cancel': 'Annuler',
             'module.close': 'Fermer',
 
             'type.abilities': 'Compétences',
@@ -180,6 +181,7 @@ window.CV_TRANSLATIONS['fr'] = {
 
             'text.placeholder': 'Écrivez vos notes...',
             'text.moduleSettings': 'Paramètres du Module',
+            'text.settingsTitle': 'Paramètres de la Zone de Texte',
 
             'health.currentHP': 'PV Actuels',
             'health.maxHP': 'PV Maximum',
@@ -192,10 +194,12 @@ window.CV_TRANSLATIONS['fr'] = {
             'health.healing': 'Soin',
             'health.setTempHP': 'Définir PV Temporaires',
             'health.moduleSettings': 'Paramètres du Module',
+            'health.settingsTitle': 'Paramètres de Santé',
             'health.maxHPMod': 'Modificateur PV Max',
             'health.ok': 'OK',
             'health.cancel': 'Annuler',
             'health.eyedropper': 'Récupérer du Plateau',
+            'health.getFromBoardSuccess': 'HP importés depuis le plateau',
             'health.event.heal': 'Soin',
             'health.event.damage': 'Dégâts',
             'health.event.tempHP': 'PV Temporaires',
@@ -208,6 +212,7 @@ window.CV_TRANSLATIONS['fr'] = {
             'health.log.adjust': '{field} ajusté ({oldVal} → {newVal})',
             'stat.eyedropper': 'Récupérer du Plateau',
             'stat.moduleSettings': 'Paramètres du Module',
+            'stat.settingsTitle': 'Paramètres des Statistiques',
             'stat.rollableStats': 'Stats Lançables',
             'stat.getFromBoardSuccess': 'Stats importées depuis le plateau',
 
@@ -330,13 +335,13 @@ window.CV_TRANSLATIONS['fr'] = {
             'level.barStyleSolid': 'Pleine',
             'level.barStyleSeg10': 'Segment\u00e9e (10%)',
             'level.barStyleSeg25': 'Segment\u00e9e (25%)',
-            'level.discardChanges': 'Vous avez des modifications non enregistr\u00e9es. Annuler ?',
             'level.maxLevelReached': 'Niveau maximum atteint',
             'level.decrementLevel': 'Diminuer le Niveau',
             'level.incrementLevel': 'Augmenter le Niveau',
 
             // Resistance submodule
             'res.moduleSettings': 'Paramètres du Module',
+            'res.settingsTitle': 'Paramètres des Résistances',
             'res.toggleLayout': 'Basculer la Disposition',
             'res.layout': 'Disposition',
             'res.layoutColumns': 'Colonnes',
@@ -415,7 +420,6 @@ window.CV_TRANSLATIONS['fr'] = {
             'save.noProficiency': 'Aucun',
             'save.cancel': 'Annuler',
             'save.close': 'Fermer',
-            'save.discardChanges': 'Abandonner les modifications non sauvegardées\u00a0?',
             'save.event.roll': 'Jet de Sauvegarde',
             'save.log.roll': 'Jet de sauvegarde de {name} ({modifier})',
 
@@ -883,7 +887,6 @@ window.CV_TRANSLATIONS['fr'] = {
             'spells.cancel': 'Annuler',
             'spells.close': 'Fermer',
             'spells.delete': 'Supprimer',
-            'spells.discardChanges': 'Abandonner les modifications non sauvegardées\u00a0?',
             'spells.expand': 'Développer',
             'spells.collapse': 'Réduire',
             'spells.event.cast': 'Sort Lancé',
@@ -945,6 +948,7 @@ window.CV_TRANSLATIONS['fr'] = {
             // Counters submodule
             'counter.addCounter': 'Ajouter un Compteur',
             'counter.moduleSettings': 'Paramètres du Module',
+            'counter.settingsTitle': 'Paramètres des Compteurs',
             'counter.createTitle': 'Nouveau Compteur',
             'counter.editTitle': 'Modifier le Compteur',
             'counter.name': 'Nom',
@@ -1047,7 +1051,7 @@ window.CV_TRANSLATIONS['fr'] = {
             'recovery.action.restoreHitDice': 'Dés de Vie restaurés',
             'recovery.log.rest': '{buttonName}: {details}',
             'recovery.moduleSettings': 'Paramètres du Module',
-            'recovery.noHealByRollConfigured': 'Aucun bouton de repos n\'utilise d\'action de lancer de Dés de Vie.',
+            'recovery.settingsTitle': 'Paramètres de Récupération',
             'recovery.close': 'Fermer',
 
             'level.event.levelUp': 'Changement de Niveau',
@@ -1098,7 +1102,6 @@ window.CV_TRANSLATIONS['fr'] = {
             'weapons.editWeapon': 'Modifier l\'Arme',
             'weapons.deleteWeapon': 'Supprimer l\'Arme',
             'weapons.deleteConfirm': 'Supprimer cette arme ? Cette action est irréversible.',
-            'weapons.discardChanges': 'Vous avez des modifications non enregistrées. Annuler ?',
             'weapons.unnamed': 'Sans Nom',
             'weapons.name': 'Nom',
             'weapons.icon': 'Icône',
@@ -1323,6 +1326,9 @@ window.CV_TRANSLATIONS['fr'] = {
             'dice.criticalWithHope': 'Critique — avec Espoir',
 
             // Common
+            'common.cancel': 'Annuler',
+            'common.save': 'Enregistrer',
+            'common.close': 'Fermer',
             'common.discardChanges': 'Vous avez des modifications non sauvegardées. Annuler ?',
 
             'empty.message': 'Cliquez sur <strong>Nouveau Module</strong> pour commencer',

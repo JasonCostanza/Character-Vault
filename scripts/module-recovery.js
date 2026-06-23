@@ -18,6 +18,27 @@
 
     const ACTION_TYPES = ['resetTempHP', 'restoreAllSpellSlots', 'restoreHitDice'];
 
+    function makeHDConfigField(labelKey, val, min, onCommit) {
+        const field = document.createElement('div');
+        field.className = 'recovery-hitdice-config-field';
+        const lbl = document.createElement('div');
+        lbl.className = 'recovery-hitdice-config-label';
+        lbl.textContent = t(labelKey);
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.className = 'recovery-hitdice-config-input';
+        input.min = min;
+        input.value = val;
+        input.addEventListener('change', () => {
+            const v = parseInt(input.value);
+            if (!isNaN(v) && v >= parseInt(min)) { onCommit(v, input); }
+            else { input.value = val; }
+        });
+        field.appendChild(lbl);
+        field.appendChild(input);
+        return field;
+    }
+
     // ── Execute Rest Button ──
 
     function executeRestButton(btn, content, diceCount) {
@@ -252,8 +273,8 @@
         header.className = 'cv-modal-header';
         const titleEl = document.createElement('span');
         titleEl.className = 'cv-modal-title';
-        titleEl.setAttribute('data-i18n', 'recovery.moduleSettings');
-        titleEl.textContent = t('recovery.moduleSettings');
+        titleEl.setAttribute('data-i18n', 'recovery.settingsTitle');
+        titleEl.textContent = t('recovery.settingsTitle');
         const closeXBtn = document.createElement('button');
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
@@ -266,154 +287,74 @@
         const body = document.createElement('div');
         body.className = 'cv-modal-body';
 
-        if (!hasHealByRoll(content)) {
-            const msg = document.createElement('p');
-            msg.className = 'recovery-hd-modal-empty';
-            msg.textContent = t('recovery.noHealByRollConfigured');
-            body.appendChild(msg);
-        } else {
-            if (!content.hitDice) {
-                content.hitDice = { dieSize: 8, total: 1, remaining: 1, modifier: 0, restoreOnLongRest: 'half' };
-            }
-            const hd = content.hitDice;
-
-            const grid = document.createElement('div');
-            grid.className = 'recovery-hitdice-config-grid';
-
-            // Die size dropdown
-            const dieSizeField = document.createElement('div');
-            dieSizeField.className = 'recovery-hitdice-config-field';
-            const dieSizeLbl = document.createElement('div');
-            dieSizeLbl.className = 'recovery-hitdice-config-label';
-            dieSizeLbl.textContent = t('recovery.dieSize');
-            const dieSizeSelect = document.createElement('div');
-            dieSizeSelect.className = 'cv-select';
-            const dieSizeTrigger = document.createElement('button');
-            dieSizeTrigger.type = 'button';
-            dieSizeTrigger.className = 'cv-select-trigger';
-            dieSizeTrigger.innerHTML = `<span class="cv-select-value">d${hd.dieSize}</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`;
-            const dieSizeMenu = document.createElement('ul');
-            dieSizeMenu.className = 'cv-select-menu';
-            [4, 6, 8, 10, 12].forEach(size => {
-                const opt = document.createElement('li');
-                opt.className = 'cv-select-option' + (hd.dieSize === size ? ' selected' : '');
-                opt.textContent = 'd' + size;
-                opt.addEventListener('click', () => {
-                    hd.dieSize = size;
-                    dieSizeTrigger.querySelector('.cv-select-value').textContent = 'd' + size;
-                    dieSizeMenu.querySelectorAll('.cv-select-option').forEach(o => o.classList.toggle('selected', o.textContent === 'd' + size));
-                    dieSizeSelect.classList.remove('open');
-                    scheduleSave();
-                });
-                dieSizeMenu.appendChild(opt);
-            });
-            dieSizeTrigger.addEventListener('click', e => {
-                e.stopPropagation();
-                const rect = dieSizeTrigger.getBoundingClientRect();
-                dieSizeMenu.style.position = 'fixed';
-                dieSizeMenu.style.top = rect.bottom + 2 + 'px';
-                dieSizeMenu.style.left = rect.left + 'px';
-                dieSizeMenu.style.minWidth = rect.width + 'px';
-                dieSizeSelect.classList.toggle('open');
-            });
-            document.addEventListener('click', () => dieSizeSelect.classList.remove('open'));
-            dieSizeSelect.appendChild(dieSizeTrigger);
-            dieSizeSelect.appendChild(dieSizeMenu);
-            dieSizeField.appendChild(dieSizeLbl);
-            dieSizeField.appendChild(dieSizeSelect);
-            grid.appendChild(dieSizeField);
-
-            function makeNumField(labelKey, val, min, onCommit) {
-                const field = document.createElement('div');
-                field.className = 'recovery-hitdice-config-field';
-                const lbl = document.createElement('div');
-                lbl.className = 'recovery-hitdice-config-label';
-                lbl.textContent = t(labelKey);
-                const input = document.createElement('input');
-                input.type = 'number';
-                input.className = 'recovery-hitdice-config-input';
-                input.min = min;
-                input.value = val;
-                input.addEventListener('change', () => {
-                    const v = parseInt(input.value);
-                    if (!isNaN(v) && v >= parseInt(min)) {
-                        onCommit(v, input);
-                    } else {
-                        input.value = val;
-                    }
-                });
-                field.appendChild(lbl);
-                field.appendChild(input);
-                return field;
-            }
-
-            grid.appendChild(makeNumField('recovery.totalDice', hd.total, 1, (v) => {
-                hd.total = v;
-                hd.remaining = Math.min(hd.remaining, hd.total);
-                scheduleSave();
-            }));
-
-            grid.appendChild(makeNumField('recovery.remainingDice', hd.remaining, 0, (v, input) => {
-                hd.remaining = Math.min(v, hd.total);
-                input.value = hd.remaining;
-                scheduleSave();
-            }));
-
-            grid.appendChild(makeNumField('recovery.modifier', hd.modifier || 0, -99, (v) => {
-                hd.modifier = v;
-                scheduleSave();
-            }));
-
-            body.appendChild(grid);
-
-            // Restore on Long Rest
-            const restoreField = document.createElement('div');
-            restoreField.className = 'recovery-hitdice-config-field';
-            restoreField.style.marginTop = '8px';
-            const restoreLbl = document.createElement('div');
-            restoreLbl.className = 'recovery-hitdice-config-label';
-            restoreLbl.textContent = t('recovery.restoreOnLongRest');
-            restoreField.appendChild(restoreLbl);
-
-            const restoreOptions = ['all', 'half', 'none'];
-            const currentRestore = hd.restoreOnLongRest || 'half';
-            const restoreSelect = document.createElement('div');
-            restoreSelect.className = 'cv-select';
-            const restoreTrigger = document.createElement('button');
-            restoreTrigger.type = 'button';
-            restoreTrigger.className = 'cv-select-trigger';
-            restoreTrigger.innerHTML = `<span class="cv-select-value">${escapeHtml(t('recovery.restoreOption.' + currentRestore))}</span><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`;
-            const restoreMenu = document.createElement('ul');
-            restoreMenu.className = 'cv-select-menu';
-            restoreOptions.forEach(opt => {
-                const li = document.createElement('li');
-                li.className = 'cv-select-option' + (currentRestore === opt ? ' selected' : '');
-                li.textContent = t('recovery.restoreOption.' + opt);
-                li.dataset.value = opt;
-                li.addEventListener('click', () => {
-                    hd.restoreOnLongRest = opt;
-                    restoreTrigger.querySelector('.cv-select-value').textContent = t('recovery.restoreOption.' + opt);
-                    restoreMenu.querySelectorAll('.cv-select-option').forEach(o => o.classList.toggle('selected', o.dataset.value === opt));
-                    restoreSelect.classList.remove('open');
-                    scheduleSave();
-                });
-                restoreMenu.appendChild(li);
-            });
-            restoreTrigger.addEventListener('click', e => {
-                e.stopPropagation();
-                const rect = restoreTrigger.getBoundingClientRect();
-                restoreMenu.style.position = 'fixed';
-                restoreMenu.style.top = rect.bottom + 2 + 'px';
-                restoreMenu.style.left = rect.left + 'px';
-                restoreMenu.style.minWidth = rect.width + 'px';
-                restoreSelect.classList.toggle('open');
-            });
-            document.addEventListener('click', () => restoreSelect.classList.remove('open'));
-            restoreSelect.appendChild(restoreTrigger);
-            restoreSelect.appendChild(restoreMenu);
-            restoreField.appendChild(restoreSelect);
-            body.appendChild(restoreField);
+        if (!content.hitDice) {
+            content.hitDice = { dieSize: 8, total: 1, remaining: 1, modifier: 0, restoreOnLongRest: 'half' };
         }
+        const hd = content.hitDice;
+
+        const grid = document.createElement('div');
+        grid.className = 'recovery-hitdice-config-grid';
+
+        // Die size dropdown
+        const dieSizeField = document.createElement('div');
+        dieSizeField.className = 'recovery-hitdice-config-field';
+        const dieSizeLbl = document.createElement('div');
+        dieSizeLbl.className = 'recovery-hitdice-config-label';
+        dieSizeLbl.textContent = t('recovery.dieSize');
+        const dieSizeSelect = document.createElement('select');
+        dieSizeSelect.className = 'recovery-hitdice-config-select';
+        [4, 6, 8, 10, 12].forEach(size => {
+            const opt = document.createElement('option');
+            opt.value = size;
+            opt.textContent = 'd' + size;
+            if (hd.dieSize === size) opt.selected = true;
+            dieSizeSelect.appendChild(opt);
+        });
+        dieSizeSelect.addEventListener('change', () => { hd.dieSize = parseInt(dieSizeSelect.value); scheduleSave(); });
+        dieSizeField.appendChild(dieSizeLbl);
+        dieSizeField.appendChild(dieSizeSelect);
+        grid.appendChild(dieSizeField);
+
+        grid.appendChild(makeHDConfigField('recovery.totalDice', hd.total, 1, (v) => {
+            hd.total = v;
+            hd.remaining = Math.min(hd.remaining, hd.total);
+            scheduleSave();
+        }));
+
+        grid.appendChild(makeHDConfigField('recovery.remainingDice', hd.remaining, 0, (v, input) => {
+            hd.remaining = Math.min(v, hd.total);
+            input.value = hd.remaining;
+            scheduleSave();
+        }));
+
+        grid.appendChild(makeHDConfigField('recovery.modifier', hd.modifier || 0, -99, (v) => {
+            hd.modifier = v;
+            scheduleSave();
+        }));
+
+        // Restore on Long Rest (spans full grid width)
+        const restoreField = document.createElement('div');
+        restoreField.className = 'recovery-hitdice-config-field';
+        restoreField.style.gridColumn = '1 / -1';
+        const restoreLbl = document.createElement('div');
+        restoreLbl.className = 'recovery-hitdice-config-label';
+        restoreLbl.textContent = t('recovery.restoreOnLongRest');
+        const restoreSelect = document.createElement('select');
+        restoreSelect.className = 'recovery-hitdice-config-select';
+        const currentRestore = hd.restoreOnLongRest || 'half';
+        ['all', 'half', 'none'].forEach(opt => {
+            const el = document.createElement('option');
+            el.value = opt;
+            el.textContent = t('recovery.restoreOption.' + opt);
+            if (currentRestore === opt) el.selected = true;
+            restoreSelect.appendChild(el);
+        });
+        restoreSelect.addEventListener('change', () => { hd.restoreOnLongRest = restoreSelect.value; scheduleSave(); });
+        restoreField.appendChild(restoreLbl);
+        restoreField.appendChild(restoreSelect);
+        grid.appendChild(restoreField);
+
+        body.appendChild(grid);
 
         buildCommonSettingsSection(body, moduleEl, data);
         panel.appendChild(body);
@@ -431,7 +372,17 @@
         overlay.appendChild(panel);
         document.body.appendChild(overlay);
 
-        function closeModal() { overlay.remove(); }
+        function closeModal() {
+            document.removeEventListener('keydown', keyHandler);
+            overlay.remove();
+        }
+        const keyHandler = (e) => {
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                closeModal();
+            }
+        };
+        document.addEventListener('keydown', keyHandler);
         closeXBtn.addEventListener('click', closeModal);
         overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
     }
@@ -631,37 +582,19 @@
         dieSizeField.appendChild(dieSizeSelect);
         hdGrid.appendChild(dieSizeField);
 
-        function makeHDNumField(labelKey, val, min, onCommit) {
-            const field = document.createElement('div');
-            field.className = 'recovery-hitdice-config-field';
-            const lbl = document.createElement('div');
-            lbl.className = 'recovery-hitdice-config-label';
-            lbl.textContent = t(labelKey);
-            const input = document.createElement('input');
-            input.type = 'number';
-            input.className = 'recovery-hitdice-config-input';
-            input.min = min;
-            input.value = val;
-            input.addEventListener('change', () => {
-                const v = parseInt(input.value);
-                if (!isNaN(v) && v >= parseInt(min)) { onCommit(v, input); dirty = true; }
-                else { input.value = val; }
-            });
-            field.appendChild(lbl);
-            field.appendChild(input);
-            return field;
-        }
-
-        hdGrid.appendChild(makeHDNumField('recovery.totalDice', localHD.total, 1, (v) => {
+        hdGrid.appendChild(makeHDConfigField('recovery.totalDice', localHD.total, 1, (v) => {
             localHD.total = v;
             localHD.remaining = Math.min(localHD.remaining, localHD.total);
+            dirty = true;
         }));
-        hdGrid.appendChild(makeHDNumField('recovery.remainingDice', localHD.remaining, 0, (v, input) => {
+        hdGrid.appendChild(makeHDConfigField('recovery.remainingDice', localHD.remaining, 0, (v, input) => {
             localHD.remaining = Math.min(v, localHD.total);
             input.value = localHD.remaining;
+            dirty = true;
         }));
-        hdGrid.appendChild(makeHDNumField('recovery.modifier', localHD.modifier || 0, -99, (v) => {
+        hdGrid.appendChild(makeHDConfigField('recovery.modifier', localHD.modifier || 0, -99, (v) => {
             localHD.modifier = v;
+            dirty = true;
         }));
         hdConfig.appendChild(hdGrid);
 
@@ -672,11 +605,12 @@
         restorePolicyLbl.textContent = t('recovery.restoreOnLongRest');
         const restorePolicySelect = document.createElement('select');
         restorePolicySelect.className = 'recovery-hitdice-config-select';
+        const currentRestorePolicy = localHD.restoreOnLongRest || 'half';
         ['all', 'half', 'none'].forEach(opt => {
             const el = document.createElement('option');
             el.value = opt;
             el.textContent = t('recovery.restoreOption.' + opt);
-            if ((localHD.restoreOnLongRest || 'half') === opt) el.selected = true;
+            if (currentRestorePolicy === opt) el.selected = true;
             restorePolicySelect.appendChild(el);
         });
         restorePolicySelect.addEventListener('change', () => { localHD.restoreOnLongRest = restorePolicySelect.value; dirty = true; });
@@ -725,14 +659,30 @@
         overlay.appendChild(panel);
         document.body.appendChild(overlay);
 
-        function tryClose() {
-            if (dirty && !confirm(t('common.discardChanges'))) return;
+        function closeModal() {
             overlay.remove();
+            document.removeEventListener('keydown', keyHandler);
+        }
+
+        function tryClose() {
+            if (dirty) {
+                showConfirm(t('common.discardChanges'), closeModal);
+            } else {
+                closeModal();
+            }
         }
 
         closeXBtn.addEventListener('click', tryClose);
         cancelBtn.addEventListener('click', tryClose);
         overlay.addEventListener('click', e => { if (e.target === overlay) tryClose(); });
+
+        const keyHandler = (e) => {
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                tryClose();
+            }
+        };
+        document.addEventListener('keydown', keyHandler);
 
         deleteBtn.addEventListener('click', () => {
             content.restButtons = content.restButtons.filter(b => b.id !== btn.id);

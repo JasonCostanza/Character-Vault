@@ -106,6 +106,7 @@ window.CV_TRANSLATIONS.en = {
             'module.moveToTabNoOtherTabs': 'No other tabs available',
             'module.moveToTabMoved': 'Moved to {tab}',
             'module.appearance': 'Appearance',
+            'module.cancel': 'Cancel',
             'module.close': 'Close',
 
             // Module type labels
@@ -190,6 +191,7 @@ window.CV_TRANSLATIONS.en = {
             // Text box submodule
             'text.placeholder': 'Write your notes...',
             'text.moduleSettings': 'Module Settings',
+            'text.settingsTitle': 'Text Box Settings',
 
             // Health submodule
             'health.currentHP': 'Current HP',
@@ -203,10 +205,12 @@ window.CV_TRANSLATIONS.en = {
             'health.healing': 'Healing',
             'health.setTempHP': 'Set Temp HP',
             'health.moduleSettings': 'Module Settings',
+            'health.settingsTitle': 'Health Settings',
             'health.maxHPMod': 'Max HP Modifier',
             'health.ok': 'OK',
             'health.cancel': 'Cancel',
             'health.eyedropper': 'Get from Board',
+            'health.getFromBoardSuccess': 'HP imported from board',
             'health.event.heal': 'Heal',
             'health.event.damage': 'Damage',
             'health.event.tempHP': 'Temp HP',
@@ -219,6 +223,7 @@ window.CV_TRANSLATIONS.en = {
             'health.log.adjust': '{field} adjusted ({oldVal} → {newVal})',
             'stat.eyedropper': 'Get from Board',
             'stat.moduleSettings': 'Module Settings',
+            'stat.settingsTitle': 'Stat Settings',
             'stat.rollableStats': 'Rollable Stats',
             'stat.getFromBoardSuccess': 'Stats imported from board',
 
@@ -341,7 +346,6 @@ window.CV_TRANSLATIONS.en = {
             'level.barStyleSolid': 'Solid',
             'level.barStyleSeg10': 'Segmented (10%)',
             'level.barStyleSeg25': 'Segmented (25%)',
-            'level.discardChanges': 'You have unsaved changes. Discard?',
             'level.maxLevelReached': 'Max level reached',
             'level.decrementLevel': 'Decrease Level',
             'level.incrementLevel': 'Increase Level',
@@ -360,6 +364,7 @@ window.CV_TRANSLATIONS.en = {
 
             // Resistance submodule
             'res.moduleSettings': 'Module Settings',
+            'res.settingsTitle': 'Resistance Settings',
             'res.toggleLayout': 'Toggle Layout',
             'res.layout': 'Layout',
             'res.layoutColumns': 'Columns',
@@ -833,6 +838,7 @@ window.CV_TRANSLATIONS.en = {
             // Counters submodule
             'counter.addCounter': 'Add Counter',
             'counter.moduleSettings': 'Module Settings',
+            'counter.settingsTitle': 'Counter Settings',
             'counter.createTitle': 'New Counter',
             'counter.editTitle': 'Edit Counter',
             'counter.name': 'Name',
@@ -900,7 +906,6 @@ window.CV_TRANSLATIONS.en = {
             'save.noProficiency': 'None',
             'save.cancel': 'Cancel',
             'save.close': 'Close',
-            'save.discardChanges': 'Discard unsaved changes?',
             'save.event.roll': 'Saving Throw',
             'save.log.roll': 'Rolled {name} save ({modifier})',
 
@@ -976,7 +981,6 @@ window.CV_TRANSLATIONS.en = {
             'spells.cancel': 'Cancel',
             'spells.close': 'Close',
             'spells.delete': 'Delete',
-            'spells.discardChanges': 'Discard unsaved changes?',
             'spells.expand': 'Expand',
             'spells.collapse': 'Collapse',
             'spells.event.cast': 'Spell Cast',
@@ -1097,7 +1101,7 @@ window.CV_TRANSLATIONS.en = {
             'recovery.action.restoreHitDice': 'Restored Hit Dice',
             'recovery.log.rest': '{buttonName}: {details}',
             'recovery.moduleSettings': 'Module Settings',
-            'recovery.noHealByRollConfigured': 'No rest buttons use a Hit Dice roll action.',
+            'recovery.settingsTitle': 'Recovery Settings',
             'recovery.close': 'Close',
 
             // Weapons submodule
@@ -1109,7 +1113,6 @@ window.CV_TRANSLATIONS.en = {
             'weapons.editWeapon': 'Edit Weapon',
             'weapons.deleteWeapon': 'Delete Weapon',
             'weapons.deleteConfirm': 'Delete this weapon? This cannot be undone.',
-            'weapons.discardChanges': 'You have unsaved changes. Discard?',
             'weapons.unnamed': 'Unnamed',
             'weapons.name': 'Name',
             'weapons.icon': 'Icon',
@@ -1333,6 +1336,9 @@ window.CV_TRANSLATIONS.en = {
             'weapons.linkStatFirst': 'Link a stat module first',
 
             // Common
+            'common.cancel': 'Cancel',
+            'common.save': 'Save',
+            'common.close': 'Close',
             'common.discardChanges': 'You have unsaved changes. Discard?',
 
             'empty.message': 'Click <strong>New Module</strong> to get started',

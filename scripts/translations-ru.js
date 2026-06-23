@@ -99,6 +99,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'module.moveToTabNoOtherTabs': 'Нет других доступных вкладок',
             'module.moveToTabMoved': 'Перемещено во вкладку {tab}',
             'module.appearance': 'Внешний вид',
+            'module.cancel': 'Отмена',
             'module.close': 'Закрыть',
 
             'type.abilities': 'Навыки',
@@ -182,6 +183,7 @@ window.CV_TRANSLATIONS['ru'] = {
 
             'text.placeholder': 'Пишите заметки...',
             'text.moduleSettings': 'Настройки Модуля',
+            'text.settingsTitle': 'Настройки Текстового Поля',
 
             'health.currentHP': 'Текущие ОЗ',
             'health.maxHP': 'Макс. ОЗ',
@@ -194,10 +196,12 @@ window.CV_TRANSLATIONS['ru'] = {
             'health.healing': 'Исцеление',
             'health.setTempHP': 'Установить Временные ОЗ',
             'health.moduleSettings': 'Настройки Модуля',
+            'health.settingsTitle': 'Настройки Здоровья',
             'health.maxHPMod': 'Модификатор Макс. ОЗ',
             'health.ok': 'ОК',
             'health.cancel': 'Отмена',
             'health.eyedropper': 'Получить с Доски',
+            'health.getFromBoardSuccess': 'ОЗ импортированы с доски',
             'health.event.heal': 'Исцеление',
             'health.event.damage': 'Урон',
             'health.event.tempHP': 'Врем. ОЗ',
@@ -211,6 +215,7 @@ window.CV_TRANSLATIONS['ru'] = {
 
             'stat.eyedropper': 'Получить с Доски',
             'stat.moduleSettings': 'Настройки Модуля',
+            'stat.settingsTitle': 'Настройки Характеристик',
             'stat.rollableStats': 'Бросаемые Статы',
             'stat.getFromBoardSuccess': 'Статы импортированы с доски',
             'stat.addStat': 'Добавить Характеристику',
@@ -304,6 +309,7 @@ window.CV_TRANSLATIONS['ru'] = {
 
             // Resistance submodule
             'res.moduleSettings': 'Настройки Модуля',
+            'res.settingsTitle': 'Настройки Сопротивлений',
             'res.toggleLayout': 'Переключить Макет',
             'res.layout': 'Макет',
             'res.layoutColumns': 'Колонки',
@@ -382,7 +388,6 @@ window.CV_TRANSLATIONS['ru'] = {
             'save.noProficiency': 'Нет',
             'save.cancel': 'Отмена',
             'save.close': 'Закрыть',
-            'save.discardChanges': 'Отменить несохранённые изменения?',
             'save.event.roll': 'Спасбросок',
             'save.log.roll': 'Спасбросок {name} ({modifier})',
 
@@ -458,7 +463,6 @@ window.CV_TRANSLATIONS['ru'] = {
             'spells.cancel': 'Отмена',
             'spells.close': 'Закрыть',
             'spells.delete': 'Удалить',
-            'spells.discardChanges': 'Отменить несохранённые изменения?',
             'spells.expand': 'Развернуть',
             'spells.collapse': 'Свернуть',
             'spells.event.cast': 'Использование Заклинания',
@@ -518,6 +522,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'spells.bonusOverrideIndicator': 'Активно ручное переопределение',
             'counter.addCounter': 'Добавить Счётчик',
             'counter.moduleSettings': 'Настройки Модуля',
+            'counter.settingsTitle': 'Настройки Счётчиков',
             'counter.createTitle': 'Новый Счётчик',
             'counter.editTitle': 'Редактировать Счётчик',
             'counter.name': 'Название',
@@ -607,7 +612,6 @@ window.CV_TRANSLATIONS['ru'] = {
             'level.barStyleSolid': 'Сплошная',
             'level.barStyleSeg10': 'Сегментированная (10%)',
             'level.barStyleSeg25': 'Сегментированная (25%)',
-            'level.discardChanges': 'Есть несохранённые изменения. Отменить?',
             'level.maxLevelReached': 'Достигнут максимальный уровень',
             'level.decrementLevel': 'Понизить уровень',
             'level.incrementLevel': 'Повысить уровень',
@@ -1060,7 +1064,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'recovery.action.restoreHitDice': 'Кости Хитов восстановлены',
             'recovery.log.rest': '{buttonName}: {details}',
             'recovery.moduleSettings': 'Настройки Модуля',
-            'recovery.noHealByRollConfigured': 'Ни одна кнопка отдыха не использует бросок Костей Хитов.',
+            'recovery.settingsTitle': 'Настройки Восстановления',
             'recovery.close': 'Закрыть',
 
                         // Weapons submodule
@@ -1072,7 +1076,6 @@ window.CV_TRANSLATIONS['ru'] = {
             'weapons.editWeapon': 'Редактировать Оружие',
             'weapons.deleteWeapon': 'Удалить Оружие',
             'weapons.deleteConfirm': 'Удалить это оружие? Это нельзя отменить.',
-            'weapons.discardChanges': 'Есть несохранённые изменения. Отменить?',
             'weapons.unnamed': 'Без Названия',
             'weapons.name': 'Название',
             'weapons.icon': 'Иконка',
@@ -1295,6 +1298,9 @@ window.CV_TRANSLATIONS['ru'] = {
             'dice.criticalWithHope': 'Критический — с Надеждой',
 
             // Common
+            'common.cancel': 'Отмена',
+            'common.save': 'Сохранить',
+            'common.close': 'Закрыть',
             'common.discardChanges': 'Есть несохранённые изменения. Отменить?',
 
             'empty.message': 'Нажмите <strong>Новый Модуль</strong> чтобы начать',

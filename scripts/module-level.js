@@ -407,7 +407,7 @@
         overlay.className = 'cv-modal-overlay level-xp-overlay';
 
         const panel = document.createElement('div');
-        panel.className = 'cv-modal-panel health-action-modal';
+        panel.className = 'cv-modal-panel';
 
         const header = document.createElement('div');
         header.className = 'cv-modal-header';
@@ -594,8 +594,7 @@
         let dirty = false;
 
         const overlay = document.createElement('div');
-        overlay.className = 'cv-modal-overlay';
-        overlay.style.zIndex = '200';
+        overlay.className = 'cv-modal-overlay level-settings-overlay';
 
         const panel = document.createElement('div');
         panel.className = 'cv-modal-panel';
@@ -604,14 +603,15 @@
         const header = document.createElement('div');
         header.className = 'cv-modal-header';
 
-        const titleEl = document.createElement('h3');
+        const titleEl = document.createElement('span');
         titleEl.className = 'cv-modal-title';
         titleEl.textContent = t('level.settingsTitle');
-        titleEl.style.userSelect = 'none';
 
         const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
         closeBtn.className = 'cv-modal-close';
-        closeBtn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+        closeBtn.title = t('level.close');
+        closeBtn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
 
         header.appendChild(titleEl);
         header.appendChild(closeBtn);
@@ -627,7 +627,6 @@
         const classLabel = document.createElement('div');
         classLabel.className = 'cv-modal-label';
         classLabel.textContent = t('level.classNameLabel');
-        classLabel.style.userSelect = 'none';
 
         const classInput = document.createElement('input');
         classInput.type = 'text';
@@ -653,7 +652,6 @@
         const systemLabel = document.createElement('div');
         systemLabel.className = 'cv-modal-label';
         systemLabel.textContent = t('level.systemLabel');
-        systemLabel.style.userSelect = 'none';
 
         const systemToggle = document.createElement('div');
         systemToggle.className = 'level-system-toggle';
@@ -685,7 +683,6 @@
         const threshLabel = document.createElement('div');
         threshLabel.className = 'cv-modal-label';
         threshLabel.textContent = t('level.thresholdsLabel');
-        threshLabel.style.userSelect = 'none';
 
         const threshList = document.createElement('div');
         threshList.className = 'level-threshold-list';
@@ -772,7 +769,6 @@
         const colorLabel = document.createElement('div');
         colorLabel.className = 'cv-modal-label';
         colorLabel.textContent = t('level.barColorLabel');
-        colorLabel.style.userSelect = 'none';
 
         const colorSwatches = document.createElement('div');
         colorSwatches.className = 'level-color-swatches';
@@ -806,7 +802,6 @@
         const styleLabel = document.createElement('div');
         styleLabel.className = 'cv-modal-label';
         styleLabel.textContent = t('level.barStyleLabel');
-        styleLabel.style.userSelect = 'none';
 
         const stylePicker = document.createElement('div');
         stylePicker.className = 'level-bar-style-picker';
@@ -858,14 +853,12 @@
         footer.className = 'cv-modal-footer';
 
         const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'btn-secondary';
+        cancelBtn.className = 'btn-secondary sm';
         cancelBtn.textContent = t('level.cancel');
-        cancelBtn.style.userSelect = 'none';
 
         const saveBtn = document.createElement('button');
-        saveBtn.className = 'btn-primary';
+        saveBtn.className = 'btn-primary sm';
         saveBtn.textContent = t('level.save');
-        saveBtn.style.userSelect = 'none';
 
         footer.appendChild(cancelBtn);
         footer.appendChild(saveBtn);
@@ -878,6 +871,7 @@
 
         function closeModal() {
             overlay.remove();
+            document.removeEventListener('keydown', keyHandler);
         }
 
         function commitAndClose() {
@@ -899,7 +893,7 @@
 
         function tryClose() {
             if (dirty) {
-                if (window.confirm(t('level.discardChanges'))) closeModal();
+                showConfirm(t('common.discardChanges'), closeModal);
             } else {
                 closeModal();
             }
@@ -908,12 +902,17 @@
         saveBtn.addEventListener('click', commitAndClose);
         cancelBtn.addEventListener('click', tryClose);
         closeBtn.addEventListener('click', tryClose);
-        overlay.addEventListener('keydown', (e) => {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) tryClose();
+        });
+
+        const keyHandler = (e) => {
             if (e.key === 'Escape') {
                 e.stopPropagation();
                 tryClose();
             }
-        });
+        };
+        document.addEventListener('keydown', keyHandler);
     }
 
     // ── Register Module Type ──

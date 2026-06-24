@@ -976,6 +976,7 @@
     background: transparent;
     border: 1px dashed var(--cv-border);
     box-shadow: none;
+    min-height: 0;
 }
 
 .module[data-type="spacer"] .module-body {

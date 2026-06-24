@@ -438,6 +438,8 @@
         const existing = document.querySelector('.ability-settings-overlay');
         if (existing) existing.remove();
 
+        let dirty = false;
+
         const overlay = document.createElement('div');
         overlay.className = 'cv-modal-overlay ability-settings-overlay';
 
@@ -485,6 +487,7 @@
             });
 
         select.value = data.content.linkedStatModuleId || '';
+        select.addEventListener('change', function () { dirty = true; });
 
         body.appendChild(fieldLabel);
         body.appendChild(select);
@@ -525,15 +528,26 @@
             close();
         }
 
-        closeBtnEl.addEventListener('click', close);
-        cancelBtn.addEventListener('click', close);
+        function tryClose() {
+            if (dirty) {
+                showConfirm(t('common.discardChanges'), close);
+            } else {
+                close();
+            }
+        }
+
+        closeBtnEl.addEventListener('click', tryClose);
+        cancelBtn.addEventListener('click', tryClose);
         saveBtn.addEventListener('click', save);
         overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) close();
+            if (e.target === overlay) tryClose();
         });
 
         function onKeydown(e) {
-            if (e.key === 'Escape') close();
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                tryClose();
+            }
         }
         document.addEventListener('keydown', onKeydown);
     }

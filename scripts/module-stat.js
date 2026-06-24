@@ -490,7 +490,7 @@
         header.className = 'cv-modal-header';
         const titleEl = document.createElement('span');
         titleEl.className = 'cv-modal-title';
-        titleEl.textContent = t('stat.moduleSettings');
+        titleEl.textContent = t('stat.settingsTitle');
         const closeXBtn = document.createElement('button');
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
@@ -606,7 +606,17 @@
         overlay.appendChild(panel);
         document.body.appendChild(overlay);
 
-        function closeModal() { overlay.remove(); }
+        function closeModal() {
+            document.removeEventListener('keydown', keyHandler);
+            overlay.remove();
+        }
+        const keyHandler = (e) => {
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                closeModal();
+            }
+        };
+        document.addEventListener('keydown', keyHandler);
         closeXBtn.addEventListener('click', closeModal);
         overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
     }

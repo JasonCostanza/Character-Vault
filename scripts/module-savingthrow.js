@@ -341,8 +341,7 @@
         let dirty = false;
 
         const overlay = document.createElement('div');
-        overlay.className = 'cv-modal-overlay';
-        overlay.style.zIndex = '200';
+        overlay.className = 'cv-modal-overlay save-settings-overlay';
 
         const panel = document.createElement('div');
         panel.className = 'cv-modal-panel';
@@ -350,13 +349,14 @@
         // Header
         const header = document.createElement('div');
         header.className = 'cv-modal-header';
-        const title = document.createElement('h3');
+        const title = document.createElement('span');
         title.className = 'cv-modal-title';
         title.textContent = t('save.settingsTitle');
-        title.style.userSelect = 'none';
         const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
         closeBtn.className = 'cv-modal-close';
-        closeBtn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+        closeBtn.title = t('save.close');
+        closeBtn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
         header.appendChild(title);
         header.appendChild(closeBtn);
 
@@ -388,7 +388,6 @@
         const presetLabel = document.createElement('label');
         presetLabel.className = 'cv-modal-label';
         presetLabel.textContent = t('save.tierPreset');
-        presetLabel.style.userSelect = 'none';
         presetRow.appendChild(presetLabel);
 
         const presetControls = document.createElement('div');
@@ -436,11 +435,11 @@
         footer.className = 'cv-modal-footer';
 
         const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'btn-secondary';
+        cancelBtn.className = 'btn-secondary sm';
         cancelBtn.textContent = t('save.cancel');
 
         const saveBtn = document.createElement('button');
-        saveBtn.className = 'btn-primary';
+        saveBtn.className = 'btn-primary sm';
         saveBtn.textContent = t('save.save');
 
         footer.appendChild(cancelBtn);
@@ -454,6 +453,7 @@
 
         function closeModal() {
             overlay.remove();
+            document.removeEventListener('keydown', keyHandler);
         }
 
         function commitAndClose() {
@@ -477,20 +477,28 @@
             closeModal();
         }
 
-        saveBtn.addEventListener('click', commitAndClose);
-        cancelBtn.addEventListener('click', closeModal);
-        closeBtn.addEventListener('click', closeModal);
+        function tryClose() {
+            if (dirty) {
+                showConfirm(t('common.discardChanges'), closeModal);
+            } else {
+                closeModal();
+            }
+        }
 
-        overlay.addEventListener('keydown', (e) => {
+        saveBtn.addEventListener('click', commitAndClose);
+        cancelBtn.addEventListener('click', tryClose);
+        closeBtn.addEventListener('click', tryClose);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) tryClose();
+        });
+
+        const keyHandler = (e) => {
             if (e.key === 'Escape') {
                 e.stopPropagation();
-                if (dirty) {
-                    if (window.confirm(t('save.discardChanges'))) closeModal();
-                } else {
-                    closeModal();
-                }
+                tryClose();
             }
-        });
+        };
+        document.addEventListener('keydown', keyHandler);
     }
 
     // ── Custom Tier Editor ──
@@ -498,7 +506,7 @@
         let editTiers = workingTiers.map((tier) => ({ ...tier }));
 
         const overlay = document.createElement('div');
-        overlay.className = 'cv-modal-overlay';
+        overlay.className = 'cv-modal-overlay save-tier-editor-overlay';
         overlay.style.zIndex = '210';
 
         const panel = document.createElement('div');
@@ -507,13 +515,14 @@
         // Header
         const header = document.createElement('div');
         header.className = 'cv-modal-header';
-        const title = document.createElement('h3');
+        const title = document.createElement('span');
         title.className = 'cv-modal-title';
         title.textContent = t('save.tierEditorTitle');
-        title.style.userSelect = 'none';
         const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
         closeBtn.className = 'cv-modal-close';
-        closeBtn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+        closeBtn.title = t('save.close');
+        closeBtn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
         header.appendChild(title);
         header.appendChild(closeBtn);
 
@@ -626,11 +635,11 @@
         footer.className = 'cv-modal-footer';
 
         const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'btn-secondary';
+        cancelBtn.className = 'btn-secondary sm';
         cancelBtn.textContent = t('save.cancel');
 
         const saveBtn = document.createElement('button');
-        saveBtn.className = 'btn-primary';
+        saveBtn.className = 'btn-primary sm';
         saveBtn.textContent = t('save.save');
 
         footer.appendChild(cancelBtn);
@@ -644,6 +653,7 @@
 
         function closeEditor() {
             overlay.remove();
+            document.removeEventListener('keydown', tierKeyHandler);
         }
 
         saveBtn.addEventListener('click', () => {
@@ -652,13 +662,17 @@
         });
         cancelBtn.addEventListener('click', closeEditor);
         closeBtn.addEventListener('click', closeEditor);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeEditor();
+        });
 
-        overlay.addEventListener('keydown', (e) => {
+        const tierKeyHandler = (e) => {
             if (e.key === 'Escape') {
                 e.stopPropagation();
                 closeEditor();
             }
-        });
+        };
+        document.addEventListener('keydown', tierKeyHandler);
     }
 
     // ── Module Type Registration ──

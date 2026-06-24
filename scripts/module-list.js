@@ -1131,6 +1131,7 @@
         closeColumnPicker(true);
         const overlay = document.querySelector('.list-manage-overlay');
         if (!overlay) return;
+        if (overlay._keyHandler) document.removeEventListener('keydown', overlay._keyHandler);
         overlay.remove();
         // Re-render list body in layout mode
         const bodyEl = moduleEl.querySelector('.module-body');
@@ -1158,12 +1159,14 @@
             if (e.target === overlay) closeManageAttrsPanel(moduleEl, data);
         });
 
-        // Close on Escape
-        overlay.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') closeManageAttrsPanel(moduleEl, data);
-        });
-        overlay.setAttribute('tabindex', '-1');
-        overlay.focus();
+        const keyHandler = function (e) {
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                closeManageAttrsPanel(moduleEl, data);
+            }
+        };
+        overlay._keyHandler = keyHandler;
+        document.addEventListener('keydown', keyHandler);
     }
 
     function renderManagePanelContent(panel, moduleEl, data, content) {
@@ -1172,18 +1175,17 @@
         // ── Header ──
         const header = document.createElement('div');
         header.className = 'cv-modal-header';
-        header.innerHTML =
-            '<span class="cv-modal-title">' +
-            escapeHtml(t('list.manageAttrs')) +
-            '</span>' +
-            '<button class="cv-modal-close" title="' +
-            escapeHtml(t('list.close')) +
-            '">' +
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
-            '</button>';
-        header.querySelector('.cv-modal-close').addEventListener('click', function () {
-            closeManageAttrsPanel(moduleEl, data);
-        });
+        const titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = t('list.manageAttrs');
+        const closeXBtn = document.createElement('button');
+        closeXBtn.type = 'button';
+        closeXBtn.className = 'cv-modal-close';
+        closeXBtn.title = t('list.close');
+        closeXBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeXBtn.addEventListener('click', function () { closeManageAttrsPanel(moduleEl, data); });
+        header.appendChild(titleEl);
+        header.appendChild(closeXBtn);
         panel.appendChild(header);
 
         // ── Body (scrollable) ──
@@ -1355,6 +1357,17 @@
 
         buildCommonSettingsSection(body, moduleEl, data);
         panel.appendChild(body);
+
+        // ── Footer ──
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        const closeFooterBtn = document.createElement('button');
+        closeFooterBtn.type = 'button';
+        closeFooterBtn.className = 'btn-secondary sm';
+        closeFooterBtn.textContent = t('list.close');
+        closeFooterBtn.addEventListener('click', function () { closeManageAttrsPanel(moduleEl, data); });
+        footer.appendChild(closeFooterBtn);
+        panel.appendChild(footer);
     }
 
     // ── Attribute Wizard ──

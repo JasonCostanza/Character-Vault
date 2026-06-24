@@ -632,7 +632,7 @@
         footer.className = 'cv-modal-footer';
         const closeBtn = document.createElement('button');
         closeBtn.type = 'button';
-        closeBtn.className = 'cv-modal-btn cv-modal-btn-secondary';
+        closeBtn.className = 'btn-secondary sm';
         closeBtn.textContent = t('def.close');
         footer.appendChild(closeBtn);
         panel.appendChild(footer);
@@ -640,6 +640,7 @@
         overlay.appendChild(panel);
 
         function closeModal() {
+            document.removeEventListener('keydown', keyHandler);
             overlay.remove();
             const bodyEl = moduleEl.querySelector('.module-body');
             if (bodyEl) {
@@ -647,6 +648,13 @@
                 MODULE_TYPES['defenses'].renderBody(bodyEl, data, isPlay);
             }
         }
+        const keyHandler = (e) => {
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                closeModal();
+            }
+        };
+        document.addEventListener('keydown', keyHandler);
 
         closeXBtn.addEventListener('click', closeModal);
         closeBtn.addEventListener('click', closeModal);

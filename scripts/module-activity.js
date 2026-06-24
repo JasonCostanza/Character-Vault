@@ -279,7 +279,6 @@
         // Sort order
         const sortLabel = document.createElement('label');
         sortLabel.className = 'cv-modal-label';
-        sortLabel.style.userSelect = 'none';
         sortLabel.textContent = t('activity.sortOrder');
         body.appendChild(sortLabel);
 
@@ -296,7 +295,6 @@
         // Show timestamps toggle
         const tsToggle = makeCvToggle(working.showTimestamps, function (checked) { working.showTimestamps = checked; dirty = true; });
         tsToggle.className = 'cv-modal-label';
-        tsToggle.style.userSelect = 'none';
         const tsLabel = document.createElement('span');
         tsLabel.className = 'cv-toggle-label';
         tsLabel.textContent = t('activity.showTimestamps');
@@ -306,7 +304,6 @@
         // Max entries
         const maxLabel = document.createElement('label');
         maxLabel.className = 'cv-modal-label';
-        maxLabel.style.userSelect = 'none';
         maxLabel.textContent = t('activity.maxEntries');
         body.appendChild(maxLabel);
 
@@ -375,20 +372,26 @@
             close();
         }
 
-        closeBtnEl.addEventListener('click', close);
-        cancelBtn.addEventListener('click', close);
+        function tryClose() {
+            if (dirty) {
+                showConfirm(t('common.discardChanges'), close);
+            } else {
+                close();
+            }
+        }
+
+        closeBtnEl.addEventListener('click', tryClose);
+        cancelBtn.addEventListener('click', tryClose);
         saveBtn.addEventListener('click', save);
         overlay.addEventListener('click', function (e) {
             if (e.target !== overlay) return;
-            if (dirty && !window.confirm(t('common.discardChanges'))) return;
-            close();
+            tryClose();
         });
 
         function onKeydown(e) {
             if (e.key === 'Escape') {
                 e.stopPropagation();
-                if (dirty && !window.confirm(t('common.discardChanges'))) return;
-                close();
+                tryClose();
             }
         }
         document.addEventListener('keydown', onKeydown);

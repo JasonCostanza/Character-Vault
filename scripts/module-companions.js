@@ -1070,7 +1070,17 @@
         overlay.appendChild(panel);
         document.body.appendChild(overlay);
 
-        function closeModal() { overlay.remove(); }
+        function closeModal() {
+            document.removeEventListener('keydown', keyHandler);
+            overlay.remove();
+        }
+        const keyHandler = (e) => {
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                closeModal();
+            }
+        };
+        document.addEventListener('keydown', keyHandler);
         closeXBtn.addEventListener('click', closeModal);
         overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
 

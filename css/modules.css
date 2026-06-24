@@ -1632,52 +1632,77 @@
 }
 
 /* ── Move to Tab Modal ── */
-.module-movetab-body {
-    display: flex;
-    flex-direction: column;
-    padding: 4px 0;
-    gap: 2px;
-}
-
-.module-movetab-tab-item {
+.cv-settings-move-tab-btn {
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 100%;
     padding: 8px 12px;
-    background: none;
-    border: none;
-    border-radius: 4px;
-    color: inherit;
+    margin-top: 8px;
+    background: var(--cv-bg-alt);
+    border: 1px solid var(--cv-border);
+    border-radius: 6px;
+    color: var(--cv-text);
     font: inherit;
-    font-size: 12px;
-    text-align: left;
+    font-size: 0.8rem;
     cursor: pointer;
+    transition: background 0.15s;
+    user-select: none;
 }
 
-.module-movetab-tab-item:hover {
+.cv-settings-move-tab-btn:hover {
     background: var(--cv-bg-hover);
+}
+
+.cv-movetab-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 4px 0;
+}
+
+.cv-movetab-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--cv-bg-alt);
+    border: 1px solid var(--cv-border);
+    border-radius: 6px;
+    color: var(--cv-text);
+    font: inherit;
+    font-size: 0.85rem;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s;
+    user-select: none;
+}
+
+.cv-movetab-row:hover {
+    background: var(--cv-bg-hover);
+}
+
+.cv-movetab-name {
+    flex: 1;
+}
+
+.cv-movetab-arrow {
+    color: var(--cv-text-muted);
+    font-size: 1.1rem;
+    line-height: 1;
+    margin-left: 8px;
 }
 
 /* ── Common Settings Section ── */
 .cv-settings-divider {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 12px 0 8px;
+    margin: 12px 0 4px;
     color: var(--cv-text-muted);
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     user-select: none;
-}
-
-.cv-settings-divider::before,
-.cv-settings-divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--cv-border);
 }
 
 .cv-settings-no-tabs {

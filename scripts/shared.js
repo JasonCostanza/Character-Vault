@@ -562,20 +562,45 @@
     // ── Common Settings Section ──
     // Appends theme + move-to-tab controls to any module settings modal body.
     function buildCommonSettingsSection(container, moduleEl, data) {
-        const divider = document.createElement('div');
-        divider.className = 'cv-settings-divider';
-        const dividerLabel = document.createElement('span');
-        dividerLabel.textContent = t('module.appearance');
-        divider.appendChild(dividerLabel);
-        container.appendChild(divider);
-
         window.buildSwatchPanel(container, moduleEl, data, null);
 
         // Move to Tab
-        const tabLabel = document.createElement('div');
-        tabLabel.className = 'cv-modal-label';
-        tabLabel.textContent = t('module.moveToTab');
-        container.appendChild(tabLabel);
+        const moveBtn = document.createElement('button');
+        moveBtn.type = 'button';
+        moveBtn.className = 'cv-settings-move-tab-btn';
+        moveBtn.textContent = t('module.moveToTab');
+        moveBtn.addEventListener('click', function () {
+            window.openMoveToTabModal(moduleEl, data);
+        });
+        container.appendChild(moveBtn);
+    }
+
+    function openMoveToTabModal(moduleEl, data) {
+        const existing = document.querySelector('.cv-movetab-overlay');
+        if (existing) { existing.remove(); return; }
+
+        const overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay cv-movetab-overlay';
+
+        const panel = document.createElement('div');
+        panel.className = 'cv-modal-panel';
+
+        const header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        const titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = t('module.moveToTab');
+        const closeXBtn = document.createElement('button');
+        closeXBtn.type = 'button';
+        closeXBtn.className = 'cv-modal-close';
+        closeXBtn.title = t('module.close');
+        closeXBtn.innerHTML = CV_SVG_CLOSE;
+        header.appendChild(titleEl);
+        header.appendChild(closeXBtn);
+        panel.appendChild(header);
+
+        const body = document.createElement('div');
+        body.className = 'cv-modal-body';
 
         const otherTabs = (window.tabs || [])
             .filter(function (tab) { return tab.id !== data.tabId; })
@@ -585,23 +610,50 @@
             const noTabsMsg = document.createElement('div');
             noTabsMsg.className = 'cv-settings-no-tabs';
             noTabsMsg.textContent = t('module.moveToTabNoOtherTabs');
-            container.appendChild(noTabsMsg);
+            body.appendChild(noTabsMsg);
         } else {
-            const tabRow = document.createElement('div');
-            tabRow.className = 'module-movetab-body';
+            const tabList = document.createElement('div');
+            tabList.className = 'cv-movetab-list';
             otherTabs.forEach(function (tab) {
                 const btn = document.createElement('button');
                 btn.type = 'button';
-                btn.className = 'module-movetab-tab-item';
-                btn.textContent = tab.name;
+                btn.className = 'cv-movetab-row';
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'cv-movetab-name';
+                nameSpan.textContent = tab.name;
+                const arrow = document.createElement('span');
+                arrow.className = 'cv-movetab-arrow';
+                arrow.textContent = '›';
+                btn.appendChild(nameSpan);
+                btn.appendChild(arrow);
                 btn.addEventListener('click', function () {
                     window.performModuleMove(moduleEl, data, tab);
                 });
-                tabRow.appendChild(btn);
+                tabList.appendChild(btn);
             });
-            container.appendChild(tabRow);
+            body.appendChild(tabList);
         }
+
+        panel.appendChild(body);
+
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'btn-secondary sm';
+        cancelBtn.textContent = t('module.cancel');
+        cancelBtn.addEventListener('click', closeModal);
+        footer.appendChild(cancelBtn);
+        panel.appendChild(footer);
+
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+
+        function closeModal() { overlay.remove(); }
+        closeXBtn.addEventListener('click', closeModal);
+        overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
     }
 
     window.buildCommonSettingsSection = buildCommonSettingsSection;
+    window.openMoveToTabModal = openMoveToTabModal;
 })();

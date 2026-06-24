@@ -820,6 +820,7 @@
         }
 
         if (rollPromise) {
+            rollPromise.catch(function (e) { console.warn('[CV] Spell dice roll failed:', e); });
             rollPromise.then(function (rollId) {
                 if (rollId) {
                     window.pendingRolls[rollId] = {

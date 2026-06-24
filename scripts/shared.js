@@ -524,7 +524,7 @@
             });
             rollPromise.then(function (rollId) {
                 if (rollId) window.pendingRolls[rollId] = { logEntryId: logEntryId, dualityRoll: true, modifier: modifier, label: label };
-            });
+            }).catch(function (e) { console.warn('[CV] Duality dice roll failed:', e); });
         }
     }
 

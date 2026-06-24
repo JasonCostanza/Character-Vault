@@ -242,7 +242,7 @@
             ]);
             if (typeof window.logActivity === 'function') {
                 const logEntryId = window.logActivity({ type: 'save.event.roll', message: t('save.log.roll', { name: save.name || t('save.unnamed'), modifier: modStr }), sourceModuleId: data.id });
-                rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId }; });
+                rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId }; }).catch(function (e) { console.warn('[CV] Saving throw dice roll failed:', e); });
             }
         } catch (e) {
             console.warn('[CV] Saving throw dice roll failed:', e);

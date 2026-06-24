@@ -1588,7 +1588,7 @@
                     });
                     rollPromise.then(function (rollId) {
                         if (rollId) window.pendingRolls[rollId] = Object.assign({ logEntryId: logEntryId }, extraMeta || {});
-                    });
+                    }).catch(function (e) { console.warn('[CV] Weapon roll failed:', e); });
                 }
             });
             return btn;
@@ -1708,7 +1708,7 @@
                                 });
                                 rollPromise.then(function (rollId) {
                                     if (rollId) window.pendingRolls[rollId] = { logEntryId: logEntryId, poolRoll: true, system: sys, hungerGroupIndex: 1 };
-                                });
+                                }).catch(function (e) { console.warn('[CV] Weapon roll failed:', e); });
                             }
                         });
                     }(regularCount, hungerCount, poolSize));
@@ -1793,7 +1793,7 @@
                                 message: t('weapons.log.damage', { name: weapon.name || t('weapons.unnamed'), roll: expr, type: type }),
                                 sourceModuleId: data.id,
                             });
-                            rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId: logEntryId }; });
+                            rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId: logEntryId }; }).catch(function (e) { console.warn('[CV] Weapon roll failed:', e); });
                         }
                     });
                 })(diceExpr, typeLabel);

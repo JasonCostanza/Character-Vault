@@ -348,7 +348,7 @@
             const rollPromise = TS.dice.putDiceInTray([{ name: `${stat.name} ${t('stat.check')}`, roll: `1d20${modStr}` }]);
             if (typeof window.logActivity === 'function') {
                 const logEntryId = window.logActivity({ type: 'stat.event.roll', message: t('stat.log.roll', { name: stat.name || t('stat.unnamed'), modifier: `1d20${modStr}` }), sourceModuleId: data.id });
-                rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId }; });
+                rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId }; }).catch(function (e) { console.warn('[CV] Dice roll failed:', e); });
             }
         } catch (e) {
             console.warn('[CV] Dice roll failed:', e);

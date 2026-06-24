@@ -312,15 +312,6 @@
 }
 
 /* Abilities settings panel */
-.ability-settings-label {
-    font-size: 9px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--cv-text-secondary);
-    user-select: none;
-}
-
 .ability-settings-select {
     width: 100%;
     font-size: 12px;

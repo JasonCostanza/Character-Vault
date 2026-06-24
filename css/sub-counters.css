@@ -311,25 +311,6 @@
     max-height: 50vh;
 }
 
-.cv-modal-input {
-    width: 100%;
-    font-size: 12px;
-    font-family: inherit;
-    color: inherit;
-    background: var(--cv-bg-sunken);
-    border: 1px solid var(--cv-border);
-    border-radius: 4px;
-    padding: 6px 8px;
-    outline: none;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    box-sizing: border-box;
-}
-
-.cv-modal-input:focus {
-    border-color: var(--cv-accent);
-    box-shadow: 0 0 0 2px var(--cv-focus-ring);
-}
-
 .cv-input {
     width: 100%;
     font-size: 12px;
@@ -355,17 +336,6 @@ input[type="number"].cv-input {
 
 input[type="number"].cv-input::-webkit-inner-spin-button,
 input[type="number"].cv-input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-.cv-modal-num {
-    text-align: center;
-    -moz-appearance: textfield;
-}
-
-.cv-modal-num::-webkit-inner-spin-button,
-.cv-modal-num::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }

@@ -1120,3 +1120,22 @@
     text-align: center;
     user-select: none;
 }
+
+/* ── Weapons Settings Modal ── */
+.weapons-linked-select {
+    width: 100%;
+    font-size: 12px;
+    font-family: inherit;
+    color: var(--cv-text);
+    background-color: var(--cv-bg-sunken);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    padding: 6px 8px;
+    outline: none;
+    cursor: pointer;
+}
+
+.weapons-linked-select:focus {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}

@@ -25,7 +25,7 @@
     flex: 1;
     padding: 16px;
     text-align: center;
-    color: var(--cv-muted);
+    color: var(--cv-text-muted);
     font-size: 0.8rem;
     font-style: italic;
     user-select: none;
@@ -115,7 +115,7 @@
 
 .recovery-hitdice-label {
     font-size: 0.7rem;
-    color: var(--cv-muted);
+    color: var(--cv-text-muted);
     user-select: none;
 }
 
@@ -132,7 +132,7 @@
 
 .recovery-hitdice-die {
     font-size: 0.7rem;
-    color: var(--cv-muted);
+    color: var(--cv-text-muted);
     user-select: none;
 }
 
@@ -152,7 +152,7 @@
     align-items: center;
     gap: 7px;
     font-size: 0.78rem;
-    color: var(--cv-muted);
+    color: var(--cv-text-muted);
     user-select: none;
 }
 
@@ -181,7 +181,7 @@
 
 .recovery-hitdice-spend-label {
     font-size: 0.75rem;
-    color: var(--cv-muted);
+    color: var(--cv-text-muted);
     user-select: none;
 }
 
@@ -237,7 +237,7 @@
 
 .recovery-hitdice-spend-available {
     font-size: 0.72rem;
-    color: var(--cv-muted);
+    color: var(--cv-text-muted);
     user-select: none;
 }
 
@@ -285,7 +285,7 @@
 
 
 .recovery-btn-drag-handle {
-    color: var(--cv-muted);
+    color: var(--cv-text-muted);
     cursor: grab;
     font-size: 0.9rem;
     opacity: 0.5;
@@ -324,7 +324,7 @@
     border: none;
     border-radius: 3px;
     cursor: pointer;
-    color: var(--cv-muted);
+    color: var(--cv-text-muted);
     transition: color 0.1s, background 0.1s;
     user-select: none;
 }
@@ -348,7 +348,7 @@
 
 .recovery-edit-label {
     font-size: 0.7rem;
-    color: var(--cv-muted);
+    color: var(--cv-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     user-select: none;
@@ -395,7 +395,7 @@
     border: 1px dashed color-mix(in srgb, var(--cv-border) 70%, transparent);
     border-radius: 4px;
     background: transparent;
-    color: var(--cv-muted);
+    color: var(--cv-text-muted);
     font-size: 0.78rem;
     cursor: pointer;
     user-select: none;
@@ -425,7 +425,7 @@
 .recovery-hitdice-config-title {
     font-size: 0.7rem;
     font-weight: 600;
-    color: var(--cv-muted);
+    color: var(--cv-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     user-select: none;
@@ -444,8 +444,9 @@
 }
 
 .recovery-hitdice-config-label {
-    font-size: 0.67rem;
-    color: var(--cv-muted);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--cv-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     user-select: none;

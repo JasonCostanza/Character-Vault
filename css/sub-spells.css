@@ -266,7 +266,7 @@
 }
 
 .spells-settings-card-title {
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -597,8 +597,11 @@
 }
 
 .spells-settings-field-label {
-    font-size: 12px;
-    color: var(--cv-text);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--cv-text-muted);
     user-select: none;
     flex-shrink: 0;
 }

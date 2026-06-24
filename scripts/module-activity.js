@@ -603,7 +603,16 @@
                 message: message,
             });
         } else if (event.kind === 'rollRemoved') {
+            const removed = window.pendingRolls[event.payload.rollId];
             delete window.pendingRolls[event.payload.rollId];
+            if (removed && removed.logEntryId) {
+                const idx = window.activityLog.findIndex(function (e) { return e.id === removed.logEntryId; });
+                if (idx !== -1) {
+                    window.activityLog.splice(idx, 1);
+                    scheduleSave();
+                    window.refreshActivityLog();
+                }
+            }
         }
     };
 

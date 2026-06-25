@@ -229,6 +229,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'stat.layoutLabel': 'Макет',
             'stat.largeStat': 'Большое Значение',
             'stat.largeModifier': 'Большой Модификатор',
+            'stat.modifierOnly': 'Только Модификатор',
             'stat.swapLayout': 'Переключить Отображение Значение/Модификатор',
             'stat.toggleRollable': 'Переключить Бросок (сначала выберите характеристику)',
             'stat.rollableOn': 'Бросаемая — нажмите для отключения',

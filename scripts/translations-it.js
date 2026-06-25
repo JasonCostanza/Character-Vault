@@ -233,6 +233,7 @@ window.CV_TRANSLATIONS['it'] = {
             'stat.layoutLabel': 'Layout',
             'stat.largeStat': 'Valore Grande',
             'stat.largeModifier': 'Modificatore Grande',
+            'stat.modifierOnly': 'Solo Modificatore',
             'stat.swapLayout': 'Scambia Visualizzazione Valore/Modificatore',
             'stat.toggleRollable': 'Alterna Tirabile (seleziona prima una statistica)',
             'stat.rollableOn': 'Tirabile — clicca per disattivare',

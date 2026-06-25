@@ -17,6 +17,10 @@
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+.stat-block.stat-modifier-only {
+    padding-bottom: 8px;
+}
+
 .stat-block.stat-rollable {
     cursor: pointer;
 }

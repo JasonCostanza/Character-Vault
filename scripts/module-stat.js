@@ -75,12 +75,14 @@
     }
 
     function renderStatBlock(stat, index, data, isPlayMode) {
-        const isLargeStat = data.content.layout === 'large-stat';
+        const layout = data.content.layout;
+        const isModifierOnly = layout === 'modifier-only';
+        const isLargeStat = layout === 'large-stat';
         const primaryVal = isLargeStat ? stat.value : formatModifier(stat.modifier);
         const secondaryVal = isLargeStat ? formatModifier(stat.modifier) : stat.value;
 
         const block = document.createElement('div');
-        block.className = 'stat-block' + (isPlayMode && stat.rollable ? ' stat-rollable' : '');
+        block.className = 'stat-block' + (isPlayMode && stat.rollable ? ' stat-rollable' : '') + (isModifierOnly ? ' stat-modifier-only' : '');
         block.dataset.index = index;
         var sys = window.gameSystem || 'custom';
         var profIndicatorHtml = '';
@@ -90,11 +92,18 @@
         } else if (stat.proficient && sys !== 'daggerheart') {
             profIndicatorHtml = '<span class="stat-proficiency-dot"></span>';
         }
-        block.innerHTML =
-            profIndicatorHtml +
-            `<div class="stat-name" title="${escapeHtml(stat.name || t('stat.unnamed'))}">${escapeHtml(stat.name || t('stat.unnamed'))}</div>` +
-            `<div class="stat-primary">${escapeHtml(String(primaryVal))}</div>` +
-            `<div class="stat-secondary">${escapeHtml(String(secondaryVal))}</div>`;
+        if (isModifierOnly) {
+            block.innerHTML =
+                profIndicatorHtml +
+                `<div class="stat-name" title="${escapeHtml(stat.name || t('stat.unnamed'))}">${escapeHtml(stat.name || t('stat.unnamed'))}</div>` +
+                `<div class="stat-primary">${escapeHtml(formatModifier(stat.modifier))}</div>`;
+        } else {
+            block.innerHTML =
+                profIndicatorHtml +
+                `<div class="stat-name" title="${escapeHtml(stat.name || t('stat.unnamed'))}">${escapeHtml(stat.name || t('stat.unnamed'))}</div>` +
+                `<div class="stat-primary">${escapeHtml(String(primaryVal))}</div>` +
+                `<div class="stat-secondary">${escapeHtml(String(secondaryVal))}</div>`;
+        }
 
         var isAutoProf = stat.isProficiencyStat && sys === 'dnd5e';
 
@@ -164,6 +173,10 @@
                 profRowHtml = `<div class="stat-edit-prof-row"><span class="stat-edit-prof-label">${t('stat.proficient')}</span><button class="stat-edit-prof-dot${stat.proficient ? ' active' : ''}" title="${t('stat.proficient')}"></button></div>`;
             }
         }
+        var editLayout = data.content.layout;
+        var isEditModOnly = editLayout === 'modifier-only';
+        var valueFieldHtml = isEditModOnly ? '' :
+            `<div class="stat-edit-field"><label class="${editLayout === 'large-stat' ? 'stat-edit-primary-label' : ''}">${t('stat.value')}</label><input type="number" class="stat-edit-value" value="${stat.value}"></div>`;
         block.innerHTML =
             `<div class="stat-edit-name-row">` +
             `<span class="stat-drag-handle">&#x2807;</span>` +
@@ -171,8 +184,8 @@
             `<button class="stat-edit-delete" title="${t('stat.deleteStat')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>` +
             `</div>` +
             `<div class="stat-edit-row">` +
-            `<div class="stat-edit-field"><label class="${data.content.layout === 'large-stat' ? 'stat-edit-primary-label' : ''}">${t('stat.value')}</label><input type="number" class="stat-edit-value" value="${stat.value}"></div>` +
-            `<div class="stat-edit-field"><label class="${data.content.layout === 'large-modifier' ? 'stat-edit-primary-label' : ''}">${t('stat.modifier')}</label><input type="number" class="stat-edit-modifier" value="${stat.modifier}"></div>` +
+            valueFieldHtml +
+            `<div class="stat-edit-field"><label class="${editLayout !== 'large-stat' ? 'stat-edit-primary-label' : ''}">${t('stat.modifier')}</label><input type="number" class="stat-edit-modifier" value="${stat.modifier}"></div>` +
             `</div>` +
             profRowHtml;
 
@@ -224,18 +237,20 @@
             scheduleSave();
             document.dispatchEvent(new CustomEvent('cv:stats-changed', { detail: { moduleId: data.id } }));
         });
-        valInput.addEventListener('input', () => {
-            stat.value = parseInt(valInput.value, 10) || 0;
-            scheduleSave();
-            document.dispatchEvent(new CustomEvent('cv:stat-values-changed', { detail: { moduleId: data.id } }));
-        });
+        if (valInput) {
+            valInput.addEventListener('input', () => {
+                stat.value = parseInt(valInput.value, 10) || 0;
+                scheduleSave();
+                document.dispatchEvent(new CustomEvent('cv:stat-values-changed', { detail: { moduleId: data.id } }));
+            });
+        }
         modInput.addEventListener('input', () => {
             stat.modifier = parseInt(modInput.value, 10) || 0;
             scheduleSave();
             document.dispatchEvent(new CustomEvent('cv:stat-values-changed', { detail: { moduleId: data.id } }));
         });
 
-        [nameInput, valInput, modInput].forEach((inp) => {
+        [nameInput, valInput, modInput].filter(Boolean).forEach((inp) => {
             inp.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === 'Escape') inp.blur();
             });
@@ -356,28 +371,36 @@
     }
 
     function enterQuickEdit(block, stat, data) {
-        const isLargeStat = data.content.layout === 'large-stat';
+        const layout = data.content.layout;
+        const isLargeStat = layout === 'large-stat';
+        const isModOnly = layout === 'modifier-only';
         const primaryEl = block.querySelector('.stat-primary');
         const secondaryEl = block.querySelector('.stat-secondary');
-        if (!primaryEl || !secondaryEl) return;
+        if (!primaryEl) return;
+        if (!isModOnly && !secondaryEl) return;
 
         const primaryInput = document.createElement('input');
         primaryInput.type = 'number';
         primaryInput.className = 'stat-quick-input';
-        primaryInput.value = isLargeStat ? stat.value : stat.modifier;
+        primaryInput.value = isModOnly ? stat.modifier : (isLargeStat ? stat.value : stat.modifier);
 
-        const secondaryInput = document.createElement('input');
-        secondaryInput.type = 'number';
-        secondaryInput.className = 'stat-quick-input stat-quick-secondary';
-        secondaryInput.value = isLargeStat ? stat.modifier : stat.value;
+        var secondaryInput = null;
+        if (!isModOnly) {
+            secondaryInput = document.createElement('input');
+            secondaryInput.type = 'number';
+            secondaryInput.className = 'stat-quick-input stat-quick-secondary';
+            secondaryInput.value = isLargeStat ? stat.modifier : stat.value;
+            secondaryEl.replaceWith(secondaryInput);
+        }
 
         primaryEl.replaceWith(primaryInput);
-        secondaryEl.replaceWith(secondaryInput);
         primaryInput.focus();
         primaryInput.select();
 
         function commit() {
-            if (isLargeStat) {
+            if (isModOnly) {
+                stat.modifier = parseInt(primaryInput.value, 10) || 0;
+            } else if (isLargeStat) {
                 stat.value = parseInt(primaryInput.value, 10) || 0;
                 stat.modifier = parseInt(secondaryInput.value, 10) || 0;
             } else {
@@ -385,7 +408,6 @@
                 stat.value = parseInt(secondaryInput.value, 10) || 0;
             }
             scheduleSave();
-            // Re-render this block in-place
             const container = block.parentElement;
             const idx = parseInt(block.dataset.index, 10);
             const isPlayModeLocal = isPlayMode;
@@ -400,7 +422,8 @@
             commit();
         }
 
-        [primaryInput, secondaryInput].forEach((inp) => {
+        var inputs = secondaryInput ? [primaryInput, secondaryInput] : [primaryInput];
+        inputs.forEach((inp) => {
             inp.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === 'Escape') {
                     commitOnce();
@@ -551,6 +574,7 @@
             [
                 { value: 'large-stat', label: t('stat.largeStat') },
                 { value: 'large-modifier', label: t('stat.largeModifier') },
+                { value: 'modifier-only', label: t('stat.modifierOnly') },
             ],
             data.content.layout || 'large-stat',
             function (val) {

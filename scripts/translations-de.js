@@ -228,6 +228,7 @@ window.CV_TRANSLATIONS['de'] = {
             'stat.layoutLabel': 'Layout',
             'stat.largeStat': 'Großer Wert',
             'stat.largeModifier': 'Großer Modifikator',
+            'stat.modifierOnly': 'Nur Modifikator',
             'stat.swapLayout': 'Wert/Modifikator-Anzeige tauschen',
             'stat.toggleRollable': 'Würfelbar umschalten (zuerst einen Wert auswählen)',
             'stat.rollableOn': 'Würfelbar — klicken zum Deaktivieren',

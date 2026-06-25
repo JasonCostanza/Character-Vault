@@ -211,6 +211,9 @@ export function setupMinimalDOM() {
               <button class="wizard-layout-btn" data-layout="large-modifier">
                 <span class="wizard-layout-label" data-i18n="stat.largeModifier">Large Modifier</span>
               </button>
+              <button class="wizard-layout-btn" data-layout="modifier-only">
+                <span class="wizard-layout-label" data-i18n="stat.modifierOnly">Modifier Only</span>
+              </button>
             </div>
           </div>
 

@@ -861,6 +861,10 @@ select,
     color: var(--cv-text-secondary);
 }
 
+.wizard-layout-preview-hidden {
+    opacity: 0.25;
+}
+
 .wizard-layout-label {
     font-size: 10px;
     font-weight: 600;

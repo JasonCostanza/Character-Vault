@@ -239,6 +239,7 @@ window.CV_TRANSLATIONS.en = {
             'stat.layoutLabel': 'Layout',
             'stat.largeStat': 'Large Stat',
             'stat.largeModifier': 'Large Modifier',
+            'stat.modifierOnly': 'Modifier Only',
             'stat.swapLayout': 'Swap Stat/Modifier Display',
             'stat.toggleRollable': 'Toggle Rollable (select a stat first)',
             'stat.rollableOn': 'Rollable — click to disable',

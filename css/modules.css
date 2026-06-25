@@ -1355,6 +1355,75 @@
     border-color: var(--cv-accent);
 }
 
+/* ── Text Color Picker (wizard + overflow/settings) ── */
+.text-color-section {
+    margin-top: 10px;
+}
+
+.text-color-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--cv-text-muted);
+    user-select: none;
+    margin-bottom: 6px;
+}
+
+.wizard-section .text-color-label {
+    font-size: 11px;
+}
+
+.text-color-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.text-color-chip {
+    flex: 1;
+    height: 28px;
+    border-radius: 4px;
+    border: 2px solid var(--cv-border);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    user-select: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    outline: none;
+    padding: 0;
+}
+
+.text-color-chip:hover {
+    border-color: var(--cv-text-muted);
+}
+
+.text-color-chip.selected {
+    border-color: var(--cv-accent);
+    box-shadow: 0 0 0 2px var(--cv-focus-ring);
+}
+
+.wizard-section .text-color-chip {
+    height: 32px;
+    font-size: 13px;
+}
+
+.module.module-text-light,
+.module.module-text-light .module-title-input,
+.module.module-text-light .module-type-label {
+    color: var(--cv-module-text-light);
+}
+
+.module.module-text-dark,
+.module.module-text-dark .module-title-input,
+.module.module-text-dark .module-type-label {
+    color: var(--cv-module-text-dark);
+}
+
 /* ── Wizard Footer ── */
 .wizard-footer {
     display: flex;

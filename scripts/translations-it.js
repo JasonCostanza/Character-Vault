@@ -86,6 +86,10 @@ window.CV_TRANSLATIONS['it'] = {
             'wizard.swatchLeather': 'Cuoio',
             'wizard.swatchSlate': 'Ardesia',
             'wizard.swatchCustom': 'Colore Personalizzato',
+            'wizard.textColor': 'Colore del testo',
+            'wizard.textColorAuto': 'Auto',
+            'wizard.textColorLight': 'Chiaro',
+            'wizard.textColorDark': 'Scuro',
 
             // Delete confirmation
             'confirm.title': 'Conferma',

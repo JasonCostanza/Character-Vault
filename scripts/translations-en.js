@@ -88,6 +88,10 @@ window.CV_TRANSLATIONS.en = {
             'wizard.swatchLeather': 'Leather',
             'wizard.swatchSlate': 'Slate',
             'wizard.swatchCustom': 'Custom Color',
+            'wizard.textColor': 'Text Color',
+            'wizard.textColorAuto': 'Auto',
+            'wizard.textColorLight': 'Light',
+            'wizard.textColorDark': 'Dark',
 
             // Delete confirmation
             'confirm.title': 'Confirm',

@@ -185,6 +185,13 @@ export function setupMinimalDOM() {
             <div class="wizard-hex-row">
               <input type="text" class="wizard-custom-hex" id="wizard-custom-hex" placeholder="#000000" maxlength="7" spellcheck="false">
             </div>
+            <div class="text-color-section" id="wizard-text-color-section">
+              <div class="text-color-label">Text Color</div>
+              <div class="text-color-row" id="wizard-text-color-row">
+                <button class="text-color-chip" data-text-color="light">Abc</button>
+                <button class="text-color-chip" data-text-color="dark">Abc</button>
+              </div>
+            </div>
           </div>
 
           <!-- Abilities Template -->

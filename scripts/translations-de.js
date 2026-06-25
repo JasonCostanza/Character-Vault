@@ -83,6 +83,10 @@ window.CV_TRANSLATIONS['de'] = {
             'wizard.swatchLeather': 'Leder',
             'wizard.swatchSlate': 'Schiefer',
             'wizard.swatchCustom': 'Benutzerdefiniert',
+            'wizard.textColor': 'Textfarbe',
+            'wizard.textColorAuto': 'Auto',
+            'wizard.textColorLight': 'Hell',
+            'wizard.textColorDark': 'Dunkel',
 
             'confirm.title': 'Bestätigen',
             'delete.title': 'Modul löschen',

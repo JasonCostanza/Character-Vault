@@ -31,6 +31,7 @@
     let wizardState = {
         type: 'text',
         theme: null,
+        textColor: null,
         statLayout: 'large-stat',
     };
 
@@ -53,6 +54,7 @@
         wizardState = {
             type: defaultType,
             theme: null,
+            textColor: null,
             statLayout: 'large-stat',
         };
 
@@ -87,6 +89,12 @@
             statLayoutSection.querySelectorAll('.wizard-layout-btn').forEach((btn) => {
                 btn.classList.toggle('selected', btn.dataset.layout === 'large-stat');
             });
+        }
+
+        const tcRow = document.getElementById('wizard-text-color-row');
+        if (tcRow) {
+            tcRow.querySelectorAll('.text-color-chip').forEach((c) => c.classList.remove('selected'));
+            syncWizardTextChipPreviews();
         }
 
     }
@@ -138,6 +146,19 @@
     const wizardCustomHex = document.getElementById('wizard-custom-hex');
     const wizardHexWrap = document.getElementById('wizard-hex-wrap');
     const wizardHexDot = document.getElementById('wizard-hex-dot');
+    const wizardTextColorRow = document.getElementById('wizard-text-color-row');
+    const wizardTextChips = wizardTextColorRow.querySelectorAll('.text-color-chip');
+
+    const TEXT_COLOR_CSS = { light: 'var(--cv-module-text-light)', dark: 'var(--cv-module-text-dark)' };
+
+    function syncWizardTextChipPreviews() {
+        const bg = wizardState.theme || '';
+        wizardTextChips.forEach((chip) => {
+            chip.style.backgroundColor = bg || 'var(--cv-bg-surface)';
+            const tc = chip.dataset.textColor;
+            chip.style.color = TEXT_COLOR_CSS[tc] || 'var(--cv-text)';
+        });
+    }
 
     wizardSwatches.forEach((swatch) => {
         swatch.addEventListener('click', () => {
@@ -148,6 +169,7 @@
             wizardHexDot.style.backgroundColor = color || '';
             wizardHexWrap.classList.toggle('valid', !!color);
             wizardState.theme = color || null;
+            syncWizardTextChipPreviews();
         });
     });
 
@@ -163,6 +185,20 @@
             wizardHexDot.style.backgroundColor = '';
             wizardState.theme = null;
         }
+        syncWizardTextChipPreviews();
+    });
+
+    wizardTextChips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+            const alreadySelected = chip.classList.contains('selected');
+            wizardTextChips.forEach((c) => c.classList.remove('selected'));
+            if (!alreadySelected) {
+                chip.classList.add('selected');
+                wizardState.textColor = chip.dataset.textColor || null;
+            } else {
+                wizardState.textColor = null;
+            }
+        });
     });
 
     // ── Create Module ──
@@ -175,6 +211,7 @@
             rowSpan: 2,
             order: window.modules.filter(m => m.tabId === window.activeTabId).length,
             theme: wizardState.theme,
+            textColor: wizardState.textColor,
             tabId: window.activeTabId,
             content: '',
         };
@@ -194,12 +231,14 @@
             moduleData.colSpan = GRID_COLUMNS;
             moduleData.rowSpan = null;
             moduleData.theme = null;
+            moduleData.textColor = null;
         }
 
         if (moduleData.type === 'spacer') {
             moduleData.colSpan = 1;
             moduleData.rowSpan = 1;
             moduleData.theme = null;
+            moduleData.textColor = null;
         }
 
         if (moduleData.type === 'health') {
@@ -646,6 +685,56 @@
             hexWrap.classList.toggle('valid', !!color);
         }
 
+        // Text color chips (built first so bg swatch clicks can sync them)
+        const tcSection = document.createElement('div');
+        tcSection.className = 'text-color-section';
+        const tcLabel = document.createElement('div');
+        tcLabel.className = 'text-color-label overflow-theme-label';
+        tcLabel.textContent = t('wizard.textColor');
+        tcSection.appendChild(tcLabel);
+
+        const tcRow = document.createElement('div');
+        tcRow.className = 'text-color-row overflow-swatch-row';
+        const tcOptions = [
+            { value: 'light', key: 'wizard.textColorLight' },
+            { value: 'dark', key: 'wizard.textColorDark' },
+        ];
+        const currentTextColor = data.textColor || '';
+
+        function syncTextChipPreviews() {
+            const bg = data.theme || '';
+            tcRow.querySelectorAll('.text-color-chip').forEach((chip) => {
+                chip.style.backgroundColor = bg || 'var(--cv-bg-surface)';
+                const tc = chip.dataset.textColor;
+                chip.style.color = TEXT_COLOR_CSS[tc] || 'var(--cv-text)';
+            });
+        }
+
+        tcOptions.forEach((opt) => {
+            const chip = document.createElement('button');
+            chip.className = 'text-color-chip';
+            chip.dataset.textColor = opt.value;
+            chip.title = t(opt.key);
+            chip.textContent = 'Abc';
+            if (opt.value === currentTextColor) chip.classList.add('selected');
+            chip.addEventListener('click', () => {
+                const alreadySelected = chip.classList.contains('selected');
+                tcRow.querySelectorAll('.text-color-chip').forEach((c) => c.classList.remove('selected'));
+                if (!alreadySelected) {
+                    chip.classList.add('selected');
+                    data.textColor = opt.value;
+                    moduleEl.classList.remove('module-text-light', 'module-text-dark');
+                    moduleEl.classList.add('module-text-' + opt.value);
+                } else {
+                    data.textColor = null;
+                    moduleEl.classList.remove('module-text-light', 'module-text-dark');
+                }
+                scheduleSave();
+            });
+            tcRow.appendChild(chip);
+        });
+        tcSection.appendChild(tcRow);
+
         THEME_SWATCHES.forEach((sw) => {
             const btn = document.createElement('button');
             btn.className = 'overflow-swatch' + (sw.cls ? ' ' + sw.cls : '');
@@ -659,6 +748,7 @@
                 data.theme = sw.color || null;
                 moduleEl.style.backgroundColor = sw.color || '';
                 syncHexState(sw.color);
+                syncTextChipPreviews();
                 scheduleSave();
             });
             row.appendChild(btn);
@@ -677,6 +767,7 @@
                 row.querySelectorAll('.overflow-swatch').forEach((s) => s.classList.remove('selected'));
                 data.theme = val;
                 moduleEl.style.backgroundColor = val;
+                syncTextChipPreviews();
                 scheduleSave();
             } else {
                 hexWrap.classList.remove('valid');
@@ -692,6 +783,9 @@
 
         row.appendChild(hexWrap);
         container.appendChild(row);
+
+        container.appendChild(tcSection);
+        syncTextChipPreviews();
     }
 
     function renderModule(data) {
@@ -717,6 +811,10 @@
 
         if (data.theme) {
             el.style.backgroundColor = data.theme;
+        }
+
+        if (data.textColor === 'light' || data.textColor === 'dark') {
+            el.classList.add('module-text-' + data.textColor);
         }
 
         const showResize = data.type !== 'hline';

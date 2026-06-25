@@ -83,6 +83,10 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'wizard.swatchLeather': 'Couro',
             'wizard.swatchSlate': 'Ardósia',
             'wizard.swatchCustom': 'Cor Personalizada',
+            'wizard.textColor': 'Cor do texto',
+            'wizard.textColorAuto': 'Auto',
+            'wizard.textColorLight': 'Claro',
+            'wizard.textColorDark': 'Escuro',
 
             'confirm.title': 'Confirmar',
             'delete.title': 'Excluir Módulo',

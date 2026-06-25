@@ -22,6 +22,9 @@ html[data-theme="dark"] {
     --cv-warning:         #C09040;
 
     --cv-focus-ring:      #C0874A80;
+
+    --cv-module-text-light: #E8DCC8;
+    --cv-module-text-dark:  #2C1A0E;
 }
 
 /* ── Light Theme (Parchment) ──────────────────────────────────────── */
@@ -47,6 +50,9 @@ html[data-theme="light"] {
     --cv-warning:         #A0722A;
 
     --cv-focus-ring:      #8B451380;
+
+    --cv-module-text-light: #F7EED8;
+    --cv-module-text-dark:  #2C1A0E;
 }
 
 /* ── Cyberpunk Theme ─────────────────────────────────────────────── */
@@ -72,6 +78,9 @@ html[data-theme="cyberpunk"] {
     --cv-warning:         #FFAB00;
 
     --cv-focus-ring:      #FF2E8B80;
+
+    --cv-module-text-light: #E0E0F0;
+    --cv-module-text-dark:  #12121F;
 }
 
 /* ── Sci-Fi Theme ────────────────────────────────────────────────── */
@@ -97,6 +106,9 @@ html[data-theme="scifi"] {
     --cv-warning:         #F5A623;
 
     --cv-focus-ring:      #2196F380;
+
+    --cv-module-text-light: #C8D8E8;
+    --cv-module-text-dark:  #131A24;
 }
 
 /* ── Angelic Theme (Light) ───────────────────────────────────────── */
@@ -122,6 +134,9 @@ html[data-theme="angelic"] {
     --cv-warning:         #B07A10;
 
     --cv-focus-ring:      #B8860B80;
+
+    --cv-module-text-light: #F5F5FA;
+    --cv-module-text-dark:  #1A1A2E;
 }
 
 /* ── Demonic Theme ───────────────────────────────────────────────── */
@@ -147,4 +162,7 @@ html[data-theme="demonic"] {
     --cv-warning:         #D48A20;
 
     --cv-focus-ring:      #CC202080;
+
+    --cv-module-text-light: #E8D0C8;
+    --cv-module-text-dark:  #1C0E0E;
 }

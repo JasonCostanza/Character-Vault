@@ -83,6 +83,10 @@ window.CV_TRANSLATIONS['ru'] = {
             'wizard.swatchLeather': 'Кожаный',
             'wizard.swatchSlate': 'Сланцевый',
             'wizard.swatchCustom': 'Свой Цвет',
+            'wizard.textColor': 'Цвет текста',
+            'wizard.textColorAuto': 'Авто',
+            'wizard.textColorLight': 'Светлый',
+            'wizard.textColorDark': 'Тёмный',
 
             'confirm.title': 'Подтвердить',
             'delete.title': 'Удалить Модуль',

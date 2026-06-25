@@ -65,14 +65,16 @@
         });
 
         const customHex = document.getElementById('wizard-custom-hex');
-        const customSwatch = document.querySelector('.wizard-swatch-custom');
+        const customHexWrap = document.getElementById('wizard-hex-wrap');
+        const customHexDot = document.getElementById('wizard-hex-dot');
         if (customHex) {
             customHex.value = '';
-            customHex.classList.remove('visible');
         }
-        if (customSwatch) {
-            customSwatch.style.backgroundColor = '';
-            customSwatch.classList.remove('has-color');
+        if (customHexWrap) {
+            customHexWrap.classList.remove('valid');
+        }
+        if (customHexDot) {
+            customHexDot.style.backgroundColor = '';
         }
 
         const themeSection = document.getElementById('wizard-theme-section');
@@ -134,36 +136,31 @@
 
     // Color swatch selection
     const wizardCustomHex = document.getElementById('wizard-custom-hex');
-    const wizardCustomSwatch = document.querySelector('.wizard-swatch-custom');
+    const wizardHexWrap = document.getElementById('wizard-hex-wrap');
+    const wizardHexDot = document.getElementById('wizard-hex-dot');
 
     wizardSwatches.forEach((swatch) => {
         swatch.addEventListener('click', () => {
-            if (swatch.dataset.color === 'custom') {
-                wizardSwatches.forEach((s) => s.classList.remove('selected'));
-                swatch.classList.add('selected');
-                wizardCustomHex.classList.add('visible');
-                wizardCustomHex.focus();
-                wizardState.theme = wizardCustomHex.value.match(/^#[0-9A-Fa-f]{6}$/) ? wizardCustomHex.value : null;
-                return;
-            }
             wizardSwatches.forEach((s) => s.classList.remove('selected'));
             swatch.classList.add('selected');
-            wizardCustomHex.classList.remove('visible');
-            wizardCustomSwatch.style.backgroundColor = '';
-            wizardCustomSwatch.classList.remove('has-color');
-            wizardState.theme = swatch.dataset.color || null;
+            const color = swatch.dataset.color || '';
+            wizardCustomHex.value = color;
+            wizardHexDot.style.backgroundColor = color || '';
+            wizardHexWrap.classList.toggle('valid', !!color);
+            wizardState.theme = color || null;
         });
     });
 
     wizardCustomHex.addEventListener('input', () => {
-        const val = wizardCustomHex.value;
-        if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
-            wizardCustomSwatch.style.backgroundColor = val;
-            wizardCustomSwatch.classList.add('has-color');
+        const val = normalizeHexInput(wizardCustomHex);
+        if (val) {
+            wizardHexWrap.classList.add('valid');
+            wizardHexDot.style.backgroundColor = val;
+            wizardSwatches.forEach((s) => s.classList.remove('selected'));
             wizardState.theme = val;
         } else {
-            wizardCustomSwatch.style.backgroundColor = '';
-            wizardCustomSwatch.classList.remove('has-color');
+            wizardHexWrap.classList.remove('valid');
+            wizardHexDot.style.backgroundColor = '';
             wizardState.theme = null;
         }
     });
@@ -618,67 +615,72 @@
         const row = document.createElement('div');
         row.className = 'overflow-swatch-row';
 
+        const currentTheme = data.theme || '';
+
+        // Hex input (always visible)
+        const hexWrap = document.createElement('div');
+        hexWrap.className = 'hex-input-wrap';
+
+        const hexDot = document.createElement('span');
+        hexDot.className = 'hex-input-dot';
+
+        const hexInput = document.createElement('input');
+        hexInput.type = 'text';
+        hexInput.className = 'cv-hex-input';
+        hexInput.placeholder = '#000000';
+        hexInput.maxLength = 7;
+        hexInput.spellcheck = false;
+
+        if (currentTheme) {
+            hexInput.value = currentTheme;
+            hexDot.style.backgroundColor = currentTheme;
+            hexWrap.classList.add('valid');
+        }
+
+        hexWrap.appendChild(hexDot);
+        hexWrap.appendChild(hexInput);
+
+        function syncHexState(color) {
+            hexInput.value = color || '';
+            hexDot.style.backgroundColor = color || '';
+            hexWrap.classList.toggle('valid', !!color);
+        }
+
         THEME_SWATCHES.forEach((sw) => {
             const btn = document.createElement('button');
             btn.className = 'overflow-swatch' + (sw.cls ? ' ' + sw.cls : '');
             btn.title = t(sw.key);
             if (sw.color) btn.style.backgroundColor = sw.color;
-            const current = data.theme || '';
-            if (sw.color === current) btn.classList.add('selected');
+            if (sw.color === currentTheme) btn.classList.add('selected');
 
             btn.addEventListener('click', () => {
+                row.querySelectorAll('.overflow-swatch').forEach((s) => s.classList.remove('selected'));
+                btn.classList.add('selected');
                 data.theme = sw.color || null;
                 moduleEl.style.backgroundColor = sw.color || '';
+                syncHexState(sw.color);
                 scheduleSave();
-                if (onClose) onClose();
             });
             row.appendChild(btn);
         });
 
-        // Custom color swatch
-        const customBtn = document.createElement('button');
-        customBtn.className = 'overflow-swatch overflow-swatch-custom';
-        customBtn.title = t('wizard.swatchCustom');
-        customBtn.textContent = '#';
-        const currentTheme = data.theme || '';
         const isCustom = currentTheme && !THEME_SWATCHES.some((sw) => sw.color === currentTheme);
         if (isCustom) {
-            customBtn.style.backgroundColor = currentTheme;
-            customBtn.classList.add('has-color', 'selected');
-        }
-
-        customBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
             row.querySelectorAll('.overflow-swatch').forEach((s) => s.classList.remove('selected'));
-            customBtn.classList.add('selected');
-            hexInput.classList.add('visible');
-            hexInput.focus();
-        });
-        row.appendChild(customBtn);
-
-        // Custom hex input
-        const hexInput = document.createElement('input');
-        hexInput.type = 'text';
-        hexInput.className = 'overflow-custom-hex';
-        hexInput.placeholder = '#000000';
-        hexInput.maxLength = 7;
-        hexInput.spellcheck = false;
-        if (isCustom) {
-            hexInput.value = currentTheme;
-            hexInput.classList.add('visible');
         }
 
         hexInput.addEventListener('input', () => {
-            const val = hexInput.value;
-            if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
-                customBtn.style.backgroundColor = val;
-                customBtn.classList.add('has-color');
+            const val = normalizeHexInput(hexInput);
+            if (val) {
+                hexWrap.classList.add('valid');
+                hexDot.style.backgroundColor = val;
+                row.querySelectorAll('.overflow-swatch').forEach((s) => s.classList.remove('selected'));
                 data.theme = val;
                 moduleEl.style.backgroundColor = val;
                 scheduleSave();
             } else {
-                customBtn.style.backgroundColor = '';
-                customBtn.classList.remove('has-color');
+                hexWrap.classList.remove('valid');
+                hexDot.style.backgroundColor = '';
             }
         });
 
@@ -686,9 +688,9 @@
             if (e.key === 'Enter' && onClose) onClose();
         });
 
-        hexInput.addEventListener('click', (e) => e.stopPropagation());
+        hexWrap.addEventListener('click', (e) => e.stopPropagation());
 
-        row.appendChild(hexInput);
+        row.appendChild(hexWrap);
         container.appendChild(row);
     }
 

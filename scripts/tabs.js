@@ -147,20 +147,25 @@
         { color: '#4A2D6B', cls: '', label: 'Royal' },
         { color: '#5C3A1E', cls: '', label: 'Leather' },
         { color: '#3A3A3A', cls: '', label: 'Slate' },
-        { color: 'custom', cls: 'wizard-swatch-custom', label: 'Custom Color' },
     ];
 
     const TAB_PRESET_COLORS = TAB_SWATCH_DEFS
-        .filter(function (d) { return d.color !== null && d.color !== 'custom'; })
+        .filter(function (d) { return d.color !== null; })
         .map(function (d) { return d.color; });
 
     // Holds the active Escape/backdrop handlers so closeTabSettings can always clean them up
     let settingsEscapeHandler = null;
     let settingsBackdropHandler = null;
 
-    function closeTabSettings() {
+    let settingsRevertColor = null;
+
+    function closeTabSettings(skipRevert) {
         const overlay = document.getElementById('tab-settings-overlay');
         if (!overlay) return;
+        if (!skipRevert && settingsRevertColor) {
+            settingsRevertColor();
+        }
+        settingsRevertColor = null;
         overlay.classList.remove('open');
         overlay.setAttribute('aria-hidden', 'true');
         if (settingsEscapeHandler) {
@@ -182,6 +187,12 @@
         if (!overlay || !panel) return;
 
         let selectedColor = tab.color ?? null;
+        const originalColor = selectedColor;
+        const previewTabEl = document.querySelector('.tab-item[data-tab-id="' + tabId + '"]');
+
+        settingsRevertColor = function () {
+            if (previewTabEl) previewTabEl.style.backgroundColor = originalColor || '';
+        };
 
         panel.innerHTML = '';
 
@@ -226,41 +237,43 @@
 
         const hexRow = document.createElement('div');
         hexRow.className = 'wizard-hex-row';
+
+        const hexWrap = document.createElement('div');
+        hexWrap.className = 'hex-input-wrap';
+
+        const hexDot = document.createElement('span');
+        hexDot.className = 'hex-input-dot';
+
         const hexInput = document.createElement('input');
         hexInput.type = 'text';
-        hexInput.className = 'wizard-custom-hex tab-settings-hex';
+        hexInput.className = 'cv-hex-input tab-settings-hex';
         hexInput.placeholder = '#000000';
         hexInput.maxLength = 7;
         hexInput.spellcheck = false;
-        hexRow.appendChild(hexInput);
 
-        const isCustomColor = selectedColor !== null && !TAB_PRESET_COLORS.includes(selectedColor);
-        if (isCustomColor) {
+        hexWrap.appendChild(hexDot);
+        hexWrap.appendChild(hexInput);
+        hexRow.appendChild(hexWrap);
+
+        if (selectedColor) {
             hexInput.value = selectedColor;
-            hexInput.classList.add('visible');
+            hexDot.style.backgroundColor = selectedColor;
+            hexWrap.classList.add('valid');
         }
 
         function updateSwatchSelection(activeColor) {
             swatchRow.querySelectorAll('.wizard-swatch').forEach(function (s) {
                 s.classList.remove('selected');
             });
-            let matched = false;
             TAB_SWATCH_DEFS.forEach(function (def, i) {
                 const btn = swatchRow.children[i];
                 if (!btn) return;
                 if (def.color === null && activeColor === null) {
                     btn.classList.add('selected');
-                    matched = true;
-                } else if (def.color !== null && def.color !== 'custom' && def.color === activeColor) {
+                } else if (def.color !== null && def.color === activeColor) {
                     btn.classList.add('selected');
-                    matched = true;
                 }
             });
-            if (!matched && activeColor !== null) {
-                // Custom swatch is always the last entry
-                const customBtn = swatchRow.children[TAB_SWATCH_DEFS.length - 1];
-                if (customBtn) customBtn.classList.add('selected');
-            }
         }
 
         TAB_SWATCH_DEFS.forEach(function (def) {
@@ -268,26 +281,37 @@
             btn.type = 'button';
             btn.className = 'wizard-swatch ' + def.cls;
             btn.setAttribute('title', def.label);
-            if (def.color !== null && def.color !== 'custom') {
+            if (def.color !== null) {
                 btn.style.backgroundColor = def.color;
             }
 
             btn.addEventListener('click', function () {
-                if (def.color === 'custom') {
-                    hexInput.classList.add('visible');
-                    selectedColor = hexInput.value || null;
-                } else {
-                    hexInput.classList.remove('visible');
-                    selectedColor = def.color;
-                }
+                selectedColor = def.color;
+                hexInput.value = def.color || '';
+                hexDot.style.backgroundColor = def.color || '';
+                hexWrap.classList.toggle('valid', !!def.color);
                 updateSwatchSelection(selectedColor);
+                if (previewTabEl) previewTabEl.style.backgroundColor = selectedColor || '';
             });
 
             swatchRow.appendChild(btn);
         });
 
         hexInput.addEventListener('input', function () {
-            selectedColor = hexInput.value || null;
+            const val = normalizeHexInput(hexInput);
+            if (val) {
+                hexWrap.classList.add('valid');
+                hexDot.style.backgroundColor = val;
+                selectedColor = val;
+                swatchRow.querySelectorAll('.wizard-swatch').forEach(function (s) {
+                    s.classList.remove('selected');
+                });
+                if (previewTabEl) previewTabEl.style.backgroundColor = val;
+            } else {
+                hexWrap.classList.remove('valid');
+                hexDot.style.backgroundColor = '';
+                selectedColor = hexInput.value || null;
+            }
         });
 
         colorSection.appendChild(swatchRow);
@@ -344,7 +368,7 @@
             tab.name = newName;
             tab.color = selectedColor;
             window.renderTabBar();
-            closeTabSettings();
+            closeTabSettings(true);
             window.scheduleSave();
         });
 

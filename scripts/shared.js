@@ -444,6 +444,16 @@
         });
     }
 
+    function normalizeHexInput(input) {
+        var val = input.value;
+        if (/^[0-9A-Fa-f]{6}$/.test(val)) {
+            val = '#' + val;
+            input.value = val;
+        }
+        return /^#[0-9A-Fa-f]{6}$/.test(val) ? val : null;
+    }
+
+    window.normalizeHexInput = normalizeHexInput;
     window.generateId = generateId;
     window.formatModifier = formatModifier;
     window.showConfirm = showConfirm;

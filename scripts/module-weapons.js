@@ -1612,7 +1612,7 @@
                     }(bonus));
                     attackCol.appendChild(dualityBtn);
                 } else if (sys === 'cpred') {
-                    var cpredVal = Number(weapon.cpredSkillValue) || 0;
+                    var cpredVal = (Number(weapon.cpredSkillValue) || 0) + weaponsComputeEnhancementAttackBonus(weapon, data.content);
                     var cpredModes = Array.isArray(weapon.firingModes) && weapon.firingModes.length ? weapon.firingModes : null;
                     if (cpredModes) {
                         cpredModes.forEach(function (mode) {

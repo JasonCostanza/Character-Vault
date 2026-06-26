@@ -557,18 +557,7 @@
 
     // ── Chain Link Indicator ──
     function updateAbilitiesChainIcon(moduleEl, data) {
-        const indicator = moduleEl.querySelector('.module-abilities-link-indicator');
-        if (!indicator) return;
-        const linkedId = data.content.linkedStatModuleId;
-        if (!linkedId) {
-            indicator.style.display = 'none';
-            indicator.title = '';
-            return;
-        }
-        const linkedModule = window.modules.find((m) => m.id === linkedId);
-        const name = linkedModule ? (linkedModule.title || t('type.stat')) : '?';
-        indicator.title = t('abilities.linkedTo', { name });
-        indicator.style.display = '';
+        window.updateChainLinkIndicator(moduleEl, 'abilities', 'abilities.linkedTo', data);
     }
 
     // ── Module Body Builder ──
@@ -615,6 +604,7 @@
     // ── Module Type Registration ──
     registerModuleType('abilities', {
         label: 'type.abilities',
+        hasStatLink: true,
 
         renderBody(bodyEl, data, isPlayMode) {
             buildAbilityBody(bodyEl, data, isPlayMode);

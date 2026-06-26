@@ -127,6 +127,11 @@
         return tiers.find((tier) => tier.name === save.proficiencyTier) || null;
     }
 
+    // ── Chain Link Indicator ──
+    function updateSavingthrowChainIcon(moduleEl, data) {
+        window.updateChainLinkIndicator(moduleEl, 'savingthrow', 'save.linkedTo', data);
+    }
+
     // ── Play Mode Block ──
     function renderSaveBlock(save, index, data) {
         const content = data.content;
@@ -769,6 +774,7 @@
     // ── Module Type Registration ──
     registerModuleType('savingthrow', {
         label: 'type.savingthrow',
+        hasStatLink: true,
 
         renderBody(bodyEl, data, isPlayMode) {
             ensureSaveContent(data);
@@ -796,6 +802,8 @@
             bodyEl.innerHTML = '';
             bodyEl.appendChild(container);
             renderNotesArea(container, data, isPlayMode);
+            const moduleEl = bodyEl.closest('.module');
+            if (moduleEl) updateSavingthrowChainIcon(moduleEl, data);
         },
 
         onPlayMode(moduleEl, data) {

@@ -777,10 +777,12 @@ window.CV_TRANSLATIONS['de'] = {
             'save.log.roll': 'Rettungswurf für {name} ({modifier})',
             'save.linkedStat': 'Attribut',
             'save.linkStatFirst': 'Zuerst ein Stat-Modul verknüpfen',
+            'save.linkedTo': 'Verknüpft mit {name}.',
 
             // Zauber (Spells submodule)
             'spells.settings': 'Zauber-Einstellungen',
             'spells.settingsTitle': 'Zauber-Einstellungen',
+            'spells.linkedTo': 'Verknüpft mit {name}.',
             'spells.slots': 'Zauberschlitze',
             'spells.restoreAll': 'Alle Wiederherstellen',
             'spells.noSlots': 'Keine Zauberschlitz-Stufen konfiguriert',

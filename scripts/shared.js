@@ -685,6 +685,17 @@
         overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
     }
 
+    function updateChainLinkIndicator(moduleEl, type, i18nKey, data) {
+        const indicator = moduleEl.querySelector(`.module-${type}-link-indicator`);
+        if (!indicator) return;
+        const linkedId = data.content && data.content.linkedStatModuleId;
+        if (!linkedId) { indicator.style.display = 'none'; indicator.title = ''; return; }
+        const linked = (window.modules || []).find(m => m.id === linkedId);
+        indicator.title = t(i18nKey, { name: linked ? (linked.title || t('type.stat')) : '?' });
+        indicator.style.display = '';
+    }
+
     window.buildCommonSettingsSection = buildCommonSettingsSection;
     window.openMoveToTabModal = openMoveToTabModal;
+    window.updateChainLinkIndicator = updateChainLinkIndicator;
 })();

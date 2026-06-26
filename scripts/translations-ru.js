@@ -397,10 +397,12 @@ window.CV_TRANSLATIONS['ru'] = {
             'save.log.roll': 'Спасбросок {name} ({modifier})',
             'save.linkedStat': 'Характеристика',
             'save.linkStatFirst': 'Сначала привяжите модуль характеристик',
+            'save.linkedTo': 'Связано с {name}.',
 
             // Заклинания (Spells submodule)
             'spells.settings': 'Настройки Заклинаний',
             'spells.settingsTitle': 'Настройки Заклинаний',
+            'spells.linkedTo': 'Связано с {name}.',
             'spells.slots': 'Ячейки Заклинаний',
             'spells.restoreAll': 'Восстановить Все',
             'spells.noSlots': 'Нет настроенных уровней ячеек',

@@ -915,10 +915,12 @@ window.CV_TRANSLATIONS.en = {
             'save.log.roll': 'Rolled {name} save ({modifier})',
             'save.linkedStat': 'Ability',
             'save.linkStatFirst': 'Link a stat module first',
+            'save.linkedTo': 'Linked to {name}.',
 
             // Spells submodule
             'spells.settings': 'Spell Settings',
             'spells.settingsTitle': 'Spell Settings',
+            'spells.linkedTo': 'Linked to {name}.',
             'spells.slots': 'Spell Slots',
             'spells.restoreAll': 'Restore All',
             'spells.noSlots': 'No spell slot levels configured',

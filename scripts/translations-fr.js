@@ -429,6 +429,7 @@ window.CV_TRANSLATIONS['fr'] = {
             'save.log.roll': 'Jet de sauvegarde de {name} ({modifier})',
             'save.linkedStat': 'Caractéristique',
             'save.linkStatFirst': 'Liez d\'abord un module de stats',
+            'save.linkedTo': 'Lié à {name}.',
 
             // Conditions submodule — UI
             'type.condition': 'Conditions',
@@ -825,6 +826,7 @@ window.CV_TRANSLATIONS['fr'] = {
             // Sorts (Spells submodule)
             'spells.settings': 'Paramètres des Sorts',
             'spells.settingsTitle': 'Paramètres des Sorts',
+            'spells.linkedTo': 'Lié à {name}.',
             'spells.slots': 'Emplacements de Sort',
             'spells.restoreAll': 'Tout Restaurer',
             'spells.noSlots': "Aucun niveau d'emplacement de sort configuré",

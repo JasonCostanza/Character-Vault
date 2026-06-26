@@ -396,10 +396,12 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'save.log.roll': 'Resistência de {name} rolada ({modifier})',
             'save.linkedStat': 'Habilidade',
             'save.linkStatFirst': 'Vincule um módulo de stats primeiro',
+            'save.linkedTo': 'Vinculado a {name}.',
 
             // Magias (Spells submodule)
             'spells.settings': 'Configurações de Magias',
             'spells.settingsTitle': 'Configurações de Magias',
+            'spells.linkedTo': 'Vinculado a {name}.',
             'spells.slots': 'Espaços de Magia',
             'spells.restoreAll': 'Restaurar Todos',
             'spells.noSlots': 'Nenhum nível de espaço de magia configurado',

@@ -16,7 +16,9 @@
     transform: none;
 }
 
-.module-weapons-link-indicator {
+.module-weapons-link-indicator,
+.module-savingthrow-link-indicator,
+.module-spells-link-indicator {
     display: inline-flex;
     align-items: center;
     flex-shrink: 0;
@@ -27,7 +29,9 @@
     position: relative;
 }
 
-.module-weapons-link-indicator[title]::after {
+.module-weapons-link-indicator[title]::after,
+.module-savingthrow-link-indicator[title]::after,
+.module-spells-link-indicator[title]::after {
     left: 0;
     transform: none;
 }

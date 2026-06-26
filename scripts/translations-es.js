@@ -396,10 +396,12 @@ window.CV_TRANSLATIONS['es'] = {
             'save.log.roll': 'Tirada de salvación de {name} ({modifier})',
             'save.linkedStat': 'Característica',
             'save.linkStatFirst': 'Vincula primero un módulo de stats',
+            'save.linkedTo': 'Vinculado a {name}.',
 
             // Spells submodule
             'spells.settings': 'Ajustes de Conjuros',
             'spells.settingsTitle': 'Ajustes de Conjuros',
+            'spells.linkedTo': 'Vinculado a {name}.',
             'spells.slots': 'Espacios de Conjuro',
             'spells.restoreAll': 'Restaurar Todo',
             'spells.noSlots': 'No hay niveles de espacio de conjuro configurados',

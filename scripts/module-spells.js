@@ -287,6 +287,11 @@
         return th;
     }
 
+    // ── Chain Link Indicator ──
+    function updateSpellsChainIcon(moduleEl, data) {
+        window.updateChainLinkIndicator(moduleEl, 'spells', 'spells.linkedTo', data);
+    }
+
     // ── Play Mode (Table Layout) ──
     function renderSpellsPlay(bodyEl, data) {
         const preparationMode = _prepModeModules.has(data.id);
@@ -1420,6 +1425,7 @@
             bodyEl.innerHTML = '';
             if (window.isPlayMode) renderSpellsPlay(bodyEl, data);
             else renderSpellsLayout(bodyEl, data);
+            updateSpellsChainIcon(moduleEl, data);
         }
 
         // ── Behavior Card ──
@@ -2218,6 +2224,7 @@
     // ── Registration ──
     registerModuleType('spells', {
         label: 'type.spells',
+        hasStatLink: true,
 
         renderBody(bodyEl, data, isPlayMode) {
             ensureContent(data);
@@ -2227,6 +2234,8 @@
             } else {
                 renderSpellsLayout(bodyEl, data);
             }
+            const moduleEl = bodyEl.closest('.module');
+            if (moduleEl) updateSpellsChainIcon(moduleEl, data);
         },
 
         onPlayMode(moduleEl, data) {

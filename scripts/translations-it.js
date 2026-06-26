@@ -406,10 +406,12 @@ window.CV_TRANSLATIONS['it'] = {
             'save.log.roll': 'Tiro salvezza di {name} ({modifier})',
             'save.linkedStat': 'Caratteristica',
             'save.linkStatFirst': 'Collega prima un modulo statistiche',
+            'save.linkedTo': 'Collegato a {name}.',
 
             // Incantesimi (Spells submodule)
             'spells.settings': 'Impostazioni Incantesimi',
             'spells.settingsTitle': 'Impostazioni Incantesimi',
+            'spells.linkedTo': 'Collegato a {name}.',
             'spells.slots': 'Slot Incantesimo',
             'spells.restoreAll': 'Ripristina Tutto',
             'spells.noSlots': 'Nessun livello di slot incantesimo configurato',

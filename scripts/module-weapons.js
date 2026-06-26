@@ -1434,18 +1434,7 @@
 
     // ── Module Settings Modal ──
     function updateWeaponsChainIcon(moduleEl, data) {
-        var indicator = moduleEl.querySelector('.module-weapons-link-indicator');
-        if (!indicator) return;
-        var linkedId = data.content ? data.content.linkedStatModuleId : null;
-        if (!linkedId) {
-            indicator.style.display = 'none';
-            indicator.title = '';
-            return;
-        }
-        var linkedModule = (window.modules || []).find(function (m) { return m.id === linkedId; });
-        var name = linkedModule ? (linkedModule.title || t('type.stat')) : '?';
-        indicator.title = t('weapons.linkedTo', { name: name });
-        indicator.style.display = '';
+        window.updateChainLinkIndicator(moduleEl, 'weapons', 'weapons.linkedTo', data);
     }
 
     function openWeaponModuleSettings(moduleEl, data) {
@@ -3222,6 +3211,7 @@
     // ── Module Type Registration ──
     registerModuleType('weapons', {
         label: 'type.weapons',
+        hasStatLink: true,
 
         renderBody: function (bodyEl, data, isPlayMode) {
             if (isPlayMode) {

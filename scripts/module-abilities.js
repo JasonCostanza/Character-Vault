@@ -233,6 +233,14 @@
     }
 
     // ── Ability Helpers ──
+    function getAbilityBaseMod(ability, data) {
+        if (data.content.linkedStatModuleId && ability.linkedStat) {
+            var statMod = window.getAbilityModifierFrom(ability.linkedStat, data.content.linkedStatModuleId);
+            return statMod + (ability.modifier || 0);
+        }
+        return ability.modifier || 0;
+    }
+
     function getProficiencyState(ability, data) {
         if (!data.content.linkedStatModuleId || !ability.linkedStat) {
             return ability.proficiency;
@@ -261,7 +269,7 @@
         } else if (sys === 'pf2e' && typeof window.computePf2eProficiencyBonus === 'function') {
             profBonus = window.computePf2eProficiencyBonus(getProficiencyRank(ability, data));
         }
-        var totalMod = ability.modifier + profBonus;
+        var totalMod = getAbilityBaseMod(ability, data) + profBonus;
         const modStr = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
         if (sys === 'daggerheart') {
             window.rollDualityDice(
@@ -308,7 +316,7 @@
             profHtml +
             (abbrev ? `<span class="ability-abbrev">${escapeHtml(abbrev)}</span>` : '') +
             `<span class="ability-name">${escapeHtml(ability.name || t('abilities.unnamed'))}</span>` +
-            `<span class="ability-modifier">${escapeHtml(formatModifier(ability.modifier))}</span>`;
+            `<span class="ability-modifier">${escapeHtml(formatModifier(getAbilityBaseMod(ability, data)))}</span>`;
 
         row.addEventListener('click', () => rollAbilityCheck(ability, data));
         return row;
@@ -329,6 +337,15 @@
         } else {
             profColHtml = `<span class="ability-proficiency-dot${proficient ? ' active' : ''}${isLinked ? ' linked' : ''}" title="${t('abilities.proficiency')}"></span>`;
         }
+        var modAreaHtml;
+        if (isLinked) {
+            var statMod = window.getAbilityModifierFrom(ability.linkedStat, data.content.linkedStatModuleId);
+            modAreaHtml =
+                `<span class="ability-stat-mod" title="${escapeHtml(t('common.fromStat', { stat: ability.linkedStat }))}">${escapeHtml(formatModifier(statMod))}</span>` +
+                `<input class="ability-edit-modifier ability-edit-bonus" type="number" value="${ability.modifier}" title="${t('common.bonus')}">`;
+        } else {
+            modAreaHtml = `<input class="ability-edit-modifier" type="number" value="${ability.modifier}">`;
+        }
         row.innerHTML =
             `<span class="ability-drag-handle">&#x2807;</span>` +
             profColHtml +
@@ -336,7 +353,7 @@
                 ? `<span class="ability-abbrev ability-abbrev--locked">${escapeHtml(abbrev)}</span>`
                 : `<input class="ability-abbrev-input" type="text" maxlength="3" value="${escapeHtml(abbrev)}" placeholder="---" title="${t('abilities.abbrevLabel')}">`) +
             `<input class="ability-edit-name" type="text" value="${escapeHtml(ability.name)}" placeholder="${t('abilities.unnamed')}">` +
-            `<input class="ability-edit-modifier" type="number" value="${ability.modifier}">` +
+            modAreaHtml +
             `<button class="ability-edit-delete" title="${t('abilities.deleteAbility')}">` +
             `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>` +
             `</button>`;
@@ -469,28 +486,14 @@
         fieldLabel.className = 'cv-modal-label';
         fieldLabel.textContent = t('abilities.linkedStatModule');
 
-        const select = document.createElement('select');
-        select.className = 'ability-settings-select';
-
-        const noneOpt = document.createElement('option');
-        noneOpt.value = '';
-        noneOpt.textContent = t('abilities.noLinkedModule');
-        select.appendChild(noneOpt);
-
-        window.modules
-            .filter((m) => m.type === 'stat')
-            .forEach((m) => {
-                const opt = document.createElement('option');
-                opt.value = m.id;
-                opt.textContent = m.title || t('type.stat');
-                select.appendChild(opt);
-            });
-
-        select.value = data.content.linkedStatModuleId || '';
-        select.addEventListener('change', function () { dirty = true; });
+        const statPicker = buildStatModulePicker(
+            data.content.linkedStatModuleId,
+            function () { dirty = true; },
+            t('abilities.noLinkedModule')
+        );
 
         body.appendChild(fieldLabel);
-        body.appendChild(select);
+        body.appendChild(statPicker.el);
         buildCommonSettingsSection(body, moduleEl, data);
 
         const footer = document.createElement('div');
@@ -519,7 +522,7 @@
         }
 
         function save() {
-            data.content.linkedStatModuleId = select.value || null;
+            data.content.linkedStatModuleId = statPicker.getValue() || null;
             scheduleSave();
             const bodyEl = moduleEl.querySelector('.module-body');
             const isPlay = isPlayMode;
@@ -684,4 +687,16 @@
             if (moduleEl) updateAbilitiesChainIcon(moduleEl, mod);
         });
     };
+
+    document.addEventListener('cv:stat-values-changed', function (e) {
+        var changedId = e.detail && e.detail.moduleId;
+        window.modules.forEach(function (mod) {
+            if (mod.type !== 'abilities' || !mod.content) return;
+            if (mod.content.linkedStatModuleId !== changedId) return;
+            var moduleEl = document.querySelector('.module[data-id="' + mod.id + '"]');
+            if (!moduleEl) return;
+            var bodyEl = moduleEl.querySelector('.module-body');
+            if (bodyEl) buildAbilityBody(bodyEl, mod, isPlayMode);
+        });
+    });
 })();

@@ -473,6 +473,27 @@
     window.getGameSystemDisplayName = getGameSystemDisplayName;
     window.buildCvSelect = buildCvSelect;
 
+    // ── Stat Module Linking Helpers ──
+    function buildStatModulePicker(selectedId, onChange, noneLabel) {
+        var opts = [{ value: '', label: noneLabel || t('common.noLinkedModule') }];
+        (window.modules || []).filter(function (m) { return m.type === 'stat'; }).forEach(function (m) {
+            opts.push({ value: m.id, label: m.title || t('type.stat') });
+        });
+        return buildCvSelect(opts, selectedId || '', onChange || function () {});
+    }
+
+    function getLinkedStatNames(moduleId) {
+        if (!moduleId) return [];
+        var linkedMod = (window.modules || []).find(function (m) { return m.id === moduleId; });
+        if (!linkedMod || !linkedMod.content || !Array.isArray(linkedMod.content.stats)) return [];
+        return linkedMod.content.stats
+            .filter(function (s) { return s.name && !s.isProficiencyStat; })
+            .map(function (s) { return s.name; });
+    }
+
+    window.buildStatModulePicker = buildStatModulePicker;
+    window.getLinkedStatNames = getLinkedStatNames;
+
     // ── PF2e Proficiency Rank Helpers ──
     var PF2E_RANK_BONUS_MAP = { untrained: 0, trained: 2, expert: 4, master: 6, legendary: 8 };
 

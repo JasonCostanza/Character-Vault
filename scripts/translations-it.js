@@ -404,6 +404,8 @@ window.CV_TRANSLATIONS['it'] = {
             'save.close': 'Chiudi',
             'save.event.roll': 'Tiro Salvezza',
             'save.log.roll': 'Tiro salvezza di {name} ({modifier})',
+            'save.linkedStat': 'Caratteristica',
+            'save.linkStatFirst': 'Collega prima un modulo statistiche',
 
             // Incantesimi (Spells submodule)
             'spells.settings': 'Impostazioni Incantesimi',
@@ -1343,6 +1345,10 @@ window.CV_TRANSLATIONS['it'] = {
             'common.save': 'Salva',
             'common.close': 'Chiudi',
             'common.discardChanges': 'Hai modifiche non salvate. Scartare?',
+            'common.linkedStatModule': 'Modulo statistiche collegato',
+            'common.noLinkedModule': 'Nessuno (manuale)',
+            'common.bonus': 'Bonus',
+            'common.fromStat': 'da {stat}',
 
             'empty.message': 'Clicca su <strong>Nuovo Modulo</strong> per iniziare',
             'empty.hint': 'Apri <strong>Impostazioni</strong> per scegliere un sistema di gioco',

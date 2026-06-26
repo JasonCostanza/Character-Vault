@@ -262,6 +262,20 @@
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
 
+.ability-stat-mod {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--cv-text-muted);
+    flex-shrink: 0;
+    user-select: none;
+    min-width: 22px;
+    text-align: center;
+}
+
+.ability-edit-bonus {
+    width: 30px;
+}
+
 .ability-edit-delete {
     width: 16px;
     height: 16px;

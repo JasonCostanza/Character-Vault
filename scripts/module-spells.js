@@ -146,12 +146,7 @@
     // ── Linked Stat Module Helpers ──
     function getLinkedStatNames(data) {
         var linkedId = data.content ? data.content.linkedStatModuleId : null;
-        if (!linkedId) return [];
-        var linkedMod = (window.modules || []).find(function (m) { return m.id === linkedId; });
-        if (!linkedMod || !linkedMod.content || !Array.isArray(linkedMod.content.stats)) return [];
-        return linkedMod.content.stats
-            .filter(function (s) { return s.name && !s.isProficiencyStat; })
-            .map(function (s) { return s.name; });
+        return window.getLinkedStatNames(linkedId);
     }
 
     // ── Spell Attack / DC Computation ──
@@ -1521,11 +1516,6 @@
             linkLabel.className = 'spells-settings-field-label';
             linkLabel.textContent = t('spells.linkedStatModule');
 
-            const statModOptions = [{ value: '', label: t('spells.noLinkedModule') }];
-            (window.modules || []).filter(m => m.type === 'stat').forEach(m => {
-                statModOptions.push({ value: m.id, label: m.title || t('type.stat') });
-            });
-
             const abilitySelectWrapper = document.createElement('div');
 
             function buildAbilitySelect() {
@@ -1550,7 +1540,7 @@
 
             buildAbilitySelect();
 
-            const statModSelect = buildCvSelect(statModOptions, content.linkedStatModuleId || '', (val) => {
+            const statModSelect = buildStatModulePicker(content.linkedStatModuleId, (val) => {
                 content.linkedStatModuleId = val || null;
                 if (content.spellcastingAbility) {
                     const validNames = getLinkedStatNames(data);
@@ -1561,7 +1551,7 @@
                 reRender();
                 buildAbilitySelect();
                 refreshPreview();
-            });
+            }, t('spells.noLinkedModule'));
 
             linkRow.appendChild(linkLabel);
             linkRow.appendChild(statModSelect.el);

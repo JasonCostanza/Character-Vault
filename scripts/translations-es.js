@@ -394,6 +394,8 @@ window.CV_TRANSLATIONS['es'] = {
             'save.close': 'Cerrar',
             'save.event.roll': 'Tirada de Salvación',
             'save.log.roll': 'Tirada de salvación de {name} ({modifier})',
+            'save.linkedStat': 'Característica',
+            'save.linkStatFirst': 'Vincula primero un módulo de stats',
 
             // Spells submodule
             'spells.settings': 'Ajustes de Conjuros',
@@ -979,6 +981,10 @@ window.CV_TRANSLATIONS['es'] = {
             'common.save': 'Guardar',
             'common.close': 'Cerrar',
             'common.discardChanges': '¿Hay cambios sin guardar. ¿Descartar?',
+            'common.linkedStatModule': 'Módulo de stats vinculado',
+            'common.noLinkedModule': 'Ninguno (manual)',
+            'common.bonus': 'Bonus',
+            'common.fromStat': 'de {stat}',
 
             'empty.message': 'Haz clic en <strong>Nuevo Módulo</strong> para comenzar',
             'empty.hint': 'Abre <strong>Configuración</strong> para elegir un sistema de juego',

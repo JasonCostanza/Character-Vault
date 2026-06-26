@@ -775,6 +775,8 @@ window.CV_TRANSLATIONS['de'] = {
             'save.close': 'Schließen',
             'save.event.roll': 'Rettungswurf',
             'save.log.roll': 'Rettungswurf für {name} ({modifier})',
+            'save.linkedStat': 'Attribut',
+            'save.linkStatFirst': 'Zuerst ein Stat-Modul verknüpfen',
 
             // Zauber (Spells submodule)
             'spells.settings': 'Zauber-Einstellungen',
@@ -1283,6 +1285,10 @@ window.CV_TRANSLATIONS['de'] = {
             'common.save': 'Speichern',
             'common.close': 'Schließen',
             'common.discardChanges': 'Es gibt ungespeicherte Änderungen. Verwerfen?',
+            'common.linkedStatModule': 'Verknüpftes Stat-Modul',
+            'common.noLinkedModule': 'Keins (manuell)',
+            'common.bonus': 'Bonus',
+            'common.fromStat': 'von {stat}',
 
             'empty.message': 'Klicke auf <strong>Neues Modul</strong> um zu beginnen',
             'empty.hint': 'Öffne <strong>Einstellungen</strong> um ein Spielsystem zu wählen',

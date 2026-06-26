@@ -913,6 +913,8 @@ window.CV_TRANSLATIONS.en = {
             'save.close': 'Close',
             'save.event.roll': 'Saving Throw',
             'save.log.roll': 'Rolled {name} save ({modifier})',
+            'save.linkedStat': 'Ability',
+            'save.linkStatFirst': 'Link a stat module first',
 
             // Spells submodule
             'spells.settings': 'Spell Settings',
@@ -1345,6 +1347,10 @@ window.CV_TRANSLATIONS.en = {
             'common.save': 'Save',
             'common.close': 'Close',
             'common.discardChanges': 'You have unsaved changes. Discard?',
+            'common.linkedStatModule': 'Linked Stat Module',
+            'common.noLinkedModule': 'None (manual)',
+            'common.bonus': 'Bonus',
+            'common.fromStat': 'from {stat}',
 
             'empty.message': 'Click <strong>New Module</strong> to get started',
             'empty.hint': 'Open <strong>Settings</strong> to choose a game system',

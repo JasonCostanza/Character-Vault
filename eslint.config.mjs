@@ -34,6 +34,8 @@ export default [
                 formatModifier: 'readonly',
                 makeCvToggle: 'readonly',
                 buildCvSelect: 'readonly',
+                buildStatModulePicker: 'readonly',
+                getLinkedStatNames: 'readonly',
                 closeAllModals: 'readonly',
                 CV_ICONS: 'readonly',
                 CV_SVG_SORT_UP: 'readonly',

@@ -272,12 +272,7 @@
     // ── Linked Stat Module Helpers ──
     function getLinkedStatNames(data) {
         var linkedId = data.content ? data.content.linkedStatModuleId : null;
-        if (!linkedId) return [];
-        var linkedMod = (window.modules || []).find(function (m) { return m.id === linkedId; });
-        if (!linkedMod || !linkedMod.content || !Array.isArray(linkedMod.content.stats)) return [];
-        return linkedMod.content.stats
-            .filter(function (s) { return s.name && !s.isProficiencyStat; })
-            .map(function (s) { return s.name; });
+        return window.getLinkedStatNames(linkedId);
     }
 
     // ── Attack Bonus Computation ──
@@ -1481,25 +1476,15 @@
 
         var label = document.createElement('label');
         label.className = 'cv-modal-label';
-        label.setAttribute('data-i18n', 'weapons.linkedStatModule');
         label.textContent = t('weapons.linkedStatModule');
         body.appendChild(label);
 
-        var select = document.createElement('select');
-        select.className = 'weapons-linked-select';
-        var noneOpt = document.createElement('option');
-        noneOpt.value = '';
-        noneOpt.setAttribute('data-i18n', 'weapons.noLinkedModule');
-        noneOpt.textContent = t('weapons.noLinkedModule');
-        select.appendChild(noneOpt);
-        (window.modules || []).filter(function (m) { return m.type === 'stat'; }).forEach(function (m) {
-            var opt = document.createElement('option');
-            opt.value = m.id;
-            opt.textContent = m.title || t('type.stat');
-            select.appendChild(opt);
-        });
-        select.value = data.content.linkedStatModuleId || '';
-        body.appendChild(select);
+        var statPicker = buildStatModulePicker(
+            data.content.linkedStatModuleId,
+            null,
+            t('weapons.noLinkedModule')
+        );
+        body.appendChild(statPicker.el);
         buildCommonSettingsSection(body, moduleEl, data);
 
         var footer = document.createElement('div');
@@ -1522,7 +1507,7 @@
         function close() { overlay.remove(); }
 
         function save() {
-            data.content.linkedStatModuleId = select.value || null;
+            data.content.linkedStatModuleId = statPicker.getValue() || null;
             scheduleSave();
             var bodyEl = moduleEl.querySelector('.module-body');
             var isPlay = window.isPlayMode;

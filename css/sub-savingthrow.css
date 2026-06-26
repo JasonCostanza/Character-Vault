@@ -273,6 +273,15 @@
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
 
+.save-stat-mod {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--cv-text-muted);
+    user-select: none;
+    min-width: 28px;
+    text-align: center;
+}
+
 
 /* ── SortableJS Ghost (mirrors .stat-ghost) ── */
 

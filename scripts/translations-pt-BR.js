@@ -394,6 +394,8 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'save.close': 'Fechar',
             'save.event.roll': 'Resistência',
             'save.log.roll': 'Resistência de {name} rolada ({modifier})',
+            'save.linkedStat': 'Habilidade',
+            'save.linkStatFirst': 'Vincule um módulo de stats primeiro',
 
             // Magias (Spells submodule)
             'spells.settings': 'Configurações de Magias',
@@ -1315,6 +1317,10 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'common.save': 'Salvar',
             'common.close': 'Fechar',
             'common.discardChanges': 'Você tem alterações não salvas. Descartar?',
+            'common.linkedStatModule': 'Módulo de stats vinculado',
+            'common.noLinkedModule': 'Nenhum (manual)',
+            'common.bonus': 'Bônus',
+            'common.fromStat': 'de {stat}',
 
             'empty.message': 'Clique em <strong>Novo Módulo</strong> para começar',
             'empty.hint': 'Abra <strong>Configurações</strong> para escolher um sistema de jogo',

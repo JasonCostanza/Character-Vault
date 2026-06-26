@@ -427,6 +427,8 @@ window.CV_TRANSLATIONS['fr'] = {
             'save.close': 'Fermer',
             'save.event.roll': 'Jet de Sauvegarde',
             'save.log.roll': 'Jet de sauvegarde de {name} ({modifier})',
+            'save.linkedStat': 'Caractéristique',
+            'save.linkStatFirst': 'Liez d\'abord un module de stats',
 
             // Conditions submodule — UI
             'type.condition': 'Conditions',
@@ -1335,6 +1337,10 @@ window.CV_TRANSLATIONS['fr'] = {
             'common.save': 'Enregistrer',
             'common.close': 'Fermer',
             'common.discardChanges': 'Vous avez des modifications non sauvegardées. Annuler ?',
+            'common.linkedStatModule': 'Module de stats lié',
+            'common.noLinkedModule': 'Aucun (manuel)',
+            'common.bonus': 'Bonus',
+            'common.fromStat': 'de {stat}',
 
             'empty.message': 'Cliquez sur <strong>Nouveau Module</strong> pour commencer',
             'empty.hint': 'Ouvrez <strong>Paramètres</strong> pour choisir un système de jeu',

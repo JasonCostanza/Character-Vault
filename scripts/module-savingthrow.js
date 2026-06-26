@@ -4,11 +4,34 @@
 
     // ── Templates ──
     const SAVE_TEMPLATES = {
-        dnd5e: ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma'],
-        pf2e: ['Fortitude', 'Reflex', 'Will'],
-        coc: ['Sanity', 'Luck', 'Power'],
-        cpred: ['Death Save', 'Stun'],
-        mothership: ['Sanity', 'Fear', 'Body', 'Armor'],
+        dnd5e: [
+            { name: 'Strength', linkedStatName: 'STR' },
+            { name: 'Dexterity', linkedStatName: 'DEX' },
+            { name: 'Constitution', linkedStatName: 'CON' },
+            { name: 'Intelligence', linkedStatName: 'INT' },
+            { name: 'Wisdom', linkedStatName: 'WIS' },
+            { name: 'Charisma', linkedStatName: 'CHA' },
+        ],
+        pf2e: [
+            { name: 'Fortitude', linkedStatName: 'CON' },
+            { name: 'Reflex', linkedStatName: 'DEX' },
+            { name: 'Will', linkedStatName: 'WIS' },
+        ],
+        coc: [
+            { name: 'Sanity' },
+            { name: 'Luck' },
+            { name: 'Power' },
+        ],
+        cpred: [
+            { name: 'Death Save' },
+            { name: 'Stun' },
+        ],
+        mothership: [
+            { name: 'Sanity' },
+            { name: 'Fear' },
+            { name: 'Body' },
+            { name: 'Armor' },
+        ],
     };
 
     const TIER_PRESETS = {
@@ -30,14 +53,17 @@
     };
 
     function applySavingThrowTemplate(key) {
-        const names = SAVE_TEMPLATES[key];
-        if (!names) return [];
-        return names.map((name) => ({
-            id: generateId('save'),
-            name,
-            value: 0,
-            proficiencyTier: null,
-        }));
+        const entries = SAVE_TEMPLATES[key];
+        if (!entries) return [];
+        return entries.map(function (entry) {
+            return {
+                id: generateId('save'),
+                name: entry.name,
+                value: 0,
+                proficiencyTier: null,
+                linkedStatName: entry.linkedStatName || null,
+            };
+        });
     }
 
     function applyTierPreset(key) {
@@ -55,6 +81,7 @@
                 tiersEnabled: false,
                 tiers: applyTierPreset('simple'),
                 tierPreset: 'simple',
+                linkedStatModuleId: null,
             };
         }
         if (!Array.isArray(data.content.saves)) data.content.saves = [];
@@ -62,12 +89,16 @@
         if (typeof data.content.tiersEnabled !== 'boolean') data.content.tiersEnabled = false;
         if (!Array.isArray(data.content.tiers)) data.content.tiers = applyTierPreset('simple');
         if (!data.content.tierPreset) data.content.tierPreset = 'simple';
+        if (data.content.linkedStatModuleId === undefined) data.content.linkedStatModuleId = null;
         if (data.content.tierPreset === 'dnd5e') {
             data.content.tiers = applyTierPreset('dnd5e');
             data.content.saves.forEach((save) => {
                 if (save.proficiencyTier === 'Not Proficient') save.proficiencyTier = null;
             });
         }
+        data.content.saves.forEach(function (save) {
+            if (save.linkedStatName === undefined) save.linkedStatName = null;
+        });
         return data.content;
     }
 
@@ -83,6 +114,14 @@
     }
 
     // ── Helpers ──
+    function getSaveBaseMod(save, content) {
+        if (content.linkedStatModuleId && save.linkedStatName) {
+            var statMod = window.getAbilityModifierFrom(save.linkedStatName, content.linkedStatModuleId);
+            return statMod + (save.value || 0);
+        }
+        return save.value || 0;
+    }
+
     function getTierForSave(save, tiers) {
         if (!save.proficiencyTier) return null;
         return tiers.find((tier) => tier.name === save.proficiencyTier) || null;
@@ -102,7 +141,7 @@
             html += `<span class="save-tier-badge" style="background:${escapeHtml(tier.color)}">${escapeHtml(tier.letter)}</span>`;
         }
         html += `<div class="save-name" title="${escapeHtml(save.name || t('save.unnamed'))}">${escapeHtml(save.name || t('save.unnamed'))}</div>`;
-        html += `<div class="save-modifier">${escapeHtml(formatModifier(save.value))}</div>`;
+        html += `<div class="save-modifier">${escapeHtml(formatModifier(getSaveBaseMod(save, content)))}</div>`;
         block.innerHTML = html;
 
         block.addEventListener('click', (e) => {
@@ -123,6 +162,22 @@
         block.className = 'save-block-edit';
         block.dataset.index = index;
 
+        var isLinked = !!(content.linkedStatModuleId && save.linkedStatName);
+        var modAreaHtml = '';
+        if (isLinked) {
+            var statMod = window.getAbilityModifierFrom(save.linkedStatName, content.linkedStatModuleId);
+            modAreaHtml +=
+                `<div class="save-edit-field">` +
+                `<label>${escapeHtml(t('save.modifier'))}</label>` +
+                `<span class="save-stat-mod" title="${escapeHtml(t('common.fromStat', { stat: save.linkedStatName }))}">${escapeHtml(formatModifier(statMod))}</span>` +
+                `</div>`;
+        }
+        modAreaHtml +=
+            `<div class="save-edit-field">` +
+            `<label>${escapeHtml(t(isLinked ? 'common.bonus' : 'save.modifier'))}</label>` +
+            `<input type="number" class="save-edit-value" value="${save.value}">` +
+            `</div>`;
+
         block.innerHTML =
             `<div class="save-edit-name-row">` +
             `<span class="save-drag-handle">&#x2807;</span>` +
@@ -134,15 +189,34 @@
             `</button>` +
             `</div>` +
             `<div class="save-edit-row">` +
-            `<div class="save-edit-field">` +
-            `<label>${escapeHtml(t('save.modifier'))}</label>` +
-            `<input type="number" class="save-edit-value" value="${save.value}">` +
-            `</div>` +
+            modAreaHtml +
             `</div>`;
 
         const nameInput = block.querySelector('.save-edit-name');
         const valInput = block.querySelector('.save-edit-value');
         const deleteBtn = block.querySelector('.save-edit-delete');
+
+        if (content.linkedStatModuleId) {
+            var statNames = getLinkedStatNames(content.linkedStatModuleId);
+            if (statNames.length > 0) {
+                var statOpts = [{ value: '', label: '—' }].concat(
+                    statNames.map(function (n) { return { value: n, label: n }; })
+                );
+                var statWidget = buildCvSelect(statOpts, save.linkedStatName || '', function (val) {
+                    save.linkedStatName = val || null;
+                    scheduleSave();
+                    var blocksGrid = block.closest('.save-blocks-grid');
+                    if (blocksGrid) reRenderSaveEdits(blocksGrid, data);
+                });
+                var statField = document.createElement('div');
+                statField.className = 'save-edit-field';
+                var statLabel = document.createElement('label');
+                statLabel.textContent = t('save.linkedStat');
+                statField.appendChild(statLabel);
+                statField.appendChild(statWidget.el);
+                block.querySelector('.save-edit-row').appendChild(statField);
+            }
+        }
 
         if (content.tiersEnabled) {
             const tierOpts = [{ value: '', label: t('save.noProficiency') }].concat(
@@ -222,7 +296,7 @@
         } else if (sys === 'pf2e' && save.proficiencyTier && typeof window.computePf2eProficiencyBonus === 'function') {
             profBonus = window.computePf2eProficiencyBonus(save.proficiencyTier.toLowerCase());
         }
-        var totalMod = save.value + profBonus;
+        var totalMod = getSaveBaseMod(save, data.content) + profBonus;
         const modStr = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
         if (sys === 'daggerheart') {
             window.rollDualityDice(
@@ -428,6 +502,22 @@
             });
         });
 
+        // Linked stat module
+        var workingLinkedStatId = content.linkedStatModuleId;
+        const statPickerLabel = document.createElement('label');
+        statPickerLabel.className = 'cv-modal-label';
+        statPickerLabel.textContent = t('common.linkedStatModule');
+        body.appendChild(statPickerLabel);
+
+        const statPicker = buildStatModulePicker(
+            workingLinkedStatId,
+            function (val) {
+                workingLinkedStatId = val || null;
+                dirty = true;
+            }
+        );
+        body.appendChild(statPicker.el);
+
         buildCommonSettingsSection(body, moduleEl, data);
 
         // Footer
@@ -460,6 +550,7 @@
             content.tiersEnabled = workingTiersEnabled;
             content.tierPreset = workingTierPreset;
             content.tiers = workingTiers;
+            content.linkedStatModuleId = workingLinkedStatId;
             // Orphan cleanup: saves pointing at deleted/renamed tiers → null
             const tierNames = new Set(content.tiers.map((tier) => tier.name));
             content.saves.forEach((save) => {
@@ -739,4 +830,36 @@
     window.getTierForSave = getTierForSave;
     window.saveNotesCheckboxProxy = saveNotesCheckboxProxy;
     window.openSaveSettings = openSaveSettings;
+
+    function reRenderLinkedSaves(changedId) {
+        window.modules.forEach(function (mod) {
+            if (mod.type !== 'savingthrow' || !mod.content) return;
+            if (mod.content.linkedStatModuleId !== changedId) return;
+            var moduleEl = document.querySelector('.module[data-id="' + mod.id + '"]');
+            if (!moduleEl) return;
+            var bodyEl = moduleEl.querySelector('.module-body');
+            if (bodyEl && window.MODULE_TYPES && window.MODULE_TYPES['savingthrow']) {
+                window.MODULE_TYPES['savingthrow'].renderBody(bodyEl, mod, isPlayMode);
+            }
+        });
+    }
+
+    document.addEventListener('cv:stat-values-changed', function (e) {
+        reRenderLinkedSaves(e.detail && e.detail.moduleId);
+    });
+
+    document.addEventListener('cv:stats-changed', function (e) {
+        var changedId = e.detail && e.detail.moduleId;
+        var validNames = getLinkedStatNames(changedId);
+        window.modules.forEach(function (mod) {
+            if (mod.type !== 'savingthrow' || !mod.content) return;
+            if (mod.content.linkedStatModuleId !== changedId) return;
+            mod.content.saves.forEach(function (save) {
+                if (save.linkedStatName && validNames.indexOf(save.linkedStatName) === -1) {
+                    save.linkedStatName = null;
+                }
+            });
+        });
+        reRenderLinkedSaves(changedId);
+    });
 })();

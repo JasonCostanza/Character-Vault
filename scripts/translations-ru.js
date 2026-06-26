@@ -395,6 +395,8 @@ window.CV_TRANSLATIONS['ru'] = {
             'save.close': 'Закрыть',
             'save.event.roll': 'Спасбросок',
             'save.log.roll': 'Спасбросок {name} ({modifier})',
+            'save.linkedStat': 'Характеристика',
+            'save.linkStatFirst': 'Сначала привяжите модуль характеристик',
 
             // Заклинания (Spells submodule)
             'spells.settings': 'Настройки Заклинаний',
@@ -1307,6 +1309,10 @@ window.CV_TRANSLATIONS['ru'] = {
             'common.save': 'Сохранить',
             'common.close': 'Закрыть',
             'common.discardChanges': 'Есть несохранённые изменения. Отменить?',
+            'common.linkedStatModule': 'Связанный модуль характеристик',
+            'common.noLinkedModule': 'Нет (вручную)',
+            'common.bonus': 'Бонус',
+            'common.fromStat': 'от {stat}',
 
             'empty.message': 'Нажмите <strong>Новый Модуль</strong> чтобы начать',
             'empty.hint': 'Откройте <strong>Настройки</strong> чтобы выбрать игровую систему',

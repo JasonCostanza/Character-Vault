@@ -462,7 +462,11 @@
         }
 
         function doSave() {
+            var oldName = counter.name;
             counter.name = editState.name.trim() || t('counter.unnamed');
+            if (typeof window.propagateDiceVariableRename === 'function' && oldName !== counter.name) {
+                window.propagateDiceVariableRename(data.id, 'counter', oldName, counter.name);
+            }
             counter.icon = editState.icon;
             counter.value = editState.value;
             counter.max = editState.max;

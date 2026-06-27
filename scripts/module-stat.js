@@ -233,7 +233,12 @@
         }
 
         nameInput.addEventListener('input', () => {
+            var oldName = stat.name;
             stat.name = nameInput.value;
+            if (typeof window.propagateDiceVariableRename === 'function' && oldName !== stat.name) {
+                window.propagateDiceVariableRename(data.id, 'stat-mod', oldName, stat.name);
+                window.propagateDiceVariableRename(data.id, 'stat-val', oldName, stat.name);
+            }
             scheduleSave();
             document.dispatchEvent(new CustomEvent('cv:stats-changed', { detail: { moduleId: data.id } }));
         });

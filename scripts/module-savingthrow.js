@@ -241,7 +241,11 @@
         }
 
         nameInput.addEventListener('input', () => {
+            var oldName = save.name;
             save.name = nameInput.value;
+            if (typeof window.propagateDiceVariableRename === 'function' && oldName !== save.name) {
+                window.propagateDiceVariableRename(data.id, 'save-mod', oldName, save.name);
+            }
             scheduleSave();
         });
         valInput.addEventListener('input', () => {

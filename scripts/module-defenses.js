@@ -364,7 +364,11 @@
         nameInput.className = 'def-name-input';
         nameInput.value = def.name;
         nameInput.addEventListener('input', function () {
+            var oldName = def.name;
             def.name = nameInput.value;
+            if (typeof window.propagateDiceVariableRename === 'function' && oldName !== def.name) {
+                window.propagateDiceVariableRename(data.id, 'defense', oldName, def.name);
+            }
             scheduleSave();
         });
         row.appendChild(nameInput);

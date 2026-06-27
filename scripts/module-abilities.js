@@ -366,7 +366,11 @@
         const deleteBtn = row.querySelector('.ability-edit-delete');
 
         nameInput.addEventListener('input', () => {
+            var oldName = ability.name;
             ability.name = nameInput.value;
+            if (typeof window.propagateDiceVariableRename === 'function' && oldName !== ability.name) {
+                window.propagateDiceVariableRename(data.id, 'ability-mod', oldName, ability.name);
+            }
             scheduleSave();
         });
         modInput.addEventListener('input', () => {

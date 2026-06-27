@@ -368,7 +368,8 @@
     }
 
     function closePicker() {
-        var picker = getPickerEl();
+        if (!pickerEl) return;
+        var picker = pickerEl;
         picker.style.display = 'none';
         picker.innerHTML = '';
         activeInput = null;
@@ -392,7 +393,6 @@
 
         picker.innerHTML = '';
         pickerItems = [];
-        highlightIndex = 0;
 
         if (!filtered.length) {
             var empty = document.createElement('div');
@@ -480,9 +480,7 @@
 
     function moveHighlight(delta) {
         if (!pickerItems.length) return;
-        if (highlightIndex >= 0 && highlightIndex < pickerItems.length) {
-            pickerItems[highlightIndex].el.classList.remove('highlighted');
-        }
+        pickerItems[highlightIndex].el.classList.remove('highlighted');
         highlightIndex = (highlightIndex + delta + pickerItems.length) % pickerItems.length;
         pickerItems[highlightIndex].el.classList.add('highlighted');
         pickerItems[highlightIndex].el.scrollIntoView({ block: 'nearest' });
@@ -529,14 +527,14 @@
             // Look for unclosed ${ before cursor
             var triggerIdx = before.lastIndexOf('${');
             if (triggerIdx === -1) {
-                if (isPickerOpen()) closePicker();
+                closePicker();
                 return;
             }
 
             // Check there's no } between trigger and cursor
             var segment = before.slice(triggerIdx + 2);
             if (segment.indexOf('}') !== -1) {
-                if (isPickerOpen()) closePicker();
+                closePicker();
                 return;
             }
 

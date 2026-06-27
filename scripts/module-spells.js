@@ -798,9 +798,15 @@
 
         const values = spell.values || {};
         const rolls = (content.attributes || [])
-            .filter(attr => isDiceNotation(values[attr.id]))
-            .map(attr => ({ name: (spell.name || t('spells.unnamed')) + ': ' + attr.name, roll: extractDiceRoll(values[attr.id]) }))
-            .filter(x => x.roll);
+            .map(function (attr) {
+                var raw = values[attr.id];
+                if (raw == null || raw === '') return null;
+                var resolved = typeof window.hasDiceVariables === 'function' && window.hasDiceVariables(raw)
+                    ? window.resolveDiceExpression(raw) : raw;
+                if (!isDiceNotation(resolved)) return null;
+                return { name: (spell.name || t('spells.unnamed')) + ': ' + attr.name, roll: extractDiceRoll(resolved) };
+            })
+            .filter(function (x) { return x && x.roll; });
 
         let rollPromise = null;
         if (typeof TS !== 'undefined' && rolls.length) {

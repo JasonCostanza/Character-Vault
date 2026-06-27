@@ -1,0 +1,79 @@
+/* ── Dice Variable Picker ── */
+
+.cv-var-picker {
+    position: fixed;
+    z-index: 250;
+    background: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    border-radius: 4px;
+    max-height: 240px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
+    scrollbar-gutter: stable;
+}
+
+.cv-var-picker::-webkit-scrollbar { width: 4px; }
+.cv-var-picker::-webkit-scrollbar-track { background: transparent; }
+.cv-var-picker::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
+
+.cv-var-picker-group {
+    padding: 4px 8px 2px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--cv-text-muted);
+    user-select: none;
+}
+
+.cv-var-picker-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 8px;
+    cursor: pointer;
+    user-select: none;
+    gap: 8px;
+}
+
+.cv-var-picker-item:hover,
+.cv-var-picker-item.highlighted {
+    background: var(--cv-accent);
+    color: var(--cv-bg);
+}
+
+.cv-var-picker-name {
+    font-size: 12px;
+    color: var(--cv-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cv-var-picker-item:hover .cv-var-picker-name,
+.cv-var-picker-item.highlighted .cv-var-picker-name {
+    color: inherit;
+}
+
+.cv-var-picker-value {
+    font-size: 11px;
+    color: var(--cv-text-secondary);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.cv-var-picker-item:hover .cv-var-picker-value,
+.cv-var-picker-item.highlighted .cv-var-picker-value {
+    color: inherit;
+    opacity: 0.8;
+}
+
+.cv-var-picker-empty {
+    padding: 8px;
+    font-size: 12px;
+    color: var(--cv-text-muted);
+    text-align: center;
+    user-select: none;
+}

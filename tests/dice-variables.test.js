@@ -261,3 +261,59 @@ describe('propagateDiceVariableRename', () => {
         expect(window.modules[0].content.weapons[0].damageInstances[0].dice).toBe('2d6+3');
     });
 });
+
+// ── propagateEntityRename ──
+
+describe('propagateEntityRename', () => {
+    it('renames all stat token types (stat-mod and stat-val) in one call', () => {
+        window.modules = [{
+            id: 'mod-w', type: 'weapons',
+            content: {
+                weapons: [{
+                    damageInstances: [
+                        { dice: '1d8+${stat-mod.STR.mod-s}' },
+                        { dice: '${stat-val.STR.mod-s}' },
+                    ],
+                }],
+            },
+        }];
+        window.propagateEntityRename('mod-s', 'stat', 'STR', 'Strength');
+        const instances = window.modules[0].content.weapons[0].damageInstances;
+        expect(instances[0].dice).toBe('1d8+${stat-mod.Strength.mod-s}');
+        expect(instances[1].dice).toBe('${stat-val.Strength.mod-s}');
+    });
+
+    it('renames counter tokens via entityKind=counter', () => {
+        window.modules = [{
+            id: 'mod-sp', type: 'spells',
+            content: {
+                categories: [{
+                    spells: [{ values: { a1: '${counter.Rage.mod-c}' } }],
+                }],
+            },
+        }];
+        window.propagateEntityRename('mod-c', 'counter', 'Rage', 'Fury');
+        expect(window.modules[0].content.categories[0].spells[0].values.a1)
+            .toBe('${counter.Fury.mod-c}');
+    });
+
+    it('does nothing when oldName equals newName', () => {
+        window.modules = [{
+            id: 'mod-w', type: 'weapons',
+            content: { weapons: [{ damageInstances: [{ dice: '1d6+${stat-mod.STR.mod-s}' }] }] },
+        }];
+        window.propagateEntityRename('mod-s', 'stat', 'STR', 'STR');
+        expect(window.modules[0].content.weapons[0].damageInstances[0].dice)
+            .toBe('1d6+${stat-mod.STR.mod-s}');
+    });
+
+    it('does nothing for unknown entityKind', () => {
+        window.modules = [{
+            id: 'mod-w', type: 'weapons',
+            content: { weapons: [{ damageInstances: [{ dice: '1d6+${bogus.X.mod-s}' }] }] },
+        }];
+        window.propagateEntityRename('mod-s', 'bogus', 'X', 'Y');
+        expect(window.modules[0].content.weapons[0].damageInstances[0].dice)
+            .toBe('1d6+${bogus.X.mod-s}');
+    });
+});

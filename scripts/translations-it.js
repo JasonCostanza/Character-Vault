@@ -1488,4 +1488,6 @@ window.CV_TRANSLATIONS['it'] = {
             'diceVar.pickerEmpty': 'Nessuna variabile disponibile',
             'diceVar.pickerNoMatch': 'Nessuna corrispondenza',
             'diceVar.tooltipPrefix': '=',
+            'diceVar.modSuffix': ' mod',
+            'diceVar.saveSuffix': ' sal',
 };

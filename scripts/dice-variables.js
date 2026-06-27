@@ -520,10 +520,10 @@
     function getTokenDisplayName(inner) {
         var parsed = parseToken(inner);
         switch (parsed.type) {
-            case 'stat-mod': return parsed.name + ' mod';
+            case 'stat-mod': return parsed.name + t('diceVar.modSuffix');
             case 'stat-val': return parsed.name;
             case 'ability-mod': return parsed.name;
-            case 'save-mod': return parsed.name + ' save';
+            case 'save-mod': return parsed.name + t('diceVar.saveSuffix');
             case 'counter': return parsed.name;
             case 'defense': return parsed.name;
             case 'level': return t('diceVar.level');

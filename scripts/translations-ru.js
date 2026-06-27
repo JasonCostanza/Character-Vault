@@ -1452,4 +1452,6 @@ window.CV_TRANSLATIONS['ru'] = {
             'diceVar.pickerEmpty': 'Нет доступных переменных',
             'diceVar.pickerNoMatch': 'Нет совпадений',
             'diceVar.tooltipPrefix': '=',
+            'diceVar.modSuffix': ' мод',
+            'diceVar.saveSuffix': ' сп',
 };

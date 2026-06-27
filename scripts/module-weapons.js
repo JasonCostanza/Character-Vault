@@ -1744,13 +1744,18 @@
                 if (inst.modFromAbility) {
                     instBonus += typeof window.getAbilityModifierFrom === 'function' ? window.getAbilityModifierFrom(weapon.abilityMod, data.content.linkedStatModuleId) : 0;
                 }
-                var diceExpr = (inst.dice || '1d4') + (instBonus !== 0 ? formatBonus(instBonus) : '');
+                var rawDice = inst.dice || '1d4';
+                var resolvedDice = typeof window.hasDiceVariables === 'function' && window.hasDiceVariables(rawDice)
+                    ? window.resolveDiceExpression(rawDice) : rawDice;
+                var diceExpr = resolvedDice + (instBonus !== 0 ? formatBonus(instBonus) : '');
                 if (sys === 'daggerheart') {
                     var dhProf = typeof window.getCharacterProficiency === 'function'
                         ? window.getCharacterProficiency() : null;
                     if (dhProf && dhProf > 1) {
-                        var baseDice = weaponsApplyProficiencyDice(inst.dice || '1d4', dhProf);
-                        diceExpr = baseDice + (instBonus !== 0 ? formatBonus(instBonus) : '');
+                        var baseDice = weaponsApplyProficiencyDice(rawDice, dhProf);
+                        var resolvedBase = typeof window.hasDiceVariables === 'function' && window.hasDiceVariables(baseDice)
+                            ? window.resolveDiceExpression(baseDice) : baseDice;
+                        diceExpr = resolvedBase + (instBonus !== 0 ? formatBonus(instBonus) : '');
                     }
                 }
                 var typeLabel = inst.damageType || '';

@@ -178,6 +178,7 @@
     }
 
     function resolveDiceExpression(expr) {
+        if (!hasDiceVariables(expr)) return expr;
         return applyTokens(expr, '0', showBrokenRefWarning);
     }
 

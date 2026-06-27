@@ -801,7 +801,7 @@
             .map(function (attr) {
                 var raw = values[attr.id];
                 if (raw == null || raw === '') return null;
-                var resolved = typeof window.hasDiceVariables === 'function' && window.hasDiceVariables(raw)
+                var resolved = typeof window.resolveDiceExpression === 'function'
                     ? window.resolveDiceExpression(raw) : raw;
                 if (!isDiceNotation(resolved)) return null;
                 return { name: (spell.name || t('spells.unnamed')) + ': ' + attr.name, roll: extractDiceRoll(resolved) };

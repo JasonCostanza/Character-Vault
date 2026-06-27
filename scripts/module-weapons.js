@@ -1745,19 +1745,17 @@
                     instBonus += typeof window.getAbilityModifierFrom === 'function' ? window.getAbilityModifierFrom(weapon.abilityMod, data.content.linkedStatModuleId) : 0;
                 }
                 var rawDice = inst.dice || '1d4';
-                var resolvedDice = typeof window.hasDiceVariables === 'function' && window.hasDiceVariables(rawDice)
-                    ? window.resolveDiceExpression(rawDice) : rawDice;
-                var diceExpr = resolvedDice + (instBonus !== 0 ? formatBonus(instBonus) : '');
+                var bonusStr = instBonus !== 0 ? formatBonus(instBonus) : '';
+                var effectiveDice = rawDice;
                 if (sys === 'daggerheart') {
                     var dhProf = typeof window.getCharacterProficiency === 'function'
                         ? window.getCharacterProficiency() : null;
                     if (dhProf && dhProf > 1) {
-                        var baseDice = weaponsApplyProficiencyDice(rawDice, dhProf);
-                        var resolvedBase = typeof window.hasDiceVariables === 'function' && window.hasDiceVariables(baseDice)
-                            ? window.resolveDiceExpression(baseDice) : baseDice;
-                        diceExpr = resolvedBase + (instBonus !== 0 ? formatBonus(instBonus) : '');
+                        effectiveDice = weaponsApplyProficiencyDice(rawDice, dhProf);
                     }
                 }
+                var diceExpr = (typeof window.resolveDiceExpression === 'function'
+                    ? window.resolveDiceExpression(effectiveDice) : effectiveDice) + bonusStr;
                 var typeLabel = inst.damageType || '';
                 var btn = document.createElement('button');
                 btn.className = 'btn-secondary weapon-action-btn';

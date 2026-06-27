@@ -337,6 +337,221 @@
         });
     }
 
+    // ── Autocomplete Picker ──
+
+    var pickerEl = null;
+    var activeInput = null;
+    var pickerItems = [];
+    var highlightIndex = -1;
+
+    function getPickerEl() {
+        if (pickerEl) return pickerEl;
+        pickerEl = document.createElement('div');
+        pickerEl.className = 'cv-var-picker';
+        pickerEl.setAttribute('role', 'listbox');
+        pickerEl.style.display = 'none';
+        document.body.appendChild(pickerEl);
+        pickerEl.addEventListener('mousedown', function (e) {
+            e.preventDefault();
+        });
+        return pickerEl;
+    }
+
+    function positionPicker(input) {
+        var picker = getPickerEl();
+        var rect = input.getBoundingClientRect();
+        picker.style.position = 'fixed';
+        picker.style.top = (rect.bottom + 2) + 'px';
+        picker.style.left = rect.left + 'px';
+        picker.style.minWidth = Math.max(rect.width, 200) + 'px';
+        picker.style.maxWidth = '320px';
+    }
+
+    function closePicker() {
+        var picker = getPickerEl();
+        picker.style.display = 'none';
+        picker.innerHTML = '';
+        activeInput = null;
+        pickerItems = [];
+        highlightIndex = -1;
+    }
+
+    function isPickerOpen() {
+        return pickerEl && pickerEl.style.display !== 'none';
+    }
+
+    function openPicker(input, filterText) {
+        var picker = getPickerEl();
+        var allVars = getAllDiceVariables();
+        activeInput = input;
+
+        var filter = (filterText || '').toLowerCase();
+        var filtered = filter
+            ? allVars.filter(function (v) { return v.searchText.indexOf(filter) !== -1 || v.display.toLowerCase().indexOf(filter) !== -1; })
+            : allVars;
+
+        picker.innerHTML = '';
+        pickerItems = [];
+        highlightIndex = 0;
+
+        if (!filtered.length) {
+            var empty = document.createElement('div');
+            empty.className = 'cv-var-picker-empty';
+            empty.textContent = allVars.length ? t('diceVar.pickerNoMatch') : t('diceVar.pickerEmpty');
+            picker.appendChild(empty);
+            picker.style.display = 'block';
+            positionPicker(input);
+            return;
+        }
+
+        // Group by module
+        var groups = {};
+        var groupOrder = [];
+        filtered.forEach(function (v) {
+            if (!groups[v.group]) {
+                groups[v.group] = [];
+                groupOrder.push(v.group);
+            }
+            groups[v.group].push(v);
+        });
+
+        groupOrder.forEach(function (groupName) {
+            var header = document.createElement('div');
+            header.className = 'cv-var-picker-group';
+            header.textContent = groupName;
+            picker.appendChild(header);
+
+            groups[groupName].forEach(function (v) {
+                var item = document.createElement('div');
+                item.className = 'cv-var-picker-item';
+                item.setAttribute('role', 'option');
+                item.dataset.token = v.token;
+
+                var nameSpan = document.createElement('span');
+                nameSpan.className = 'cv-var-picker-name';
+                nameSpan.textContent = v.display;
+
+                var valueSpan = document.createElement('span');
+                valueSpan.className = 'cv-var-picker-value';
+                valueSpan.textContent = v.value;
+
+                item.appendChild(nameSpan);
+                item.appendChild(valueSpan);
+
+                item.addEventListener('click', function () {
+                    insertToken(v.token);
+                    closePicker();
+                });
+
+                picker.appendChild(item);
+                pickerItems.push({ el: item, token: v.token });
+            });
+        });
+
+        if (pickerItems.length) {
+            pickerItems[0].el.classList.add('highlighted');
+            highlightIndex = 0;
+        }
+
+        picker.style.display = 'block';
+        positionPicker(input);
+    }
+
+    function insertToken(token) {
+        if (!activeInput) return;
+        var val = activeInput.value;
+        var cursorPos = activeInput.selectionStart;
+
+        // Find the `${` that triggered this picker
+        var before = val.slice(0, cursorPos);
+        var triggerIdx = before.lastIndexOf('${');
+        if (triggerIdx === -1) return;
+
+        var after = val.slice(cursorPos);
+        var fullToken = '${' + token + '}';
+        activeInput.value = val.slice(0, triggerIdx) + fullToken + after;
+
+        var newCursor = triggerIdx + fullToken.length;
+        activeInput.setSelectionRange(newCursor, newCursor);
+
+        // Fire input event to trigger save handlers
+        activeInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+
+    function moveHighlight(delta) {
+        if (!pickerItems.length) return;
+        if (highlightIndex >= 0 && highlightIndex < pickerItems.length) {
+            pickerItems[highlightIndex].el.classList.remove('highlighted');
+        }
+        highlightIndex = (highlightIndex + delta + pickerItems.length) % pickerItems.length;
+        pickerItems[highlightIndex].el.classList.add('highlighted');
+        pickerItems[highlightIndex].el.scrollIntoView({ block: 'nearest' });
+    }
+
+    function handlePickerKeydown(e) {
+        if (!isPickerOpen()) return false;
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            moveHighlight(1);
+            return true;
+        }
+        if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            moveHighlight(-1);
+            return true;
+        }
+        if (e.key === 'Enter' || e.key === 'Tab') {
+            if (highlightIndex >= 0 && highlightIndex < pickerItems.length) {
+                e.preventDefault();
+                insertToken(pickerItems[highlightIndex].token);
+                closePicker();
+                return true;
+            }
+        }
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            closePicker();
+            return true;
+        }
+        return false;
+    }
+
+    function attachDiceVariablePicker(inputEl) {
+        if (!inputEl || inputEl._cvVarPickerAttached) return;
+        inputEl._cvVarPickerAttached = true;
+
+        inputEl.addEventListener('input', function () {
+            var val = inputEl.value;
+            var cursorPos = inputEl.selectionStart;
+            var before = val.slice(0, cursorPos);
+
+            // Look for unclosed ${ before cursor
+            var triggerIdx = before.lastIndexOf('${');
+            if (triggerIdx === -1) {
+                if (isPickerOpen()) closePicker();
+                return;
+            }
+
+            // Check there's no } between trigger and cursor
+            var segment = before.slice(triggerIdx + 2);
+            if (segment.indexOf('}') !== -1) {
+                if (isPickerOpen()) closePicker();
+                return;
+            }
+
+            openPicker(inputEl, segment);
+        });
+
+        inputEl.addEventListener('keydown', function (e) {
+            handlePickerKeydown(e);
+        });
+
+        inputEl.addEventListener('blur', function () {
+            setTimeout(function () { closePicker(); }, 150);
+        });
+    }
+
     // ── Window Exports (pure/testable functions) ──
     window.hasDiceVariables = hasDiceVariables;
     window.resolveDiceExpression = resolveDiceExpression;
@@ -344,6 +559,7 @@
     window.formatDiceExpressionDisplay = formatDiceExpressionDisplay;
     window.getAllDiceVariables = getAllDiceVariables;
     window.propagateDiceVariableRename = propagateDiceVariableRename;
+    window.attachDiceVariablePicker = attachDiceVariablePicker;
     // exported for tests only
     window._parseDiceVarToken = parseToken;
     window._normalizeOperators = normalizeOperators;

@@ -1417,4 +1417,15 @@ window.CV_TRANSLATIONS['de'] = {
             'bio.predatorType': 'Raubtiertyp',
             'bio.ambition': 'Ambition',
             'bio.desire': 'Begehren',
+            // Dice variables
+            'diceVar.brokenRef': 'Variable „{name}" nicht gefunden — verwende 0',
+            'diceVar.level': 'Stufe',
+            'diceVar.currentHP': 'Aktuelle TP',
+            'diceVar.maxHP': 'Max TP',
+            'diceVar.prof': 'Prof',
+            'diceVar.groupGlobal': 'Global',
+            'diceVar.pickerTitle': 'Variable einfügen',
+            'diceVar.pickerEmpty': 'Keine Variablen verfügbar',
+            'diceVar.pickerNoMatch': 'Keine Übereinstimmungen',
+            'diceVar.tooltipPrefix': '=',
 };

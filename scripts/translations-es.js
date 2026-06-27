@@ -1113,4 +1113,15 @@ window.CV_TRANSLATIONS['es'] = {
             'bio.predatorType': 'Tipo de Depredador',
             'bio.ambition': 'Ambición',
             'bio.desire': 'Deseo',
+            // Dice variables
+            'diceVar.brokenRef': 'Variable "{name}" no encontrada — usando 0',
+            'diceVar.level': 'Nivel',
+            'diceVar.currentHP': 'PV actuales',
+            'diceVar.maxHP': 'PV máx',
+            'diceVar.prof': 'Comp',
+            'diceVar.groupGlobal': 'Global',
+            'diceVar.pickerTitle': 'Insertar variable',
+            'diceVar.pickerEmpty': 'Sin variables disponibles',
+            'diceVar.pickerNoMatch': 'Sin coincidencias',
+            'diceVar.tooltipPrefix': '=',
 };

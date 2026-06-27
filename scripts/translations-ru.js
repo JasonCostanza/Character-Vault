@@ -1441,4 +1441,15 @@ window.CV_TRANSLATIONS['ru'] = {
             'bio.predatorType': 'Тип Хищника',
             'bio.ambition': 'Амбиция',
             'bio.desire': 'Желание',
+            // Dice variables
+            'diceVar.brokenRef': 'Переменная «{name}» не найдена — использую 0',
+            'diceVar.level': 'Уровень',
+            'diceVar.currentHP': 'Текущие ОЗ',
+            'diceVar.maxHP': 'Макс ОЗ',
+            'diceVar.prof': 'Мас',
+            'diceVar.groupGlobal': 'Глобально',
+            'diceVar.pickerTitle': 'Вставить переменную',
+            'diceVar.pickerEmpty': 'Нет доступных переменных',
+            'diceVar.pickerNoMatch': 'Нет совпадений',
+            'diceVar.tooltipPrefix': '=',
 };

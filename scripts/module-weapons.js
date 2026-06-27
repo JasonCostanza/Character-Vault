@@ -2111,6 +2111,9 @@
                 diceInput.value = inst.dice || '';
                 diceInput.placeholder = t('weapons.dice');
                 diceInput.spellcheck = false;
+                if (typeof window.attachDiceVariablePicker === 'function') {
+                    window.attachDiceVariablePicker(diceInput);
+                }
                 (function (i) { diceInput.addEventListener('input', function () { workingWeapon.damageInstances[i].dice = diceInput.value.trim(); dirty = true; }); })(idx);
                 var diceField = buildField(t('weapons.diceLabel'));
                 diceField.classList.add('weapon-damage-field', 'weapon-damage-field--dice');

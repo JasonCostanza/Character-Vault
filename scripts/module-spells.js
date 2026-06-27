@@ -1255,6 +1255,9 @@
             valInput.placeholder = attr.name;
             valInput.spellcheck = false;
             valInput.autocomplete = 'off';
+            if (typeof window.attachDiceVariablePicker === 'function') {
+                window.attachDiceVariablePicker(valInput);
+            }
             valInput.addEventListener('blur', () => {
                 if (!spell.values) spell.values = {};
                 spell.values[attr.id] = valInput.value;

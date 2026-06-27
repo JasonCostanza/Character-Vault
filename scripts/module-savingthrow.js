@@ -241,10 +241,10 @@
         }
 
         nameInput.addEventListener('input', () => {
-            var oldName = save.name;
+            const oldName = save.name;
             save.name = nameInput.value;
-            if (typeof window.propagateDiceVariableRename === 'function' && oldName !== save.name) {
-                window.propagateDiceVariableRename(data.id, 'save-mod', oldName, save.name);
+            if (typeof window.propagateEntityRename === 'function') {
+                window.propagateEntityRename(data.id, 'save', oldName, save.name);
             }
             scheduleSave();
         });

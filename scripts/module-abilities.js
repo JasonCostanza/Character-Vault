@@ -366,10 +366,10 @@
         const deleteBtn = row.querySelector('.ability-edit-delete');
 
         nameInput.addEventListener('input', () => {
-            var oldName = ability.name;
+            const oldName = ability.name;
             ability.name = nameInput.value;
-            if (typeof window.propagateDiceVariableRename === 'function' && oldName !== ability.name) {
-                window.propagateDiceVariableRename(data.id, 'ability-mod', oldName, ability.name);
+            if (typeof window.propagateEntityRename === 'function') {
+                window.propagateEntityRename(data.id, 'ability', oldName, ability.name);
             }
             scheduleSave();
         });

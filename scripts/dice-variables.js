@@ -337,6 +337,22 @@
         });
     }
 
+    var ENTITY_TYPE_KEYS = {
+        stat:     ['stat-mod', 'stat-val'],
+        ability:  ['ability-mod'],
+        save:     ['save-mod'],
+        counter:  ['counter'],
+        defense:  ['defense'],
+    };
+
+    function propagateEntityRename(moduleId, entityKind, oldName, newName) {
+        if (!newName || oldName === newName) return;
+        var types = ENTITY_TYPE_KEYS[entityKind] || [];
+        types.forEach(function (type) {
+            propagateDiceVariableRename(moduleId, type, oldName, newName);
+        });
+    }
+
     // ── Autocomplete Picker ──
 
     var pickerEl = null;
@@ -678,6 +694,7 @@
     window.formatDiceExpressionDisplay = formatDiceExpressionDisplay;
     window.getAllDiceVariables = getAllDiceVariables;
     window.propagateDiceVariableRename = propagateDiceVariableRename;
+    window.propagateEntityRename = propagateEntityRename;
     window.attachDiceVariablePicker = attachDiceVariablePicker;
     // exported for tests only
     window._parseDiceVarToken = parseToken;

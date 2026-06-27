@@ -6,16 +6,16 @@
     var TOKEN_TEST = /\$\{[^}]+\}/;
 
     var TYPES = {
-        'stat-mod':    { segments: 3 },
-        'stat-val':    { segments: 3 },
-        'ability-mod': { segments: 3 },
-        'save-mod':    { segments: 3 },
-        'counter':     { segments: 3 },
-        'defense':     { segments: 3 },
-        'level':       { segments: 2 },
-        'hp-cur':      { segments: 2 },
-        'hp-max':      { segments: 2 },
-        'prof':        { segments: 1 },
+        'stat-mod':    1,
+        'stat-val':    1,
+        'ability-mod': 1,
+        'save-mod':    1,
+        'counter':     1,
+        'defense':     1,
+        'level':       1,
+        'hp-cur':      1,
+        'hp-max':      1,
+        'prof':        1,
     };
 
     function parseToken(inner) {
@@ -36,21 +36,30 @@
 
     // ── Module-data lookup helpers ──
 
+    function computeAbilityMod(ability, mod) {
+        if (mod.content.linkedStatModuleId && ability.linkedStat) {
+            var statMod = typeof window.getAbilityModifierFrom === 'function'
+                ? window.getAbilityModifierFrom(ability.linkedStat, mod.content.linkedStatModuleId) : 0;
+            return statMod + (ability.modifier || 0);
+        }
+        return ability.modifier || 0;
+    }
+
     function findAbilityMod(name, moduleId) {
         var mod = (window.modules || []).find(function (m) { return m.id === moduleId && m.type === 'abilities'; });
         if (!mod || !mod.content || !Array.isArray(mod.content.abilities)) return null;
         var target = name.toLowerCase();
         var ability = mod.content.abilities.find(function (a) { return (a.name || '').toLowerCase() === target; });
-        if (!ability) return null;
-        var baseMod = 0;
-        if (mod.content.linkedStatModuleId && ability.linkedStat) {
+        return ability ? computeAbilityMod(ability, mod) : null;
+    }
+
+    function computeSaveMod(save, mod) {
+        if (mod.content.linkedStatModuleId && save.linkedStatName) {
             var statMod = typeof window.getAbilityModifierFrom === 'function'
-                ? window.getAbilityModifierFrom(ability.linkedStat, mod.content.linkedStatModuleId) : 0;
-            baseMod = statMod + (ability.modifier || 0);
-        } else {
-            baseMod = ability.modifier || 0;
+                ? window.getAbilityModifierFrom(save.linkedStatName, mod.content.linkedStatModuleId) : 0;
+            return statMod + (save.value || 0);
         }
-        return baseMod;
+        return save.value || 0;
     }
 
     function findSaveMod(name, moduleId) {
@@ -58,32 +67,15 @@
         if (!mod || !mod.content || !Array.isArray(mod.content.saves)) return null;
         var target = name.toLowerCase();
         var save = mod.content.saves.find(function (s) { return (s.name || '').toLowerCase() === target; });
-        if (!save) return null;
-        var baseMod = 0;
-        if (mod.content.linkedStatModuleId && save.linkedStatName) {
-            var statMod = typeof window.getAbilityModifierFrom === 'function'
-                ? window.getAbilityModifierFrom(save.linkedStatName, mod.content.linkedStatModuleId) : 0;
-            baseMod = statMod + (save.value || 0);
-        } else {
-            baseMod = save.value || 0;
-        }
-        return baseMod;
+        return save ? computeSaveMod(save, mod) : null;
     }
 
-    function findCounterValue(name, moduleId) {
-        var mod = (window.modules || []).find(function (m) { return m.id === moduleId && m.type === 'counters'; });
-        if (!mod || !mod.content || !Array.isArray(mod.content.counters)) return null;
+    function findNamedItemValue(moduleId, modType, arrayKey, name) {
+        var mod = (window.modules || []).find(function (m) { return m.id === moduleId && m.type === modType; });
+        if (!mod || !mod.content || !Array.isArray(mod.content[arrayKey])) return null;
         var target = name.toLowerCase();
-        var counter = mod.content.counters.find(function (c) { return (c.name || '').toLowerCase() === target; });
-        return counter ? (counter.value || 0) : null;
-    }
-
-    function findDefenseValue(name, moduleId) {
-        var mod = (window.modules || []).find(function (m) { return m.id === moduleId && m.type === 'defenses'; });
-        if (!mod || !mod.content || !Array.isArray(mod.content.defenses)) return null;
-        var target = name.toLowerCase();
-        var def = mod.content.defenses.find(function (d) { return (d.name || '').toLowerCase() === target; });
-        return def ? (def.value || 0) : null;
+        var item = mod.content[arrayKey].find(function (i) { return (i.name || '').toLowerCase() === target; });
+        return item ? (item.value || 0) : null;
     }
 
     function findHPValue(moduleId, which) {
@@ -123,11 +115,11 @@
             }
             case 'counter': {
                 if (!parsed.name || !parsed.moduleId) return null;
-                return findCounterValue(parsed.name, parsed.moduleId);
+                return findNamedItemValue(parsed.moduleId, 'counters', 'counters', parsed.name);
             }
             case 'defense': {
                 if (!parsed.name || !parsed.moduleId) return null;
-                return findDefenseValue(parsed.name, parsed.moduleId);
+                return findNamedItemValue(parsed.moduleId, 'defenses', 'defenses', parsed.name);
             }
             case 'level': {
                 if (!parsed.moduleId) return null;
@@ -148,8 +140,6 @@
                     ? window.getProficiencyBonus()
                     : null;
             }
-            default:
-                return null;
         }
     }
 
@@ -174,29 +164,25 @@
         }
     }
 
-    function resolveDiceExpression(expr) {
+    function applyTokens(expr, fallback, onMissing) {
         if (!expr || typeof expr !== 'string') return expr;
         var result = expr.replace(TOKEN_REGEX, function (match, inner) {
             var val = resolveToken(inner);
             if (val === null || val === undefined) {
-                showBrokenRefWarning(inner);
-                return '0';
+                if (onMissing) onMissing(inner);
+                return fallback;
             }
             return String(val);
         });
-        TOKEN_REGEX.lastIndex = 0;
         return normalizeOperators(result);
     }
 
+    function resolveDiceExpression(expr) {
+        return applyTokens(expr, '0', showBrokenRefWarning);
+    }
+
     function formatDiceExpressionDisplay(expr) {
-        if (!expr || typeof expr !== 'string') return expr;
-        var result = expr.replace(TOKEN_REGEX, function (match, inner) {
-            var val = resolveToken(inner);
-            if (val === null || val === undefined) return '??';
-            return String(val);
-        });
-        TOKEN_REGEX.lastIndex = 0;
-        return normalizeOperators(result);
+        return applyTokens(expr, '??', null);
     }
 
     function getAllDiceVariables() {
@@ -209,31 +195,31 @@
             if (m.type === 'stat' && m.content && Array.isArray(m.content.stats)) {
                 m.content.stats.forEach(function (stat) {
                     if (stat.isProficiencyStat) return;
+                    var lc = stat.name.toLowerCase();
                     items.push({
                         token: 'stat-mod.' + stat.name + '.' + m.id,
                         display: stat.name + ' mod',
                         group: moduleTitle,
                         value: stat.modifier || 0,
-                        searchText: stat.name.toLowerCase(),
+                        searchText: lc,
                     });
                     items.push({
                         token: 'stat-val.' + stat.name + '.' + m.id,
                         display: stat.name,
                         group: moduleTitle,
                         value: stat.value || 0,
-                        searchText: stat.name.toLowerCase(),
+                        searchText: lc,
                     });
                 });
             }
 
             if (m.type === 'abilities' && m.content && Array.isArray(m.content.abilities)) {
                 m.content.abilities.forEach(function (ability) {
-                    var mod = findAbilityMod(ability.name, m.id);
                     items.push({
                         token: 'ability-mod.' + ability.name + '.' + m.id,
                         display: ability.name,
                         group: moduleTitle,
-                        value: mod || 0,
+                        value: computeAbilityMod(ability, m) || 0,
                         searchText: ability.name.toLowerCase(),
                     });
                 });
@@ -241,12 +227,11 @@
 
             if (m.type === 'savingthrow' && m.content && Array.isArray(m.content.saves)) {
                 m.content.saves.forEach(function (save) {
-                    var mod = findSaveMod(save.name, m.id);
                     items.push({
                         token: 'save-mod.' + save.name + '.' + m.id,
                         display: save.name + ' save',
                         group: moduleTitle,
-                        value: mod || 0,
+                        value: computeSaveMod(save, m) || 0,
                         searchText: save.name.toLowerCase(),
                     });
                 });

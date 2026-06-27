@@ -515,6 +515,114 @@
         return false;
     }
 
+    // ── Blur Overlay & Tooltip ──
+
+    function getTokenDisplayName(inner) {
+        var parsed = parseToken(inner);
+        switch (parsed.type) {
+            case 'stat-mod': return parsed.name + ' mod';
+            case 'stat-val': return parsed.name;
+            case 'ability-mod': return parsed.name;
+            case 'save-mod': return parsed.name + ' save';
+            case 'counter': return parsed.name;
+            case 'defense': return parsed.name;
+            case 'level': return t('diceVar.level');
+            case 'hp-cur': return t('diceVar.currentHP');
+            case 'hp-max': return t('diceVar.maxHP');
+            case 'prof': return t('diceVar.prof');
+            default: return inner;
+        }
+    }
+
+    function buildOverlay(inputEl) {
+        var wrapper = inputEl.closest('.cv-var-field-wrapper');
+        if (!wrapper) {
+            wrapper = document.createElement('div');
+            wrapper.className = 'cv-var-field-wrapper';
+            inputEl.parentNode.insertBefore(wrapper, inputEl);
+            wrapper.appendChild(inputEl);
+        }
+
+        var overlay = wrapper.querySelector('.cv-var-field-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'cv-var-field-overlay';
+            wrapper.appendChild(overlay);
+        }
+        return overlay;
+    }
+
+    function renderOverlay(inputEl) {
+        var val = inputEl.value;
+        if (!hasDiceVariables(val)) {
+            var wrapper = inputEl.closest('.cv-var-field-wrapper');
+            if (wrapper) {
+                var ov = wrapper.querySelector('.cv-var-field-overlay');
+                if (ov) ov.style.display = 'none';
+            }
+            return;
+        }
+
+        var overlay = buildOverlay(inputEl);
+        overlay.innerHTML = '';
+
+        var lastIndex = 0;
+        var regex = /\$\{([^}]+)\}/g;
+        var match;
+        while ((match = regex.exec(val)) !== null) {
+            if (match.index > lastIndex) {
+                overlay.appendChild(document.createTextNode(val.slice(lastIndex, match.index)));
+            }
+            var inner = match[1];
+            var chip = document.createElement('span');
+            var resolved = resolveToken(inner);
+            if (resolved === null) {
+                chip.className = 'cv-var-token cv-var-token--broken';
+            } else {
+                chip.className = 'cv-var-token';
+            }
+            chip.textContent = getTokenDisplayName(inner);
+            overlay.appendChild(chip);
+            lastIndex = regex.lastIndex;
+        }
+        if (lastIndex < val.length) {
+            overlay.appendChild(document.createTextNode(val.slice(lastIndex)));
+        }
+
+        overlay.style.display = '';
+    }
+
+    var tooltipEl = null;
+
+    function getTooltipEl() {
+        if (tooltipEl) return tooltipEl;
+        tooltipEl = document.createElement('div');
+        tooltipEl.className = 'cv-var-tooltip';
+        tooltipEl.style.display = 'none';
+        document.body.appendChild(tooltipEl);
+        return tooltipEl;
+    }
+
+    function showTooltip(inputEl) {
+        var val = inputEl.value;
+        if (!hasDiceVariables(val)) return;
+
+        var tip = getTooltipEl();
+        var resolved = formatDiceExpressionDisplay(val);
+        tip.textContent = t('diceVar.tooltipPrefix') + ' ' + resolved;
+
+        var wrapper = inputEl.closest('.cv-var-field-wrapper') || inputEl;
+        var rect = wrapper.getBoundingClientRect();
+        tip.style.position = 'fixed';
+        tip.style.top = (rect.top - 28) + 'px';
+        tip.style.left = rect.left + 'px';
+        tip.style.display = '';
+    }
+
+    function hideTooltip() {
+        if (tooltipEl) tooltipEl.style.display = 'none';
+    }
+
     function attachDiceVariablePicker(inputEl) {
         if (!inputEl || inputEl._cvVarPickerAttached) return;
         inputEl._cvVarPickerAttached = true;
@@ -546,7 +654,26 @@
         });
 
         inputEl.addEventListener('blur', function () {
-            setTimeout(function () { closePicker(); }, 150);
+            setTimeout(function () {
+                closePicker();
+                renderOverlay(inputEl);
+            }, 150);
+        });
+
+        inputEl.addEventListener('focus', function () {
+            var wrapper = inputEl.closest('.cv-var-field-wrapper');
+            if (wrapper) {
+                var ov = wrapper.querySelector('.cv-var-field-overlay');
+                if (ov) ov.style.display = 'none';
+            }
+        });
+
+        var wrapper = buildOverlay(inputEl).parentNode;
+        wrapper.addEventListener('mouseenter', function () {
+            if (document.activeElement !== inputEl) showTooltip(inputEl);
+        });
+        wrapper.addEventListener('mouseleave', function () {
+            hideTooltip();
         });
     }
 

@@ -77,3 +77,68 @@
     text-align: center;
     user-select: none;
 }
+
+/* ── Dice Variable Field Overlay ── */
+
+.cv-var-field-wrapper {
+    position: relative;
+    display: inline-flex;
+    width: 100%;
+}
+
+.cv-var-field-wrapper input {
+    width: 100%;
+}
+
+.cv-var-field-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    pointer-events: none;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 12px;
+    color: var(--cv-text);
+    background: var(--cv-bg-sunken);
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+
+/* ── Variable Token Chips ── */
+
+.cv-var-token {
+    display: inline-block;
+    padding: 1px 5px;
+    margin: 0 1px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 500;
+    background: color-mix(in srgb, var(--cv-accent) 20%, transparent);
+    color: var(--cv-accent);
+    user-select: none;
+}
+
+.cv-var-token--broken {
+    background: color-mix(in srgb, var(--cv-danger) 20%, transparent);
+    color: var(--cv-danger);
+    text-decoration: line-through;
+}
+
+/* ── Hover Tooltip ── */
+
+.cv-var-tooltip {
+    position: fixed;
+    z-index: 260;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    color: var(--cv-text);
+    background: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+}

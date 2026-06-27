@@ -142,4 +142,5 @@
     white-space: nowrap;
     pointer-events: none;
     user-select: none;
+    transform: translateY(calc(-100% - 4px));
 }

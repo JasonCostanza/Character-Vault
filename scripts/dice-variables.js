@@ -199,7 +199,7 @@
                     var lc = stat.name.toLowerCase();
                     items.push({
                         token: 'stat-mod.' + stat.name + '.' + m.id,
-                        display: stat.name + ' mod',
+                        display: stat.name + t('diceVar.modSuffix'),
                         group: moduleTitle,
                         value: stat.modifier || 0,
                         searchText: lc,
@@ -230,7 +230,7 @@
                 m.content.saves.forEach(function (save) {
                     items.push({
                         token: 'save-mod.' + save.name + '.' + m.id,
-                        display: save.name + ' save',
+                        display: save.name + t('diceVar.saveSuffix'),
                         group: moduleTitle,
                         value: computeSaveMod(save, m) || 0,
                         searchText: save.name.toLowerCase(),
@@ -521,16 +521,12 @@
         var parsed = parseToken(inner);
         switch (parsed.type) {
             case 'stat-mod': return parsed.name + t('diceVar.modSuffix');
-            case 'stat-val': return parsed.name;
-            case 'ability-mod': return parsed.name;
             case 'save-mod': return parsed.name + t('diceVar.saveSuffix');
-            case 'counter': return parsed.name;
-            case 'defense': return parsed.name;
-            case 'level': return t('diceVar.level');
-            case 'hp-cur': return t('diceVar.currentHP');
-            case 'hp-max': return t('diceVar.maxHP');
-            case 'prof': return t('diceVar.prof');
-            default: return inner;
+            case 'level':    return t('diceVar.level');
+            case 'hp-cur':   return t('diceVar.currentHP');
+            case 'hp-max':   return t('diceVar.maxHP');
+            case 'prof':     return t('diceVar.prof');
+            default:         return parsed.name || inner;
         }
     }
 
@@ -552,14 +548,18 @@
         return overlay;
     }
 
+    function hideOverlay(inputEl) {
+        var wrapper = inputEl.closest('.cv-var-field-wrapper');
+        if (wrapper) {
+            var ov = wrapper.querySelector('.cv-var-field-overlay');
+            if (ov) ov.style.display = 'none';
+        }
+    }
+
     function renderOverlay(inputEl) {
         var val = inputEl.value;
         if (!hasDiceVariables(val)) {
-            var wrapper = inputEl.closest('.cv-var-field-wrapper');
-            if (wrapper) {
-                var ov = wrapper.querySelector('.cv-var-field-overlay');
-                if (ov) ov.style.display = 'none';
-            }
+            hideOverlay(inputEl);
             return;
         }
 
@@ -567,23 +567,20 @@
         overlay.innerHTML = '';
 
         var lastIndex = 0;
-        var regex = /\$\{([^}]+)\}/g;
+        TOKEN_REGEX.lastIndex = 0;
         var match;
-        while ((match = regex.exec(val)) !== null) {
+        while ((match = TOKEN_REGEX.exec(val)) !== null) {
             if (match.index > lastIndex) {
                 overlay.appendChild(document.createTextNode(val.slice(lastIndex, match.index)));
             }
             var inner = match[1];
             var chip = document.createElement('span');
-            var resolved = resolveToken(inner);
-            if (resolved === null) {
-                chip.className = 'cv-var-token cv-var-token--broken';
-            } else {
-                chip.className = 'cv-var-token';
-            }
+            chip.className = resolveToken(inner) === null
+                ? 'cv-var-token cv-var-token--broken'
+                : 'cv-var-token';
             chip.textContent = getTokenDisplayName(inner);
             overlay.appendChild(chip);
-            lastIndex = regex.lastIndex;
+            lastIndex = TOKEN_REGEX.lastIndex;
         }
         if (lastIndex < val.length) {
             overlay.appendChild(document.createTextNode(val.slice(lastIndex)));
@@ -614,7 +611,7 @@
         var wrapper = inputEl.closest('.cv-var-field-wrapper') || inputEl;
         var rect = wrapper.getBoundingClientRect();
         tip.style.position = 'fixed';
-        tip.style.top = (rect.top - 28) + 'px';
+        tip.style.top = rect.top + 'px';
         tip.style.left = rect.left + 'px';
         tip.style.display = '';
     }
@@ -660,21 +657,18 @@
             }, 150);
         });
 
+        buildOverlay(inputEl);
+        var wrapper = inputEl.closest('.cv-var-field-wrapper');
+        var cachedOverlay = wrapper.querySelector('.cv-var-field-overlay');
+
         inputEl.addEventListener('focus', function () {
-            var wrapper = inputEl.closest('.cv-var-field-wrapper');
-            if (wrapper) {
-                var ov = wrapper.querySelector('.cv-var-field-overlay');
-                if (ov) ov.style.display = 'none';
-            }
+            cachedOverlay.style.display = 'none';
         });
 
-        var wrapper = buildOverlay(inputEl).parentNode;
         wrapper.addEventListener('mouseenter', function () {
             if (document.activeElement !== inputEl) showTooltip(inputEl);
         });
-        wrapper.addEventListener('mouseleave', function () {
-            hideTooltip();
-        });
+        wrapper.addEventListener('mouseleave', hideTooltip);
     }
 
     // ── Window Exports (pure/testable functions) ──

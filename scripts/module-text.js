@@ -1,5 +1,9 @@
 // ── Text Box Module Type ──
 (function () {
+    function renderResolved(content) {
+        return renderMarkdown(window.resolveDiceExpression(content));
+    }
+
     function autoResizeTextarea(textarea) {
         const module = textarea.closest('.module');
         textarea.style.height = 'auto';
@@ -28,9 +32,17 @@
                 window.attachDiceVariablePicker(textarea, { overlay: false });
             }
 
+            const display = bodyEl.querySelector('.module-text-display');
+
+            document.addEventListener('cv:stat-values-changed', function () {
+                if (display.style.display !== 'none') {
+                    display.innerHTML = renderResolved(data.content);
+                    attachCheckboxHandlers(display, data, bodyEl.closest('.module'));
+                }
+            });
+
             if (isPlayMode) {
-                const display = bodyEl.querySelector('.module-text-display');
-                display.innerHTML = renderMarkdown(data.content);
+                display.innerHTML = renderResolved(data.content);
                 attachCheckboxHandlers(display, data, bodyEl.closest('.module'));
             }
         },
@@ -40,7 +52,7 @@
             const display = moduleEl.querySelector('.module-text-display');
             if (textarea && display) {
                 const data = modules.find((m) => m.id === moduleEl.dataset.id);
-                display.innerHTML = renderMarkdown(textarea.value);
+                display.innerHTML = renderResolved(textarea.value);
                 attachCheckboxHandlers(display, data, moduleEl);
                 textarea.style.display = 'none';
                 display.style.display = 'block';

@@ -127,6 +127,18 @@
     text-decoration: line-through;
 }
 
+/* ── Resolved Token Spans (Play Mode Display) ── */
+
+.cv-resolved-token {
+    cursor: help;
+    border-bottom: 1px dotted currentColor;
+}
+
+.cv-resolved-token--broken {
+    color: var(--cv-danger);
+    border-bottom-color: var(--cv-danger);
+}
+
 /* ── Hover Tooltip ── */
 
 .cv-var-tooltip {

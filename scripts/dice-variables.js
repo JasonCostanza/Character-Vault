@@ -620,20 +620,21 @@
         return tooltipEl;
     }
 
-    function showTooltip(inputEl) {
-        var val = inputEl.value;
-        if (!hasDiceVariables(val)) return;
-
+    function showTooltipAt(text, rect) {
         var tip = getTooltipEl();
-        var resolved = formatDiceExpressionDisplay(val);
-        tip.textContent = t('diceVar.tooltipPrefix') + ' ' + resolved;
-
-        var wrapper = inputEl.closest('.cv-var-field-wrapper') || inputEl;
-        var rect = wrapper.getBoundingClientRect();
+        tip.textContent = text;
         tip.style.position = 'fixed';
         tip.style.top = rect.top + 'px';
         tip.style.left = rect.left + 'px';
         tip.style.display = '';
+    }
+
+    function showTooltip(inputEl) {
+        var val = inputEl.value;
+        if (!hasDiceVariables(val)) return;
+        var resolved = formatDiceExpressionDisplay(val);
+        var wrapper = inputEl.closest('.cv-var-field-wrapper') || inputEl;
+        showTooltipAt(t('diceVar.tooltipPrefix') + ' ' + resolved, wrapper.getBoundingClientRect());
     }
 
     function hideTooltip() {
@@ -696,10 +697,6 @@
             inputEl.addEventListener('blur', function () {
                 setTimeout(closePicker, 150);
             });
-            inputEl.addEventListener('mouseenter', function () {
-                if (document.activeElement !== inputEl) showTooltip(inputEl);
-            });
-            inputEl.addEventListener('mouseleave', hideTooltip);
         }
     }
 
@@ -712,6 +709,9 @@
     window.propagateDiceVariableRename = propagateDiceVariableRename;
     window.propagateEntityRename = propagateEntityRename;
     window.attachDiceVariablePicker = attachDiceVariablePicker;
+    window.getTokenDisplayName = getTokenDisplayName;
+    window.showDiceVarTooltip = showTooltipAt;
+    window.hideDiceVarTooltip = hideTooltip;
     // exported for tests only
     window._parseDiceVarToken = parseToken;
     window._normalizeOperators = normalizeOperators;

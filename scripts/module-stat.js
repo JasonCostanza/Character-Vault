@@ -692,7 +692,7 @@
         for (const m of (window.modules || [])) {
             if (m.type !== 'stat' || !m.content || !Array.isArray(m.content.stats)) continue;
             const profStat = m.content.stats.find((s) => s.isProficiencyStat);
-            if (profStat) return profStat.value || 2;
+            if (profStat) return profStat.value ?? 0;
         }
         return 2;
     };

@@ -189,13 +189,14 @@
     function getAllDiceVariables() {
         var items = [];
         var modules = window.modules || [];
+        var hasProfStat = false;
 
         modules.forEach(function (m) {
             var moduleTitle = m.title || t('type.' + m.type);
 
             if (m.type === 'stat' && m.content && Array.isArray(m.content.stats)) {
                 m.content.stats.forEach(function (stat) {
-                    if (stat.isProficiencyStat) return;
+                    if (stat.isProficiencyStat) { hasProfStat = true; return; }
                     var lc = stat.name.toLowerCase();
                     items.push({
                         token: 'stat-mod.' + stat.name + '.' + m.id,
@@ -291,13 +292,16 @@
         });
 
         if (typeof window.getProficiencyBonus === 'function') {
-            items.push({
-                token: 'prof',
-                display: t('diceVar.prof'),
-                group: t('diceVar.groupGlobal'),
-                value: window.getProficiencyBonus(),
-                searchText: 'proficiency prof',
-            });
+            var profSys = window.gameSystem || 'custom';
+            if (profSys === 'dnd5e' || hasProfStat) {
+                items.push({
+                    token: 'prof',
+                    display: t('diceVar.prof'),
+                    group: t('diceVar.groupGlobal'),
+                    value: window.getProficiencyBonus(),
+                    searchText: 'proficiency prof',
+                });
+            }
         }
 
         return items;
@@ -636,9 +640,11 @@
         if (tooltipEl) tooltipEl.style.display = 'none';
     }
 
-    function attachDiceVariablePicker(inputEl) {
+    function attachDiceVariablePicker(inputEl, opts) {
         if (!inputEl || inputEl._cvVarPickerAttached) return;
         inputEl._cvVarPickerAttached = true;
+
+        var useOverlay = !opts || opts.overlay !== false;
 
         inputEl.addEventListener('input', function () {
             var val = inputEl.value;
@@ -666,25 +672,35 @@
             handlePickerKeydown(e);
         });
 
-        inputEl.addEventListener('blur', function () {
-            setTimeout(function () {
-                closePicker();
-                renderOverlay(inputEl);
-            }, 150);
-        });
+        if (useOverlay) {
+            inputEl.addEventListener('blur', function () {
+                setTimeout(function () {
+                    closePicker();
+                    renderOverlay(inputEl);
+                }, 150);
+            });
 
-        buildOverlay(inputEl);
-        var wrapper = inputEl.closest('.cv-var-field-wrapper');
-        var cachedOverlay = wrapper.querySelector('.cv-var-field-overlay');
+            buildOverlay(inputEl);
+            var wrapper = inputEl.closest('.cv-var-field-wrapper');
+            var cachedOverlay = wrapper.querySelector('.cv-var-field-overlay');
 
-        inputEl.addEventListener('focus', function () {
-            cachedOverlay.style.display = 'none';
-        });
+            inputEl.addEventListener('focus', function () {
+                cachedOverlay.style.display = 'none';
+            });
 
-        wrapper.addEventListener('mouseenter', function () {
-            if (document.activeElement !== inputEl) showTooltip(inputEl);
-        });
-        wrapper.addEventListener('mouseleave', hideTooltip);
+            wrapper.addEventListener('mouseenter', function () {
+                if (document.activeElement !== inputEl) showTooltip(inputEl);
+            });
+            wrapper.addEventListener('mouseleave', hideTooltip);
+        } else {
+            inputEl.addEventListener('blur', function () {
+                setTimeout(closePicker, 150);
+            });
+            inputEl.addEventListener('mouseenter', function () {
+                if (document.activeElement !== inputEl) showTooltip(inputEl);
+            });
+            inputEl.addEventListener('mouseleave', hideTooltip);
+        }
     }
 
     // ── Window Exports (pure/testable functions) ──

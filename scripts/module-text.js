@@ -24,6 +24,10 @@
 
             autoResizeTextarea(textarea);
 
+            if (typeof window.attachDiceVariablePicker === 'function') {
+                window.attachDiceVariablePicker(textarea, { overlay: false });
+            }
+
             if (isPlayMode) {
                 const display = bodyEl.querySelector('.module-text-display');
                 display.innerHTML = renderMarkdown(data.content);

@@ -87,9 +87,6 @@
     cursor: pointer;
 }
 
-.ability-edit-row .ability-proficiency-dot.linked {
-    cursor: default;
-}
 
 .ability-rank-badge {
     width: 12px;

@@ -1,6 +1,5 @@
 // ── Bio Module ──
 (function () {
-
     // ── Constants ──
     const RACE_LABELS = {
         dnd5e: 'bio.species',
@@ -15,18 +14,31 @@
     };
 
     const SYSTEM_FIELDS = {
-        dnd5e:       { name: 'D&D 5th Edition',         fields: ['backgroundName'] },
-        pf2e:        { name: 'Pathfinder 2e',            fields: ['backgroundName', 'heritage', 'edicts', 'anathemas'] },
-        coc:         { name: 'Call of Cthulhu',          fields: ['occupation', 'ideologyBeliefs'] },
-        cpred:       { name: 'Cyberpunk Red',            fields: ['culturalOrigin'] },
-        daggerheart: { name: 'Daggerheart',              fields: ['community'] },
-        sr6:         { name: 'Shadowrun 6e',             fields: ['lifestyle'] },
-        vtm:         { name: 'Vampire: The Masquerade',  fields: ['clan', 'generation', 'sire', 'predatorType', 'ambition', 'desire'] },
+        dnd5e: { name: 'D&D 5th Edition', fields: ['backgroundName'] },
+        pf2e: { name: 'Pathfinder 2e', fields: ['backgroundName', 'heritage', 'edicts', 'anathemas'] },
+        coc: { name: 'Call of Cthulhu', fields: ['occupation', 'ideologyBeliefs'] },
+        cpred: { name: 'Cyberpunk Red', fields: ['culturalOrigin'] },
+        daggerheart: { name: 'Daggerheart', fields: ['community'] },
+        sr6: { name: 'Shadowrun 6e', fields: ['lifestyle'] },
+        vtm: {
+            name: 'Vampire: The Masquerade',
+            fields: ['clan', 'generation', 'sire', 'predatorType', 'ambition', 'desire'],
+        },
     };
 
     const TEXTAREA_FIELDS = new Set([
-        'appearance', 'biography', 'personalityTraits', 'ideals', 'bonds', 'flaws',
-        'likesDislikes', 'alliesEnemies', 'organizations', 'edicts', 'anathemas', 'ideologyBeliefs',
+        'appearance',
+        'biography',
+        'personalityTraits',
+        'ideals',
+        'bonds',
+        'flaws',
+        'likesDislikes',
+        'alliesEnemies',
+        'organizations',
+        'edicts',
+        'anathemas',
+        'ideologyBeliefs',
     ]);
 
     // ── Pure helpers (exposed on window for tests) ──
@@ -47,17 +59,46 @@
         return {
             activeTab: 'overview',
             portrait: null,
-            name: '', pronouns: '', race: '', alignment: '',
-            age: '', height: '', weight: '', eyes: '', hair: '', skin: '',
-            appearance: '', biography: '',
+            name: '',
+            pronouns: '',
+            race: '',
+            alignment: '',
+            age: '',
+            height: '',
+            weight: '',
+            eyes: '',
+            hair: '',
+            skin: '',
+            appearance: '',
+            biography: '',
             showPersonality: false,
-            personalityTraits: '', ideals: '', bonds: '', flaws: '',
-            deity: '', birthplace: '', nationality: '', ethnicity: '', alias: '',
-            likesDislikes: '', alliesEnemies: '', organizations: '',
-            backgroundName: '', heritage: '', edicts: '', anathemas: '',
-            occupation: '', ideologyBeliefs: '', culturalOrigin: '',
-            community: '', lifestyle: '',
-            clan: '', generation: '', sire: '', predatorType: '', ambition: '', desire: '',
+            personalityTraits: '',
+            ideals: '',
+            bonds: '',
+            flaws: '',
+            deity: '',
+            birthplace: '',
+            nationality: '',
+            ethnicity: '',
+            alias: '',
+            likesDislikes: '',
+            alliesEnemies: '',
+            organizations: '',
+            backgroundName: '',
+            heritage: '',
+            edicts: '',
+            anathemas: '',
+            occupation: '',
+            ideologyBeliefs: '',
+            culturalOrigin: '',
+            community: '',
+            lifestyle: '',
+            clan: '',
+            generation: '',
+            sire: '',
+            predatorType: '',
+            ambition: '',
+            desire: '',
             fieldSizes: {},
         };
     }
@@ -170,7 +211,7 @@
         } else {
             const placeholder = document.createElement('div');
             placeholder.className = 'bio-portrait-placeholder';
-            placeholder.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>';
+            placeholder.innerHTML = cvIcon('user');
             frame.appendChild(placeholder);
         }
 
@@ -255,12 +296,16 @@
         const identitySide = document.createElement('div');
         identitySide.className = 'bio-identity-side';
 
-        identitySide.appendChild(buildBioField('name', 'bio.name', data.name, { placeholder: 'bio.namePlaceholder', widthClass: 'w3' }));
+        identitySide.appendChild(
+            buildBioField('name', 'bio.name', data.name, { placeholder: 'bio.namePlaceholder', widthClass: 'w3' })
+        );
 
         const idRow = document.createElement('div');
         idRow.className = 'bio-field-row';
         const raceLabel = getRaceLabel(window.gameSystem || 'custom');
-        idRow.appendChild(buildBioField('pronouns', 'bio.pronouns', data.pronouns, { placeholder: 'bio.pronounsPlaceholder' }));
+        idRow.appendChild(
+            buildBioField('pronouns', 'bio.pronouns', data.pronouns, { placeholder: 'bio.pronounsPlaceholder' })
+        );
         idRow.appendChild(buildBioField('race', raceLabel, data.race, { widthClass: 'w2' }));
         identitySide.appendChild(idRow);
 
@@ -278,14 +323,22 @@
         });
         container.appendChild(physRow);
 
-        container.appendChild(buildBioField('appearance', 'bio.appearance', data.appearance, {
-            type: 'textarea', rows: 2, placeholder: 'bio.appearancePlaceholder',
-        }));
+        container.appendChild(
+            buildBioField('appearance', 'bio.appearance', data.appearance, {
+                type: 'textarea',
+                rows: 2,
+                placeholder: 'bio.appearancePlaceholder',
+            })
+        );
 
         container.appendChild(buildSectionDivider('bio.biography'));
-        container.appendChild(buildBioField('biography', 'bio.biography', data.biography, {
-            type: 'textarea', rows: 4, placeholder: 'bio.biographyPlaceholder',
-        }));
+        container.appendChild(
+            buildBioField('biography', 'bio.biography', data.biography, {
+                type: 'textarea',
+                rows: 4,
+                placeholder: 'bio.biographyPlaceholder',
+            })
+        );
 
         const collapseHeader = buildCollapseHeader(data.showPersonality);
         container.appendChild(collapseHeader);
@@ -295,9 +348,9 @@
         personalityGrid.style.display = data.showPersonality ? 'grid' : 'none';
         [
             { key: 'personalityTraits', labelKey: 'bio.traits' },
-            { key: 'ideals',            labelKey: 'bio.ideals' },
-            { key: 'bonds',             labelKey: 'bio.bonds' },
-            { key: 'flaws',             labelKey: 'bio.flaws' },
+            { key: 'ideals', labelKey: 'bio.ideals' },
+            { key: 'bonds', labelKey: 'bio.bonds' },
+            { key: 'flaws', labelKey: 'bio.flaws' },
         ].forEach(({ key, labelKey }) => {
             personalityGrid.appendChild(buildBioField(key, labelKey, data[key], { type: 'textarea', rows: 3 }));
         });
@@ -395,9 +448,9 @@
 
         const personalityDefs = [
             { key: 'personalityTraits', labelKey: 'bio.traits' },
-            { key: 'ideals',            labelKey: 'bio.ideals' },
-            { key: 'bonds',             labelKey: 'bio.bonds' },
-            { key: 'flaws',             labelKey: 'bio.flaws' },
+            { key: 'ideals', labelKey: 'bio.ideals' },
+            { key: 'bonds', labelKey: 'bio.bonds' },
+            { key: 'flaws', labelKey: 'bio.flaws' },
         ];
         const hasPersonality = data.showPersonality && personalityDefs.some((f) => shouldShowBioField(data[f.key]));
         if (hasPersonality) {
@@ -439,7 +492,9 @@
             const row1 = document.createElement('div');
             row1.className = 'bio-field-row';
             row1.appendChild(buildBioField('clan', 'bio.clan', data.clan));
-            row1.appendChild(buildBioField('generation', 'bio.generation', data.generation, { widthClass: 'fixed-md' }));
+            row1.appendChild(
+                buildBioField('generation', 'bio.generation', data.generation, { widthClass: 'fixed-md' })
+            );
             row1.appendChild(buildBioField('sire', 'bio.sire', data.sire));
             container.appendChild(row1);
             const row2 = document.createElement('div');
@@ -456,21 +511,26 @@
             row.appendChild(buildBioField('heritage', 'bio.heritage', data.heritage));
             container.appendChild(row);
             container.appendChild(buildBioField('edicts', 'bio.edicts', data.edicts, { type: 'textarea', rows: 2 }));
-            container.appendChild(buildBioField('anathemas', 'bio.anathemas', data.anathemas, { type: 'textarea', rows: 2 }));
+            container.appendChild(
+                buildBioField('anathemas', 'bio.anathemas', data.anathemas, { type: 'textarea', rows: 2 })
+            );
         } else {
             const fieldOpts = {
-                backgroundName:  { labelKey: 'bio.background' },
-                occupation:      { labelKey: 'bio.occupation' },
+                backgroundName: { labelKey: 'bio.background' },
+                occupation: { labelKey: 'bio.occupation' },
                 ideologyBeliefs: { labelKey: 'bio.ideologyBeliefs', type: 'textarea', rows: 2 },
-                culturalOrigin:  { labelKey: 'bio.culturalOrigin' },
-                community:       { labelKey: 'bio.community' },
-                lifestyle:       { labelKey: 'bio.lifestyle' },
+                culturalOrigin: { labelKey: 'bio.culturalOrigin' },
+                community: { labelKey: 'bio.community' },
+                lifestyle: { labelKey: 'bio.lifestyle' },
             };
             sysData.fields.forEach((key) => {
                 const cfg = fieldOpts[key] || { labelKey: 'bio.' + key };
-                container.appendChild(buildBioField(key, cfg.labelKey, data[key], {
-                    type: cfg.type || 'text', rows: cfg.rows || 3,
-                }));
+                container.appendChild(
+                    buildBioField(key, cfg.labelKey, data[key], {
+                        type: cfg.type || 'text',
+                        rows: cfg.rows || 3,
+                    })
+                );
             });
         }
     }
@@ -489,13 +549,21 @@
 
         const blockFields = new Set(['edicts', 'anathemas', 'ideologyBeliefs']);
         const fieldLabelKeys = {
-            backgroundName: 'bio.background', heritage: 'bio.heritage',
-            edicts: 'bio.edicts', anathemas: 'bio.anathemas',
-            occupation: 'bio.occupation', ideologyBeliefs: 'bio.ideologyBeliefs',
-            culturalOrigin: 'bio.culturalOrigin', community: 'bio.community',
-            lifestyle: 'bio.lifestyle', clan: 'bio.clan', generation: 'bio.generation',
-            sire: 'bio.sire', predatorType: 'bio.predatorType',
-            ambition: 'bio.ambition', desire: 'bio.desire',
+            backgroundName: 'bio.background',
+            heritage: 'bio.heritage',
+            edicts: 'bio.edicts',
+            anathemas: 'bio.anathemas',
+            occupation: 'bio.occupation',
+            ideologyBeliefs: 'bio.ideologyBeliefs',
+            culturalOrigin: 'bio.culturalOrigin',
+            community: 'bio.community',
+            lifestyle: 'bio.lifestyle',
+            clan: 'bio.clan',
+            generation: 'bio.generation',
+            sire: 'bio.sire',
+            predatorType: 'bio.predatorType',
+            ambition: 'bio.ambition',
+            desire: 'bio.desire',
         };
 
         sysData.fields.forEach((key) => {
@@ -526,7 +594,9 @@
 
         const row1 = document.createElement('div');
         row1.className = 'bio-field-row';
-        row1.appendChild(buildBioField('deity', 'bio.deity', data.deity, { placeholder: 'bio.deityPlaceholder', widthClass: 'w2' }));
+        row1.appendChild(
+            buildBioField('deity', 'bio.deity', data.deity, { placeholder: 'bio.deityPlaceholder', widthClass: 'w2' })
+        );
         row1.appendChild(buildBioField('birthplace', 'bio.birthplace', data.birthplace, { widthClass: 'w2' }));
         container.appendChild(row1);
 
@@ -537,9 +607,15 @@
         row2.appendChild(buildBioField('alias', 'bio.alias', data.alias, { placeholder: 'bio.aliasPlaceholder' }));
         container.appendChild(row2);
 
-        container.appendChild(buildBioField('likesDislikes', 'bio.likesDislikes', data.likesDislikes, { type: 'textarea', rows: 2 }));
-        container.appendChild(buildBioField('alliesEnemies', 'bio.alliesEnemies', data.alliesEnemies, { type: 'textarea', rows: 2 }));
-        container.appendChild(buildBioField('organizations', 'bio.organizations', data.organizations, { type: 'textarea', rows: 2 }));
+        container.appendChild(
+            buildBioField('likesDislikes', 'bio.likesDislikes', data.likesDislikes, { type: 'textarea', rows: 2 })
+        );
+        container.appendChild(
+            buildBioField('alliesEnemies', 'bio.alliesEnemies', data.alliesEnemies, { type: 'textarea', rows: 2 })
+        );
+        container.appendChild(
+            buildBioField('organizations', 'bio.organizations', data.organizations, { type: 'textarea', rows: 2 })
+        );
 
         const sys = window.gameSystem || 'custom';
         if (sys === 'custom') {
@@ -574,16 +650,16 @@
         container.innerHTML = '';
 
         const shortFields = [
-            { key: 'deity',       labelKey: 'bio.deity' },
-            { key: 'birthplace',  labelKey: 'bio.birthplace' },
+            { key: 'deity', labelKey: 'bio.deity' },
+            { key: 'birthplace', labelKey: 'bio.birthplace' },
             { key: 'nationality', labelKey: 'bio.nationality' },
-            { key: 'ethnicity',   labelKey: 'bio.ethnicity' },
-            { key: 'alias',       labelKey: 'bio.alias' },
+            { key: 'ethnicity', labelKey: 'bio.ethnicity' },
+            { key: 'alias', labelKey: 'bio.alias' },
         ];
         const textareaFields = [
-            { key: 'likesDislikes',  labelKey: 'bio.likesDislikes' },
-            { key: 'alliesEnemies',  labelKey: 'bio.alliesEnemies' },
-            { key: 'organizations',  labelKey: 'bio.organizations' },
+            { key: 'likesDislikes', labelKey: 'bio.likesDislikes' },
+            { key: 'alliesEnemies', labelKey: 'bio.alliesEnemies' },
+            { key: 'organizations', labelKey: 'bio.organizations' },
         ];
 
         const shortRow = document.createElement('div');
@@ -719,5 +795,4 @@
     window.getRaceLabel = getRaceLabel;
     window.getSystemFields = getSystemFields;
     window.shouldShowBioField = shouldShowBioField;
-
 })();

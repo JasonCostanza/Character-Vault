@@ -14,6 +14,7 @@ beforeEach(() => {
     globalThis.gameSystem = 'custom';
 
     loadScript('scripts/translations-en.js');
+    loadScript('scripts/icons.js');
     loadScript('scripts/shared.js');
     loadScript('scripts/i18n.js');
     loadScript('scripts/module-core.js');

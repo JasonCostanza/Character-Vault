@@ -64,54 +64,46 @@
 
     // ── UI Scale ──
     const uiScaleOptions = [
-        { value: '0.9',  label: '90%' },
-        { value: '1',    label: '100%' },
-        { value: '1.1',  label: '110%' },
+        { value: '0.9', label: '90%' },
+        { value: '1', label: '100%' },
+        { value: '1.1', label: '110%' },
         { value: '1.25', label: '125%' },
     ];
-    const uiScaleWidget = buildCvSelect(
-        uiScaleOptions,
-        localStorage.getItem('cv-ui-scale') ?? '1',
-        function (val) {
-            localStorage.setItem('cv-ui-scale', val);
-            applyUiScale(val);
-        }
-    );
+    const uiScaleWidget = buildCvSelect(uiScaleOptions, localStorage.getItem('cv-ui-scale') ?? '1', function (val) {
+        localStorage.setItem('cv-ui-scale', val);
+        applyUiScale(val);
+    });
     document.getElementById('setting-ui-scale-container').appendChild(uiScaleWidget.el);
 
     // ── Language ──
     const langOptions = [
-        { value: 'en',    label: 'English' },
-        { value: 'es',    label: 'Español' },
-        { value: 'fr',    label: 'Français' },
-        { value: 'de',    label: 'Deutsch' },
-        { value: 'it',    label: 'Italiano' },
+        { value: 'en', label: 'English' },
+        { value: 'es', label: 'Español' },
+        { value: 'fr', label: 'Français' },
+        { value: 'de', label: 'Deutsch' },
+        { value: 'it', label: 'Italiano' },
         { value: 'pt-BR', label: 'Português (Brasil)' },
-        { value: 'ru',    label: 'Русский' },
+        { value: 'ru', label: 'Русский' },
     ];
-    const langWidget = buildCvSelect(
-        langOptions,
-        localStorage.getItem('cv-language') ?? 'en',
-        function (val) {
-            localStorage.setItem('cv-language', val);
-            window.currentLang = val;
-            applyTranslations();
-            refreshModuleLabels();
-        }
-    );
+    const langWidget = buildCvSelect(langOptions, localStorage.getItem('cv-language') ?? 'en', function (val) {
+        localStorage.setItem('cv-language', val);
+        window.currentLang = val;
+        applyTranslations();
+        refreshModuleLabels();
+    });
     document.getElementById('setting-language-container').appendChild(langWidget.el);
 
     // ── Game System ──
     const gameSystemOptions = [
-        { value: 'coc',         label: 'Call of Cthulhu' },
-        { value: 'cpred',       label: 'Cyberpunk Red' },
-        { value: 'dnd5e',       label: 'D&D 5e' },
+        { value: 'coc', label: 'Call of Cthulhu' },
+        { value: 'cpred', label: 'Cyberpunk Red' },
+        { value: 'dnd5e', label: 'D&D 5e' },
         { value: 'daggerheart', label: 'Daggerheart' },
-        { value: 'mothership',  label: 'Mothership' },
-        { value: 'pf2e',        label: 'Pathfinder 2e' },
-        { value: 'sr6',         label: 'Shadowrun 6e' },
-        { value: 'vtm',         label: 'Vampire: The Masquerade' },
-        { value: 'custom',      label: t('settings.gameSystemCustom') },
+        { value: 'mothership', label: 'Mothership' },
+        { value: 'pf2e', label: 'Pathfinder 2e' },
+        { value: 'sr6', label: 'Shadowrun 6e' },
+        { value: 'vtm', label: 'Vampire: The Masquerade' },
+        { value: 'custom', label: t('settings.gameSystemCustom') },
     ];
     const gameSystemWidget = buildCvSelect(
         gameSystemOptions,
@@ -202,7 +194,9 @@
                 if (!result.ok) {
                     showToast(t(result.error), 'error', {
                         label: t('import.viewError'),
-                        onClick: function () { openImportErrorModal(result.detail); },
+                        onClick: function () {
+                            openImportErrorModal(result.detail);
+                        },
                     });
                     return;
                 }
@@ -231,12 +225,18 @@
             return { ok: false, error: 'import.errorNotCV', detail: 'Missing modules array' };
         }
         if (blob.version > 3) {
-            return { ok: false, error: 'import.errorNewerVersion', detail: `File version: ${blob.version}, app supports: 3` };
+            return {
+                ok: false,
+                error: 'import.errorNewerVersion',
+                detail: `File version: ${blob.version}, app supports: 3`,
+            };
         }
         if (blob.version < 3) {
             window.migrateData(blob);
         }
-        const unknownCount = blob.modules.filter(function (m) { return !window.MODULE_TYPES[m.type]; }).length;
+        const unknownCount = blob.modules.filter(function (m) {
+            return !window.MODULE_TYPES[m.type];
+        }).length;
         return { ok: true, blob: blob, unknownCount: unknownCount };
     }
 
@@ -258,7 +258,7 @@
         closeBtn.type = 'button';
         closeBtn.className = 'cv-modal-close';
         closeBtn.setAttribute('title', t('wizard.close'));
-        closeBtn.innerHTML = CV_SVG_CLOSE;
+        closeBtn.innerHTML = cvIcon('x', 12);
         header.appendChild(titleEl);
         header.appendChild(closeBtn);
 
@@ -282,12 +282,16 @@
         panel.appendChild(footer);
         overlay.appendChild(panel);
         document.body.appendChild(overlay);
-        requestAnimationFrame(function () { overlay.classList.add('open'); });
+        requestAnimationFrame(function () {
+            overlay.classList.add('open');
+        });
 
         function close() {
             overlay.classList.remove('open');
             document.removeEventListener('keydown', onEscape);
-            setTimeout(function () { document.body.removeChild(overlay); }, 200);
+            setTimeout(function () {
+                document.body.removeChild(overlay);
+            }, 200);
         }
 
         function onEscape(e) {
@@ -296,14 +300,17 @@
 
         closeBtn.addEventListener('click', close);
         dismissBtn.addEventListener('click', close);
-        overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) close();
+        });
         document.addEventListener('keydown', onEscape);
     }
 
     function handleValidImport(blob, unknownCount) {
-        const hasData = window.modules.length > 0
-            || window.tabs.length > 1
-            || (window.activityLog && window.activityLog.length > 0);
+        const hasData =
+            window.modules.length > 0 ||
+            window.tabs.length > 1 ||
+            (window.activityLog && window.activityLog.length > 0);
         if (!hasData) {
             applyOverwrite(blob, unknownCount);
         } else {
@@ -334,7 +341,7 @@
         closeBtn.type = 'button';
         closeBtn.className = 'cv-modal-close';
         closeBtn.setAttribute('title', t('wizard.close'));
-        closeBtn.innerHTML = CV_SVG_CLOSE;
+        closeBtn.innerHTML = cvIcon('x', 12);
         header.appendChild(titleEl);
         header.appendChild(closeBtn);
 
@@ -368,12 +375,16 @@
         panel.appendChild(footer);
         overlay.appendChild(panel);
         document.body.appendChild(overlay);
-        requestAnimationFrame(function () { overlay.classList.add('open'); });
+        requestAnimationFrame(function () {
+            overlay.classList.add('open');
+        });
 
         function close() {
             overlay.classList.remove('open');
             document.removeEventListener('keydown', onEscape);
-            setTimeout(function () { document.body.removeChild(overlay); }, 200);
+            setTimeout(function () {
+                document.body.removeChild(overlay);
+            }, 200);
         }
 
         function onEscape(e) {
@@ -382,7 +393,9 @@
 
         closeBtn.addEventListener('click', close);
         cancelBtn.addEventListener('click', close);
-        overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) close();
+        });
         document.addEventListener('keydown', onEscape);
 
         addAsTabBtn.addEventListener('click', function () {
@@ -406,15 +419,21 @@
 
     function applyAddAsNewTab(blob, unknownCount) {
         const idMap = {};
-        (blob.tabs || []).forEach(function (tab) { idMap[tab.id] = window.generateTabId(); });
-        (blob.modules || []).forEach(function (mod) { idMap[mod.id] = window.generateModuleId(); });
+        (blob.tabs || []).forEach(function (tab) {
+            idMap[tab.id] = window.generateTabId();
+        });
+        (blob.modules || []).forEach(function (mod) {
+            idMap[mod.id] = window.generateModuleId();
+        });
 
         const importedTabName = blob.tabs?.[0]?.name || 'Imported';
         const newTab = window.createTab(importedTabName);
         const newTabId = newTab.id;
 
         let orderCounter = 0;
-        const validModules = (blob.modules || []).filter(function (m) { return window.MODULE_TYPES[m.type]; });
+        const validModules = (blob.modules || []).filter(function (m) {
+            return window.MODULE_TYPES[m.type];
+        });
         validModules.forEach(function (saved) {
             const data = {
                 id: idMap[saved.id],
@@ -428,7 +447,12 @@
                 tabId: newTabId,
                 content: saved.content ?? '',
             };
-            if (data.content && typeof data.content === 'object' && data.content.linkedStatModuleId && idMap[data.content.linkedStatModuleId]) {
+            if (
+                data.content &&
+                typeof data.content === 'object' &&
+                data.content.linkedStatModuleId &&
+                idMap[data.content.linkedStatModuleId]
+            ) {
                 data.content.linkedStatModuleId = idMap[data.content.linkedStatModuleId];
             }
             window.modules.push(data);
@@ -462,16 +486,20 @@
     updateDimensions();
 
     // ── GitHub Link (copy to clipboard) ──
+    // The GitHub octocat mark is a brand logo, not a generic icon, so it stays as its
+    // own inline SVG rather than going through the cvIcon sprite system.
+    const GITHUB_LOGO_SVG =
+        '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>';
     document.getElementById('btn-github-link').addEventListener('click', async function () {
         const btn = this;
         const ok = await copyTextToClipboard('https://github.com/JasonCostanza/Character-Vault');
         if (ok) {
             console.log('[CV] GitHub URL copied to clipboard');
             btn.classList.add('copied');
-            btn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ${t('settings.githubCopied')}`;
+            btn.innerHTML = `${cvIcon('check', 14)} ${t('settings.githubCopied')}`;
             setTimeout(() => {
                 btn.classList.remove('copied');
-                btn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> ${t('settings.github')}`;
+                btn.innerHTML = `${GITHUB_LOGO_SVG} ${t('settings.github')}`;
             }, 1500);
         } else {
             console.error('[CV] Failed to copy GitHub URL');
@@ -498,7 +526,7 @@
         closeBtn.type = 'button';
         closeBtn.className = 'cv-modal-close';
         closeBtn.setAttribute('title', t('wizard.close'));
-        closeBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeBtn.innerHTML = cvIcon('x', 16);
         header.appendChild(titleEl);
         header.appendChild(closeBtn);
 
@@ -527,12 +555,16 @@
         panel.appendChild(footer);
         overlay.appendChild(panel);
         document.body.appendChild(overlay);
-        requestAnimationFrame(function () { overlay.classList.add('open'); });
+        requestAnimationFrame(function () {
+            overlay.classList.add('open');
+        });
 
         function close() {
             overlay.classList.remove('open');
             document.removeEventListener('keydown', onEscape);
-            setTimeout(function () { document.body.removeChild(overlay); }, 200);
+            setTimeout(function () {
+                document.body.removeChild(overlay);
+            }, 200);
         }
 
         function onEscape(e) {
@@ -541,12 +573,16 @@
 
         closeBtn.addEventListener('click', close);
         cancelBtn.addEventListener('click', close);
-        overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) close();
+        });
         document.addEventListener('keydown', onEscape);
 
         confirmBtn.addEventListener('click', function () {
             close();
-            document.querySelectorAll('.module').forEach(function (el) { el.remove(); });
+            document.querySelectorAll('.module').forEach(function (el) {
+                el.remove();
+            });
             window.modules.length = 0;
             if (Array.isArray(window.activityLog)) window.activityLog.length = 0;
             window.tabs.length = 0;

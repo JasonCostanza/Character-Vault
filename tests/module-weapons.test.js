@@ -21,6 +21,7 @@ beforeEach(() => {
     configurable: true,
   });
 
+  loadScript('scripts/icons.js');
   loadScript('scripts/shared.js');
   loadScript('scripts/i18n.js');
   loadScript('scripts/theme.js');

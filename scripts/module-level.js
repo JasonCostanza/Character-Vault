@@ -5,10 +5,16 @@
     // ── XP Templates ──
     const LEVEL_XP_TEMPLATES = {
         dnd5e: {
-            thresholds: [300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000],
+            thresholds: [
+                300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000,
+                225000, 265000, 305000, 355000,
+            ],
         },
         pf2e: {
-            thresholds: [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000, 13000, 14000, 15000, 16000, 17000, 18000, 19000],
+            thresholds: [
+                1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000, 13000, 14000, 15000, 16000,
+                17000, 18000, 19000,
+            ],
         },
     };
 
@@ -64,7 +70,8 @@
         if (data.content.level === undefined) data.content.level = 1;
         if (data.content.currentXP === undefined) data.content.currentXP = 0;
         if (!data.content.levelingSystem) data.content.levelingSystem = 'xp';
-        if (!Array.isArray(data.content.xpThresholds)) data.content.xpThresholds = LEVEL_XP_TEMPLATES.dnd5e.thresholds.slice();
+        if (!Array.isArray(data.content.xpThresholds))
+            data.content.xpThresholds = LEVEL_XP_TEMPLATES.dnd5e.thresholds.slice();
         if (data.content.carryOverXP === undefined) data.content.carryOverXP = true;
         if (data.content.barColor === undefined) data.content.barColor = null;
         if (!data.content.barStyle) data.content.barStyle = 'solid';
@@ -77,7 +84,7 @@
         const level = c.level;
         const thresholds = c.xpThresholds;
         const nextThreshold = level - 1 < thresholds.length ? thresholds[level - 1] : null;
-        const prevThreshold = level >= 2 ? (thresholds[level - 2] || 0) : 0;
+        const prevThreshold = level >= 2 ? thresholds[level - 2] || 0 : 0;
         const currentXP = c.currentXP;
 
         let percentage = 0;
@@ -156,7 +163,11 @@
                 scheduleSave();
                 document.dispatchEvent(new CustomEvent('cv:level-changed'));
                 if (typeof window.logActivity === 'function') {
-                    window.logActivity({ type: 'level.event.levelUp', message: t('level.log.levelChange', { oldLevel: oldLevel, newLevel: c.level }), sourceModuleId: data.id });
+                    window.logActivity({
+                        type: 'level.event.levelUp',
+                        message: t('level.log.levelChange', { oldLevel: oldLevel, newLevel: c.level }),
+                        sourceModuleId: data.id,
+                    });
                 }
             });
 
@@ -172,7 +183,11 @@
                 scheduleSave();
                 document.dispatchEvent(new CustomEvent('cv:level-changed'));
                 if (typeof window.logActivity === 'function') {
-                    window.logActivity({ type: 'level.event.levelUp', message: t('level.log.levelChange', { oldLevel: oldLevel, newLevel: c.level }), sourceModuleId: data.id });
+                    window.logActivity({
+                        type: 'level.event.levelUp',
+                        message: t('level.log.levelChange', { oldLevel: oldLevel, newLevel: c.level }),
+                        sourceModuleId: data.id,
+                    });
                 }
             });
 
@@ -201,14 +216,14 @@
                 for (let i = 1; i < 10; i++) {
                     const divider = document.createElement('div');
                     divider.className = 'level-bar-divider';
-                    divider.style.left = (i * 10) + '%';
+                    divider.style.left = i * 10 + '%';
                     track.appendChild(divider);
                 }
             } else if (c.barStyle === 'segmented-25') {
                 for (let i = 1; i < 4; i++) {
                     const divider = document.createElement('div');
                     divider.className = 'level-bar-divider';
-                    divider.style.left = (i * 25) + '%';
+                    divider.style.left = i * 25 + '%';
                     track.appendChild(divider);
                 }
             }
@@ -249,7 +264,11 @@
                     scheduleSave();
                     document.dispatchEvent(new CustomEvent('cv:level-changed'));
                     if (typeof window.logActivity === 'function') {
-                        window.logActivity({ type: 'level.event.levelUp', message: t('level.log.levelUp', { level: c.level }), sourceModuleId: data.id });
+                        window.logActivity({
+                            type: 'level.event.levelUp',
+                            message: t('level.log.levelUp', { level: c.level }),
+                            sourceModuleId: data.id,
+                        });
                     }
                 });
                 wrap.appendChild(lvlUpBtn);
@@ -285,7 +304,7 @@
         const closeBtn = document.createElement('button');
         closeBtn.className = 'cv-modal-close';
         closeBtn.title = t('level.cancel');
-        closeBtn.innerHTML = CV_SVG_CLOSE;
+        closeBtn.innerHTML = cvIcon('x', 12);
 
         header.appendChild(titleEl);
         header.appendChild(closeBtn);
@@ -420,7 +439,7 @@
         const closeBtn = document.createElement('button');
         closeBtn.className = 'cv-modal-close';
         closeBtn.title = t('level.cancel');
-        closeBtn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+        closeBtn.innerHTML = cvIcon('x', 12);
 
         header.appendChild(titleEl);
         header.appendChild(closeBtn);
@@ -514,7 +533,10 @@
         function confirm() {
             if (mode === 'set') {
                 const targetXP = evaluateXPExpression(input.value);
-                if (targetXP === null || targetXP < 0) { closeModal(); return; }
+                if (targetXP === null || targetXP < 0) {
+                    closeModal();
+                    return;
+                }
                 c.currentXP = targetXP;
                 c.level = getLevelFromXP(targetXP, c.xpThresholds);
                 const newLevel = c.level;
@@ -559,9 +581,10 @@
             if (typeof window.logActivity === 'function') {
                 window.logActivity({
                     type: 'level.event.xp',
-                    message: mode === 'add'
-                        ? t('level.log.xpGain', { amount: amount, oldXP: oldXP, newXP: newXP })
-                        : t('level.log.xpLoss', { amount: amount, oldXP: oldXP, newXP: newXP }),
+                    message:
+                        mode === 'add'
+                            ? t('level.log.xpGain', { amount: amount, oldXP: oldXP, newXP: newXP })
+                            : t('level.log.xpLoss', { amount: amount, oldXP: oldXP, newXP: newXP }),
                     sourceModuleId: data.id,
                 });
             }
@@ -611,7 +634,7 @@
         closeBtn.type = 'button';
         closeBtn.className = 'cv-modal-close';
         closeBtn.title = t('level.close');
-        closeBtn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+        closeBtn.innerHTML = cvIcon('x', 12);
 
         header.appendChild(titleEl);
         header.appendChild(closeBtn);
@@ -713,7 +736,7 @@
                 const delBtn = document.createElement('button');
                 delBtn.className = 'level-threshold-delete';
                 delBtn.title = t('level.deleteThreshold');
-                delBtn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+                delBtn.innerHTML = cvIcon('x', 12);
                 delBtn.addEventListener('click', () => {
                     wThresholds.splice(idx, 1);
                     dirty = true;
@@ -951,7 +974,7 @@
         const mod = moduleId
             ? window.modules.find((m) => m.id === moduleId && m.type === 'level')
             : window.modules.find((m) => m.type === 'level');
-        return mod && mod.content ? (mod.content.className || null) : null;
+        return mod && mod.content ? mod.content.className || null : null;
     };
 
     // Expose for module-core.js and tests

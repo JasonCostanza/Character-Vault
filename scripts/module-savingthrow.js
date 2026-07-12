@@ -17,21 +17,9 @@
             { name: 'Reflex', linkedStatName: 'DEX' },
             { name: 'Will', linkedStatName: 'WIS' },
         ],
-        coc: [
-            { name: 'Sanity' },
-            { name: 'Luck' },
-            { name: 'Power' },
-        ],
-        cpred: [
-            { name: 'Death Save' },
-            { name: 'Stun' },
-        ],
-        mothership: [
-            { name: 'Sanity' },
-            { name: 'Fear' },
-            { name: 'Body' },
-            { name: 'Armor' },
-        ],
+        coc: [{ name: 'Sanity' }, { name: 'Luck' }, { name: 'Power' }],
+        cpred: [{ name: 'Death Save' }, { name: 'Stun' }],
+        mothership: [{ name: 'Sanity' }, { name: 'Fear' }, { name: 'Body' }, { name: 'Armor' }],
     };
 
     const TIER_PRESETS = {
@@ -188,9 +176,7 @@
             `<span class="save-drag-handle">&#x2807;</span>` +
             `<input class="save-edit-name" type="text" value="${escapeHtml(save.name)}" placeholder="${escapeHtml(t('save.unnamed'))}">` +
             `<button class="save-edit-delete" title="${escapeHtml(t('save.deleteSave'))}">` +
-            `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
-            `<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>` +
-            `</svg>` +
+            cvIcon('x', 12) +
             `</button>` +
             `</div>` +
             `<div class="save-edit-row">` +
@@ -205,7 +191,9 @@
             var statNames = getLinkedStatNames(content.linkedStatModuleId);
             if (statNames.length > 0) {
                 var statOpts = [{ value: '', label: '—' }].concat(
-                    statNames.map(function (n) { return { value: n, label: n }; })
+                    statNames.map(function (n) {
+                        return { value: n, label: n };
+                    })
                 );
                 var statWidget = buildCvSelect(statOpts, save.linkedStatName || '', function (val) {
                     save.linkedStatName = val || null;
@@ -300,7 +288,11 @@
     function rollSavingThrow(save, data) {
         var sys = window.gameSystem || 'custom';
         var profBonus = 0;
-        if ((sys === 'dnd5e' || sys === 'custom') && save.proficiencyTier === 'Proficient' && typeof window.getProficiencyBonus === 'function') {
+        if (
+            (sys === 'dnd5e' || sys === 'custom') &&
+            save.proficiencyTier === 'Proficient' &&
+            typeof window.getProficiencyBonus === 'function'
+        ) {
             profBonus = window.getProficiencyBonus();
         } else if (sys === 'pf2e' && save.proficiencyTier && typeof window.computePf2eProficiencyBonus === 'function') {
             profBonus = window.computePf2eProficiencyBonus(save.proficiencyTier.toLowerCase());
@@ -309,8 +301,10 @@
         const modStr = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
         if (sys === 'daggerheart') {
             window.rollDualityDice(
-                (save.name || t('save.unnamed')) + ' ' + t('save.save'), totalMod,
-                'save.event.roll', 'save.log.roll',
+                (save.name || t('save.unnamed')) + ' ' + t('save.save'),
+                totalMod,
+                'save.event.roll',
+                'save.log.roll',
                 { name: save.name || t('save.unnamed'), modifier: '2d12' + modStr },
                 data.id
             );
@@ -324,8 +318,18 @@
                 },
             ]);
             if (typeof window.logActivity === 'function') {
-                const logEntryId = window.logActivity({ type: 'save.event.roll', message: t('save.log.roll', { name: save.name || t('save.unnamed'), modifier: modStr }), sourceModuleId: data.id });
-                rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId }; }).catch(function (e) { console.warn('[CV] Saving throw dice roll failed:', e); });
+                const logEntryId = window.logActivity({
+                    type: 'save.event.roll',
+                    message: t('save.log.roll', { name: save.name || t('save.unnamed'), modifier: modStr }),
+                    sourceModuleId: data.id,
+                });
+                rollPromise
+                    .then(function (rollId) {
+                        if (rollId) window.pendingRolls[rollId] = { logEntryId };
+                    })
+                    .catch(function (e) {
+                        console.warn('[CV] Saving throw dice roll failed:', e);
+                    });
             }
         } catch (e) {
             console.warn('[CV] Saving throw dice roll failed:', e);
@@ -439,7 +443,7 @@
         closeBtn.type = 'button';
         closeBtn.className = 'cv-modal-close';
         closeBtn.title = t('save.close');
-        closeBtn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+        closeBtn.innerHTML = cvIcon('x', 12);
         header.appendChild(title);
         header.appendChild(closeBtn);
 
@@ -518,13 +522,10 @@
         statPickerLabel.textContent = t('common.linkedStatModule');
         body.appendChild(statPickerLabel);
 
-        const statPicker = buildStatModulePicker(
-            workingLinkedStatId,
-            function (val) {
-                workingLinkedStatId = val || null;
-                dirty = true;
-            }
-        );
+        const statPicker = buildStatModulePicker(workingLinkedStatId, function (val) {
+            workingLinkedStatId = val || null;
+            dirty = true;
+        });
         body.appendChild(statPicker.el);
 
         buildCommonSettingsSection(body, moduleEl, data);
@@ -622,7 +623,7 @@
         closeBtn.type = 'button';
         closeBtn.className = 'cv-modal-close';
         closeBtn.title = t('save.close');
-        closeBtn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+        closeBtn.innerHTML = cvIcon('x', 12);
         header.appendChild(title);
         header.appendChild(closeBtn);
 
@@ -662,9 +663,7 @@
                     `<input type="text" class="save-tier-color-hex" value="${escapeHtml(tier.color)}" maxlength="7" placeholder="#888888">` +
                     `</div>` +
                     `<button class="save-tier-delete" title="${escapeHtml(t('save.deleteSave'))}">` +
-                    `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
-                    `<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>` +
-                    `</svg>` +
+                    cvIcon('x', 12) +
                     `</button>`;
 
                 const nameInput = row.querySelector('.save-tier-name-input');

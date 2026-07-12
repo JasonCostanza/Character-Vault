@@ -125,7 +125,7 @@
             `<div class="cv-modal-header">` +
             `<span class="cv-modal-title">${escapeHtml(t(titleKey))}</span>` +
             `<button class="cv-modal-close" title="${escapeHtml(t('health.cancel'))}">` +
-            `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>` +
+            cvIcon('x', 12) +
             `</button>` +
             `</div>` +
             `<div class="cv-modal-body health-action-body">` +
@@ -171,16 +171,32 @@
                 switch (mode) {
                     case 'damage': {
                         const absorbed = oldTempHP - data.content.tempHP;
-                        let msg = t('health.log.damage', { amount: result, oldHP: oldCurrentHP, newHP: data.content.currentHP });
+                        let msg = t('health.log.damage', {
+                            amount: result,
+                            oldHP: oldCurrentHP,
+                            newHP: data.content.currentHP,
+                        });
                         if (absorbed > 0) msg += ' ' + t('health.log.tempAbsorbed', { absorbed: absorbed });
                         window.logActivity({ type: 'health.event.damage', message: msg, sourceModuleId: data.id });
                         break;
                     }
                     case 'heal':
-                        window.logActivity({ type: 'health.event.heal', message: t('health.log.heal', { amount: result, oldHP: oldCurrentHP, newHP: data.content.currentHP }), sourceModuleId: data.id });
+                        window.logActivity({
+                            type: 'health.event.heal',
+                            message: t('health.log.heal', {
+                                amount: result,
+                                oldHP: oldCurrentHP,
+                                newHP: data.content.currentHP,
+                            }),
+                            sourceModuleId: data.id,
+                        });
                         break;
                     case 'temp':
-                        window.logActivity({ type: 'health.event.tempHP', message: t('health.log.tempSet', { oldTemp: oldTempHP, newTemp: data.content.tempHP }), sourceModuleId: data.id });
+                        window.logActivity({
+                            type: 'health.event.tempHP',
+                            message: t('health.log.tempSet', { oldTemp: oldTempHP, newTemp: data.content.tempHP }),
+                            sourceModuleId: data.id,
+                        });
                         break;
                 }
             }
@@ -223,7 +239,10 @@
 
     function openHealthSettingsModal(moduleEl, data) {
         const existing = document.querySelector('.health-settings-overlay');
-        if (existing) { existing.remove(); return; }
+        if (existing) {
+            existing.remove();
+            return;
+        }
 
         const overlay = document.createElement('div');
         overlay.className = 'cv-modal-overlay health-settings-overlay';
@@ -240,7 +259,7 @@
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
         closeXBtn.title = t('module.close');
-        closeXBtn.innerHTML = CV_SVG_CLOSE;
+        closeXBtn.innerHTML = cvIcon('x', 12);
         header.appendChild(titleEl);
         header.appendChild(closeXBtn);
         panel.appendChild(header);
@@ -341,7 +360,9 @@
         };
         document.addEventListener('keydown', keyHandler);
         closeXBtn.addEventListener('click', closeModal);
-        overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) closeModal();
+        });
     }
 
     function buildPlayLayer(bodyEl, data) {
@@ -380,27 +401,27 @@
         setMaxModIndicatorEl(modPlay, c);
         hpCol.appendChild(modPlay);
 
-    mainRow.appendChild(hpCol);
+        mainRow.appendChild(hpCol);
 
-    layer.appendChild(mainRow);
+        layer.appendChild(mainRow);
 
-    const tempRow = document.createElement('div');
-    tempRow.className = 'health-temp-row';
+        const tempRow = document.createElement('div');
+        tempRow.className = 'health-temp-row';
 
-    const tempBadge = document.createElement('button');
-    tempBadge.type = 'button';
-    tempBadge.className = 'health-temp-badge' + (c.tempHP > 0 ? ' has-temp' : '');
-    tempBadge.innerHTML =
-        `<span class="health-temp-value">${c.tempHP > 0 ? '+' + c.tempHP : '0'}</span>` +
-        `<span class="health-temp-label">${escapeHtml(t('health.tempHP'))}</span>`;
-    tempBadge.addEventListener('click', () => {
-        openHealthActionOverlay(bodyEl.closest('.module'), data, 'temp');
-    });
-    tempRow.appendChild(tempBadge);
-    layer.appendChild(tempRow);
+        const tempBadge = document.createElement('button');
+        tempBadge.type = 'button';
+        tempBadge.className = 'health-temp-badge' + (c.tempHP > 0 ? ' has-temp' : '');
+        tempBadge.innerHTML =
+            `<span class="health-temp-value">${c.tempHP > 0 ? '+' + c.tempHP : '0'}</span>` +
+            `<span class="health-temp-label">${escapeHtml(t('health.tempHP'))}</span>`;
+        tempBadge.addEventListener('click', () => {
+            openHealthActionOverlay(bodyEl.closest('.module'), data, 'temp');
+        });
+        tempRow.appendChild(tempBadge);
+        layer.appendChild(tempRow);
 
-    const actionsRow = document.createElement('div');
-    actionsRow.className = 'health-actions-row';
+        const actionsRow = document.createElement('div');
+        actionsRow.className = 'health-actions-row';
 
         const actions = document.createElement('div');
         actions.className = 'health-actions';
@@ -421,10 +442,10 @@
             openHealthActionOverlay(bodyEl.closest('.module'), data, 'damage');
         });
 
-    actions.appendChild(healBtn);
-    actions.appendChild(damageBtn);
-    actionsRow.appendChild(actions);
-    layer.appendChild(actionsRow);
+        actions.appendChild(healBtn);
+        actions.appendChild(damageBtn);
+        actionsRow.appendChild(actions);
+        layer.appendChild(actionsRow);
 
         return layer;
     }
@@ -452,8 +473,12 @@
                     if (oldVal !== c[key] && typeof window.logActivity === 'function') {
                         window.logActivity({
                             type: 'health.event.adjust',
-                            message: t('health.log.adjust', { field: t('health.' + key), oldVal: oldVal, newVal: c[key] }),
-                            sourceModuleId: data.id
+                            message: t('health.log.adjust', {
+                                field: t('health.' + key),
+                                oldVal: oldVal,
+                                newVal: c[key],
+                            }),
+                            sourceModuleId: data.id,
                         });
                     }
                     syncHealthLayersFromData(bodyEl.closest('.module'), data);
@@ -500,7 +525,7 @@
         setMaxModIndicatorEl(modEdit, c);
         hpCol.appendChild(modEdit);
 
-    mainRow.appendChild(hpCol);
+        mainRow.appendChild(hpCol);
 
         layer.appendChild(mainRow);
 
@@ -528,7 +553,7 @@
                     window.logActivity({
                         type: 'health.event.tempHP',
                         message: t('health.log.tempAdjust', { oldTemp: oldTemp, newTemp: c.tempHP }),
-                        sourceModuleId: data.id
+                        sourceModuleId: data.id,
                     });
                 }
                 tempBadge.classList.toggle('has-temp', c.tempHP > 0);
@@ -552,33 +577,33 @@
         tempLabel.className = 'health-temp-label';
         tempLabel.textContent = t('health.tempHP');
 
-    tempBadge.appendChild(tempInput);
-    tempBadge.appendChild(tempLabel);
-    tempRow.appendChild(tempBadge);
-    layer.appendChild(tempRow);
+        tempBadge.appendChild(tempInput);
+        tempBadge.appendChild(tempLabel);
+        tempRow.appendChild(tempBadge);
+        layer.appendChild(tempRow);
 
-    const actionsRow = document.createElement('div');
-    actionsRow.className = 'health-actions-row';
+        const actionsRow = document.createElement('div');
+        actionsRow.className = 'health-actions-row';
 
-    const actions = document.createElement('div');
-    actions.className = 'health-actions';
+        const actions = document.createElement('div');
+        actions.className = 'health-actions';
 
-    const healBtn = document.createElement('button');
-    healBtn.className = 'health-action-btn health-heal-btn';
-    healBtn.title = t('health.heal');
-    healBtn.textContent = t('health.healShort');
-    healBtn.disabled = true;
+        const healBtn = document.createElement('button');
+        healBtn.className = 'health-action-btn health-heal-btn';
+        healBtn.title = t('health.heal');
+        healBtn.textContent = t('health.healShort');
+        healBtn.disabled = true;
 
-    const damageBtn = document.createElement('button');
-    damageBtn.className = 'health-action-btn health-damage-btn';
-    damageBtn.title = t('health.takeDamage');
-    damageBtn.textContent = t('health.dmgShort');
-    damageBtn.disabled = true;
+        const damageBtn = document.createElement('button');
+        damageBtn.className = 'health-action-btn health-damage-btn';
+        damageBtn.title = t('health.takeDamage');
+        damageBtn.textContent = t('health.dmgShort');
+        damageBtn.disabled = true;
 
-    actions.appendChild(healBtn);
-    actions.appendChild(damageBtn);
-    actionsRow.appendChild(actions);
-    layer.appendChild(actionsRow);
+        actions.appendChild(healBtn);
+        actions.appendChild(damageBtn);
+        actionsRow.appendChild(actions);
+        layer.appendChild(actionsRow);
 
         return layer;
     }
@@ -693,7 +718,7 @@
     // ── Cross-Module API (used by Recovery module) ──
 
     window.healToFull = function (moduleId) {
-        const data = window.modules.find(m => m.id === moduleId);
+        const data = window.modules.find((m) => m.id === moduleId);
         if (!data || data.type !== 'health') return;
         const c = data.content;
         c.currentHP = (c.maxHP || 0) + (c.maxHPModifier || 0);
@@ -702,7 +727,7 @@
     };
 
     window.resetTempHP = function (moduleId) {
-        const data = window.modules.find(m => m.id === moduleId);
+        const data = window.modules.find((m) => m.id === moduleId);
         if (!data || data.type !== 'health') return;
         data.content.tempHP = 0;
         const el = document.querySelector(`.module[data-id="${moduleId}"]`);
@@ -710,7 +735,7 @@
     };
 
     window.applyHealingAmount = function (moduleId, amount) {
-        const data = window.modules.find(m => m.id === moduleId);
+        const data = window.modules.find((m) => m.id === moduleId);
         if (!data || data.type !== 'health') return;
         applyHealing(data.content, amount);
         const el = document.querySelector(`.module[data-id="${moduleId}"]`);

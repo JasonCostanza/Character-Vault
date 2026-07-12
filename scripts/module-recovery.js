@@ -7,8 +7,9 @@
     }
 
     function hasHealByRoll(content) {
-        return content.restButtons && content.restButtons.some(btn =>
-            btn.actions && btn.actions.some(a => a.type === 'healByRoll')
+        return (
+            content.restButtons &&
+            content.restButtons.some((btn) => btn.actions && btn.actions.some((a) => a.type === 'healByRoll'))
         );
     }
 
@@ -31,8 +32,11 @@
         input.value = val;
         input.addEventListener('change', () => {
             const v = parseInt(input.value);
-            if (!isNaN(v) && v >= parseInt(min)) { onCommit(v, input); }
-            else { input.value = val; }
+            if (!isNaN(v) && v >= parseInt(min)) {
+                onCommit(v, input);
+            } else {
+                input.value = val;
+            }
         });
         field.appendChild(lbl);
         field.appendChild(input);
@@ -43,26 +47,32 @@
 
     function executeRestButton(btn, content, diceCount) {
         const results = [];
-        btn.actions.forEach(action => {
+        btn.actions.forEach((action) => {
             switch (action.type) {
                 case 'healToFull': {
-                    window.modules.filter(m => m.type === 'health').forEach(m => {
-                        if (typeof window.healToFull === 'function') window.healToFull(m.id);
-                    });
+                    window.modules
+                        .filter((m) => m.type === 'health')
+                        .forEach((m) => {
+                            if (typeof window.healToFull === 'function') window.healToFull(m.id);
+                        });
                     results.push(t('recovery.action.healToFull'));
                     break;
                 }
                 case 'resetTempHP': {
-                    window.modules.filter(m => m.type === 'health').forEach(m => {
-                        if (typeof window.resetTempHP === 'function') window.resetTempHP(m.id);
-                    });
+                    window.modules
+                        .filter((m) => m.type === 'health')
+                        .forEach((m) => {
+                            if (typeof window.resetTempHP === 'function') window.resetTempHP(m.id);
+                        });
                     results.push(t('recovery.action.resetTempHP'));
                     break;
                 }
                 case 'restoreAllSpellSlots': {
-                    window.modules.filter(m => m.type === 'spells').forEach(m => {
-                        if (typeof window.restoreAllSpellSlots === 'function') window.restoreAllSpellSlots(m.id);
-                    });
+                    window.modules
+                        .filter((m) => m.type === 'spells')
+                        .forEach((m) => {
+                            if (typeof window.restoreAllSpellSlots === 'function') window.restoreAllSpellSlots(m.id);
+                        });
                     results.push(t('recovery.action.restoreAllSpellSlots'));
                     break;
                 }
@@ -77,9 +87,11 @@
                     }
                     total = Math.max(0, total);
                     hd.remaining -= count;
-                    window.modules.filter(m => m.type === 'health').forEach(m => {
-                        if (typeof window.applyHealingAmount === 'function') window.applyHealingAmount(m.id, total);
-                    });
+                    window.modules
+                        .filter((m) => m.type === 'health')
+                        .forEach((m) => {
+                            if (typeof window.applyHealingAmount === 'function') window.applyHealingAmount(m.id, total);
+                        });
                     results.push(t('recovery.action.healByRoll', { count, dieSize: hd.dieSize, total }));
                     break;
                 }
@@ -104,7 +116,7 @@
 
     function openRestConfirm(moduleEl, data, btn) {
         const content = data.content;
-        const hasRoll = btn.actions.some(a => a.type === 'healByRoll');
+        const hasRoll = btn.actions.some((a) => a.type === 'healByRoll');
         const hd = content.hitDice;
 
         const overlay = document.createElement('div');
@@ -122,7 +134,7 @@
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
         closeXBtn.title = t('recovery.cancel');
-        closeXBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeXBtn.innerHTML = cvIcon('x', 12);
         header.appendChild(titleEl);
         header.appendChild(closeXBtn);
         panel.appendChild(header);
@@ -132,7 +144,7 @@
 
         const actionList = document.createElement('ul');
         actionList.className = 'recovery-confirm-actions-list';
-        btn.actions.forEach(action => {
+        btn.actions.forEach((action) => {
             const item = document.createElement('li');
             item.className = 'recovery-confirm-action-item';
             item.textContent = t('recovery.actionLabel.' + action.type);
@@ -179,8 +191,14 @@
                     incBtn.disabled = diceCount >= hd.remaining;
                 }
                 updateStepper();
-                decBtn.addEventListener('click', () => { diceCount = Math.max(0, diceCount - 1); updateStepper(); });
-                incBtn.addEventListener('click', () => { diceCount = Math.min(hd.remaining, diceCount + 1); updateStepper(); });
+                decBtn.addEventListener('click', () => {
+                    diceCount = Math.max(0, diceCount - 1);
+                    updateStepper();
+                });
+                incBtn.addEventListener('click', () => {
+                    diceCount = Math.min(hd.remaining, diceCount + 1);
+                    updateStepper();
+                });
 
                 stepper.appendChild(decBtn);
                 stepper.appendChild(valueEl);
@@ -189,7 +207,11 @@
 
                 const availableSpan = document.createElement('span');
                 availableSpan.className = 'recovery-hitdice-spend-available';
-                availableSpan.textContent = t('recovery.diceAvailable', { remaining: hd.remaining, total: hd.total, dieSize: hd.dieSize });
+                availableSpan.textContent = t('recovery.diceAvailable', {
+                    remaining: hd.remaining,
+                    total: hd.total,
+                    dieSize: hd.dieSize,
+                });
                 spendRow.appendChild(availableSpan);
 
                 spendSection.appendChild(spendRow);
@@ -224,11 +246,15 @@
         overlay.appendChild(panel);
         document.body.appendChild(overlay);
 
-        function closeDialog() { overlay.remove(); }
+        function closeDialog() {
+            overlay.remove();
+        }
 
         closeXBtn.addEventListener('click', closeDialog);
         cancelBtn.addEventListener('click', closeDialog);
-        overlay.addEventListener('click', e => { if (e.target === overlay) closeDialog(); });
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeDialog();
+        });
 
         confirmBtn.addEventListener('click', () => {
             const diceCount = getDiceCount();
@@ -279,7 +305,7 @@
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
         closeXBtn.title = t('recovery.close');
-        closeXBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeXBtn.innerHTML = cvIcon('x', 12);
         header.appendChild(titleEl);
         header.appendChild(closeXBtn);
         panel.appendChild(header);
@@ -303,34 +329,43 @@
         dieSizeLbl.textContent = t('recovery.dieSize');
         const dieSizeSelect = document.createElement('select');
         dieSizeSelect.className = 'recovery-hitdice-config-select';
-        [4, 6, 8, 10, 12].forEach(size => {
+        [4, 6, 8, 10, 12].forEach((size) => {
             const opt = document.createElement('option');
             opt.value = size;
             opt.textContent = 'd' + size;
             if (hd.dieSize === size) opt.selected = true;
             dieSizeSelect.appendChild(opt);
         });
-        dieSizeSelect.addEventListener('change', () => { hd.dieSize = parseInt(dieSizeSelect.value); scheduleSave(); });
+        dieSizeSelect.addEventListener('change', () => {
+            hd.dieSize = parseInt(dieSizeSelect.value);
+            scheduleSave();
+        });
         dieSizeField.appendChild(dieSizeLbl);
         dieSizeField.appendChild(dieSizeSelect);
         grid.appendChild(dieSizeField);
 
-        grid.appendChild(makeHDConfigField('recovery.totalDice', hd.total, 1, (v) => {
-            hd.total = v;
-            hd.remaining = Math.min(hd.remaining, hd.total);
-            scheduleSave();
-        }));
+        grid.appendChild(
+            makeHDConfigField('recovery.totalDice', hd.total, 1, (v) => {
+                hd.total = v;
+                hd.remaining = Math.min(hd.remaining, hd.total);
+                scheduleSave();
+            })
+        );
 
-        grid.appendChild(makeHDConfigField('recovery.remainingDice', hd.remaining, 0, (v, input) => {
-            hd.remaining = Math.min(v, hd.total);
-            input.value = hd.remaining;
-            scheduleSave();
-        }));
+        grid.appendChild(
+            makeHDConfigField('recovery.remainingDice', hd.remaining, 0, (v, input) => {
+                hd.remaining = Math.min(v, hd.total);
+                input.value = hd.remaining;
+                scheduleSave();
+            })
+        );
 
-        grid.appendChild(makeHDConfigField('recovery.modifier', hd.modifier || 0, -99, (v) => {
-            hd.modifier = v;
-            scheduleSave();
-        }));
+        grid.appendChild(
+            makeHDConfigField('recovery.modifier', hd.modifier || 0, -99, (v) => {
+                hd.modifier = v;
+                scheduleSave();
+            })
+        );
 
         // Restore on Long Rest (spans full grid width)
         const restoreField = document.createElement('div');
@@ -342,14 +377,17 @@
         const restoreSelect = document.createElement('select');
         restoreSelect.className = 'recovery-hitdice-config-select';
         const currentRestore = hd.restoreOnLongRest || 'half';
-        ['all', 'half', 'none'].forEach(opt => {
+        ['all', 'half', 'none'].forEach((opt) => {
             const el = document.createElement('option');
             el.value = opt;
             el.textContent = t('recovery.restoreOption.' + opt);
             if (currentRestore === opt) el.selected = true;
             restoreSelect.appendChild(el);
         });
-        restoreSelect.addEventListener('change', () => { hd.restoreOnLongRest = restoreSelect.value; scheduleSave(); });
+        restoreSelect.addEventListener('change', () => {
+            hd.restoreOnLongRest = restoreSelect.value;
+            scheduleSave();
+        });
         restoreField.appendChild(restoreLbl);
         restoreField.appendChild(restoreSelect);
         grid.appendChild(restoreField);
@@ -384,7 +422,9 @@
         };
         document.addEventListener('keydown', keyHandler);
         closeXBtn.addEventListener('click', closeModal);
-        overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeModal();
+        });
     }
     window.openRecoverySettingsModal = openRecoverySettingsModal;
 
@@ -401,11 +441,11 @@
             empty.textContent = t('recovery.emptyState');
             container.appendChild(empty);
         } else {
-            content.restButtons.forEach(btn => {
+            content.restButtons.forEach((btn) => {
                 const btnEl = document.createElement('button');
                 btnEl.type = 'button';
                 btnEl.className = 'recovery-rest-btn';
-                btnEl.innerHTML = `<svg class="icon recovery-rest-btn-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+                btnEl.innerHTML = cvIcon('moon', 14);
                 const nameSpan = document.createElement('span');
                 nameSpan.className = 'recovery-rest-btn-name';
                 nameSpan.textContent = btn.name;
@@ -467,7 +507,7 @@
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
         closeXBtn.title = t('recovery.close');
-        closeXBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeXBtn.innerHTML = cvIcon('x', 12);
         header.appendChild(titleEl);
         header.appendChild(closeXBtn);
         panel.appendChild(header);
@@ -484,7 +524,9 @@
         nameInput.type = 'text';
         nameInput.className = 'recovery-edit-name-input';
         nameInput.value = btn.name;
-        nameInput.addEventListener('input', () => { dirty = true; });
+        nameInput.addEventListener('input', () => {
+            dirty = true;
+        });
         nameField.appendChild(nameLabel);
         nameField.appendChild(nameInput);
         body.appendChild(nameField);
@@ -495,10 +537,12 @@
         const hpRecoveryLabel = document.createElement('div');
         hpRecoveryLabel.className = 'recovery-edit-label';
         hpRecoveryLabel.textContent = t('recovery.hpRecovery');
-        const currentHealType = btn.actions.find(a => a.type === 'healToFull' || a.type === 'healByRoll')?.type || '';
+        const currentHealType = btn.actions.find((a) => a.type === 'healToFull' || a.type === 'healByRoll')?.type || '';
         const healSelect = document.createElement('select');
         healSelect.className = 'settings-select';
-        healSelect.addEventListener('change', () => { dirty = true; });
+        healSelect.addEventListener('change', () => {
+            dirty = true;
+        });
         [
             { value: '', label: t('recovery.hpRecovery.none') },
             { value: 'healToFull', label: t('recovery.actionLabel.healToFull') },
@@ -526,8 +570,13 @@
         checklist.className = 'recovery-action-checklist';
         const checkboxes = [];
         let restoreHitDiceCb = null;
-        ACTION_TYPES.forEach(actionType => {
-            const toggle = makeCvToggle(btn.actions.some(a => a.type === actionType), () => { dirty = true; });
+        ACTION_TYPES.forEach((actionType) => {
+            const toggle = makeCvToggle(
+                btn.actions.some((a) => a.type === actionType),
+                () => {
+                    dirty = true;
+                }
+            );
             const lbl = document.createElement('span');
             lbl.className = 'cv-toggle-label';
             lbl.textContent = t('recovery.actionLabel.' + actionType);
@@ -570,32 +619,41 @@
         dieSizeLbl.textContent = t('recovery.dieSize');
         const dieSizeSelect = document.createElement('select');
         dieSizeSelect.className = 'recovery-hitdice-config-select';
-        [4, 6, 8, 10, 12].forEach(size => {
+        [4, 6, 8, 10, 12].forEach((size) => {
             const opt = document.createElement('option');
             opt.value = size;
             opt.textContent = 'd' + size;
             if (localHD.dieSize === size) opt.selected = true;
             dieSizeSelect.appendChild(opt);
         });
-        dieSizeSelect.addEventListener('change', () => { localHD.dieSize = parseInt(dieSizeSelect.value); dirty = true; });
+        dieSizeSelect.addEventListener('change', () => {
+            localHD.dieSize = parseInt(dieSizeSelect.value);
+            dirty = true;
+        });
         dieSizeField.appendChild(dieSizeLbl);
         dieSizeField.appendChild(dieSizeSelect);
         hdGrid.appendChild(dieSizeField);
 
-        hdGrid.appendChild(makeHDConfigField('recovery.totalDice', localHD.total, 1, (v) => {
-            localHD.total = v;
-            localHD.remaining = Math.min(localHD.remaining, localHD.total);
-            dirty = true;
-        }));
-        hdGrid.appendChild(makeHDConfigField('recovery.remainingDice', localHD.remaining, 0, (v, input) => {
-            localHD.remaining = Math.min(v, localHD.total);
-            input.value = localHD.remaining;
-            dirty = true;
-        }));
-        hdGrid.appendChild(makeHDConfigField('recovery.modifier', localHD.modifier || 0, -99, (v) => {
-            localHD.modifier = v;
-            dirty = true;
-        }));
+        hdGrid.appendChild(
+            makeHDConfigField('recovery.totalDice', localHD.total, 1, (v) => {
+                localHD.total = v;
+                localHD.remaining = Math.min(localHD.remaining, localHD.total);
+                dirty = true;
+            })
+        );
+        hdGrid.appendChild(
+            makeHDConfigField('recovery.remainingDice', localHD.remaining, 0, (v, input) => {
+                localHD.remaining = Math.min(v, localHD.total);
+                input.value = localHD.remaining;
+                dirty = true;
+            })
+        );
+        hdGrid.appendChild(
+            makeHDConfigField('recovery.modifier', localHD.modifier || 0, -99, (v) => {
+                localHD.modifier = v;
+                dirty = true;
+            })
+        );
         hdConfig.appendChild(hdGrid);
 
         const restorePolicyField = document.createElement('div');
@@ -606,14 +664,17 @@
         const restorePolicySelect = document.createElement('select');
         restorePolicySelect.className = 'recovery-hitdice-config-select';
         const currentRestorePolicy = localHD.restoreOnLongRest || 'half';
-        ['all', 'half', 'none'].forEach(opt => {
+        ['all', 'half', 'none'].forEach((opt) => {
             const el = document.createElement('option');
             el.value = opt;
             el.textContent = t('recovery.restoreOption.' + opt);
             if (currentRestorePolicy === opt) el.selected = true;
             restorePolicySelect.appendChild(el);
         });
-        restorePolicySelect.addEventListener('change', () => { localHD.restoreOnLongRest = restorePolicySelect.value; dirty = true; });
+        restorePolicySelect.addEventListener('change', () => {
+            localHD.restoreOnLongRest = restorePolicySelect.value;
+            dirty = true;
+        });
         restorePolicyField.appendChild(restorePolicyLbl);
         restorePolicyField.appendChild(restorePolicySelect);
         hdConfig.appendChild(restorePolicyField);
@@ -674,7 +735,9 @@
 
         closeXBtn.addEventListener('click', tryClose);
         cancelBtn.addEventListener('click', tryClose);
-        overlay.addEventListener('click', e => { if (e.target === overlay) tryClose(); });
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) tryClose();
+        });
 
         const keyHandler = (e) => {
             if (e.key === 'Escape') {
@@ -685,7 +748,7 @@
         document.addEventListener('keydown', keyHandler);
 
         deleteBtn.addEventListener('click', () => {
-            content.restButtons = content.restButtons.filter(b => b.id !== btn.id);
+            content.restButtons = content.restButtons.filter((b) => b.id !== btn.id);
             overlay.remove();
             onSaved();
             scheduleSave();
@@ -695,8 +758,10 @@
             btn.name = nameInput.value.trim() || t('recovery.unnamedButton');
             btn.actions = [];
             if (healSelect.value) btn.actions.push({ type: healSelect.value });
-            checkboxes.forEach((cb, i) => { if (cb.checked) btn.actions.push({ type: ACTION_TYPES[i] }); });
-            if (btn.actions.some(a => a.type === 'healByRoll' || a.type === 'restoreHitDice')) {
+            checkboxes.forEach((cb, i) => {
+                if (cb.checked) btn.actions.push({ type: ACTION_TYPES[i] });
+            });
+            if (btn.actions.some((a) => a.type === 'healByRoll' || a.type === 'restoreHitDice')) {
                 content.hitDice = { ...localHD };
             }
             if (isNew) content.restButtons.push(btn);
@@ -729,7 +794,7 @@
             }
             btnList.innerHTML = '';
 
-            content.restButtons.forEach(btn => {
+            content.restButtons.forEach((btn) => {
                 const row = document.createElement('div');
                 row.className = 'recovery-btn-row';
                 row.dataset.btnId = btn.id;
@@ -749,7 +814,7 @@
                 editBtn.type = 'button';
                 editBtn.className = 'recovery-btn-row-edit';
                 editBtn.title = t('recovery.editButton');
-                editBtn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+                editBtn.innerHTML = cvIcon('pencil', 12);
                 editBtn.addEventListener('click', () => {
                     openRestButtonEditModal(btn, content, renderBtnList, false);
                 });
@@ -758,9 +823,9 @@
                 deleteBtn.type = 'button';
                 deleteBtn.className = 'recovery-btn-row-delete';
                 deleteBtn.title = t('recovery.deleteButton');
-                deleteBtn.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>`;
+                deleteBtn.innerHTML = cvIcon('trash-2', 12);
                 deleteBtn.addEventListener('click', () => {
-                    content.restButtons = content.restButtons.filter(b => b.id !== btn.id);
+                    content.restButtons = content.restButtons.filter((b) => b.id !== btn.id);
                     renderBtnList();
                     scheduleSave();
                 });
@@ -781,7 +846,7 @@
                     draggable: '.recovery-btn-row',
                     onEnd() {
                         const rows = Array.from(btnList.querySelectorAll('.recovery-btn-row'));
-                        const newOrder = rows.map(r => r.dataset.btnId);
+                        const newOrder = rows.map((r) => r.dataset.btnId);
                         content.restButtons.sort((a, b) => newOrder.indexOf(a.id) - newOrder.indexOf(b.id));
                         scheduleSave();
                     },
@@ -795,7 +860,7 @@
         const addRow = document.createElement('button');
         addRow.type = 'button';
         addRow.className = 'recovery-add-btn-row';
-        addRow.innerHTML = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> ${escapeHtml(t('recovery.addButton'))}`;
+        addRow.innerHTML = `${cvIcon('plus', 12)} ${escapeHtml(t('recovery.addButton'))}`;
         addRow.addEventListener('click', () => {
             const newBtn = { id: genBtnId(), name: t('recovery.newButton'), actions: [] };
             openRestButtonEditModal(newBtn, content, renderBtnList, true);

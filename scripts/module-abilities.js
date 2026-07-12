@@ -244,7 +244,11 @@
     function rollAbilityCheck(ability, data) {
         var sys = window.gameSystem || 'custom';
         var profBonus = 0;
-        if ((sys === 'dnd5e' || sys === 'custom') && ability.proficiency && typeof window.getProficiencyBonus === 'function') {
+        if (
+            (sys === 'dnd5e' || sys === 'custom') &&
+            ability.proficiency &&
+            typeof window.getProficiencyBonus === 'function'
+        ) {
             profBonus = window.getProficiencyBonus();
         } else if (sys === 'pf2e' && typeof window.computePf2eProficiencyBonus === 'function') {
             profBonus = window.computePf2eProficiencyBonus(ability.proficiencyRank || 'untrained');
@@ -253,18 +257,35 @@
         const modStr = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
         if (sys === 'daggerheart') {
             window.rollDualityDice(
-                ability.name + ' ' + t('abilities.check'), totalMod,
-                'abilities.event.roll', 'abilities.log.roll',
+                ability.name + ' ' + t('abilities.check'),
+                totalMod,
+                'abilities.event.roll',
+                'abilities.log.roll',
                 { name: ability.name || t('abilities.unnamed'), modifier: '2d12' + modStr },
                 data.id
             );
             return;
         }
         try {
-            const rollPromise = TS.dice.putDiceInTray([{ name: `${ability.name} ${t('abilities.check')}`, roll: `1d20${modStr}` }]);
+            const rollPromise = TS.dice.putDiceInTray([
+                { name: `${ability.name} ${t('abilities.check')}`, roll: `1d20${modStr}` },
+            ]);
             if (typeof window.logActivity === 'function') {
-                const logEntryId = window.logActivity({ type: 'abilities.event.roll', message: t('abilities.log.roll', { name: ability.name || t('abilities.unnamed'), modifier: modStr }), sourceModuleId: data.id });
-                rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId }; }).catch(function (e) { console.warn('[CV] Ability roll failed:', e); });
+                const logEntryId = window.logActivity({
+                    type: 'abilities.event.roll',
+                    message: t('abilities.log.roll', {
+                        name: ability.name || t('abilities.unnamed'),
+                        modifier: modStr,
+                    }),
+                    sourceModuleId: data.id,
+                });
+                rollPromise
+                    .then(function (rollId) {
+                        if (rollId) window.pendingRolls[rollId] = { logEntryId };
+                    })
+                    .catch(function (e) {
+                        console.warn('[CV] Ability roll failed:', e);
+                    });
             }
         } catch (e) {
             console.warn('[CV] Ability roll failed:', e);
@@ -285,7 +306,12 @@
         if (playSys === 'pf2e') {
             var playRank = ability.proficiencyRank || 'untrained';
             if (playRank !== 'untrained') {
-                profHtml = '<span class="ability-rank-badge" title="' + escapeHtml(t('rank.' + playRank)) + '">' + playRank.charAt(0).toUpperCase() + '</span>';
+                profHtml =
+                    '<span class="ability-rank-badge" title="' +
+                    escapeHtml(t('rank.' + playRank)) +
+                    '">' +
+                    playRank.charAt(0).toUpperCase() +
+                    '</span>';
             } else {
                 profHtml = '<span class="ability-rank-badge untrained"></span>';
             }
@@ -334,7 +360,7 @@
             `<input class="ability-edit-name" type="text" value="${escapeHtml(ability.name)}" placeholder="${t('abilities.unnamed')}">` +
             modAreaHtml +
             `<button class="ability-edit-delete" title="${t('abilities.deleteAbility')}">` +
-            `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>` +
+            cvIcon('x', 12) +
             `</button>`;
 
         const nameInput = row.querySelector('.ability-edit-name');
@@ -375,7 +401,10 @@
             var rankSel = window.buildCvSelect(
                 window.buildPf2eRankOptions(),
                 ability.proficiencyRank || 'untrained',
-                function (v) { ability.proficiencyRank = v; scheduleSave(); }
+                function (v) {
+                    ability.proficiencyRank = v;
+                    scheduleSave();
+                }
             );
             rankWrap.appendChild(rankSel.el);
         }
@@ -446,8 +475,7 @@
         const closeBtnEl = document.createElement('button');
         closeBtnEl.className = 'cv-modal-close';
         closeBtnEl.title = t('abilities.close');
-        closeBtnEl.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeBtnEl.innerHTML = cvIcon('x', 14);
 
         header.appendChild(titleEl);
         header.appendChild(closeBtnEl);
@@ -461,7 +489,9 @@
 
         const statPicker = buildStatModulePicker(
             data.content.linkedStatModuleId,
-            function () { dirty = true; },
+            function () {
+                dirty = true;
+            },
             t('abilities.noLinkedModule')
         );
 
@@ -544,7 +574,7 @@
         var abilityGuardSys = window.gameSystem || 'custom';
         data.content.abilities.forEach(function (ability) {
             if (ability.proficiencyRank === undefined) {
-                ability.proficiencyRank = (abilityGuardSys === 'pf2e' && ability.proficiency) ? 'trained' : 'untrained';
+                ability.proficiencyRank = abilityGuardSys === 'pf2e' && ability.proficiency ? 'trained' : 'untrained';
             }
         });
 

@@ -94,10 +94,12 @@
             });
             return companions;
         }
-        const attr = content.attributes.find(a => a.id === content.sortBy);
+        const attr = content.attributes.find((a) => a.id === content.sortBy);
         companions.sort((a, b) => {
-            const av = (a.values && a.values[content.sortBy] != null) ? a.values[content.sortBy] : (attr ? attr.defaultValue : 0);
-            const bv = (b.values && b.values[content.sortBy] != null) ? b.values[content.sortBy] : (attr ? attr.defaultValue : 0);
+            const av =
+                a.values && a.values[content.sortBy] != null ? a.values[content.sortBy] : attr ? attr.defaultValue : 0;
+            const bv =
+                b.values && b.values[content.sortBy] != null ? b.values[content.sortBy] : attr ? attr.defaultValue : 0;
             if (attr && attr.type === 'number-pair') {
                 return ((av.current || 0) - (bv.current || 0)) * dir;
             }
@@ -118,8 +120,8 @@
     function getDisplayValue(attr, value) {
         if (value == null) value = attr.defaultValue;
         if (attr.type === 'number-pair') {
-            const cur = (value && value.current != null) ? value.current : 0;
-            const max = (value && value.max != null) ? value.max : 0;
+            const cur = value && value.current != null ? value.current : 0;
+            const max = value && value.max != null ? value.max : 0;
             return cur + ' / ' + max;
         }
         if (attr.type === 'toggle') {
@@ -132,15 +134,15 @@
     }
 
     function isHpAttr(attr) {
-        return attr.builtIn === true &&
-            attr.type === 'number-pair' &&
-            attr.name.toLowerCase().includes('hp');
+        return attr.builtIn === true && attr.type === 'number-pair' && attr.name.toLowerCase().includes('hp');
     }
 
     // ── Auto-Size Pair Input (sizes to digit count, min 1 char) ──
 
     function applyPairAutoSize(input) {
-        const resize = () => { input.style.width = Math.max(1, String(input.value).length) + 'ch'; };
+        const resize = () => {
+            input.style.width = Math.max(1, String(input.value).length) + 'ch';
+        };
         resize();
         input.addEventListener('input', resize);
     }
@@ -159,7 +161,10 @@
             cell.innerHTML = '';
             const span = document.createElement('span');
             span.className = 'companion-attr-display';
-            span.textContent = getDisplayValue(attr, companion.values[attr.id] != null ? companion.values[attr.id] : attr.defaultValue);
+            span.textContent = getDisplayValue(
+                attr,
+                companion.values[attr.id] != null ? companion.values[attr.id] : attr.defaultValue
+            );
 
             if (attr.type === 'toggle') {
                 span.style.cursor = 'pointer';
@@ -204,7 +209,9 @@
 
             input.addEventListener('blur', commit);
             input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') { input.blur(); }
+                if (e.key === 'Enter') {
+                    input.blur();
+                }
                 if (e.key === 'Escape') {
                     companion.values[attr.id] = curVal;
                     renderSpan();
@@ -335,7 +342,7 @@
     // ── Render a Single Companion Row ──
 
     function renderCompanionRow(companion, content, data, tableBody, bodyEl, isLayoutMode) {
-        const pinnedAttrs = content.attributes.filter(a => a.pinned);
+        const pinnedAttrs = content.attributes.filter((a) => a.pinned);
 
         // Main row
         const tr = document.createElement('tr');
@@ -361,7 +368,7 @@
         const chevBtn = document.createElement('button');
         chevBtn.className = 'companion-chevron-btn' + (companion.expanded ? ' expanded' : '');
         chevBtn.title = companion.expanded ? t('companion.collapse') : t('companion.expand');
-        chevBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+        chevBtn.innerHTML = cvIcon('chevron-right', 12);
         chevTd.appendChild(chevBtn);
         tr.appendChild(chevTd);
 
@@ -371,9 +378,7 @@
         const activeBtn = document.createElement('button');
         activeBtn.className = 'companion-active-btn' + (companion.active ? ' is-active' : '');
         activeBtn.title = t('companion.toggleActive');
-        activeBtn.innerHTML = companion.active
-            ? '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
-            : '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>';
+        activeBtn.innerHTML = companion.active ? cvIcon('info', 13) : cvIcon('circle', 13);
         activeBtn.addEventListener('click', () => {
             const wasActive = companion.active;
             companion.active = !wasActive;
@@ -509,7 +514,7 @@
 
     function renderCompanionsBody(bodyEl, data, isLayoutMode) {
         const content = ensureContent(data);
-        const pinnedAttrs = content.attributes.filter(a => a.pinned);
+        const pinnedAttrs = content.attributes.filter((a) => a.pinned);
 
         bodyEl.innerHTML = '';
 
@@ -577,10 +582,14 @@
 
         // Attribute col headers
         pinnedAttrs.forEach((attr) => {
-            const colClass = attr.type === 'number-pair' ? 'companion-col-number-pair'
-                : attr.type === 'number' ? 'companion-col-number'
-                : attr.type === 'toggle' ? 'companion-col-toggle'
-                : 'companion-col-text';
+            const colClass =
+                attr.type === 'number-pair'
+                    ? 'companion-col-number-pair'
+                    : attr.type === 'number'
+                      ? 'companion-col-number'
+                      : attr.type === 'toggle'
+                        ? 'companion-col-toggle'
+                        : 'companion-col-text';
             const th = document.createElement('th');
             th.className = 'companion-col-header ' + colClass + (content.sortBy === attr.id ? ' active-sort' : '');
             th.title = attr.name;
@@ -640,10 +649,12 @@
             onEnd() {
                 const rows = Array.from(tbody.querySelectorAll('.companion-row'));
                 const reordered = rows
-                    .map(r => content.companions.find(c => c.id === r.dataset.companionId))
+                    .map((r) => content.companions.find((c) => c.id === r.dataset.companionId))
                     .filter(Boolean);
                 content.companions = reordered;
-                content.companions.forEach((c, i) => { c.order = i; });
+                content.companions.forEach((c, i) => {
+                    c.order = i;
+                });
                 scheduleSave();
             },
         });
@@ -663,7 +674,7 @@
 
         // Update drag handle visibility
         const showDrag = isLayoutMode && content.sortBy === null;
-        container.querySelectorAll('.companion-drag-handle').forEach(h => {
+        container.querySelectorAll('.companion-drag-handle').forEach((h) => {
             h.style.visibility = showDrag ? '' : 'hidden';
         });
 
@@ -671,10 +682,10 @@
         // Textarea stays in sync via its input handler; collapsed drawers are skipped.
         if (!isLayoutMode) {
             const drawerMap = {};
-            container.querySelectorAll('[data-companion-drawer]').forEach(tr => {
+            container.querySelectorAll('[data-companion-drawer]').forEach((tr) => {
                 drawerMap[tr.dataset.companionDrawer] = tr;
             });
-            content.companions.forEach(companion => {
+            content.companions.forEach((companion) => {
                 if (!companion.expanded) return;
                 const drawerTr = drawerMap[companion.id];
                 if (!drawerTr) return;
@@ -723,7 +734,7 @@
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
         closeXBtn.title = t('companion.close');
-        closeXBtn.innerHTML = CV_SVG_CLOSE;
+        closeXBtn.innerHTML = cvIcon('x', 12);
 
         header.appendChild(titleEl);
         header.appendChild(closeXBtn);
@@ -834,7 +845,7 @@
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'companion-settings-delete-btn';
                 deleteBtn.title = t('companion.delete');
-                deleteBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>';
+                deleteBtn.innerHTML = cvIcon('trash-2', 14);
 
                 deleteBtn.addEventListener('click', () => {
                     showConfirm(
@@ -843,8 +854,10 @@
                             message: t('companion.deleteMsg', { name: companion.name || '?' }),
                         },
                         () => {
-                            content.companions = content.companions.filter(c => c.id !== companion.id);
-                            content.companions.forEach((c, i) => { c.order = i; });
+                            content.companions = content.companions.filter((c) => c.id !== companion.id);
+                            content.companions.forEach((c, i) => {
+                                c.order = i;
+                            });
                             scheduleSave();
                             refreshCompanionList();
                             const bodyEl = moduleEl.querySelector('.module-body');
@@ -893,7 +906,10 @@
         }
 
         function refreshAttrList() {
-            if (attrListEl._sortable) { attrListEl._sortable.destroy(); attrListEl._sortable = null; }
+            if (attrListEl._sortable) {
+                attrListEl._sortable.destroy();
+                attrListEl._sortable = null;
+            }
             attrListEl.innerHTML = '';
             content.attributes.forEach((attr) => {
                 const row = document.createElement('div');
@@ -916,9 +932,7 @@
                 const pinBtn = document.createElement('button');
                 pinBtn.className = 'companion-attr-pin-btn' + (attr.pinned ? ' pinned' : '');
                 pinBtn.title = t('companion.pinned');
-                pinBtn.innerHTML = attr.pinned
-                    ? '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V17z"/></svg>'
-                    : '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V17z"/></svg>';
+                pinBtn.innerHTML = attr.pinned ? cvIcon('pin', 13) : cvIcon('pin-off', 13);
                 pinBtn.addEventListener('click', () => {
                     attr.pinned = !attr.pinned;
                     scheduleSave();
@@ -934,7 +948,7 @@
                     const deleteBtn = document.createElement('button');
                     deleteBtn.className = 'companion-attr-delete-btn';
                     deleteBtn.title = t('companion.delete');
-                    deleteBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>';
+                    deleteBtn.innerHTML = cvIcon('trash-2', 13);
                     deleteBtn.addEventListener('click', () => {
                         showConfirm(
                             {
@@ -942,8 +956,10 @@
                                 message: t('companion.deleteMsg', { name: attr.name }),
                             },
                             () => {
-                                content.attributes = content.attributes.filter(a => a.id !== attr.id);
-                                content.companions.forEach(c => { delete c.values[attr.id]; });
+                                content.attributes = content.attributes.filter((a) => a.id !== attr.id);
+                                content.companions.forEach((c) => {
+                                    delete c.values[attr.id];
+                                });
                                 scheduleSave();
                                 refreshAttrList();
                                 reRenderModuleBody();
@@ -973,7 +989,11 @@
                     onEnd: function () {
                         var rows = Array.from(attrListEl.querySelectorAll('.companion-attr-row'));
                         var reordered = rows
-                            .map(function (r) { return content.attributes.find(function (a) { return a.id === r.dataset.attrId; }); })
+                            .map(function (r) {
+                                return content.attributes.find(function (a) {
+                                    return a.id === r.dataset.attrId;
+                                });
+                            })
                             .filter(Boolean);
                         content.attributes = reordered;
                         scheduleSave();
@@ -1082,18 +1102,27 @@
         };
         document.addEventListener('keydown', keyHandler);
         closeXBtn.addEventListener('click', closeModal);
-        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeModal();
+        });
 
-        requestAnimationFrame(() => { addInput.focus(); });
+        requestAnimationFrame(() => {
+            addInput.focus();
+        });
     }
 
     function getAttrTypeLabel(type) {
         switch (type) {
-            case 'number': return t('companion.attrTypeNumber');
-            case 'number-pair': return t('companion.attrTypeNumberPair');
-            case 'text': return t('companion.attrTypeText');
-            case 'toggle': return t('companion.attrTypeToggle');
-            default: return type;
+            case 'number':
+                return t('companion.attrTypeNumber');
+            case 'number-pair':
+                return t('companion.attrTypeNumberPair');
+            case 'text':
+                return t('companion.attrTypeText');
+            case 'toggle':
+                return t('companion.attrTypeToggle');
+            default:
+                return type;
         }
     }
 
@@ -1124,7 +1153,9 @@
 
     // ── Window Exports ──
     window.buildCompanionsDefaultContent = buildCompanionsDefaultContent;
-    window.openCompanionSettings = function (moduleEl, data) { openCompanionSettings(moduleEl, data); };
+    window.openCompanionSettings = function (moduleEl, data) {
+        openCompanionSettings(moduleEl, data);
+    };
 
     console.log('[CV] Companions module registered');
 })();

@@ -33,9 +33,7 @@
         { key: 'thunder', nameKey: 'res.typeThunder' },
     ];
 
-    // ── Resistance Icon SVGs ──
-    // ── Resistance Icon Library — references shared CV_ICONS ──
-    const RESISTANCE_ICON_SVG = CV_ICONS;
+    // ── Resistance Icons ──
 
     // ── Helpers ──
 
@@ -53,13 +51,13 @@
 
     function getResIconSvg(item, content) {
         // Pre-defined types use their key as icon key
-        if (RESISTANCE_ICON_SVG[item.typeKey]) return RESISTANCE_ICON_SVG[item.typeKey];
+        if (item.typeKey) return cvIcon(item.typeKey);
         // Custom types store an icon key
         const custom = (content.customTypes || []).find(function (c) {
             return c.key === item.typeKey;
         });
-        if (custom && custom.icon && RESISTANCE_ICON_SVG[custom.icon]) {
-            return RESISTANCE_ICON_SVG[custom.icon];
+        if (custom && custom.icon) {
+            return cvIcon(custom.icon);
         }
         return '';
     }
@@ -252,7 +250,11 @@
                         if (typeof window.logActivity === 'function') {
                             window.logActivity({
                                 type: 'res.event.toggle',
-                                message: t('res.log.toggle', { name: updatedName, column: t(COLUMN_SINGULAR_KEYS[colKey]), state: item.active ? t('res.active') : t('res.inactive') }),
+                                message: t('res.log.toggle', {
+                                    name: updatedName,
+                                    column: t(COLUMN_SINGULAR_KEYS[colKey]),
+                                    state: item.active ? t('res.active') : t('res.inactive'),
+                                }),
                                 sourceModuleId: data.id,
                             });
                         }
@@ -410,8 +412,7 @@
         const closeBtn = document.createElement('button');
         closeBtn.className = 'cv-modal-close';
         closeBtn.title = t('res.close');
-        closeBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeBtn.innerHTML = cvIcon('x', 12);
         closeBtn.addEventListener('click', function () {
             closeResSettingsPanel(moduleEl, data);
         });
@@ -471,7 +472,7 @@
             itemEl.className = 'res-staging-item';
             itemEl.dataset.typeKey = type.key;
 
-            const iconSvg = RESISTANCE_ICON_SVG[type.icon] || '';
+            const iconSvg = type.icon ? cvIcon(type.icon) : '';
             if (iconSvg) {
                 const iconSpan = document.createElement('span');
                 iconSpan.className = 'res-staging-icon';
@@ -492,11 +493,7 @@
         // Create Custom button
         const createBtn = document.createElement('button');
         createBtn.className = 'res-create-custom-btn';
-        createBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
-            '<span>' +
-            escapeHtml(t('res.createCustom')) +
-            '</span>';
+        createBtn.innerHTML = cvIcon('plus', 12) + '<span>' + escapeHtml(t('res.createCustom')) + '</span>';
         createBtn.addEventListener('click', function () {
             openResWizard(moduleEl, data, panel);
         });
@@ -538,7 +535,9 @@
         footerCloseBtn.type = 'button';
         footerCloseBtn.className = 'btn-secondary sm';
         footerCloseBtn.textContent = t('res.close');
-        footerCloseBtn.addEventListener('click', function () { closeResSettingsPanel(moduleEl, data); });
+        footerCloseBtn.addEventListener('click', function () {
+            closeResSettingsPanel(moduleEl, data);
+        });
         footer.appendChild(footerCloseBtn);
         panel.appendChild(footer);
 
@@ -588,8 +587,7 @@
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'res-assigned-delete';
         deleteBtn.title = t('res.remove');
-        deleteBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        deleteBtn.innerHTML = cvIcon('x', 10);
         deleteBtn.addEventListener('click', function (e) {
             e.stopPropagation();
             // Remove from data
@@ -663,7 +661,10 @@
                             if (typeof window.logActivity === 'function') {
                                 window.logActivity({
                                     type: 'res.event.add',
-                                    message: t('res.log.add', { name: getResName({ typeKey: typeKey }, content), column: t(COLUMN_LABEL_KEYS[toColumn]) }),
+                                    message: t('res.log.add', {
+                                        name: getResName({ typeKey: typeKey }, content),
+                                        column: t(COLUMN_LABEL_KEYS[toColumn]),
+                                    }),
                                     sourceModuleId: data.id,
                                 });
                             }
@@ -679,7 +680,11 @@
                                     if (typeof window.logActivity === 'function') {
                                         window.logActivity({
                                             type: 'res.event.add',
-                                            message: t('res.log.addWithValue', { name: getResName({ typeKey: typeKey }, content), column: t(COLUMN_LABEL_KEYS[toColumn]), value: val }),
+                                            message: t('res.log.addWithValue', {
+                                                name: getResName({ typeKey: typeKey }, content),
+                                                column: t(COLUMN_LABEL_KEYS[toColumn]),
+                                                value: val,
+                                            }),
                                             sourceModuleId: data.id,
                                         });
                                     }
@@ -717,7 +722,11 @@
                             if (typeof window.logActivity === 'function') {
                                 window.logActivity({
                                     type: 'res.event.move',
-                                    message: t('res.log.move', { name: getResName(movedItem, content), fromColumn: t(COLUMN_LABEL_KEYS[fromColumn]), toColumn: t(COLUMN_LABEL_KEYS[toColumn]) }),
+                                    message: t('res.log.move', {
+                                        name: getResName(movedItem, content),
+                                        fromColumn: t(COLUMN_LABEL_KEYS[fromColumn]),
+                                        toColumn: t(COLUMN_LABEL_KEYS[toColumn]),
+                                    }),
                                     sourceModuleId: data.id,
                                 });
                             }
@@ -733,7 +742,11 @@
                                     if (typeof window.logActivity === 'function') {
                                         window.logActivity({
                                             type: 'res.event.move',
-                                            message: t('res.log.move', { name: getResName(movedItem, content), fromColumn: t(COLUMN_LABEL_KEYS[fromColumn]), toColumn: t(COLUMN_LABEL_KEYS[toColumn]) }),
+                                            message: t('res.log.move', {
+                                                name: getResName(movedItem, content),
+                                                fromColumn: t(COLUMN_LABEL_KEYS[fromColumn]),
+                                                toColumn: t(COLUMN_LABEL_KEYS[toColumn]),
+                                            }),
                                             sourceModuleId: data.id,
                                         });
                                     }
@@ -789,8 +802,7 @@
         const closeBtn = document.createElement('button');
         closeBtn.className = 'res-wizard-close';
         closeBtn.title = t('res.close');
-        closeBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeBtn.innerHTML = cvIcon('x', 14);
         closeBtn.addEventListener('click', function () {
             overlay.remove();
         });
@@ -814,12 +826,12 @@
         iconGrid.className = 'res-wizard-icon-grid';
 
         // Sort icon keys alphabetically
-        const iconKeys = Object.keys(RESISTANCE_ICON_SVG).sort();
+        const iconKeys = CV_ICON_KEYS;
         iconKeys.forEach(function (key) {
             const btn = document.createElement('button');
             btn.className = 'res-wizard-icon-btn';
             btn.dataset.iconKey = key;
-            btn.innerHTML = RESISTANCE_ICON_SVG[key];
+            btn.innerHTML = cvIcon(key);
             const iconLabel = key.charAt(0).toUpperCase() + key.slice(1);
             let _tip = null;
             btn.addEventListener('mouseenter', function () {
@@ -968,7 +980,9 @@
     window.getAvailableTypes = getAvailableTypes;
     window.sortColumnAlpha = sortColumnAlpha;
     window.addResistanceToColumn = addResistanceToColumn;
-    window.generateResId = function () { return generateId('res'); };
+    window.generateResId = function () {
+        return generateId('res');
+    };
 
     console.log('[CV] Resistance module registered');
 })();

@@ -2,8 +2,24 @@
 (function () {
     // ── Stat Templates ──
     const STAT_TEMPLATES = {
-        dnd5e: [{ name: 'STR' }, { name: 'DEX' }, { name: 'CON' }, { name: 'INT' }, { name: 'WIS' }, { name: 'CHA' }, { name: 'Proficiency', isProficiencyStat: true, rollable: false }],
-        pf2e: [{ name: 'STR' }, { name: 'DEX' }, { name: 'CON' }, { name: 'INT' }, { name: 'WIS' }, { name: 'CHA' }, { name: 'Proficiency', isProficiencyStat: true, rollable: false }],
+        dnd5e: [
+            { name: 'STR' },
+            { name: 'DEX' },
+            { name: 'CON' },
+            { name: 'INT' },
+            { name: 'WIS' },
+            { name: 'CHA' },
+            { name: 'Proficiency', isProficiencyStat: true, rollable: false },
+        ],
+        pf2e: [
+            { name: 'STR' },
+            { name: 'DEX' },
+            { name: 'CON' },
+            { name: 'INT' },
+            { name: 'WIS' },
+            { name: 'CHA' },
+            { name: 'Proficiency', isProficiencyStat: true, rollable: false },
+        ],
         daggerheart: [
             { name: 'Agility' },
             { name: 'Strength' },
@@ -82,13 +98,21 @@
         const secondaryVal = isLargeStat ? formatModifier(stat.modifier) : stat.value;
 
         const block = document.createElement('div');
-        block.className = 'stat-block' + (isPlayMode && stat.rollable ? ' stat-rollable' : '') + (isModifierOnly ? ' stat-modifier-only' : '');
+        block.className =
+            'stat-block' +
+            (isPlayMode && stat.rollable ? ' stat-rollable' : '') +
+            (isModifierOnly ? ' stat-modifier-only' : '');
         block.dataset.index = index;
         var sys = window.gameSystem || 'custom';
         var profIndicatorHtml = '';
         if (sys === 'pf2e') {
             var rank = stat.proficiencyRank || 'untrained';
-            profIndicatorHtml = '<span class="stat-rank-badge" title="' + escapeHtml(t('rank.' + rank)) + '">' + rank.charAt(0).toUpperCase() + '</span>';
+            profIndicatorHtml =
+                '<span class="stat-rank-badge" title="' +
+                escapeHtml(t('rank.' + rank)) +
+                '">' +
+                rank.charAt(0).toUpperCase() +
+                '</span>';
         } else if (stat.proficient && sys !== 'daggerheart') {
             profIndicatorHtml = '<span class="stat-proficiency-dot"></span>';
         }
@@ -134,7 +158,7 @@
 
         if (stat.isProficiencyStat && editSys === 'dnd5e') {
             var autoVal = typeof window.getProficiencyBonus === 'function' ? window.getProficiencyBonus() : 2;
-            var deleteSvg = `<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+            var deleteSvg = cvIcon('x', 12);
             block.innerHTML =
                 `<div class="stat-edit-name-row">` +
                 `<span class="stat-drag-handle" style="visibility:hidden">&#x2807;</span>` +
@@ -158,7 +182,9 @@
                 }
                 container.querySelectorAll('.stat-block-edit').forEach((b) => b.classList.remove('stat-selected'));
                 if (moduleEl._selectedStatIndex !== null) {
-                    const sel = container.querySelector(`.stat-block-edit[data-index="${moduleEl._selectedStatIndex}"]`);
+                    const sel = container.querySelector(
+                        `.stat-block-edit[data-index="${moduleEl._selectedStatIndex}"]`
+                    );
                     if (sel) sel.classList.add('stat-selected');
                 }
             });
@@ -175,13 +201,14 @@
         }
         var editLayout = data.content.layout;
         var isEditModOnly = editLayout === 'modifier-only';
-        var valueFieldHtml = isEditModOnly ? '' :
-            `<div class="stat-edit-field"><label class="${editLayout === 'large-stat' ? 'stat-edit-primary-label' : ''}">${t('stat.value')}</label><input type="number" class="stat-edit-value" value="${stat.value}"></div>`;
+        var valueFieldHtml = isEditModOnly
+            ? ''
+            : `<div class="stat-edit-field"><label class="${editLayout === 'large-stat' ? 'stat-edit-primary-label' : ''}">${t('stat.value')}</label><input type="number" class="stat-edit-value" value="${stat.value}"></div>`;
         block.innerHTML =
             `<div class="stat-edit-name-row">` +
             `<span class="stat-drag-handle">&#x2807;</span>` +
             `<input class="stat-edit-name" type="text" value="${escapeHtml(stat.name)}" placeholder="${t('stat.unnamed')}">` +
-            `<button class="stat-edit-delete" title="${t('stat.deleteStat')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>` +
+            `<button class="stat-edit-delete" title="${t('stat.deleteStat')}">${cvIcon('x', 12)}</button>` +
             `</div>` +
             `<div class="stat-edit-row">` +
             valueFieldHtml +
@@ -217,13 +244,16 @@
             ];
             ranks.forEach(function (r) {
                 var pill = document.createElement('button');
-                pill.className = 'stat-rank-pill' + ((stat.proficiencyRank || 'untrained') === r.value ? ' active' : '');
+                pill.className =
+                    'stat-rank-pill' + ((stat.proficiencyRank || 'untrained') === r.value ? ' active' : '');
                 pill.textContent = r.letter;
                 pill.title = t('rank.' + r.value);
                 pill.dataset.rank = r.value;
                 pill.addEventListener('click', function () {
                     stat.proficiencyRank = r.value;
-                    pillBar.querySelectorAll('.stat-rank-pill').forEach(function (p) { p.classList.remove('active'); });
+                    pillBar.querySelectorAll('.stat-rank-pill').forEach(function (p) {
+                        p.classList.remove('active');
+                    });
                     pill.classList.add('active');
                     scheduleSave();
                 });
@@ -347,7 +377,11 @@
     function rollStatCheck(stat, data) {
         var sys = window.gameSystem || 'custom';
         var profBonus = 0;
-        if ((sys === 'dnd5e' || sys === 'custom') && stat.proficient && typeof window.getProficiencyBonus === 'function') {
+        if (
+            (sys === 'dnd5e' || sys === 'custom') &&
+            stat.proficient &&
+            typeof window.getProficiencyBonus === 'function'
+        ) {
             profBonus = window.getProficiencyBonus();
         } else if (sys === 'pf2e' && typeof window.computePf2eProficiencyBonus === 'function') {
             profBonus = window.computePf2eProficiencyBonus(stat.proficiencyRank);
@@ -356,18 +390,32 @@
         const modStr = totalMod >= 0 ? `+${totalMod}` : `${totalMod}`;
         if (sys === 'daggerheart') {
             window.rollDualityDice(
-                stat.name + ' ' + t('stat.check'), totalMod,
-                'stat.event.roll', 'stat.log.roll',
+                stat.name + ' ' + t('stat.check'),
+                totalMod,
+                'stat.event.roll',
+                'stat.log.roll',
                 { name: stat.name || t('stat.unnamed'), modifier: '2d12' + modStr },
                 data.id
             );
             return;
         }
         try {
-            const rollPromise = TS.dice.putDiceInTray([{ name: `${stat.name} ${t('stat.check')}`, roll: `1d20${modStr}` }]);
+            const rollPromise = TS.dice.putDiceInTray([
+                { name: `${stat.name} ${t('stat.check')}`, roll: `1d20${modStr}` },
+            ]);
             if (typeof window.logActivity === 'function') {
-                const logEntryId = window.logActivity({ type: 'stat.event.roll', message: t('stat.log.roll', { name: stat.name || t('stat.unnamed'), modifier: `1d20${modStr}` }), sourceModuleId: data.id });
-                rollPromise.then(function (rollId) { if (rollId) window.pendingRolls[rollId] = { logEntryId }; }).catch(function (e) { console.warn('[CV] Dice roll failed:', e); });
+                const logEntryId = window.logActivity({
+                    type: 'stat.event.roll',
+                    message: t('stat.log.roll', { name: stat.name || t('stat.unnamed'), modifier: `1d20${modStr}` }),
+                    sourceModuleId: data.id,
+                });
+                rollPromise
+                    .then(function (rollId) {
+                        if (rollId) window.pendingRolls[rollId] = { logEntryId };
+                    })
+                    .catch(function (e) {
+                        console.warn('[CV] Dice roll failed:', e);
+                    });
             }
         } catch (e) {
             console.warn('[CV] Dice roll failed:', e);
@@ -386,7 +434,7 @@
         const primaryInput = document.createElement('input');
         primaryInput.type = 'number';
         primaryInput.className = 'stat-quick-input';
-        primaryInput.value = isModOnly ? stat.modifier : (isLargeStat ? stat.value : stat.modifier);
+        primaryInput.value = isModOnly ? stat.modifier : isLargeStat ? stat.value : stat.modifier;
 
         var secondaryInput = null;
         if (!isModOnly) {
@@ -454,7 +502,7 @@
             var guardSys = window.gameSystem || 'custom';
             data.content.stats.forEach(function (stat) {
                 if (stat.proficiencyRank === undefined) {
-                    stat.proficiencyRank = (guardSys === 'pf2e' && stat.proficient) ? 'trained' : 'untrained';
+                    stat.proficiencyRank = guardSys === 'pf2e' && stat.proficient ? 'trained' : 'untrained';
                 }
             });
 
@@ -505,7 +553,10 @@
     // ── Stat Settings Modal ──
     function openStatSettingsModal(moduleEl, data) {
         const existing = document.querySelector('.stat-settings-overlay');
-        if (existing) { existing.remove(); return; }
+        if (existing) {
+            existing.remove();
+            return;
+        }
 
         const overlay = document.createElement('div');
         overlay.className = 'cv-modal-overlay stat-settings-overlay';
@@ -522,7 +573,7 @@
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
         closeXBtn.title = t('module.close');
-        closeXBtn.innerHTML = CV_SVG_CLOSE;
+        closeXBtn.innerHTML = cvIcon('x', 12);
         header.appendChild(titleEl);
         header.appendChild(closeXBtn);
         panel.appendChild(header);
@@ -548,11 +599,19 @@
                     const boardStats = creature.stats;
                     if (data.content.stats.length === 0) {
                         data.content.stats = boardStats.map(function (s) {
-                            return { name: s.name || t('stat.unnamed'), value: s.value || 0, modifier: 0, proficient: false, rollable: true };
+                            return {
+                                name: s.name || t('stat.unnamed'),
+                                value: s.value || 0,
+                                modifier: 0,
+                                proficient: false,
+                                rollable: true,
+                            };
                         });
                     } else {
                         boardStats.forEach(function (bs) {
-                            const existing = data.content.stats.find(function (es) { return es.name.toLowerCase() === bs.name.toLowerCase(); });
+                            const existing = data.content.stats.find(function (es) {
+                                return es.name.toLowerCase() === bs.name.toLowerCase();
+                            });
                             if (existing) existing.value = bs.value;
                         });
                     }
@@ -600,22 +659,26 @@
 
         const rollableList = document.createElement('div');
         rollableList.className = 'stat-settings-rollable-list';
-        data.content.stats.filter(function (stat) { return !stat.isProficiencyStat; }).forEach(function (stat) {
-            const row = document.createElement('div');
-            row.className = 'stat-settings-rollable-row';
+        data.content.stats
+            .filter(function (stat) {
+                return !stat.isProficiencyStat;
+            })
+            .forEach(function (stat) {
+                const row = document.createElement('div');
+                row.className = 'stat-settings-rollable-row';
 
-            const nameSpan = document.createElement('span');
-            nameSpan.className = 'cv-toggle-label';
-            nameSpan.textContent = stat.name || t('stat.unnamed');
-            row.appendChild(nameSpan);
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'cv-toggle-label';
+                nameSpan.textContent = stat.name || t('stat.unnamed');
+                row.appendChild(nameSpan);
 
-            const toggle = window.makeCvToggle(!!stat.rollable, function (checked) {
-                stat.rollable = checked;
-                scheduleSave();
+                const toggle = window.makeCvToggle(!!stat.rollable, function (checked) {
+                    stat.rollable = checked;
+                    scheduleSave();
+                });
+                row.appendChild(toggle);
+                rollableList.appendChild(row);
             });
-            row.appendChild(toggle);
-            rollableList.appendChild(row);
-        });
         body.appendChild(rollableList);
 
         buildCommonSettingsSection(body, moduleEl, data);
@@ -646,7 +709,9 @@
         };
         document.addEventListener('keydown', keyHandler);
         closeXBtn.addEventListener('click', closeModal);
-        overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) closeModal();
+        });
     }
 
     window.openStatSettingsModal = openStatSettingsModal;
@@ -657,13 +722,22 @@
     window.getAbilityModifier = function (key) {
         if (!key) return 0;
         const nameMap = {
-            str: 'STR', dex: 'DEX', con: 'CON', int: 'INT', wis: 'WIS', cha: 'CHA',
+            str: 'STR',
+            dex: 'DEX',
+            con: 'CON',
+            int: 'INT',
+            wis: 'WIS',
+            cha: 'CHA',
             // Daggerheart governing traits
-            agility: 'AGILITY', strength: 'STRENGTH', finesse: 'FINESSE',
-            instinct: 'INSTINCT', presence: 'PRESENCE', knowledge: 'KNOWLEDGE',
+            agility: 'AGILITY',
+            strength: 'STRENGTH',
+            finesse: 'FINESSE',
+            instinct: 'INSTINCT',
+            presence: 'PRESENCE',
+            knowledge: 'KNOWLEDGE',
         };
         const target = (nameMap[key] || key).toUpperCase();
-        for (const m of (window.modules || [])) {
+        for (const m of window.modules || []) {
             if (m.type !== 'stat' || !m.content || !Array.isArray(m.content.stats)) continue;
             const stat = m.content.stats.find((s) => s.name && s.name.toUpperCase() === target);
             if (stat) return stat.modifier || 0;
@@ -674,7 +748,7 @@
     window.getAbilityModifierFrom = function (key, moduleId) {
         if (!key) return 0;
         const target = key.toUpperCase();
-        for (const m of (window.modules || [])) {
+        for (const m of window.modules || []) {
             if (m.type !== 'stat' || !m.content || !Array.isArray(m.content.stats)) continue;
             if (moduleId && m.id !== moduleId) continue;
             const stat = m.content.stats.find((s) => s.name && s.name.toUpperCase() === target);
@@ -686,10 +760,11 @@
     window.getProficiencyBonus = function () {
         var sys = window.gameSystem || 'custom';
         if (sys === 'dnd5e') {
-            var totalLevel = typeof window.getTotalCharacterLevel === 'function' ? window.getTotalCharacterLevel() : null;
+            var totalLevel =
+                typeof window.getTotalCharacterLevel === 'function' ? window.getTotalCharacterLevel() : null;
             if (totalLevel !== null) return window.computeDnd5eProficiencyBonus(totalLevel);
         }
-        for (const m of (window.modules || [])) {
+        for (const m of window.modules || []) {
             if (m.type !== 'stat' || !m.content || !Array.isArray(m.content.stats)) continue;
             const profStat = m.content.stats.find((s) => s.isProficiencyStat);
             if (profStat) return profStat.value ?? 0;
@@ -703,7 +778,9 @@
         for (var i = 0; i < (window.modules || []).length; i++) {
             var m = window.modules[i];
             if (m.type !== 'stat' || !m.content || !Array.isArray(m.content.stats)) continue;
-            var stat = m.content.stats.find(function (s) { return s.name && s.name.toUpperCase() === target; });
+            var stat = m.content.stats.find(function (s) {
+                return s.name && s.name.toUpperCase() === target;
+            });
             if (stat) return typeof stat.value === 'number' ? stat.value : null;
         }
         return null;
@@ -728,7 +805,9 @@
         var newBonus = window.computeDnd5eProficiencyBonus(totalLevel);
         (window.modules || []).forEach(function (m) {
             if (m.type !== 'stat' || !m.content || !Array.isArray(m.content.stats)) return;
-            var profStat = m.content.stats.find(function (s) { return s.isProficiencyStat; });
+            var profStat = m.content.stats.find(function (s) {
+                return s.isProficiencyStat;
+            });
             if (!profStat || profStat.value === newBonus) return;
             profStat.value = newBonus;
             var moduleEl = document.querySelector('.module[data-id="' + m.id + '"]');

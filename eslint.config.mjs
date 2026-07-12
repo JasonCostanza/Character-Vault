@@ -23,6 +23,10 @@ export default [
                 // ── translations.js ──
                 CV_TRANSLATIONS: 'readonly',
 
+                // ── icons.js ──
+                cvIcon: 'readonly',
+                CV_ICON_KEYS: 'readonly',
+
                 // ── shared.js ──
                 escapeHtml: 'readonly',
                 renderMarkdown: 'readonly',
@@ -37,10 +41,6 @@ export default [
                 buildStatModulePicker: 'readonly',
                 getLinkedStatNames: 'readonly',
                 closeAllModals: 'readonly',
-                CV_ICONS: 'readonly',
-                CV_SVG_SORT_UP: 'readonly',
-                CV_SVG_SORT_DOWN: 'readonly',
-                CV_SVG_CLOSE: 'readonly',
 
                 // ── i18n.js ──
                 currentLang: 'writable',

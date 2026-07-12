@@ -4,11 +4,15 @@
 
     // ── Shared SVG Fragments ──
 
-    var SVG_CLOSE = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-    var SVG_PLUS = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+    var SVG_CLOSE = cvIcon('x', 12);
+    var SVG_PLUS = cvIcon('plus', 14);
 
-    function generateDefenseId() { return generateId('def'); }
-    function generateQDId() { return generateId('qd'); }
+    function generateDefenseId() {
+        return generateId('def');
+    }
+    function generateQDId() {
+        return generateId('qd');
+    }
 
     // ── Default Content Builder ──
 
@@ -17,11 +21,29 @@
 
         if (sys === 'pf2e') {
             content.defenses.push({ id: generateDefenseId(), name: 'AC', value: 10, icon: 'shield', showSign: false });
-            content.quickDefenses.push({ id: generateQDId(), name: 'Raise Shield', icon: 'shield', modifier: 2, active: false });
+            content.quickDefenses.push({
+                id: generateQDId(),
+                name: 'Raise Shield',
+                icon: 'shield',
+                modifier: 2,
+                active: false,
+            });
         } else if (sys === 'dnd3.5e') {
             content.defenses.push({ id: generateDefenseId(), name: 'AC', value: 10, icon: 'shield', showSign: false });
-            content.defenses.push({ id: generateDefenseId(), name: 'Touch AC', value: 10, icon: 'crosshair', showSign: false });
-            content.defenses.push({ id: generateDefenseId(), name: 'Flat-Footed AC', value: 10, icon: 'shield', showSign: false });
+            content.defenses.push({
+                id: generateDefenseId(),
+                name: 'Touch AC',
+                value: 10,
+                icon: 'crosshair',
+                showSign: false,
+            });
+            content.defenses.push({
+                id: generateDefenseId(),
+                name: 'Flat-Footed AC',
+                value: 10,
+                icon: 'shield',
+                showSign: false,
+            });
         } else {
             content.defenses.push({ id: generateDefenseId(), name: 'AC', value: 10, icon: 'shield', showSign: false });
         }
@@ -63,13 +85,19 @@
         if (!content.defenses.length) return 0;
         const base = content.defenses[0].value;
         const qdBonus = content.quickDefenses
-            .filter(function (qd) { return qd.active; })
-            .reduce(function (sum, qd) { return sum + (qd.modifier || 0); }, 0);
+            .filter(function (qd) {
+                return qd.active;
+            })
+            .reduce(function (sum, qd) {
+                return sum + (qd.modifier || 0);
+            }, 0);
         return base + qdBonus;
     }
 
     function getActiveQDs(content) {
-        return content.quickDefenses.filter(function (qd) { return qd.active; });
+        return content.quickDefenses.filter(function (qd) {
+            return qd.active;
+        });
     }
 
     function isBuffed(content) {
@@ -93,16 +121,22 @@
         noneBtn.title = t('def.noIcon');
         noneBtn.className = currentIcon === null ? 'selected' : '';
         noneBtn.innerHTML = '&mdash;';
-        noneBtn.addEventListener('click', function () { onSelect(null); closePicker(); });
+        noneBtn.addEventListener('click', function () {
+            onSelect(null);
+            closePicker();
+        });
         picker.appendChild(noneBtn);
 
-        Object.keys(CV_ICONS).forEach(function (key) {
+        CV_ICON_KEYS.forEach(function (key) {
             const iconBtn = document.createElement('button');
             iconBtn.type = 'button';
             iconBtn.className = key === currentIcon ? 'selected' : '';
             iconBtn.title = key;
-            iconBtn.innerHTML = CV_ICONS[key];
-            iconBtn.addEventListener('click', function () { onSelect(key); closePicker(); });
+            iconBtn.innerHTML = cvIcon(key);
+            iconBtn.addEventListener('click', function () {
+                onSelect(key);
+                closePicker();
+            });
             picker.appendChild(iconBtn);
         });
 
@@ -145,8 +179,14 @@
         }
 
         input.addEventListener('keydown', function (ev) {
-            if (ev.key === 'Enter') { ev.preventDefault(); commitOnce(); }
-            if (ev.key === 'Escape') { committed = true; onCommit(currentValue); }
+            if (ev.key === 'Enter') {
+                ev.preventDefault();
+                commitOnce();
+            }
+            if (ev.key === 'Escape') {
+                committed = true;
+                onCommit(currentValue);
+            }
         });
         input.addEventListener('blur', function () {
             setTimeout(commitOnce, 50);
@@ -196,10 +236,10 @@
         const section = document.createElement('div');
         section.className = 'def-spotlight';
 
-        if (def.icon && CV_ICONS[def.icon]) {
+        if (def.icon) {
             const iconEl = document.createElement('span');
             iconEl.className = 'def-spotlight-icon';
-            iconEl.innerHTML = CV_ICONS[def.icon];
+            iconEl.innerHTML = cvIcon(def.icon);
             section.appendChild(iconEl);
         }
 
@@ -239,10 +279,10 @@
             const row = document.createElement('div');
             row.className = 'def-secondary-row';
 
-            if (def.icon && CV_ICONS[def.icon]) {
+            if (def.icon) {
                 const iconEl = document.createElement('span');
                 iconEl.className = 'def-secondary-icon';
-                iconEl.innerHTML = CV_ICONS[def.icon];
+                iconEl.innerHTML = cvIcon(def.icon);
                 row.appendChild(iconEl);
             }
 
@@ -287,10 +327,10 @@
             btn.className = 'def-qd-btn' + (qd.active ? ' active' : '');
             btn.dataset.id = qd.id;
 
-            if (qd.icon && CV_ICONS[qd.icon]) {
+            if (qd.icon) {
                 const iconEl = document.createElement('span');
                 iconEl.className = 'def-qd-icon';
-                iconEl.innerHTML = CV_ICONS[qd.icon];
+                iconEl.innerHTML = cvIcon(qd.icon);
                 btn.appendChild(iconEl);
             }
 
@@ -344,11 +384,7 @@
         iconBtn.type = 'button';
         iconBtn.className = 'def-icon-btn';
         iconBtn.title = t('def.changeIcon');
-        if (def.icon && CV_ICONS[def.icon]) {
-            iconBtn.innerHTML = CV_ICONS[def.icon];
-        } else {
-            iconBtn.innerHTML = CV_ICONS['none'];
-        }
+        iconBtn.innerHTML = def.icon ? cvIcon(def.icon) : cvIcon('none');
         iconBtn.addEventListener('click', function () {
             openDefenseIconPicker(iconBtn, def.icon, function (newIcon) {
                 def.icon = newIcon;
@@ -405,7 +441,9 @@
         deleteBtn.innerHTML = SVG_CLOSE;
         deleteBtn.addEventListener('click', function () {
             showConfirm(t('def.confirmDelete', { name: def.name || t('def.unnamed') }), function () {
-                const idx = data.content.defenses.findIndex(function (d) { return d.id === def.id; });
+                const idx = data.content.defenses.findIndex(function (d) {
+                    return d.id === def.id;
+                });
                 if (idx !== -1) data.content.defenses.splice(idx, 1);
                 MODULE_TYPES['defenses'].renderBody(bodyEl, data, false);
                 scheduleSave();
@@ -448,11 +486,14 @@
             ghostClass: 'cv-drag-ghost',
             draggable: '.def-edit-row',
             onEnd: function () {
-                const ids = Array.from(container.querySelectorAll('.def-edit-row'))
-                    .map(function (el) { return el.dataset.id; });
+                const ids = Array.from(container.querySelectorAll('.def-edit-row')).map(function (el) {
+                    return el.dataset.id;
+                });
                 const reordered = ids
                     .map(function (id) {
-                        return data.content.defenses.find(function (d) { return d.id === id; });
+                        return data.content.defenses.find(function (d) {
+                            return d.id === id;
+                        });
                     })
                     .filter(Boolean);
                 data.content.defenses = reordered;
@@ -479,11 +520,7 @@
         iconBtn.type = 'button';
         iconBtn.className = 'def-icon-btn';
         iconBtn.title = t('def.changeIcon');
-        if (qd.icon && CV_ICONS[qd.icon]) {
-            iconBtn.innerHTML = CV_ICONS[qd.icon];
-        } else {
-            iconBtn.innerHTML = CV_ICONS['none'];
-        }
+        iconBtn.innerHTML = qd.icon ? cvIcon(qd.icon) : cvIcon('none');
         iconBtn.addEventListener('click', function () {
             openDefenseIconPicker(iconBtn, qd.icon, function (newIcon) {
                 qd.icon = newIcon;
@@ -528,7 +565,9 @@
         deleteBtn.title = t('def.deleteQD');
         deleteBtn.innerHTML = SVG_CLOSE;
         deleteBtn.addEventListener('click', function () {
-            const idx = content.quickDefenses.findIndex(function (q) { return q.id === qd.id; });
+            const idx = content.quickDefenses.findIndex(function (q) {
+                return q.id === qd.id;
+            });
             if (idx !== -1) content.quickDefenses.splice(idx, 1);
             scheduleSave();
             renderQDModalBody(listEl, content, data, moduleEl);
@@ -584,11 +623,14 @@
             ghostClass: 'cv-drag-ghost',
             draggable: '.def-qd-row',
             onEnd: function () {
-                const ids = Array.from(container.querySelectorAll('.def-qd-row'))
-                    .map(function (el) { return el.dataset.id; });
+                const ids = Array.from(container.querySelectorAll('.def-qd-row')).map(function (el) {
+                    return el.dataset.id;
+                });
                 const reordered = ids
                     .map(function (id) {
-                        return content.quickDefenses.find(function (q) { return q.id === id; });
+                        return content.quickDefenses.find(function (q) {
+                            return q.id === id;
+                        });
                     })
                     .filter(Boolean);
                 content.quickDefenses = reordered;
@@ -685,8 +727,13 @@
             if (content.defenses.length === 0 && isPlayMode) {
                 const empty = document.createElement('div');
                 empty.className = 'def-empty';
-                empty.innerHTML = '<div>' + escapeHtml(t('def.emptyTitle')) + '</div>'
-                    + '<div>' + escapeHtml(t('def.emptyHint')) + '</div>';
+                empty.innerHTML =
+                    '<div>' +
+                    escapeHtml(t('def.emptyTitle')) +
+                    '</div>' +
+                    '<div>' +
+                    escapeHtml(t('def.emptyHint')) +
+                    '</div>';
                 container.appendChild(empty);
             } else if (isPlayMode) {
                 renderSpotlight(container, content, data, bodyEl);

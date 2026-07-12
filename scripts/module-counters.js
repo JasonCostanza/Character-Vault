@@ -13,9 +13,6 @@
         return data.content;
     }
 
-    // ── Counter Icon Library — references shared CV_ICONS ──
-    const COUNTER_ICON_SVG = CV_ICONS;
-
     // Icon picker data — organized by category for display in modals
     const COUNTER_ICON_CATEGORIES = [
         { label: 'counter.iconGeneric', keys: ['star', 'circle', 'square', 'triangle', 'diamond'] },
@@ -114,7 +111,7 @@
                 btn.className = 'counter-icon-pick-btn' + (key === selectedKey ? ' selected' : '');
                 btn.dataset.iconKey = key;
                 btn.title = COUNTER_ICON_LABELS[key] || key;
-                btn.innerHTML = COUNTER_ICON_SVG[key] || '';
+                btn.innerHTML = cvIcon(key);
                 btn.addEventListener('click', function () {
                     picker.querySelectorAll('.counter-icon-pick-btn').forEach(function (b) {
                         b.classList.remove('selected');
@@ -151,7 +148,7 @@
             '<button type="button" class="cv-modal-close" title="' +
             escapeHtml(t('counter.close')) +
             '">' +
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+            cvIcon('x', 14) +
             '</button>';
         panel.appendChild(header);
 
@@ -288,7 +285,7 @@
             '<button type="button" class="cv-modal-close" title="' +
             escapeHtml(t('counter.close')) +
             '">' +
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+            cvIcon('x', 14) +
             '</button>';
         panel.appendChild(header);
 
@@ -515,10 +512,10 @@
         const atMin = counter.value <= counter.min;
 
         // Icon
-        if (counter.icon && COUNTER_ICON_SVG[counter.icon]) {
+        if (counter.icon) {
             const iconWrap = document.createElement('span');
             iconWrap.className = 'counter-row-icon';
-            iconWrap.innerHTML = COUNTER_ICON_SVG[counter.icon];
+            iconWrap.innerHTML = cvIcon(counter.icon);
             row.appendChild(iconWrap);
         }
 
@@ -555,8 +552,7 @@
         decrementBtn.type = 'button';
         decrementBtn.className = 'counter-decrement-btn';
         decrementBtn.title = t('counter.decrement');
-        decrementBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+        decrementBtn.innerHTML = cvIcon('minus', 14);
         decrementBtn.addEventListener('click', function (e) {
             e.stopPropagation();
             if (counter.value <= counter.min) return;
@@ -564,7 +560,11 @@
             counter.value--;
             scheduleSave();
             if (typeof window.logActivity === 'function') {
-                window.logActivity({ type: 'counter.event.change', message: t('counter.log.decrement', { name: counter.name, oldVal: oldVal, newVal: counter.value }), sourceModuleId: data.id });
+                window.logActivity({
+                    type: 'counter.event.change',
+                    message: t('counter.log.decrement', { name: counter.name, oldVal: oldVal, newVal: counter.value }),
+                    sourceModuleId: data.id,
+                });
             }
             reRenderCounterModule(moduleEl, data);
         });
@@ -575,8 +575,7 @@
         incrementBtn.type = 'button';
         incrementBtn.className = 'counter-increment-btn';
         incrementBtn.title = t('counter.increment');
-        incrementBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+        incrementBtn.innerHTML = cvIcon('plus', 14);
         incrementBtn.addEventListener('click', function (e) {
             e.stopPropagation();
             if (counter.max !== null && counter.value >= counter.max) return;
@@ -584,7 +583,11 @@
             counter.value++;
             scheduleSave();
             if (typeof window.logActivity === 'function') {
-                window.logActivity({ type: 'counter.event.change', message: t('counter.log.increment', { name: counter.name, oldVal: oldVal, newVal: counter.value }), sourceModuleId: data.id });
+                window.logActivity({
+                    type: 'counter.event.change',
+                    message: t('counter.log.increment', { name: counter.name, oldVal: oldVal, newVal: counter.value }),
+                    sourceModuleId: data.id,
+                });
             }
             reRenderCounterModule(moduleEl, data);
         });
@@ -595,8 +598,7 @@
         resetBtn.type = 'button';
         resetBtn.className = 'counter-reset-btn';
         resetBtn.title = t('counter.reset');
-        resetBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>';
+        resetBtn.innerHTML = cvIcon('rotate-ccw', 14);
         resetBtn.addEventListener('click', function (e) {
             e.stopPropagation();
             showConfirm(
@@ -610,7 +612,11 @@
                     counter.value = counter.min;
                     scheduleSave();
                     if (typeof window.logActivity === 'function') {
-                        window.logActivity({ type: 'counter.event.reset', message: t('counter.log.reset', { name: counter.name, value: counter.min }), sourceModuleId: data.id });
+                        window.logActivity({
+                            type: 'counter.event.reset',
+                            message: t('counter.log.reset', { name: counter.name, value: counter.min }),
+                            sourceModuleId: data.id,
+                        });
                     }
                     reRenderCounterModule(moduleEl, data);
                 }
@@ -632,7 +638,11 @@
             counter.value++;
             scheduleSave();
             if (typeof window.logActivity === 'function') {
-                window.logActivity({ type: 'counter.event.change', message: t('counter.log.increment', { name: counter.name, oldVal: oldVal, newVal: counter.value }), sourceModuleId: data.id });
+                window.logActivity({
+                    type: 'counter.event.change',
+                    message: t('counter.log.increment', { name: counter.name, oldVal: oldVal, newVal: counter.value }),
+                    sourceModuleId: data.id,
+                });
             }
             reRenderCounterModule(moduleEl, data);
         });
@@ -645,7 +655,11 @@
             counter.value--;
             scheduleSave();
             if (typeof window.logActivity === 'function') {
-                window.logActivity({ type: 'counter.event.change', message: t('counter.log.decrement', { name: counter.name, oldVal: oldVal, newVal: counter.value }), sourceModuleId: data.id });
+                window.logActivity({
+                    type: 'counter.event.change',
+                    message: t('counter.log.decrement', { name: counter.name, oldVal: oldVal, newVal: counter.value }),
+                    sourceModuleId: data.id,
+                });
             }
             reRenderCounterModule(moduleEl, data);
         });
@@ -667,10 +681,10 @@
         row.appendChild(handle);
 
         // Icon
-        if (counter.icon && COUNTER_ICON_SVG[counter.icon]) {
+        if (counter.icon) {
             const iconWrap = document.createElement('span');
             iconWrap.className = 'counter-row-icon counter-row-icon-sm';
-            iconWrap.innerHTML = COUNTER_ICON_SVG[counter.icon];
+            iconWrap.innerHTML = cvIcon(counter.icon);
             row.appendChild(iconWrap);
         }
 
@@ -700,8 +714,7 @@
         decrementBtnEdit.className = 'counter-decrement-btn';
         decrementBtnEdit.title = t('counter.decrement');
         decrementBtnEdit.disabled = true;
-        decrementBtnEdit.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+        decrementBtnEdit.innerHTML = cvIcon('minus', 14);
         actionsGroup.appendChild(decrementBtnEdit);
 
         const incrementBtnEdit = document.createElement('button');
@@ -709,8 +722,7 @@
         incrementBtnEdit.className = 'counter-increment-btn';
         incrementBtnEdit.title = t('counter.increment');
         incrementBtnEdit.disabled = true;
-        incrementBtnEdit.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+        incrementBtnEdit.innerHTML = cvIcon('plus', 14);
         actionsGroup.appendChild(incrementBtnEdit);
 
         const resetBtnEdit = document.createElement('button');
@@ -718,8 +730,7 @@
         resetBtnEdit.className = 'counter-reset-btn';
         resetBtnEdit.title = t('counter.reset');
         resetBtnEdit.disabled = true;
-        resetBtnEdit.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>';
+        resetBtnEdit.innerHTML = cvIcon('rotate-ccw', 14);
         actionsGroup.appendChild(resetBtnEdit);
 
         row.appendChild(actionsGroup);
@@ -729,8 +740,7 @@
         deleteBtn.type = 'button';
         deleteBtn.className = 'counter-row-delete';
         deleteBtn.title = t('counter.deleteCounter');
-        deleteBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        deleteBtn.innerHTML = cvIcon('x', 12);
         deleteBtn.addEventListener('click', function (e) {
             e.stopPropagation();
             const idx = content.counters.findIndex(function (c) {
@@ -756,9 +766,6 @@
 
     // ── Column Headers ──
     function renderCounterColumnHeaders(container, content, moduleEl, data) {
-        const SVG_UP = CV_SVG_SORT_UP;
-        const SVG_DOWN = CV_SVG_SORT_DOWN;
-
         const headerRow = document.createElement('div');
         headerRow.className = 'counter-header-row';
 
@@ -795,7 +802,7 @@
             if (isActive) {
                 const indicator = document.createElement('span');
                 indicator.className = 'list-sort-indicator';
-                indicator.innerHTML = content.sortDir === 'asc' ? SVG_UP : SVG_DOWN;
+                indicator.innerHTML = content.sortDir === 'asc' ? cvIcon('chevron-up', 10) : cvIcon('chevron-down', 10);
                 colEl.appendChild(indicator);
             }
 
@@ -936,5 +943,4 @@
 
     // Expose for module-core toolbar wiring
     window.openCounterCreateModal = openCounterCreateModal;
-    window.COUNTER_ICON_SVG = COUNTER_ICON_SVG;
 })();

@@ -21,14 +21,6 @@
         return data.content;
     }
 
-    // ── Preset Icon SVGs ──
-    // ── List Icon Library — references shared CV_ICONS ──
-    const LIST_ICON_SVG = CV_ICONS;
-
-    const CV_SVG_EYE_OPEN = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
-    const CV_SVG_EYE_CLOSED = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
-    const CV_SVG_COLUMNS = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="18" rx="1"/><rect x="13" y="3" width="8" height="18" rx="1"/></svg>';
-
     // ── Attribute Wizard Icon Library ──
     const ATTR_WIZARD_ICONS = [
         { key: null, label: 'None' },
@@ -229,9 +221,19 @@
             if (typeof window.logActivity !== 'function') return;
             const itemName = item.name || t('list.itemName');
             const listName = data.title || t('type.list');
-            const message = action === 'toggle'
-                ? t(newVal ? 'list.log.attrToggleOn' : 'list.log.attrToggleOff', { item: itemName, attr: attr.name, listName })
-                : t('list.log.attrChange', { item: itemName, attr: attr.name, value: formatAttrValueForLog(attr, newVal), listName });
+            const message =
+                action === 'toggle'
+                    ? t(newVal ? 'list.log.attrToggleOn' : 'list.log.attrToggleOff', {
+                          item: itemName,
+                          attr: attr.name,
+                          listName,
+                      })
+                    : t('list.log.attrChange', {
+                          item: itemName,
+                          attr: attr.name,
+                          value: formatAttrValueForLog(attr, newVal),
+                          listName,
+                      });
             window.logActivity({ type: 'list.event.attrChange', message, sourceModuleId: data.id });
         };
     }
@@ -242,10 +244,7 @@
         cell.className = 'list-attr-cell list-attr-' + attr.type;
 
         if (attr.type === 'toggle') {
-            const toggleIconSvg =
-                attr.icon && LIST_ICON_SVG[attr.icon]
-                    ? LIST_ICON_SVG[attr.icon]
-                    : '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7"/></svg>';
+            const toggleIconSvg = attr.icon ? cvIcon(attr.icon) : cvIcon('circle', 16);
             const toggleBtn = document.createElement('button');
             toggleBtn.className = 'list-attr-toggle-btn' + (value ? ' is-on' : ' is-off');
             toggleBtn.innerHTML = toggleIconSvg;
@@ -293,7 +292,9 @@
                     if (e.key === 'Enter' || e.key === 'Escape') qtyInput.blur();
                 });
                 let qtyFocusVal = val;
-                qtyInput.addEventListener('focus', function () { qtyFocusVal = parseInt(qtyInput.value) || 0; });
+                qtyInput.addEventListener('focus', function () {
+                    qtyFocusVal = parseInt(qtyInput.value) || 0;
+                });
                 qtyInput.addEventListener('blur', function () {
                     const newQty = parseInt(qtyInput.value) || 0;
                     if (newQty !== qtyFocusVal && onLog) onLog('change', newQty);
@@ -321,7 +322,9 @@
                     if (e.key === 'Enter' || e.key === 'Escape') numInput.blur();
                 });
                 let numFocusVal = value != null ? value : 0;
-                numInput.addEventListener('focus', function () { numFocusVal = parseFloat(numInput.value) || 0; });
+                numInput.addEventListener('focus', function () {
+                    numFocusVal = parseFloat(numInput.value) || 0;
+                });
                 numInput.addEventListener('blur', function () {
                     const newNum = parseFloat(numInput.value) || 0;
                     if (newNum !== numFocusVal && onLog) onLog('change', newNum);
@@ -364,7 +367,10 @@
                 });
                 let pairFocusStr = JSON.stringify({ current: pairCur, max: pairMax });
                 const snapPairFocus = function () {
-                    pairFocusStr = JSON.stringify({ current: parseFloat(curInput.value) || 0, max: parseFloat(maxInput.value) || 0 });
+                    pairFocusStr = JSON.stringify({
+                        current: parseFloat(curInput.value) || 0,
+                        max: parseFloat(maxInput.value) || 0,
+                    });
                 };
                 const logPairBlur = function () {
                     const current = parseFloat(curInput.value) || 0;
@@ -430,7 +436,9 @@
                 if (e.key === 'Enter' || e.key === 'Escape') txtInput.blur();
             });
             let textFocusVal = value != null ? value : '';
-            txtInput.addEventListener('focus', function () { textFocusVal = txtInput.value; });
+            txtInput.addEventListener('focus', function () {
+                textFocusVal = txtInput.value;
+            });
             txtInput.addEventListener('blur', function () {
                 if (txtInput.value !== textFocusVal && onLog) onLog('change', txtInput.value);
             });
@@ -487,8 +495,8 @@
 
                 const iconEl = document.createElement('span');
                 iconEl.className = 'list-col-picker-icon';
-                if (attr.icon && LIST_ICON_SVG[attr.icon]) {
-                    iconEl.innerHTML = LIST_ICON_SVG[attr.icon];
+                if (attr.icon) {
+                    iconEl.innerHTML = cvIcon(attr.icon);
                 }
                 row.appendChild(iconEl);
 
@@ -500,11 +508,11 @@
                 const visBtn = document.createElement('button');
                 visBtn.className = 'list-attr-visibility-btn' + (attr.pinned ? ' visible' : '');
                 visBtn.title = escapeHtml(t('list.columnVisible'));
-                visBtn.innerHTML = attr.pinned ? CV_SVG_EYE_OPEN : CV_SVG_EYE_CLOSED;
+                visBtn.innerHTML = attr.pinned ? cvIcon('eye', 14) : cvIcon('eye-off', 14);
                 visBtn.addEventListener('click', function () {
                     attr.pinned = !attr.pinned;
                     visBtn.classList.toggle('visible', attr.pinned);
-                    visBtn.innerHTML = attr.pinned ? CV_SVG_EYE_OPEN : CV_SVG_EYE_CLOSED;
+                    visBtn.innerHTML = attr.pinned ? cvIcon('eye', 14) : cvIcon('eye-off', 14);
                     scheduleSave();
                 });
                 row.appendChild(visBtn);
@@ -552,7 +560,9 @@
         const w = attr.width || DEFAULT_COL_WIDTH;
         applyColWidth(colHeader, w);
         const cells = bodyEl.querySelectorAll('.list-attr-cell[data-attr-id="' + attr.id + '"]');
-        cells.forEach(function (cell) { applyColWidth(cell, w); });
+        cells.forEach(function (cell) {
+            applyColWidth(cell, w);
+        });
     }
 
     function initColResizeHandle(colHeader, attr, bodyEl, data) {
@@ -589,7 +599,9 @@
             function applyWidth() {
                 const w = attr.width || DEFAULT_COL_WIDTH;
                 applyColWidth(colHeader, w);
-                cells.forEach(function (cell) { applyColWidth(cell, w); });
+                cells.forEach(function (cell) {
+                    applyColWidth(cell, w);
+                });
             }
 
             function onMouseMove(ev) {
@@ -654,7 +666,7 @@
         if (nameIsActive) {
             const nameIndicator = document.createElement('span');
             nameIndicator.className = 'list-sort-indicator';
-            nameIndicator.innerHTML = content.sortDir === 'asc' ? CV_SVG_SORT_UP : CV_SVG_SORT_DOWN;
+            nameIndicator.innerHTML = content.sortDir === 'asc' ? cvIcon('chevron-up', 10) : cvIcon('chevron-down', 10);
             nameHeader.appendChild(nameIndicator);
         }
 
@@ -694,7 +706,7 @@
             if (isActive) {
                 const indicator = document.createElement('span');
                 indicator.className = 'list-sort-indicator';
-                indicator.innerHTML = content.sortDir === 'asc' ? CV_SVG_SORT_UP : CV_SVG_SORT_DOWN;
+                indicator.innerHTML = content.sortDir === 'asc' ? cvIcon('chevron-up', 10) : cvIcon('chevron-down', 10);
                 colHeader.appendChild(indicator);
             }
 
@@ -727,7 +739,7 @@
             const pickerBtn = document.createElement('button');
             pickerBtn.className = 'list-col-picker-btn';
             pickerBtn.title = escapeHtml(t('list.columns'));
-            pickerBtn.innerHTML = CV_SVG_COLUMNS;
+            pickerBtn.innerHTML = cvIcon('columns', 14);
             pickerBtn.addEventListener('click', function (e) {
                 e.stopPropagation();
                 if (activeColumnPicker && activeColumnPicker.anchorEl === pickerBtn) {
@@ -1002,7 +1014,9 @@
                         if (e.key === 'Enter' || e.key === 'Escape') nameInput.blur();
                     });
                     let nameOnFocus = item.name;
-                    nameInput.addEventListener('focus', () => { nameOnFocus = nameInput.value; });
+                    nameInput.addEventListener('focus', () => {
+                        nameOnFocus = nameInput.value;
+                    });
                     nameInput.addEventListener('blur', () => {
                         const newName = nameInput.value;
                         if (pendingAddEntries.has(item.id)) {
@@ -1010,16 +1024,28 @@
                                 const entryId = pendingAddEntries.get(item.id);
                                 const entry = (window.activityLog || []).find((e) => e.id === entryId);
                                 if (entry) {
-                                    entry.message = t('list.log.addNamed', { name: newName, listName: data.title || t('type.list') });
+                                    entry.message = t('list.log.addNamed', {
+                                        name: newName,
+                                        listName: data.title || t('type.list'),
+                                    });
                                     scheduleSave();
                                     if (typeof window.refreshActivityLog === 'function') window.refreshActivityLog();
                                 }
                             }
                             pendingAddEntries.delete(item.id);
-                        } else if (newName && newName !== nameOnFocus && nameOnFocus && typeof window.logActivity === 'function') {
+                        } else if (
+                            newName &&
+                            newName !== nameOnFocus &&
+                            nameOnFocus &&
+                            typeof window.logActivity === 'function'
+                        ) {
                             window.logActivity({
                                 type: 'list.event.rename',
-                                message: t('list.log.rename', { oldName: nameOnFocus, newName, listName: data.title || t('type.list') }),
+                                message: t('list.log.rename', {
+                                    oldName: nameOnFocus,
+                                    newName,
+                                    listName: data.title || t('type.list'),
+                                }),
                                 sourceModuleId: data.id,
                             });
                         }
@@ -1029,13 +1055,19 @@
 
                 // Pinned attribute value cells
                 pinnedAttrs.forEach((attr) => {
-                    const val =
-                        item.values && item.values[attr.id] != null ? item.values[attr.id] : attr.defaultValue;
-                    const attrCell = renderAttrValue(attr, val, isPlayMode, item, function (newVal) {
-                        if (!item.values) item.values = {};
-                        item.values[attr.id] = newVal;
-                        scheduleSave();
-                    }, buildAttrOnLog(item, attr, data));
+                    const val = item.values && item.values[attr.id] != null ? item.values[attr.id] : attr.defaultValue;
+                    const attrCell = renderAttrValue(
+                        attr,
+                        val,
+                        isPlayMode,
+                        item,
+                        function (newVal) {
+                            if (!item.values) item.values = {};
+                            item.values[attr.id] = newVal;
+                            scheduleSave();
+                        },
+                        buildAttrOnLog(item, attr, data)
+                    );
                     attrCell.dataset.attrId = attr.id;
                     applyColWidth(attrCell, attr.width);
                     row.appendChild(attrCell);
@@ -1046,8 +1078,7 @@
                     const expandBtn = document.createElement('button');
                     expandBtn.className = 'list-item-expand-btn';
                     expandBtn.title = escapeHtml(t('list.inspectTitle'));
-                    expandBtn.innerHTML =
-                        '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>';
+                    expandBtn.innerHTML = cvIcon('maximize-2', 14);
                     expandBtn.addEventListener('click', function () {
                         openItemInspect(moduleEl, data, item.id);
                     });
@@ -1057,8 +1088,7 @@
                     const deleteBtn = document.createElement('button');
                     deleteBtn.className = 'list-item-delete-btn';
                     deleteBtn.title = escapeHtml(t('list.deleteItem'));
-                    deleteBtn.innerHTML =
-                        '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+                    deleteBtn.innerHTML = cvIcon('x', 12);
                     deleteBtn.addEventListener('click', () => {
                         const idx = content.items.findIndex((i) => i.id === item.id);
                         if (idx !== -1) {
@@ -1071,7 +1101,10 @@
                             if (typeof window.logActivity === 'function') {
                                 window.logActivity({
                                     type: 'list.event.remove',
-                                    message: t('list.log.remove', { name: itemName, listName: data.title || t('type.list') }),
+                                    message: t('list.log.remove', {
+                                        name: itemName,
+                                        listName: data.title || t('type.list'),
+                                    }),
                                     sourceModuleId: data.id,
                                 });
                             }
@@ -1182,8 +1215,10 @@
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
         closeXBtn.title = t('list.close');
-        closeXBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-        closeXBtn.addEventListener('click', function () { closeManageAttrsPanel(moduleEl, data); });
+        closeXBtn.innerHTML = cvIcon('x', 12);
+        closeXBtn.addEventListener('click', function () {
+            closeManageAttrsPanel(moduleEl, data);
+        });
         header.appendChild(titleEl);
         header.appendChild(closeXBtn);
         panel.appendChild(header);
@@ -1206,8 +1241,8 @@
                 // Icon
                 const iconSpan = document.createElement('span');
                 iconSpan.className = 'list-attr-icon';
-                if (attr.icon && LIST_ICON_SVG[attr.icon]) {
-                    iconSpan.innerHTML = LIST_ICON_SVG[attr.icon];
+                if (attr.icon) {
+                    iconSpan.innerHTML = cvIcon(attr.icon);
                 }
                 row.appendChild(iconSpan);
 
@@ -1233,7 +1268,7 @@
                 const visBtn = document.createElement('button');
                 visBtn.className = 'list-attr-visibility-btn' + (attr.pinned ? ' visible' : '');
                 visBtn.title = escapeHtml(t('list.columnVisible'));
-                visBtn.innerHTML = attr.pinned ? CV_SVG_EYE_OPEN : CV_SVG_EYE_CLOSED;
+                visBtn.innerHTML = attr.pinned ? cvIcon('eye', 14) : cvIcon('eye-off', 14);
                 visBtn.addEventListener('click', function () {
                     attr.pinned = !attr.pinned;
                     scheduleSave();
@@ -1245,8 +1280,7 @@
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'list-attr-delete-btn';
                 deleteBtn.title = escapeHtml(t('list.deleteItem'));
-                deleteBtn.innerHTML =
-                    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+                deleteBtn.innerHTML = cvIcon('x', 12);
                 deleteBtn.addEventListener('click', function () {
                     showAttrDeleteConfirm(attr.name, function () {
                         const idx = content.attributes.indexOf(attr);
@@ -1301,7 +1335,7 @@
             availablePresets.forEach(function (preset) {
                 const btn = document.createElement('button');
                 btn.className = 'list-attr-preset-btn';
-                const iconHtml = LIST_ICON_SVG[preset.icon] || '';
+                const iconHtml = preset.icon ? cvIcon(preset.icon) : '';
                 btn.innerHTML = iconHtml + '<span>' + escapeHtml(t('list.' + preset.key)) + '</span>';
                 btn.addEventListener('click', function () {
                     const defaultVal =
@@ -1344,11 +1378,7 @@
         customSection.className = 'list-manage-section';
         const customBtn = document.createElement('button');
         customBtn.className = 'list-custom-btn';
-        customBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
-            '<span>' +
-            escapeHtml(t('list.createCustom')) +
-            '</span>';
+        customBtn.innerHTML = cvIcon('plus', 14) + '<span>' + escapeHtml(t('list.createCustom')) + '</span>';
         customBtn.addEventListener('click', function () {
             openAttrWizard(moduleEl, data, content, panel);
         });
@@ -1365,7 +1395,9 @@
         closeFooterBtn.type = 'button';
         closeFooterBtn.className = 'btn-secondary sm';
         closeFooterBtn.textContent = t('list.close');
-        closeFooterBtn.addEventListener('click', function () { closeManageAttrsPanel(moduleEl, data); });
+        closeFooterBtn.addEventListener('click', function () {
+            closeManageAttrsPanel(moduleEl, data);
+        });
         footer.appendChild(closeFooterBtn);
         panel.appendChild(footer);
     }
@@ -1389,8 +1421,7 @@
         const closeBtn = document.createElement('button');
         closeBtn.className = 'attr-wizard-close';
         closeBtn.title = escapeHtml(t('list.close'));
-        closeBtn.innerHTML =
-            '<svg class="icon" width="16" height="16" viewBox="0 0 24 24" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeBtn.innerHTML = cvIcon('x', 16);
 
         header.appendChild(titleEl);
         header.appendChild(closeBtn);
@@ -1529,7 +1560,7 @@
             if (ic.key === null) {
                 btn.textContent = '—';
             } else {
-                btn.innerHTML = LIST_ICON_SVG[ic.key] || '';
+                btn.innerHTML = cvIcon(ic.key);
             }
             btn.addEventListener('click', function () {
                 iconGrid.querySelectorAll('.attr-wizard-icon-btn').forEach(function (b) {
@@ -1671,12 +1702,14 @@
                 // Capture attribute diffs before overwriting
                 const attrDiffs = [];
                 content.attributes.forEach(function (attr) {
-                    const oldVal = ctx.itemOriginal.values && ctx.itemOriginal.values[attr.id] != null
-                        ? ctx.itemOriginal.values[attr.id]
-                        : attr.defaultValue;
-                    const newVal = ctx.itemProxy.values && ctx.itemProxy.values[attr.id] != null
-                        ? ctx.itemProxy.values[attr.id]
-                        : attr.defaultValue;
+                    const oldVal =
+                        ctx.itemOriginal.values && ctx.itemOriginal.values[attr.id] != null
+                            ? ctx.itemOriginal.values[attr.id]
+                            : attr.defaultValue;
+                    const newVal =
+                        ctx.itemProxy.values && ctx.itemProxy.values[attr.id] != null
+                            ? ctx.itemProxy.values[attr.id]
+                            : attr.defaultValue;
                     if (JSON.stringify(oldVal) !== JSON.stringify(newVal)) {
                         attrDiffs.push({ attr, newVal });
                     }
@@ -1712,9 +1745,19 @@
                 // Log changed attributes
                 if (typeof window.logActivity === 'function') {
                     attrDiffs.forEach(function ({ attr, newVal }) {
-                        const message = attr.type === 'toggle'
-                            ? t(newVal ? 'list.log.attrToggleOn' : 'list.log.attrToggleOff', { item: itemName, attr: attr.name, listName })
-                            : t('list.log.attrChange', { item: itemName, attr: attr.name, value: formatAttrValueForLog(attr, newVal), listName });
+                        const message =
+                            attr.type === 'toggle'
+                                ? t(newVal ? 'list.log.attrToggleOn' : 'list.log.attrToggleOff', {
+                                      item: itemName,
+                                      attr: attr.name,
+                                      listName,
+                                  })
+                                : t('list.log.attrChange', {
+                                      item: itemName,
+                                      attr: attr.name,
+                                      value: formatAttrValueForLog(attr, newVal),
+                                      listName,
+                                  });
                         window.logActivity({ type: 'list.event.attrChange', message, sourceModuleId: ctx.data.id });
                     });
                 }
@@ -1768,8 +1811,7 @@
 
         const closeXBtn = document.createElement('button');
         closeXBtn.className = 'list-inspect-close-x';
-        closeXBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeXBtn.innerHTML = cvIcon('x', 16);
         closeXBtn.title = t('list.close');
         closeXBtn.addEventListener('click', function () {
             closeItemInspect(true);
@@ -1835,9 +1877,9 @@
                 const attrLabel = document.createElement('div');
                 attrLabel.className = 'list-inspect-attr-label';
 
-                if (attr.icon && LIST_ICON_SVG[attr.icon]) {
+                if (attr.icon) {
                     const iconSpan = document.createElement('span');
-                    iconSpan.innerHTML = LIST_ICON_SVG[attr.icon];
+                    iconSpan.innerHTML = cvIcon(attr.icon);
                     attrLabel.appendChild(iconSpan.firstChild);
                 }
 
@@ -1918,9 +1960,7 @@
         const sendPlayerBtn = document.createElement('button');
         sendPlayerBtn.className = 'list-inspect-btn-send';
         sendPlayerBtn.title = escapeHtml(t('transfer.sendToPlayer'));
-        sendPlayerBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>' +
-            ' ' + escapeHtml(t('transfer.sendToPlayer'));
+        sendPlayerBtn.innerHTML = cvIcon('send', 14) + ' ' + escapeHtml(t('transfer.sendToPlayer'));
         sendPlayerBtn.addEventListener('click', function () {
             window.openSendToPlayerModal(itemProxy, 'list', { attrs: content.attributes }, data.id, itemProxy.id);
         });

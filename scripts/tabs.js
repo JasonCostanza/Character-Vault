@@ -1,27 +1,38 @@
 // ── Tab System ──
 (function () {
-
     // ── Tab State ──
     window.tabs = [];
     window.activeTabId = null;
 
     let tabIdCounter = 0;
-    window.getTabIdCounter = function () { return tabIdCounter; };
-    window.setTabIdCounter = function (n) { tabIdCounter = n; };
+    window.getTabIdCounter = function () {
+        return tabIdCounter;
+    };
+    window.setTabIdCounter = function (n) {
+        tabIdCounter = n;
+    };
 
     window.generateTabId = function () {
-        return 'tab-' + (++tabIdCounter);
+        return 'tab-' + ++tabIdCounter;
     };
 
     window.getActiveTab = function () {
-        return window.tabs.find(function (t) { return t.id === window.activeTabId; });
+        return window.tabs.find(function (t) {
+            return t.id === window.activeTabId;
+        });
     };
 
     window.getNextTabName = function () {
-        const existing = new Set(window.tabs.map(function (t) { return t.name; }));
+        const existing = new Set(
+            window.tabs.map(function (t) {
+                return t.name;
+            })
+        );
         let n = 1;
         let candidate;
-        do { candidate = t('tabs.defaultName', { n: n++ }); } while (existing.has(candidate));
+        do {
+            candidate = t('tabs.defaultName', { n: n++ });
+        } while (existing.has(candidate));
         return candidate;
     };
 
@@ -42,14 +53,22 @@
 
         const grid = document.getElementById('module-grid');
         if (grid) {
-            Array.from(grid.querySelectorAll('.module')).forEach(function (el) { el.remove(); });
+            Array.from(grid.querySelectorAll('.module')).forEach(function (el) {
+                el.remove();
+            });
         }
 
         const tabModules = window.modules
-            .filter(function (m) { return m.tabId === tabId; })
-            .sort(function (a, b) { return a.order - b.order; });
+            .filter(function (m) {
+                return m.tabId === tabId;
+            })
+            .sort(function (a, b) {
+                return a.order - b.order;
+            });
         if (window.setLayoutBatchMode) window.setLayoutBatchMode(true);
-        tabModules.forEach(function (data) { window.renderModule(data); });
+        tabModules.forEach(function (data) {
+            window.renderModule(data);
+        });
         if (window.setLayoutBatchMode) window.setLayoutBatchMode(false);
 
         if (window.isPlayMode) {
@@ -111,8 +130,8 @@
 
         // Clamp to viewport
         const rect = menu.getBoundingClientRect();
-        if (rect.right > window.innerWidth) menu.style.left = (x - rect.width) + 'px';
-        if (rect.bottom > window.innerHeight) menu.style.top = (y - rect.height) + 'px';
+        if (rect.right > window.innerWidth) menu.style.left = x - rect.width + 'px';
+        if (rect.bottom > window.innerHeight) menu.style.top = y - rect.height + 'px';
 
         function onClickOutside(e) {
             if (!menu.contains(e.target)) {
@@ -149,9 +168,11 @@
         { color: '#3A3A3A', cls: '', label: 'Slate' },
     ];
 
-    const TAB_PRESET_COLORS = TAB_SWATCH_DEFS
-        .filter(function (d) { return d.color !== null; })
-        .map(function (d) { return d.color; });
+    const TAB_PRESET_COLORS = TAB_SWATCH_DEFS.filter(function (d) {
+        return d.color !== null;
+    }).map(function (d) {
+        return d.color;
+    });
 
     // Holds the active Escape/backdrop handlers so closeTabSettings can always clean them up
     let settingsEscapeHandler = null;
@@ -179,7 +200,9 @@
     }
 
     window.openTabSettings = function (tabId) {
-        const tab = window.tabs.find(function (tb) { return tb.id === tabId; });
+        const tab = window.tabs.find(function (tb) {
+            return tb.id === tabId;
+        });
         if (!tab) return;
 
         const overlay = document.getElementById('tab-settings-overlay');
@@ -200,9 +223,13 @@
         const header = document.createElement('div');
         header.className = 'cv-modal-header';
         header.innerHTML =
-            '<h2 class="cv-modal-title">' + escapeHtml(t('tabs.settingsTitle')) + '</h2>' +
-            '<button type="button" class="cv-modal-close" title="' + escapeHtml(t('wizard.close')) + '">' +
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+            '<h2 class="cv-modal-title">' +
+            escapeHtml(t('tabs.settingsTitle')) +
+            '</h2>' +
+            '<button type="button" class="cv-modal-close" title="' +
+            escapeHtml(t('wizard.close')) +
+            '">' +
+            cvIcon('x', 16) +
             '</button>';
         panel.appendChild(header);
 
@@ -419,29 +446,47 @@
     }
 
     window.deleteTab = function (tabId, action, destinationTabId) {
-        const tab = window.tabs.find(function (t) { return t.id === tabId; });
+        const tab = window.tabs.find(function (t) {
+            return t.id === tabId;
+        });
         if (!tab) return;
 
         if (action === 'delete') {
             if (tabId === window.activeTabId) {
-                document.querySelectorAll('.module').forEach(function (el) { el.remove(); });
+                document.querySelectorAll('.module').forEach(function (el) {
+                    el.remove();
+                });
             }
             for (let i = window.modules.length - 1; i >= 0; i--) {
                 if (window.modules[i].tabId === tabId) window.modules.splice(i, 1);
             }
         } else if (action === 'move') {
-            const destModules = window.modules.filter(function (m) { return m.tabId === destinationTabId; });
-            let nextOrder = destModules.reduce(function (max, m) { return Math.max(max, m.order); }, -1) + 1;
+            const destModules = window.modules.filter(function (m) {
+                return m.tabId === destinationTabId;
+            });
+            let nextOrder =
+                destModules.reduce(function (max, m) {
+                    return Math.max(max, m.order);
+                }, -1) + 1;
             window.modules.forEach(function (m) {
-                if (m.tabId === tabId) { m.tabId = destinationTabId; m.order = nextOrder++; }
+                if (m.tabId === tabId) {
+                    m.tabId = destinationTabId;
+                    m.order = nextOrder++;
+                }
             });
         }
 
-        const sortedBefore = window.tabs.slice().sort(function (a, b) { return a.order - b.order; });
-        const deletedVisualIndex = sortedBefore.findIndex(function (t) { return t.id === tabId; });
+        const sortedBefore = window.tabs.slice().sort(function (a, b) {
+            return a.order - b.order;
+        });
+        const deletedVisualIndex = sortedBefore.findIndex(function (t) {
+            return t.id === tabId;
+        });
 
         window.tabs.splice(window.tabs.indexOf(tab), 1);
-        window.tabs.forEach(function (t, i) { t.order = i; });
+        window.tabs.forEach(function (t, i) {
+            t.order = i;
+        });
 
         const wasActive = tabId === window.activeTabId;
         if (wasActive) {
@@ -450,9 +495,7 @@
                 window.renderTabBar();
                 window.switchToTab(fresh.id);
             } else {
-                const nextTabId = deletedVisualIndex > 0
-                    ? sortedBefore[deletedVisualIndex - 1].id
-                    : sortedBefore[1].id;
+                const nextTabId = deletedVisualIndex > 0 ? sortedBefore[deletedVisualIndex - 1].id : sortedBefore[1].id;
                 window.renderTabBar();
                 window.switchToTab(nextTabId);
             }
@@ -463,18 +506,26 @@
     };
 
     window.openTabDeleteConfirm = function (tabId) {
-        const tab = window.tabs.find(function (t) { return t.id === tabId; });
+        const tab = window.tabs.find(function (t) {
+            return t.id === tabId;
+        });
         if (!tab) return;
 
-        const tabModules = window.modules.filter(function (m) { return m.tabId === tabId; });
+        const tabModules = window.modules.filter(function (m) {
+            return m.tabId === tabId;
+        });
         if (tabModules.length === 0) {
             window.deleteTab(tabId, 'delete');
             return;
         }
 
         const otherTabs = window.tabs
-            .filter(function (t) { return t.id !== tabId; })
-            .sort(function (a, b) { return a.order - b.order; });
+            .filter(function (t) {
+                return t.id !== tabId;
+            })
+            .sort(function (a, b) {
+                return a.order - b.order;
+            });
 
         const overlay = document.getElementById('tab-delete-overlay');
         const panel = document.getElementById('tab-delete-panel');
@@ -485,9 +536,13 @@
         const header = document.createElement('div');
         header.className = 'cv-modal-header';
         header.innerHTML =
-            '<h2 class="cv-modal-title">' + escapeHtml(t('tabs.deleteConfirmTitle')) + '</h2>' +
-            '<button type="button" class="cv-modal-close" title="' + escapeHtml(t('wizard.close')) + '">' +
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+            '<h2 class="cv-modal-title">' +
+            escapeHtml(t('tabs.deleteConfirmTitle')) +
+            '</h2>' +
+            '<button type="button" class="cv-modal-close" title="' +
+            escapeHtml(t('wizard.close')) +
+            '">' +
+            cvIcon('x', 16) +
             '</button>';
         header.querySelector('.cv-modal-close').addEventListener('click', closeTabDeleteConfirm);
         panel.appendChild(header);
@@ -508,7 +563,10 @@
 
         function buildRadioOption(value, labelContent, disabled) {
             const lbl = document.createElement('label');
-            lbl.className = 'tab-delete-radio-option' + (disabled ? ' tab-delete-radio-option--disabled' : '') + (value === selectedAction ? ' selected' : '');
+            lbl.className =
+                'tab-delete-radio-option' +
+                (disabled ? ' tab-delete-radio-option--disabled' : '') +
+                (value === selectedAction ? ' selected' : '');
 
             const radio = document.createElement('input');
             radio.type = 'radio';
@@ -541,8 +599,12 @@
         moveRow.appendChild(moveText);
 
         if (hasDestinations) {
-            const selectOpts = otherTabs.map(function (ot) { return { value: ot.id, label: ot.name }; });
-            const selectWidget = window.buildCvSelect(selectOpts, otherTabs[0].id, function (val) { selectedDestId = val; });
+            const selectOpts = otherTabs.map(function (ot) {
+                return { value: ot.id, label: ot.name };
+            });
+            const selectWidget = window.buildCvSelect(selectOpts, otherTabs[0].id, function (val) {
+                selectedDestId = val;
+            });
             selectWidget.el.classList.add('tab-delete-select');
             moveRow.appendChild(selectWidget.el);
         }
@@ -598,7 +660,9 @@
         document.addEventListener('keydown', deleteEscapeHandler);
 
         overlay.setAttribute('aria-hidden', 'false');
-        requestAnimationFrame(function () { overlay.classList.add('open'); });
+        requestAnimationFrame(function () {
+            overlay.classList.add('open');
+        });
     };
 
     // ── Tab Bar Rendering ──
@@ -613,7 +677,9 @@
 
         scrollArea.innerHTML = '';
 
-        const sorted = window.tabs.slice().sort(function (a, b) { return a.order - b.order; });
+        const sorted = window.tabs.slice().sort(function (a, b) {
+            return a.order - b.order;
+        });
         sorted.forEach(function (tab) {
             const el = document.createElement('div');
             el.className = 'tab-item' + (tab.id === window.activeTabId ? ' active' : '');
@@ -626,7 +692,8 @@
             const handle = document.createElement('div');
             handle.className = 'tab-drag-handle';
             handle.setAttribute('aria-hidden', 'true');
-            handle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="8" height="12" viewBox="0 0 8 12" fill="currentColor"><circle cx="2" cy="2.5" r="1.1"/><circle cx="6" cy="2.5" r="1.1"/><circle cx="2" cy="6" r="1.1"/><circle cx="6" cy="6" r="1.1"/><circle cx="2" cy="9.5" r="1.1"/><circle cx="6" cy="9.5" r="1.1"/></svg>';
+            handle.innerHTML =
+                '<svg xmlns="http://www.w3.org/2000/svg" width="8" height="12" viewBox="0 0 8 12" fill="currentColor"><circle cx="2" cy="2.5" r="1.1"/><circle cx="6" cy="2.5" r="1.1"/><circle cx="2" cy="6" r="1.1"/><circle cx="6" cy="6" r="1.1"/><circle cx="2" cy="9.5" r="1.1"/><circle cx="6" cy="9.5" r="1.1"/></svg>';
             el.appendChild(handle);
 
             const nameSpan = document.createElement('span');
@@ -646,8 +713,19 @@
                 e.stopPropagation();
                 showTabContextMenu(e.clientX, e.clientY, [
                     { label: t('tabs.createNew'), action: createAndSwitchTab },
-                    { label: t('tabs.openSettings'), action: function () { window.openTabSettings(tab.id); } },
-                    { label: t('tabs.delete'), danger: true, action: function () { window.openTabDeleteConfirm(tab.id); } },
+                    {
+                        label: t('tabs.openSettings'),
+                        action: function () {
+                            window.openTabSettings(tab.id);
+                        },
+                    },
+                    {
+                        label: t('tabs.delete'),
+                        danger: true,
+                        action: function () {
+                            window.openTabDeleteConfirm(tab.id);
+                        },
+                    },
                 ]);
             });
 
@@ -662,7 +740,9 @@
             direction: 'horizontal',
             onEnd: function () {
                 Array.from(scrollArea.querySelectorAll('.tab-item')).forEach(function (el, i) {
-                    const tab = window.tabs.find(function (t) { return t.id === el.dataset.tabId; });
+                    const tab = window.tabs.find(function (t) {
+                        return t.id === el.dataset.tabId;
+                    });
                     if (tab) tab.order = i;
                 });
                 window.scheduleSave();
@@ -676,9 +756,7 @@
         tabBar.addEventListener('contextmenu', function (e) {
             if (e.target.closest('.tab-item')) return;
             e.preventDefault();
-            showTabContextMenu(e.clientX, e.clientY, [
-                { label: t('tabs.createNew'), action: createAndSwitchTab },
-            ]);
+            showTabContextMenu(e.clientX, e.clientY, [{ label: t('tabs.createNew'), action: createAndSwitchTab }]);
         });
     }
 
@@ -687,5 +765,4 @@
     if (btnAddTab) {
         btnAddTab.addEventListener('click', createAndSwitchTab);
     }
-
 })();

@@ -106,6 +106,3 @@ globalThis.CV_TRANSLATIONS = {
     'settings.title': 'Configuracion',
   },
 };
-
-// CV_ICONS stub
-globalThis.CV_ICONS = {};

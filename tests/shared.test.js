@@ -11,6 +11,7 @@ beforeEach(() => {
   globalThis.marked.parse.mockImplementation((input) => input || '');
   globalThis.DOMPurify.sanitize.mockImplementation((html) => html);
   globalThis.scheduleSave.mockClear();
+  loadScript('scripts/icons.js');
   loadScript('scripts/shared.js');
 });
 

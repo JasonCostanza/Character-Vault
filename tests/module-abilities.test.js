@@ -29,6 +29,7 @@ beforeEach(() => {
   globalThis.logActivity = vi.fn();
   globalThis.pendingRolls = {};
 
+  loadScript('scripts/icons.js');
   loadScript('scripts/shared.js');
   loadScript('scripts/i18n.js');
   loadScript('scripts/theme.js');

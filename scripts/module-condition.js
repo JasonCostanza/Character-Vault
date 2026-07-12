@@ -25,57 +25,57 @@
         return data.content;
     }
 
-    // ── Condition Icon SVGs ──
-    const CONDITION_ICON_SVG = {
-        'eye-off':
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>',
-        heart: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>',
-        'ear-off':
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18.5a3.5 3.5 0 0 1-3.5-3.5V12a9 9 0 0 1 9-9 8.94 8.94 0 0 1 3.42.67"/><path d="M20 12a8.94 8.94 0 0 0-.67-3.42"/><line x1="1" y1="1" x2="23" y2="23"/></svg>',
-        'zap-off':
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="12.41 6.75 13 2 10.57 4.92"/><polyline points="18.57 12.91 21 10 15.66 10"/><polyline points="8 8 3 14 12 14 11 22 16 16"/><line x1="1" y1="1" x2="23" y2="23"/></svg>',
-        ghost: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M12 2a8 8 0 0 0-8 8v12l3-3 2 2 3-3 3 3 2-2 3 3V10a8 8 0 0 0-8-8z"/></svg>',
-        grab: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v1"/><path d="M14 10V4a2 2 0 0 0-4 0v2"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>',
-        lock: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
-        eye: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
-        shield: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
-        gem: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 18 3 22 9 12 22 2 9"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="12" y1="22" x2="6" y2="9"/><line x1="12" y1="22" x2="18" y2="9"/></svg>',
-        skull: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="8"/><circle cx="9" cy="9" r="1.5" fill="currentColor" stroke="none"/><circle cx="15" cy="9" r="1.5" fill="currentColor" stroke="none"/><path d="M8 16v6h2v-2h4v2h2v-6"/></svg>',
-        'arrow-down':
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>',
-        chain: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
-        star: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
-        moon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
-        brain: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a8 8 0 0 0-8 8c0 3 1.5 5 3 6.5V20a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-3.5c1.5-1.5 3-3.5 3-6.5a8 8 0 0 0-8-8z"/><path d="M8 12c1-1 2-2 4-2s3 1 4 2"/><line x1="9" y1="17" x2="15" y2="17"/></svg>',
-        flame: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1 3 5 6 5 11a5 5 0 0 1-10 0c0-5 4-8 5-11z"/></svg>',
-        droplet:
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>',
-        target: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
-        alert: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
-        sword: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="2" x2="9" y2="11"/><line x1="22" y1="2" x2="18" y2="2"/><line x1="22" y1="6" x2="22" y2="2"/><line x1="7" y1="13" x2="2" y2="18"/><line x1="5" y1="16" x2="8" y2="19"/><line x1="2" y1="22" x2="4" y2="20"/></svg>',
-        wind: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2"/><path d="M12.59 19.41A2 2 0 1 0 14 16H2"/><path d="M17.73 7.73A2.5 2.5 0 1 1 19.5 12H2"/></svg>',
-        thermometer:
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>',
-        radioactive:
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 4.5A7.5 7.5 0 0 1 19.5 12h-3a4.5 4.5 0 0 0-4.5-4.5v-3z"/><path d="M12 4.5A7.5 7.5 0 0 0 4.5 12h3a4.5 4.5 0 0 1 4.5-4.5v-3z"/><path d="M4.5 12A7.5 7.5 0 0 0 12 19.5v-3A4.5 4.5 0 0 1 7.5 12h-3z"/><path d="M19.5 12A7.5 7.5 0 0 1 12 19.5v-3a4.5 4.5 0 0 0 4.5-4.5h3z"/></svg>',
-        syringe:
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2l4 4"/><path d="M17 7l-10 10"/><path d="M9 12l-5 5"/><path d="M2 22l4-4"/><path d="M15 5l4 4"/></svg>',
-        crosshair:
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>',
-        'shield-off':
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="4" y1="4" x2="20" y2="20"/></svg>',
-        cloud: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>',
-        'x-circle':
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
-        zap: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 4 14 12 14 11 22 20 10 12 10 13 2"/></svg>',
-        activity:
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
-        anchor: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>',
-        slash: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>',
-        clock: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
-        frown: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>',
+    // ── Condition Icon Names ──
+    // These names resolve through cvIcon(); CONDITION_ICON_ALIAS below routes a few
+    // that collide with existing filled RPG icon keys to a stroke-style variant so
+    // they stay visually consistent with the rest of this picker.
+    const CONDITION_ICON_NAMES = [
+        'eye-off',
+        'heart',
+        'ear-off',
+        'zap-off',
+        'ghost',
+        'grab',
+        'lock',
+        'eye',
+        'shield',
+        'gem',
+        'skull',
+        'arrow-down',
+        'chain',
+        'star',
+        'moon',
+        'brain',
+        'flame',
+        'droplet',
+        'target',
+        'alert',
+        'sword',
+        'wind',
+        'thermometer',
+        'radioactive',
+        'syringe',
+        'crosshair',
+        'shield-off',
+        'cloud',
+        'x-circle',
+        'zap',
+        'activity',
+        'anchor',
+        'slash',
+        'clock',
+        'frown',
+    ];
+    const CONDITION_ICON_ALIAS = {
+        shield: 'shield-outline',
+        brain: 'brain-outline',
+        flame: 'flame-outline',
+        crosshair: 'crosshair-outline',
+        radioactive: 'radioactive-outline',
     };
-
+    function condIcon(name, size) {
+        return cvIcon(CONDITION_ICON_ALIAS[name] || name, size);
+    }
     // ── Condition Templates ──
     const CONDITION_TEMPLATES = {
         // -- D&D 5e Template (keywords: D&D5e, DND5e, 5e) -- //
@@ -1556,14 +1556,14 @@
     function getCondIconSvg(item, content) {
         // Check template definition
         const def = getTemplateDef(item.typeKey, content.template);
-        if (def && def.icon && CONDITION_ICON_SVG[def.icon]) return CONDITION_ICON_SVG[def.icon];
+        if (def && def.icon) return condIcon(def.icon);
         // Check custom
         const custom = (content.customConditions || []).find(function (c) {
             return c.key === item.typeKey;
         });
-        if (custom && custom.icon && CONDITION_ICON_SVG[custom.icon]) return CONDITION_ICON_SVG[custom.icon];
+        if (custom && custom.icon) return condIcon(custom.icon);
         // Fallback
-        return CONDITION_ICON_SVG['alert'] || '';
+        return condIcon('alert');
     }
 
     function getCondDescription(item, content) {
@@ -1668,8 +1668,8 @@
     }
 
     // ── Sort Header SVGs ──
-    const SORT_ASC_SVG = CV_SVG_SORT_UP;
-    const SORT_DESC_SVG = CV_SVG_SORT_DOWN;
+    const SORT_ASC_SVG = cvIcon('chevron-up', 10);
+    const SORT_DESC_SVG = cvIcon('chevron-down', 10);
 
     // ── Value Prompt ──
 
@@ -1771,8 +1771,7 @@
         const closeBtn = document.createElement('button');
         closeBtn.className = 'cond-expand-close';
         closeBtn.title = t('cond.close');
-        closeBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeBtn.innerHTML = cvIcon('x', 14);
         closeBtn.addEventListener('click', function () {
             closeExpandModal();
         });
@@ -1803,7 +1802,9 @@
             if (typeof window.logActivity === 'function') {
                 window.logActivity({
                     type: 'cond.event.toggle',
-                    message: item.active ? t('cond.log.applied', { name: getCondName(item, content) }) : t('cond.log.removed', { name: getCondName(item, content) }),
+                    message: item.active
+                        ? t('cond.log.applied', { name: getCondName(item, content) })
+                        : t('cond.log.removed', { name: getCondName(item, content) }),
                     sourceModuleId: data.id,
                 });
             }
@@ -1837,7 +1838,15 @@
                     toggleBtn.textContent = item.active ? t('cond.active') : t('cond.inactive');
                     scheduleSave();
                     if (typeof window.logActivity === 'function') {
-                        window.logActivity({ type: 'cond.event.value', message: t('cond.log.valueChange', { name: getCondName(item, content), oldVal: oldVal, newVal: item.value }), sourceModuleId: data.id });
+                        window.logActivity({
+                            type: 'cond.event.value',
+                            message: t('cond.log.valueChange', {
+                                name: getCondName(item, content),
+                                oldVal: oldVal,
+                                newVal: item.value,
+                            }),
+                            sourceModuleId: data.id,
+                        });
                     }
                     rerender();
                 }
@@ -1865,7 +1874,15 @@
                     toggleBtn.textContent = item.active ? t('cond.active') : t('cond.inactive');
                     scheduleSave();
                     if (typeof window.logActivity === 'function') {
-                        window.logActivity({ type: 'cond.event.value', message: t('cond.log.valueChange', { name: getCondName(item, content), oldVal: oldVal, newVal: item.value }), sourceModuleId: data.id });
+                        window.logActivity({
+                            type: 'cond.event.value',
+                            message: t('cond.log.valueChange', {
+                                name: getCondName(item, content),
+                                oldVal: oldVal,
+                                newVal: item.value,
+                            }),
+                            sourceModuleId: data.id,
+                        });
                     }
                     rerender();
                 }
@@ -1924,7 +1941,11 @@
                 removed.value = 0;
                 content.staging.push(removed);
                 if (typeof window.logActivity === 'function') {
-                    window.logActivity({ type: 'cond.event.toggle', message: t('cond.log.removed', { name: condName }), sourceModuleId: data.id });
+                    window.logActivity({
+                        type: 'cond.event.toggle',
+                        message: t('cond.log.removed', { name: condName }),
+                        sourceModuleId: data.id,
+                    });
                 }
             }
             scheduleSave();
@@ -2040,7 +2061,9 @@
                     if (typeof window.logActivity === 'function') {
                         window.logActivity({
                             type: 'cond.event.toggle',
-                            message: item.active ? t('cond.log.applied', { name: getCondName(item, content) }) : t('cond.log.removed', { name: getCondName(item, content) }),
+                            message: item.active
+                                ? t('cond.log.applied', { name: getCondName(item, content) })
+                                : t('cond.log.removed', { name: getCondName(item, content) }),
                             sourceModuleId: data.id,
                         });
                     }
@@ -2066,7 +2089,15 @@
                             }
                             scheduleSave();
                             if (typeof window.logActivity === 'function') {
-                                window.logActivity({ type: 'cond.event.value', message: t('cond.log.valueChange', { name: getCondName(item, content), oldVal: oldVal, newVal: item.value }), sourceModuleId: data.id });
+                                window.logActivity({
+                                    type: 'cond.event.value',
+                                    message: t('cond.log.valueChange', {
+                                        name: getCondName(item, content),
+                                        oldVal: oldVal,
+                                        newVal: item.value,
+                                    }),
+                                    sourceModuleId: data.id,
+                                });
                             }
                             renderPlayBody(bodyEl, data);
                             snapModuleHeight(bodyEl.closest('.module'), data);
@@ -2081,7 +2112,15 @@
                             if (item.value === 0) item.active = false;
                             scheduleSave();
                             if (typeof window.logActivity === 'function') {
-                                window.logActivity({ type: 'cond.event.value', message: t('cond.log.valueChange', { name: getCondName(item, content), oldVal: oldVal, newVal: item.value }), sourceModuleId: data.id });
+                                window.logActivity({
+                                    type: 'cond.event.value',
+                                    message: t('cond.log.valueChange', {
+                                        name: getCondName(item, content),
+                                        oldVal: oldVal,
+                                        newVal: item.value,
+                                    }),
+                                    sourceModuleId: data.id,
+                                });
                             }
                             renderPlayBody(bodyEl, data);
                             snapModuleHeight(bodyEl.closest('.module'), data);
@@ -2095,8 +2134,7 @@
             const expandBtn = document.createElement('button');
             expandBtn.className = 'cond-play-expand';
             expandBtn.title = t('cond.expand');
-            expandBtn.innerHTML =
-                '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>';
+            expandBtn.innerHTML = cvIcon('maximize-2', 12);
             (function (item) {
                 expandBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
@@ -2336,8 +2374,7 @@
         const closeBtn = document.createElement('button');
         closeBtn.className = 'cv-modal-close';
         closeBtn.title = t('cond.close');
-        closeBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeBtn.innerHTML = cvIcon('x', 12);
         closeBtn.addEventListener('click', function () {
             closeCondSettingsPanel(moduleEl, data);
         });
@@ -2413,8 +2450,7 @@
                 const delBtn = document.createElement('button');
                 delBtn.className = 'cond-staging-delete';
                 delBtn.title = t('cond.remove');
-                delBtn.innerHTML =
-                    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+                delBtn.innerHTML = cvIcon('x', 8);
                 (function (item) {
                     delBtn.addEventListener('click', function (e) {
                         e.stopPropagation();
@@ -2448,11 +2484,7 @@
         // Create Custom button
         const createBtn = document.createElement('button');
         createBtn.className = 'cond-create-custom-btn';
-        createBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' +
-            '<span>' +
-            escapeHtml(t('cond.createCustom')) +
-            '</span>';
+        createBtn.innerHTML = cvIcon('plus', 12) + '<span>' + escapeHtml(t('cond.createCustom')) + '</span>';
         createBtn.addEventListener('click', function () {
             openCondWizard(moduleEl, data, panel);
         });
@@ -2469,7 +2501,9 @@
         footerCloseBtn.type = 'button';
         footerCloseBtn.className = 'btn-secondary sm';
         footerCloseBtn.textContent = t('cond.close');
-        footerCloseBtn.addEventListener('click', function () { closeCondSettingsPanel(moduleEl, data); });
+        footerCloseBtn.addEventListener('click', function () {
+            closeCondSettingsPanel(moduleEl, data);
+        });
         footer.appendChild(footerCloseBtn);
         panel.appendChild(footer);
 
@@ -2525,8 +2559,7 @@
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'cond-assigned-delete';
         deleteBtn.title = t('cond.remove');
-        deleteBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        deleteBtn.innerHTML = cvIcon('x', 10);
         deleteBtn.addEventListener('click', function (e) {
             e.stopPropagation();
             const condName = getCondName(item, content);
@@ -2539,7 +2572,11 @@
                 removed.value = 0;
                 content.staging.push(removed);
                 if (typeof window.logActivity === 'function') {
-                    window.logActivity({ type: 'cond.event.toggle', message: t('cond.log.removed', { name: condName }), sourceModuleId: data.id });
+                    window.logActivity({
+                        type: 'cond.event.toggle',
+                        message: t('cond.log.removed', { name: condName }),
+                        sourceModuleId: data.id,
+                    });
                 }
             }
             scheduleSave();
@@ -2553,11 +2590,17 @@
     // ── Apply Condition from Staging ──
 
     function applyConditionFromStaging(typeKey, itemId, content, panel, moduleEl, data) {
-        if (content.applied.some(function (a) { return a.typeKey === typeKey; })) {
+        if (
+            content.applied.some(function (a) {
+                return a.typeKey === typeKey;
+            })
+        ) {
             renderSettingsPanelContent(panel, moduleEl, data, content);
             return;
         }
-        const stagingItem = content.staging.find(function (s) { return s.id === itemId; });
+        const stagingItem = content.staging.find(function (s) {
+            return s.id === itemId;
+        });
         if (!stagingItem) {
             renderSettingsPanelContent(panel, moduleEl, data, content);
             return;
@@ -2570,7 +2613,9 @@
                 1,
                 condMax,
                 function (val) {
-                    const idx = content.staging.findIndex(function (s) { return s.id === itemId; });
+                    const idx = content.staging.findIndex(function (s) {
+                        return s.id === itemId;
+                    });
                     if (idx !== -1) content.staging.splice(idx, 1);
                     stagingItem.value = val;
                     stagingItem.active = val > 0;
@@ -2578,7 +2623,11 @@
                     if (stagingItem.active) activateSubconditions(typeKey, content);
                     scheduleSave();
                     if (typeof window.logActivity === 'function') {
-                        window.logActivity({ type: 'cond.event.toggle', message: t('cond.log.applied', { name: getCondName(stagingItem, content) }), sourceModuleId: data.id });
+                        window.logActivity({
+                            type: 'cond.event.toggle',
+                            message: t('cond.log.applied', { name: getCondName(stagingItem, content) }),
+                            sourceModuleId: data.id,
+                        });
                     }
                     renderSettingsPanelContent(panel, moduleEl, data, content);
                 },
@@ -2587,14 +2636,20 @@
                 }
             );
         } else {
-            const idx = content.staging.findIndex(function (s) { return s.id === itemId; });
+            const idx = content.staging.findIndex(function (s) {
+                return s.id === itemId;
+            });
             if (idx !== -1) content.staging.splice(idx, 1);
             stagingItem.active = true;
             content.applied.push(stagingItem);
             activateSubconditions(typeKey, content);
             scheduleSave();
             if (typeof window.logActivity === 'function') {
-                window.logActivity({ type: 'cond.event.toggle', message: t('cond.log.applied', { name: getCondName(stagingItem, content) }), sourceModuleId: data.id });
+                window.logActivity({
+                    type: 'cond.event.toggle',
+                    message: t('cond.log.applied', { name: getCondName(stagingItem, content) }),
+                    sourceModuleId: data.id,
+                });
             }
             renderSettingsPanelContent(panel, moduleEl, data, content);
         }
@@ -2658,27 +2713,41 @@
         const tpl = CONDITION_TEMPLATES[templateKey];
         if (!tpl) return;
 
-        const customKeys = new Set((content.customConditions || []).map(function (c) { return c.key; }));
+        const customKeys = new Set(
+            (content.customConditions || []).map(function (c) {
+                return c.key;
+            })
+        );
 
         if (mode === 'replace') {
             // Stash custom condition instances before clearing so they survive template switches.
             // Each instance is tagged with the homeTemplate from its definition (defaulting to 'custom'
             // for legacy data) so it is restored to the correct template later.
             if (!Array.isArray(content.savedCustomInstances)) content.savedCustomInstances = [];
-            const stashedKeys = new Set(content.savedCustomInstances.map(function (i) { return i.typeKey; }));
+            const stashedKeys = new Set(
+                content.savedCustomInstances.map(function (i) {
+                    return i.typeKey;
+                })
+            );
             const getHomeTemplate = function (typeKey) {
-                const def = (content.customConditions || []).find(function (c) { return c.key === typeKey; });
-                return (def && def.homeTemplate) ? def.homeTemplate : 'custom';
+                const def = (content.customConditions || []).find(function (c) {
+                    return c.key === typeKey;
+                });
+                return def && def.homeTemplate ? def.homeTemplate : 'custom';
             };
             content.applied.forEach(function (a) {
                 if (customKeys.has(a.typeKey) && !stashedKeys.has(a.typeKey)) {
-                    content.savedCustomInstances.push(Object.assign({}, a, { wasApplied: true, homeTemplate: getHomeTemplate(a.typeKey) }));
+                    content.savedCustomInstances.push(
+                        Object.assign({}, a, { wasApplied: true, homeTemplate: getHomeTemplate(a.typeKey) })
+                    );
                     stashedKeys.add(a.typeKey);
                 }
             });
             content.staging.forEach(function (s) {
                 if (customKeys.has(s.typeKey) && !stashedKeys.has(s.typeKey)) {
-                    content.savedCustomInstances.push(Object.assign({}, s, { wasApplied: false, homeTemplate: getHomeTemplate(s.typeKey) }));
+                    content.savedCustomInstances.push(
+                        Object.assign({}, s, { wasApplied: false, homeTemplate: getHomeTemplate(s.typeKey) })
+                    );
                     stashedKeys.add(s.typeKey);
                 }
             });
@@ -2691,13 +2760,28 @@
         // Restore stashed instances whose homeTemplate matches the new template
         if (Array.isArray(content.savedCustomInstances) && content.savedCustomInstances.length) {
             const existingTypeKeys = new Set(
-                content.applied.map(function (a) { return a.typeKey; }).concat(
-                content.staging.map(function (s) { return s.typeKey; }))
+                content.applied
+                    .map(function (a) {
+                        return a.typeKey;
+                    })
+                    .concat(
+                        content.staging.map(function (s) {
+                            return s.typeKey;
+                        })
+                    )
             );
             const remaining = [];
             content.savedCustomInstances.forEach(function (inst) {
                 if (inst.homeTemplate === templateKey && !existingTypeKeys.has(inst.typeKey)) {
-                    const restored = { id: inst.id, typeKey: inst.typeKey, type: inst.type, value: inst.value, active: inst.active, description: inst.description, maxValue: inst.maxValue };
+                    const restored = {
+                        id: inst.id,
+                        typeKey: inst.typeKey,
+                        type: inst.type,
+                        value: inst.value,
+                        active: inst.active,
+                        description: inst.description,
+                        maxValue: inst.maxValue,
+                    };
                     if (inst.wasApplied) {
                         content.applied.push(restored);
                     } else {
@@ -2713,8 +2797,12 @@
 
         // Build set of existing typeKeys to skip duplicates when adding template conditions
         const existingKeys = {};
-        content.applied.forEach(function (a) { existingKeys[a.typeKey] = true; });
-        content.staging.forEach(function (s) { existingKeys[s.typeKey] = true; });
+        content.applied.forEach(function (a) {
+            existingKeys[a.typeKey] = true;
+        });
+        content.staging.forEach(function (s) {
+            existingKeys[s.typeKey] = true;
+        });
 
         // Add template conditions to staging (skip duplicates)
         tpl.conditions.forEach(function (def) {
@@ -2763,8 +2851,7 @@
         const closeBtn = document.createElement('button');
         closeBtn.className = 'cond-wizard-close';
         closeBtn.title = t('cond.close');
-        closeBtn.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeBtn.innerHTML = cvIcon('x', 14);
         closeBtn.addEventListener('click', function () {
             overlay.remove();
         });
@@ -2786,12 +2873,12 @@
         const iconGrid = document.createElement('div');
         iconGrid.className = 'cond-wizard-icon-grid';
 
-        const iconKeys = Object.keys(CONDITION_ICON_SVG).sort();
+        const iconKeys = [...CONDITION_ICON_NAMES].sort();
         iconKeys.forEach(function (key) {
             const btn = document.createElement('button');
             btn.className = 'cond-wizard-icon-btn';
             btn.dataset.iconKey = key;
-            btn.innerHTML = CONDITION_ICON_SVG[key];
+            btn.innerHTML = condIcon(key);
             const tipLabel = key.charAt(0).toUpperCase() + key.slice(1).replace(/-/g, ' ');
             let _tip = null;
             btn.addEventListener('mouseenter', function () {
@@ -3026,7 +3113,9 @@
         for (var i = 0; i < (window.modules || []).length; i++) {
             var m = window.modules[i];
             if (m.type !== 'condition' || !m.content || !Array.isArray(m.content.applied)) continue;
-            var item = m.content.applied.find(function (c) { return c.typeKey === key && c.active; });
+            var item = m.content.applied.find(function (c) {
+                return c.typeKey === key && c.active;
+            });
             if (item && typeof item.value === 'number') return item.value;
         }
         return null;

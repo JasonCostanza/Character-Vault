@@ -8,7 +8,8 @@
             data.content = { sortOrder: 'newest', hiddenEventTypes: [], showTimestamps: true, maxEntries: 200 };
         }
         if (!Array.isArray(data.content.hiddenEventTypes)) data.content.hiddenEventTypes = [];
-        if (data.content.sortOrder !== 'newest' && data.content.sortOrder !== 'oldest') data.content.sortOrder = 'newest';
+        if (data.content.sortOrder !== 'newest' && data.content.sortOrder !== 'oldest')
+            data.content.sortOrder = 'newest';
         if (typeof data.content.showTimestamps !== 'boolean') data.content.showTimestamps = true;
         if (typeof data.content.maxEntries !== 'number') data.content.maxEntries = 200;
     }
@@ -26,12 +27,18 @@
     function getVisibleEntries(content) {
         const log = window.activityLog || [];
         const hidden = new Set(content.hiddenEventTypes);
-        let filtered = log.filter(function (entry) { return !hidden.has(entry.eventType); });
+        let filtered = log.filter(function (entry) {
+            return !hidden.has(entry.eventType);
+        });
 
         if (content.sortOrder === 'newest') {
-            filtered.sort(function (a, b) { return b.timestamp - a.timestamp; });
+            filtered.sort(function (a, b) {
+                return b.timestamp - a.timestamp;
+            });
         } else {
-            filtered.sort(function (a, b) { return a.timestamp - b.timestamp; });
+            filtered.sort(function (a, b) {
+                return a.timestamp - b.timestamp;
+            });
         }
 
         return filtered;
@@ -40,7 +47,9 @@
     function getUniqueEventTypes() {
         const log = window.activityLog || [];
         const types = new Set();
-        log.forEach(function (entry) { types.add(entry.eventType); });
+        log.forEach(function (entry) {
+            types.add(entry.eventType);
+        });
         return Array.from(types).sort();
     }
 
@@ -113,12 +122,11 @@
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'activity-entry-delete';
                 deleteBtn.title = t('activity.deleteEntry');
-                deleteBtn.innerHTML =
-                    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-                    '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>' +
-                    '</svg>';
+                deleteBtn.innerHTML = cvIcon('x', 12);
                 deleteBtn.addEventListener('click', function () {
-                    const idx = window.activityLog.findIndex(function (e) { return e.id === entry.id; });
+                    const idx = window.activityLog.findIndex(function (e) {
+                        return e.id === entry.id;
+                    });
                     if (idx !== -1) {
                         window.activityLog.splice(idx, 1);
                         scheduleSave();
@@ -137,8 +145,8 @@
         const content = data.content;
 
         const existingList = bodyEl.querySelector('.activity-entry-list');
-        const wasAtBottom = !existingList ||
-            (existingList.scrollHeight - existingList.scrollTop - existingList.clientHeight < 5);
+        const wasAtBottom =
+            !existingList || existingList.scrollHeight - existingList.scrollTop - existingList.clientHeight < 5;
 
         bodyEl.innerHTML = '';
 
@@ -194,7 +202,9 @@
         window.activityLog.push(entry);
 
         // Enforce max entries across all Activity Log module instances (use smallest maxEntries)
-        const activityModules = window.modules.filter(function (m) { return m.type === 'activity'; });
+        const activityModules = window.modules.filter(function (m) {
+            return m.type === 'activity';
+        });
         let maxEntries = 200;
         activityModules.forEach(function (m) {
             if (m.content && typeof m.content.maxEntries === 'number' && m.content.maxEntries < maxEntries) {
@@ -217,7 +227,9 @@
 
         // Re-render all Activity Log modules
         document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
-            const modData = window.modules.find(function (m) { return m.id === el.dataset.id; });
+            const modData = window.modules.find(function (m) {
+                return m.id === el.dataset.id;
+            });
             if (modData) {
                 const bodyEl = el.querySelector('.module-body');
                 const isPlay = window.isPlayMode;
@@ -231,7 +243,9 @@
 
     window.refreshActivityLog = function () {
         document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
-            const modData = window.modules.find(function (m) { return m.id === el.dataset.id; });
+            const modData = window.modules.find(function (m) {
+                return m.id === el.dataset.id;
+            });
             if (modData) {
                 const bEl = el.querySelector('.module-body');
                 renderActivityLogBody(bEl, modData, window.isPlayMode);
@@ -267,8 +281,7 @@
         const closeBtnEl = document.createElement('button');
         closeBtnEl.className = 'cv-modal-close';
         closeBtnEl.title = t('activity.close');
-        closeBtnEl.innerHTML =
-            '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeBtnEl.innerHTML = cvIcon('x', 14);
         header.appendChild(titleEl);
         header.appendChild(closeBtnEl);
 
@@ -288,12 +301,18 @@
                 { value: 'oldest', label: t('activity.sortOldest') },
             ],
             working.sortOrder,
-            function (val) { working.sortOrder = val; dirty = true; }
+            function (val) {
+                working.sortOrder = val;
+                dirty = true;
+            }
         );
         body.appendChild(sortSelectWidget.el);
 
         // Show timestamps toggle
-        const tsToggle = makeCvToggle(working.showTimestamps, function (checked) { working.showTimestamps = checked; dirty = true; });
+        const tsToggle = makeCvToggle(working.showTimestamps, function (checked) {
+            working.showTimestamps = checked;
+            dirty = true;
+        });
         tsToggle.className = 'cv-modal-label';
         const tsLabel = document.createElement('span');
         tsLabel.className = 'cv-toggle-label';
@@ -308,9 +327,14 @@
         body.appendChild(maxLabel);
 
         const maxSelectWidget = buildCvSelect(
-            [50, 100, 200, 500, 1000].map(function (val) { return { value: val, label: String(val) }; }),
+            [50, 100, 200, 500, 1000].map(function (val) {
+                return { value: val, label: String(val) };
+            }),
             working.maxEntries,
-            function (val) { working.maxEntries = parseInt(val, 10); dirty = true; }
+            function (val) {
+                working.maxEntries = parseInt(val, 10);
+                dirty = true;
+            }
         );
         body.appendChild(maxSelectWidget.el);
 
@@ -320,21 +344,20 @@
         clearBtn.style.marginTop = '16px';
         clearBtn.textContent = t('activity.clearAll');
         clearBtn.addEventListener('click', function () {
-            showConfirm(
-                { title: t('activity.clearAll'), message: t('activity.clearAllConfirm') },
-                function () {
-                    window.activityLog.length = 0;
-                    scheduleSave();
-                    // Re-render all activity modules
-                    document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
-                        const modData = window.modules.find(function (m) { return m.id === el.dataset.id; });
-                        if (modData) {
-                            const bEl = el.querySelector('.module-body');
-                            renderActivityLogBody(bEl, modData, window.isPlayMode);
-                        }
+            showConfirm({ title: t('activity.clearAll'), message: t('activity.clearAllConfirm') }, function () {
+                window.activityLog.length = 0;
+                scheduleSave();
+                // Re-render all activity modules
+                document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
+                    const modData = window.modules.find(function (m) {
+                        return m.id === el.dataset.id;
                     });
-                }
-            );
+                    if (modData) {
+                        const bEl = el.querySelector('.module-body');
+                        renderActivityLogBody(bEl, modData, window.isPlayMode);
+                    }
+                });
+            });
         });
         body.appendChild(clearBtn);
         buildCommonSettingsSection(body, moduleEl, data);
@@ -433,7 +456,9 @@
             const pending = window.pendingRolls[event.payload.rollId];
             if (pending) {
                 delete window.pendingRolls[event.payload.rollId];
-                const entry = window.activityLog.find(function (e) { return e.id === pending.logEntryId; });
+                const entry = window.activityLog.find(function (e) {
+                    return e.id === pending.logEntryId;
+                });
 
                 if (entry && pending.poolRoll) {
                     var resultGroups = event.payload.resultsGroups || [];
@@ -450,17 +475,27 @@
                         }
                     });
 
-                    var regularSuccesses = allFaces.filter(function (f) { return f >= threshold; }).length;
-                    var hungerSuccesses = hungerFaces.filter(function (f) { return f >= threshold; }).length;
+                    var regularSuccesses = allFaces.filter(function (f) {
+                        return f >= threshold;
+                    }).length;
+                    var hungerSuccesses = hungerFaces.filter(function (f) {
+                        return f >= threshold;
+                    }).length;
                     var totalSuccesses = regularSuccesses + hungerSuccesses;
 
                     var resultLabel = pending.system === 'sr6' ? t('weapons.pool.hits') : t('weapons.pool.successes');
                     var resultText = ' \u2192 ' + totalSuccesses + ' ' + resultLabel;
 
                     if (pending.system === 'vtm') {
-                        var allTens = allFaces.filter(function (f) { return f === 10; }).length;
-                        var hungerTens = hungerFaces.filter(function (f) { return f === 10; }).length;
-                        var hungerOnes = hungerFaces.filter(function (f) { return f === 1; }).length;
+                        var allTens = allFaces.filter(function (f) {
+                            return f === 10;
+                        }).length;
+                        var hungerTens = hungerFaces.filter(function (f) {
+                            return f === 10;
+                        }).length;
+                        var hungerOnes = hungerFaces.filter(function (f) {
+                            return f === 1;
+                        }).length;
                         var totalTens = allTens + hungerTens;
                         var critPairs = Math.floor(totalTens / 2);
                         if (critPairs > 0 && hungerTens > 0) {
@@ -476,8 +511,11 @@
                     entry.message += resultText;
                     scheduleSave();
                     document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
-                        const modData = window.modules.find(function (m) { return m.id === el.dataset.id; });
-                        if (modData) renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
+                        const modData = window.modules.find(function (m) {
+                            return m.id === el.dataset.id;
+                        });
+                        if (modData)
+                            renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
                     });
                     return;
                 }
@@ -503,7 +541,18 @@
                         dualityLabel = t('dice.withFear');
                     }
                     var dualityTotal = hopeFace + fearFace + (pending.modifier || 0);
-                    console.log('[CV] dualityRoll: hope=' + hopeFace + ' fear=' + fearFace + ' mod=' + pending.modifier + ' total=' + dualityTotal + ' — ' + dualityLabel);
+                    console.log(
+                        '[CV] dualityRoll: hope=' +
+                            hopeFace +
+                            ' fear=' +
+                            fearFace +
+                            ' mod=' +
+                            pending.modifier +
+                            ' total=' +
+                            dualityTotal +
+                            ' — ' +
+                            dualityLabel
+                    );
                     entry.message += ' \u2192 ' + dualityTotal + ' \u2014 ' + dualityLabel;
 
                     // ── Send only the winning result to TaleSpire chat ──
@@ -521,8 +570,11 @@
                     }
                     scheduleSave();
                     document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
-                        const modData = window.modules.find(function (m) { return m.id === el.dataset.id; });
-                        if (modData) renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
+                        const modData = window.modules.find(function (m) {
+                            return m.id === el.dataset.id;
+                        });
+                        if (modData)
+                            renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
                     });
                     return;
                 }
@@ -530,14 +582,16 @@
                 if (pending && pending.spellCast) {
                     if (entry) entry.message += ' \u2192 ' + total;
 
-                    const spellModData = window.modules.find(m => m.id === pending.moduleId);
+                    const spellModData = window.modules.find((m) => m.id === pending.moduleId);
                     let needsSpellRender = false;
                     if (pending.autoSpend && pending.poolId !== null && (pending.slotCost ?? 1) > 0) {
                         if (spellModData && typeof window.spendSlot === 'function') {
                             window.spendSlot(spellModData, pending.poolId, pending.slotCost ?? 1);
-                            const pool = spellModData.content.resourcePools.find(p => p.id === pending.poolId);
-                            const poolLabel = typeof window.getPoolLabel === 'function' ? window.getPoolLabel(pool) : (pending.poolId);
-                            if (entry && pool) entry.message += ' (' + t('spells.log.slotSpent', { level: poolLabel }) + ')';
+                            const pool = spellModData.content.resourcePools.find((p) => p.id === pending.poolId);
+                            const poolLabel =
+                                typeof window.getPoolLabel === 'function' ? window.getPoolLabel(pool) : pending.poolId;
+                            if (entry && pool)
+                                entry.message += ' (' + t('spells.log.slotSpent', { level: poolLabel }) + ')';
                             needsSpellRender = true;
                         }
                     }
@@ -555,8 +609,11 @@
                     }
                     scheduleSave();
                     document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
-                        const modData = window.modules.find(function (m) { return m.id === el.dataset.id; });
-                        if (modData) renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
+                        const modData = window.modules.find(function (m) {
+                            return m.id === el.dataset.id;
+                        });
+                        if (modData)
+                            renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
                     });
                     return;
                 }
@@ -565,8 +622,11 @@
                     entry.message += ' \u2192 ' + total;
                     scheduleSave();
                     document.querySelectorAll('.module[data-type="activity"]').forEach(function (el) {
-                        const modData = window.modules.find(function (m) { return m.id === el.dataset.id; });
-                        if (modData) renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
+                        const modData = window.modules.find(function (m) {
+                            return m.id === el.dataset.id;
+                        });
+                        if (modData)
+                            renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
                     });
                 }
                 return;
@@ -591,8 +651,12 @@
             }
             const groups = event.payload.resultsGroups || [];
             const notation = groups
-                .map(function (g) { return g ? notationFromResult(g.result) : ''; })
-                .filter(function (n) { return n.length > 0; })
+                .map(function (g) {
+                    return g ? notationFromResult(g.result) : '';
+                })
+                .filter(function (n) {
+                    return n.length > 0;
+                })
                 .join(' / ');
             const message = notation
                 ? t('activity.message.quickRollWithNotation', { notation: notation, total: total })
@@ -606,7 +670,9 @@
             const removed = window.pendingRolls[event.payload.rollId];
             delete window.pendingRolls[event.payload.rollId];
             if (removed && removed.logEntryId) {
-                const idx = window.activityLog.findIndex(function (e) { return e.id === removed.logEntryId; });
+                const idx = window.activityLog.findIndex(function (e) {
+                    return e.id === removed.logEntryId;
+                });
                 if (idx !== -1) {
                     window.activityLog.splice(idx, 1);
                     scheduleSave();

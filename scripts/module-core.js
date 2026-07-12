@@ -96,7 +96,6 @@
             tcRow.querySelectorAll('.text-color-chip').forEach((c) => c.classList.remove('selected'));
             syncWizardTextChipPreviews();
         }
-
     }
 
     btnNewModule.addEventListener('click', openWizard);
@@ -209,7 +208,7 @@
             title: null,
             colSpan: GRID_COLUMNS / 2,
             rowSpan: 2,
-            order: window.modules.filter(m => m.tabId === window.activeTabId).length,
+            order: window.modules.filter((m) => m.tabId === window.activeTabId).length,
             theme: wizardState.theme,
             textColor: wizardState.textColor,
             tabId: window.activeTabId,
@@ -345,7 +344,12 @@
                 level: 1,
                 currentXP: 0,
                 levelingSystem: 'xp',
-                xpThresholds: xpTpl ? xpTpl.thresholds.slice() : [300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000],
+                xpThresholds: xpTpl
+                    ? xpTpl.thresholds.slice()
+                    : [
+                          300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000,
+                          165000, 195000, 225000, 265000, 305000, 355000,
+                      ],
                 carryOverXP: true,
                 barColor: null,
                 barStyle: 'solid',
@@ -358,7 +362,13 @@
         if (moduleData.type === 'spells') {
             moduleData.colSpan = GRID_COLUMNS;
             moduleData.rowSpan = 4;
-            moduleData.content = { autoSpendSlots: true, showSlotErrors: true, resourcePools: [], casterType: null, categories: [] };
+            moduleData.content = {
+                autoSpendSlots: true,
+                showSlotErrors: true,
+                resourcePools: [],
+                casterType: null,
+                categories: [],
+            };
         }
 
         if (moduleData.type === 'activity') {
@@ -422,18 +432,23 @@
             const sys = window.gameSystem || 'custom';
             moduleData.colSpan = GRID_COLUMNS;
             moduleData.rowSpan = null;
-            moduleData.content = typeof window.buildCompanionsDefaultContent === 'function'
-                ? window.buildCompanionsDefaultContent(sys)
-                : { companions: [], attributes: [], sortBy: null, sortDir: 'asc' };
+            moduleData.content =
+                typeof window.buildCompanionsDefaultContent === 'function'
+                    ? window.buildCompanionsDefaultContent(sys)
+                    : { companions: [], attributes: [], sortBy: null, sortDir: 'asc' };
             const sysName = getGameSystemDisplayName(sys);
             if (sysName) moduleData.title = sysName + ' ' + t('type.companions');
         }
 
         if (moduleData.type === 'defenses') {
             const sys = window.gameSystem || 'custom';
-            moduleData.content = typeof window.buildDefensesDefaultContent === 'function'
-                ? window.buildDefensesDefaultContent(sys)
-                : { defenses: [{ id: generateId('def'), name: 'AC', value: 10, icon: 'shield', showSign: false }], quickDefenses: [] };
+            moduleData.content =
+                typeof window.buildDefensesDefaultContent === 'function'
+                    ? window.buildDefensesDefaultContent(sys)
+                    : {
+                          defenses: [{ id: generateId('def'), name: 'AC', value: 10, icon: 'shield', showSign: false }],
+                          quickDefenses: [],
+                      };
             moduleData.rowSpan = 2;
         }
 
@@ -462,7 +477,7 @@
     const emptyState = document.getElementById('empty-state');
 
     function updateEmptyState() {
-        const tabModuleCount = window.modules.filter(m => m.tabId === window.activeTabId).length;
+        const tabModuleCount = window.modules.filter((m) => m.tabId === window.activeTabId).length;
         emptyState.style.display = tabModuleCount === 0 ? 'flex' : 'none';
     }
 
@@ -479,108 +494,108 @@
             {
                 sel: '.module-abilities-settings-btn',
                 label: t('abilities.settings'),
-                icon: CV_SVG_GEAR,
+                icon: cvIcon('settings', 14),
             },
             {
                 sel: '.module-abilities-add-btn',
                 label: t('abilities.addAbility'),
-                icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+                icon: cvIcon('plus', 14),
             },
             {
                 sel: '.module-health-maxmod-btn',
                 label: t('health.moduleSettings'),
-                icon: CV_SVG_GEAR,
+                icon: cvIcon('settings', 14),
             },
             {
                 sel: '.module-addstat-btn',
                 label: t('stat.addStat'),
-                icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+                icon: cvIcon('plus', 14),
             },
             {
                 sel: '.module-counter-add-btn',
                 label: t('counter.addCounter'),
-                icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+                icon: cvIcon('plus', 14),
             },
             {
                 sel: '.module-list-additem-btn',
                 label: t('list.addItem'),
-                icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+                icon: cvIcon('plus', 14),
             },
             {
                 sel: '.module-list-manage-btn',
                 label: t('list.moduleSettings'),
-                icon: CV_SVG_GEAR,
+                icon: cvIcon('settings', 14),
             },
             {
                 sel: '.module-stat-settings-btn',
                 label: t('stat.moduleSettings'),
-                icon: CV_SVG_GEAR,
+                icon: cvIcon('settings', 14),
             },
             {
                 sel: '.module-text-settings-btn',
                 label: t('text.moduleSettings'),
-                icon: CV_SVG_GEAR,
+                icon: cvIcon('settings', 14),
             },
             {
                 sel: '.module-counter-settings-btn',
                 label: t('counter.moduleSettings'),
-                icon: CV_SVG_GEAR,
+                icon: cvIcon('settings', 14),
             },
             {
                 sel: '.module-cond-settings-btn',
                 label: t('cond.moduleSettings'),
-                icon: CV_SVG_GEAR,
+                icon: cvIcon('settings', 14),
             },
             {
                 sel: '.module-save-add-btn',
                 label: t('save.addSave'),
-                icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+                icon: cvIcon('plus', 14),
             },
             {
                 sel: '.module-save-settings-btn',
                 label: t('save.moduleSettings'),
-                icon: CV_SVG_GEAR,
+                icon: cvIcon('settings', 14),
             },
             {
                 sel: '.module-res-settings-btn',
                 label: t('res.moduleSettings'),
-                icon: CV_SVG_GEAR,
+                icon: cvIcon('settings', 14),
             },
             {
                 sel: '.module-copy-btn',
                 label: t('module.copyClipboard'),
-                icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+                icon: cvIcon('clipboard-copy', 14),
             },
             {
                 sel: '.module-level-settings-btn',
                 label: t('level.settings'),
-                icon: CV_SVG_GEAR,
+                icon: cvIcon('settings', 14),
             },
             {
                 sel: '.module-spells-settings-btn',
                 label: t('spells.settings'),
-                icon: CV_SVG_GEAR,
+                icon: cvIcon('settings', 14),
             },
-            { sel: '.module-activity-settings-btn', label: t('activity.settings'), icon: CV_SVG_GEAR },
+            { sel: '.module-activity-settings-btn', label: t('activity.settings'), icon: cvIcon('settings', 14) },
             {
                 sel: '.module-recovery-settings-btn',
                 label: t('recovery.moduleSettings'),
-                icon: CV_SVG_GEAR,
+                icon: cvIcon('settings', 14),
             },
             {
                 sel: '.module-companions-settings-btn',
                 label: t('companion.settings'),
-                icon: CV_SVG_GEAR,
+                icon: cvIcon('settings', 14),
             },
             {
                 sel: '.module-def-settings-btn',
                 label: t('def.qdSettings'),
-                icon: CV_SVG_GEAR,
+                icon: cvIcon('settings', 14),
             },
             {
                 sel: '.module-delete-btn',
                 label: t('module.deleteModule'),
-                icon: '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>',
+                icon: cvIcon('trash-2', 14),
                 cls: 'danger',
             },
         ];
@@ -822,33 +837,33 @@
         el.innerHTML = `
         <div class="module-header">
             <span class="module-drag-handle" style="${isPlayMode ? 'display:none' : ''}">&#x2807;</span>
-            ${MODULE_TYPES[data.type]?.hasStatLink ? `<span class="module-${data.type}-link-indicator" title="" style="display:none"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>` : ''}
+            ${MODULE_TYPES[data.type]?.hasStatLink ? `<span class="module-${data.type}-link-indicator" title="" style="display:none">${cvIcon('link', 12)}</span>` : ''}
             <span class="module-type-label" style="${isPlayMode ? '' : 'display:none'}">${escapeHtml(displayTitle)}</span>
             <input class="module-title-input" type="text" value="${escapeHtml(displayTitle)}" placeholder="${escapeHtml(t(typeDef.label))}" style="${isPlayMode ? 'display:none' : ''}" />
-            <button class="module-overflow-btn" title="${t('module.moreOptions')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button>
-            ${data.type === 'health' ? `<button class="module-toolbar-btn module-health-maxmod-btn" title="${t('health.moduleSettings')}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'stat' ? `<button class="module-toolbar-btn module-stat-settings-btn" title="${t('stat.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'stat' ? `<button class="module-toolbar-btn module-addstat-btn" title="${t('stat.addStat')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>` : ''}
-            ${data.type === 'text' ? `<button class="module-toolbar-btn module-text-settings-btn" title="${t('text.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'text' ? `<button class="module-toolbar-btn module-copy-btn" title="${t('module.copyClipboard')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>` : ''}
-            ${data.type === 'counters' ? `<button class="module-toolbar-btn module-counter-settings-btn" title="${t('counter.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'counters' ? `<button class="module-toolbar-btn module-counter-add-btn" title="${t('counter.addCounter')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>` : ''}
-            ${data.type === 'list' ? `<button class="module-toolbar-btn module-list-additem-btn" title="${t('list.addItem')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>` : ''}
-            ${data.type === 'list' ? `<button class="module-toolbar-btn module-list-manage-btn" title="${t('list.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'abilities' ? `<button class="module-toolbar-btn module-abilities-settings-btn" title="${t('abilities.settings')}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'abilities' ? `<button class="module-toolbar-btn module-abilities-add-btn" title="${t('abilities.addAbility')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>` : ''}
-            ${data.type === 'weapons' ? `<button class="module-toolbar-btn module-weapons-settings-btn" title="${t('weapons.settings')}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'condition' ? `<button class="module-toolbar-btn module-cond-settings-btn" title="${t('cond.moduleSettings')}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'savingthrow' ? `<button class="module-toolbar-btn module-save-add-btn" title="${t('save.addSave')}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>` : ''}
-            ${data.type === 'savingthrow' ? `<button class="module-toolbar-btn module-save-settings-btn" title="${t('save.moduleSettings')}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'recovery' ? `<button class="module-toolbar-btn module-recovery-settings-btn" title="${t('recovery.moduleSettings')}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'resistance' ? `<button class="module-toolbar-btn module-res-settings-btn" title="${t('res.moduleSettings')}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'spells' ? `<button class="module-toolbar-btn module-spells-settings-btn" title="${t('spells.settings')}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'level' ? `<button class="module-toolbar-btn module-level-settings-btn" title="${t('level.settings')}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'activity' ? `<button class="module-activity-settings-btn module-toolbar-btn" title="${t('activity.settings')}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'companions' ? `<button class="module-toolbar-btn module-companions-settings-btn" title="${t('companion.settings')}">${CV_SVG_GEAR}</button>` : ''}
-            ${data.type === 'defenses' ? `<button class="module-toolbar-btn module-def-settings-btn" title="${t('def.qdSettings')}">${CV_SVG_GEAR}</button>` : ''}
-            <button class="module-toolbar-btn module-delete-btn" title="${t('module.deleteModule')}" style="${isPlayMode ? 'display:none' : ''}"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
+            <button class="module-overflow-btn" title="${t('module.moreOptions')}" style="${isPlayMode ? 'display:none' : ''}">${cvIcon('more-vertical', 14)}</button>
+            ${data.type === 'health' ? `<button class="module-toolbar-btn module-health-maxmod-btn" title="${t('health.moduleSettings')}">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'stat' ? `<button class="module-toolbar-btn module-stat-settings-btn" title="${t('stat.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'stat' ? `<button class="module-toolbar-btn module-addstat-btn" title="${t('stat.addStat')}">${cvIcon('plus', 14)}</button>` : ''}
+            ${data.type === 'text' ? `<button class="module-toolbar-btn module-text-settings-btn" title="${t('text.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'text' ? `<button class="module-toolbar-btn module-copy-btn" title="${t('module.copyClipboard')}">${cvIcon('clipboard-copy', 14)}</button>` : ''}
+            ${data.type === 'counters' ? `<button class="module-toolbar-btn module-counter-settings-btn" title="${t('counter.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'counters' ? `<button class="module-toolbar-btn module-counter-add-btn" title="${t('counter.addCounter')}">${cvIcon('plus', 14)}</button>` : ''}
+            ${data.type === 'list' ? `<button class="module-toolbar-btn module-list-additem-btn" title="${t('list.addItem')}">${cvIcon('plus', 14)}</button>` : ''}
+            ${data.type === 'list' ? `<button class="module-toolbar-btn module-list-manage-btn" title="${t('list.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'abilities' ? `<button class="module-toolbar-btn module-abilities-settings-btn" title="${t('abilities.settings')}">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'abilities' ? `<button class="module-toolbar-btn module-abilities-add-btn" title="${t('abilities.addAbility')}">${cvIcon('plus', 14)}</button>` : ''}
+            ${data.type === 'weapons' ? `<button class="module-toolbar-btn module-weapons-settings-btn" title="${t('weapons.settings')}">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'condition' ? `<button class="module-toolbar-btn module-cond-settings-btn" title="${t('cond.moduleSettings')}">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'savingthrow' ? `<button class="module-toolbar-btn module-save-add-btn" title="${t('save.addSave')}">${cvIcon('plus', 14)}</button>` : ''}
+            ${data.type === 'savingthrow' ? `<button class="module-toolbar-btn module-save-settings-btn" title="${t('save.moduleSettings')}">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'recovery' ? `<button class="module-toolbar-btn module-recovery-settings-btn" title="${t('recovery.moduleSettings')}">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'resistance' ? `<button class="module-toolbar-btn module-res-settings-btn" title="${t('res.moduleSettings')}">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'spells' ? `<button class="module-toolbar-btn module-spells-settings-btn" title="${t('spells.settings')}">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'level' ? `<button class="module-toolbar-btn module-level-settings-btn" title="${t('level.settings')}">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'activity' ? `<button class="module-activity-settings-btn module-toolbar-btn" title="${t('activity.settings')}">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'companions' ? `<button class="module-toolbar-btn module-companions-settings-btn" title="${t('companion.settings')}">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'defenses' ? `<button class="module-toolbar-btn module-def-settings-btn" title="${t('def.qdSettings')}">${cvIcon('settings', 14)}</button>` : ''}
+            <button class="module-toolbar-btn module-delete-btn" title="${t('module.deleteModule')}" style="${isPlayMode ? 'display:none' : ''}">${cvIcon('trash-2', 14)}</button>
         </div>
         <div class="module-body"></div>
         ${showResize ? `<div class="module-resize-handle" title="${t('module.dragResize')}" style="${isPlayMode ? 'display:none' : ''}"></div>` : ''}
@@ -1143,7 +1158,8 @@
     function deleteModule(moduleId) {
         const moduleData = window.modules.find((m) => m.id === moduleId);
         const moduleTitle = moduleData
-            ? moduleData.title || t(MODULE_TYPES[moduleData.type] ? MODULE_TYPES[moduleData.type].label : 'module.unknownType')
+            ? moduleData.title ||
+              t(MODULE_TYPES[moduleData.type] ? MODULE_TYPES[moduleData.type].label : 'module.unknownType')
             : moduleId;
         const moduleType = moduleData ? moduleData.type : 'unknown';
 
@@ -1180,7 +1196,10 @@
     // ── Simple Module Settings Modal (theme + move-to-tab only) ──
     function openSimpleSettingsModal(moduleEl, data, overlayClass, titleKey) {
         const existing = document.querySelector('.' + overlayClass);
-        if (existing) { existing.remove(); return; }
+        if (existing) {
+            existing.remove();
+            return;
+        }
 
         const overlay = document.createElement('div');
         overlay.className = 'cv-modal-overlay ' + overlayClass;
@@ -1197,7 +1216,7 @@
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
         closeXBtn.title = t('module.close');
-        closeXBtn.innerHTML = CV_SVG_CLOSE;
+        closeXBtn.innerHTML = cvIcon('x', 12);
         header.appendChild(titleEl);
         header.appendChild(closeXBtn);
         panel.appendChild(header);
@@ -1232,14 +1251,21 @@
         };
         document.addEventListener('keydown', keyHandler);
         closeXBtn.addEventListener('click', closeModal);
-        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeModal();
+        });
     }
 
     // ── Edit/Play Mode Switching ──
     const EDIT_ONLY_BTNS = [
-        '.module-drag-handle', '.module-resize-handle', '.module-delete-btn',
-        '.module-overflow-btn', '.module-stat-settings-btn', '.module-text-settings-btn',
-        '.module-counter-settings-btn', '.module-list-manage-btn',
+        '.module-drag-handle',
+        '.module-resize-handle',
+        '.module-delete-btn',
+        '.module-overflow-btn',
+        '.module-stat-settings-btn',
+        '.module-text-settings-btn',
+        '.module-counter-settings-btn',
+        '.module-list-manage-btn',
     ];
 
     function setDisplay(parent, sel, val) {
@@ -1529,7 +1555,9 @@
     window.applyPlayMode = applyPlayMode;
     window.applyLayoutMode = applyLayoutMode;
     window.applyLayout = applyLayout;
-    window.setLayoutBatchMode = (val) => { _batchMode = val; };
+    window.setLayoutBatchMode = (val) => {
+        _batchMode = val;
+    };
     window.GRID_COLUMNS = GRID_COLUMNS;
     window.GRID_GAP = GRID_GAP;
     window.ROW_H = ROW_H;

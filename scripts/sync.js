@@ -7,13 +7,13 @@
     var WIRE_LIMIT = 500; // TS.sync.send hard cap (1 kB at UTF-16 = 500 JS chars)
 
     // ── Connection State ──
-    var connectedPlayers = {};   // clientId → { clientId, playerId, playerName }
-    var myClient = null;         // own clientFragment (from TS.clients.whoAmI)
-    var myPlayer = null;         // own playerFragment (from TS.players.whoAmI)
+    var connectedPlayers = {}; // clientId → { clientId, playerId, playerName }
+    var myClient = null; // own clientFragment (from TS.clients.whoAmI)
+    var myPlayer = null; // own playerFragment (from TS.players.whoAmI)
 
     // ── Transaction Tracking ──
-    var pendingOutgoing = {};    // txnId → { targetClient, mode, src, moduleId, itemId, timestamp, state }
-    var pendingIncoming = {};    // txnId → { fromClient, fromName, mode, src, data, meta, receivedAt }
+    var pendingOutgoing = {}; // txnId → { targetClient, mode, src, moduleId, itemId, timestamp, state }
+    var pendingIncoming = {}; // txnId → { fromClient, fromName, mode, src, data, meta, receivedAt }
     var activeIncomingModal = null; // { txnId, forceClose, onSenderDisconnected }
     var _offersDropdownEl = null;
     var _offersOutsideHandler = null;
@@ -22,31 +22,31 @@
     // ── Initialization ──
     var _sweepInterval = null;
     var _keySeq = 0;
-    var _chunkBuffers = {};    // txnId → { n, parts, timer }
+    var _chunkBuffers = {}; // txnId → { n, parts, timer }
 
     function initSync() {
         if (_sweepInterval !== null) return;
         if (typeof TS === 'undefined') return;
-        Promise.all([
-            TS.clients.whoAmI(),
-            TS.players.whoAmI()
-        ]).then(function (results) {
-            myClient = results[0];
-            myPlayer = results[1];
-            return TS.sync.getClientsConnected();
-        }).then(function (clients) {
-            if (clients && clients.cause) {
-                console.error('[CV Sync] getClientsConnected failed:', clients.cause);
-                return;
-            }
-            (clients || []).forEach(function (client) {
-                if (!myClient || client.id === myClient.id) return;
-                addConnectedClient(client);
+        Promise.all([TS.clients.whoAmI(), TS.players.whoAmI()])
+            .then(function (results) {
+                myClient = results[0];
+                myPlayer = results[1];
+                return TS.sync.getClientsConnected();
+            })
+            .then(function (clients) {
+                if (clients && clients.cause) {
+                    console.error('[CV Sync] getClientsConnected failed:', clients.cause);
+                    return;
+                }
+                (clients || []).forEach(function (client) {
+                    if (!myClient || client.id === myClient.id) return;
+                    addConnectedClient(client);
+                });
+                updateConnectionIndicator();
+            })
+            .catch(function (err) {
+                console.error('[CV Sync] initSync error:', err);
             });
-            updateConnectionIndicator();
-        }).catch(function (err) {
-            console.error('[CV Sync] initSync error:', err);
-        });
         _sweepInterval = setInterval(sweepTimeouts, 5000);
     }
 
@@ -56,7 +56,7 @@
         connectedPlayers[cid] = {
             clientId: cid,
             playerId: clientFragment.player ? clientFragment.player.id : null,
-            playerName: clientFragment.player ? clientFragment.player.name : 'Unknown'
+            playerName: clientFragment.player ? clientFragment.player.name : 'Unknown',
         };
     }
 
@@ -73,14 +73,28 @@
         if (!msg || !msg.t) return;
         var fromClientId = event.payload.fromClient ? event.payload.fromClient.id : null;
         switch (msg.t) {
-            case 'offer':   handleOffer(msg, fromClientId); break;
-            case 'accept':  resolveOutgoing(msg.txn, 'transfer.accepted', true); break;
-            case 'decline': resolveOutgoing(msg.txn, 'transfer.declined', false); break;
-            case 'cancel':  handleCancel(msg); break;
-            case 'ping':    handlePing(fromClientId); break;
-            case 'pong':    break;
-            case 'chunk':     handleChunk(msg, fromClientId); break;
-            case 'chunk_ack': break;
+            case 'offer':
+                handleOffer(msg, fromClientId);
+                break;
+            case 'accept':
+                resolveOutgoing(msg.txn, 'transfer.accepted', true);
+                break;
+            case 'decline':
+                resolveOutgoing(msg.txn, 'transfer.declined', false);
+                break;
+            case 'cancel':
+                handleCancel(msg);
+                break;
+            case 'ping':
+                handlePing(fromClientId);
+                break;
+            case 'pong':
+                break;
+            case 'chunk':
+                handleChunk(msg, fromClientId);
+                break;
+            case 'chunk_ack':
+                break;
             default:
                 console.warn('[CV Sync] Unknown message type:', msg.t);
         }
@@ -91,13 +105,16 @@
         if (event.kind === 'clientConnected') {
             var client = event.payload.client;
             if (!client) return;
-            TS.clients.isMe(client.id).then(function (isMe) {
-                if (isMe) return;
-                addConnectedClient(client);
-                updateConnectionIndicator();
-                var name = (connectedPlayers[client.id] || {}).playerName || 'Unknown';
-                window.showToast(window.t('transfer.connected', { name: name }), 'info');
-            }).catch(console.error);
+            TS.clients
+                .isMe(client.id)
+                .then(function (isMe) {
+                    if (isMe) return;
+                    addConnectedClient(client);
+                    updateConnectionIndicator();
+                    var name = (connectedPlayers[client.id] || {}).playerName || 'Unknown';
+                    window.showToast(window.t('transfer.connected', { name: name }), 'info');
+                })
+                .catch(console.error);
         } else if (event.kind === 'clientDisconnected') {
             var clientId = event.payload.clientId;
             var name = (connectedPlayers[clientId] || {}).playerName || 'Unknown';
@@ -135,15 +152,17 @@
             src: msg.src,
             data: msg.data,
             meta: msg.meta,
-            receivedAt: Date.now()
+            receivedAt: Date.now(),
         };
         var txnId = msg.txn;
         var fromName = msg.from || 'Unknown';
-        var itemName = (msg.data && msg.data.name) ? msg.data.name : '';
+        var itemName = msg.data && msg.data.name ? msg.data.name : '';
         var toastMsg = window.t('transfer.incomingFrom', { name: fromName }) + (itemName ? ' ' + itemName : '');
         window.showToast(toastMsg, 'info', {
             label: window.t('transfer.view'),
-            onClick: function () { openIncomingTransferModal(txnId); }
+            onClick: function () {
+                openIncomingTransferModal(txnId);
+            },
         });
         updatePendingOffersUI();
         console.log('[CV Sync] Offer received txn:', txnId, 'from:', fromName);
@@ -178,12 +197,15 @@
 
     function sendMessage(type, targetClient, extraFields) {
         if (!myPlayer || !myClient) return;
-        var msg = Object.assign({
-            v: PROTOCOL_VERSION,
-            t: type,
-            from: myPlayer.name,
-            fromClient: myClient.id
-        }, extraFields || {});
+        var msg = Object.assign(
+            {
+                v: PROTOCOL_VERSION,
+                t: type,
+                from: myPlayer.name,
+                fromClient: myClient.id,
+            },
+            extraFields || {}
+        );
         var json = JSON.stringify(msg);
         if (type === 'offer' && json.length > MAX_MSG_LENGTH) {
             sendChunked(targetClient, json, msg.txn);
@@ -216,7 +238,8 @@
         var chunks = [];
         var i = 0;
         while (i < str.length) {
-            var lo = 1, hi = str.length - i;
+            var lo = 1,
+                hi = str.length - i;
             while (lo < hi) {
                 var mid = Math.ceil((lo + hi) / 2);
                 if (JSON.stringify(str.slice(i, i + mid)).length <= maxEncodedLen) {
@@ -233,7 +256,7 @@
 
     function joinChunks(parts, n) {
         var result = '';
-        for (var i = 0; i < n; i++) result += (parts[i] || '');
+        for (var i = 0; i < n; i++) result += parts[i] || '';
         return result;
     }
 
@@ -243,17 +266,30 @@
         // d:'' contributes 2 chars (""); full budget for serialized d value =
         // WIRE_LIMIT - (probe.length - 2) = (WIRE_LIMIT + 2) - probe.length.
         var probe = JSON.stringify({ v: PROTOCOL_VERSION, t: 'chunk', txn: txnId, i: 99, n: 99, d: '' });
-        var dBudget = (WIRE_LIMIT + 2) - probe.length;
+        var dBudget = WIRE_LIMIT + 2 - probe.length;
         var chunks = splitIntoChunksByEncodedLen(json, dBudget);
         if (chunks.length > 99) {
-            console.warn('[CV Sync] Chunk count ' + chunks.length + ' exceeds probe assumption of ≤99; wire messages may be oversized');
+            console.warn(
+                '[CV Sync] Chunk count ' +
+                    chunks.length +
+                    ' exceeds probe assumption of ≤99; wire messages may be oversized'
+            );
         }
         console.log('[CV Sync] Chunking offer ' + txnId + ' into ' + chunks.length + ' parts');
         chunks.forEach(function (slice, idx) {
-            TS.sync.send(JSON.stringify({
-                v: PROTOCOL_VERSION, t: 'chunk',
-                txn: txnId, i: idx, n: chunks.length, d: slice
-            }), targetClient).catch(console.error);
+            TS.sync
+                .send(
+                    JSON.stringify({
+                        v: PROTOCOL_VERSION,
+                        t: 'chunk',
+                        txn: txnId,
+                        i: idx,
+                        n: chunks.length,
+                        d: slice,
+                    }),
+                    targetClient
+                )
+                .catch(console.error);
         });
     }
 
@@ -265,7 +301,9 @@
                 n: msg.n,
                 parts: {},
                 received: 0,
-                timer: setTimeout(function () { delete _chunkBuffers[txnId]; }, 15000)
+                timer: setTimeout(function () {
+                    delete _chunkBuffers[txnId];
+                }, 15000),
             };
         }
         var buf = _chunkBuffers[txnId];
@@ -276,7 +314,9 @@
             delete _chunkBuffers[txnId];
             var fullJson = joinChunks(buf.parts, buf.n);
             var assembled;
-            try { assembled = JSON.parse(fullJson); } catch (e) {
+            try {
+                assembled = JSON.parse(fullJson);
+            } catch (e) {
                 console.warn('[CV Sync] Failed to parse reassembled chunks for txn:', txnId);
                 return;
             }
@@ -306,9 +346,11 @@
     }
 
     function removeTransferredItem(txn) {
-        var mod = (window.modules || []).find(function (m) { return m.id === txn.moduleId; });
+        var mod = (window.modules || []).find(function (m) {
+            return m.id === txn.moduleId;
+        });
         if (!mod || !mod.content) return;
-        var moduleType = (txn.src === 'weapons' || txn.src === 'spells') ? txn.src : 'list';
+        var moduleType = txn.src === 'weapons' || txn.src === 'spells' ? txn.src : 'list';
 
         if (txn.src === 'weapons') {
             if (!Array.isArray(mod.content.weapons)) return;
@@ -344,7 +386,7 @@
 
         var players = window.getConnectedPlayers();
         var hasPlayers = players.length > 0;
-        var itemName = (itemData && itemData.name) ? itemData.name : '';
+        var itemName = itemData && itemData.name ? itemData.name : '';
         var transferMode = 'copy';
 
         var overlay = document.createElement('div');
@@ -365,7 +407,7 @@
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
         closeXBtn.title = window.t('transfer.close');
-        closeXBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeXBtn.innerHTML = cvIcon('x', 12);
 
         header.appendChild(titleEl);
         header.appendChild(closeXBtn);
@@ -447,15 +489,12 @@
 
             var modeDescEl = document.createElement('span');
             modeDescEl.className = 'cv-toggle-label';
-            modeDescEl.textContent = transferMode === 'copy'
-                ? window.t('transfer.modeCopy')
-                : window.t('transfer.modeGive');
+            modeDescEl.textContent =
+                transferMode === 'copy' ? window.t('transfer.modeCopy') : window.t('transfer.modeGive');
 
             var modeToggle = window.makeCvToggle(transferMode === 'copy', function (isCopy) {
                 transferMode = isCopy ? 'copy' : 'move';
-                modeDescEl.textContent = isCopy
-                    ? window.t('transfer.modeCopy')
-                    : window.t('transfer.modeGive');
+                modeDescEl.textContent = isCopy ? window.t('transfer.modeCopy') : window.t('transfer.modeGive');
             });
 
             modeRow.appendChild(modeToggle);
@@ -508,7 +547,10 @@
         });
 
         var keyHandler = function (e) {
-            if (e.key === 'Escape') { e.stopPropagation(); close(); }
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                close();
+            }
         };
         document.addEventListener('keydown', keyHandler);
     }
@@ -520,14 +562,17 @@
         if (srcType === 'weapons') {
             meta = buildWeaponTransferMeta(compactItem, moduleMeta);
         } else {
-            var metaAttrs = (moduleMeta && moduleMeta.attrs) ? moduleMeta.attrs.map(function (a) {
-                return { name: a.name, type: a.type };
-            }) : [];
+            var metaAttrs =
+                moduleMeta && moduleMeta.attrs
+                    ? moduleMeta.attrs.map(function (a) {
+                          return { name: a.name, type: a.type };
+                      })
+                    : [];
             if (srcType === 'spells') {
                 meta = {
                     attrs: metaAttrs,
                     categoryName: (moduleMeta && moduleMeta.categoryName) || null,
-                    poolDescriptor: (moduleMeta && moduleMeta.poolDescriptor) || null
+                    poolDescriptor: (moduleMeta && moduleMeta.poolDescriptor) || null,
                 };
             } else {
                 meta = { attrs: metaAttrs };
@@ -538,7 +583,7 @@
             mode: transferMode,
             src: srcType,
             data: compactItem,
-            meta: meta
+            meta: meta,
         });
         pendingOutgoing[txnId] = {
             targetClient: targetClientId,
@@ -547,7 +592,7 @@
             moduleId: moduleId,
             itemId: itemId,
             timestamp: Date.now(),
-            state: 'pending'
+            state: 'pending',
         };
         window.reapplyPendingStates();
     }
@@ -628,7 +673,10 @@
     }
 
     function openOffersDropdown() {
-        if (_offersDropdownEl) { closeOffersDropdown(); return; }
+        if (_offersDropdownEl) {
+            closeOffersDropdown();
+            return;
+        }
         var btn = document.getElementById('pending-offers-btn');
         if (!btn) return;
         var panel = document.createElement('div');
@@ -637,7 +685,7 @@
         document.body.appendChild(panel);
         _offersDropdownEl = panel;
         var rect = btn.getBoundingClientRect();
-        panel.style.top = (rect.bottom + 4) + 'px';
+        panel.style.top = rect.bottom + 4 + 'px';
         panel.style.left = rect.left + 'px';
         _offersOutsideHandler = function (e) {
             if (panel.contains(e.target) || btn.contains(e.target)) return;
@@ -645,7 +693,10 @@
         };
         document.addEventListener('click', _offersOutsideHandler, true);
         _offersEscapeHandler = function (e) {
-            if (e.key === 'Escape') { e.stopPropagation(); closeOffersDropdown(); }
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                closeOffersDropdown();
+            }
         };
         document.addEventListener('keydown', _offersEscapeHandler);
     }
@@ -660,7 +711,7 @@
         list.className = 'pending-offers-list';
         Object.keys(pendingIncoming).forEach(function (txnId) {
             var offer = pendingIncoming[txnId];
-            var itemName = (offer.data && offer.data.name) ? offer.data.name : window.t('transfer.unknownItem');
+            var itemName = offer.data && offer.data.name ? offer.data.name : window.t('transfer.unknownItem');
             var isMove = offer.mode !== 'copy';
             var item = document.createElement('div');
             item.className = 'pending-offers-item';
@@ -710,9 +761,11 @@
         if (spell.slotCost !== null && spell.slotCost !== undefined) compact.slotCost = spell.slotCost;
         if (spell.canUpcast) compact.canUpcast = true;
 
-        var attrs = (moduleData && moduleData.attrs) ? moduleData.attrs : [];
+        var attrs = moduleData && moduleData.attrs ? moduleData.attrs : [];
         var idToName = {};
-        attrs.forEach(function (attr) { idToName[attr.id] = attr.name; });
+        attrs.forEach(function (attr) {
+            idToName[attr.id] = attr.name;
+        });
 
         var compactValues = compactAttrValues(spell.values, idToName);
         if (Object.keys(compactValues).length > 0) compact.values = compactValues;
@@ -727,7 +780,8 @@
         if (weapon.icon) compact.icon = weapon.icon;
         if (weapon.abilityMod) compact.abilityMod = weapon.abilityMod;
         if (weapon.proficient) compact.proficient = true;
-        if (weapon.attackBonusOverride !== null && weapon.attackBonusOverride !== undefined) compact.attackBonusOverride = weapon.attackBonusOverride;
+        if (weapon.attackBonusOverride !== null && weapon.attackBonusOverride !== undefined)
+            compact.attackBonusOverride = weapon.attackBonusOverride;
         if (weapon.twoHanded) compact.twoHanded = true;
         if (weapon.range) compact.range = weapon.range;
         if (weapon.ammoCount !== null && weapon.ammoCount !== undefined) compact.ammoCount = weapon.ammoCount;
@@ -763,9 +817,24 @@
                 return cfm;
             });
         }
-        var optionals = ['proficiencyRank', 'skillName', 'skillValue', 'poolAttribute', 'poolSkill', 'poolSize',
-                         'weaponCategory', 'cpredStat', 'cpredSkillValue', 'governingTrait', 'baseDamageFlat',
-                         'damageCategory', 'impaling', 'armorSavePenalty', 'poolAdjustment', 'accuracy'];
+        var optionals = [
+            'proficiencyRank',
+            'skillName',
+            'skillValue',
+            'poolAttribute',
+            'poolSkill',
+            'poolSize',
+            'weaponCategory',
+            'cpredStat',
+            'cpredSkillValue',
+            'governingTrait',
+            'baseDamageFlat',
+            'damageCategory',
+            'impaling',
+            'armorSavePenalty',
+            'poolAdjustment',
+            'accuracy',
+        ];
         optionals.forEach(function (f) {
             var v = weapon[f];
             if (v !== null && v !== undefined && v !== false && v !== 0 && v !== '') compact[f] = v;
@@ -779,9 +848,11 @@
         if (item.name) compact.name = item.name;
         if (item.notes) compact.notes = item.notes;
 
-        var attrs = (moduleData && moduleData.attrs) ? moduleData.attrs : [];
+        var attrs = moduleData && moduleData.attrs ? moduleData.attrs : [];
         var idToName = {};
-        attrs.forEach(function (attr) { idToName[attr.id] = attr.name; });
+        attrs.forEach(function (attr) {
+            idToName[attr.id] = attr.name;
+        });
 
         var compactValues = compactAttrValues(item.values, idToName);
         if (Object.keys(compactValues).length > 0) compact.values = compactValues;
@@ -806,7 +877,7 @@
             canUpcast: compact.canUpcast || false,
             preparedCount: 0,
             castsUsed: 0,
-            values: compact.values ? Object.assign({}, compact.values) : {}
+            values: compact.values ? Object.assign({}, compact.values) : {},
         };
     }
 
@@ -815,7 +886,7 @@
             id: generateLocalId(),
             name: compact.name || '',
             notes: compact.notes || '',
-            values: compact.values ? Object.assign({}, compact.values) : {}
+            values: compact.values ? Object.assign({}, compact.values) : {},
         };
     }
 
@@ -825,16 +896,42 @@
 
     function expandWeapon(compact) {
         var defaults = {
-            name: '', slot: 'main', kind: 'melee', icon: null, abilityMod: null,
-            proficient: false, attackBonusOverride: null, damageInstances: [], range: null,
-            ammoCount: null, traits: [], notesMarkdown: '', twoHanded: false,
-            acBonus: null, shieldHp: null, shieldHpMax: null, proficiencyRank: null,
-            skillName: null, skillValue: null, poolAttribute: null, poolSkill: null,
-            poolSize: null, weaponCategory: null, cpredStat: null, cpredSkillValue: null,
-            governingTrait: null, baseDamageFlat: null, damageCategory: null,
-            firingModes: null, impaling: null, armorSavePenalty: null,
-            attachedEnhancements: null, poolAdjustment: null, poolAutoCompute: false,
-            accuracy: null, linkedStatModuleId: null
+            name: '',
+            slot: 'main',
+            kind: 'melee',
+            icon: null,
+            abilityMod: null,
+            proficient: false,
+            attackBonusOverride: null,
+            damageInstances: [],
+            range: null,
+            ammoCount: null,
+            traits: [],
+            notesMarkdown: '',
+            twoHanded: false,
+            acBonus: null,
+            shieldHp: null,
+            shieldHpMax: null,
+            proficiencyRank: null,
+            skillName: null,
+            skillValue: null,
+            poolAttribute: null,
+            poolSkill: null,
+            poolSize: null,
+            weaponCategory: null,
+            cpredStat: null,
+            cpredSkillValue: null,
+            governingTrait: null,
+            baseDamageFlat: null,
+            damageCategory: null,
+            firingModes: null,
+            impaling: null,
+            armorSavePenalty: null,
+            attachedEnhancements: null,
+            poolAdjustment: null,
+            poolAutoCompute: false,
+            accuracy: null,
+            linkedStatModuleId: null,
         };
         return Object.assign({}, defaults, compact, { id: generateWeaponLocalId() });
     }
@@ -848,15 +945,23 @@
         if (Array.isArray(compact.traits) && moduleContent && Array.isArray(moduleContent.customWeaponTraits)) {
             compact.traits.forEach(function (tr) {
                 if (tr.key && tr.key.indexOf('custom.') === 0) {
-                    var found = moduleContent.customWeaponTraits.find(function (ct) { return ct.key === tr.key; });
+                    var found = moduleContent.customWeaponTraits.find(function (ct) {
+                        return ct.key === tr.key;
+                    });
                     if (found) customTraits.push(found);
                 }
             });
         }
         var enhancements = [];
-        if (Array.isArray(compact.attachedEnhancements) && moduleContent && Array.isArray(moduleContent.enhancementCatalog)) {
+        if (
+            Array.isArray(compact.attachedEnhancements) &&
+            moduleContent &&
+            Array.isArray(moduleContent.enhancementCatalog)
+        ) {
             compact.attachedEnhancements.forEach(function (key) {
-                var found = moduleContent.enhancementCatalog.find(function (e) { return e.key === key; });
+                var found = moduleContent.enhancementCatalog.find(function (e) {
+                    return e.key === key;
+                });
                 if (found) enhancements.push(found);
             });
         }
@@ -904,7 +1009,9 @@
 
     function remapByName(attributes, namedValues) {
         var nameToId = {};
-        attributes.forEach(function (a) { nameToId[a.name.toLowerCase()] = a.id; });
+        attributes.forEach(function (a) {
+            nameToId[a.name.toLowerCase()] = a.id;
+        });
         var remapped = {};
         Object.keys(namedValues || {}).forEach(function (attrName) {
             var attrId = nameToId[attrName.toLowerCase()];
@@ -914,7 +1021,9 @@
     }
 
     function spliceById(arr, id) {
-        var idx = arr.findIndex(function (it) { return it.id === id; });
+        var idx = arr.findIndex(function (it) {
+            return it.id === id;
+        });
         if (idx === -1) return false;
         arr.splice(idx, 1);
         return true;
@@ -943,24 +1052,46 @@
 
     function buildNewTransferModule(type, tabId) {
         var id = 'module-' + String(++window.moduleIdCounter).padStart(3, '0');
-        var order = (window.modules || []).filter(function (m) { return m.tabId === tabId; }).length;
+        var order = (window.modules || []).filter(function (m) {
+            return m.tabId === tabId;
+        }).length;
         var content, colSpan, rowSpan;
         if (type === 'weapons') {
             content = { weapons: [] };
-            colSpan = window.GRID_COLUMNS; rowSpan = 2;
+            colSpan = window.GRID_COLUMNS;
+            rowSpan = 2;
         } else if (type === 'spells') {
-            content = { autoSpendSlots: true, showSlotErrors: true, resourcePools: [], categories: [], casterType: null };
-            colSpan = window.GRID_COLUMNS; rowSpan = 4;
+            content = {
+                autoSpendSlots: true,
+                showSlotErrors: true,
+                resourcePools: [],
+                categories: [],
+                casterType: null,
+            };
+            colSpan = window.GRID_COLUMNS;
+            rowSpan = 4;
         } else {
             content = { attributes: [], items: [], sortBy: null, sortDir: 'asc' };
-            colSpan = window.GRID_COLUMNS / 2; rowSpan = 2;
+            colSpan = window.GRID_COLUMNS / 2;
+            rowSpan = 2;
         }
-        return { id: id, type: type, title: null, colSpan: colSpan, rowSpan: rowSpan,
-                 order: order, theme: null, tabId: tabId, content: content };
+        return {
+            id: id,
+            type: type,
+            title: null,
+            colSpan: colSpan,
+            rowSpan: rowSpan,
+            order: order,
+            theme: null,
+            tabId: tabId,
+            content: content,
+        };
     }
 
     function insertListItem(targetModuleId, expandedItem, metaAttrs) {
-        var mod = (window.modules || []).find(function (m) { return m.id === targetModuleId; });
+        var mod = (window.modules || []).find(function (m) {
+            return m.id === targetModuleId;
+        });
         if (!mod || !mod.content) return;
         if (!Array.isArray(mod.content.attributes)) mod.content.attributes = [];
         if (!Array.isArray(mod.content.items)) mod.content.items = [];
@@ -977,7 +1108,7 @@
                     icon: null,
                     defaultValue: defaultValueForType(meta.type),
                     pinned: false,
-                    builtIn: false
+                    builtIn: false,
                 };
                 mod.content.attributes.push(newAttr);
                 mod.content.items.forEach(function (item) {
@@ -990,7 +1121,7 @@
         var remappedValues = remapByName(mod.content.attributes, expandedItem.values);
 
         var maxOrder = mod.content.items.reduce(function (max, it) {
-            return (it.order != null && it.order > max) ? it.order : max;
+            return it.order != null && it.order > max ? it.order : max;
         }, -1);
 
         mod.content.items.push({
@@ -998,7 +1129,7 @@
             name: expandedItem.name,
             notes: expandedItem.notes || '',
             order: maxOrder + 1,
-            values: remappedValues
+            values: remappedValues,
         });
 
         var moduleEl = document.querySelector('[data-id="' + targetModuleId + '"]');
@@ -1031,14 +1162,20 @@
     }
 
     function insertWeapon(targetModuleId, expandedWeapon, meta) {
-        var mod = (window.modules || []).find(function (m) { return m.id === targetModuleId; });
+        var mod = (window.modules || []).find(function (m) {
+            return m.id === targetModuleId;
+        });
         if (!mod || !mod.content) return;
         if (!Array.isArray(mod.content.customWeaponTraits)) mod.content.customWeaponTraits = [];
         if (!Array.isArray(mod.content.enhancementCatalog)) mod.content.enhancementCatalog = [];
         if (!Array.isArray(mod.content.weapons)) mod.content.weapons = [];
 
         var traitKeyRemap = mergeByName(mod.content.customWeaponTraits, meta.customTraits, function (inc) {
-            return { key: 'custom.wt_' + Date.now().toString(36) + '_' + (++_keySeq), name: inc.name, description: inc.description || '' };
+            return {
+                key: 'custom.wt_' + Date.now().toString(36) + '_' + ++_keySeq,
+                name: inc.name,
+                description: inc.description || '',
+            };
         });
         if (Array.isArray(expandedWeapon.traits)) {
             expandedWeapon.traits = expandedWeapon.traits.map(function (tr) {
@@ -1047,7 +1184,7 @@
         }
 
         var enhKeyRemap = mergeByName(mod.content.enhancementCatalog, meta.enhancements, function (inc) {
-            return Object.assign({}, inc, { key: 'enh_' + Date.now().toString(36) + '_' + (++_keySeq) });
+            return Object.assign({}, inc, { key: 'enh_' + Date.now().toString(36) + '_' + ++_keySeq });
         });
         if (Array.isArray(expandedWeapon.attachedEnhancements)) {
             expandedWeapon.attachedEnhancements = expandedWeapon.attachedEnhancements.map(function (k) {
@@ -1070,7 +1207,9 @@
     }
 
     function insertSpell(targetModuleId, expandedSpell, meta) {
-        var mod = (window.modules || []).find(function (m) { return m.id === targetModuleId; });
+        var mod = (window.modules || []).find(function (m) {
+            return m.id === targetModuleId;
+        });
         if (!mod || !mod.content) return;
         if (typeof window.ensureSpellContent === 'function') window.ensureSpellContent(mod);
         if (!Array.isArray(mod.content.attributes)) mod.content.attributes = [];
@@ -1087,7 +1226,7 @@
                     type: incoming.type,
                     defaultValue: defaultValueForType(incoming.type),
                     pinned: false,
-                    builtIn: false
+                    builtIn: false,
                 };
                 mod.content.attributes.push(newAttr);
                 mod.content.categories.forEach(function (cat) {
@@ -1110,7 +1249,9 @@
         if (!targetCat && meta.poolDescriptor) {
             var poolDesc = meta.poolDescriptor;
             targetCat = mod.content.categories.find(function (c) {
-                var pool = (mod.content.resourcePools || []).find(function (p) { return p.id === c.resourcePoolId; });
+                var pool = (mod.content.resourcePools || []).find(function (p) {
+                    return p.id === c.resourcePoolId;
+                });
                 if (!pool) return false;
                 if (poolDesc.type === 'spell-slot') return pool.type === 'spell-slot' && pool.level === poolDesc.level;
                 return pool.type === poolDesc.type && poolDesc.name !== null && pool.name === poolDesc.name;
@@ -1119,7 +1260,9 @@
         if (!targetCat && meta.slotLevel != null) {
             targetCat = mod.content.categories.find(function (c) {
                 if (c.resourcePoolId) {
-                    var pool = (mod.content.resourcePools || []).find(function (p) { return p.id === c.resourcePoolId; });
+                    var pool = (mod.content.resourcePools || []).find(function (p) {
+                        return p.id === c.resourcePoolId;
+                    });
                     return pool && pool.type === 'spell-slot' && pool.level === meta.slotLevel;
                 }
                 return c.slotLevel === meta.slotLevel;
@@ -1127,7 +1270,9 @@
         }
         if (!targetCat) {
             var newPoolId = null;
-            var poolDesc2 = meta.poolDescriptor || (meta.slotLevel != null ? { type: 'spell-slot', level: meta.slotLevel, name: null } : null);
+            var poolDesc2 =
+                meta.poolDescriptor ||
+                (meta.slotLevel != null ? { type: 'spell-slot', level: meta.slotLevel, name: null } : null);
             if (poolDesc2) {
                 if (!Array.isArray(mod.content.resourcePools)) mod.content.resourcePools = [];
                 var matchingPool = mod.content.resourcePools.find(function (p) {
@@ -1141,7 +1286,7 @@
                         level: poolDesc2.level !== undefined ? poolDesc2.level : null,
                         name: poolDesc2.name !== undefined ? poolDesc2.name : null,
                         max: 4,
-                        spent: 0
+                        spent: 0,
                     };
                     mod.content.resourcePools.push(matchingPool);
                 }
@@ -1152,7 +1297,7 @@
                 name: meta.categoryName || '',
                 resourcePoolId: newPoolId,
                 collapsed: false,
-                spells: []
+                spells: [],
             };
             mod.content.categories.push(targetCat);
         }
@@ -1192,11 +1337,13 @@
         } else {
             targetModuleType = 'list';
         }
-        var targetModules = (window.modules || []).filter(function (m) { return m.type === targetModuleType; });
+        var targetModules = (window.modules || []).filter(function (m) {
+            return m.type === targetModuleType;
+        });
         var selectedModuleId = targetModules.length > 0 ? targetModules[0].id : null;
         var createOnTabId = window.activeTabId;
 
-        var itemName = (incoming.data && incoming.data.name) ? incoming.data.name : '';
+        var itemName = incoming.data && incoming.data.name ? incoming.data.name : '';
         var fromName = incoming.fromName || 'Unknown';
         var isMove = incoming.mode !== 'copy';
         var senderDisconnected = !connectedPlayers[incoming.fromClient];
@@ -1219,7 +1366,7 @@
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
         closeXBtn.title = window.t('transfer.close');
-        closeXBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeXBtn.innerHTML = cvIcon('x', 12);
         header.appendChild(titleEl);
         header.appendChild(closeXBtn);
         panel.appendChild(header);
@@ -1277,10 +1424,12 @@
             if (Array.isArray(weaponData.traits) && weaponData.traits.length) {
                 var traitsEl = document.createElement('div');
                 traitsEl.className = 'transfer-meta-value transfer-weapon-traits';
-                traitsEl.textContent = weaponData.traits.map(function (tr) {
-                    var key = tr.key || '';
-                    return key.split('.').pop();
-                }).join(', ');
+                traitsEl.textContent = weaponData.traits
+                    .map(function (tr) {
+                        var key = tr.key || '';
+                        return key.split('.').pop();
+                    })
+                    .join(', ');
                 body.appendChild(traitsEl);
             }
             if (weaponData.notesMarkdown && weaponData.notesMarkdown.trim()) {
@@ -1305,7 +1454,7 @@
         } else {
             // Values are name-keyed (compact format), not attr-ID-keyed
             var listAttrEl = buildAttrPreviewEl(incoming.data && incoming.data.values, function (val) {
-                return (val && typeof val === 'object') ? (val.current + '/' + val.max) : String(val);
+                return val && typeof val === 'object' ? val.current + '/' + val.max : String(val);
             });
             if (listAttrEl) body.appendChild(listAttrEl);
             if (incoming.data && incoming.data.notes && incoming.data.notes.trim()) {
@@ -1322,7 +1471,11 @@
         body.appendChild(targetLabel);
 
         var typeDefaultLabel = window.t('type.' + targetModuleType);
-        var noModulesKey = { weapons: 'transfer.noWeaponModules', spells: 'transfer.noSpellModules', list: 'transfer.noListModules' }[targetModuleType];
+        var noModulesKey = {
+            weapons: 'transfer.noWeaponModules',
+            spells: 'transfer.noSpellModules',
+            list: 'transfer.noListModules',
+        }[targetModuleType];
         if (!targetModules.length) {
             var noListMsg = document.createElement('div');
             noListMsg.className = 'transfer-no-list-msg';
@@ -1335,7 +1488,10 @@
             body.appendChild(createOnLabel);
 
             var tabs = (window.tabs || []).slice();
-            var activeTab = tabs.find(function (t) { return t.id === window.activeTabId; }) || tabs[0];
+            var activeTab =
+                tabs.find(function (t) {
+                    return t.id === window.activeTabId;
+                }) || tabs[0];
 
             if (tabs.length === 1) {
                 var singleTabEl = document.createElement('div');
@@ -1348,8 +1504,11 @@
                 var tabTrigger = document.createElement('button');
                 tabTrigger.type = 'button';
                 tabTrigger.className = 'cv-select-trigger';
-                tabTrigger.innerHTML = '<span class="cv-select-value">' + window.escapeHtml(activeTab ? activeTab.name : '') + '</span>' +
-                    '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+                tabTrigger.innerHTML =
+                    '<span class="cv-select-value">' +
+                    window.escapeHtml(activeTab ? activeTab.name : '') +
+                    '</span>' +
+                    cvIcon('chevron-down', 10);
                 var tabMenu = document.createElement('ul');
                 tabMenu.className = 'cv-select-menu';
                 tabs.forEach(function (tab) {
@@ -1370,7 +1529,7 @@
                     e.stopPropagation();
                     var rect = tabTrigger.getBoundingClientRect();
                     tabMenu.style.position = 'fixed';
-                    tabMenu.style.top = (rect.bottom + 2) + 'px';
+                    tabMenu.style.top = rect.bottom + 2 + 'px';
                     tabMenu.style.left = rect.left + 'px';
                     tabMenu.style.minWidth = rect.width + 'px';
                     tabSelectWrapper.classList.toggle('open');
@@ -1394,8 +1553,11 @@
             var trigger = document.createElement('button');
             trigger.type = 'button';
             trigger.className = 'cv-select-trigger';
-            trigger.innerHTML = '<span class="cv-select-value">' + window.escapeHtml(targetModules[0].title || typeDefaultLabel) + '</span>' +
-                '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+            trigger.innerHTML =
+                '<span class="cv-select-value">' +
+                window.escapeHtml(targetModules[0].title || typeDefaultLabel) +
+                '</span>' +
+                cvIcon('chevron-down', 10);
             var menu = document.createElement('ul');
             menu.className = 'cv-select-menu';
             targetModules.forEach(function (mod, idx) {
@@ -1416,12 +1578,14 @@
                 e.stopPropagation();
                 var rect = trigger.getBoundingClientRect();
                 menu.style.position = 'fixed';
-                menu.style.top = (rect.bottom + 2) + 'px';
+                menu.style.top = rect.bottom + 2 + 'px';
                 menu.style.left = rect.left + 'px';
                 menu.style.minWidth = rect.width + 'px';
                 selectWrapper.classList.toggle('open');
             });
-            closeSelectHandler = function () { selectWrapper.classList.remove('open'); };
+            closeSelectHandler = function () {
+                selectWrapper.classList.remove('open');
+            };
             document.addEventListener('click', closeSelectHandler);
             selectWrapper.appendChild(trigger);
             selectWrapper.appendChild(menu);
@@ -1518,7 +1682,10 @@
         });
 
         var keyHandler = function (e) {
-            if (e.key === 'Escape') { e.stopPropagation(); decline(); }
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                decline();
+            }
         };
         document.addEventListener('keydown', keyHandler);
     }
@@ -1540,48 +1707,50 @@
                 range: '5 ft',
                 damageInstances: [
                     { dice: '1d8', damageType: 'Slashing', modFromAbility: true },
-                    { dice: '1d6', damageType: 'Fire' }
+                    { dice: '1d6', damageType: 'Fire' },
                 ],
-                traits: [
-                    { key: 'versatile', value: '1d10' },
-                    { key: 'finesse' }
-                ],
-                notesMarkdown: 'A blade wreathed in magical flames. Grants +1 to attack rolls against undead.'
+                traits: [{ key: 'versatile', value: '1d10' }, { key: 'finesse' }],
+                notesMarkdown: 'A blade wreathed in magical flames. Grants +1 to attack rolls against undead.',
             };
             meta = { customTraits: [], enhancements: [] };
         } else if (type === 'spells') {
             data = {
                 name: 'Fireball',
-                description: 'A bright streak flashes from your pointing finger to a point you choose within range, then blossoms into a fiery explosion.',
+                description:
+                    'A bright streak flashes from your pointing finger to a point you choose within range, then blossoms into a fiery explosion.',
                 slotCost: 1,
                 canUpcast: true,
-                values: { 'Damage': '8d6', 'Range': '150 ft', 'Save': 'DEX' }
+                values: { Damage: '8d6', Range: '150 ft', Save: 'DEX' },
             };
             meta = {
                 attrs: [
                     { name: 'Damage', type: 'text' },
                     { name: 'Range', type: 'text' },
-                    { name: 'Save', type: 'text' }
+                    { name: 'Save', type: 'text' },
                 ],
                 categoryName: 'Level 3',
-                poolDescriptor: null
+                poolDescriptor: null,
             };
         } else {
             data = {
                 name: 'Healing Potion',
                 notes: 'A small vial filled with a red, magical liquid that restores 2d4+2 HP.',
-                values: { 'Weight': 0.5, 'Quantity': 3, 'Value': '50 gp' }
+                values: { Weight: 0.5, Quantity: 3, Value: '50 gp' },
             };
             meta = {
                 attrs: [
                     { name: 'Weight', type: 'number' },
                     { name: 'Quantity', type: 'number' },
-                    { name: 'Value', type: 'text' }
-                ]
+                    { name: 'Value', type: 'text' },
+                ],
             };
         }
 
-        connectedPlayers[debugClientId] = { clientId: debugClientId, playerId: 'debug-player', playerName: 'Debug Player' };
+        connectedPlayers[debugClientId] = {
+            clientId: debugClientId,
+            playerId: 'debug-player',
+            playerName: 'Debug Player',
+        };
         pendingIncoming[txnId] = {
             fromClient: debugClientId,
             fromName: 'Debug Player',
@@ -1589,7 +1758,7 @@
             src: type,
             data: data,
             meta: meta,
-            receivedAt: Date.now()
+            receivedAt: Date.now(),
         };
         updatePendingOffersUI();
         openIncomingTransferModal(txnId);
@@ -1599,7 +1768,9 @@
 
     // ── Public API ──
     window.initSync = initSync;
-    window.getConnectedPlayers = function () { return Object.values(connectedPlayers); };
+    window.getConnectedPlayers = function () {
+        return Object.values(connectedPlayers);
+    };
 
     window.openSendToPlayerModal = openSendToPlayerModal;
 
@@ -1616,7 +1787,9 @@
         Object.keys(pendingOutgoing).forEach(function (txnId) {
             var txn = pendingOutgoing[txnId];
             if (!txn.moduleId || !txn.itemId) return;
-            var row = document.querySelector('[data-module-id="' + txn.moduleId + '"][data-item-id="' + txn.itemId + '"]');
+            var row = document.querySelector(
+                '[data-module-id="' + txn.moduleId + '"][data-item-id="' + txn.itemId + '"]'
+            );
             if (!row) return;
             row.classList.add('list-item-pending');
             var rowKey = txn.moduleId + ':' + txn.itemId;
@@ -1661,6 +1834,9 @@
     var _pendingOffersBtn = document.getElementById('pending-offers-btn');
     if (_pendingOffersBtn) {
         _pendingOffersBtn.title = window.t('transfer.pendingOffersTitle');
-        _pendingOffersBtn.addEventListener('click', function (e) { e.stopPropagation(); openOffersDropdown(); });
+        _pendingOffersBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            openOffersDropdown();
+        });
     }
 })();

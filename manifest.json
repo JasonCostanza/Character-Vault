@@ -1,10 +1,10 @@
 {
     "manifestVersion": 1,
-    "name": "Character Vault DEV",
+    "name": "Character Vault BETA",
     "entryPoint": "/main.html",
     "summary": "A character sheet engine for RPGs.",
     "descriptionFilePath": "/README.md",
-    "version": "0.1",
+    "version": "0.2",
     "license": "GPLv3 + Common Clause",
     "about": {
         "website": "https://github.com/jasoncostanza/character-vault",

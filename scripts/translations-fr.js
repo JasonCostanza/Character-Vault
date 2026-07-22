@@ -107,6 +107,7 @@ window.CV_TRANSLATIONS['fr'] = {
             'module.close': 'Fermer',
 
             'type.abilities': 'Compétences',
+            'type.actions': 'Suivi des Actions',
             'type.activity': 'Journal d\'Activité',
             'type.bio': 'Bio',
             'type.text': 'Zone de Texte',
@@ -182,6 +183,22 @@ window.CV_TRANSLATIONS['fr'] = {
             'abilities.linkedTo': 'Lié à {name}.',
             'abilities.event.roll': 'Jet de Compétence',
             'abilities.log.roll': 'Jet de test de {name} ({modifier})',
+
+            // Action Tracker submodule
+            'actions.add': 'Ajouter une Action',
+            'actions.addTitle': 'Ajouter une Action',
+            'actions.namePlaceholder': 'Nom de l\'action...',
+            'actions.deleteAction': 'Supprimer l\'action',
+            'actions.empty': 'Aucune action',
+            'actions.resetAll': 'Tout Réinitialiser',
+            'actions.deleteAll': 'Tout Supprimer',
+            'actions.deleteAllConfirm': 'Supprimer toutes les actions ? Cela ne peut pas être annulé.',
+            'actions.settings': 'Paramètres',
+            'actions.settingsTitle': 'Paramètres du Suivi des Actions',
+            'actions.layoutLabel': 'Disposition',
+            'actions.layoutWrap': 'Retour à la ligne',
+            'actions.layoutList': 'Liste',
+            'actions.ok': 'OK',
 
             'text.placeholder': 'Écrivez vos notes...',
             'text.moduleSettings': 'Paramètres du Module',

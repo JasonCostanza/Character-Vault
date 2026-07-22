@@ -113,6 +113,7 @@ window.CV_TRANSLATIONS['it'] = {
 
             // Module type labels
             'type.abilities': 'Abilità',
+            'type.actions': 'Tracciatore Azioni',
             'type.activity': 'Registro Attività',
             'type.bio': 'Bio',
             'type.companions': 'Compagni',
@@ -190,6 +191,22 @@ window.CV_TRANSLATIONS['it'] = {
             'abilities.linkedTo': 'Collegato a {name}.',
             'abilities.event.roll': 'Tiro di Abilità',
             'abilities.log.roll': 'Prova di {name} ({modifier})',
+
+            // Action Tracker submodule
+            'actions.add': 'Aggiungi Azione',
+            'actions.addTitle': 'Aggiungi Azione',
+            'actions.namePlaceholder': 'Nome azione...',
+            'actions.deleteAction': 'Elimina azione',
+            'actions.empty': 'Nessuna azione',
+            'actions.resetAll': 'Ripristina Tutto',
+            'actions.deleteAll': 'Elimina Tutto',
+            'actions.deleteAllConfirm': 'Rimuovere tutte le azioni? Questa azione è irreversibile.',
+            'actions.settings': 'Impostazioni',
+            'actions.settingsTitle': 'Impostazioni del Tracciatore Azioni',
+            'actions.layoutLabel': 'Layout',
+            'actions.layoutWrap': 'A capo',
+            'actions.layoutList': 'Elenco',
+            'actions.ok': 'OK',
 
             // Text box submodule
             'text.placeholder': 'Scrivi le tue note...',

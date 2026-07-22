@@ -107,6 +107,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'module.close': 'Закрыть',
 
             'type.abilities': 'Навыки',
+            'type.actions': 'Трекер Действий',
             'type.activity': 'Журнал Активности',
             'type.bio': 'Био',
             'type.companions': 'Компаньоны',
@@ -184,6 +185,22 @@ window.CV_TRANSLATIONS['ru'] = {
             'abilities.linkedTo': 'Связано с {name}.',
             'abilities.event.roll': 'Бросок Навыка',
             'abilities.log.roll': 'Проверка {name} ({modifier})',
+
+            // Action Tracker submodule
+            'actions.add': 'Добавить Действие',
+            'actions.addTitle': 'Добавить Действие',
+            'actions.namePlaceholder': 'Название действия...',
+            'actions.deleteAction': 'Удалить действие',
+            'actions.empty': 'Нет действий',
+            'actions.resetAll': 'Сбросить Всё',
+            'actions.deleteAll': 'Удалить Всё',
+            'actions.deleteAllConfirm': 'Удалить все действия? Это действие нельзя отменить.',
+            'actions.settings': 'Настройки',
+            'actions.settingsTitle': 'Настройки Трекера Действий',
+            'actions.layoutLabel': 'Расположение',
+            'actions.layoutWrap': 'Перенос',
+            'actions.layoutList': 'Список',
+            'actions.ok': 'ОК',
 
             'text.placeholder': 'Пишите заметки...',
             'text.moduleSettings': 'Настройки Модуля',

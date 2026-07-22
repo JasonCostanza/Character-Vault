@@ -107,6 +107,7 @@ window.CV_TRANSLATIONS['de'] = {
             'module.close': 'Schließen',
 
             'type.abilities': 'Fähigkeiten',
+            'type.actions': 'Aktionsverfolgung',
             'type.activity': 'Aktivitätsprotokoll',
             'type.bio': 'Bio',
             'type.text': 'Textfeld',
@@ -183,6 +184,22 @@ window.CV_TRANSLATIONS['de'] = {
             'abilities.linkedTo': 'Verknüpft mit {name}.',
             'abilities.event.roll': 'Fertigkeitswurf',
             'abilities.log.roll': 'Fertigkeitsprobe für {name} ({modifier})',
+
+            // Action Tracker submodule
+            'actions.add': 'Aktion Hinzufügen',
+            'actions.addTitle': 'Aktion Hinzufügen',
+            'actions.namePlaceholder': 'Aktionsname...',
+            'actions.deleteAction': 'Aktion löschen',
+            'actions.empty': 'Keine Aktionen',
+            'actions.resetAll': 'Alle Zurücksetzen',
+            'actions.deleteAll': 'Alle Löschen',
+            'actions.deleteAllConfirm': 'Alle Aktionen entfernen? Dies kann nicht rückgängig gemacht werden.',
+            'actions.settings': 'Einstellungen',
+            'actions.settingsTitle': 'Einstellungen der Aktionsverfolgung',
+            'actions.layoutLabel': 'Layout',
+            'actions.layoutWrap': 'Umbruch',
+            'actions.layoutList': 'Liste',
+            'actions.ok': 'OK',
 
             'text.placeholder': 'Schreibe deine Notizen...',
             'text.moduleSettings': 'Moduleinstellungen',

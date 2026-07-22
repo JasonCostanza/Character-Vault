@@ -1,0 +1,132 @@
+
+/* ── Action Tracker Module ── */
+
+.actions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 4px;
+}
+
+.actions-pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.actions-layout-list .actions-pill-list {
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+/* ── Pill Base ── */
+
+.actions-pill {
+    display: inline-flex;
+    align-items: center;
+    background: color-mix(in srgb, var(--cv-accent) 12%, var(--cv-bg-raised));
+    border: 1px solid color-mix(in srgb, var(--cv-accent) 25%, var(--cv-border));
+    border-radius: 16px;
+    padding: 0;
+    cursor: default;
+    user-select: none;
+    transition: background 0.15s, border-color 0.15s, opacity 0.15s;
+    min-width: 0;
+}
+
+.actions-layout-list .actions-pill {
+    width: 100%;
+}
+
+/* ── Pill Zones ── */
+
+.actions-drag-handle {
+    display: flex;
+    align-items: center;
+    padding: 4px 2px 4px 6px;
+    color: var(--cv-text-muted);
+    cursor: grab;
+    font-size: 11px;
+    flex-shrink: 0;
+}
+
+.actions-drag-handle:active {
+    cursor: grabbing;
+}
+
+.actions-pill-name {
+    flex: 1;
+    padding: 4px 6px;
+    font-size: 11px;
+    color: var(--cv-text);
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    text-align: center;
+}
+
+.actions-pill-delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 6px 4px 2px;
+    background: none;
+    border: none;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.actions-pill-delete:hover {
+    color: var(--cv-danger);
+}
+
+/* ── Used (toggled off) State ── */
+
+.actions-pill-used {
+    background: var(--cv-bg-sunken);
+    border-color: var(--cv-border-subtle);
+    opacity: 0.55;
+}
+
+.actions-pill-used .actions-pill-name {
+    color: var(--cv-text-muted);
+    text-decoration: line-through;
+}
+
+/* ── Empty State ── */
+
+.actions-empty {
+    text-align: center;
+    padding: 12px 8px;
+    color: var(--cv-text-muted);
+    font-size: 11px;
+    user-select: none;
+}
+
+/* ── SortableJS Ghost ── */
+
+.actions-pill.cv-drag-ghost {
+    border: 2px dashed var(--cv-border);
+    background: transparent;
+    opacity: 0.5;
+}
+
+/* ── Add Action Modal ── */
+
+.actions-add-modal {
+    width: 280px;
+}
+
+.actions-add-body {
+    align-items: center;
+}
+
+/* ── Responsive ── */
+
+.module[data-size="xs"] .actions-pill-name,
+.module[data-size="sm"] .actions-pill-name {
+    font-size: 10px;
+}

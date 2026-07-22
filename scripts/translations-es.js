@@ -107,6 +107,7 @@ window.CV_TRANSLATIONS['es'] = {
             'module.close': 'Cerrar',
 
             'type.abilities': 'Habilidades',
+            'type.actions': 'Rastreador de Acciones',
             'type.activity': 'Registro de Actividad',
             'type.bio': 'Bio',
             'type.companions': 'Compañeros',
@@ -184,6 +185,22 @@ window.CV_TRANSLATIONS['es'] = {
             'abilities.linkedTo': 'Vinculado a {name}.',
             'abilities.event.roll': 'Tirada de Habilidad',
             'abilities.log.roll': 'Tirada de prueba de {name} ({modifier})',
+
+            // Action Tracker submodule
+            'actions.add': 'Añadir Acción',
+            'actions.addTitle': 'Añadir Acción',
+            'actions.namePlaceholder': 'Nombre de la acción...',
+            'actions.deleteAction': 'Eliminar acción',
+            'actions.empty': 'Sin acciones',
+            'actions.resetAll': 'Reiniciar Todo',
+            'actions.deleteAll': 'Eliminar Todo',
+            'actions.deleteAllConfirm': '¿Eliminar todas las acciones? Esto no se puede deshacer.',
+            'actions.settings': 'Ajustes',
+            'actions.settingsTitle': 'Ajustes del Rastreador de Acciones',
+            'actions.layoutLabel': 'Diseño',
+            'actions.layoutWrap': 'Ajustado',
+            'actions.layoutList': 'Lista',
+            'actions.ok': 'Aceptar',
 
             'text.placeholder': 'Escribe tus notas...',
             'text.moduleSettings': 'Configuración del Módulo',

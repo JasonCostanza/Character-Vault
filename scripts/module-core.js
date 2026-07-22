@@ -284,6 +284,15 @@
             moduleData.content = { counters: [], sortBy: 'custom', sortDir: 'asc' };
         }
 
+        if (moduleData.type === 'actions') {
+            moduleData.content =
+                typeof window.actionTrackerDefaultContent === 'function'
+                    ? window.actionTrackerDefaultContent()
+                    : { layout: 'wrap', actions: [] };
+            moduleData.colSpan = 3;
+            moduleData.rowSpan = 3;
+        }
+
         if (moduleData.type === 'resistance') {
             moduleData.rowSpan = null;
             moduleData.content = {
@@ -487,6 +496,8 @@
     function openOverflowMenu(moduleEl, overflowBtn) {
         closeOverflowMenu();
 
+        const data = window.modules.find((m) => m.id === moduleEl.dataset.id);
+
         const menu = document.createElement('div');
         menu.className = 'module-overflow-menu';
 
@@ -515,6 +526,17 @@
                 sel: '.module-counter-add-btn',
                 label: t('counter.addCounter'),
                 icon: cvIcon('plus', 14),
+            },
+            {
+                sel: '.module-actions-add-btn',
+                label: t('actions.add'),
+                icon: cvIcon('plus', 14),
+            },
+            ...(MODULE_TYPES[data?.type]?.overflowMenuItems?.(moduleEl, data) ?? []),
+            {
+                sel: '.module-actions-settings-btn',
+                label: t('actions.settings'),
+                icon: cvIcon('settings', 14),
             },
             {
                 sel: '.module-list-additem-btn',
@@ -601,13 +623,19 @@
         ];
 
         btnDefs.forEach((def) => {
-            const realBtn = moduleEl.querySelector(def.sel);
-            if (!realBtn) return;
+            let trigger;
+            if (def.onClick) {
+                trigger = def.onClick;
+            } else {
+                const realBtn = moduleEl.querySelector(def.sel);
+                if (!realBtn) return;
+                trigger = () => realBtn.click();
+            }
             const item = document.createElement('button');
             item.className = 'module-overflow-menu-item' + (def.cls ? ' ' + def.cls : '');
             item.innerHTML = def.icon + `<span>${escapeHtml(def.label)}</span>`;
             item.addEventListener('click', () => {
-                realBtn.click();
+                trigger();
                 closeOverflowMenu();
             });
             menu.appendChild(item);
@@ -848,6 +876,7 @@
             ${data.type === 'text' ? `<button class="module-toolbar-btn module-copy-btn" title="${t('module.copyClipboard')}">${cvIcon('clipboard-copy', 14)}</button>` : ''}
             ${data.type === 'counters' ? `<button class="module-toolbar-btn module-counter-settings-btn" title="${t('counter.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${cvIcon('settings', 14)}</button>` : ''}
             ${data.type === 'counters' ? `<button class="module-toolbar-btn module-counter-add-btn" title="${t('counter.addCounter')}">${cvIcon('plus', 14)}</button>` : ''}
+            ${data.type === 'actions' ? `<button class="module-toolbar-btn module-actions-settings-btn" title="${t('actions.settings')}">${cvIcon('settings', 14)}</button><button class="module-toolbar-btn module-actions-add-btn" title="${t('actions.add')}">${cvIcon('plus', 14)}</button>` : ''}
             ${data.type === 'list' ? `<button class="module-toolbar-btn module-list-additem-btn" title="${t('list.addItem')}">${cvIcon('plus', 14)}</button>` : ''}
             ${data.type === 'list' ? `<button class="module-toolbar-btn module-list-manage-btn" title="${t('list.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${cvIcon('settings', 14)}</button>` : ''}
             ${data.type === 'abilities' ? `<button class="module-toolbar-btn module-abilities-settings-btn" title="${t('abilities.settings')}">${cvIcon('settings', 14)}</button>` : ''}
@@ -961,6 +990,22 @@
         if (counterAddBtn) {
             counterAddBtn.addEventListener('click', () => {
                 openCounterCreateModal(el, data);
+            });
+        }
+
+        // Add Action button (actions modules only)
+        const actionsAddBtn = el.querySelector('.module-actions-add-btn');
+        if (actionsAddBtn) {
+            actionsAddBtn.addEventListener('click', () => {
+                openAddActionModal(el, data);
+            });
+        }
+
+        // Settings button (actions modules only)
+        const actionsSettingsBtn = el.querySelector('.module-actions-settings-btn');
+        if (actionsSettingsBtn) {
+            actionsSettingsBtn.addEventListener('click', () => {
+                openActionsSettings(el, data);
             });
         }
 

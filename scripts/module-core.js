@@ -491,6 +491,7 @@
     // ── Module Rename Modal ──
     function openRenameModule(moduleEl, data) {
         const typeDef = MODULE_TYPES[data.type];
+        const defaultLabel = typeDef ? t(typeDef.label) : '';
 
         const overlay = document.createElement('div');
         overlay.className = 'cv-modal-overlay module-rename-overlay';
@@ -518,7 +519,7 @@
         input.type = 'text';
         input.className = 'cv-input module-rename-input';
         input.value = data.title || '';
-        input.placeholder = typeDef ? t(typeDef.label) : '';
+        input.placeholder = defaultLabel;
         body.appendChild(input);
         panel.appendChild(body);
 
@@ -548,9 +549,9 @@
 
         function commitRename() {
             const val = input.value.trim();
-            data.title = val && val !== (typeDef ? t(typeDef.label) : '') ? val : null;
+            data.title = val && val !== defaultLabel ? val : null;
             const label = moduleEl.querySelector('.module-type-label');
-            if (label) label.textContent = data.title || (typeDef ? t(typeDef.label) : '');
+            if (label) label.textContent = data.title || defaultLabel;
             scheduleSave();
             if (window.refreshLinkedAbilitiesChainIcons) {
                 window.refreshLinkedAbilitiesChainIcons(data.id);

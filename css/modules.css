@@ -106,12 +106,6 @@
     transition: opacity 0.15s ease;
 }
 
-.module:hover .module-drag-handle,
-.module--chrome-active .module-drag-handle {
-    opacity: 1;
-    pointer-events: auto;
-}
-
 .module-type-label {
     font-size: 11px;
     font-weight: 600;
@@ -211,7 +205,10 @@
     transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
 }
 
+/* Chrome reveal: drag handle + overflow button share the same hover/active-menu trigger */
+.module:hover .module-drag-handle,
 .module:hover .module-overflow-btn,
+.module--chrome-active .module-drag-handle,
 .module--chrome-active .module-overflow-btn {
     opacity: 1;
     pointer-events: auto;
@@ -809,6 +806,7 @@
     cursor: nwse-resize;
     z-index: 60;
     opacity: 0;
+    pointer-events: none;
     transition: opacity 0.15s ease;
 }
 
@@ -816,6 +814,7 @@
 .module--chrome-active .module-resize-handle,
 .module-resize-handle.resizing {
     opacity: 1;
+    pointer-events: auto;
 }
 
 .module-resize-handle::before {

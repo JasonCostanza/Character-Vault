@@ -370,6 +370,37 @@
         const layer = document.createElement('div');
         layer.className = 'health-layer health-layer-play';
 
+        // Ctrl+Click quick edit on the HP numbers (relative math: "+2", "-5")
+        function wireHPQuickEdit(span, key) {
+            span.addEventListener('click', (e) => {
+                if (!e.ctrlKey) return;
+                e.stopPropagation();
+                window.openEditPopover(span, {
+                    label: t('health.' + key),
+                    value: c[key],
+                    type: 'number',
+                    relative: true,
+                    onSave(val) {
+                        const oldVal = c[key];
+                        c[key] = val;
+                        scheduleSave();
+                        if (oldVal !== val && typeof window.logActivity === 'function') {
+                            window.logActivity({
+                                type: 'health.event.adjust',
+                                message: t('health.log.adjust', {
+                                    field: t('health.' + key),
+                                    oldVal: oldVal,
+                                    newVal: val,
+                                }),
+                                sourceModuleId: data.id,
+                            });
+                        }
+                        syncHealthLayersFromData(bodyEl.closest('.module'), data);
+                    },
+                });
+            });
+        }
+
         const mainRow = document.createElement('div');
         mainRow.className = 'health-main-row';
 
@@ -382,6 +413,7 @@
         const currentSpan = document.createElement('span');
         currentSpan.className = 'health-current';
         currentSpan.textContent = c.currentHP;
+        wireHPQuickEdit(currentSpan, 'currentHP');
 
         const sepSpan = document.createElement('span');
         sepSpan.className = 'health-sep';
@@ -390,6 +422,7 @@
         const maxSpan = document.createElement('span');
         maxSpan.className = 'health-max';
         maxSpan.textContent = getEffectiveMaxHP(c);
+        wireHPQuickEdit(maxSpan, 'maxHP');
 
         hpRow.appendChild(currentSpan);
         hpRow.appendChild(sepSpan);

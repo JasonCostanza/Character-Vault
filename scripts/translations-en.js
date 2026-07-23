@@ -1362,7 +1362,9 @@ window.CV_TRANSLATIONS.en = {
 
             // Common
             'common.cancel': 'Cancel',
+            'common.name': 'Name',
             'common.save': 'Save',
+            'popover.hint': 'Enter to save · Esc to cancel',
             'common.close': 'Close',
             'common.discardChanges': 'You have unsaved changes. Discard?',
             'common.linkedStatModule': 'Linked Stat Module',

@@ -35,6 +35,24 @@
             bodyEl.querySelector('.hline-delete-btn').addEventListener('click', () => {
                 openDeleteConfirm(data.id);
             });
+
+            // Ctrl+Click anywhere on the divider edits the label
+            const divider = bodyEl.querySelector('.hline-divider');
+            divider.addEventListener('click', (e) => {
+                if (!e.ctrlKey) return;
+                e.stopPropagation();
+                window.openEditPopover(divider, {
+                    label: defaultLabel,
+                    value: data?.title && data.title !== defaultLabel ? data.title : '',
+                    type: 'text',
+                    onSave(val) {
+                        data.title = val && val !== defaultLabel ? val : null;
+                        label.textContent = val;
+                        input.value = val;
+                        scheduleSave();
+                    },
+                });
+            });
         },
     });
 })();

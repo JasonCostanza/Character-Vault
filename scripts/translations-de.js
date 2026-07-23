@@ -1300,7 +1300,9 @@ window.CV_TRANSLATIONS['de'] = {
 
             // Common
             'common.cancel': 'Abbrechen',
+            'common.name': 'Name',
             'common.save': 'Speichern',
+            'popover.hint': 'Enter zum Speichern · Esc zum Abbrechen',
             'common.close': 'Schließen',
             'common.discardChanges': 'Es gibt ungespeicherte Änderungen. Verwerfen?',
             'common.linkedStatModule': 'Verknüpftes Stat-Modul',

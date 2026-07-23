@@ -229,17 +229,6 @@
     user-select: none;
 }
 
-.weapon-quick-edit-input {
-    width: 52px;
-    font-size: 11px;
-    padding: 1px 4px;
-    background: var(--cv-bg-sunken);
-    border: 1px solid var(--cv-accent);
-    border-radius: 4px;
-    color: var(--cv-text);
-    outline: none;
-}
-
 .weapon-add-btn {
     width: 100%;
     padding: 5px 8px;

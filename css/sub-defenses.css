@@ -204,14 +204,6 @@
     color: var(--cv-text-muted); font-size: 0.85em; user-select: none;
 }
 
-/* ── Quick-Edit Input (Play Ctrl+Click) ── */
-.def-quick-input {
-    background: var(--cv-bg-sunken); border: 1px solid var(--cv-accent);
-    color: var(--cv-text-primary); padding: 2px 4px; border-radius: 3px;
-    font-size: inherit; font-weight: inherit; text-align: inherit; outline: none;
-    font-family: inherit;
-}
-
 /* ── Icon Picker Popover ── */
 .def-icon-picker {
     position: fixed; z-index: 200;

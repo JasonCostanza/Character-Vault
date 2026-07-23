@@ -336,36 +336,20 @@
         }
     }
 
-    // ── Quick Edit (Ctrl+Click in Play Mode) ──
+    // ── Quick Edit (Ctrl+Click) ──
     function enterSaveQuickEdit(block, save, data) {
-        const modEl = block.querySelector('.save-modifier');
-        if (!modEl) return;
-
-        const input = document.createElement('input');
-        input.type = 'number';
-        input.className = 'save-quick-input';
-        input.value = save.value;
-
-        modEl.replaceWith(input);
-        input.focus();
-        input.select();
-
-        let committed = false;
-        function commitOnce() {
-            if (committed) return;
-            committed = true;
-            save.value = parseInt(input.value, 10) || 0;
-            scheduleSave();
-            const container = block.parentElement;
-            const idx = parseInt(block.dataset.index, 10);
-            const newBlock = renderSaveBlock(save, idx, data);
-            block.replaceWith(newBlock);
-        }
-
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === 'Escape') commitOnce();
+        const modEl = block.querySelector('.save-modifier') || block;
+        window.openEditPopover(modEl, {
+            label: save.name || t('save.unnamed'),
+            value: save.value,
+            type: 'number',
+            onSave(newVal) {
+                save.value = newVal;
+                scheduleSave();
+                const idx = parseInt(block.dataset.index, 10);
+                block.replaceWith(renderSaveBlock(save, idx, data));
+            },
         });
-        input.addEventListener('blur', () => setTimeout(commitOnce, 50));
     }
 
     // ── Notes Area ──

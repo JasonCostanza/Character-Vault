@@ -696,23 +696,6 @@
     border-color: var(--cv-accent);
 }
 
-/* ── Quick Edit Input ── */
-.spell-bonus-quick-edit-input {
-    width: 48px;
-    font-size: 11px;
-    background: var(--cv-bg-sunken);
-    border: 1px solid var(--cv-accent);
-    border-radius: 3px;
-    color: var(--cv-text);
-    padding: 1px 4px;
-    text-align: center;
-    font-family: inherit;
-    -moz-appearance: textfield;
-}
-
-.spell-bonus-quick-edit-input::-webkit-outer-spin-button,
-.spell-bonus-quick-edit-input::-webkit-inner-spin-button { -webkit-appearance: none; }
-
 /* ── Pool Type Badge ── */
 .pool-type-badge {
     font-size: 9px;

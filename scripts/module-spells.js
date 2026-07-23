@@ -231,35 +231,17 @@
 
     // ── Play Mode Helpers ──
     function enterSpellBonusQuickEdit(chipEl, overrideKey, content, data, bodyEl) {
-        var committed = false;
-        var input = document.createElement('input');
-        input.type = 'number';
-        input.className = 'spell-bonus-quick-edit-input';
-        input.value = content[overrideKey] !== null && content[overrideKey] !== undefined ? content[overrideKey] : '';
-        chipEl.textContent = '';
-        chipEl.appendChild(input);
-        input.focus();
-        input.select();
-        function commit() {
-            if (committed) return;
-            committed = true;
-            var raw = input.value.trim();
-            content[overrideKey] = raw === '' ? null : Number(raw);
-            scheduleSave();
-            bodyEl.innerHTML = '';
-            renderSpellsPlay(bodyEl, data);
-        }
-        input.addEventListener('blur', commit);
-        input.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                commit();
-            }
-            if (e.key === 'Escape') {
-                committed = true;
+        window.openEditPopover(chipEl, {
+            label: t('spells.' + overrideKey),
+            value: content[overrideKey] !== null && content[overrideKey] !== undefined ? content[overrideKey] : '',
+            type: 'number',
+            allowEmpty: true,
+            onSave(val) {
+                content[overrideKey] = val;
+                scheduleSave();
                 bodyEl.innerHTML = '';
                 renderSpellsPlay(bodyEl, data);
-            }
+            },
         });
     }
 

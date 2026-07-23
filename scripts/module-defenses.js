@@ -159,37 +159,15 @@
         }, 0);
     }
 
-    // ── Inline Quick-Edit (Ctrl+Click) ──
+    // ── Quick-Edit (Ctrl+Click) ──
 
-    function enterDefenseQuickEdit(el, currentValue, onCommit) {
-        const input = document.createElement('input');
-        input.type = 'number';
-        input.className = 'def-quick-input';
-        input.value = currentValue;
-        el.replaceWith(input);
-        input.focus();
-        input.select();
-
-        let committed = false;
-        function commitOnce() {
-            if (committed) return;
-            committed = true;
-            const val = parseInt(input.value, 10) || 0;
-            onCommit(val);
-        }
-
-        input.addEventListener('keydown', function (ev) {
-            if (ev.key === 'Enter') {
-                ev.preventDefault();
-                commitOnce();
-            }
-            if (ev.key === 'Escape') {
-                committed = true;
-                onCommit(currentValue);
-            }
-        });
-        input.addEventListener('blur', function () {
-            setTimeout(commitOnce, 50);
+    function enterDefenseQuickEdit(el, def, onCommit) {
+        window.openEditPopover(el, {
+            label: def.name,
+            value: def.value,
+            type: 'number',
+            relative: true,
+            onSave: onCommit,
         });
     }
 
@@ -248,7 +226,7 @@
         valueEl.addEventListener('click', function (e) {
             if (!e.ctrlKey && !e.metaKey) return;
             e.stopPropagation();
-            enterDefenseQuickEdit(valueEl, def.value, function (newVal) {
+            enterDefenseQuickEdit(valueEl, def, function (newVal) {
                 def.value = newVal;
                 scheduleSave();
                 MODULE_TYPES['defenses'].renderBody(bodyEl, data, true);
@@ -297,7 +275,7 @@
             valueEl.addEventListener('click', function (e) {
                 if (!e.ctrlKey && !e.metaKey) return;
                 e.stopPropagation();
-                enterDefenseQuickEdit(valueEl, def.value, function (newVal) {
+                enterDefenseQuickEdit(valueEl, def, function (newVal) {
                     def.value = newVal;
                     scheduleSave();
                     MODULE_TYPES['defenses'].renderBody(bodyEl, data, true);

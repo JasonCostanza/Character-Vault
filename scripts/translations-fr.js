@@ -1352,7 +1352,9 @@ window.CV_TRANSLATIONS['fr'] = {
 
             // Common
             'common.cancel': 'Annuler',
+            'common.name': 'Nom',
             'common.save': 'Enregistrer',
+            'popover.hint': 'Entrée pour enregistrer · Échap pour annuler',
             'common.close': 'Fermer',
             'common.discardChanges': 'Vous avez des modifications non sauvegardées. Annuler ?',
             'common.linkedStatModule': 'Module de stats lié',

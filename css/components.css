@@ -896,3 +896,64 @@ select,
     border: 1px solid var(--cv-warning);
     color: var(--cv-warning);
 }
+
+/* ── Edit Popover (Ctrl+Click quick editing) ── */
+.cv-edit-popover {
+    position: fixed;
+    z-index: 150;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 160px;
+    max-width: 240px;
+    padding: 8px;
+    background: var(--cv-bg-raised);
+    border: 1px solid var(--cv-border);
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.cv-edit-popover-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--cv-text-muted);
+    user-select: none;
+}
+
+.cv-edit-popover-fields {
+    display: flex;
+    gap: 6px;
+}
+
+.cv-edit-popover-field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.cv-edit-popover-field-label {
+    font-size: 10px;
+    color: var(--cv-text-secondary);
+    user-select: none;
+}
+
+.cv-edit-popover-input.invalid {
+    border-color: var(--cv-danger);
+}
+
+.cv-edit-popover-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.cv-edit-popover-hint {
+    font-size: 9px;
+    color: var(--cv-text-muted);
+    user-select: none;
+}

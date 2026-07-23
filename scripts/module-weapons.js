@@ -844,79 +844,46 @@
 
     // ── Quick Edit ──
     function enterQuickEditAmmo(pipEl, weapon, data, bodyEl) {
-        var committed = false;
-        var input = document.createElement('input');
-        input.type = 'number';
-        input.className = 'weapon-quick-edit-input';
-        input.value = weapon.ammoCount !== null ? weapon.ammoCount : 0;
-        input.min = '0';
-        pipEl.textContent = '';
-        pipEl.appendChild(input);
-        input.focus();
-        input.select();
-
-        function commit() {
-            if (committed) return;
-            committed = true;
-            var val = parseInt(input.value, 10);
-            if (isNaN(val) || val < 0) val = 0;
-            weapon.ammoCount = val;
-            scheduleSave();
-            renderPlayBody(bodyEl, data);
-        }
-        input.addEventListener('blur', commit);
-        input.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                commit();
-            }
-            if (e.key === 'Escape') renderPlayBody(bodyEl, data);
+        window.openEditPopover(pipEl, {
+            label: t('weapons.ammo'),
+            value: weapon.ammoCount !== null ? weapon.ammoCount : 0,
+            type: 'number',
+            min: 0,
+            relative: true,
+            onSave(val) {
+                weapon.ammoCount = val;
+                scheduleSave();
+                renderPlayBody(bodyEl, data);
+            },
         });
     }
 
     function enterQuickEditShieldHp(hpEl, weapon, data, bodyEl) {
-        var committed = false;
         var oldHp = weapon.shieldHp !== null ? weapon.shieldHp : 0;
-        var input = document.createElement('input');
-        input.type = 'number';
-        input.className = 'weapon-quick-edit-input';
-        input.value = oldHp;
-        input.min = '0';
-        if (weapon.shieldHpMax !== null) input.max = String(weapon.shieldHpMax);
-        hpEl.textContent = '';
-        hpEl.appendChild(input);
-        input.focus();
-        input.select();
-
-        function commit() {
-            if (committed) return;
-            committed = true;
-            var val = parseInt(input.value, 10);
-            if (isNaN(val) || val < 0) val = 0;
-            if (weapon.shieldHpMax !== null && val > weapon.shieldHpMax) val = weapon.shieldHpMax;
-            weapon.shieldHp = val;
-            scheduleSave();
-            if (val < oldHp && typeof window.logActivity === 'function') {
-                window.logActivity({
-                    type: 'weapons.event.shieldDamage',
-                    message: t('weapons.log.shieldDamage', {
-                        name: weapon.name || t('weapons.unnamed'),
-                        amount: oldHp - val,
-                        from: oldHp,
-                        to: val,
-                    }),
-                    sourceModuleId: data.id,
-                });
-            }
-            renderPlayBody(bodyEl, data);
-        }
-        input.addEventListener('blur', commit);
-        input.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                commit();
-            }
-            if (e.key === 'Escape') renderPlayBody(bodyEl, data);
+        window.openEditPopover(hpEl, {
+            label: t('weapons.shieldHp'),
+            value: oldHp,
+            type: 'number',
+            min: 0,
+            max: weapon.shieldHpMax !== null ? weapon.shieldHpMax : undefined,
+            relative: true,
+            onSave(val) {
+                weapon.shieldHp = val;
+                scheduleSave();
+                if (val < oldHp && typeof window.logActivity === 'function') {
+                    window.logActivity({
+                        type: 'weapons.event.shieldDamage',
+                        message: t('weapons.log.shieldDamage', {
+                            name: weapon.name || t('weapons.unnamed'),
+                            amount: oldHp - val,
+                            from: oldHp,
+                            to: val,
+                        }),
+                        sourceModuleId: data.id,
+                    });
+                }
+                renderPlayBody(bodyEl, data);
+            },
         });
     }
 

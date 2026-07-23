@@ -131,6 +131,17 @@
 
         var isAutoProf = stat.isProficiencyStat && sys === 'dnd5e';
 
+        if (isPlayMode && !isAutoProf) {
+            const nameEl = block.querySelector('.stat-name');
+            if (nameEl) {
+                nameEl.addEventListener('click', (e) => {
+                    if (!e.ctrlKey) return;
+                    e.stopPropagation();
+                    enterNameQuickEdit(nameEl, block, stat, data);
+                });
+            }
+        }
+
         if (isPlayMode && stat.rollable) {
             block.addEventListener('click', (e) => {
                 if (e.ctrlKey) {
@@ -424,66 +435,42 @@
 
     function enterQuickEdit(block, stat, data) {
         const layout = data.content.layout;
-        const isLargeStat = layout === 'large-stat';
-        const isModOnly = layout === 'modifier-only';
-        const primaryEl = block.querySelector('.stat-primary');
-        const secondaryEl = block.querySelector('.stat-secondary');
-        if (!primaryEl) return;
-        if (!isModOnly && !secondaryEl) return;
+        const valueField = { key: 'value', label: t('stat.value'), value: stat.value, type: 'number' };
+        const modField = { key: 'modifier', label: t('stat.modifier'), value: stat.modifier, type: 'number' };
 
-        const primaryInput = document.createElement('input');
-        primaryInput.type = 'number';
-        primaryInput.className = 'stat-quick-input';
-        primaryInput.value = isModOnly ? stat.modifier : isLargeStat ? stat.value : stat.modifier;
-
-        var secondaryInput = null;
-        if (!isModOnly) {
-            secondaryInput = document.createElement('input');
-            secondaryInput.type = 'number';
-            secondaryInput.className = 'stat-quick-input stat-quick-secondary';
-            secondaryInput.value = isLargeStat ? stat.modifier : stat.value;
-            secondaryEl.replaceWith(secondaryInput);
+        var fields;
+        if (layout === 'modifier-only') {
+            fields = [modField];
+        } else if (layout === 'large-stat') {
+            fields = [valueField, modField];
+        } else {
+            fields = [modField, valueField];
         }
 
-        primaryEl.replaceWith(primaryInput);
-        primaryInput.focus();
-        primaryInput.select();
+        window.openEditPopover(block, {
+            label: stat.name || t('stat.unnamed'),
+            fields: fields,
+            onSave(values) {
+                if (values.value !== undefined) stat.value = values.value;
+                stat.modifier = values.modifier;
+                scheduleSave();
+                const idx = parseInt(block.dataset.index, 10);
+                block.replaceWith(renderStatBlock(stat, idx, data, true));
+            },
+        });
+    }
 
-        function commit() {
-            if (isModOnly) {
-                stat.modifier = parseInt(primaryInput.value, 10) || 0;
-            } else if (isLargeStat) {
-                stat.value = parseInt(primaryInput.value, 10) || 0;
-                stat.modifier = parseInt(secondaryInput.value, 10) || 0;
-            } else {
-                stat.modifier = parseInt(primaryInput.value, 10) || 0;
-                stat.value = parseInt(secondaryInput.value, 10) || 0;
-            }
-            scheduleSave();
-            const container = block.parentElement;
-            const idx = parseInt(block.dataset.index, 10);
-            const isPlayModeLocal = isPlayMode;
-            const newBlock = renderStatBlock(stat, idx, data, isPlayModeLocal);
-            block.replaceWith(newBlock);
-        }
-
-        let committed = false;
-        function commitOnce() {
-            if (committed) return;
-            committed = true;
-            commit();
-        }
-
-        var inputs = secondaryInput ? [primaryInput, secondaryInput] : [primaryInput];
-        inputs.forEach((inp) => {
-            inp.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === 'Escape') {
-                    commitOnce();
-                }
-            });
-            inp.addEventListener('blur', () => {
-                setTimeout(commitOnce, 50);
-            });
+    function enterNameQuickEdit(nameEl, block, stat, data) {
+        window.openEditPopover(nameEl, {
+            label: t('common.name'),
+            value: stat.name,
+            type: 'text',
+            onSave(newName) {
+                stat.name = newName;
+                scheduleSave();
+                const idx = parseInt(block.dataset.index, 10);
+                block.replaceWith(renderStatBlock(stat, idx, data, true));
+            },
         });
     }
 

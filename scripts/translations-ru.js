@@ -1324,7 +1324,9 @@ window.CV_TRANSLATIONS['ru'] = {
 
             // Common
             'common.cancel': 'Отмена',
+            'common.name': 'Название',
             'common.save': 'Сохранить',
+            'popover.hint': 'Enter — сохранить · Esc — отмена',
             'common.close': 'Закрыть',
             'common.discardChanges': 'Есть несохранённые изменения. Отменить?',
             'common.linkedStatModule': 'Связанный модуль характеристик',

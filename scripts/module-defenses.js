@@ -753,15 +753,6 @@
             if (typeof snapModuleHeight === 'function') snapModuleHeight(moduleEl, data);
         },
 
-        onPlayMode: function (moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            this.renderBody(bodyEl, data, true);
-        },
-
-        onLayoutMode: function (moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            this.renderBody(bodyEl, data, false);
-        },
     });
 
     // ── Window Exports ──

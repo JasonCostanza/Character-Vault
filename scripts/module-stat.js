@@ -525,16 +525,6 @@
             bodyEl.appendChild(container);
         },
 
-        onPlayMode(moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            this.renderBody(bodyEl, data, true);
-        },
-
-        onLayoutMode(moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            this.renderBody(bodyEl, data, false);
-        },
-
         syncState(moduleEl, data) {
             // Inputs mutate data directly, but as a safety net, re-read edit values
             moduleEl.querySelectorAll('.stat-block-edit').forEach((block, i) => {

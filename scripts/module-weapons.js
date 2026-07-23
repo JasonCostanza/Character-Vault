@@ -4012,16 +4012,6 @@
             }
         },
 
-        onPlayMode: function (moduleEl, data) {
-            var bodyEl = moduleEl.querySelector('.module-body');
-            this.renderBody(bodyEl, data, true);
-        },
-
-        onLayoutMode: function (moduleEl, data) {
-            var bodyEl = moduleEl.querySelector('.module-body');
-            this.renderBody(bodyEl, data, false);
-        },
-
         syncState: function () {},
     });
 

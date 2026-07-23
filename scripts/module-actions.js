@@ -286,15 +286,6 @@
             bodyEl.appendChild(container);
         },
 
-        onPlayMode: function (moduleEl, data) {
-            this.onLayoutMode(moduleEl, data);
-        },
-
-        onLayoutMode: function (moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            this.renderBody(bodyEl, data, false);
-        },
-
         syncState: function () {
             // Actions are mutated directly via pill/modal interactions, nothing to sync from DOM
         },

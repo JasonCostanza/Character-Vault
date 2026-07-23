@@ -28,9 +28,6 @@
                 const val = input.value.trim();
                 data.title = val && val !== defaultLabel ? val : null;
                 label.textContent = val;
-                // Also sync the header title input so persistence picks it up
-                const headerInput = bodyEl.closest('.module')?.querySelector('.module-title-input');
-                if (headerInput) headerInput.value = val;
                 scheduleSave();
             });
 
@@ -38,40 +35,6 @@
             bodyEl.querySelector('.hline-delete-btn').addEventListener('click', () => {
                 openDeleteConfirm(data.id);
             });
-        },
-        onPlayMode(moduleEl, data) {
-            // Sync label text, show label, hide input
-            const label = moduleEl.querySelector('.hline-label');
-            const input = moduleEl.querySelector('.hline-input');
-            if (label) {
-                const defaultLabel = t('type.hline');
-                label.textContent = data?.title && data.title !== defaultLabel ? data.title : '';
-                label.style.display = '';
-            }
-            if (input) input.style.display = 'none';
-
-            // Hide edit controls
-            const dragHandle = moduleEl.querySelector('.hline-drag-handle');
-            if (dragHandle) dragHandle.style.display = 'none';
-            const deleteBtn = moduleEl.querySelector('.hline-delete-btn');
-            if (deleteBtn) deleteBtn.style.display = 'none';
-        },
-        onLayoutMode(moduleEl, data) {
-            // Show input, hide static label
-            const label = moduleEl.querySelector('.hline-label');
-            const input = moduleEl.querySelector('.hline-input');
-            if (label) label.style.display = 'none';
-            if (input) {
-                const defaultLabel = t('type.hline');
-                input.value = data?.title && data.title !== defaultLabel ? data.title : '';
-                input.style.display = '';
-            }
-
-            // Show edit controls
-            const dragHandle = moduleEl.querySelector('.hline-drag-handle');
-            if (dragHandle) dragHandle.style.display = '';
-            const deleteBtn = moduleEl.querySelector('.hline-delete-btn');
-            if (deleteBtn) deleteBtn.style.display = '';
         },
     });
 })();

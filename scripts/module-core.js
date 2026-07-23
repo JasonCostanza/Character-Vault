@@ -471,14 +471,12 @@
     });
 
     // ── Module Type Registry ──
-    // Each module type registers: label, renderBody, onPlayMode, onLayoutMode.
+    // Each module type registers: label, renderBody.
     // renderBody(bodyEl, data, isPlayMode) — populate the .module-body element.
-    // onPlayMode(moduleEl, data) — switch this module to play mode.
-    // onLayoutMode(moduleEl, data) — switch this module to layout mode.
     const MODULE_TYPES = {};
 
-    function registerModuleType(type, { label, renderBody, onPlayMode, onLayoutMode, syncState, hasStatLink }) {
-        MODULE_TYPES[type] = { label, renderBody, onPlayMode, onLayoutMode, syncState, hasStatLink };
+    function registerModuleType(type, { label, renderBody, syncState, hasStatLink }) {
+        MODULE_TYPES[type] = { label, renderBody, syncState, hasStatLink };
     }
 
     // ── Module Rendering ──
@@ -490,8 +488,96 @@
         emptyState.style.display = tabModuleCount === 0 ? 'flex' : 'none';
     }
 
+    // ── Module Rename Modal ──
+    function openRenameModule(moduleEl, data) {
+        const typeDef = MODULE_TYPES[data.type];
+
+        const overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay module-rename-overlay';
+
+        const panel = document.createElement('div');
+        panel.className = 'cv-modal-panel';
+
+        const header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        const titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = t('module.renameTitle');
+        const closeXBtn = document.createElement('button');
+        closeXBtn.type = 'button';
+        closeXBtn.className = 'cv-modal-close';
+        closeXBtn.title = t('module.close');
+        closeXBtn.innerHTML = cvIcon('x', 12);
+        header.appendChild(titleEl);
+        header.appendChild(closeXBtn);
+        panel.appendChild(header);
+
+        const body = document.createElement('div');
+        body.className = 'cv-modal-body';
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'cv-input module-rename-input';
+        input.value = data.title || '';
+        input.placeholder = typeDef ? t(typeDef.label) : '';
+        body.appendChild(input);
+        panel.appendChild(body);
+
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'btn-secondary sm';
+        cancelBtn.textContent = t('module.cancel');
+        const saveBtn = document.createElement('button');
+        saveBtn.type = 'button';
+        saveBtn.className = 'btn-primary sm';
+        saveBtn.textContent = t('common.save');
+        footer.appendChild(cancelBtn);
+        footer.appendChild(saveBtn);
+        panel.appendChild(footer);
+
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+        input.focus();
+        input.select();
+
+        function closeModal() {
+            document.removeEventListener('keydown', keyHandler);
+            overlay.remove();
+        }
+
+        function commitRename() {
+            const val = input.value.trim();
+            data.title = val && val !== (typeDef ? t(typeDef.label) : '') ? val : null;
+            const label = moduleEl.querySelector('.module-type-label');
+            if (label) label.textContent = data.title || (typeDef ? t(typeDef.label) : '');
+            scheduleSave();
+            if (window.refreshLinkedAbilitiesChainIcons) {
+                window.refreshLinkedAbilitiesChainIcons(data.id);
+            }
+            closeModal();
+        }
+
+        const keyHandler = (e) => {
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                closeModal();
+            } else if (e.key === 'Enter') {
+                commitRename();
+            }
+        };
+        document.addEventListener('keydown', keyHandler);
+        saveBtn.addEventListener('click', commitRename);
+        cancelBtn.addEventListener('click', closeModal);
+        closeXBtn.addEventListener('click', closeModal);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeModal();
+        });
+    }
+
     // ── Module Overflow Menu ──
     let activeOverflowMenu = null;
+    let activeOverflowModule = null;
 
     function openOverflowMenu(moduleEl, overflowBtn) {
         closeOverflowMenu();
@@ -502,6 +588,11 @@
         menu.className = 'module-overflow-menu';
 
         const btnDefs = [
+            {
+                onClick: () => openRenameModule(moduleEl, data),
+                label: t('module.rename'),
+                icon: cvIcon('pencil', 14),
+            },
             {
                 sel: '.module-abilities-settings-btn',
                 label: t('abilities.settings'),
@@ -658,6 +749,8 @@
         }
 
         activeOverflowMenu = menu;
+        activeOverflowModule = moduleEl;
+        moduleEl.classList.add('module--chrome-active');
 
         requestAnimationFrame(() => {
             document.addEventListener('click', handleOverflowOutsideClick);
@@ -669,6 +762,10 @@
             activeOverflowMenu.remove();
             activeOverflowMenu = null;
             document.removeEventListener('click', handleOverflowOutsideClick);
+        }
+        if (activeOverflowModule) {
+            activeOverflowModule.classList.remove('module--chrome-active');
+            activeOverflowModule = null;
         }
     }
 
@@ -862,40 +959,41 @@
 
         const showResize = data.type !== 'hline';
         const displayTitle = data.title || t(typeDef.label);
+        // Per-type toolbar buttons are permanently hidden click proxies — the
+        // options (overflow) menu triggers them via querySelector + click().
         el.innerHTML = `
         <div class="module-header">
-            <span class="module-drag-handle" style="${isPlayMode ? 'display:none' : ''}">&#x2807;</span>
+            <span class="module-drag-handle">&#x2807;</span>
             ${MODULE_TYPES[data.type]?.hasStatLink ? `<span class="module-${data.type}-link-indicator" title="" style="display:none">${cvIcon('link', 12)}</span>` : ''}
-            <span class="module-type-label" style="${isPlayMode ? '' : 'display:none'}">${escapeHtml(displayTitle)}</span>
-            <input class="module-title-input" type="text" value="${escapeHtml(displayTitle)}" placeholder="${escapeHtml(t(typeDef.label))}" style="${isPlayMode ? 'display:none' : ''}" />
-            <button class="module-overflow-btn" title="${t('module.moreOptions')}" style="${isPlayMode ? 'display:none' : ''}">${cvIcon('more-vertical', 14)}</button>
-            ${data.type === 'health' ? `<button class="module-toolbar-btn module-health-maxmod-btn" title="${t('health.moduleSettings')}">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'stat' ? `<button class="module-toolbar-btn module-stat-settings-btn" title="${t('stat.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'stat' ? `<button class="module-toolbar-btn module-addstat-btn" title="${t('stat.addStat')}">${cvIcon('plus', 14)}</button>` : ''}
-            ${data.type === 'text' ? `<button class="module-toolbar-btn module-text-settings-btn" title="${t('text.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'text' ? `<button class="module-toolbar-btn module-copy-btn" title="${t('module.copyClipboard')}">${cvIcon('clipboard-copy', 14)}</button>` : ''}
-            ${data.type === 'counters' ? `<button class="module-toolbar-btn module-counter-settings-btn" title="${t('counter.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'counters' ? `<button class="module-toolbar-btn module-counter-add-btn" title="${t('counter.addCounter')}">${cvIcon('plus', 14)}</button>` : ''}
-            ${data.type === 'actions' ? `<button class="module-toolbar-btn module-actions-settings-btn" title="${t('actions.settings')}">${cvIcon('settings', 14)}</button><button class="module-toolbar-btn module-actions-add-btn" title="${t('actions.add')}">${cvIcon('plus', 14)}</button>` : ''}
-            ${data.type === 'list' ? `<button class="module-toolbar-btn module-list-additem-btn" title="${t('list.addItem')}">${cvIcon('plus', 14)}</button>` : ''}
-            ${data.type === 'list' ? `<button class="module-toolbar-btn module-list-manage-btn" title="${t('list.moduleSettings')}" style="${isPlayMode ? 'display:none' : ''}">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'abilities' ? `<button class="module-toolbar-btn module-abilities-settings-btn" title="${t('abilities.settings')}">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'abilities' ? `<button class="module-toolbar-btn module-abilities-add-btn" title="${t('abilities.addAbility')}">${cvIcon('plus', 14)}</button>` : ''}
-            ${data.type === 'weapons' ? `<button class="module-toolbar-btn module-weapons-settings-btn" title="${t('weapons.settings')}">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'condition' ? `<button class="module-toolbar-btn module-cond-settings-btn" title="${t('cond.moduleSettings')}">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'savingthrow' ? `<button class="module-toolbar-btn module-save-add-btn" title="${t('save.addSave')}">${cvIcon('plus', 14)}</button>` : ''}
-            ${data.type === 'savingthrow' ? `<button class="module-toolbar-btn module-save-settings-btn" title="${t('save.moduleSettings')}">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'recovery' ? `<button class="module-toolbar-btn module-recovery-settings-btn" title="${t('recovery.moduleSettings')}">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'resistance' ? `<button class="module-toolbar-btn module-res-settings-btn" title="${t('res.moduleSettings')}">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'spells' ? `<button class="module-toolbar-btn module-spells-settings-btn" title="${t('spells.settings')}">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'level' ? `<button class="module-toolbar-btn module-level-settings-btn" title="${t('level.settings')}">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'activity' ? `<button class="module-activity-settings-btn module-toolbar-btn" title="${t('activity.settings')}">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'companions' ? `<button class="module-toolbar-btn module-companions-settings-btn" title="${t('companion.settings')}">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'defenses' ? `<button class="module-toolbar-btn module-def-settings-btn" title="${t('def.qdSettings')}">${cvIcon('settings', 14)}</button>` : ''}
-            <button class="module-toolbar-btn module-delete-btn" title="${t('module.deleteModule')}" style="${isPlayMode ? 'display:none' : ''}">${cvIcon('trash-2', 14)}</button>
+            <span class="module-type-label">${escapeHtml(displayTitle)}</span>
+            <button class="module-overflow-btn" title="${t('module.moreOptions')}">${cvIcon('more-vertical', 14)}</button>
+            ${data.type === 'health' ? `<button class="module-toolbar-btn module-health-maxmod-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'stat' ? `<button class="module-toolbar-btn module-stat-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'stat' ? `<button class="module-toolbar-btn module-addstat-btn" style="display:none" aria-hidden="true">${cvIcon('plus', 14)}</button>` : ''}
+            ${data.type === 'text' ? `<button class="module-toolbar-btn module-text-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'text' ? `<button class="module-toolbar-btn module-copy-btn" style="display:none" aria-hidden="true">${cvIcon('clipboard-copy', 14)}</button>` : ''}
+            ${data.type === 'counters' ? `<button class="module-toolbar-btn module-counter-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'counters' ? `<button class="module-toolbar-btn module-counter-add-btn" style="display:none" aria-hidden="true">${cvIcon('plus', 14)}</button>` : ''}
+            ${data.type === 'actions' ? `<button class="module-toolbar-btn module-actions-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button><button class="module-toolbar-btn module-actions-add-btn" style="display:none" aria-hidden="true">${cvIcon('plus', 14)}</button>` : ''}
+            ${data.type === 'list' ? `<button class="module-toolbar-btn module-list-additem-btn" style="display:none" aria-hidden="true">${cvIcon('plus', 14)}</button>` : ''}
+            ${data.type === 'list' ? `<button class="module-toolbar-btn module-list-manage-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'abilities' ? `<button class="module-toolbar-btn module-abilities-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'abilities' ? `<button class="module-toolbar-btn module-abilities-add-btn" style="display:none" aria-hidden="true">${cvIcon('plus', 14)}</button>` : ''}
+            ${data.type === 'weapons' ? `<button class="module-toolbar-btn module-weapons-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'condition' ? `<button class="module-toolbar-btn module-cond-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'savingthrow' ? `<button class="module-toolbar-btn module-save-add-btn" style="display:none" aria-hidden="true">${cvIcon('plus', 14)}</button>` : ''}
+            ${data.type === 'savingthrow' ? `<button class="module-toolbar-btn module-save-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'recovery' ? `<button class="module-toolbar-btn module-recovery-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'resistance' ? `<button class="module-toolbar-btn module-res-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'spells' ? `<button class="module-toolbar-btn module-spells-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'level' ? `<button class="module-toolbar-btn module-level-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'activity' ? `<button class="module-activity-settings-btn module-toolbar-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'companions' ? `<button class="module-toolbar-btn module-companions-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            ${data.type === 'defenses' ? `<button class="module-toolbar-btn module-def-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
+            <button class="module-toolbar-btn module-delete-btn" style="display:none" aria-hidden="true">${cvIcon('trash-2', 14)}</button>
         </div>
         <div class="module-body"></div>
-        ${showResize ? `<div class="module-resize-handle" title="${t('module.dragResize')}" style="${isPlayMode ? 'display:none' : ''}"></div>` : ''}
+        ${showResize ? `<div class="module-resize-handle" title="${t('module.dragResize')}"></div>` : ''}
     `;
 
         el.querySelector('.module-delete-btn').addEventListener('click', () => {
@@ -1130,17 +1228,6 @@
             openOverflowMenu(el, overflowBtn);
         });
 
-        // Title input — sync custom title to data
-        const titleInput = el.querySelector('.module-title-input');
-        titleInput.addEventListener('input', () => {
-            const val = titleInput.value.trim();
-            data.title = val && val !== t(typeDef.label) ? val : null;
-            scheduleSave();
-            if (window.refreshLinkedAbilitiesChainIcons) {
-                window.refreshLinkedAbilitiesChainIcons(data.id);
-            }
-        });
-
         const bodyEl = el.querySelector('.module-body');
         typeDef.renderBody(bodyEl, data, isPlayMode);
 
@@ -1161,7 +1248,7 @@
         chosenClass: 'module-dragging',
         dragClass: 'module-drag-active',
         filter: '#empty-state',
-        disabled: window.isPlayMode,
+        disabled: false,
         onStart() {
             _dragging = true;
             moduleGrid.querySelectorAll('.module').forEach((el) => {
@@ -1301,78 +1388,6 @@
         });
     }
 
-    // ── Edit/Play Mode Switching ──
-    const EDIT_ONLY_BTNS = [
-        '.module-drag-handle',
-        '.module-resize-handle',
-        '.module-delete-btn',
-        '.module-overflow-btn',
-        '.module-stat-settings-btn',
-        '.module-text-settings-btn',
-        '.module-counter-settings-btn',
-        '.module-list-manage-btn',
-    ];
-
-    function setDisplay(parent, sel, val) {
-        const el = parent.querySelector(sel);
-        if (el) el.style.display = val;
-    }
-
-    function applyPlayMode() {
-        closeOverflowMenu();
-        _batchMode = true;
-        document.querySelectorAll('.module').forEach((mod) => {
-            const type = mod.dataset.type;
-            const data = window.modules.find((m) => m.id === mod.dataset.id);
-            // Apply header/toolbar play state first so auto-height modules measure final chrome
-            EDIT_ONLY_BTNS.forEach((sel) => setDisplay(mod, sel, 'none'));
-            // Clear stat selection when entering play mode
-            mod._selectedStatIndex = null;
-            // Title: show label, hide input
-            const titleInput = mod.querySelector('.module-title-input');
-            const titleLabel = mod.querySelector('.module-type-label');
-            if (titleInput && titleLabel) {
-                const typeDef = MODULE_TYPES[type];
-                titleLabel.textContent = data?.title || (typeDef ? t(typeDef.label) : '');
-                titleLabel.style.display = '';
-                titleInput.style.display = 'none';
-            }
-            if (type && MODULE_TYPES[type]?.onPlayMode) {
-                MODULE_TYPES[type].onPlayMode(mod, data);
-            }
-            // Re-snap auto-height after mode switch (play blocks are shorter)
-            if (data) snapModuleHeight(mod, data);
-        });
-        _batchMode = false;
-        applyLayout();
-    }
-
-    function applyLayoutMode() {
-        _batchMode = true;
-        document.querySelectorAll('.module').forEach((mod) => {
-            const type = mod.dataset.type;
-            const data = window.modules.find((m) => m.id === mod.dataset.id);
-            // Apply header/toolbar edit state first so auto-height modules measure final chrome
-            EDIT_ONLY_BTNS.forEach((sel) => setDisplay(mod, sel, ''));
-            // Clear stat selection when entering layout mode
-            mod._selectedStatIndex = null;
-            // Title: show input, hide label
-            const titleInput = mod.querySelector('.module-title-input');
-            const titleLabel = mod.querySelector('.module-type-label');
-            if (titleInput && titleLabel) {
-                titleLabel.style.display = 'none';
-                titleInput.style.display = '';
-            }
-            if (type && MODULE_TYPES[type]?.onLayoutMode) {
-                MODULE_TYPES[type].onLayoutMode(mod, data);
-            }
-            // Re-snap auto-height after mode switch (edit blocks are taller)
-            if (data) snapModuleHeight(mod, data);
-        });
-        _batchMode = false;
-        applyLayout();
-    }
-
     // ── Module Size Constants ──
     const GRID_COLUMNS = 8;
     const GRID_GAP = 8;
@@ -1505,8 +1520,6 @@
             e.preventDefault();
             e.stopPropagation();
 
-            // Only allow resize in layout mode
-            if (window.isPlayMode) return;
             if (moduleEl.classList.contains('module-resizing')) return;
 
             const grid = document.getElementById('module-grid');
@@ -1597,8 +1610,6 @@
     window.updateEmptyState = updateEmptyState;
     window.renderModule = renderModule;
     window.openDeleteConfirm = openDeleteConfirm;
-    window.applyPlayMode = applyPlayMode;
-    window.applyLayoutMode = applyLayoutMode;
     window.applyLayout = applyLayout;
     window.setLayoutBatchMode = (val) => {
         _batchMode = val;

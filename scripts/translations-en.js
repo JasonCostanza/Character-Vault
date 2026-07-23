@@ -8,9 +8,6 @@ window.CV_TRANSLATIONS.en = {
             'menu.settings': 'Settings',
             'menu.newModule': 'New Module',
             'menu.newModuleTitle': 'New Module',
-            'menu.edit': 'Layout',
-            'menu.play': 'Play',
-            'menu.toggleMode': 'Toggle Play/Layout Mode',
 
             // Settings overlay
             'settings.title': 'Settings',
@@ -106,6 +103,8 @@ window.CV_TRANSLATIONS.en = {
             'module.deleteModule': 'Delete Module',
             'module.dragResize': 'Drag to resize',
             'module.moreOptions': 'More options',
+            'module.rename': 'Rename',
+            'module.renameTitle': 'Rename Module',
             'module.moveToTab': 'Move to Tab',
             'module.moveToTabNoOtherTabs': 'No other tabs available',
             'module.moveToTabMoved': 'Moved to {tab}',
@@ -841,7 +840,7 @@ window.CV_TRANSLATIONS.en = {
             // Defenses submodule
             'def.addDefense': 'Add Defense',
             'def.emptyTitle': 'No defenses configured',
-            'def.emptyHint': 'Switch to Layout mode to add defense values',
+            'def.emptyHint': 'Use the Options menu to add defense values',
             'def.showSign': 'Show +/- sign',
             'def.deleteDefense': 'Delete defense',
             'def.confirmDelete': 'Delete {name}?',
@@ -1088,7 +1087,7 @@ window.CV_TRANSLATIONS.en = {
             'recovery.longRest': 'Long Rest',
             'recovery.shortRest': 'Short Rest',
             'recovery.rest': 'Rest',
-            'recovery.emptyState': 'No rest buttons configured. Switch to Edit mode to add some.',
+            'recovery.emptyState': 'No rest buttons configured. Use the Options menu to add some.',
             'recovery.hitDiceLabel': 'Hit Dice:',
             'recovery.cancel': 'Cancel',
             'recovery.doRest': 'Rest',

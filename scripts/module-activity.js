@@ -118,23 +118,21 @@
             }
             row.appendChild(msg);
 
-            if (!isPlayMode) {
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'activity-entry-delete';
-                deleteBtn.title = t('activity.deleteEntry');
-                deleteBtn.innerHTML = cvIcon('x', 12);
-                deleteBtn.addEventListener('click', function () {
-                    const idx = window.activityLog.findIndex(function (e) {
-                        return e.id === entry.id;
-                    });
-                    if (idx !== -1) {
-                        window.activityLog.splice(idx, 1);
-                        scheduleSave();
-                        renderActivityLogBody(bodyEl, data, isPlayMode);
-                    }
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'activity-entry-delete';
+            deleteBtn.title = t('activity.deleteEntry');
+            deleteBtn.innerHTML = cvIcon('x', 12);
+            deleteBtn.addEventListener('click', function () {
+                const idx = window.activityLog.findIndex(function (e) {
+                    return e.id === entry.id;
                 });
-                row.appendChild(deleteBtn);
-            }
+                if (idx !== -1) {
+                    window.activityLog.splice(idx, 1);
+                    scheduleSave();
+                    renderActivityLogBody(bodyEl, data, isPlayMode);
+                }
+            });
+            row.appendChild(deleteBtn);
 
             container.appendChild(row);
         });
@@ -687,16 +685,6 @@
         label: 'type.activity',
 
         renderBody: renderActivityLogBody,
-
-        onPlayMode(moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            renderActivityLogBody(bodyEl, data, true);
-        },
-
-        onLayoutMode(moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            renderActivityLogBody(bodyEl, data, false);
-        },
     });
 
     window.extractDieFaces = extractDieFaces;

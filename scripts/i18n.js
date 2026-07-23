@@ -39,9 +39,7 @@
             const typeDef = MODULE_TYPES[data.type];
             if (!typeDef) return;
             const titleLabel = el.querySelector('.module-type-label');
-            const titleInput = el.querySelector('.module-title-input');
             if (titleLabel) titleLabel.textContent = data.title || t(typeDef.label);
-            if (titleInput) titleInput.placeholder = t(typeDef.label);
             const copyBtn = el.querySelector('.module-copy-btn');
             if (copyBtn) copyBtn.title = t('module.copyClipboard');
             const deleteBtn = el.querySelector('.module-delete-btn');
@@ -61,12 +59,6 @@
                 btn.title = t('stat.deleteStat');
             });
         });
-        const btnModeLayout = document.getElementById('btn-mode-layout');
-        const btnModePlay = document.getElementById('btn-mode-play');
-        if (btnModeLayout && btnModePlay) {
-            btnModeLayout.querySelector('.mode-label').textContent = t('menu.edit');
-            btnModePlay.querySelector('.mode-label').textContent = t('menu.play');
-        }
     }
 
     window.t = t;

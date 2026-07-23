@@ -763,28 +763,6 @@
             });
         },
 
-        onPlayMode(moduleEl) {
-            moduleEl.dataset.bioMode = 'play';
-            const data = modules.find((m) => m.id === moduleEl.dataset.id);
-            if (!data) return;
-            const tabContentEl = moduleEl.querySelector('.bio-tab-content');
-            if (tabContentEl) {
-                renderTabContent(tabContentEl, data.content, true);
-                if (data.content.activeTab !== 'details') {
-                    const bioDisplay = tabContentEl.querySelector('.bio-biography-display');
-                    if (bioDisplay) attachCheckboxHandlers(bioDisplay, data, moduleEl);
-                }
-            }
-        },
-
-        onLayoutMode(moduleEl) {
-            moduleEl.dataset.bioMode = 'edit';
-            const data = modules.find((m) => m.id === moduleEl.dataset.id);
-            if (!data) return;
-            const tabContentEl = moduleEl.querySelector('.bio-tab-content');
-            if (tabContentEl) renderTabContent(tabContentEl, data.content, false);
-        },
-
         syncState(moduleEl, data) {
             syncBioInputs(moduleEl, data.content);
         },

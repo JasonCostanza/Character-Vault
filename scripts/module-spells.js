@@ -2479,15 +2479,6 @@
             if (moduleEl) updateSpellsChainIcon(moduleEl, data);
         },
 
-        onPlayMode(moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            this.renderBody(bodyEl, data, true);
-        },
-
-        onLayoutMode(moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            this.renderBody(bodyEl, data, false);
-        },
     });
 
     // ── Reactive Stat Listeners ──

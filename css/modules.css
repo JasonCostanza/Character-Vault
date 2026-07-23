@@ -101,6 +101,15 @@
     cursor: grab;
     font-size: 12px;
     line-height: 1;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+}
+
+.module:hover .module-drag-handle,
+.module--chrome-active .module-drag-handle {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .module-type-label {
@@ -110,31 +119,6 @@
     letter-spacing: 0.06em;
     color: var(--cv-text-secondary);
     flex: 1;
-}
-
-.module-title-input {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--cv-text-secondary);
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    padding: 1px 4px;
-    outline: none;
-    min-width: 60px;
-    flex: 1;
-    font-family: inherit;
-}
-
-.module-title-input:hover {
-    border-color: var(--cv-border-subtle);
-}
-
-.module-title-input:focus {
-    border-color: var(--cv-accent);
-    color: var(--cv-text);
 }
 
 /* ── Module Toolbar Button (shared base) ── */
@@ -211,7 +195,7 @@
 /* ── Module Overflow (Kebab) Button ── */
 .module-overflow-btn {
     margin-left: auto;
-    display: none;              /* hidden by default, shown at xs/sm via data-size */
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 20px;
@@ -223,11 +207,14 @@
     color: var(--cv-text-muted);
     cursor: pointer;
     opacity: 0;
+    pointer-events: none;
     transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
 }
 
-.module:hover .module-overflow-btn {
+.module:hover .module-overflow-btn,
+.module--chrome-active .module-overflow-btn {
     opacity: 1;
+    pointer-events: auto;
 }
 
 .module-overflow-btn:hover {
@@ -826,6 +813,7 @@
 }
 
 .module:hover .module-resize-handle,
+.module--chrome-active .module-resize-handle,
 .module-resize-handle.resizing {
     opacity: 1;
 }
@@ -939,7 +927,7 @@
 }
 
 /* Remove gap when label is empty to form a solid line */
-.mode-play .module[data-type="hline"] .hline-divider:has(.hline-label:empty) {
+.module[data-type="hline"] .hline-divider:has(.hline-label:empty) {
     gap: 0;
 }
 
@@ -1071,21 +1059,16 @@
     color: var(--cv-danger);
 }
 
-/* Play mode: invisible but still occupies grid space */
-.mode-play .module[data-type="spacer"] {
+/* Invisible but still occupies grid space; hover reveals the module chrome */
+.module[data-type="spacer"] {
     background: transparent;
     border-color: transparent;
     box-shadow: none;
-    pointer-events: none;
 }
 
 /* ── Responsive Size Classes (set by ResizeObserver) ── */
 
 /* XS: ~1 column width */
-
-.module[data-size="xs"] .module-overflow-btn {
-    display: inline-flex;
-}
 
 .module[data-size="xs"] .module-toolbar-btn {
     display: none !important;
@@ -1129,10 +1112,6 @@
 }
 
 /* SM: ~2 column narrow width */
-
-.module[data-size="sm"] .module-overflow-btn {
-    display: inline-flex;
-}
 
 .module[data-size="sm"] .module-toolbar-btn {
     display: none !important;
@@ -1413,13 +1392,11 @@
 }
 
 .module.module-text-light,
-.module.module-text-light .module-title-input,
 .module.module-text-light .module-type-label {
     color: var(--cv-module-text-light);
 }
 
 .module.module-text-dark,
-.module.module-text-dark .module-title-input,
 .module.module-text-dark .module-type-label {
     color: var(--cv-module-text-dark);
 }

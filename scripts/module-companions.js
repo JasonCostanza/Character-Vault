@@ -1136,16 +1136,6 @@
             renderCompanionsBody(bodyEl, data, isLayoutMode);
         },
 
-        onPlayMode(moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            if (bodyEl) syncCompanionsMode(bodyEl, data, false);
-        },
-
-        onLayoutMode(moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            if (bodyEl) syncCompanionsMode(bodyEl, data, true);
-        },
-
         syncState(data) {
             ensureContent(data);
         },

@@ -70,12 +70,7 @@
             window.renderModule(data);
         });
         if (window.setLayoutBatchMode) window.setLayoutBatchMode(false);
-
-        if (window.isPlayMode) {
-            window.applyPlayMode();
-        } else {
-            window.applyLayoutMode();
-        }
+        window.applyLayout();
 
         document.querySelectorAll('.tab-item').forEach(function (el) {
             el.classList.toggle('active', el.dataset.tabId === tabId);

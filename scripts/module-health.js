@@ -641,60 +641,6 @@
             bodyEl.appendChild(container);
         },
 
-        onPlayMode(moduleEl, data) {
-            const container = moduleEl.querySelector('.health-container');
-            if (!container) {
-                const bodyEl = moduleEl.querySelector('.module-body');
-                this.renderBody(bodyEl, data, true);
-                return;
-            }
-            const play = container.querySelector('.health-layer-play');
-            const edit = container.querySelector('.health-layer-edit');
-            if (!play || !edit) {
-                const bodyEl = moduleEl.querySelector('.module-body');
-                this.renderBody(bodyEl, data, true);
-                return;
-            }
-            edit.classList.remove('is-active');
-            play.classList.add('is-active');
-            const actions = play.querySelectorAll('.health-action-btn');
-            actions.forEach((btn) => {
-                btn.disabled = false;
-            });
-            const editActions = edit.querySelectorAll('.health-action-btn');
-            editActions.forEach((btn) => {
-                btn.disabled = true;
-            });
-            syncHealthLayersFromData(moduleEl, data);
-        },
-
-        onLayoutMode(moduleEl, data) {
-            const container = moduleEl.querySelector('.health-container');
-            if (!container) {
-                const bodyEl = moduleEl.querySelector('.module-body');
-                this.renderBody(bodyEl, data, false);
-                return;
-            }
-            const play = container.querySelector('.health-layer-play');
-            const edit = container.querySelector('.health-layer-edit');
-            if (!play || !edit) {
-                const bodyEl = moduleEl.querySelector('.module-body');
-                this.renderBody(bodyEl, data, false);
-                return;
-            }
-            play.classList.remove('is-active');
-            edit.classList.add('is-active');
-            const actions = play.querySelectorAll('.health-action-btn');
-            actions.forEach((btn) => {
-                btn.disabled = true;
-            });
-            const editActions = edit.querySelectorAll('.health-action-btn');
-            editActions.forEach((btn) => {
-                btn.disabled = true;
-            });
-            syncHealthLayersFromData(moduleEl, data);
-        },
-
         syncState(moduleEl, data) {
             const currentInput = moduleEl.querySelector('.health-layer-edit .health-inline-input.health-current');
             const maxInput = moduleEl.querySelector('.health-layer-edit .health-inline-input.health-max');

@@ -947,16 +947,6 @@
             renderLevelBody(bodyEl, data, isPlayMode);
         },
 
-        onPlayMode(moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            renderLevelBody(bodyEl, data, true);
-        },
-
-        onLayoutMode(moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            renderLevelBody(bodyEl, data, false);
-        },
-
         syncState() {
             // No transient input state to sync
         },

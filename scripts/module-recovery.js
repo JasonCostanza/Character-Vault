@@ -887,14 +887,5 @@
             }
         },
 
-        onPlayMode(moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            buildPlayMode(bodyEl, data);
-        },
-
-        onLayoutMode(moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            buildEditMode(bodyEl, moduleEl, data);
-        },
     });
 })();

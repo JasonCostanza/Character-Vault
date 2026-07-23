@@ -8,9 +8,6 @@ window.CV_TRANSLATIONS['it'] = {
             'menu.settings': 'Impostazioni',
             'menu.newModule': 'Nuovo Modulo',
             'menu.newModuleTitle': 'Nuovo Modulo',
-            'menu.edit': 'Layout',
-            'menu.play': 'Gioca',
-            'menu.toggleMode': 'Alterna Modalità Gioco/Modifica',
 
             // Settings overlay
             'settings.title': 'Impostazioni',
@@ -104,6 +101,8 @@ window.CV_TRANSLATIONS['it'] = {
             'module.deleteModule': 'Elimina Modulo',
             'module.dragResize': 'Trascina per ridimensionare',
             'module.moreOptions': 'Altre opzioni',
+            'module.rename': 'Rinomina',
+            'module.renameTitle': 'Rinomina modulo',
             'module.moveToTab': 'Sposta nella scheda',
             'module.moveToTabNoOtherTabs': "Nessun'altra scheda disponibile",
             'module.moveToTabMoved': 'Spostato in {tab}',
@@ -638,7 +637,7 @@ window.CV_TRANSLATIONS['it'] = {
             // Defenses submodule
             'def.addDefense': 'Aggiungi difesa',
             'def.emptyTitle': 'Nessuna difesa configurata',
-            'def.emptyHint': 'Passa alla modalità Layout per aggiungere valori di difesa',
+            'def.emptyHint': 'Usa il menu opzioni per aggiungere valori di difesa',
             'def.showSign': 'Mostra segno +/-',
             'def.deleteDefense': 'Elimina difesa',
             'def.confirmDelete': 'Eliminare {name}?',
@@ -1087,7 +1086,7 @@ window.CV_TRANSLATIONS['it'] = {
             'recovery.longRest': 'Riposo Lungo',
             'recovery.shortRest': 'Riposo Breve',
             'recovery.rest': 'Riposa',
-            'recovery.emptyState': 'Nessun pulsante di riposo configurato. Passa alla modalità Modifica per aggiungerne uno.',
+            'recovery.emptyState': 'Nessun pulsante di riposo configurato. Usa il menu opzioni per aggiungerne uno.',
             'recovery.hitDiceLabel': 'Dadi Vita:',
             'recovery.cancel': 'Annulla',
             'recovery.doRest': 'Riposa',

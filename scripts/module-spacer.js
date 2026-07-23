@@ -14,13 +14,5 @@
                 openDeleteConfirm(data.id);
             });
         },
-        onPlayMode(moduleEl, data) {
-            const controls = moduleEl.querySelector('.spacer-controls');
-            if (controls) controls.style.display = 'none';
-        },
-        onLayoutMode(moduleEl, data) {
-            const controls = moduleEl.querySelector('.spacer-controls');
-            if (controls) controls.style.display = '';
-        },
     });
 })();

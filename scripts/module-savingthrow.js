@@ -809,18 +809,6 @@
             if (moduleEl) updateSavingthrowChainIcon(moduleEl, data);
         },
 
-        onPlayMode(moduleEl, data) {
-            ensureSaveContent(data);
-            const bodyEl = moduleEl.querySelector('.module-body');
-            this.renderBody(bodyEl, data, true);
-        },
-
-        onLayoutMode(moduleEl, data) {
-            ensureSaveContent(data);
-            const bodyEl = moduleEl.querySelector('.module-body');
-            this.renderBody(bodyEl, data, false);
-        },
-
         syncState(moduleEl, data) {
             moduleEl.querySelectorAll('.save-block-edit').forEach((block, i) => {
                 const save = data.content.saves[i];

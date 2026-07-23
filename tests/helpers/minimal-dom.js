@@ -16,16 +16,7 @@ export function setupMinimalDOM() {
           <span class="mode-label" data-i18n="menu.newModule">New Module</span>
         </button>
       </div>
-      <div id="menu-right">
-        <div id="mode-switcher">
-          <button id="btn-mode-layout" class="menu-btn mode-seg-btn active" title="Edit Mode">
-            <span class="mode-label" data-i18n="menu.edit">Edit</span>
-          </button>
-          <button id="btn-mode-play" class="menu-btn mode-seg-btn" title="Play Mode">
-            <span class="mode-label" data-i18n="menu.play">Play</span>
-          </button>
-        </div>
-      </div>
+      <div id="menu-right"></div>
     </div>
 
     <!-- Main Content Area -->

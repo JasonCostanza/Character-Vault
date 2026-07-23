@@ -1,28 +1,7 @@
 // ── Settings ──
 (function () {
-    // ── Mode Switcher ──
-    const btnModeLayout = document.getElementById('btn-mode-layout');
-    const btnModePlay = document.getElementById('btn-mode-play');
-
-    window.isPlayMode = false;
-
-    function _setMode(play) {
-        window.isPlayMode = play;
-        if (play) {
-            btnModeLayout.classList.remove('active');
-            btnModePlay.classList.add('active');
-            if (typeof sortable !== 'undefined') sortable.option('disabled', true);
-            applyPlayMode();
-        } else {
-            btnModePlay.classList.remove('active');
-            btnModeLayout.classList.add('active');
-            if (typeof sortable !== 'undefined') sortable.option('disabled', false);
-            applyLayoutMode();
-        }
-    }
-
-    btnModeLayout.addEventListener('click', () => _setMode(!window.isPlayMode));
-    btnModePlay.addEventListener('click', () => _setMode(!window.isPlayMode));
+    // Layout mode removed — always play mode
+    window.isPlayMode = true;
 
     // ── Settings Overlay ──
     const settingsOverlay = document.getElementById('settings-overlay');

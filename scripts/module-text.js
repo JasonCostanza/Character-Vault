@@ -99,30 +99,6 @@
             }
         },
 
-        onPlayMode(moduleEl) {
-            const textarea = moduleEl.querySelector('.module-textarea');
-            const display = moduleEl.querySelector('.module-text-display');
-            if (textarea && display) {
-                if (typeof window.hideDiceVarTooltip === 'function') window.hideDiceVarTooltip();
-                const data = modules.find((m) => m.id === moduleEl.dataset.id);
-                display.innerHTML = renderResolvedWithSpans(textarea.value);
-                attachCheckboxHandlers(display, data, moduleEl);
-                textarea.style.display = 'none';
-                display.style.display = 'block';
-            }
-        },
-
-        onLayoutMode(moduleEl) {
-            const textarea = moduleEl.querySelector('.module-textarea');
-            const display = moduleEl.querySelector('.module-text-display');
-            if (textarea && display) {
-                if (typeof window.hideDiceVarTooltip === 'function') window.hideDiceVarTooltip();
-                textarea.style.display = 'block';
-                display.style.display = 'none';
-                autoResizeTextarea(textarea);
-            }
-        },
-
         syncState(moduleEl, data) {
             const textarea = moduleEl.querySelector('.module-textarea');
             if (textarea) data.content = textarea.value;

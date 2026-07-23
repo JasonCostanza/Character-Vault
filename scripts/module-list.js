@@ -1992,17 +1992,6 @@
             renderListBody(bodyEl, data, isPlayMode);
         },
 
-        onPlayMode(moduleEl, data) {
-            closeManageAttrsPanel(moduleEl, data);
-            const bodyEl = moduleEl.querySelector('.module-body');
-            renderListBody(bodyEl, data, true);
-        },
-
-        onLayoutMode(moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            renderListBody(bodyEl, data, false);
-        },
-
         syncState(moduleEl, data) {
             const content = ensureContent(data);
             moduleEl.querySelectorAll('.list-item-row').forEach((row) => {

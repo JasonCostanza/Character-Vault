@@ -953,17 +953,6 @@
             }
         },
 
-        onPlayMode: function (moduleEl, data) {
-            closeResSettingsPanel(moduleEl, data);
-            const bodyEl = moduleEl.querySelector('.module-body');
-            this.renderBody(bodyEl, data, true);
-        },
-
-        onLayoutMode: function (moduleEl, data) {
-            const bodyEl = moduleEl.querySelector('.module-body');
-            this.renderBody(bodyEl, data, false);
-        },
-
         syncState: function (moduleEl, data) {
             // Data is mutated directly via event handlers; no form sync needed
         },

@@ -613,14 +613,6 @@
             buildAbilityBody(bodyEl, data, isPlayMode);
         },
 
-        onPlayMode(moduleEl, data) {
-            buildAbilityBody(moduleEl.querySelector('.module-body'), data, true);
-        },
-
-        onLayoutMode(moduleEl, data) {
-            buildAbilityBody(moduleEl.querySelector('.module-body'), data, false);
-        },
-
         syncState(moduleEl, data) {
             moduleEl.querySelectorAll('.ability-edit-row').forEach((row, i) => {
                 const ability = data.content.abilities[i];

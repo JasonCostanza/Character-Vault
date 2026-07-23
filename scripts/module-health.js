@@ -3,17 +3,7 @@
     // ── Health Module Helpers ──
 
     function evaluateHealthExpression(str) {
-        str = String(str).trim();
-        if (!str) return null;
-        // Allow digits, operators, decimal points, spaces, parentheses
-        if (!/^[\d+\-*/.()\s]+$/.test(str)) return null;
-        try {
-            const result = Function('"use strict"; return (' + str + ')')();
-            if (typeof result !== 'number' || !isFinite(result)) return null;
-            return Math.floor(result);
-        } catch {
-            return null;
-        }
+        return window.resolveMathExpression(str, null, false);
     }
 
     function autoSizeInput(input, buffer) {

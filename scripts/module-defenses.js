@@ -159,18 +159,6 @@
         }, 0);
     }
 
-    // ── Quick-Edit (Ctrl+Click) ──
-
-    function enterDefenseQuickEdit(el, def, onCommit) {
-        window.openEditPopover(el, {
-            label: def.name,
-            value: def.value,
-            type: 'number',
-            relative: true,
-            onSave: onCommit,
-        });
-    }
-
     // ── Play Mode: Spotlight ──
 
     function refreshSpotlightState(spotlight, content) {
@@ -226,10 +214,16 @@
         valueEl.addEventListener('click', function (e) {
             if (!e.ctrlKey && !e.metaKey) return;
             e.stopPropagation();
-            enterDefenseQuickEdit(valueEl, def, function (newVal) {
-                def.value = newVal;
-                scheduleSave();
-                MODULE_TYPES['defenses'].renderBody(bodyEl, data, true);
+            window.openEditPopover(valueEl, {
+                label: def.name,
+                value: def.value,
+                type: 'number',
+                relative: true,
+                onSave(newVal) {
+                    def.value = newVal;
+                    scheduleSave();
+                    MODULE_TYPES['defenses'].renderBody(bodyEl, data, true);
+                },
             });
         });
         section.appendChild(valueEl);
@@ -275,10 +269,16 @@
             valueEl.addEventListener('click', function (e) {
                 if (!e.ctrlKey && !e.metaKey) return;
                 e.stopPropagation();
-                enterDefenseQuickEdit(valueEl, def, function (newVal) {
-                    def.value = newVal;
-                    scheduleSave();
-                    MODULE_TYPES['defenses'].renderBody(bodyEl, data, true);
+                window.openEditPopover(valueEl, {
+                    label: def.name,
+                    value: def.value,
+                    type: 'number',
+                    relative: true,
+                    onSave(newVal) {
+                        def.value = newVal;
+                        scheduleSave();
+                        MODULE_TYPES['defenses'].renderBody(bodyEl, data, true);
+                    },
                 });
             });
             row.appendChild(valueEl);

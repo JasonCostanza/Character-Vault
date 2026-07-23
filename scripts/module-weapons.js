@@ -865,7 +865,7 @@
             value: oldHp,
             type: 'number',
             min: 0,
-            max: weapon.shieldHpMax !== null ? weapon.shieldHpMax : undefined,
+            max: weapon.shieldHpMax,
             relative: true,
             onSave(val) {
                 weapon.shieldHp = val;

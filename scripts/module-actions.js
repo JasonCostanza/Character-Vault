@@ -51,7 +51,7 @@
     // ── Re-render Helper ──
     function reRenderActionsModule(moduleEl, data) {
         const bodyEl = moduleEl.querySelector('.module-body');
-        MODULE_TYPES['actions'].renderBody(bodyEl, data, window.isPlayMode);
+        MODULE_TYPES['actions'].renderBody(bodyEl, data);
         snapModuleHeight(moduleEl, data);
     }
 
@@ -258,7 +258,7 @@
     registerModuleType('actions', {
         label: 'type.actions',
 
-        renderBody: function (bodyEl, data, _isPlayMode) {
+        renderBody: function (bodyEl, data) {
             const content = ensureContent(data);
             const container = document.createElement('div');
             container.className = 'actions-container' + (content.layout === 'list' ? ' actions-layout-list' : '');
@@ -286,14 +286,17 @@
             bodyEl.appendChild(container);
         },
 
-        syncState: function () {
-            // Actions are mutated directly via pill/modal interactions, nothing to sync from DOM
-        },
-
         // Menu-only actions with no toolbar button — dispatched generically by
         // module-core.js's openOverflowMenu() via MODULE_TYPES[type].overflowMenuItems().
         overflowMenuItems: function (moduleEl, data) {
             return [
+                {
+                    onClick: function () {
+                        openAddActionModal(moduleEl, data);
+                    },
+                    label: t('actions.add'),
+                    icon: cvIcon('plus', 14),
+                },
                 {
                     onClick: function () {
                         resetAllActions(moduleEl.dataset.id);
@@ -312,6 +315,13 @@
                     },
                     label: t('actions.deleteAll'),
                     icon: cvIcon('trash-2', 14),
+                },
+                {
+                    onClick: function () {
+                        openActionsSettings(moduleEl, data);
+                    },
+                    label: t('actions.settings'),
+                    icon: cvIcon('settings', 14),
                 },
             ];
         },

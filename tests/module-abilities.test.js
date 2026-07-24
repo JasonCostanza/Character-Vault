@@ -14,7 +14,6 @@ beforeEach(() => {
   globalThis.updateEmptyState = vi.fn();
 
   globalThis.Sortable = vi.fn().mockImplementation(() => ({ destroy: vi.fn() }));
-  globalThis.isPlayMode = false;
   globalThis.gameSystem = 'dnd5e';
   globalThis.getProficiencyBonus = vi.fn(() => 2);
   globalThis.computePf2eProficiencyBonus = vi.fn(() => 0);

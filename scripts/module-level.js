@@ -115,7 +115,7 @@
     }
 
     // ── Render Body ──
-    function renderLevelBody(bodyEl, data, isPlayMode) {
+    function renderLevelBody(bodyEl, data) {
         ensureLevelContent(data);
         const c = data.content;
         const prog = getLevelProgress(data);
@@ -159,7 +159,7 @@
                 if (c.level <= 1) return;
                 const oldLevel = c.level;
                 c.level--;
-                renderLevelBody(bodyEl, data, isPlayMode);
+                renderLevelBody(bodyEl, data);
                 scheduleSave();
                 document.dispatchEvent(new CustomEvent('cv:level-changed'));
                 if (typeof window.logActivity === 'function') {
@@ -179,7 +179,7 @@
                 e.stopPropagation();
                 const oldLevel = c.level;
                 c.level++;
-                renderLevelBody(bodyEl, data, isPlayMode);
+                renderLevelBody(bodyEl, data);
                 scheduleSave();
                 document.dispatchEvent(new CustomEvent('cv:level-changed'));
                 if (typeof window.logActivity === 'function') {
@@ -257,7 +257,7 @@
                     e.stopPropagation();
                     levelUp(data);
                     const moduleEl = bodyEl.closest('.module');
-                    renderLevelBody(bodyEl, data, isPlayMode);
+                    renderLevelBody(bodyEl, data);
                     if (typeof window.snapModuleHeight === 'function') {
                         window.snapModuleHeight(moduleEl, data);
                     }
@@ -383,8 +383,7 @@
             c.level = newLevel;
             closeModal();
             const bodyEl = moduleEl.querySelector('.module-body');
-            const isPlay = window.isPlayMode;
-            renderLevelBody(bodyEl, data, isPlay);
+            renderLevelBody(bodyEl, data);
             if (typeof window.snapModuleHeight === 'function') {
                 window.snapModuleHeight(moduleEl, data);
             }
@@ -542,7 +541,7 @@
                 const newLevel = c.level;
                 closeModal();
                 const bodyElSet = moduleEl.querySelector('.module-body');
-                renderLevelBody(bodyElSet, data, isPlayMode);
+                renderLevelBody(bodyElSet, data);
                 if (typeof window.snapModuleHeight === 'function') {
                     window.snapModuleHeight(moduleEl, data);
                 }
@@ -572,8 +571,7 @@
             const newXP = c.currentXP;
             closeModal();
             const bodyEl = moduleEl.querySelector('.module-body');
-            const isPlay = isPlayMode;
-            renderLevelBody(bodyEl, data, isPlay);
+            renderLevelBody(bodyEl, data);
             if (typeof window.snapModuleHeight === 'function') {
                 window.snapModuleHeight(moduleEl, data);
             }
@@ -905,8 +903,7 @@
             content.barColor = wBarColor;
             content.barStyle = wBarStyle;
             const bodyEl = moduleEl.querySelector('.module-body');
-            const isPlay = isPlayMode;
-            renderLevelBody(bodyEl, data, isPlay);
+            renderLevelBody(bodyEl, data);
             if (typeof window.snapModuleHeight === 'function') {
                 window.snapModuleHeight(moduleEl, data);
             }
@@ -942,13 +939,19 @@
     registerModuleType('level', {
         label: 'type.level',
 
-        renderBody(bodyEl, data, isPlayMode) {
+        renderBody(bodyEl, data) {
             ensureLevelContent(data);
-            renderLevelBody(bodyEl, data, isPlayMode);
+            renderLevelBody(bodyEl, data);
         },
 
-        syncState() {
-            // No transient input state to sync
+        overflowMenuItems(moduleEl, data) {
+            return [
+                {
+                    onClick: () => openLevelSettings(moduleEl, data),
+                    label: t('level.settings'),
+                    icon: cvIcon('settings', 14),
+                },
+            ];
         },
     });
 
@@ -967,8 +970,6 @@
         return mod && mod.content ? mod.content.className || null : null;
     };
 
-    // Expose for module-core.js and tests
-    window.openLevelSettings = openLevelSettings;
     window.LEVEL_XP_TEMPLATES = LEVEL_XP_TEMPLATES;
     window.getLevelFromXP = getLevelFromXP;
 

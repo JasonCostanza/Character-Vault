@@ -134,17 +134,100 @@
     pointer-events: none;
 }
 
-.weapon-drag-handle {
+/* ── Manage Weapons List (Settings Modal) ── */
+
+.weapon-manage-slot-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cv-text-secondary);
+    margin-top: 6px;
+    user-select: none;
+}
+
+.weapon-manage-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 8px;
+    margin-bottom: 4px;
+}
+
+.weapon-manage-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--cv-border-subtle);
+}
+
+.weapon-manage-row:last-child {
+    border-bottom: none;
+}
+
+.weapon-manage-drag {
     color: var(--cv-text-muted);
     cursor: grab;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1;
-    padding-top: 1px;
+    padding: 0 2px;
     flex-shrink: 0;
     user-select: none;
 }
 
-.weapon-drag-handle:active { cursor: grabbing; }
+.weapon-manage-drag:active {
+    cursor: grabbing;
+}
+
+.weapon-manage-icon {
+    flex-shrink: 0;
+    color: var(--cv-text-secondary);
+    display: flex;
+    align-items: center;
+}
+
+.weapon-manage-name {
+    flex: 1;
+    min-width: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: inherit;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    user-select: none;
+}
+
+.weapon-manage-name:hover {
+    color: var(--cv-accent);
+}
+
+.weapon-manage-delete {
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0;
+    flex-shrink: 0;
+    transition: color 0.15s ease;
+}
+
+.weapon-manage-delete:hover {
+    color: var(--cv-danger);
+}
+
+.weapon-manage-delete .icon {
+    width: 12px;
+    height: 12px;
+}
 
 .weapon-ghost {
     opacity: 0.4;

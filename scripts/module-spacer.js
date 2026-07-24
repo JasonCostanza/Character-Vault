@@ -2,9 +2,9 @@
 (function () {
     registerModuleType('spacer', {
         label: 'type.spacer',
-        renderBody(bodyEl, data, isPlayMode) {
+        renderBody(bodyEl, data) {
             bodyEl.innerHTML = `
-            <div class="spacer-controls" style="${isPlayMode ? 'display:none' : ''}">
+            <div class="spacer-controls">
                 <span class="spacer-drag-handle module-drag-handle">&#x2807;</span>
                 <span class="spacer-label">${escapeHtml(t('type.spacer'))}</span>
                 <button class="spacer-delete-btn" title="${escapeHtml(t('module.deleteModule'))}">${cvIcon('x', 12)}</button>

@@ -204,66 +204,6 @@
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
 
-/* ── Layout Mode: Inline Inputs ── */
-.health-inline-input {
-    border: 1px solid var(--cv-border-subtle);
-    border-radius: 3px;
-    background-color: var(--cv-bg-sunken);
-    font-family: inherit;
-    color: inherit;
-    outline: none;
-    padding: 1px 2px;
-    box-sizing: border-box;
-    min-width: 1.5ch;
-}
-
-.health-inline-input:focus {
-    border-color: var(--cv-accent);
-    box-shadow: 0 0 0 1px var(--cv-focus-ring);
-}
-
-.health-inline-input.health-current {
-    font-size: 34px;
-    font-weight: 700;
-    line-height: 1.1;
-    text-align: right;
-}
-
-.health-inline-input.health-max {
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--cv-text-secondary);
-    text-align: left;
-}
-
-.health-temp-badge-edit {
-    cursor: default;
-}
-
-.health-temp-input {
-    min-width: 2ch;
-    border: 1px solid var(--cv-border-subtle);
-    border-radius: 3px;
-    background-color: var(--cv-bg-sunken);
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 700;
-    text-align: right;
-    color: var(--cv-text);
-    outline: none;
-    padding: 1px 4px;
-    box-sizing: border-box;
-}
-
-.health-temp-input:focus {
-    border-color: var(--cv-accent);
-    box-shadow: 0 0 0 2px var(--cv-focus-ring);
-}
-
-.health-temp-badge.has-temp .health-temp-input {
-    color: var(--cv-warning);
-}
-
 /* ── Responsive: XS Health ── */
 .module[data-size="xs"] .health-current {
     font-size: 26px;
@@ -274,13 +214,5 @@
 }
 
 .module[data-size="xs"] .health-sep {
-    font-size: 17px;
-}
-
-.module[data-size="xs"] .health-inline-input.health-current {
-    font-size: 26px;
-}
-
-.module[data-size="xs"] .health-inline-input.health-max {
     font-size: 17px;
 }

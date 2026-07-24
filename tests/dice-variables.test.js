@@ -5,7 +5,6 @@ import { setupMinimalDOM } from './helpers/minimal-dom.js';
 globalThis.scheduleSave = vi.fn();
 globalThis.modules = [];
 globalThis.gameSystem = 'dnd5e';
-globalThis.isPlayMode = false;
 
 beforeEach(() => {
     setupMinimalDOM();

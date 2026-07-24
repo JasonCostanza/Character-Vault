@@ -229,7 +229,7 @@
         return String(val);
     }
 
-    // ── Play Mode Helpers ──
+    // ── Render Helpers ──
     function enterSpellBonusQuickEdit(chipEl, overrideKey, content, data, bodyEl) {
         window.openEditPopover(chipEl, {
             label: t('spells.' + overrideKey),
@@ -312,7 +312,7 @@
         window.updateChainLinkIndicator(moduleEl, 'spells', 'spells.linkedTo', data);
     }
 
-    // ── Play Mode (Table Layout) ──
+    // ── Module Body (Table Layout) ──
     function renderSpellsPlay(bodyEl, data) {
         const preparationMode = _prepModeModules.has(data.id);
         renderSlotSummaryBar(bodyEl, data, bodyEl, preparationMode);
@@ -946,582 +946,6 @@
         }
     }
 
-    // ── Layout Mode ──
-
-    function addInlineInputKeys(input, getOriginal) {
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') input.blur();
-            if (e.key === 'Escape') {
-                input.value = getOriginal();
-                input.blur();
-            }
-        });
-    }
-
-    function autoResizeTextarea(el) {
-        el.style.height = 'auto';
-        el.style.height = el.scrollHeight + 'px';
-    }
-
-    function renderSpellsLayout(bodyEl, data) {
-        renderSlotSummaryBarLayout(bodyEl, data, bodyEl);
-        const container = document.createElement('div');
-        container.className = 'spells-container';
-        if (data.content.categories.length === 0) {
-            const empty = document.createElement('div');
-            empty.className = 'spells-empty-state';
-            empty.textContent = t('spells.emptyState');
-            container.appendChild(empty);
-        } else {
-            data.content.categories.forEach((cat) => {
-                renderCategoryBlockLayout(container, cat, data, bodyEl);
-            });
-            if (data.content.sortBy === null) {
-                initCategorySortable(container, data, bodyEl);
-            }
-        }
-        const addCatBtn = document.createElement('button');
-        addCatBtn.className = 'spells-add-cat-btn';
-        addCatBtn.textContent = t('spells.addCategory');
-        addCatBtn.addEventListener('click', () => {
-            const newCat = { id: generateId('cat'), name: '', resourcePoolId: null, collapsed: false, spells: [] };
-            data.content.categories.push(newCat);
-            scheduleSave();
-            bodyEl.innerHTML = '';
-            renderSpellsLayout(bodyEl, data);
-        });
-        container.appendChild(addCatBtn);
-        bodyEl.appendChild(container);
-    }
-
-    function renderSlotSummaryBarLayout(container, data, bodyEl) {
-        const summary = document.createElement('div');
-        summary.className = 'spells-slots-summary';
-        const bar = document.createElement('div');
-        bar.className = 'spells-slots-bar';
-        const sortedPools = data.content.resourcePools
-            .slice()
-            .sort((a, b) => (a.level ?? Infinity) - (b.level ?? Infinity));
-        sortedPools.forEach((pool) => {
-            const group = document.createElement('div');
-            group.className = 'spells-slot-group';
-            if (pool.type === 'spell-slot') {
-                const label = document.createElement('span');
-                label.className = 'spells-slot-label';
-                label.textContent = getPoolLabel(pool);
-                group.appendChild(label);
-            } else {
-                const nameIn = document.createElement('input');
-                nameIn.type = 'text';
-                nameIn.className = 'spells-slot-name-input';
-                nameIn.value = pool.name || '';
-                nameIn.placeholder = getPoolLabel(pool);
-                nameIn.addEventListener('blur', () => {
-                    pool.name = nameIn.value.trim() || null;
-                    scheduleSave();
-                });
-                group.appendChild(nameIn);
-            }
-            const maxIn = document.createElement('input');
-            maxIn.type = 'number';
-            maxIn.className = 'spells-slot-max-input';
-            maxIn.value = pool.max;
-            maxIn.min = 0;
-            maxIn.max = 99;
-            maxIn.title = t('spells.slotMax');
-            maxIn.addEventListener('change', () => {
-                const v = Math.max(0, Math.min(99, parseInt(maxIn.value, 10) || 0));
-                pool.max = v;
-                pool.spent = Math.min(pool.spent, pool.max);
-                maxIn.value = v;
-                scheduleSave();
-            });
-            const removeBtn = document.createElement('button');
-            removeBtn.className = 'icon-btn sm danger';
-            removeBtn.title = t('spells.removeSlotLevel');
-            removeBtn.innerHTML = cvIcon('x', 10);
-            removeBtn.addEventListener('click', () => {
-                const inUse = data.content.categories.some((cat) => cat.resourcePoolId === pool.id);
-                if (inUse) {
-                    showConfirm(t('spells.removeSlotLevelConfirm'), () => {
-                        data.content.categories.forEach((cat) => {
-                            if (cat.resourcePoolId === pool.id) cat.resourcePoolId = null;
-                        });
-                        data.content.resourcePools = data.content.resourcePools.filter((x) => x.id !== pool.id);
-                        scheduleSave();
-                        bodyEl.innerHTML = '';
-                        renderSpellsLayout(bodyEl, data);
-                    });
-                } else {
-                    data.content.resourcePools = data.content.resourcePools.filter((x) => x.id !== pool.id);
-                    scheduleSave();
-                    bodyEl.innerHTML = '';
-                    renderSpellsLayout(bodyEl, data);
-                }
-            });
-            group.appendChild(maxIn);
-            group.appendChild(removeBtn);
-            bar.appendChild(group);
-        });
-        const lSys = window.gameSystem || 'custom';
-        if (spellsIsSupported(lSys)) {
-            const lAttack = spellsComputeAttackBonus(data.content);
-            const lDC = spellsComputeSpellDC(data.content);
-            if (lAttack !== null || lDC !== null) {
-                const lBonusStrip = document.createElement('div');
-                lBonusStrip.className = 'spells-bonus-strip';
-                if (lAttack !== null) {
-                    const isOverride =
-                        data.content.spellAttackOverride !== null &&
-                        data.content.spellAttackOverride !== undefined &&
-                        data.content.spellAttackOverride !== '';
-                    const lAttackChip = document.createElement('span');
-                    lAttackChip.className = 'spells-bonus-chip' + (isOverride ? ' spells-bonus-chip--override' : '');
-                    lAttackChip.dataset.type = 'attack';
-                    lAttackChip.textContent = spellsFormatAttackBonus(data.content) + ' ' + t('spells.attackLabel');
-                    if (isOverride) lAttackChip.title = t('spells.bonusOverrideIndicator');
-                    lBonusStrip.appendChild(lAttackChip);
-                }
-                if (lDC !== null) {
-                    const isDCOverride =
-                        data.content.spellDCOverride !== null &&
-                        data.content.spellDCOverride !== undefined &&
-                        data.content.spellDCOverride !== '';
-                    const lDCChip = document.createElement('span');
-                    lDCChip.className = 'spells-bonus-chip' + (isDCOverride ? ' spells-bonus-chip--override' : '');
-                    lDCChip.dataset.type = 'dc';
-                    lDCChip.textContent = t('spells.dcLabel') + ' ' + spellsFormatDC(data.content);
-                    if (isDCOverride) lDCChip.title = t('spells.bonusOverrideIndicator');
-                    lBonusStrip.appendChild(lDCChip);
-                }
-                summary.appendChild(lBonusStrip);
-            }
-        }
-        summary.appendChild(bar);
-        const addSlotBtn = document.createElement('button');
-        addSlotBtn.className = 'btn-secondary sm';
-        addSlotBtn.textContent = t('spells.addSlotLevel');
-        addSlotBtn.addEventListener('click', () => {
-            const spellSlotPools = data.content.resourcePools.filter((p) => p.type === 'spell-slot');
-            const nextLevel = spellSlotPools.reduce((m, p) => Math.max(m, p.level), 0) + 1;
-            data.content.resourcePools.push({
-                id: generateId('rp'),
-                type: 'spell-slot',
-                level: nextLevel,
-                name: null,
-                max: 4,
-                spent: 0,
-            });
-            scheduleSave();
-            bodyEl.innerHTML = '';
-            renderSpellsLayout(bodyEl, data);
-        });
-        summary.appendChild(addSlotBtn);
-        const addFocusBtn = document.createElement('button');
-        addFocusBtn.className = 'btn-secondary sm';
-        addFocusBtn.textContent = t('spells.addFocusPool');
-        addFocusBtn.addEventListener('click', () => {
-            data.content.resourcePools.push({
-                id: generateId('rp'),
-                type: 'focus',
-                level: null,
-                name: null,
-                max: 3,
-                spent: 0,
-            });
-            scheduleSave();
-            bodyEl.innerHTML = '';
-            renderSpellsLayout(bodyEl, data);
-        });
-        summary.appendChild(addFocusBtn);
-        const addCustomBtn = document.createElement('button');
-        addCustomBtn.className = 'btn-secondary sm';
-        addCustomBtn.textContent = t('spells.addCustomPool');
-        addCustomBtn.addEventListener('click', () => {
-            data.content.resourcePools.push({
-                id: generateId('rp'),
-                type: 'custom',
-                level: null,
-                name: null,
-                max: 3,
-                spent: 0,
-            });
-            scheduleSave();
-            bodyEl.innerHTML = '';
-            renderSpellsLayout(bodyEl, data);
-        });
-        summary.appendChild(addCustomBtn);
-        container.appendChild(summary);
-    }
-
-    function renderCategoryBlockLayout(container, cat, data, bodyEl) {
-        const pinnedAttrs = data.content.attributes.filter((a) => a.pinned);
-        const block = document.createElement('div');
-        block.className = 'spells-category-block';
-        block.dataset.catId = cat.id;
-        renderCategoryHeaderLayout(block, cat, data, bodyEl);
-        const table = document.createElement('table');
-        table.className = 'spells-table';
-        const thead = document.createElement('thead');
-        renderSpellTableHeadersLayout(thead, data, bodyEl, pinnedAttrs);
-        const tbody = document.createElement('tbody');
-        const sorted = getSortedSpells(data.content, cat.spells || []);
-        sorted.forEach((spell) => {
-            renderSpellRowLayout(spell, cat, data, tbody, bodyEl, pinnedAttrs);
-        });
-        if ((cat.spells || []).length === 0) {
-            const emptyTr = document.createElement('tr');
-            const emptyTd = document.createElement('td');
-            emptyTd.colSpan = 4 + pinnedAttrs.length;
-            emptyTd.className = 'spells-empty-state';
-            emptyTd.textContent = t('spells.emptyCategory');
-            emptyTr.appendChild(emptyTd);
-            tbody.appendChild(emptyTr);
-        }
-        table.appendChild(thead);
-        table.appendChild(tbody);
-        if (cat.collapsed) table.style.display = 'none';
-        block.appendChild(table);
-        const addSpellBtn = document.createElement('button');
-        addSpellBtn.className = 'spells-add-spell-btn';
-        addSpellBtn.textContent = t('spells.addSpell');
-        if (cat.collapsed) addSpellBtn.style.display = 'none';
-        addSpellBtn.addEventListener('click', () => {
-            const newSpell = {
-                id: generateId('sp'),
-                name: '',
-                description: '',
-                order: (cat.spells || []).length,
-                expanded: false,
-                values: {},
-            };
-            cat.spells = cat.spells || [];
-            cat.spells.push(newSpell);
-            scheduleSave();
-            const prevContainer = bodyEl.querySelector('.spells-container');
-            const spellsScrollTop = prevContainer ? prevContainer.scrollTop : 0;
-            bodyEl.innerHTML = '';
-            renderSpellsLayout(bodyEl, data);
-            const newContainer = bodyEl.querySelector('.spells-container');
-            if (newContainer) newContainer.scrollTop = spellsScrollTop;
-        });
-        block.appendChild(addSpellBtn);
-        container.appendChild(block);
-        if (data.content.sortBy === null) {
-            initSpellSortable(tbody, data, cat, bodyEl);
-        }
-    }
-
-    function renderCategoryHeaderLayout(blockEl, cat, data, bodyEl) {
-        const header = document.createElement('div');
-        header.className = 'spells-cat-header spells-cat-header--layout';
-        const dragHandle = document.createElement('span');
-        dragHandle.className = 'spells-cat-drag-handle';
-        dragHandle.innerHTML = '&#x2807;';
-        header.appendChild(dragHandle);
-        const collapseBtn = document.createElement('button');
-        collapseBtn.className = 'spells-cat-collapse-btn' + (cat.collapsed ? '' : ' expanded');
-        collapseBtn.innerHTML = cvIcon('chevron-right', 10);
-        collapseBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            cat.collapsed = !cat.collapsed;
-            collapseBtn.classList.toggle('expanded', !cat.collapsed);
-            const table = blockEl.querySelector('.spells-table');
-            const addBtn = blockEl.querySelector('.spells-add-spell-btn');
-            if (table) table.style.display = cat.collapsed ? 'none' : '';
-            if (addBtn) addBtn.style.display = cat.collapsed ? 'none' : '';
-            scheduleSave();
-        });
-        header.appendChild(collapseBtn);
-        const nameInput = document.createElement('input');
-        nameInput.type = 'text';
-        nameInput.className = 'spells-cat-name-input';
-        nameInput.value = cat.name || '';
-        nameInput.placeholder = t('spells.categoryNamePlaceholder');
-        nameInput.spellcheck = false;
-        nameInput.autocomplete = 'off';
-        nameInput.addEventListener('blur', () => {
-            cat.name = nameInput.value.trim();
-            scheduleSave();
-        });
-        addInlineInputKeys(nameInput, () => cat.name || '');
-        header.appendChild(nameInput);
-        const lCatSys = window.gameSystem || 'custom';
-        if (spellsIsSupported(lCatSys)) {
-            const lCatAttack = spellsComputeAttackBonus(data.content);
-            const lCatDC = spellsComputeSpellDC(data.content);
-            if (lCatAttack !== null || lCatDC !== null) {
-                const lCatBadges = document.createElement('div');
-                lCatBadges.className = 'spells-cat-bonus-badges';
-                if (lCatAttack !== null) {
-                    const isOverride =
-                        data.content.spellAttackOverride !== null &&
-                        data.content.spellAttackOverride !== undefined &&
-                        data.content.spellAttackOverride !== '';
-                    const lCatAttackBadge = document.createElement('span');
-                    lCatAttackBadge.className =
-                        'spells-cat-bonus-badge' + (isOverride ? ' spells-cat-bonus-badge--override' : '');
-                    lCatAttackBadge.dataset.type = 'attack';
-                    lCatAttackBadge.textContent = spellsFormatAttackBonus(data.content);
-                    lCatBadges.appendChild(lCatAttackBadge);
-                }
-                if (lCatDC !== null) {
-                    const isDCOverride =
-                        data.content.spellDCOverride !== null &&
-                        data.content.spellDCOverride !== undefined &&
-                        data.content.spellDCOverride !== '';
-                    const lCatDCBadge = document.createElement('span');
-                    lCatDCBadge.className =
-                        'spells-cat-bonus-badge' + (isDCOverride ? ' spells-cat-bonus-badge--override' : '');
-                    lCatDCBadge.dataset.type = 'dc';
-                    lCatDCBadge.textContent = t('spells.dcLabel') + ' ' + spellsFormatDC(data.content);
-                    lCatBadges.appendChild(lCatDCBadge);
-                }
-                header.appendChild(lCatBadges);
-            }
-        }
-        const slotSelect = document.createElement('select');
-        slotSelect.className = 'spells-cat-slot-select';
-        slotSelect.title = t('spells.categorySlot');
-        const noneOpt = document.createElement('option');
-        noneOpt.value = '';
-        noneOpt.textContent = t('spells.slotNone');
-        slotSelect.appendChild(noneOpt);
-        data.content.resourcePools
-            .slice()
-            .sort((a, b) => (a.level ?? Infinity) - (b.level ?? Infinity))
-            .forEach((pool) => {
-                const opt = document.createElement('option');
-                opt.value = pool.id;
-                opt.textContent = getPoolLabel(pool);
-                slotSelect.appendChild(opt);
-            });
-        slotSelect.value = cat.resourcePoolId ?? '';
-        slotSelect.addEventListener('change', () => {
-            cat.resourcePoolId = slotSelect.value === '' ? null : slotSelect.value;
-            scheduleSave();
-        });
-        header.appendChild(slotSelect);
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'icon-btn sm danger';
-        deleteBtn.title = t('spells.deleteCategory');
-        deleteBtn.innerHTML = cvIcon('x', 10);
-        deleteBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            showConfirm(t('spells.deleteCategoryConfirm'), () => {
-                data.content.categories = data.content.categories.filter((c) => c.id !== cat.id);
-                scheduleSave();
-                bodyEl.innerHTML = '';
-                renderSpellsLayout(bodyEl, data);
-            });
-        });
-        header.appendChild(deleteBtn);
-        blockEl.appendChild(header);
-    }
-
-    function renderSpellTableHeadersLayout(thead, data, bodyEl, pinnedAttrs) {
-        const content = data.content;
-        const tr = document.createElement('tr');
-        const dragTh = document.createElement('th');
-        dragTh.style.width = '20px';
-        tr.appendChild(dragTh);
-        const chevTh = document.createElement('th');
-        chevTh.style.width = '20px';
-        tr.appendChild(chevTh);
-        const nameTh = buildSortColHeader(t('spells.spellName'), '__name__', content);
-        nameTh.addEventListener('click', () => handleSortClick('__name__', content, bodyEl, data, renderSpellsLayout));
-        tr.appendChild(nameTh);
-        pinnedAttrs.forEach((attr) => {
-            const th = buildSortColHeader(attr.name, attr.id, content);
-            th.addEventListener('click', () => handleSortClick(attr.id, content, bodyEl, data, renderSpellsLayout));
-            tr.appendChild(th);
-        });
-        const deleteTh = document.createElement('th');
-        deleteTh.style.width = '28px';
-        tr.appendChild(deleteTh);
-        thead.appendChild(tr);
-    }
-
-    function renderSpellRowLayout(spell, cat, data, tbody, bodyEl, pinnedAttrs) {
-        const tr = document.createElement('tr');
-        tr.className = 'spells-row';
-        tr.dataset.spellId = spell.id;
-        const dragTd = document.createElement('td');
-        const dragHandle = document.createElement('span');
-        dragHandle.className = 'spells-row-handle';
-        dragHandle.innerHTML = '&#x2807;';
-        if (data.content.sortBy !== null) dragHandle.style.visibility = 'hidden';
-        dragTd.appendChild(dragHandle);
-        tr.appendChild(dragTd);
-        const chevTd = document.createElement('td');
-        const chevBtn = document.createElement('button');
-        chevBtn.className = 'spells-chevron-btn' + (spell.expanded ? ' expanded' : '');
-        chevBtn.innerHTML = cvIcon('chevron-right', 10);
-        chevTd.appendChild(chevBtn);
-        tr.appendChild(chevTd);
-        const nameTd = document.createElement('td');
-        const nameInput = document.createElement('input');
-        nameInput.type = 'text';
-        nameInput.className = 'spells-inline-input';
-        nameInput.value = spell.name || '';
-        nameInput.placeholder = t('spells.spellNamePlaceholder');
-        nameInput.spellcheck = false;
-        nameInput.autocomplete = 'off';
-        nameInput.addEventListener('blur', () => {
-            spell.name = nameInput.value.trim();
-            scheduleSave();
-        });
-        addInlineInputKeys(nameInput, () => spell.name || '');
-        nameTd.appendChild(nameInput);
-        tr.appendChild(nameTd);
-        pinnedAttrs.forEach((attr) => {
-            const td = document.createElement('td');
-            const valInput = document.createElement('input');
-            valInput.type = 'text';
-            valInput.className = 'spells-inline-input';
-            valInput.value = spell.values && spell.values[attr.id] != null ? spell.values[attr.id] : '';
-            valInput.placeholder = attr.name;
-            valInput.spellcheck = false;
-            valInput.autocomplete = 'off';
-            valInput.addEventListener('blur', () => {
-                if (!spell.values) spell.values = {};
-                spell.values[attr.id] = valInput.value;
-                scheduleSave();
-            });
-            addInlineInputKeys(valInput, () =>
-                spell.values && spell.values[attr.id] != null ? spell.values[attr.id] : ''
-            );
-            td.appendChild(valInput);
-            if (typeof window.attachDiceVariablePicker === 'function') {
-                window.attachDiceVariablePicker(valInput);
-            }
-            tr.appendChild(td);
-        });
-        const deleteTd = document.createElement('td');
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'icon-btn sm danger';
-        deleteBtn.title = t('spells.deleteSpell');
-        deleteBtn.innerHTML = cvIcon('x', 10);
-        deleteBtn.addEventListener('click', () => {
-            showConfirm(t('spells.deleteSpellConfirm'), () => {
-                cat.spells = cat.spells.filter((s) => s.id !== spell.id);
-                scheduleSave();
-                bodyEl.innerHTML = '';
-                renderSpellsLayout(bodyEl, data);
-            });
-        });
-        deleteTd.appendChild(deleteBtn);
-        tr.appendChild(deleteTd);
-        const drawerTr = document.createElement('tr');
-        drawerTr.className = 'spells-drawer';
-        drawerTr.style.display = spell.expanded ? '' : 'none';
-        const drawerTd = document.createElement('td');
-        drawerTd.colSpan = 4 + pinnedAttrs.length;
-        drawerTd.className = 'spells-drawer-content-td';
-        const drawerContent = document.createElement('div');
-        drawerContent.className = 'spells-drawer-content';
-        const textarea = document.createElement('textarea');
-        textarea.className = 'spells-desc-textarea';
-        textarea.value = spell.description || '';
-        textarea.placeholder = t('spells.descPlaceholder');
-        textarea.addEventListener('input', () => {
-            spell.description = textarea.value;
-            autoResizeTextarea(textarea);
-            scheduleSave();
-        });
-        drawerContent.appendChild(textarea);
-        const slotCostRow = document.createElement('div');
-        slotCostRow.className = 'spells-drawer-field-row';
-        const slotCostLabel = document.createElement('label');
-        slotCostLabel.className = 'spells-drawer-field-label';
-        slotCostLabel.textContent = t('spells.slotCost');
-        const slotCostInput = document.createElement('input');
-        slotCostInput.type = 'number';
-        slotCostInput.className = 'spells-inline-input';
-        slotCostInput.style.width = '56px';
-        slotCostInput.min = '0';
-        slotCostInput.step = '1';
-        slotCostInput.placeholder = '1';
-        slotCostInput.value = spell.slotCost !== null && spell.slotCost !== undefined ? String(spell.slotCost) : '';
-        slotCostInput.addEventListener('blur', () => {
-            const raw = slotCostInput.value.trim();
-            spell.slotCost = raw === '' ? null : Math.max(0, Number(raw) || 0);
-            scheduleSave();
-        });
-        slotCostRow.appendChild(slotCostLabel);
-        slotCostRow.appendChild(slotCostInput);
-        drawerContent.appendChild(slotCostRow);
-        const upcastRow = document.createElement('div');
-        upcastRow.className = 'spells-drawer-field-row';
-        const upcastLabel = document.createElement('label');
-        upcastLabel.className = 'spells-drawer-field-label';
-        upcastLabel.textContent = t('spells.allowUpcast');
-        const upcastToggle = makeCvToggle(spell.canUpcast, (checked) => {
-            spell.canUpcast = checked;
-            scheduleSave();
-        });
-        upcastRow.appendChild(upcastLabel);
-        upcastRow.appendChild(upcastToggle);
-        drawerContent.appendChild(upcastRow);
-        drawerTd.appendChild(drawerContent);
-        drawerTr.appendChild(drawerTd);
-        chevBtn.addEventListener('click', () => {
-            spell.expanded = !spell.expanded;
-            chevBtn.classList.toggle('expanded', spell.expanded);
-            drawerTr.style.display = spell.expanded ? '' : 'none';
-            if (spell.expanded) autoResizeTextarea(textarea);
-            scheduleSave();
-        });
-        tbody.appendChild(tr);
-        tbody.appendChild(drawerTr);
-        if (spell.expanded) requestAnimationFrame(() => autoResizeTextarea(textarea));
-    }
-
-    function initSpellSortable(tbody, data, cat, bodyEl) {
-        if (tbody._sortable) tbody._sortable.destroy();
-        if (data.content.sortBy !== null) return;
-        tbody._sortable = new Sortable(tbody, {
-            handle: '.spells-row-handle',
-            animation: 150,
-            ghostClass: 'spells-row-ghost',
-            draggable: '.spells-row',
-            onEnd() {
-                const rows = Array.from(tbody.querySelectorAll('.spells-row'));
-                const reordered = rows.map((r) => cat.spells.find((s) => s.id === r.dataset.spellId)).filter(Boolean);
-                cat.spells = reordered;
-                cat.spells.forEach((s, i) => {
-                    s.order = i;
-                });
-                scheduleSave();
-                tbody.innerHTML = '';
-                const pinnedAttrs = data.content.attributes.filter((a) => a.pinned);
-                getSortedSpells(data.content, cat.spells).forEach((spell) => {
-                    renderSpellRowLayout(spell, cat, data, tbody, bodyEl, pinnedAttrs);
-                });
-                initSpellSortable(tbody, data, cat, bodyEl);
-            },
-        });
-    }
-
-    function initCategorySortable(container, data, bodyEl) {
-        if (container._catSortable) container._catSortable.destroy();
-        if (data.content.sortBy !== null) return;
-        container._catSortable = new Sortable(container, {
-            handle: '.spells-cat-drag-handle',
-            animation: 150,
-            ghostClass: 'spells-category-ghost',
-            draggable: '.spells-category-block',
-            onEnd() {
-                const blocks = Array.from(container.querySelectorAll('.spells-category-block'));
-                const reordered = blocks
-                    .map((b) => data.content.categories.find((c) => c.id === b.dataset.catId))
-                    .filter(Boolean);
-                data.content.categories = reordered;
-                scheduleSave();
-            },
-        });
-    }
-
     // ── Settings Modal ──
     function openSpellSettings(moduleEl, data) {
         const content = data.content;
@@ -1562,8 +986,7 @@
         function reRender() {
             if (!bodyEl) return;
             bodyEl.innerHTML = '';
-            if (window.isPlayMode) renderSpellsPlay(bodyEl, data);
-            else renderSpellsLayout(bodyEl, data);
+            renderSpellsPlay(bodyEl, data);
             updateSpellsChainIcon(moduleEl, data);
         }
 
@@ -2404,8 +1827,6 @@
         overlay._keyHandler = keyHandler;
     }
 
-    window.openSpellSettings = openSpellSettings;
-
     // ── Cross-Module API (used by Recovery module) ──
 
     window.restoreAllSpellSlots = function (moduleId) {
@@ -2420,9 +1841,9 @@
             });
         });
         const el = document.querySelector(`.module[data-id="${moduleId}"]`);
-        if (el && window.isPlayMode) {
+        if (el) {
             const bodyEl = el.querySelector('.module-body');
-            if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, data, true);
+            if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, data);
         }
     };
 
@@ -2449,18 +1870,23 @@
         label: 'type.spells',
         hasStatLink: true,
 
-        renderBody(bodyEl, data, isPlayMode) {
+        renderBody(bodyEl, data) {
             ensureContent(data);
             bodyEl.innerHTML = '';
-            if (isPlayMode) {
-                renderSpellsPlay(bodyEl, data);
-            } else {
-                renderSpellsLayout(bodyEl, data);
-            }
+            renderSpellsPlay(bodyEl, data);
             const moduleEl = bodyEl.closest('.module');
             if (moduleEl) updateSpellsChainIcon(moduleEl, data);
         },
 
+        overflowMenuItems(moduleEl, data) {
+            return [
+                {
+                    onClick: () => openSpellSettings(moduleEl, data),
+                    label: t('spells.settings'),
+                    icon: cvIcon('settings', 14),
+                },
+            ];
+        },
     });
 
     // ── Reactive Stat Listeners ──
@@ -2473,7 +1899,7 @@
             var moduleEl = document.querySelector('.module[data-id="' + mod.id + '"]');
             if (!moduleEl) return;
             var bodyEl = moduleEl.querySelector('.module-body');
-            if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, mod, window.isPlayMode);
+            if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, mod);
         });
     });
 
@@ -2498,7 +1924,7 @@
             var moduleEl = document.querySelector('.module[data-id="' + mod.id + '"]');
             if (!moduleEl) return;
             var bodyEl = moduleEl.querySelector('.module-body');
-            if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, mod, window.isPlayMode);
+            if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, mod);
         });
     });
 })();

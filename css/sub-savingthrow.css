@@ -80,128 +80,6 @@
     user-select: none;
 }
 
-/* ── Layout Mode Blocks (mirrors .stat-block-edit) ── */
-
-.save-block-edit {
-    background-color: var(--cv-bg-raised);
-    border: 1px solid var(--cv-border);
-    border-radius: 6px;
-    padding: 4px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    position: relative;
-    cursor: default;
-}
-
-.save-edit-name-row {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-}
-
-.save-drag-handle {
-    color: var(--cv-text-muted);
-    cursor: grab;
-    font-size: 12px;
-    line-height: 1;
-    padding: 0 2px;
-    opacity: 0;
-    transition: opacity 0.15s ease;
-    flex-shrink: 0;
-    user-select: none;
-}
-
-.save-drag-handle:active {
-    cursor: grabbing;
-}
-
-.save-block-edit:hover .save-drag-handle {
-    opacity: 1;
-}
-
-.save-edit-name {
-    flex: 1;
-    min-width: 0;
-    font-size: 9px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: inherit;
-    background-color: var(--cv-bg-sunken);
-    border: 1px solid var(--cv-border-subtle);
-    border-radius: 3px;
-    padding: 2px 3px;
-    outline: none;
-    font-family: inherit;
-    text-align: center;
-}
-
-.save-edit-name:focus {
-    border-color: var(--cv-accent);
-    box-shadow: 0 0 0 2px var(--cv-focus-ring);
-}
-
-.save-edit-delete {
-    width: 14px;
-    height: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    color: var(--cv-text-muted);
-    cursor: pointer;
-    border-radius: 3px;
-    padding: 0;
-    transition: color 0.15s ease, opacity 0.15s ease;
-    opacity: 0;
-    flex-shrink: 0;
-}
-
-.save-block-edit:hover .save-edit-delete {
-    opacity: 1;
-}
-
-.save-edit-delete:hover {
-    color: var(--cv-danger);
-}
-
-.save-edit-delete .icon {
-    width: 12px;
-    height: 12px;
-}
-
-.save-edit-row {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    align-items: stretch;
-}
-
-.save-edit-field {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1px;
-}
-
-/* Full-width proficiency select */
-.save-edit-field:has(.cv-select) {
-    align-items: stretch;
-}
-
-.save-edit-field .cv-select {
-    margin-top: 0;
-}
-
-.save-edit-field .cv-select-trigger {
-    padding: 2px 8px;
-    font-size: 10px;
-}
-
 .save-settings-preset-controls .cv-select {
     margin-top: 0;
     flex: 1;
@@ -213,51 +91,96 @@
     font-size: 11px;
 }
 
-.save-edit-field label {
-    font-size: 7px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
+/* ── Save Manage List (Settings Modal) ── */
+
+.save-manage-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.save-manage-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--cv-border-subtle);
+}
+
+.save-manage-row:last-child {
+    border-bottom: none;
+}
+
+.save-manage-drag {
     color: var(--cv-text-muted);
+    cursor: grab;
+    font-size: 12px;
+    line-height: 1;
+    padding: 0 2px;
+    flex-shrink: 0;
     user-select: none;
 }
 
-.save-edit-value {
-    width: 100%;
-    max-width: 52px;
+.save-manage-drag:active {
+    cursor: grabbing;
+}
+
+.save-manage-name {
+    flex: 1;
+    min-width: 0;
     font-size: 12px;
     font-weight: 600;
-    font-family: inherit;
-    text-align: center;
     color: inherit;
-    background-color: var(--cv-bg-sunken);
+    background: var(--cv-bg-sunken);
     border: 1px solid var(--cv-border-subtle);
-    border-radius: 3px;
-    padding: 1px;
+    border-radius: 4px;
+    padding: 4px 6px;
     outline: none;
-    -moz-appearance: textfield;
+    font-family: inherit;
 }
 
-.save-edit-value::-webkit-inner-spin-button,
-.save-edit-value::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-.save-edit-value:focus {
+.save-manage-name:focus {
     border-color: var(--cv-accent);
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
 
-.save-stat-mod {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--cv-text-muted);
-    user-select: none;
-    min-width: 28px;
-    text-align: center;
+.save-manage-row .save-manage-tier,
+.save-manage-row .save-manage-linked-stat {
+    width: auto;
+    flex-shrink: 0;
+    margin-top: 0;
 }
 
+.save-manage-tier .cv-select-trigger,
+.save-manage-linked-stat .cv-select-trigger {
+    padding: 4px 8px;
+    font-size: 10px;
+}
+
+.save-manage-delete {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--cv-text-muted);
+    cursor: pointer;
+    padding: 0;
+    border-radius: 3px;
+    transition: color 0.15s ease;
+}
+
+.save-manage-delete:hover {
+    color: var(--cv-danger);
+}
+
+.save-manage-delete .icon {
+    width: 12px;
+    height: 12px;
+}
 
 /* ── SortableJS Ghost (mirrors .stat-ghost) ── */
 
@@ -277,33 +200,14 @@
     flex-shrink: 0;
 }
 
-.save-notes-textarea {
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    user-select: text;
-    background: var(--cv-bg-sunken);
-    border: 1px solid var(--cv-border-subtle);
-    border-radius: 4px;
-    color: var(--cv-text);
-    font-family: inherit;
-    font-size: 13px;
-    line-height: 1.5;
-    padding: 6px 8px;
-    resize: none;
-    overflow-y: hidden;
-    min-height: calc(1.5em + 12px);
-    box-sizing: border-box;
+.save-notes-placeholder {
+    color: var(--cv-text-secondary);
+    opacity: 0.5;
 }
 
-.save-notes-textarea:focus {
-    outline: none;
-    border-color: var(--cv-accent);
+.save-notes-edit-textarea {
+    min-height: 160px;
 }
-
-.save-notes-textarea::-webkit-scrollbar { width: 4px; }
-.save-notes-textarea::-webkit-scrollbar-track { background: transparent; }
-.save-notes-textarea::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 /* ── Settings Modal ── */
 
@@ -461,18 +365,6 @@
 
 .module[data-size="xs"] .save-name {
     font-size: 8px;
-}
-
-.module[data-size="xs"] .save-edit-name {
-    font-size: 9px;
-}
-
-.module[data-size="xs"] .save-edit-field label {
-    font-size: 7px;
-}
-
-.module[data-size="xs"] .save-edit-value {
-    font-size: 11px;
 }
 
 .module[data-size="sm"] .save-modifier {

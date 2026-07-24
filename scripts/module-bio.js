@@ -26,6 +26,24 @@
         },
     };
 
+    const SYSTEM_FIELD_LABELS = {
+        backgroundName: 'bio.background',
+        heritage: 'bio.heritage',
+        edicts: 'bio.edicts',
+        anathemas: 'bio.anathemas',
+        occupation: 'bio.occupation',
+        ideologyBeliefs: 'bio.ideologyBeliefs',
+        culturalOrigin: 'bio.culturalOrigin',
+        community: 'bio.community',
+        lifestyle: 'bio.lifestyle',
+        clan: 'bio.clan',
+        generation: 'bio.generation',
+        sire: 'bio.sire',
+        predatorType: 'bio.predatorType',
+        ambition: 'bio.ambition',
+        desire: 'bio.desire',
+    };
+
     const TEXTAREA_FIELDS = new Set([
         'appearance',
         'biography',
@@ -40,6 +58,19 @@
         'anathemas',
         'ideologyBeliefs',
     ]);
+
+    const PERSONALITY_FIELDS = [
+        { key: 'personalityTraits', labelKey: 'bio.traits' },
+        { key: 'ideals', labelKey: 'bio.ideals' },
+        { key: 'bonds', labelKey: 'bio.bonds' },
+        { key: 'flaws', labelKey: 'bio.flaws' },
+    ];
+
+    const NOTES_FIELDS = [
+        { key: 'likesDislikes', labelKey: 'bio.likesDislikes' },
+        { key: 'alliesEnemies', labelKey: 'bio.alliesEnemies' },
+        { key: 'organizations', labelKey: 'bio.organizations' },
+    ];
 
     // ── Pure helpers (exposed on window for tests) ──
 
@@ -99,50 +130,41 @@
             predatorType: '',
             ambition: '',
             desire: '',
-            fieldSizes: {},
         };
+    }
+
+    function activeSystemFieldSets(sys) {
+        if (sys === 'custom') return Object.values(SYSTEM_FIELDS);
+        return SYSTEM_FIELDS[sys] ? [SYSTEM_FIELDS[sys]] : [];
+    }
+
+    // ── Current-tab re-render ──
+
+    function reRenderCurrentTab(moduleEl, content) {
+        const tabContentEl = moduleEl && moduleEl.querySelector('.bio-tab-content');
+        if (tabContentEl) renderTabContent(tabContentEl, content, moduleEl);
+    }
+
+    // ── Ctrl+Click quick edit (short fields) ──
+
+    function enterBioFieldQuickEdit(anchorEl, content, key, label, moduleEl) {
+        window.openEditPopover(anchorEl, {
+            label,
+            value: content[key],
+            type: 'text',
+            onSave(newVal) {
+                content[key] = newVal;
+                scheduleSave();
+                reRenderCurrentTab(moduleEl, content);
+            },
+        });
     }
 
     // ── DOM builder helpers ──
 
-    function buildBioField(key, labelKey, value, opts) {
-        const type = (opts && opts.type) || 'text';
-        const rows = (opts && opts.rows) || 3;
-        const placeholder = (opts && opts.placeholder) || '';
-        const widthClass = (opts && opts.widthClass) || '';
-
-        const div = document.createElement('div');
-        div.className = 'bio-field' + (widthClass ? ' ' + widthClass : '');
-
-        const label = document.createElement('span');
-        label.className = 'bio-field-label';
-        label.setAttribute('data-i18n', labelKey);
-        label.textContent = t(labelKey);
-        div.appendChild(label);
-
-        let input;
-        if (type === 'textarea') {
-            input = document.createElement('textarea');
-            input.rows = rows;
-        } else {
-            input = document.createElement('input');
-            input.type = 'text';
-        }
-        input.className = 'bio-field-input';
-        input.value = value || '';
-        input.dataset.key = key;
-        if (placeholder) {
-            input.setAttribute('data-i18n-placeholder', placeholder);
-            input.placeholder = t(placeholder);
-        }
-        div.appendChild(input);
-        return div;
-    }
-
-    function buildBioFieldPlay(labelKey, value, opts) {
-        const isBlock = (opts && opts.isBlock) || false;
-        const isName = (opts && opts.isName) || false;
-        const widthClass = (opts && opts.widthClass) || '';
+    function buildBioField(labelKey, value, opts) {
+        opts = opts || {};
+        const { widthClass, isName, isBlock, key, content, moduleEl, placeholderKey } = opts;
 
         const div = document.createElement('div');
         div.className = 'bio-field' + (widthClass ? ' ' + widthClass : '');
@@ -157,10 +179,66 @@
         let cls = 'bio-field-value';
         if (isName) cls += ' name';
         if (isBlock) cls += ' block';
+        const hasValue = shouldShowBioField(value);
+        if (!hasValue) cls += ' bio-field-value--empty';
         val.className = cls;
-        val.textContent = value || '';
+        val.textContent = hasValue ? value : t(placeholderKey || 'bio.clickToAdd');
         div.appendChild(val);
+
+        if (key) {
+            val.addEventListener('click', (e) => {
+                if (!(e.ctrlKey || e.metaKey)) return;
+                enterBioFieldQuickEdit(val, content, key, t(labelKey), moduleEl);
+            });
+        }
+
         return div;
+    }
+
+    function buildLabeledTextBlock(wrapperClass, labelClass, textClass, labelKey, value) {
+        const block = document.createElement('div');
+        block.className = wrapperClass;
+
+        const lbl = document.createElement('div');
+        lbl.className = labelClass;
+        lbl.setAttribute('data-i18n', labelKey);
+        lbl.textContent = t(labelKey);
+        block.appendChild(lbl);
+
+        const hasValue = shouldShowBioField(value);
+        const txt = document.createElement('div');
+        txt.className = textClass + (hasValue ? '' : ' bio-field-value--empty');
+        txt.textContent = hasValue ? value : t('bio.addDetails');
+        block.appendChild(txt);
+
+        return block;
+    }
+
+    function buildBioBlockField(labelKey, value) {
+        return buildLabeledTextBlock('bio-play-block', 'bio-play-block-label', 'bio-play-block-text', labelKey, value);
+    }
+
+    function buildPersonalityBlock(labelKey, value) {
+        return buildLabeledTextBlock(
+            'bio-play-personality-block',
+            'bio-play-personality-label',
+            'bio-play-personality-text',
+            labelKey,
+            value
+        );
+    }
+
+    function buildBiographyDisplay(content) {
+        const bioDisplay = document.createElement('div');
+        const hasValue = shouldShowBioField(content.biography);
+        if (hasValue) {
+            bioDisplay.className = 'bio-biography-display';
+            bioDisplay.innerHTML = renderMarkdown(content.biography);
+        } else {
+            bioDisplay.className = 'bio-biography-display bio-field-value--empty';
+            bioDisplay.textContent = t('bio.biographyPlaceholder');
+        }
+        return bioDisplay;
     }
 
     function buildSectionDivider(labelKey) {
@@ -199,13 +277,13 @@
         return div;
     }
 
-    function buildPortraitFrame(data, isPlayMode, onRerender) {
+    function buildPortraitFrame(content, moduleEl) {
         const frame = document.createElement('div');
-        frame.className = 'bio-portrait-frame' + (isPlayMode ? ' play-mode' : '');
+        frame.className = 'bio-portrait-frame';
 
-        if (data.portrait) {
+        if (content.portrait) {
             const img = document.createElement('img');
-            img.src = data.portrait;
+            img.src = content.portrait;
             img.alt = '';
             frame.appendChild(img);
         } else {
@@ -215,101 +293,113 @@
             frame.appendChild(placeholder);
         }
 
-        if (!isPlayMode) {
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = '.png,.jpg,.jpeg,.webp';
-            fileInput.style.display = 'none';
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.png,.jpg,.jpeg,.webp';
+        fileInput.style.display = 'none';
 
-            const controls = document.createElement('div');
-            controls.className = 'bio-portrait-controls';
-            controls.appendChild(fileInput);
+        const controls = document.createElement('div');
+        controls.className = 'bio-portrait-controls';
+        controls.appendChild(fileInput);
 
-            if (data.portrait) {
-                const changeBtn = document.createElement('button');
-                changeBtn.className = 'bio-portrait-btn';
-                changeBtn.setAttribute('data-i18n', 'bio.portraitChange');
-                changeBtn.textContent = t('bio.portraitChange');
-                changeBtn.addEventListener('click', () => fileInput.click());
-                controls.appendChild(changeBtn);
+        if (content.portrait) {
+            const changeBtn = document.createElement('button');
+            changeBtn.className = 'bio-portrait-btn';
+            changeBtn.setAttribute('data-i18n', 'bio.portraitChange');
+            changeBtn.textContent = t('bio.portraitChange');
+            changeBtn.addEventListener('click', () => fileInput.click());
+            controls.appendChild(changeBtn);
 
-                const removeBtn = document.createElement('button');
-                removeBtn.className = 'bio-portrait-btn danger';
-                removeBtn.setAttribute('data-i18n', 'bio.portraitRemove');
-                removeBtn.textContent = t('bio.portraitRemove');
-                removeBtn.addEventListener('click', () => {
-                    data.portrait = null;
-                    scheduleSave();
-                    onRerender();
-                });
-                controls.appendChild(removeBtn);
-            } else {
-                const uploadBtn = document.createElement('button');
-                uploadBtn.className = 'bio-portrait-btn';
-                uploadBtn.setAttribute('data-i18n', 'bio.portraitUpload');
-                uploadBtn.textContent = t('bio.portraitUpload');
-                uploadBtn.addEventListener('click', () => fileInput.click());
-                controls.appendChild(uploadBtn);
-            }
-
-            fileInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                const objectUrl = URL.createObjectURL(file);
-                const img = new Image();
-                img.onload = () => {
-                    const MAX = 300;
-                    const ratio = Math.min(MAX / img.naturalWidth, MAX / img.naturalHeight, 1);
-                    const w = Math.round(img.naturalWidth * ratio);
-                    const h = Math.round(img.naturalHeight * ratio);
-                    const canvas = document.createElement('canvas');
-                    canvas.width = w;
-                    canvas.height = h;
-                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                    URL.revokeObjectURL(objectUrl);
-                    data.portrait = canvas.toDataURL('image/jpeg', 0.8);
-                    scheduleSave();
-                    onRerender();
-                };
-                img.onerror = () => {
-                    URL.revokeObjectURL(objectUrl);
-                    console.log('[CV] Bio portrait load error');
-                };
-                img.src = objectUrl;
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'bio-portrait-btn danger';
+            removeBtn.setAttribute('data-i18n', 'bio.portraitRemove');
+            removeBtn.textContent = t('bio.portraitRemove');
+            removeBtn.addEventListener('click', () => {
+                content.portrait = null;
+                scheduleSave();
+                reRenderCurrentTab(moduleEl, content);
             });
-
-            frame.appendChild(controls);
+            controls.appendChild(removeBtn);
+        } else {
+            const uploadBtn = document.createElement('button');
+            uploadBtn.className = 'bio-portrait-btn';
+            uploadBtn.setAttribute('data-i18n', 'bio.portraitUpload');
+            uploadBtn.textContent = t('bio.portraitUpload');
+            uploadBtn.addEventListener('click', () => fileInput.click());
+            controls.appendChild(uploadBtn);
         }
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const objectUrl = URL.createObjectURL(file);
+            const img = new Image();
+            img.onload = () => {
+                const MAX = 300;
+                const ratio = Math.min(MAX / img.naturalWidth, MAX / img.naturalHeight, 1);
+                const w = Math.round(img.naturalWidth * ratio);
+                const h = Math.round(img.naturalHeight * ratio);
+                const canvas = document.createElement('canvas');
+                canvas.width = w;
+                canvas.height = h;
+                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                URL.revokeObjectURL(objectUrl);
+                content.portrait = canvas.toDataURL('image/jpeg', 0.8);
+                scheduleSave();
+                reRenderCurrentTab(moduleEl, content);
+            };
+            img.onerror = () => {
+                URL.revokeObjectURL(objectUrl);
+                console.log('[CV] Bio portrait load error');
+            };
+            img.src = objectUrl;
+        });
+
+        frame.appendChild(controls);
         return frame;
     }
 
-    // ── Overview Tab — Edit Mode ──
-    function renderOverviewEdit(container, data) {
+    // ── Overview Tab ──
+    function renderOverview(container, content, moduleEl) {
         container.innerHTML = '';
 
         const portraitArea = document.createElement('div');
         portraitArea.className = 'bio-portrait-area';
-
-        const frame = buildPortraitFrame(data, false, () => renderOverviewEdit(container, data));
-        portraitArea.appendChild(frame);
+        portraitArea.appendChild(buildPortraitFrame(content, moduleEl));
 
         const identitySide = document.createElement('div');
         identitySide.className = 'bio-identity-side';
 
         identitySide.appendChild(
-            buildBioField('name', 'bio.name', data.name, { placeholder: 'bio.namePlaceholder', widthClass: 'w3' })
+            buildBioField('bio.name', content.name, {
+                isName: true,
+                key: 'name',
+                content,
+                moduleEl,
+                widthClass: 'w3',
+                placeholderKey: 'bio.namePlaceholder',
+            })
         );
 
         const idRow = document.createElement('div');
         idRow.className = 'bio-field-row';
         const raceLabel = getRaceLabel(window.gameSystem || 'custom');
         idRow.appendChild(
-            buildBioField('pronouns', 'bio.pronouns', data.pronouns, { placeholder: 'bio.pronounsPlaceholder' })
+            buildBioField('bio.pronouns', content.pronouns, {
+                key: 'pronouns',
+                content,
+                moduleEl,
+                placeholderKey: 'bio.pronounsPlaceholder',
+            })
         );
-        idRow.appendChild(buildBioField('race', raceLabel, data.race, { widthClass: 'w2' }));
+        idRow.appendChild(
+            buildBioField(raceLabel, content.race, { key: 'race', content, moduleEl, widthClass: 'w2' })
+        );
         identitySide.appendChild(idRow);
 
-        identitySide.appendChild(buildBioField('alignment', 'bio.alignment', data.alignment));
+        identitySide.appendChild(
+            buildBioField('bio.alignment', content.alignment, { key: 'alignment', content, moduleEl })
+        );
 
         portraitArea.appendChild(identitySide);
         container.appendChild(portraitArea);
@@ -319,166 +409,44 @@
         const physRow = document.createElement('div');
         physRow.className = 'bio-field-row wrap';
         ['age', 'height', 'weight', 'eyes', 'hair', 'skin'].forEach((key) => {
-            physRow.appendChild(buildBioField(key, 'bio.' + key, data[key], { widthClass: 'fixed-sm' }));
+            physRow.appendChild(
+                buildBioField('bio.' + key, content[key], { key, content, moduleEl, widthClass: 'fixed-sm' })
+            );
         });
         container.appendChild(physRow);
 
         container.appendChild(
-            buildBioField('appearance', 'bio.appearance', data.appearance, {
-                type: 'textarea',
-                rows: 2,
-                placeholder: 'bio.appearancePlaceholder',
+            buildBioField('bio.appearance', content.appearance, {
+                isBlock: true,
+                placeholderKey: 'bio.appearancePlaceholder',
             })
         );
 
         container.appendChild(buildSectionDivider('bio.biography'));
-        container.appendChild(
-            buildBioField('biography', 'bio.biography', data.biography, {
-                type: 'textarea',
-                rows: 4,
-                placeholder: 'bio.biographyPlaceholder',
-            })
-        );
+        container.appendChild(buildBiographyDisplay(content));
 
-        const collapseHeader = buildCollapseHeader(data.showPersonality);
+        const collapseHeader = buildCollapseHeader(content.showPersonality);
         container.appendChild(collapseHeader);
 
         const personalityGrid = document.createElement('div');
         personalityGrid.className = 'bio-personality-grid';
-        personalityGrid.style.display = data.showPersonality ? 'grid' : 'none';
-        [
-            { key: 'personalityTraits', labelKey: 'bio.traits' },
-            { key: 'ideals', labelKey: 'bio.ideals' },
-            { key: 'bonds', labelKey: 'bio.bonds' },
-            { key: 'flaws', labelKey: 'bio.flaws' },
-        ].forEach(({ key, labelKey }) => {
-            personalityGrid.appendChild(buildBioField(key, labelKey, data[key], { type: 'textarea', rows: 3 }));
+        personalityGrid.style.display = content.showPersonality ? 'grid' : 'none';
+        PERSONALITY_FIELDS.forEach(({ key, labelKey }) => {
+            personalityGrid.appendChild(buildPersonalityBlock(labelKey, content[key]));
         });
         container.appendChild(personalityGrid);
 
         collapseHeader.addEventListener('click', () => {
-            data.showPersonality = !data.showPersonality;
-            collapseHeader.classList.toggle('expanded', data.showPersonality);
-            personalityGrid.style.display = data.showPersonality ? 'grid' : 'none';
+            content.showPersonality = !content.showPersonality;
+            collapseHeader.classList.toggle('expanded', content.showPersonality);
+            personalityGrid.style.display = content.showPersonality ? 'grid' : 'none';
             scheduleSave();
         });
-
-        container.querySelectorAll('.bio-field-input').forEach((input) => {
-            input.addEventListener('input', () => {
-                data[input.dataset.key] = input.value;
-                scheduleSave();
-            });
-            if (input.tagName === 'TEXTAREA') {
-                const savedH = data.fieldSizes?.[input.dataset.key];
-                if (savedH) input.style.height = savedH;
-                input.addEventListener('mouseup', () => {
-                    const h = input.style.height;
-                    const current = data.fieldSizes?.[input.dataset.key] || null;
-                    if (h && h !== current) {
-                        if (!data.fieldSizes) data.fieldSizes = {};
-                        data.fieldSizes[input.dataset.key] = h;
-                        scheduleSave();
-                    }
-                });
-            }
-        });
     }
 
-    // ── Overview Tab — Play Mode ──
-    function renderOverviewPlay(container, data) {
-        container.innerHTML = '';
+    // ── System-gated section ──
 
-        const portraitArea = document.createElement('div');
-        portraitArea.className = 'bio-portrait-area';
-        portraitArea.appendChild(buildPortraitFrame(data, true, null));
-
-        const identitySide = document.createElement('div');
-        identitySide.className = 'bio-identity-side';
-
-        if (shouldShowBioField(data.name)) {
-            identitySide.appendChild(buildBioFieldPlay('bio.name', data.name, { isName: true }));
-        }
-
-        const idRow = document.createElement('div');
-        idRow.className = 'bio-field-row';
-        const raceLabel = getRaceLabel(window.gameSystem || 'custom');
-        let idHasContent = false;
-        if (shouldShowBioField(data.pronouns)) {
-            idRow.appendChild(buildBioFieldPlay('bio.pronouns', data.pronouns));
-            idHasContent = true;
-        }
-        if (shouldShowBioField(data.race)) {
-            idRow.appendChild(buildBioFieldPlay(raceLabel, data.race, { widthClass: 'w2' }));
-            idHasContent = true;
-        }
-        if (idHasContent) identitySide.appendChild(idRow);
-
-        if (shouldShowBioField(data.alignment)) {
-            identitySide.appendChild(buildBioFieldPlay('bio.alignment', data.alignment));
-        }
-
-        portraitArea.appendChild(identitySide);
-        container.appendChild(portraitArea);
-
-        const physKeys = ['age', 'height', 'weight', 'eyes', 'hair', 'skin'];
-        const hasPhys = physKeys.some((k) => shouldShowBioField(data[k]));
-        if (hasPhys) {
-            container.appendChild(buildSectionDivider('bio.physical'));
-            const physRow = document.createElement('div');
-            physRow.className = 'bio-field-row wrap';
-            physKeys.forEach((key) => {
-                if (shouldShowBioField(data[key])) {
-                    physRow.appendChild(buildBioFieldPlay('bio.' + key, data[key], { widthClass: 'fixed-sm' }));
-                }
-            });
-            container.appendChild(physRow);
-        }
-
-        if (shouldShowBioField(data.appearance)) {
-            container.appendChild(buildBioFieldPlay('bio.appearance', data.appearance, { isBlock: true }));
-        }
-
-        if (shouldShowBioField(data.biography)) {
-            container.appendChild(buildSectionDivider('bio.biography'));
-            const bioDisplay = document.createElement('div');
-            bioDisplay.className = 'bio-biography-display';
-            bioDisplay.innerHTML = renderMarkdown(data.biography);
-            container.appendChild(bioDisplay);
-        }
-
-        const personalityDefs = [
-            { key: 'personalityTraits', labelKey: 'bio.traits' },
-            { key: 'ideals', labelKey: 'bio.ideals' },
-            { key: 'bonds', labelKey: 'bio.bonds' },
-            { key: 'flaws', labelKey: 'bio.flaws' },
-        ];
-        const hasPersonality = data.showPersonality && personalityDefs.some((f) => shouldShowBioField(data[f.key]));
-        if (hasPersonality) {
-            container.appendChild(buildSectionDivider('bio.personality'));
-            const grid = document.createElement('div');
-            grid.className = 'bio-personality-grid';
-            personalityDefs.forEach(({ key, labelKey }) => {
-                if (!shouldShowBioField(data[key])) return;
-                const block = document.createElement('div');
-                block.className = 'bio-play-personality-block';
-                const blockLabel = document.createElement('div');
-                blockLabel.className = 'bio-play-personality-label';
-                blockLabel.setAttribute('data-i18n', labelKey);
-                blockLabel.textContent = t(labelKey);
-                block.appendChild(blockLabel);
-                const blockText = document.createElement('div');
-                blockText.className = 'bio-play-personality-text';
-                blockText.textContent = data[key];
-                block.appendChild(blockText);
-                grid.appendChild(block);
-            });
-            container.appendChild(grid);
-        }
-    }
-
-    // ── System-gated section (shared between edit/play) ──
-
-    function renderSystemSectionEdit(container, data, sysData) {
+    function renderSystemSection(container, content, sysData, moduleEl) {
         const header = document.createElement('div');
         header.className = 'bio-system-header';
         const sysName = document.createElement('span');
@@ -486,231 +454,167 @@
         sysName.textContent = sysData.name;
         header.appendChild(sysName);
         container.appendChild(header);
-
-        if (sysData.fields.includes('clan')) {
-            // VtM: two rows of three
-            const row1 = document.createElement('div');
-            row1.className = 'bio-field-row';
-            row1.appendChild(buildBioField('clan', 'bio.clan', data.clan));
-            row1.appendChild(
-                buildBioField('generation', 'bio.generation', data.generation, { widthClass: 'fixed-md' })
-            );
-            row1.appendChild(buildBioField('sire', 'bio.sire', data.sire));
-            container.appendChild(row1);
-            const row2 = document.createElement('div');
-            row2.className = 'bio-field-row';
-            row2.appendChild(buildBioField('predatorType', 'bio.predatorType', data.predatorType));
-            row2.appendChild(buildBioField('ambition', 'bio.ambition', data.ambition));
-            row2.appendChild(buildBioField('desire', 'bio.desire', data.desire));
-            container.appendChild(row2);
-        } else if (sysData.fields.includes('heritage')) {
-            // PF2e: background + heritage row, then edicts, anathemas
-            const row = document.createElement('div');
-            row.className = 'bio-field-row';
-            row.appendChild(buildBioField('backgroundName', 'bio.background', data.backgroundName));
-            row.appendChild(buildBioField('heritage', 'bio.heritage', data.heritage));
-            container.appendChild(row);
-            container.appendChild(buildBioField('edicts', 'bio.edicts', data.edicts, { type: 'textarea', rows: 2 }));
-            container.appendChild(
-                buildBioField('anathemas', 'bio.anathemas', data.anathemas, { type: 'textarea', rows: 2 })
-            );
-        } else {
-            const fieldOpts = {
-                backgroundName: { labelKey: 'bio.background' },
-                occupation: { labelKey: 'bio.occupation' },
-                ideologyBeliefs: { labelKey: 'bio.ideologyBeliefs', type: 'textarea', rows: 2 },
-                culturalOrigin: { labelKey: 'bio.culturalOrigin' },
-                community: { labelKey: 'bio.community' },
-                lifestyle: { labelKey: 'bio.lifestyle' },
-            };
-            sysData.fields.forEach((key) => {
-                const cfg = fieldOpts[key] || { labelKey: 'bio.' + key };
-                container.appendChild(
-                    buildBioField(key, cfg.labelKey, data[key], {
-                        type: cfg.type || 'text',
-                        rows: cfg.rows || 3,
-                    })
-                );
-            });
-        }
-    }
-
-    function renderSystemSectionPlay(container, data, sysData) {
-        const hasContent = sysData.fields.some((k) => shouldShowBioField(data[k]));
-        if (!hasContent) return;
-
-        const header = document.createElement('div');
-        header.className = 'bio-system-header';
-        const sysName = document.createElement('span');
-        sysName.className = 'bio-system-name';
-        sysName.textContent = sysData.name;
-        header.appendChild(sysName);
-        container.appendChild(header);
-
-        const blockFields = new Set(['edicts', 'anathemas', 'ideologyBeliefs']);
-        const fieldLabelKeys = {
-            backgroundName: 'bio.background',
-            heritage: 'bio.heritage',
-            edicts: 'bio.edicts',
-            anathemas: 'bio.anathemas',
-            occupation: 'bio.occupation',
-            ideologyBeliefs: 'bio.ideologyBeliefs',
-            culturalOrigin: 'bio.culturalOrigin',
-            community: 'bio.community',
-            lifestyle: 'bio.lifestyle',
-            clan: 'bio.clan',
-            generation: 'bio.generation',
-            sire: 'bio.sire',
-            predatorType: 'bio.predatorType',
-            ambition: 'bio.ambition',
-            desire: 'bio.desire',
-        };
 
         sysData.fields.forEach((key) => {
-            if (!shouldShowBioField(data[key])) return;
-            const labelKey = fieldLabelKeys[key] || 'bio.' + key;
-            if (blockFields.has(key)) {
-                const block = document.createElement('div');
-                block.className = 'bio-play-block';
-                const lbl = document.createElement('div');
-                lbl.className = 'bio-play-block-label';
-                lbl.setAttribute('data-i18n', labelKey);
-                lbl.textContent = t(labelKey);
-                block.appendChild(lbl);
-                const txt = document.createElement('div');
-                txt.className = 'bio-play-block-text';
-                txt.textContent = data[key];
-                block.appendChild(txt);
-                container.appendChild(block);
+            const labelKey = SYSTEM_FIELD_LABELS[key] || 'bio.' + key;
+            if (TEXTAREA_FIELDS.has(key)) {
+                container.appendChild(buildBioBlockField(labelKey, content[key]));
             } else {
-                container.appendChild(buildBioFieldPlay(labelKey, data[key]));
+                container.appendChild(buildBioField(labelKey, content[key], { key, content, moduleEl }));
             }
         });
     }
 
-    // ── Details Tab — Edit Mode ──
-    function renderDetailsEdit(container, data) {
+    // ── Details Tab ──
+    function renderDetails(container, content, moduleEl) {
         container.innerHTML = '';
 
         const row1 = document.createElement('div');
         row1.className = 'bio-field-row';
         row1.appendChild(
-            buildBioField('deity', 'bio.deity', data.deity, { placeholder: 'bio.deityPlaceholder', widthClass: 'w2' })
+            buildBioField('bio.deity', content.deity, {
+                key: 'deity',
+                content,
+                moduleEl,
+                widthClass: 'w2',
+                placeholderKey: 'bio.deityPlaceholder',
+            })
         );
-        row1.appendChild(buildBioField('birthplace', 'bio.birthplace', data.birthplace, { widthClass: 'w2' }));
+        row1.appendChild(
+            buildBioField('bio.birthplace', content.birthplace, { key: 'birthplace', content, moduleEl, widthClass: 'w2' })
+        );
         container.appendChild(row1);
 
         const row2 = document.createElement('div');
         row2.className = 'bio-field-row';
-        row2.appendChild(buildBioField('nationality', 'bio.nationality', data.nationality));
-        row2.appendChild(buildBioField('ethnicity', 'bio.ethnicity', data.ethnicity));
-        row2.appendChild(buildBioField('alias', 'bio.alias', data.alias, { placeholder: 'bio.aliasPlaceholder' }));
+        row2.appendChild(buildBioField('bio.nationality', content.nationality, { key: 'nationality', content, moduleEl }));
+        row2.appendChild(buildBioField('bio.ethnicity', content.ethnicity, { key: 'ethnicity', content, moduleEl }));
+        row2.appendChild(
+            buildBioField('bio.alias', content.alias, {
+                key: 'alias',
+                content,
+                moduleEl,
+                placeholderKey: 'bio.aliasPlaceholder',
+            })
+        );
         container.appendChild(row2);
 
-        container.appendChild(
-            buildBioField('likesDislikes', 'bio.likesDislikes', data.likesDislikes, { type: 'textarea', rows: 2 })
-        );
-        container.appendChild(
-            buildBioField('alliesEnemies', 'bio.alliesEnemies', data.alliesEnemies, { type: 'textarea', rows: 2 })
-        );
-        container.appendChild(
-            buildBioField('organizations', 'bio.organizations', data.organizations, { type: 'textarea', rows: 2 })
-        );
-
-        const sys = window.gameSystem || 'custom';
-        if (sys === 'custom') {
-            Object.values(SYSTEM_FIELDS).forEach((sysData) => renderSystemSectionEdit(container, data, sysData));
-        } else if (SYSTEM_FIELDS[sys]) {
-            renderSystemSectionEdit(container, data, SYSTEM_FIELDS[sys]);
-        }
-
-        container.querySelectorAll('.bio-field-input').forEach((input) => {
-            input.addEventListener('input', () => {
-                data[input.dataset.key] = input.value;
-                scheduleSave();
-            });
-            if (input.tagName === 'TEXTAREA') {
-                const savedH = data.fieldSizes?.[input.dataset.key];
-                if (savedH) input.style.height = savedH;
-                input.addEventListener('mouseup', () => {
-                    const h = input.style.height;
-                    const current = data.fieldSizes?.[input.dataset.key] || null;
-                    if (h && h !== current) {
-                        if (!data.fieldSizes) data.fieldSizes = {};
-                        data.fieldSizes[input.dataset.key] = h;
-                        scheduleSave();
-                    }
-                });
-            }
-        });
-    }
-
-    // ── Details Tab — Play Mode ──
-    function renderDetailsPlay(container, data) {
-        container.innerHTML = '';
-
-        const shortFields = [
-            { key: 'deity', labelKey: 'bio.deity' },
-            { key: 'birthplace', labelKey: 'bio.birthplace' },
-            { key: 'nationality', labelKey: 'bio.nationality' },
-            { key: 'ethnicity', labelKey: 'bio.ethnicity' },
-            { key: 'alias', labelKey: 'bio.alias' },
-        ];
-        const textareaFields = [
-            { key: 'likesDislikes', labelKey: 'bio.likesDislikes' },
-            { key: 'alliesEnemies', labelKey: 'bio.alliesEnemies' },
-            { key: 'organizations', labelKey: 'bio.organizations' },
-        ];
-
-        const shortRow = document.createElement('div');
-        shortRow.className = 'bio-field-row wrap';
-        let hasShort = false;
-        shortFields.forEach(({ key, labelKey }) => {
-            if (!shouldShowBioField(data[key])) return;
-            shortRow.appendChild(buildBioFieldPlay(labelKey, data[key]));
-            hasShort = true;
-        });
-        if (hasShort) container.appendChild(shortRow);
-
-        textareaFields.forEach(({ key, labelKey }) => {
-            if (!shouldShowBioField(data[key])) return;
-            const block = document.createElement('div');
-            block.className = 'bio-play-block';
-            const lbl = document.createElement('div');
-            lbl.className = 'bio-play-block-label';
-            lbl.setAttribute('data-i18n', labelKey);
-            lbl.textContent = t(labelKey);
-            block.appendChild(lbl);
-            const txt = document.createElement('div');
-            txt.className = 'bio-play-block-text';
-            txt.textContent = data[key];
-            block.appendChild(txt);
-            container.appendChild(block);
+        NOTES_FIELDS.forEach(({ key, labelKey }) => {
+            container.appendChild(buildBioBlockField(labelKey, content[key]));
         });
 
         const sys = window.gameSystem || 'custom';
-        if (sys === 'custom') {
-            Object.values(SYSTEM_FIELDS).forEach((sysData) => renderSystemSectionPlay(container, data, sysData));
-        } else if (SYSTEM_FIELDS[sys]) {
-            renderSystemSectionPlay(container, data, SYSTEM_FIELDS[sys]);
-        }
+        activeSystemFieldSets(sys).forEach((sysData) => renderSystemSection(container, content, sysData, moduleEl));
     }
 
     // ── Tab content dispatcher ──
-    function renderTabContent(tabContentEl, content, isPlayMode) {
-        if (content.activeTab === 'details') {
-            if (isPlayMode) renderDetailsPlay(tabContentEl, content);
-            else renderDetailsEdit(tabContentEl, content);
-        } else {
-            if (isPlayMode) renderOverviewPlay(tabContentEl, content);
-            else renderOverviewEdit(tabContentEl, content);
-        }
+    function renderTabContent(tabContentEl, content, moduleEl) {
+        if (content.activeTab === 'details') renderDetails(tabContentEl, content, moduleEl);
+        else renderOverview(tabContentEl, content, moduleEl);
     }
 
-    // ── Sync inputs back to data ──
-    function syncBioInputs(containerEl, content) {
-        containerEl.querySelectorAll('.bio-field-input').forEach((input) => {
-            if (input.dataset.key) content[input.dataset.key] = input.value;
+    // ── Textarea edit modal (long-form fields, opened from the overflow menu) ──
+    function openBioTextareaModal(moduleEl, content, titleKey, fields) {
+        const existing = document.querySelector('.bio-edit-overlay');
+        if (existing) existing.remove();
+
+        const snapshot = fields.map((f) => content[f.key] || '');
+
+        const overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay bio-edit-overlay';
+
+        const panel = document.createElement('div');
+        panel.className = 'cv-modal-panel';
+
+        const header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        const titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = t(titleKey);
+        const closeXBtn = document.createElement('button');
+        closeXBtn.type = 'button';
+        closeXBtn.className = 'cv-modal-close';
+        closeXBtn.title = t('module.close');
+        closeXBtn.innerHTML = cvIcon('x', 12);
+        header.appendChild(titleEl);
+        header.appendChild(closeXBtn);
+        panel.appendChild(header);
+
+        const body = document.createElement('div');
+        body.className = 'cv-modal-body';
+        const textareas = fields.map((f) => {
+            const label = document.createElement('span');
+            label.className = 'cv-modal-label';
+            label.setAttribute('data-i18n', f.labelKey);
+            label.textContent = t(f.labelKey);
+            body.appendChild(label);
+
+            const textarea = document.createElement('textarea');
+            textarea.className = 'cv-modal-input';
+            textarea.rows = f.rows || 3;
+            textarea.placeholder = t(f.placeholderKey || 'bio.addDetails');
+            textarea.value = content[f.key] || '';
+            body.appendChild(textarea);
+            return textarea;
+        });
+        panel.appendChild(body);
+
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'btn-secondary sm';
+        cancelBtn.textContent = t('module.cancel');
+        const saveBtn = document.createElement('button');
+        saveBtn.type = 'button';
+        saveBtn.className = 'btn-primary sm';
+        saveBtn.textContent = t('common.save');
+        footer.appendChild(cancelBtn);
+        footer.appendChild(saveBtn);
+        panel.appendChild(footer);
+
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+        textareas[0].focus();
+
+        function closeModal() {
+            document.removeEventListener('keydown', keyHandler);
+            overlay.remove();
+        }
+
+        function isDirty() {
+            return fields.some((f, i) => textareas[i].value !== snapshot[i]);
+        }
+
+        function doClose() {
+            if (isDirty()) {
+                showConfirm(t('common.discardChanges'), closeModal);
+            } else {
+                closeModal();
+            }
+        }
+
+        function doSave() {
+            fields.forEach((f, i) => {
+                content[f.key] = textareas[i].value;
+            });
+            scheduleSave();
+            reRenderCurrentTab(moduleEl, content);
+            closeModal();
+        }
+
+        const keyHandler = (e) => {
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                doClose();
+            }
+        };
+        document.addEventListener('keydown', keyHandler);
+        saveBtn.addEventListener('click', doSave);
+        cancelBtn.addEventListener('click', doClose);
+        closeXBtn.addEventListener('click', doClose);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) doClose();
         });
     }
 
@@ -718,12 +622,10 @@
     registerModuleType('bio', {
         label: 'type.bio',
 
-        renderBody(bodyEl, data, isPlayMode) {
+        renderBody(bodyEl, data) {
             const content = data.content;
             const moduleEl = bodyEl.closest('.module');
-            if (moduleEl) moduleEl.dataset.bioMode = isPlayMode ? 'play' : 'edit';
 
-            // Tab bar
             const tabBar = document.createElement('div');
             tabBar.className = 'bio-tab-bar';
 
@@ -747,24 +649,88 @@
             tabContentEl.className = 'bio-tab-content';
             bodyEl.appendChild(tabContentEl);
 
-            renderTabContent(tabContentEl, content, isPlayMode);
+            renderTabContent(tabContentEl, content, moduleEl);
 
             [overviewBtn, detailsBtn].forEach((btn) => {
                 btn.addEventListener('click', () => {
                     if (btn.dataset.tab === content.activeTab) return;
-                    syncBioInputs(bodyEl, content);
                     content.activeTab = btn.dataset.tab;
                     overviewBtn.classList.toggle('active', content.activeTab !== 'details');
                     detailsBtn.classList.toggle('active', content.activeTab === 'details');
-                    const isPlay = bodyEl.closest('.module')?.dataset.bioMode === 'play';
-                    renderTabContent(tabContentEl, content, isPlay);
+                    renderTabContent(tabContentEl, content, moduleEl);
                     scheduleSave();
                 });
             });
         },
 
-        syncState(moduleEl, data) {
-            syncBioInputs(moduleEl, data.content);
+        overflowMenuItems(moduleEl, data) {
+            const content = data.content;
+            const sys = window.gameSystem || 'custom';
+            const backgroundFields = activeSystemFieldSets(sys)
+                .flatMap((sysData) => sysData.fields)
+                .filter((key) => TEXTAREA_FIELDS.has(key))
+                .map((key) => ({ key, labelKey: SYSTEM_FIELD_LABELS[key] || 'bio.' + key, rows: 2 }));
+
+            const items = [
+                {
+                    onClick: () =>
+                        openBioTextareaModal(moduleEl, content, 'bio.editAppearance', [
+                            {
+                                key: 'appearance',
+                                labelKey: 'bio.appearance',
+                                rows: 4,
+                                placeholderKey: 'bio.appearancePlaceholder',
+                            },
+                        ]),
+                    label: t('bio.editAppearance'),
+                    icon: cvIcon('pencil', 14),
+                },
+                {
+                    onClick: () =>
+                        openBioTextareaModal(moduleEl, content, 'bio.editBiography', [
+                            {
+                                key: 'biography',
+                                labelKey: 'bio.biography',
+                                rows: 6,
+                                placeholderKey: 'bio.biographyPlaceholder',
+                            },
+                        ]),
+                    label: t('bio.editBiography'),
+                    icon: cvIcon('pencil', 14),
+                },
+                {
+                    onClick: () =>
+                        openBioTextareaModal(
+                            moduleEl,
+                            content,
+                            'bio.editPersonality',
+                            PERSONALITY_FIELDS.map((f) => ({ ...f, rows: 3 }))
+                        ),
+                    label: t('bio.editPersonality'),
+                    icon: cvIcon('pencil', 14),
+                },
+                {
+                    onClick: () =>
+                        openBioTextareaModal(
+                            moduleEl,
+                            content,
+                            'bio.editNotes',
+                            NOTES_FIELDS.map((f) => ({ ...f, rows: 2 }))
+                        ),
+                    label: t('bio.editNotes'),
+                    icon: cvIcon('pencil', 14),
+                },
+            ];
+
+            if (backgroundFields.length) {
+                items.push({
+                    onClick: () => openBioTextareaModal(moduleEl, content, 'bio.editBackground', backgroundFields),
+                    label: t('bio.editBackground'),
+                    icon: cvIcon('pencil', 14),
+                });
+            }
+
+            return items;
         },
     });
 

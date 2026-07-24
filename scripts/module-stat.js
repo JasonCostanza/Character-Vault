@@ -90,7 +90,7 @@
         }));
     }
 
-    function renderStatBlock(stat, index, data, isPlayMode) {
+    function renderStatBlock(stat, index, data) {
         const layout = data.content.layout;
         const isModifierOnly = layout === 'modifier-only';
         const isLargeStat = layout === 'large-stat';
@@ -100,7 +100,7 @@
         const block = document.createElement('div');
         block.className =
             'stat-block' +
-            (isPlayMode && stat.rollable ? ' stat-rollable' : '') +
+            (stat.rollable ? ' stat-rollable' : '') +
             (isModifierOnly ? ' stat-modifier-only' : '');
         block.dataset.index = index;
         var sys = window.gameSystem || 'custom';
@@ -131,7 +131,7 @@
 
         var isAutoProf = stat.isProficiencyStat && sys === 'dnd5e';
 
-        if (isPlayMode && !isAutoProf) {
+        if (!isAutoProf) {
             const nameEl = block.querySelector('.stat-name');
             if (nameEl) {
                 nameEl.addEventListener('click', (e) => {
@@ -142,7 +142,7 @@
             }
         }
 
-        if (isPlayMode && stat.rollable) {
+        if (stat.rollable) {
             block.addEventListener('click', (e) => {
                 if (e.ctrlKey) {
                     if (!isAutoProf) enterQuickEdit(block, stat, data);
@@ -152,237 +152,13 @@
             });
         }
 
-        if (isPlayMode && !stat.rollable) {
+        if (!stat.rollable) {
             block.addEventListener('click', (e) => {
                 if (e.ctrlKey && !isAutoProf) enterQuickEdit(block, stat, data);
             });
         }
 
         return block;
-    }
-
-    function renderStatBlockEdit(stat, index, data) {
-        const block = document.createElement('div');
-        block.className = 'stat-block-edit';
-        block.dataset.index = index;
-        var editSys = window.gameSystem || 'custom';
-
-        if (stat.isProficiencyStat && editSys === 'dnd5e') {
-            var autoVal = typeof window.getProficiencyBonus === 'function' ? window.getProficiencyBonus() : 2;
-            var deleteSvg = cvIcon('x', 12);
-            block.innerHTML =
-                `<div class="stat-edit-name-row">` +
-                `<span class="stat-drag-handle" style="visibility:hidden">&#x2807;</span>` +
-                `<input class="stat-edit-name" type="text" value="${escapeHtml(stat.name)}" readonly>` +
-                `<button class="stat-edit-delete" title="${t('stat.deleteStat')}" style="visibility:hidden">${deleteSvg}</button>` +
-                `</div>` +
-                `<div class="stat-edit-row">` +
-                `<div class="stat-edit-field"><label>${t('stat.value')}</label><span class="stat-edit-value-readonly">${autoVal}</span></div>` +
-                `</div>` +
-                `<div class="stat-prof-auto-badge" title="${escapeHtml(t('stat.proficiencyAutoComputed'))}">${t('stat.autoLabel')}</div>`;
-            block.addEventListener('click', (e) => {
-                const target = e.target;
-                if (target.tagName === 'INPUT' || target.tagName === 'BUTTON' || target.closest('button')) return;
-                const container = block.closest('.stat-container');
-                const moduleEl = container && container.closest('.module');
-                if (!moduleEl) return;
-                if (moduleEl._selectedStatIndex === index) {
-                    moduleEl._selectedStatIndex = null;
-                } else {
-                    moduleEl._selectedStatIndex = index;
-                }
-                container.querySelectorAll('.stat-block-edit').forEach((b) => b.classList.remove('stat-selected'));
-                if (moduleEl._selectedStatIndex !== null) {
-                    const sel = container.querySelector(
-                        `.stat-block-edit[data-index="${moduleEl._selectedStatIndex}"]`
-                    );
-                    if (sel) sel.classList.add('stat-selected');
-                }
-            });
-            return block;
-        }
-
-        var profRowHtml = '';
-        if (!stat.isProficiencyStat) {
-            if (editSys === 'pf2e') {
-                profRowHtml = `<div class="stat-edit-prof-row" data-pf2e-rank-row></div>`;
-            } else if (editSys !== 'daggerheart') {
-                profRowHtml = `<div class="stat-edit-prof-row"><span class="stat-edit-prof-label">${t('stat.proficient')}</span><button class="stat-edit-prof-dot${stat.proficient ? ' active' : ''}" title="${t('stat.proficient')}"></button></div>`;
-            }
-        }
-        var editLayout = data.content.layout;
-        var isEditModOnly = editLayout === 'modifier-only';
-        var valueFieldHtml = isEditModOnly
-            ? ''
-            : `<div class="stat-edit-field"><label class="${editLayout === 'large-stat' ? 'stat-edit-primary-label' : ''}">${t('stat.value')}</label><input type="number" class="stat-edit-value" value="${stat.value}"></div>`;
-        block.innerHTML =
-            `<div class="stat-edit-name-row">` +
-            `<span class="stat-drag-handle">&#x2807;</span>` +
-            `<input class="stat-edit-name" type="text" value="${escapeHtml(stat.name)}" placeholder="${t('stat.unnamed')}">` +
-            `<button class="stat-edit-delete" title="${t('stat.deleteStat')}">${cvIcon('x', 12)}</button>` +
-            `</div>` +
-            `<div class="stat-edit-row">` +
-            valueFieldHtml +
-            `<div class="stat-edit-field"><label class="${editLayout !== 'large-stat' ? 'stat-edit-primary-label' : ''}">${t('stat.modifier')}</label><input type="number" class="stat-edit-modifier" value="${stat.modifier}"></div>` +
-            `</div>` +
-            profRowHtml;
-
-        // Wire up inputs
-        const nameInput = block.querySelector('.stat-edit-name');
-        const valInput = block.querySelector('.stat-edit-value');
-        const modInput = block.querySelector('.stat-edit-modifier');
-        const deleteBtn = block.querySelector('.stat-edit-delete');
-        const profDot = block.querySelector('.stat-edit-prof-dot');
-        const rankRow = block.querySelector('[data-pf2e-rank-row]');
-
-        if (profDot) {
-            profDot.addEventListener('click', () => {
-                stat.proficient = !stat.proficient;
-                profDot.classList.toggle('active', stat.proficient);
-                scheduleSave();
-            });
-        }
-
-        if (rankRow) {
-            var pillBar = document.createElement('div');
-            pillBar.className = 'stat-rank-pills';
-            var ranks = [
-                { value: 'untrained', letter: 'U' },
-                { value: 'trained', letter: 'T' },
-                { value: 'expert', letter: 'E' },
-                { value: 'master', letter: 'M' },
-                { value: 'legendary', letter: 'L' },
-            ];
-            ranks.forEach(function (r) {
-                var pill = document.createElement('button');
-                pill.className =
-                    'stat-rank-pill' + ((stat.proficiencyRank || 'untrained') === r.value ? ' active' : '');
-                pill.textContent = r.letter;
-                pill.title = t('rank.' + r.value);
-                pill.dataset.rank = r.value;
-                pill.addEventListener('click', function () {
-                    stat.proficiencyRank = r.value;
-                    pillBar.querySelectorAll('.stat-rank-pill').forEach(function (p) {
-                        p.classList.remove('active');
-                    });
-                    pill.classList.add('active');
-                    scheduleSave();
-                });
-                pillBar.appendChild(pill);
-            });
-            rankRow.appendChild(pillBar);
-        }
-
-        nameInput.addEventListener('input', () => {
-            const oldName = stat.name;
-            stat.name = nameInput.value;
-            if (typeof window.propagateEntityRename === 'function') {
-                window.propagateEntityRename(data.id, 'stat', oldName, stat.name);
-            }
-            scheduleSave();
-            document.dispatchEvent(new CustomEvent('cv:stats-changed', { detail: { moduleId: data.id } }));
-        });
-        if (valInput) {
-            valInput.addEventListener('input', () => {
-                stat.value = parseInt(valInput.value, 10) || 0;
-                scheduleSave();
-                document.dispatchEvent(new CustomEvent('cv:stat-values-changed', { detail: { moduleId: data.id } }));
-            });
-        }
-        modInput.addEventListener('input', () => {
-            stat.modifier = parseInt(modInput.value, 10) || 0;
-            scheduleSave();
-            document.dispatchEvent(new CustomEvent('cv:stat-values-changed', { detail: { moduleId: data.id } }));
-        });
-
-        [nameInput, valInput, modInput].filter(Boolean).forEach((inp) => {
-            inp.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === 'Escape') inp.blur();
-            });
-        });
-
-        deleteBtn.addEventListener('click', () => {
-            data.content.stats.splice(index, 1);
-            const container = block.closest('.stat-container');
-            // Clear selection if the deleted stat was selected
-            const moduleEl = container.closest('.module');
-            if (moduleEl && moduleEl._selectedStatIndex === index) {
-                moduleEl._selectedStatIndex = null;
-            } else if (moduleEl && moduleEl._selectedStatIndex > index) {
-                moduleEl._selectedStatIndex--;
-            }
-            reRenderStatEdits(container, data);
-            scheduleSave();
-            document.dispatchEvent(new CustomEvent('cv:stats-changed', { detail: { moduleId: data.id } }));
-        });
-
-        // Click on block background to select (not on inputs/buttons)
-        block.addEventListener('click', (e) => {
-            const target = e.target;
-            if (
-                target.tagName === 'INPUT' ||
-                target.tagName === 'BUTTON' ||
-                target.closest('button') ||
-                target.closest('label')
-            )
-                return;
-            const container = block.closest('.stat-container');
-            const moduleEl = container.closest('.module');
-            if (!moduleEl) return;
-
-            // Toggle: if already selected, deselect
-            if (moduleEl._selectedStatIndex === index) {
-                moduleEl._selectedStatIndex = null;
-            } else {
-                moduleEl._selectedStatIndex = index;
-            }
-
-            // Update visual selection
-            container.querySelectorAll('.stat-block-edit').forEach((b) => b.classList.remove('stat-selected'));
-            if (moduleEl._selectedStatIndex !== null) {
-                const selectedBlock = container.querySelector(
-                    `.stat-block-edit[data-index="${moduleEl._selectedStatIndex}"]`
-                );
-                if (selectedBlock) selectedBlock.classList.add('stat-selected');
-            }
-        });
-
-        return block;
-    }
-
-    function reRenderStatEdits(container, data) {
-        container.querySelectorAll('.stat-block-edit').forEach((el) => el.remove());
-        data.content.stats.forEach((stat, i) => {
-            container.appendChild(renderStatBlockEdit(stat, i, data));
-        });
-        // Restore selection visual state
-        const moduleEl = container.closest('.module');
-        if (moduleEl && moduleEl._selectedStatIndex !== null && moduleEl._selectedStatIndex !== undefined) {
-            const selectedBlock = container.querySelector(
-                `.stat-block-edit[data-index="${moduleEl._selectedStatIndex}"]`
-            );
-            if (selectedBlock) selectedBlock.classList.add('stat-selected');
-        }
-        if (container._sortable) container._sortable.destroy();
-        initStatSortable(container, data);
-    }
-
-    function initStatSortable(container, data) {
-        container._sortable = new Sortable(container, {
-            handle: '.stat-drag-handle',
-            animation: 150,
-            ghostClass: 'stat-ghost',
-            filter: '',
-            draggable: '.stat-block-edit, .stat-block',
-            onEnd(evt) {
-                const items = Array.from(container.querySelectorAll('.stat-block-edit, .stat-block'));
-                const reordered = items.map((el) => data.content.stats[parseInt(el.dataset.index, 10)]).filter(Boolean);
-                data.content.stats = reordered;
-                // Re-index
-                items.forEach((el, i) => (el.dataset.index = i));
-                scheduleSave();
-            },
-        });
     }
 
     function rollStatCheck(stat, data) {
@@ -455,7 +231,7 @@
                 stat.modifier = values.modifier;
                 scheduleSave();
                 const idx = parseInt(block.dataset.index, 10);
-                block.replaceWith(renderStatBlock(stat, idx, data, true));
+                block.replaceWith(renderStatBlock(stat, idx, data));
             },
         });
     }
@@ -469,7 +245,7 @@
                 stat.name = newName;
                 scheduleSave();
                 const idx = parseInt(block.dataset.index, 10);
-                block.replaceWith(renderStatBlock(stat, idx, data, true));
+                block.replaceWith(renderStatBlock(stat, idx, data));
             },
         });
     }
@@ -478,8 +254,7 @@
     registerModuleType('stat', {
         label: 'type.stat',
 
-        renderBody(bodyEl, data, isPlayMode) {
-            // Guard: ensure content is the right shape
+        renderBody(bodyEl, data) {
             if (!data.content || typeof data.content === 'string') {
                 data.content = { layout: 'large-stat', stats: [] };
             }
@@ -496,34 +271,40 @@
             const container = document.createElement('div');
             container.className = 'stat-container';
 
-            if (isPlayMode) {
-                data.content.stats.forEach((stat, i) => {
-                    container.appendChild(renderStatBlock(stat, i, data, true));
-                });
-            } else {
-                data.content.stats.forEach((stat, i) => {
-                    container.appendChild(renderStatBlockEdit(stat, i, data));
-                });
-
-                initStatSortable(container, data);
-            }
+            data.content.stats.forEach((stat, i) => {
+                container.appendChild(renderStatBlock(stat, i, data));
+            });
 
             bodyEl.innerHTML = '';
             bodyEl.appendChild(container);
         },
 
-        syncState(moduleEl, data) {
-            // Inputs mutate data directly, but as a safety net, re-read edit values
-            moduleEl.querySelectorAll('.stat-block-edit').forEach((block, i) => {
-                const stat = data.content.stats[i];
-                if (!stat) return;
-                const nameInput = block.querySelector('.stat-edit-name');
-                const valInput = block.querySelector('.stat-edit-value');
-                const modInput = block.querySelector('.stat-edit-modifier');
-                if (nameInput) stat.name = nameInput.value;
-                if (valInput) stat.value = parseInt(valInput.value, 10) || 0;
-                if (modInput) stat.modifier = parseInt(modInput.value, 10) || 0;
-            });
+        overflowMenuItems(moduleEl, data) {
+            return [
+                {
+                    onClick() {
+                        data.content.stats.push({
+                            name: '',
+                            value: 0,
+                            modifier: 0,
+                            proficient: false,
+                            rollable: true,
+                        });
+                        const bodyEl = moduleEl.querySelector('.module-body');
+                        window.MODULE_TYPES['stat'].renderBody(bodyEl, data);
+                        snapModuleHeight(moduleEl, data);
+                        scheduleSave();
+                        document.dispatchEvent(new CustomEvent('cv:stats-changed', { detail: { moduleId: data.id } }));
+                    },
+                    label: t('stat.addStat'),
+                    icon: cvIcon('plus', 14),
+                },
+                {
+                    onClick: () => openStatSettingsModal(moduleEl, data),
+                    label: t('stat.moduleSettings'),
+                    icon: cvIcon('settings', 14),
+                },
+            ];
         },
     });
 
@@ -558,6 +339,252 @@
         const body = document.createElement('div');
         body.className = 'cv-modal-body';
 
+        function reRenderModuleBody() {
+            var bodyEl = moduleEl.querySelector('.module-body');
+            var typeDef = window.MODULE_TYPES?.['stat'];
+            if (typeDef && bodyEl) typeDef.renderBody(bodyEl, data);
+            window.snapModuleHeight(moduleEl, data);
+        }
+
+        // ── Manage Stats ──
+        const manageLabel = document.createElement('div');
+        manageLabel.className = 'cv-modal-label';
+        manageLabel.textContent = t('stat.manageStats');
+        body.appendChild(manageLabel);
+
+        const manageList = document.createElement('div');
+        manageList.className = 'stat-manage-list';
+
+        function refreshAfterListChange() {
+            renderManageRows();
+            renderRollableList();
+            reRenderModuleBody();
+        }
+
+        function buildRankPillBar(stat) {
+            var pillBar = document.createElement('div');
+            pillBar.className = 'stat-rank-pills';
+            var ranks = [
+                { value: 'untrained', letter: 'U' },
+                { value: 'trained', letter: 'T' },
+                { value: 'expert', letter: 'E' },
+                { value: 'master', letter: 'M' },
+                { value: 'legendary', letter: 'L' },
+            ];
+            ranks.forEach(function (r) {
+                var pill = document.createElement('button');
+                pill.className = 'stat-rank-pill' + ((stat.proficiencyRank || 'untrained') === r.value ? ' active' : '');
+                pill.textContent = r.letter;
+                pill.title = t('rank.' + r.value);
+                pill.dataset.rank = r.value;
+                pill.addEventListener('click', function () {
+                    stat.proficiencyRank = r.value;
+                    pillBar.querySelectorAll('.stat-rank-pill').forEach(function (p) { p.classList.remove('active'); });
+                    pill.classList.add('active');
+                    scheduleSave();
+                    reRenderModuleBody();
+                });
+                pillBar.appendChild(pill);
+            });
+            return pillBar;
+        }
+
+        function buildAutoStatRow(stat, index) {
+            const row = document.createElement('div');
+            row.className = 'stat-manage-row';
+            row.dataset.index = index;
+
+            const drag = document.createElement('span');
+            drag.className = 'stat-manage-drag';
+            drag.innerHTML = '&#x2807;';
+            drag.style.visibility = 'hidden';
+            row.appendChild(drag);
+
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.className = 'stat-manage-name';
+            nameInput.value = stat.name;
+            nameInput.readOnly = true;
+            row.appendChild(nameInput);
+
+            const autoBadge = document.createElement('span');
+            autoBadge.className = 'stat-manage-auto-badge';
+            autoBadge.title = t('stat.proficiencyAutoComputed');
+            autoBadge.textContent = t('stat.autoLabel');
+            row.appendChild(autoBadge);
+
+            return row;
+        }
+
+        function buildManageRow(stat, index) {
+            var sys = window.gameSystem || 'custom';
+            if (stat.isProficiencyStat && sys === 'dnd5e') return buildAutoStatRow(stat, index);
+
+            const row = document.createElement('div');
+            row.className = 'stat-manage-row';
+            row.dataset.index = index;
+
+            const drag = document.createElement('span');
+            drag.className = 'stat-manage-drag';
+            drag.innerHTML = '&#x2807;';
+            row.appendChild(drag);
+
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.className = 'stat-manage-name';
+            nameInput.value = stat.name;
+            nameInput.placeholder = t('stat.unnamed');
+
+            nameInput.addEventListener('input', function () {
+                var oldName = stat.name;
+                stat.name = nameInput.value;
+                if (typeof window.propagateEntityRename === 'function') {
+                    window.propagateEntityRename(data.id, 'stat', oldName, stat.name);
+                }
+                scheduleSave();
+                var displayName = stat.name || t('stat.unnamed');
+                var bodyEl = moduleEl.querySelector('.module-body');
+                var statNameEl = bodyEl && bodyEl.querySelector('.stat-block[data-index="' + index + '"] .stat-name');
+                if (statNameEl) {
+                    statNameEl.textContent = displayName;
+                    statNameEl.title = displayName;
+                }
+                var rollableLabel = rollableList.querySelector('.stat-settings-rollable-row[data-index="' + index + '"] .cv-toggle-label');
+                if (rollableLabel) rollableLabel.textContent = displayName;
+                document.dispatchEvent(new CustomEvent('cv:stats-changed', { detail: { moduleId: data.id } }));
+            });
+            nameInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === 'Escape') nameInput.blur();
+            });
+            row.appendChild(nameInput);
+
+            if (!stat.isProficiencyStat) {
+                if (sys === 'pf2e') {
+                    row.appendChild(buildRankPillBar(stat));
+                } else if (sys !== 'daggerheart') {
+                    var profDot = document.createElement('button');
+                    profDot.className = 'stat-edit-prof-dot' + (stat.proficient ? ' active' : '');
+                    profDot.title = t('stat.proficient');
+                    profDot.addEventListener('click', function () {
+                        stat.proficient = !stat.proficient;
+                        profDot.classList.toggle('active', stat.proficient);
+                        scheduleSave();
+                        reRenderModuleBody();
+                    });
+                    row.appendChild(profDot);
+                }
+            }
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'stat-manage-delete';
+            deleteBtn.title = t('stat.deleteStat');
+            deleteBtn.innerHTML = cvIcon('x', 12);
+            deleteBtn.addEventListener('click', function () {
+                data.content.stats.splice(index, 1);
+                scheduleSave();
+                refreshAfterListChange();
+                document.dispatchEvent(new CustomEvent('cv:stats-changed', { detail: { moduleId: data.id } }));
+            });
+            row.appendChild(deleteBtn);
+
+            return row;
+        }
+
+        function renderManageRows() {
+            manageList.innerHTML = '';
+            data.content.stats.forEach(function (stat, i) {
+                manageList.appendChild(buildManageRow(stat, i));
+            });
+            if (manageList._sortable) manageList._sortable.destroy();
+            manageList._sortable = new Sortable(manageList, {
+                handle: '.stat-manage-drag',
+                animation: 150,
+                ghostClass: 'stat-ghost',
+                draggable: '.stat-manage-row',
+                onEnd: function () {
+                    var rows = Array.from(manageList.querySelectorAll('.stat-manage-row'));
+                    data.content.stats = rows.map(function (r) { return data.content.stats[parseInt(r.dataset.index, 10)]; }).filter(Boolean);
+                    rows.forEach(function (r, i) { r.dataset.index = i; });
+                    scheduleSave();
+                    renderRollableList();
+                    reRenderModuleBody();
+                    document.dispatchEvent(new CustomEvent('cv:stats-changed', { detail: { moduleId: data.id } }));
+                },
+            });
+        }
+
+        renderManageRows();
+        body.appendChild(manageList);
+
+        const addStatBtn = document.createElement('button');
+        addStatBtn.type = 'button';
+        addStatBtn.className = 'btn-secondary sm';
+        addStatBtn.innerHTML = cvIcon('plus', 14) + ' ' + escapeHtml(t('stat.addStat'));
+        addStatBtn.addEventListener('click', function () {
+            data.content.stats.push({ name: '', value: 0, modifier: 0, proficient: false, proficiencyRank: 'untrained', rollable: true });
+            scheduleSave();
+            refreshAfterListChange();
+            document.dispatchEvent(new CustomEvent('cv:stats-changed', { detail: { moduleId: data.id } }));
+        });
+        body.appendChild(addStatBtn);
+
+        // ── Display Layout ──
+        const layoutLabel = document.createElement('div');
+        layoutLabel.className = 'cv-modal-label';
+        layoutLabel.textContent = t('stat.layoutLabel');
+        body.appendChild(layoutLabel);
+
+        const layoutSelect = window.buildCvSelect(
+            [
+                { value: 'large-stat', label: t('stat.largeStat') },
+                { value: 'large-modifier', label: t('stat.largeModifier') },
+                { value: 'modifier-only', label: t('stat.modifierOnly') },
+            ],
+            data.content.layout || 'large-stat',
+            function (val) {
+                data.content.layout = val;
+                reRenderModuleBody();
+                scheduleSave();
+            }
+        );
+        body.appendChild(layoutSelect.el);
+
+        // ── Rollable Stats ──
+        const rollableLabel = document.createElement('div');
+        rollableLabel.className = 'cv-modal-label';
+        rollableLabel.textContent = t('stat.rollableStats');
+        body.appendChild(rollableLabel);
+
+        const rollableList = document.createElement('div');
+        rollableList.className = 'stat-settings-rollable-list';
+
+        function renderRollableList() {
+            rollableList.innerHTML = '';
+            data.content.stats.forEach(function (stat, i) {
+                if (stat.isProficiencyStat) return;
+
+                var row = document.createElement('div');
+                row.className = 'stat-settings-rollable-row';
+                row.dataset.index = i;
+
+                var nameSpan = document.createElement('span');
+                nameSpan.className = 'cv-toggle-label';
+                nameSpan.textContent = stat.name || t('stat.unnamed');
+                row.appendChild(nameSpan);
+
+                var toggle = window.makeCvToggle(!!stat.rollable, function (checked) {
+                    stat.rollable = checked;
+                    scheduleSave();
+                    reRenderModuleBody();
+                });
+                row.appendChild(toggle);
+                rollableList.appendChild(row);
+            });
+        }
+
+        renderRollableList();
+        body.appendChild(rollableList);
+
         // ── Get From Board ──
         const getFromBoardBtn = document.createElement('button');
         getFromBoardBtn.type = 'button';
@@ -586,15 +613,13 @@
                         });
                     } else {
                         boardStats.forEach(function (bs) {
-                            const existing = data.content.stats.find(function (es) {
+                            var existing = data.content.stats.find(function (es) {
                                 return es.name.toLowerCase() === bs.name.toLowerCase();
                             });
                             if (existing) existing.value = bs.value;
                         });
                     }
-                    const bodyEl = moduleEl.querySelector('.module-body');
-                    const typeDef = window.MODULE_TYPES?.['stat'];
-                    if (typeDef && bodyEl) typeDef.renderBody(bodyEl, data, window.isPlayMode);
+                    refreshAfterListChange();
                     scheduleSave();
                     window.showToast(t('stat.getFromBoardSuccess'));
                 }
@@ -603,60 +628,6 @@
             }
         });
         body.appendChild(getFromBoardBtn);
-
-        // ── Display Layout ──
-        const layoutLabel = document.createElement('div');
-        layoutLabel.className = 'cv-modal-label';
-        layoutLabel.textContent = t('stat.layoutLabel');
-        body.appendChild(layoutLabel);
-
-        const layoutSelect = window.buildCvSelect(
-            [
-                { value: 'large-stat', label: t('stat.largeStat') },
-                { value: 'large-modifier', label: t('stat.largeModifier') },
-                { value: 'modifier-only', label: t('stat.modifierOnly') },
-            ],
-            data.content.layout || 'large-stat',
-            function (val) {
-                data.content.layout = val;
-                const bodyEl = moduleEl.querySelector('.module-body');
-                const typeDef = window.MODULE_TYPES?.['stat'];
-                if (typeDef && bodyEl) typeDef.renderBody(bodyEl, data, window.isPlayMode);
-                window.snapModuleHeight(moduleEl, data);
-                scheduleSave();
-            }
-        );
-        body.appendChild(layoutSelect.el);
-
-        // ── Rollable Stats ──
-        const rollableLabel = document.createElement('div');
-        rollableLabel.className = 'cv-modal-label';
-        rollableLabel.textContent = t('stat.rollableStats');
-        body.appendChild(rollableLabel);
-
-        const rollableList = document.createElement('div');
-        rollableList.className = 'stat-settings-rollable-list';
-        data.content.stats
-            .filter(function (stat) {
-                return !stat.isProficiencyStat;
-            })
-            .forEach(function (stat) {
-                const row = document.createElement('div');
-                row.className = 'stat-settings-rollable-row';
-
-                const nameSpan = document.createElement('span');
-                nameSpan.className = 'cv-toggle-label';
-                nameSpan.textContent = stat.name || t('stat.unnamed');
-                row.appendChild(nameSpan);
-
-                const toggle = window.makeCvToggle(!!stat.rollable, function (checked) {
-                    stat.rollable = checked;
-                    scheduleSave();
-                });
-                row.appendChild(toggle);
-                rollableList.appendChild(row);
-            });
-        body.appendChild(rollableList);
 
         buildCommonSettingsSection(body, moduleEl, data);
         panel.appendChild(body);
@@ -791,7 +762,7 @@
             if (!moduleEl) return;
             var bodyEl = moduleEl.querySelector('.module-body');
             var typeDef = window.MODULE_TYPES?.['stat'];
-            if (typeDef && bodyEl) typeDef.renderBody(bodyEl, m, window.isPlayMode);
+            if (typeDef && bodyEl) typeDef.renderBody(bodyEl, m);
         });
     });
 })();

@@ -128,7 +128,7 @@
     }
 
     // ── Creation Modal ──
-    function openCounterCreateModal(moduleEl, data) {
+    function openCounterCreateModal(moduleEl, data, onCreated) {
         const content = ensureContent(data);
         const modalState = { name: '', icon: null };
 
@@ -237,6 +237,7 @@
             scheduleSave();
             doClose();
             reRenderCounterModule(moduleEl, data);
+            if (typeof onCreated === 'function') onCreated();
         }
 
         function doClose() {
@@ -245,7 +246,7 @@
     }
 
     // ── Edit Modal ──
-    function openCounterEditModal(moduleEl, data, counterId) {
+    function openCounterEditModal(moduleEl, data, counterId, onChange) {
         const content = ensureContent(data);
         const counter = content.counters.find(function (c) {
             return c.id === counterId;
@@ -411,6 +412,7 @@
                 scheduleSave();
                 overlay.remove();
                 reRenderCounterModule(moduleEl, data);
+                if (typeof onChange === 'function') onChange();
             });
         });
 
@@ -471,6 +473,7 @@
             scheduleSave();
             overlay.remove();
             reRenderCounterModule(moduleEl, data);
+            if (typeof onChange === 'function') onChange();
         }
 
         function doClose() {
@@ -496,8 +499,7 @@
     // ── Re-render Helper ──
     function reRenderCounterModule(moduleEl, data) {
         const bodyEl = moduleEl.querySelector('.module-body');
-        const isPlayModeLocal = isPlayMode;
-        MODULE_TYPES['counters'].renderBody(bodyEl, data, isPlayModeLocal);
+        MODULE_TYPES['counters'].renderBody(bodyEl, data);
         snapModuleHeight(moduleEl, data);
     }
 
@@ -667,103 +669,6 @@
         return row;
     }
 
-    // ── Layout Mode: Counter Row ──
-    function renderCounterRowEdit(counter, data, moduleEl) {
-        const content = data.content;
-        const row = document.createElement('div');
-        row.className = 'counter-row-edit';
-        row.dataset.counterId = counter.id;
-
-        // Drag handle
-        const handle = document.createElement('span');
-        handle.className = 'counter-drag-handle';
-        handle.innerHTML = '&#x2807;';
-        row.appendChild(handle);
-
-        // Icon
-        if (counter.icon) {
-            const iconWrap = document.createElement('span');
-            iconWrap.className = 'counter-row-icon counter-row-icon-sm';
-            iconWrap.innerHTML = cvIcon(counter.icon);
-            row.appendChild(iconWrap);
-        }
-
-        // Name
-        const nameEl = document.createElement('span');
-        nameEl.className = 'counter-row-name';
-        nameEl.textContent = counter.name;
-        nameEl.title = counter.name;
-        row.appendChild(nameEl);
-
-        // Value preview
-        const valueEl = document.createElement('span');
-        valueEl.className = 'counter-row-value counter-row-value-edit';
-        if (counter.max !== null) {
-            valueEl.textContent = counter.value + ' / ' + counter.max;
-        } else {
-            valueEl.textContent = String(counter.value);
-        }
-        row.appendChild(valueEl);
-
-        // Action buttons group — disabled in layout mode to preserve layout
-        const actionsGroup = document.createElement('div');
-        actionsGroup.className = 'counter-row-actions';
-
-        const decrementBtnEdit = document.createElement('button');
-        decrementBtnEdit.type = 'button';
-        decrementBtnEdit.className = 'counter-decrement-btn';
-        decrementBtnEdit.title = t('counter.decrement');
-        decrementBtnEdit.disabled = true;
-        decrementBtnEdit.innerHTML = cvIcon('minus', 14);
-        actionsGroup.appendChild(decrementBtnEdit);
-
-        const incrementBtnEdit = document.createElement('button');
-        incrementBtnEdit.type = 'button';
-        incrementBtnEdit.className = 'counter-increment-btn';
-        incrementBtnEdit.title = t('counter.increment');
-        incrementBtnEdit.disabled = true;
-        incrementBtnEdit.innerHTML = cvIcon('plus', 14);
-        actionsGroup.appendChild(incrementBtnEdit);
-
-        const resetBtnEdit = document.createElement('button');
-        resetBtnEdit.type = 'button';
-        resetBtnEdit.className = 'counter-reset-btn';
-        resetBtnEdit.title = t('counter.reset');
-        resetBtnEdit.disabled = true;
-        resetBtnEdit.innerHTML = cvIcon('rotate-ccw', 14);
-        actionsGroup.appendChild(resetBtnEdit);
-
-        row.appendChild(actionsGroup);
-
-        // Delete button (outside the actions group, separate from play-mode layout)
-        const deleteBtn = document.createElement('button');
-        deleteBtn.type = 'button';
-        deleteBtn.className = 'counter-row-delete';
-        deleteBtn.title = t('counter.deleteCounter');
-        deleteBtn.innerHTML = cvIcon('x', 12);
-        deleteBtn.addEventListener('click', function (e) {
-            e.stopPropagation();
-            const idx = content.counters.findIndex(function (c) {
-                return c.id === counter.id;
-            });
-            if (idx !== -1) content.counters.splice(idx, 1);
-            content.counters.forEach(function (c, i) {
-                c.order = i;
-            });
-            scheduleSave();
-            reRenderCounterModule(moduleEl, data);
-        });
-        row.appendChild(deleteBtn);
-
-        // Click to open edit modal
-        row.addEventListener('click', function (e) {
-            if (e.target.closest('.counter-row-delete') || e.target.closest('.counter-drag-handle')) return;
-            openCounterEditModal(moduleEl, data, counter.id);
-        });
-
-        return row;
-    }
-
     // ── Column Headers ──
     function renderCounterColumnHeaders(container, content, moduleEl, data) {
         const headerRow = document.createElement('div');
@@ -833,104 +738,265 @@
         container.appendChild(headerRow);
     }
 
-    // ── SortableJS for Layout Mode Reorder ──
-    function initCounterSortable(container, data) {
-        const content = data.content;
-        container._sortable = new Sortable(container, {
-            handle: '.counter-drag-handle',
-            animation: 150,
-            ghostClass: 'counter-ghost',
-            draggable: '.counter-row-edit',
-            onEnd: function () {
-                const rows = Array.from(container.querySelectorAll('.counter-row-edit'));
-                const reordered = rows
-                    .map(function (row) {
-                        return content.counters.find(function (c) {
-                            return c.id === row.dataset.counterId;
-                        });
-                    })
-                    .filter(Boolean);
-                content.counters = reordered;
-                content.counters.forEach(function (c, i) {
-                    c.order = i;
-                });
-                // Revert sort to custom when manually reordered
-                content.sortBy = 'custom';
-                content.sortDir = 'asc';
-                scheduleSave();
-            },
-        });
-    }
-
     // ── Module Type Registration ──
     registerModuleType('counters', {
         label: 'type.counters',
 
-        renderBody: function (bodyEl, data, isPlayMode) {
+        renderBody: function (bodyEl, data) {
             const content = ensureContent(data);
             const container = document.createElement('div');
             container.className = 'counter-container';
             const moduleEl = bodyEl.closest('.module');
 
-            // Sort controls — shown in both play and layout mode
             if (content.counters.length > 0) {
                 renderCounterColumnHeaders(container, content, moduleEl, data);
             }
 
-            if (isPlayMode) {
-                // Counter list
-                let list = document.createElement('div');
-                list.className = 'counter-list';
-                let sorted = getSortedCounters(content);
-                sorted.forEach(function (counter) {
-                    list.appendChild(renderCounterRowPlay(counter, data, moduleEl));
-                });
+            const list = document.createElement('div');
+            list.className = 'counter-list';
+            const sorted = getSortedCounters(content);
+            sorted.forEach(function (counter) {
+                list.appendChild(renderCounterRowPlay(counter, data, moduleEl));
+            });
 
-                if (content.counters.length === 0) {
-                    let empty = document.createElement('div');
-                    empty.className = 'counter-empty-state';
-                    empty.textContent = t('counter.emptyState');
-                    list.appendChild(empty);
-                }
-
-                container.appendChild(list);
-            } else {
-                // Edit mode list
-                let list = document.createElement('div');
-                list.className = 'counter-list counter-list-edit';
-
-                // In layout mode, always show custom order
-                let sorted = content.counters.slice().sort(function (a, b) {
-                    return a.order - b.order;
-                });
-                sorted.forEach(function (counter) {
-                    list.appendChild(renderCounterRowEdit(counter, data, moduleEl));
-                });
-
-                if (content.counters.length === 0) {
-                    let empty = document.createElement('div');
-                    empty.className = 'counter-empty-state';
-                    empty.textContent = t('counter.emptyState');
-                    list.appendChild(empty);
-                }
-
-                container.appendChild(list);
-
-                // Init drag-to-reorder
-                if (content.counters.length > 1) {
-                    initCounterSortable(list, data);
-                }
+            if (content.counters.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'counter-empty-state';
+                empty.textContent = t('counter.emptyState');
+                list.appendChild(empty);
             }
+
+            container.appendChild(list);
 
             bodyEl.innerHTML = '';
             bodyEl.appendChild(container);
         },
 
-        syncState: function (moduleEl, data) {
-            // Counter data is mutated directly via modals, nothing to sync from DOM
+        overflowMenuItems: function (moduleEl, data) {
+            return [
+                {
+                    onClick: function () {
+                        openCounterCreateModal(moduleEl, data);
+                    },
+                    label: t('counter.addCounter'),
+                    icon: cvIcon('plus', 14),
+                },
+                {
+                    onClick: function () {
+                        openCounterSettingsModal(moduleEl, data);
+                    },
+                    label: t('counter.moduleSettings'),
+                    icon: cvIcon('settings', 14),
+                },
+            ];
         },
     });
 
+    // ── Settings Modal ──
+    function openCounterSettingsModal(moduleEl, data) {
+        const existing = document.querySelector('.counter-settings-overlay');
+        if (existing) {
+            existing.remove();
+            return;
+        }
+
+        const content = ensureContent(data);
+
+        const overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay counter-settings-overlay';
+
+        const panel = document.createElement('div');
+        panel.className = 'cv-modal-panel';
+
+        const header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        const titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = t('counter.settingsTitle');
+        const closeXBtn = document.createElement('button');
+        closeXBtn.type = 'button';
+        closeXBtn.className = 'cv-modal-close';
+        closeXBtn.title = t('counter.close');
+        closeXBtn.innerHTML = cvIcon('x', 12);
+        header.appendChild(titleEl);
+        header.appendChild(closeXBtn);
+        panel.appendChild(header);
+
+        const body = document.createElement('div');
+        body.className = 'cv-modal-body';
+
+        // ── Manage Counters ──
+        const manageLabel = document.createElement('div');
+        manageLabel.className = 'cv-modal-label';
+        manageLabel.textContent = t('counter.manageCounters');
+        body.appendChild(manageLabel);
+
+        const manageList = document.createElement('div');
+        manageList.className = 'counter-manage-list';
+
+        function buildManageRow(counter) {
+            const row = document.createElement('div');
+            row.className = 'counter-manage-row';
+            row.dataset.counterId = counter.id;
+
+            const drag = document.createElement('span');
+            drag.className = 'counter-manage-drag';
+            drag.innerHTML = '&#x2807;';
+            row.appendChild(drag);
+
+            const iconBtn = document.createElement('button');
+            iconBtn.type = 'button';
+            iconBtn.className = 'counter-manage-icon';
+            iconBtn.title = t('counter.editTitle');
+            iconBtn.innerHTML = counter.icon
+                ? cvIcon(counter.icon)
+                : '<span class="counter-manage-icon-none">&mdash;</span>';
+            iconBtn.addEventListener('click', function () {
+                openCounterEditModal(moduleEl, data, counter.id, renderManageRows);
+            });
+            row.appendChild(iconBtn);
+
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.className = 'counter-manage-name';
+            nameInput.value = counter.name;
+            nameInput.placeholder = t('counter.namePlaceholder');
+            nameInput.addEventListener('input', function () {
+                const oldName = counter.name;
+                counter.name = nameInput.value;
+                if (typeof window.propagateEntityRename === 'function') {
+                    window.propagateEntityRename(data.id, 'counter', oldName, counter.name);
+                }
+                scheduleSave();
+                const bodyEl = moduleEl.querySelector('.module-body');
+                const nameEl =
+                    bodyEl && bodyEl.querySelector('.counter-row-play[data-counter-id="' + counter.id + '"] .counter-row-name');
+                if (nameEl) {
+                    nameEl.textContent = counter.name;
+                    nameEl.title = counter.name;
+                }
+            });
+            nameInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === 'Escape') nameInput.blur();
+            });
+            row.appendChild(nameInput);
+
+            const valueBtn = document.createElement('button');
+            valueBtn.type = 'button';
+            valueBtn.className = 'counter-manage-value';
+            valueBtn.textContent = counter.max !== null ? counter.value + ' / ' + counter.max : String(counter.value);
+            valueBtn.title = t('counter.editTitle');
+            valueBtn.addEventListener('click', function () {
+                openCounterEditModal(moduleEl, data, counter.id, renderManageRows);
+            });
+            row.appendChild(valueBtn);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.className = 'counter-manage-delete';
+            deleteBtn.title = t('counter.deleteCounter');
+            deleteBtn.innerHTML = cvIcon('x', 12);
+            deleteBtn.addEventListener('click', function () {
+                const idx = content.counters.findIndex(function (c) {
+                    return c.id === counter.id;
+                });
+                if (idx !== -1) content.counters.splice(idx, 1);
+                content.counters.forEach(function (c, i) {
+                    c.order = i;
+                });
+                scheduleSave();
+                renderManageRows();
+                reRenderCounterModule(moduleEl, data);
+            });
+            row.appendChild(deleteBtn);
+
+            return row;
+        }
+
+        function renderManageRows() {
+            manageList.innerHTML = '';
+            content.counters
+                .slice()
+                .sort(function (a, b) {
+                    return a.order - b.order;
+                })
+                .forEach(function (counter) {
+                    manageList.appendChild(buildManageRow(counter));
+                });
+
+            if (manageList._sortable) manageList._sortable.destroy();
+            manageList._sortable = new Sortable(manageList, {
+                handle: '.counter-manage-drag',
+                animation: 150,
+                ghostClass: 'counter-ghost',
+                draggable: '.counter-manage-row',
+                onEnd: function () {
+                    const rows = Array.from(manageList.querySelectorAll('.counter-manage-row'));
+                    const reordered = rows
+                        .map(function (row) {
+                            return content.counters.find(function (c) {
+                                return c.id === row.dataset.counterId;
+                            });
+                        })
+                        .filter(Boolean);
+                    content.counters = reordered;
+                    content.counters.forEach(function (c, i) {
+                        c.order = i;
+                    });
+                    content.sortBy = 'custom';
+                    content.sortDir = 'asc';
+                    scheduleSave();
+                    reRenderCounterModule(moduleEl, data);
+                },
+            });
+        }
+
+        renderManageRows();
+        body.appendChild(manageList);
+
+        const addCounterBtn = document.createElement('button');
+        addCounterBtn.type = 'button';
+        addCounterBtn.className = 'btn-secondary sm';
+        addCounterBtn.innerHTML = cvIcon('plus', 14) + ' ' + escapeHtml(t('counter.addCounter'));
+        addCounterBtn.addEventListener('click', function () {
+            openCounterCreateModal(moduleEl, data, renderManageRows);
+        });
+        body.appendChild(addCounterBtn);
+
+        buildCommonSettingsSection(body, moduleEl, data);
+        panel.appendChild(body);
+
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'btn-secondary sm';
+        closeBtn.textContent = t('counter.close');
+        closeBtn.addEventListener('click', closeModal);
+        footer.appendChild(closeBtn);
+        panel.appendChild(footer);
+
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+
+        function closeModal() {
+            document.removeEventListener('keydown', keyHandler);
+            overlay.remove();
+        }
+        const keyHandler = function (e) {
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                closeModal();
+            }
+        };
+        document.addEventListener('keydown', keyHandler);
+        closeXBtn.addEventListener('click', closeModal);
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) closeModal();
+        });
+    }
+
     // Expose for module-core toolbar wiring
     window.openCounterCreateModal = openCounterCreateModal;
+    window.openCounterSettingsModal = openCounterSettingsModal;
 })();

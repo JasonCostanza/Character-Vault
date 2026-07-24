@@ -9,7 +9,6 @@ beforeEach(() => {
   window.moduleIdCounter = 0;
   window.activityLog = [];
   window.pendingRolls = {};
-  window.isPlayMode = false;
 
   globalThis.scheduleSave = vi.fn();
   globalThis.MODULE_TYPES = {};

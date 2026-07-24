@@ -186,8 +186,6 @@
 .spells-row { border-bottom: 1px solid var(--cv-border-subtle); }
 .spells-row:hover { background: var(--cv-bg-raised); }
 .spells-row td { padding: 4px 6px; font-size: 12px; vertical-align: middle; }
-.spells-row-ghost { opacity: 0.3; border: 1px dashed var(--cv-accent); }
-.spells-row-handle { cursor: grab; color: var(--cv-text-muted); font-size: 14px; user-select: none; }
 .spells-name-display { cursor: default; }
 .spells-attr-display { cursor: default; color: var(--cv-text-secondary); }
 
@@ -212,45 +210,6 @@
 }
 .spells-desc-display { font-size: 12px; color: var(--cv-text-secondary); line-height: 1.4; white-space: pre-wrap; }
 .spells-drawer-content code { background: var(--cv-bg-raised); }
-
-.spells-desc-textarea {
-    width: 100%;
-    min-height: 48px;
-    resize: none;
-    overflow: hidden;
-    font-size: 12px;
-    background: var(--cv-bg-sunken);
-    border: 1px solid var(--cv-border);
-    border-radius: 3px;
-    padding: 4px 6px;
-    color: var(--cv-text);
-    box-sizing: border-box;
-    font-family: inherit;
-}
-
-/* Inline inputs */
-.spells-inline-input { background: transparent; border: none; border-bottom: 1px solid var(--cv-border); color: var(--cv-text); font-size: 12px; padding: 2px 4px; width: 100%; box-sizing: border-box; }
-.spells-inline-input:focus { outline: none; border-bottom-color: var(--cv-accent); }
-
-/* Layout mode add buttons */
-.spells-add-spell-btn,
-.spells-add-cat-btn {
-    flex-shrink: 0;
-    background: none;
-    border: 1px dashed var(--cv-border);
-    color: var(--cv-text-muted);
-    border-radius: 3px;
-    padding: 4px 8px;
-    font-size: 11px;
-    cursor: pointer;
-    width: 100%;
-    text-align: center;
-    user-select: none;
-    box-sizing: border-box;
-}
-
-.spells-add-spell-btn:hover,
-.spells-add-cat-btn:hover { border-color: var(--cv-accent); color: var(--cv-accent); }
 
 /* Empty state */
 .spells-empty-state { color: var(--cv-text-muted); font-size: 12px; text-align: center; padding: 16px; user-select: none; }
@@ -722,39 +681,6 @@
     color: var(--cv-text-muted);
     background: color-mix(in srgb, var(--cv-text-muted) 12%, transparent);
     border: 1px solid color-mix(in srgb, var(--cv-text-muted) 30%, transparent);
-}
-
-/* ── Pool Name Input (layout bar) ── */
-.spells-slot-name-input {
-    font-size: 11px;
-    font-family: inherit;
-    background: var(--cv-bg-sunken);
-    border: 1px solid var(--cv-border);
-    border-radius: 3px;
-    color: var(--cv-text);
-    padding: 2px 5px;
-    width: 80px;
-    min-width: 0;
-}
-.spells-slot-name-input:focus {
-    outline: none;
-    border-color: var(--cv-accent);
-}
-
-/* ── Spell Drawer Field Row (slot cost, upcast toggle) ── */
-.spells-drawer-field-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding-top: 6px;
-    margin-top: 4px;
-    border-top: 1px solid var(--cv-border-subtle);
-}
-.spells-drawer-field-label {
-    font-size: 11px;
-    color: var(--cv-text-muted);
-    user-select: none;
-    flex-shrink: 0;
 }
 
 /* ── Upcast level picker ── */

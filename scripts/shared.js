@@ -83,7 +83,7 @@
             }
             return match;
         });
-        const textarea = moduleEl.querySelector('.module-textarea') || moduleEl.querySelector('.save-notes-textarea');
+        const textarea = moduleEl.querySelector('.module-textarea');
         if (textarea) textarea.value = data.content;
         scheduleSave();
     }

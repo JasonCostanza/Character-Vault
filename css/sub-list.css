@@ -74,39 +74,7 @@
     user-select: none;
 }
 
-.list-item-name-input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid var(--cv-border);
-    color: var(--cv-text);
-    font-size: 13px;
-    font-family: inherit;
-    padding: 2px 4px;
-    outline: none;
-    min-width: 0;
-}
-
-.list-item-name-input:focus {
-    border-bottom-color: var(--cv-accent);
-}
-
-.list-item-name-input::placeholder {
-    color: var(--cv-text-secondary);
-    opacity: 0.5;
-    text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
-    font-weight: bold;
-}
-
-.text-light .list-item-name-input::placeholder {
-    color: var(--cv-text);
-    opacity: 0.4;
-    text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
-    font-weight: bold;
-}
-
-.list-item-expand-btn,
-.list-item-delete-btn {
+.list-item-expand-btn {
     flex-shrink: 0;
     background: none;
     border: none;
@@ -122,11 +90,6 @@
 
 .list-item-expand-btn:hover {
     color: var(--cv-accent);
-    background: rgba(255, 255, 255, 0.06);
-}
-
-.list-item-delete-btn:hover {
-    color: var(--cv-danger);
     background: rgba(255, 255, 255, 0.06);
 }
 
@@ -188,16 +151,6 @@
     color: var(--cv-text);
 }
 
-
-.list-header-row.cols-draggable .list-col-attr {
-    cursor: grab;
-}
-
-.list-col-ghost {
-    opacity: 0.3;
-    border: 2px dashed var(--cv-accent);
-    background-color: transparent;
-}
 
 /* ── Column Resize Handle ── */
 .list-col-resize-handle {
@@ -274,7 +227,6 @@
 }
 
 /* For rows with attribute columns, pin the action button width */
-.list-item-row.has-columns .list-item-delete-btn,
 .list-item-row.has-columns .list-item-expand-btn {
     flex: 0 0 20px;
     width: 20px;
@@ -522,6 +474,11 @@
     user-select: none;
 }
 
+.list-attr-manage-list {
+    display: flex;
+    flex-direction: column;
+}
+
 .list-attr-row {
     display: flex;
     align-items: center;
@@ -532,6 +489,26 @@
 
 .list-attr-row:last-child {
     border-bottom: none;
+}
+
+.list-attr-drag-handle {
+    color: var(--cv-text-muted);
+    cursor: grab;
+    font-size: 12px;
+    line-height: 1;
+    padding: 0 2px;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.list-attr-drag-handle:active {
+    cursor: grabbing;
+}
+
+.list-attr-ghost {
+    opacity: 0.3;
+    border: 2px dashed var(--cv-accent);
+    background-color: transparent;
 }
 
 .list-attr-icon {

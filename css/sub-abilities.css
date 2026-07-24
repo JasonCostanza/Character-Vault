@@ -83,11 +83,6 @@
     border-color: var(--cv-accent);
 }
 
-.ability-edit-row .ability-proficiency-dot {
-    cursor: pointer;
-}
-
-
 .ability-rank-badge {
     width: 12px;
     height: 12px;
@@ -182,42 +177,39 @@
     user-select: none;
 }
 
-/* Abilities layout mode */
-.ability-edit-row {
+/* ── Manage Abilities List (Settings Modal) ── */
+.ability-manage-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ability-manage-row {
     display: flex;
     align-items: center;
-    gap: 4px;
-    padding: 3px 4px;
-    border-radius: 4px;
-    min-height: 28px;
-    transition: background-color 0.1s ease;
+    gap: 6px;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--cv-border-subtle);
 }
 
-.ability-edit-row:hover {
-    background-color: var(--cv-bg-raised);
+.ability-manage-row:last-child {
+    border-bottom: none;
 }
 
-.ability-drag-handle {
-    color: var(--cv-text-muted);
+.ability-manage-drag {
     cursor: grab;
-    font-size: 12px;
+    color: var(--cv-text-muted);
+    font-size: 14px;
     line-height: 1;
-    padding: 0 2px;
-    opacity: 0;
-    transition: opacity 0.15s ease;
     flex-shrink: 0;
     user-select: none;
 }
 
-.ability-edit-row:hover .ability-drag-handle {
-    opacity: 1;
-}
-
-.ability-drag-handle:active {
+.ability-manage-drag:active {
     cursor: grabbing;
 }
 
-.ability-edit-name {
+.ability-manage-name {
     flex: 1;
     min-width: 0;
     font-size: 11px;
@@ -226,60 +218,19 @@
     background-color: var(--cv-bg-sunken);
     border: 1px solid var(--cv-border-subtle);
     border-radius: 3px;
-    padding: 2px 4px;
+    padding: 4px 6px;
     outline: none;
     font-family: inherit;
 }
 
-.ability-edit-name:focus {
+.ability-manage-name:focus {
     border-color: var(--cv-accent);
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
 
-.ability-edit-modifier {
-    width: 36px;
-    font-size: 11px;
-    font-weight: 600;
-    font-family: inherit;
-    text-align: center;
-    color: inherit;
-    background-color: var(--cv-bg-sunken);
-    border: 1px solid var(--cv-border-subtle);
-    border-radius: 3px;
-    padding: 2px 2px;
-    outline: none;
-    flex-shrink: 0;
-    -moz-appearance: textfield;
-}
-
-.ability-edit-modifier::-webkit-inner-spin-button,
-.ability-edit-modifier::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-.ability-edit-modifier:focus {
-    border-color: var(--cv-accent);
-    box-shadow: 0 0 0 2px var(--cv-focus-ring);
-}
-
-.ability-stat-mod {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--cv-text-muted);
-    flex-shrink: 0;
-    user-select: none;
-    min-width: 22px;
-    text-align: center;
-}
-
-.ability-edit-bonus {
-    width: 30px;
-}
-
-.ability-edit-delete {
-    width: 16px;
-    height: 16px;
+.ability-manage-delete {
+    width: 20px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -289,22 +240,20 @@
     cursor: pointer;
     border-radius: 3px;
     padding: 0;
-    transition: color 0.15s ease, opacity 0.15s ease;
-    opacity: 0;
     flex-shrink: 0;
 }
 
-.ability-edit-row:hover .ability-edit-delete {
-    opacity: 1;
-}
-
-.ability-edit-delete:hover {
+.ability-manage-delete:hover {
     color: var(--cv-danger);
 }
 
-.ability-edit-delete .icon {
+.ability-manage-delete .icon {
     width: 12px;
     height: 12px;
+}
+
+.ability-manage-row .ability-proficiency-dot {
+    cursor: pointer;
 }
 
 .ability-empty-state {

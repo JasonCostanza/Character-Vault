@@ -137,12 +137,18 @@
 .def-qd-strip.compact .def-qd-compact-badge { display: block; }
 .def-qd-strip.compact .def-qd-btn { position: relative; }
 
-/* ── Layout Mode: Edit Rows ── */
-.def-edit-row {
-    display: flex; align-items: center; padding: 4px; gap: 6px;
+/* ── Manage Defenses List (Settings Modal) ── */
+.def-manage-list {
+    display: flex; flex-direction: column; gap: 4px;
 }
 
-.def-drag-handle {
+.def-manage-row {
+    display: flex; align-items: center; padding: 4px 0; gap: 6px;
+    border-bottom: 1px solid var(--cv-border-subtle);
+}
+.def-manage-row:last-child { border-bottom: none; }
+
+.def-manage-drag {
     cursor: grab; color: var(--cv-text-muted); font-size: 14px;
     flex-shrink: 0; user-select: none;
 }
@@ -155,48 +161,36 @@
 .def-icon-btn:hover { background: var(--cv-surface-hover); }
 .def-icon-btn .icon { width: 14px; height: 14px; }
 
-.def-name-input {
+.def-manage-name {
     flex: 1; min-width: 60px; background: var(--cv-bg-sunken);
     border: 1px solid var(--cv-border-subtle); color: var(--cv-text-primary);
     padding: 4px 6px; border-radius: 3px; font-size: 0.85em;
     font-family: inherit;
 }
 
-.def-sign-toggle {
+.def-manage-sign {
     background: none; border: 1px solid var(--cv-border-subtle);
     width: 24px; height: 24px; flex-shrink: 0; font-weight: 700;
     font-size: 0.8em; border-radius: 3px; color: var(--cv-text-muted);
     cursor: pointer; padding: 0;
 }
-.def-sign-toggle:hover { background: var(--cv-surface-hover); }
-.def-sign-toggle.active { color: var(--cv-accent); border-color: var(--cv-accent); }
+.def-manage-sign:hover { background: var(--cv-surface-hover); }
+.def-manage-sign.active { color: var(--cv-accent); border-color: var(--cv-accent); }
 
-.def-value-input {
+.def-manage-value {
     width: 50px; background: var(--cv-bg-sunken);
     border: 1px solid var(--cv-border-subtle); color: var(--cv-text-primary);
     padding: 4px 6px; border-radius: 3px; font-size: 0.85em; text-align: center;
     font-family: inherit;
 }
 
-.def-delete-btn {
+.def-manage-delete {
     background: none; border: none; width: 20px; height: 20px;
     color: var(--cv-text-muted); cursor: pointer; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center; padding: 0;
 }
-.def-delete-btn:hover { color: var(--cv-danger); }
-.def-delete-btn .icon { width: 12px; height: 12px; }
-
-/* ── Add Defense Row ── */
-.def-add-row {
-    display: flex; align-items: center; justify-content: center;
-    padding: 6px 4px; gap: 6px; cursor: pointer;
-    color: var(--cv-text-muted); font-size: 0.8em;
-    border-radius: 4px; margin-top: 4px; user-select: none;
-}
-.def-add-row:hover {
-    background: var(--cv-surface-hover); color: var(--cv-text-secondary);
-}
-.def-add-row .icon { width: 14px; height: 14px; }
+.def-manage-delete:hover { color: var(--cv-danger); }
+.def-manage-delete .icon { width: 12px; height: 12px; }
 
 /* ── Empty State ── */
 .def-empty {
@@ -285,7 +279,7 @@
 }
 
 /* ── SortableJS Ghost ── */
-.def-edit-row.cv-drag-ghost,
+.def-manage-row.cv-drag-ghost,
 .def-qd-row.cv-drag-ghost {
     opacity: 0.4; border: 1px dashed var(--cv-text-muted); border-radius: 4px;
 }

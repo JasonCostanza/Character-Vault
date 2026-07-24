@@ -40,24 +40,8 @@
             if (!typeDef) return;
             const titleLabel = el.querySelector('.module-type-label');
             if (titleLabel) titleLabel.textContent = data.title || t(typeDef.label);
-            const copyBtn = el.querySelector('.module-copy-btn');
-            if (copyBtn) copyBtn.title = t('module.copyClipboard');
-            const deleteBtn = el.querySelector('.module-delete-btn');
-            if (deleteBtn) deleteBtn.title = t('module.deleteModule');
             const resizeHandle = el.querySelector('.module-resize-handle');
             if (resizeHandle) resizeHandle.title = t('module.dragResize');
-            const textarea = el.querySelector('.module-textarea');
-            if (textarea) textarea.placeholder = t('text.placeholder');
-            // Stat module labels
-            const statAddBtn = el.querySelector('.stat-add-btn');
-            if (statAddBtn) {
-                statAddBtn.title = t('stat.addStat');
-                const span = statAddBtn.querySelector('span');
-                if (span) span.textContent = t('stat.addStat');
-            }
-            el.querySelectorAll('.stat-edit-delete').forEach((btn) => {
-                btn.title = t('stat.deleteStat');
-            });
         });
     }
 

@@ -2,8 +2,7 @@
 /* ── Condition Module ── */
 
 /* ── Condition Shared Layout ── */
-.cond-play-container,
-.cond-edit-container {
+.cond-play-container {
     padding: 4px 0;
     user-select: none;
 }
@@ -88,7 +87,7 @@
     padding: 2px 0;
 }
 
-/* ── Condition Play Mode Items ── */
+/* ── Condition Items ── */
 .cond-play-item {
     display: flex;
     align-items: center;
@@ -178,7 +177,7 @@
     height: 12px;
 }
 
-/* ── Condition Play Mode Tooltips ── */
+/* ── Condition Item Tooltips ── */
 .cond-play-item[data-tooltip]::after {
     content: attr(data-tooltip);
     position: absolute;
@@ -202,82 +201,6 @@
 
 .cond-play-item[data-tooltip]:hover::after {
     opacity: 1;
-}
-
-/* ── Condition Layout Mode Items ── */
-.cond-edit-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 6px;
-    background: var(--cv-bg-raised);
-    border: 1px solid var(--cv-border-subtle);
-    border-radius: 4px;
-    color: var(--cv-text);
-    position: relative;
-}
-
-.cond-edit-item.inactive {
-    opacity: 0.3;
-    color: var(--cv-text-muted);
-}
-
-.cond-edit-item[data-tooltip]::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--cv-bg-raised);
-    border: 1px solid var(--cv-border);
-    color: var(--cv-text-secondary);
-    font-size: 10px;
-    white-space: normal;
-    max-width: 220px;
-    padding: 4px 8px;
-    border-radius: 3px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.1s ease;
-    z-index: 10;
-    line-height: 1.35;
-}
-
-.cond-edit-item[data-tooltip]:hover::after {
-    opacity: 1;
-}
-
-.cond-edit-icon {
-    flex-shrink: 0;
-    width: 14px;
-    height: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.cond-edit-icon .icon {
-    width: 14px;
-    height: 14px;
-}
-
-.cond-edit-name {
-    flex: 1;
-    font-size: 10px;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.cond-edit-value {
-    flex-shrink: 0;
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--cv-accent);
-    padding: 1px 6px;
-    min-width: 18px;
-    text-align: center;
 }
 
 /* ── Condition Settings Panel ── */

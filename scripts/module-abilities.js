@@ -324,130 +324,29 @@
             `<span class="ability-name">${escapeHtml(ability.name || t('abilities.unnamed'))}</span>` +
             `<span class="ability-modifier">${escapeHtml(formatModifier(getAbilityBaseMod(ability, data)))}</span>`;
 
-        row.addEventListener('click', () => rollAbilityCheck(ability, data));
-        return row;
-    }
-
-    function renderAbilityRowEdit(ability, index, data) {
-        const row = document.createElement('div');
-        row.className = 'ability-edit-row';
-        row.dataset.index = index;
-
-        const isLinked = !!(data.content.linkedStatModuleId && ability.linkedStat);
-        const abbrev = ability.linkedStat ? ability.linkedStat.substring(0, 3).toUpperCase() : ability.abbrev || '';
-        var editAbilitySys = window.gameSystem || 'custom';
-        var profColHtml;
-        if (editAbilitySys === 'pf2e') {
-            profColHtml = `<span class="ability-rank-select-wrap"></span>`;
-        } else {
-            profColHtml = `<span class="ability-proficiency-dot${ability.proficiency ? ' active' : ''}" title="${t('abilities.proficiency')}"></span>`;
-        }
-        var modAreaHtml;
-        if (isLinked) {
-            var statMod = window.getAbilityModifierFrom(ability.linkedStat, data.content.linkedStatModuleId);
-            modAreaHtml =
-                `<span class="ability-stat-mod" title="${escapeHtml(t('common.fromStat', { stat: ability.linkedStat }))}">${escapeHtml(formatModifier(statMod))}</span>` +
-                `<input class="ability-edit-modifier ability-edit-bonus" type="number" value="${ability.modifier}" title="${t('common.bonus')}">`;
-        } else {
-            modAreaHtml = `<input class="ability-edit-modifier" type="number" value="${ability.modifier}">`;
-        }
-        row.innerHTML =
-            `<span class="ability-drag-handle">&#x2807;</span>` +
-            profColHtml +
-            (isLinked
-                ? `<span class="ability-abbrev ability-abbrev--locked">${escapeHtml(abbrev)}</span>`
-                : `<input class="ability-abbrev-input" type="text" maxlength="3" value="${escapeHtml(abbrev)}" placeholder="---" title="${t('abilities.abbrevLabel')}">`) +
-            `<input class="ability-edit-name" type="text" value="${escapeHtml(ability.name)}" placeholder="${t('abilities.unnamed')}">` +
-            modAreaHtml +
-            `<button class="ability-edit-delete" title="${t('abilities.deleteAbility')}">` +
-            cvIcon('x', 12) +
-            `</button>`;
-
-        const nameInput = row.querySelector('.ability-edit-name');
-        const modInput = row.querySelector('.ability-edit-modifier');
-        const abbrevInput = row.querySelector('.ability-abbrev-input');
-        const profDot = row.querySelector('.ability-proficiency-dot');
-        const rankWrap = row.querySelector('.ability-rank-select-wrap');
-        const deleteBtn = row.querySelector('.ability-edit-delete');
-
-        nameInput.addEventListener('input', () => {
-            const oldName = ability.name;
-            ability.name = nameInput.value;
-            if (typeof window.propagateEntityRename === 'function') {
-                window.propagateEntityRename(data.id, 'ability', oldName, ability.name);
+        row.addEventListener('click', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                e.stopPropagation();
+                enterAbilityQuickEdit(row, ability, index, data);
+                return;
             }
-            scheduleSave();
+            rollAbilityCheck(ability, data);
         });
-        modInput.addEventListener('input', () => {
-            ability.modifier = parseInt(modInput.value, 10) || 0;
-            scheduleSave();
-        });
-        if (abbrevInput) {
-            abbrevInput.addEventListener('input', () => {
-                const val = abbrevInput.value.toUpperCase().substring(0, 3);
-                abbrevInput.value = val;
-                ability.abbrev = val || null;
-                scheduleSave();
-            });
-        }
-        if (profDot) {
-            profDot.addEventListener('click', () => {
-                ability.proficiency = !ability.proficiency;
-                profDot.classList.toggle('active', ability.proficiency);
-                scheduleSave();
-            });
-        }
-        if (rankWrap) {
-            var rankSel = window.buildCvSelect(
-                window.buildPf2eRankOptions(),
-                ability.proficiencyRank || 'untrained',
-                function (v) {
-                    ability.proficiencyRank = v;
-                    scheduleSave();
-                }
-            );
-            rankWrap.appendChild(rankSel.el);
-        }
-
-        [nameInput, modInput, abbrevInput].filter(Boolean).forEach((inp) => {
-            inp.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === 'Escape') inp.blur();
-            });
-        });
-
-        deleteBtn.addEventListener('click', () => {
-            data.content.abilities.splice(index, 1);
-            const container = row.closest('.ability-container');
-            reRenderAbilityEdits(container, data);
-            scheduleSave();
-        });
-
         return row;
     }
 
-    function reRenderAbilityEdits(container, data) {
-        container.querySelectorAll('.ability-edit-row').forEach((el) => el.remove());
-        data.content.abilities.forEach((ability, i) => {
-            container.appendChild(renderAbilityRowEdit(ability, i, data));
-        });
-        if (container._sortable) container._sortable.destroy();
-        initAbilitySortable(container, data);
-    }
-
-    function initAbilitySortable(container, data) {
-        container._sortable = new Sortable(container, {
-            handle: '.ability-drag-handle',
-            animation: 150,
-            ghostClass: 'ability-ghost',
-            draggable: '.ability-edit-row',
-            onEnd() {
-                const items = Array.from(container.querySelectorAll('.ability-edit-row'));
-                const reordered = items
-                    .map((el) => data.content.abilities[parseInt(el.dataset.index, 10)])
-                    .filter(Boolean);
-                data.content.abilities = reordered;
-                items.forEach((el, i) => (el.dataset.index = i));
+    // ── Quick Edit (Ctrl+Click) ──
+    function enterAbilityQuickEdit(row, ability, index, data) {
+        const modEl = row.querySelector('.ability-modifier');
+        window.openEditPopover(modEl, {
+            label: ability.name || t('abilities.unnamed'),
+            value: ability.modifier,
+            type: 'number',
+            relative: true,
+            onSave(newVal) {
+                ability.modifier = newVal;
                 scheduleSave();
+                row.replaceWith(renderAbilityRow(ability, index, data));
             },
         });
     }
@@ -482,6 +381,170 @@
 
         const body = document.createElement('div');
         body.className = 'cv-modal-body';
+
+        function reRenderModuleBody() {
+            const bodyEl = moduleEl.querySelector('.module-body');
+            const typeDef = window.MODULE_TYPES?.['abilities'];
+            if (typeDef && bodyEl) typeDef.renderBody(bodyEl, data);
+        }
+
+        // ── Manage Abilities ──
+        const manageLabel = document.createElement('div');
+        manageLabel.className = 'cv-modal-label';
+        manageLabel.textContent = t('abilities.manageAbilities');
+        body.appendChild(manageLabel);
+
+        const manageList = document.createElement('div');
+        manageList.className = 'ability-manage-list';
+
+        function buildManageRow(ability, index) {
+            const row = document.createElement('div');
+            row.className = 'ability-manage-row';
+            row.dataset.index = index;
+
+            const drag = document.createElement('span');
+            drag.className = 'ability-manage-drag';
+            drag.innerHTML = '&#x2807;';
+            row.appendChild(drag);
+
+            const isLinked = !!(data.content.linkedStatModuleId && ability.linkedStat);
+            const sys = window.gameSystem || 'custom';
+            if (sys === 'pf2e') {
+                const rankWrap = document.createElement('span');
+                rankWrap.className = 'ability-rank-select-wrap';
+                const rankSel = window.buildCvSelect(
+                    window.buildPf2eRankOptions(),
+                    ability.proficiencyRank || 'untrained',
+                    function (v) {
+                        ability.proficiencyRank = v;
+                        scheduleSave();
+                        reRenderModuleBody();
+                    }
+                );
+                rankWrap.appendChild(rankSel.el);
+                row.appendChild(rankWrap);
+            } else {
+                const profDot = document.createElement('span');
+                profDot.className = 'ability-proficiency-dot' + (ability.proficiency ? ' active' : '');
+                profDot.title = t('abilities.proficiency');
+                profDot.addEventListener('click', function () {
+                    ability.proficiency = !ability.proficiency;
+                    profDot.classList.toggle('active', ability.proficiency);
+                    scheduleSave();
+                    reRenderModuleBody();
+                });
+                row.appendChild(profDot);
+            }
+
+            const abbrev = ability.linkedStat ? ability.linkedStat.substring(0, 3).toUpperCase() : ability.abbrev || '';
+            if (isLinked) {
+                const abbrevEl = document.createElement('span');
+                abbrevEl.className = 'ability-abbrev ability-abbrev--locked';
+                abbrevEl.textContent = abbrev;
+                row.appendChild(abbrevEl);
+            } else {
+                const abbrevInput = document.createElement('input');
+                abbrevInput.type = 'text';
+                abbrevInput.className = 'ability-abbrev-input';
+                abbrevInput.maxLength = 3;
+                abbrevInput.value = abbrev;
+                abbrevInput.placeholder = '---';
+                abbrevInput.title = t('abilities.abbrevLabel');
+                abbrevInput.addEventListener('input', function () {
+                    const val = abbrevInput.value.toUpperCase().substring(0, 3);
+                    abbrevInput.value = val;
+                    ability.abbrev = val || null;
+                    scheduleSave();
+                    reRenderModuleBody();
+                });
+                row.appendChild(abbrevInput);
+            }
+
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.className = 'ability-manage-name';
+            nameInput.value = ability.name;
+            nameInput.placeholder = t('abilities.unnamed');
+            nameInput.addEventListener('input', function () {
+                const oldName = ability.name;
+                ability.name = nameInput.value;
+                if (typeof window.propagateEntityRename === 'function') {
+                    window.propagateEntityRename(data.id, 'ability', oldName, ability.name);
+                }
+                scheduleSave();
+                const bodyEl = moduleEl.querySelector('.module-body');
+                const nameEl = bodyEl && bodyEl.querySelector('.ability-row[data-index="' + index + '"] .ability-name');
+                if (nameEl) nameEl.textContent = ability.name || t('abilities.unnamed');
+            });
+            row.appendChild(nameInput);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.className = 'ability-manage-delete';
+            deleteBtn.title = t('abilities.deleteAbility');
+            deleteBtn.innerHTML = cvIcon('x', 12);
+            deleteBtn.addEventListener('click', function () {
+                const idx = data.content.abilities.indexOf(ability);
+                if (idx !== -1) data.content.abilities.splice(idx, 1);
+                scheduleSave();
+                renderManageRows();
+                reRenderModuleBody();
+            });
+            row.appendChild(deleteBtn);
+
+            return row;
+        }
+
+        function renderManageRows() {
+            manageList.innerHTML = '';
+            data.content.abilities.forEach(function (ability, i) {
+                manageList.appendChild(buildManageRow(ability, i));
+            });
+            if (manageList._sortable) manageList._sortable.destroy();
+            if (data.content.abilities.length > 1) {
+                manageList._sortable = new Sortable(manageList, {
+                    handle: '.ability-manage-drag',
+                    animation: 150,
+                    ghostClass: 'ability-ghost',
+                    draggable: '.ability-manage-row',
+                    onEnd: function () {
+                        const items = Array.from(manageList.querySelectorAll('.ability-manage-row'));
+                        const reordered = items
+                            .map((el) => data.content.abilities[parseInt(el.dataset.index, 10)])
+                            .filter(Boolean);
+                        data.content.abilities = reordered;
+                        items.forEach(function (el, i) {
+                            el.dataset.index = i;
+                        });
+                        scheduleSave();
+                        reRenderModuleBody();
+                    },
+                });
+            }
+        }
+
+        renderManageRows();
+        body.appendChild(manageList);
+
+        const addAbilityBtn = document.createElement('button');
+        addAbilityBtn.type = 'button';
+        addAbilityBtn.className = 'btn-secondary sm';
+        addAbilityBtn.innerHTML = cvIcon('plus', 14) + ' ' + escapeHtml(t('abilities.addAbility'));
+        addAbilityBtn.addEventListener('click', function () {
+            data.content.abilities.push({
+                name: '',
+                modifier: 0,
+                proficiency: false,
+                proficiencyRank: 'untrained',
+                linkedStat: null,
+            });
+            scheduleSave();
+            renderManageRows();
+            reRenderModuleBody();
+            const inputs = manageList.querySelectorAll('.ability-manage-name');
+            if (inputs.length) inputs[inputs.length - 1].focus();
+        });
+        body.appendChild(addAbilityBtn);
 
         const fieldLabel = document.createElement('label');
         fieldLabel.className = 'cv-modal-label';
@@ -527,9 +590,7 @@
         function save() {
             data.content.linkedStatModuleId = statPicker.getValue() || null;
             scheduleSave();
-            const bodyEl = moduleEl.querySelector('.module-body');
-            const isPlay = isPlayMode;
-            buildAbilityBody(bodyEl, data, isPlay);
+            reRenderModuleBody();
             updateAbilitiesChainIcon(moduleEl, data);
             close();
         }
@@ -564,7 +625,7 @@
     }
 
     // ── Module Body Builder ──
-    function buildAbilityBody(bodyEl, data, isPlayMode) {
+    function buildAbilityBody(bodyEl, data) {
         if (!data.content || typeof data.content === 'string') {
             data.content = { linkedStatModuleId: null, abilities: [] };
         }
@@ -586,15 +647,10 @@
             empty.className = 'ability-empty-state';
             empty.textContent = t('abilities.noAbilities');
             container.appendChild(empty);
-        } else if (isPlayMode) {
+        } else {
             data.content.abilities.forEach((ability, i) => {
                 container.appendChild(renderAbilityRow(ability, i, data));
             });
-        } else {
-            data.content.abilities.forEach((ability, i) => {
-                container.appendChild(renderAbilityRowEdit(ability, i, data));
-            });
-            initAbilitySortable(container, data);
         }
 
         bodyEl.innerHTML = '';
@@ -609,29 +665,34 @@
         label: 'type.abilities',
         hasStatLink: true,
 
-        renderBody(bodyEl, data, isPlayMode) {
-            buildAbilityBody(bodyEl, data, isPlayMode);
+        renderBody(bodyEl, data) {
+            buildAbilityBody(bodyEl, data);
         },
 
-        syncState(moduleEl, data) {
-            moduleEl.querySelectorAll('.ability-edit-row').forEach((row, i) => {
-                const ability = data.content.abilities[i];
-                if (!ability) return;
-                const nameInput = row.querySelector('.ability-edit-name');
-                const modInput = row.querySelector('.ability-edit-modifier');
-                const abbrevInput = row.querySelector('.ability-abbrev-input');
-                if (nameInput) ability.name = nameInput.value;
-                if (modInput) ability.modifier = parseInt(modInput.value, 10) || 0;
-                if (abbrevInput) ability.abbrev = abbrevInput.value.toUpperCase().substring(0, 3) || null;
-            });
+        overflowMenuItems(moduleEl, data) {
+            return [
+                {
+                    onClick: () => openAbilitySettings(moduleEl, data),
+                    label: t('abilities.settings'),
+                    icon: cvIcon('settings', 14),
+                },
+                {
+                    onClick() {
+                        data.content.abilities.push({ name: '', modifier: 0, proficiency: false, linkedStat: null });
+                        const bodyEl = moduleEl.querySelector('.module-body');
+                        buildAbilityBody(bodyEl, data);
+                        snapModuleHeight(moduleEl, data);
+                        scheduleSave();
+                    },
+                    label: t('abilities.addAbility'),
+                    icon: cvIcon('plus', 14),
+                },
+            ];
         },
     });
 
     window.ABILITY_TEMPLATES = ABILITY_TEMPLATES;
     window.applyAbilityTemplate = applyAbilityTemplate;
-    window.openAbilitySettings = function (moduleEl, data) {
-        openAbilitySettings(moduleEl, data);
-    };
     window.refreshLinkedAbilitiesChainIcons = function (statModuleId) {
         window.modules.forEach((mod) => {
             if (mod.type !== 'abilities') return;
@@ -649,7 +710,7 @@
             var moduleEl = document.querySelector('.module[data-id="' + mod.id + '"]');
             if (!moduleEl) return;
             var bodyEl = moduleEl.querySelector('.module-body');
-            if (bodyEl) buildAbilityBody(bodyEl, mod, isPlayMode);
+            if (bodyEl) buildAbilityBody(bodyEl, mod);
         });
     });
 })();

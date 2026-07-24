@@ -126,6 +126,7 @@
         const block = document.createElement('div');
         block.className = 'save-block save-rollable';
         block.dataset.index = index;
+        block.dataset.saveId = save.id;
 
         const tier = content.tiersEnabled ? getTierForSave(save, content.tiers) : null;
 
@@ -146,142 +147,6 @@
         });
 
         return block;
-    }
-
-    // ── Layout Mode Block ──
-    function renderSaveBlockEdit(save, index, data) {
-        const content = data.content;
-        const block = document.createElement('div');
-        block.className = 'save-block-edit';
-        block.dataset.index = index;
-
-        var isLinked = !!(content.linkedStatModuleId && save.linkedStatName);
-        var modAreaHtml = '';
-        if (isLinked) {
-            var statMod = window.getAbilityModifierFrom(save.linkedStatName, content.linkedStatModuleId);
-            modAreaHtml +=
-                `<div class="save-edit-field">` +
-                `<label>${escapeHtml(t('save.modifier'))}</label>` +
-                `<span class="save-stat-mod" title="${escapeHtml(t('common.fromStat', { stat: save.linkedStatName }))}">${escapeHtml(formatModifier(statMod))}</span>` +
-                `</div>`;
-        }
-        modAreaHtml +=
-            `<div class="save-edit-field">` +
-            `<label>${escapeHtml(t(isLinked ? 'common.bonus' : 'save.modifier'))}</label>` +
-            `<input type="number" class="save-edit-value" value="${save.value}">` +
-            `</div>`;
-
-        block.innerHTML =
-            `<div class="save-edit-name-row">` +
-            `<span class="save-drag-handle">&#x2807;</span>` +
-            `<input class="save-edit-name" type="text" value="${escapeHtml(save.name)}" placeholder="${escapeHtml(t('save.unnamed'))}">` +
-            `<button class="save-edit-delete" title="${escapeHtml(t('save.deleteSave'))}">` +
-            cvIcon('x', 12) +
-            `</button>` +
-            `</div>` +
-            `<div class="save-edit-row">` +
-            modAreaHtml +
-            `</div>`;
-
-        const nameInput = block.querySelector('.save-edit-name');
-        const valInput = block.querySelector('.save-edit-value');
-        const deleteBtn = block.querySelector('.save-edit-delete');
-
-        if (content.linkedStatModuleId) {
-            var statNames = getLinkedStatNames(content.linkedStatModuleId);
-            if (statNames.length > 0) {
-                var statOpts = [{ value: '', label: '—' }].concat(
-                    statNames.map(function (n) {
-                        return { value: n, label: n };
-                    })
-                );
-                var statWidget = buildCvSelect(statOpts, save.linkedStatName || '', function (val) {
-                    save.linkedStatName = val || null;
-                    scheduleSave();
-                    var blocksGrid = block.closest('.save-blocks-grid');
-                    if (blocksGrid) reRenderSaveEdits(blocksGrid, data);
-                });
-                var statField = document.createElement('div');
-                statField.className = 'save-edit-field';
-                var statLabel = document.createElement('label');
-                statLabel.textContent = t('save.linkedStat');
-                statField.appendChild(statLabel);
-                statField.appendChild(statWidget.el);
-                block.querySelector('.save-edit-row').appendChild(statField);
-            }
-        }
-
-        if (content.tiersEnabled) {
-            const tierOpts = [{ value: '', label: t('save.noProficiency') }].concat(
-                content.tiers.map((tier) => ({ value: tier.name, label: tier.name }))
-            );
-            const tierWidget = buildCvSelect(tierOpts, save.proficiencyTier || '', (val) => {
-                save.proficiencyTier = val || null;
-                scheduleSave();
-            });
-            const tierField = document.createElement('div');
-            tierField.className = 'save-edit-field';
-            const tierLabel = document.createElement('label');
-            tierLabel.textContent = t('save.proficiency');
-            tierField.appendChild(tierLabel);
-            tierField.appendChild(tierWidget.el);
-            block.querySelector('.save-edit-row').appendChild(tierField);
-        }
-
-        nameInput.addEventListener('input', () => {
-            const oldName = save.name;
-            save.name = nameInput.value;
-            if (typeof window.propagateEntityRename === 'function') {
-                window.propagateEntityRename(data.id, 'save', oldName, save.name);
-            }
-            scheduleSave();
-        });
-        valInput.addEventListener('input', () => {
-            save.value = parseInt(valInput.value, 10) || 0;
-            scheduleSave();
-        });
-
-        [nameInput, valInput].forEach((inp) => {
-            inp.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === 'Escape') inp.blur();
-            });
-        });
-
-        deleteBtn.addEventListener('click', () => {
-            content.saves.splice(index, 1);
-            const blocksGrid = block.closest('.save-blocks-grid');
-            if (blocksGrid) reRenderSaveEdits(blocksGrid, data);
-            scheduleSave();
-        });
-
-        return block;
-    }
-
-    function reRenderSaveEdits(blocksGrid, data) {
-        blocksGrid.querySelectorAll('.save-block-edit').forEach((el) => el.remove());
-        data.content.saves.forEach((save, i) => {
-            blocksGrid.appendChild(renderSaveBlockEdit(save, i, data));
-        });
-        if (blocksGrid._sortable) blocksGrid._sortable.destroy();
-        initSaveSortable(blocksGrid, data);
-    }
-
-    function initSaveSortable(blocksGrid, data) {
-        blocksGrid._sortable = new Sortable(blocksGrid, {
-            handle: '.save-drag-handle',
-            animation: 150,
-            ghostClass: 'save-ghost',
-            draggable: '.save-block-edit, .save-block',
-            onEnd() {
-                const items = Array.from(blocksGrid.querySelectorAll('.save-block-edit, .save-block'));
-                const reordered = items.map((el) => data.content.saves[parseInt(el.dataset.index, 10)]).filter(Boolean);
-                data.content.saves = reordered;
-                items.forEach((el, i) => {
-                    el.dataset.index = i;
-                });
-                scheduleSave();
-            },
-        });
     }
 
     // ── Dice Rolling ──
@@ -353,12 +218,7 @@
     }
 
     // ── Notes Area ──
-    function autoResizeSaveNotesTextarea(textarea) {
-        textarea.style.height = 'auto';
-        textarea.style.height = textarea.scrollHeight + 'px';
-    }
-
-    function renderNotesArea(container, data, isPlayMode) {
+    function renderNotesArea(container, data) {
         const existing = container.querySelector('.save-notes-area');
         if (existing) existing.remove();
 
@@ -367,38 +227,108 @@
         const area = document.createElement('div');
         area.className = 'save-notes-area';
 
-        const textarea = document.createElement('textarea');
-        textarea.className = 'save-notes-textarea';
-        textarea.rows = 1;
-        textarea.placeholder = t('text.placeholder');
-        textarea.value = notes;
-        textarea.style.display = isPlayMode ? 'none' : 'block';
-
         const display = document.createElement('div');
         display.className = 'save-notes-display';
-        display.style.display = isPlayMode ? 'block' : 'none';
-        display.innerHTML = isPlayMode ? renderMarkdown(notes) : '';
-
-        textarea.addEventListener('input', () => {
-            data.content.notes = textarea.value;
-            autoResizeSaveNotesTextarea(textarea);
-            scheduleSave();
-        });
-
-        area.appendChild(textarea);
+        display.innerHTML = notes
+            ? renderMarkdown(notes)
+            : `<span class="save-notes-placeholder">${escapeHtml(t('save.notesPlaceholder'))}</span>`;
         area.appendChild(display);
 
-        if (isPlayMode && moduleEl) {
+        if (moduleEl) {
             attachCheckboxHandlers(display, saveNotesCheckboxProxy(data), moduleEl);
         }
 
-        autoResizeSaveNotesTextarea(textarea);
-        if (!isPlayMode && typeof ResizeObserver !== 'undefined') {
-            const ro = new ResizeObserver(() => autoResizeSaveNotesTextarea(textarea));
-            ro.observe(area);
+        container.appendChild(area);
+    }
+
+    // ── Edit Notes Modal ──
+    function openSaveNotesModal(moduleEl, data) {
+        const existing = document.querySelector('.save-notes-edit-overlay');
+        if (existing) existing.remove();
+
+        const snapshot = data.content.notes || '';
+
+        const overlay = document.createElement('div');
+        overlay.className = 'cv-modal-overlay save-notes-edit-overlay';
+
+        const panel = document.createElement('div');
+        panel.className = 'cv-modal-panel';
+
+        const header = document.createElement('div');
+        header.className = 'cv-modal-header';
+        const titleEl = document.createElement('span');
+        titleEl.className = 'cv-modal-title';
+        titleEl.textContent = t('save.notes');
+        const closeXBtn = document.createElement('button');
+        closeXBtn.type = 'button';
+        closeXBtn.className = 'cv-modal-close';
+        closeXBtn.title = t('save.close');
+        closeXBtn.innerHTML = cvIcon('x', 12);
+        header.appendChild(titleEl);
+        header.appendChild(closeXBtn);
+        panel.appendChild(header);
+
+        const body = document.createElement('div');
+        body.className = 'cv-modal-body';
+        const textarea = document.createElement('textarea');
+        textarea.className = 'cv-modal-input save-notes-edit-textarea';
+        textarea.placeholder = t('save.notesPlaceholder');
+        textarea.value = snapshot;
+        body.appendChild(textarea);
+        panel.appendChild(body);
+
+        const footer = document.createElement('div');
+        footer.className = 'cv-modal-footer';
+        const cancelBtn = document.createElement('button');
+        cancelBtn.type = 'button';
+        cancelBtn.className = 'btn-secondary sm';
+        cancelBtn.textContent = t('save.cancel');
+        const saveBtn = document.createElement('button');
+        saveBtn.type = 'button';
+        saveBtn.className = 'btn-primary sm';
+        saveBtn.textContent = t('save.save');
+        footer.appendChild(cancelBtn);
+        footer.appendChild(saveBtn);
+        panel.appendChild(footer);
+
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+        textarea.focus();
+
+        function closeModal() {
+            document.removeEventListener('keydown', keyHandler);
+            overlay.remove();
         }
 
-        container.appendChild(area);
+        function doClose() {
+            if (textarea.value !== snapshot) {
+                showConfirm(t('common.discardChanges'), closeModal);
+            } else {
+                closeModal();
+            }
+        }
+
+        function doSave() {
+            data.content.notes = textarea.value;
+            scheduleSave();
+            const container = moduleEl.querySelector('.save-container');
+            if (container) renderNotesArea(container, data);
+            closeModal();
+        }
+
+        const keyHandler = (e) => {
+            if (e.key === 'Escape') {
+                e.stopPropagation();
+                doClose();
+            }
+        };
+        document.addEventListener('keydown', keyHandler);
+        saveBtn.addEventListener('click', doSave);
+        cancelBtn.addEventListener('click', doClose);
+        closeXBtn.addEventListener('click', doClose);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) doClose();
+        });
     }
 
     // ── Settings Modal ──
@@ -434,6 +364,141 @@
         // Body
         const body = document.createElement('div');
         body.className = 'cv-modal-body';
+
+        function reRenderModuleBody() {
+            const bodyEl = moduleEl.querySelector('.module-body');
+            const typeDef = window.MODULE_TYPES?.['savingthrow'];
+            if (typeDef && bodyEl) typeDef.renderBody(bodyEl, data);
+            window.snapModuleHeight(moduleEl, data);
+        }
+
+        // ── Manage Saves ──
+        const manageLabel = document.createElement('div');
+        manageLabel.className = 'cv-modal-label';
+        manageLabel.textContent = t('save.manageSaves');
+        body.appendChild(manageLabel);
+
+        const manageList = document.createElement('div');
+        manageList.className = 'save-manage-list';
+
+        function buildManageRow(save, index) {
+            const row = document.createElement('div');
+            row.className = 'save-manage-row';
+            row.dataset.index = index;
+
+            const drag = document.createElement('span');
+            drag.className = 'save-manage-drag';
+            drag.innerHTML = '&#x2807;';
+            row.appendChild(drag);
+
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.className = 'save-manage-name';
+            nameInput.value = save.name;
+            nameInput.placeholder = t('save.unnamed');
+            nameInput.addEventListener('input', () => {
+                const oldName = save.name;
+                save.name = nameInput.value;
+                if (typeof window.propagateEntityRename === 'function') {
+                    window.propagateEntityRename(data.id, 'save', oldName, save.name);
+                }
+                scheduleSave();
+                const displayName = save.name || t('save.unnamed');
+                const bodyEl = moduleEl.querySelector('.module-body');
+                const nameEl = bodyEl && bodyEl.querySelector('.save-block[data-save-id="' + save.id + '"] .save-name');
+                if (nameEl) {
+                    nameEl.textContent = displayName;
+                    nameEl.title = displayName;
+                }
+            });
+            nameInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === 'Escape') nameInput.blur();
+            });
+            row.appendChild(nameInput);
+
+            if (content.linkedStatModuleId) {
+                const statNames = getLinkedStatNames(content.linkedStatModuleId);
+                if (statNames.length > 0) {
+                    const statOpts = [{ value: '', label: '—' }].concat(
+                        statNames.map((n) => ({ value: n, label: n }))
+                    );
+                    const statWidget = buildCvSelect(statOpts, save.linkedStatName || '', (val) => {
+                        save.linkedStatName = val || null;
+                        scheduleSave();
+                        reRenderModuleBody();
+                    });
+                    statWidget.el.classList.add('save-manage-linked-stat');
+                    row.appendChild(statWidget.el);
+                }
+            }
+
+            if (content.tiersEnabled) {
+                const tierOpts = [{ value: '', label: t('save.noProficiency') }].concat(
+                    content.tiers.map((tier) => ({ value: tier.name, label: tier.name }))
+                );
+                const tierWidget = buildCvSelect(tierOpts, save.proficiencyTier || '', (val) => {
+                    save.proficiencyTier = val || null;
+                    scheduleSave();
+                    reRenderModuleBody();
+                });
+                tierWidget.el.classList.add('save-manage-tier');
+                row.appendChild(tierWidget.el);
+            }
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.className = 'save-manage-delete';
+            deleteBtn.title = t('save.deleteSave');
+            deleteBtn.innerHTML = cvIcon('x', 12);
+            deleteBtn.addEventListener('click', () => {
+                const idx = content.saves.indexOf(save);
+                if (idx !== -1) content.saves.splice(idx, 1);
+                scheduleSave();
+                renderManageRows();
+                reRenderModuleBody();
+            });
+            row.appendChild(deleteBtn);
+
+            return row;
+        }
+
+        function renderManageRows() {
+            manageList.innerHTML = '';
+            content.saves.forEach((save, i) => {
+                manageList.appendChild(buildManageRow(save, i));
+            });
+            if (manageList._sortable) manageList._sortable.destroy();
+            manageList._sortable = new Sortable(manageList, {
+                handle: '.save-manage-drag',
+                animation: 150,
+                ghostClass: 'save-ghost',
+                draggable: '.save-manage-row',
+                onEnd() {
+                    const rows = Array.from(manageList.querySelectorAll('.save-manage-row'));
+                    content.saves = rows.map((r) => content.saves[parseInt(r.dataset.index, 10)]).filter(Boolean);
+                    rows.forEach((r, i) => {
+                        r.dataset.index = i;
+                    });
+                    scheduleSave();
+                    reRenderModuleBody();
+                },
+            });
+        }
+
+        renderManageRows();
+        body.appendChild(manageList);
+
+        const addSaveBtn = document.createElement('button');
+        addSaveBtn.type = 'button';
+        addSaveBtn.className = 'btn-secondary sm';
+        addSaveBtn.innerHTML = cvIcon('plus', 14) + ' ' + escapeHtml(t('save.addSave'));
+        addSaveBtn.addEventListener('click', () => {
+            content.saves.push({ id: generateId('save'), name: '', value: 0, proficiencyTier: null, linkedStatName: null });
+            scheduleSave();
+            renderManageRows();
+            reRenderModuleBody();
+        });
+        body.appendChild(addSaveBtn);
 
         // Enable tiers row
         const enableRow = document.createElement('div');
@@ -554,10 +619,7 @@
             });
             // If all tiers deleted, force-disable
             if (content.tiers.length === 0) content.tiersEnabled = false;
-            // Re-render
-            const bodyEl = moduleEl.querySelector('.module-body');
-            const isPlay = isPlayMode;
-            MODULE_TYPES['savingthrow'].renderBody(bodyEl, data, isPlay);
+            reRenderModuleBody();
             scheduleSave();
             closeModal();
         }
@@ -763,7 +825,7 @@
         label: 'type.savingthrow',
         hasStatLink: true,
 
-        renderBody(bodyEl, data, isPlayMode) {
+        renderBody(bodyEl, data) {
             ensureSaveContent(data);
             const content = data.content;
 
@@ -773,37 +835,48 @@
             const blocksGrid = document.createElement('div');
             blocksGrid.className = 'save-blocks-grid';
 
-            if (isPlayMode) {
-                content.saves.forEach((save, i) => {
-                    blocksGrid.appendChild(renderSaveBlock(save, i, data));
-                });
-            } else {
-                content.saves.forEach((save, i) => {
-                    blocksGrid.appendChild(renderSaveBlockEdit(save, i, data));
-                });
-                initSaveSortable(blocksGrid, data);
-            }
+            content.saves.forEach((save, i) => {
+                blocksGrid.appendChild(renderSaveBlock(save, i, data));
+            });
 
             container.appendChild(blocksGrid);
 
             bodyEl.innerHTML = '';
             bodyEl.appendChild(container);
-            renderNotesArea(container, data, isPlayMode);
+            renderNotesArea(container, data);
             const moduleEl = bodyEl.closest('.module');
             if (moduleEl) updateSavingthrowChainIcon(moduleEl, data);
         },
 
-        syncState(moduleEl, data) {
-            moduleEl.querySelectorAll('.save-block-edit').forEach((block, i) => {
-                const save = data.content.saves[i];
-                if (!save) return;
-                const nameInput = block.querySelector('.save-edit-name');
-                const valInput = block.querySelector('.save-edit-value');
-                if (nameInput) save.name = nameInput.value;
-                if (valInput) save.value = parseInt(valInput.value, 10) || 0;
-            });
-            const textarea = moduleEl.querySelector('.save-notes-textarea');
-            if (textarea) data.content.notes = textarea.value;
+        overflowMenuItems(moduleEl, data) {
+            return [
+                {
+                    onClick: () => openSaveNotesModal(moduleEl, data),
+                    label: t('save.editNotes'),
+                    icon: cvIcon('pencil', 14),
+                },
+                {
+                    onClick() {
+                        data.content.saves.push({
+                            id: generateId('save'),
+                            name: '',
+                            value: 0,
+                            proficiencyTier: null,
+                        });
+                        const bodyEl = moduleEl.querySelector('.module-body');
+                        window.MODULE_TYPES['savingthrow'].renderBody(bodyEl, data);
+                        snapModuleHeight(moduleEl, data);
+                        scheduleSave();
+                    },
+                    label: t('save.addSave'),
+                    icon: cvIcon('plus', 14),
+                },
+                {
+                    onClick: () => openSaveSettings(moduleEl, data),
+                    label: t('save.moduleSettings'),
+                    icon: cvIcon('settings', 14),
+                },
+            ];
         },
     });
 
@@ -812,7 +885,6 @@
     window.ensureSaveContent = ensureSaveContent;
     window.getTierForSave = getTierForSave;
     window.saveNotesCheckboxProxy = saveNotesCheckboxProxy;
-    window.openSaveSettings = openSaveSettings;
 
     function reRenderLinkedSaves(changedId) {
         window.modules.forEach(function (mod) {
@@ -822,7 +894,7 @@
             if (!moduleEl) return;
             var bodyEl = moduleEl.querySelector('.module-body');
             if (bodyEl && window.MODULE_TYPES && window.MODULE_TYPES['savingthrow']) {
-                window.MODULE_TYPES['savingthrow'].renderBody(bodyEl, mod, isPlayMode);
+                window.MODULE_TYPES['savingthrow'].renderBody(bodyEl, mod);
             }
         });
     }

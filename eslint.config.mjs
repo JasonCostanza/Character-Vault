@@ -108,22 +108,10 @@ export default [
                 // ── module-abilities.js ──
                 ABILITY_TEMPLATES: 'readonly',
                 applyAbilityTemplate: 'readonly',
-                openAbilitySettings: 'readonly',
 
                 // ── module-savingthrow.js ──
                 applySavingThrowTemplate: 'readonly',
                 applyTierPreset: 'readonly',
-                openSaveSettings: 'readonly',
-
-                // ── module-condition.js ──
-                openCondSettings: 'readonly',
-
-                // ── module-list.js ──
-                addListItem: 'readonly',
-                openListManageAttrs: 'readonly',
-
-                // ── module-resistance.js ──
-                openResSettings: 'readonly',
 
                 // ── module-counters.js ──
                 openCounterCreateModal: 'readonly',

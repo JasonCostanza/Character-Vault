@@ -622,17 +622,10 @@
     }
 
     // ── Weapon Card ──
-    function buildWeaponCard(weapon, data, isPlayMode, moduleEl, bodyEl) {
+    function buildWeaponCard(weapon, data, moduleEl, bodyEl) {
         var card = document.createElement('div');
         card.className = 'weapon-card';
         card.dataset.id = weapon.id;
-
-        if (!isPlayMode) {
-            var handle = document.createElement('span');
-            handle.className = 'weapon-drag-handle';
-            handle.innerHTML = '&#x2807;';
-            card.appendChild(handle);
-        }
 
         if (weapon.icon) {
             var iconEl = document.createElement('span');
@@ -757,16 +750,14 @@
             ammoEl.className = 'weapon-ammo-pip';
             ammoEl.textContent = weapon.ammoCount;
             ammoEl.setAttribute('data-tooltip', t('weapons.ammo'));
-            if (isPlayMode) {
-                (function (el, w) {
-                    el.addEventListener('click', function (e) {
-                        if (e.ctrlKey) {
-                            e.stopPropagation();
-                            enterQuickEditAmmo(el, w, data, bodyEl);
-                        }
-                    });
-                })(ammoEl, weapon);
-            }
+            (function (el, w) {
+                el.addEventListener('click', function (e) {
+                    if (e.ctrlKey) {
+                        e.stopPropagation();
+                        enterQuickEditAmmo(el, w, data, bodyEl);
+                    }
+                });
+            })(ammoEl, weapon);
             info.appendChild(ammoEl);
         }
 
@@ -774,34 +765,29 @@
             var hpEl = document.createElement('div');
             hpEl.className = 'weapon-shield-hp';
             hpEl.textContent = (weapon.shieldHp || 0) + ' / ' + (weapon.shieldHpMax || 0) + ' HP';
-            if (isPlayMode) {
-                (function (el, w) {
-                    el.addEventListener('click', function (e) {
-                        if (e.ctrlKey) {
-                            e.stopPropagation();
-                            enterQuickEditShieldHp(el, w, data, bodyEl);
-                        }
-                    });
-                })(hpEl, weapon);
-            }
+            (function (el, w) {
+                el.addEventListener('click', function (e) {
+                    if (e.ctrlKey) {
+                        e.stopPropagation();
+                        enterQuickEditShieldHp(el, w, data, bodyEl);
+                    }
+                });
+            })(hpEl, weapon);
             info.appendChild(hpEl);
         }
 
         card.appendChild(info);
 
-        if (isPlayMode) {
-            (function (w) {
-                card.addEventListener('click', function (e) {
-                    if (!e.ctrlKey) openWeaponActionModal(moduleEl, data, w);
-                });
-            })(weapon);
-        } else {
-            (function (w) {
-                card.addEventListener('click', function () {
+        // Click rolls (action modal); Ctrl+Click edits
+        (function (w) {
+            card.addEventListener('click', function (e) {
+                if (e.ctrlKey) {
                     openWeaponEditModal(moduleEl, data, w, bodyEl);
-                });
-            })(weapon);
-        }
+                } else {
+                    openWeaponActionModal(moduleEl, data, w);
+                }
+            });
+        })(weapon);
 
         return card;
     }
@@ -853,7 +839,7 @@
             onSave(val) {
                 weapon.ammoCount = val;
                 scheduleSave();
-                renderPlayBody(bodyEl, data);
+                renderWeaponsBody(bodyEl, data);
             },
         });
     }
@@ -882,13 +868,13 @@
                         sourceModuleId: data.id,
                     });
                 }
-                renderPlayBody(bodyEl, data);
+                renderWeaponsBody(bodyEl, data);
             },
         });
     }
 
     // ── Two-column Layout Helper ──
-    function buildTwoColumnLayout(data, isPlayMode, moduleEl, bodyEl) {
+    function buildTwoColumnLayout(data, moduleEl, bodyEl) {
         var content = data.content;
         var container = document.createElement('div');
         container.className = 'weapons-container';
@@ -929,14 +915,14 @@
         });
 
         mainWeapons.forEach(function (w) {
-            mainCol.appendChild(buildWeaponCard(w, data, isPlayMode, moduleEl, bodyEl));
+            mainCol.appendChild(buildWeaponCard(w, data, moduleEl, bodyEl));
         });
         offTwoHanded.forEach(function (w) {
             mainCol.appendChild(buildPlaceholderCard(w, data));
         });
 
         offWeapons.forEach(function (w) {
-            offCol.appendChild(buildWeaponCard(w, data, isPlayMode, moduleEl, bodyEl));
+            offCol.appendChild(buildWeaponCard(w, data, moduleEl, bodyEl));
         });
         mainTwoHanded.forEach(function (w) {
             offCol.appendChild(buildPlaceholderCard(w, data));
@@ -949,8 +935,8 @@
         return { container: container, mainCol: mainCol, offCol: offCol };
     }
 
-    // ── Play Mode ──
-    function renderPlayBody(bodyEl, data) {
+    // ── Module Body ──
+    function renderWeaponsBody(bodyEl, data) {
         var content = ensureWeaponsContent(data);
         var moduleEl = bodyEl.closest('.module');
         updateWeaponsChainIcon(moduleEl, data);
@@ -978,135 +964,30 @@
             return;
         }
 
-        var layout = buildTwoColumnLayout(data, true, moduleEl, bodyEl);
+        var layout = buildTwoColumnLayout(data, moduleEl, bodyEl);
         bodyEl.appendChild(layout.container);
     }
 
-    // ── Layout Mode ──
-    function renderEditBody(bodyEl, data) {
-        var content = ensureWeaponsContent(data);
-        var moduleEl = bodyEl.closest('.module');
-        updateWeaponsChainIcon(moduleEl, data);
-        bodyEl.innerHTML = '';
-
-        function makeAddBtn(slot) {
-            var btn = document.createElement('button');
-            btn.className = 'weapon-add-btn';
-            btn.textContent = t('weapons.addWeapon');
-            btn.addEventListener('click', function () {
-                var newWeapon = {
-                    id: generateId('wpn'),
-                    name: '',
-                    slot: slot,
-                    kind: 'melee',
-                    icon: null,
-                    abilityMod: 'str',
-                    proficient: false,
-                    attackBonusOverride: null,
-                    damageInstances: [{ dice: '1d6', modFromAbility: true, flatBonus: 0, damageType: 'slashing' }],
-                    range: null,
-                    ammoCount: null,
-                    traits: [],
-                    notesMarkdown: '',
-                    twoHanded: false,
-                    acBonus: null,
-                    shieldHp: null,
-                    shieldHpMax: null,
-                };
-                openWeaponEditModal(moduleEl, data, newWeapon, bodyEl);
-            });
-            return btn;
-        }
-
-        function buildWeaponsSection(container) {
-            container.querySelectorAll('.weapons-column').forEach(function (col) {
-                var s = Sortable.get(col);
-                if (s) s.destroy();
-            });
-            container.innerHTML = '';
-            var layout = buildTwoColumnLayout(data, false, moduleEl, bodyEl);
-            layout.mainCol.appendChild(makeAddBtn('main'));
-            layout.offCol.appendChild(makeAddBtn('off'));
-            container.appendChild(layout.container);
-            initWeaponsSortable(layout.mainCol, layout.offCol, data, bodyEl);
-        }
-
-        if ((window.gameSystem || 'custom') === 'daggerheart') {
-            var profRow = document.createElement('div');
-            profRow.className = 'weapons-proficiency-row';
-            var profLabel = document.createElement('span');
-            profLabel.className = 'weapons-proficiency-label';
-            profLabel.textContent = t('weapons.proficiency');
-            var profInput = document.createElement('input');
-            profInput.type = 'number';
-            profInput.className = 'weapons-proficiency-input';
-            profInput.min = '1';
-            profInput.max = '6';
-            profInput.step = '1';
-            profInput.value = String(content.daggerheartProficiency || 1);
-            var weaponsSection = document.createElement('div');
-            profInput.addEventListener('change', function () {
-                var val = parseInt(profInput.value, 10);
-                if (isNaN(val) || val < 1) val = 1;
-                if (val > 6) val = 6;
-                profInput.value = String(val);
-                content.daggerheartProficiency = val;
-                scheduleSave();
-                buildWeaponsSection(weaponsSection);
-            });
-            profInput.addEventListener('keydown', function (e) {
-                if (e.key === 'Enter' || e.key === 'Escape') profInput.blur();
-            });
-            profRow.appendChild(profLabel);
-            profRow.appendChild(profInput);
-            bodyEl.appendChild(profRow);
-            bodyEl.appendChild(weaponsSection);
-            buildWeaponsSection(weaponsSection);
-            return;
-        }
-
-        buildWeaponsSection(bodyEl);
-    }
-
-    // ── SortableJS ──
-    function initWeaponsSortable(mainCol, offCol, data, bodyEl) {
-        var groupName = 'weapons-' + data.id;
-        var opts = {
-            group: { name: groupName, pull: true, put: true },
-            animation: 150,
-            handle: '.weapon-drag-handle',
-            ghostClass: 'weapon-ghost',
-            draggable: '.weapon-card:not(.weapon-placeholder)',
-            filter: '.weapon-placeholder,.weapon-add-btn',
-            onEnd: function (evt) {
-                var toSlot = evt.to.dataset.slot;
-                var movedId = evt.item.dataset.id;
-                var movedWeapon = data.content.weapons.find(function (w) {
-                    return w.id === movedId;
-                });
-                if (movedWeapon) movedWeapon.slot = toSlot;
-
-                var orderedIds = [];
-                mainCol.querySelectorAll('.weapon-card:not(.weapon-placeholder)').forEach(function (el) {
-                    orderedIds.push(el.dataset.id);
-                });
-                offCol.querySelectorAll('.weapon-card:not(.weapon-placeholder)').forEach(function (el) {
-                    orderedIds.push(el.dataset.id);
-                });
-                data.content.weapons.sort(function (a, b) {
-                    var ai = orderedIds.indexOf(a.id);
-                    var bi = orderedIds.indexOf(b.id);
-                    if (ai === -1) return 1;
-                    if (bi === -1) return -1;
-                    return ai - bi;
-                });
-
-                scheduleSave();
-                renderEditBody(bodyEl, data);
-            },
+    function makeDefaultWeapon(slot) {
+        return {
+            id: generateId('wpn'),
+            name: '',
+            slot: slot,
+            kind: 'melee',
+            icon: null,
+            abilityMod: 'str',
+            proficient: false,
+            attackBonusOverride: null,
+            damageInstances: [{ dice: '1d6', modFromAbility: true, flatBonus: 0, damageType: 'slashing' }],
+            range: null,
+            ammoCount: null,
+            traits: [],
+            notesMarkdown: '',
+            twoHanded: false,
+            acBonus: null,
+            shieldHp: null,
+            shieldHpMax: null,
         };
-        new Sortable(mainCol, opts);
-        new Sortable(offCol, opts);
     }
 
     // ── System Edit Config ──
@@ -1881,6 +1762,164 @@
         var body = document.createElement('div');
         body.className = 'cv-modal-body';
 
+        var bodyEl = moduleEl.querySelector('.module-body');
+
+        function reRenderModuleBody() {
+            if (bodyEl) renderWeaponsBody(bodyEl, data);
+            if (typeof window.snapModuleHeight === 'function') window.snapModuleHeight(moduleEl, data);
+        }
+
+        // ── Manage Weapons (immediate apply) ──
+        var manageLabel = document.createElement('label');
+        manageLabel.className = 'cv-modal-label';
+        manageLabel.textContent = t('weapons.manageWeapons');
+        body.appendChild(manageLabel);
+
+        var slotLists = {};
+
+        function buildManageRow(weapon) {
+            var row = document.createElement('div');
+            row.className = 'weapon-manage-row';
+            row.dataset.id = weapon.id;
+
+            var drag = document.createElement('span');
+            drag.className = 'weapon-manage-drag';
+            drag.innerHTML = '&#x2807;';
+            row.appendChild(drag);
+
+            if (weapon.icon) {
+                var iconEl = document.createElement('span');
+                iconEl.className = 'weapon-manage-icon';
+                iconEl.innerHTML = cvIcon(weapon.icon);
+                row.appendChild(iconEl);
+            }
+
+            var nameEl = document.createElement('span');
+            nameEl.className = 'weapon-manage-name';
+            nameEl.textContent = weapon.name || t('weapons.unnamed');
+            nameEl.title = t('weapons.editWeapon');
+            nameEl.addEventListener('click', function () {
+                openWeaponEditModal(moduleEl, data, weapon, bodyEl, renderManageLists);
+            });
+            row.appendChild(nameEl);
+
+            var deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.className = 'weapon-manage-delete';
+            deleteBtn.title = t('weapons.deleteWeapon');
+            deleteBtn.innerHTML = cvIcon('x', 12);
+            deleteBtn.addEventListener('click', function () {
+                showConfirm(t('weapons.deleteConfirm'), function () {
+                    var idx = data.content.weapons.findIndex(function (w) {
+                        return w.id === weapon.id;
+                    });
+                    if (idx !== -1) data.content.weapons.splice(idx, 1);
+                    scheduleSave();
+                    row.remove();
+                    reRenderModuleBody();
+                });
+            });
+            row.appendChild(deleteBtn);
+
+            return row;
+        }
+
+        function commitManageOrder(evt) {
+            var movedWeapon = data.content.weapons.find(function (w) {
+                return w.id === evt.item.dataset.id;
+            });
+            if (movedWeapon) movedWeapon.slot = evt.to.dataset.slot;
+
+            var orderedIds = [];
+            ['main', 'off'].forEach(function (slot) {
+                slotLists[slot].querySelectorAll('.weapon-manage-row').forEach(function (el) {
+                    orderedIds.push(el.dataset.id);
+                });
+            });
+            data.content.weapons.sort(function (a, b) {
+                return orderedIds.indexOf(a.id) - orderedIds.indexOf(b.id);
+            });
+
+            scheduleSave();
+            reRenderModuleBody();
+        }
+
+        function renderManageLists() {
+            ['main', 'off'].forEach(function (slot) {
+                var list = slotLists[slot];
+                var s = Sortable.get(list);
+                if (s) s.destroy();
+                list.innerHTML = '';
+                data.content.weapons.forEach(function (w) {
+                    if (w.slot === slot) list.appendChild(buildManageRow(w));
+                });
+                new Sortable(list, {
+                    group: 'weapon-manage-' + data.id,
+                    animation: 150,
+                    handle: '.weapon-manage-drag',
+                    ghostClass: 'weapon-ghost',
+                    draggable: '.weapon-manage-row',
+                    onEnd: commitManageOrder,
+                });
+            });
+        }
+
+        [
+            { slot: 'main', labelKey: 'weapons.mainHand' },
+            { slot: 'off', labelKey: 'weapons.offHand' },
+        ].forEach(function (def) {
+            var slotLabel = document.createElement('div');
+            slotLabel.className = 'weapon-manage-slot-label';
+            slotLabel.textContent = t(def.labelKey);
+            body.appendChild(slotLabel);
+
+            var list = document.createElement('div');
+            list.className = 'weapon-manage-list';
+            list.dataset.slot = def.slot;
+            slotLists[def.slot] = list;
+            body.appendChild(list);
+
+            var addBtn = document.createElement('button');
+            addBtn.type = 'button';
+            addBtn.className = 'weapon-add-btn';
+            addBtn.textContent = t('weapons.addWeapon');
+            addBtn.addEventListener('click', function () {
+                openWeaponEditModal(moduleEl, data, makeDefaultWeapon(def.slot), bodyEl, renderManageLists);
+            });
+            body.appendChild(addBtn);
+        });
+
+        renderManageLists();
+
+        // ── Daggerheart Proficiency (immediate apply) ──
+        if ((window.gameSystem || 'custom') === 'daggerheart') {
+            var profLabel = document.createElement('label');
+            profLabel.className = 'cv-modal-label';
+            profLabel.textContent = t('weapons.proficiency');
+            body.appendChild(profLabel);
+
+            var profInput = document.createElement('input');
+            profInput.type = 'number';
+            profInput.className = 'weapons-proficiency-input';
+            profInput.min = '1';
+            profInput.max = '6';
+            profInput.step = '1';
+            profInput.value = String(data.content.daggerheartProficiency || 1);
+            profInput.addEventListener('change', function () {
+                var val = parseInt(profInput.value, 10);
+                if (isNaN(val) || val < 1) val = 1;
+                if (val > 6) val = 6;
+                profInput.value = String(val);
+                data.content.daggerheartProficiency = val;
+                scheduleSave();
+                reRenderModuleBody();
+            });
+            profInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === 'Escape') profInput.blur();
+            });
+            body.appendChild(profInput);
+        }
+
         var label = document.createElement('label');
         label.className = 'cv-modal-label';
         label.textContent = t('weapons.linkedStatModule');
@@ -1908,16 +1947,17 @@
         document.body.appendChild(overlay);
 
         function close() {
+            ['main', 'off'].forEach(function (slot) {
+                var s = slotLists[slot] && Sortable.get(slotLists[slot]);
+                if (s) s.destroy();
+            });
             overlay.remove();
         }
 
         function save() {
             data.content.linkedStatModuleId = statPicker.getValue() || null;
             scheduleSave();
-            var bodyEl = moduleEl.querySelector('.module-body');
-            var isPlay = window.isPlayMode;
-            var typeDef = window.MODULE_TYPES && window.MODULE_TYPES['weapons'];
-            if (typeDef && bodyEl) typeDef.renderBody(bodyEl, data, isPlay);
+            reRenderModuleBody();
             updateWeaponsChainIcon(moduleEl, data);
             close();
         }
@@ -1936,7 +1976,7 @@
         });
     }
 
-    // ── Action Modal (Play Mode) ──
+    // ── Action Modal ──
     function openWeaponActionModal(moduleEl, data, weapon) {
         var existing = document.querySelector('.weapon-action-overlay');
         if (existing) existing.remove();
@@ -2401,7 +2441,9 @@
     }
 
     // ── Edit Modal ──
-    function openWeaponEditModal(moduleEl, data, weapon, bodyEl) {
+    // onDone (optional) — called after a committed change (save/delete), used by
+    // the settings modal to refresh its Manage Weapons rows.
+    function openWeaponEditModal(moduleEl, data, weapon, bodyEl, onDone) {
         var existing = document.querySelector('.weapon-edit-overlay');
         if (existing) existing.remove();
 
@@ -2972,7 +3014,8 @@
                     if (idx !== -1) data.content.weapons.splice(idx, 1);
                     scheduleSave();
                     forceClose();
-                    renderEditBody(bodyEl, data);
+                    renderWeaponsBody(bodyEl, data);
+                    if (onDone) onDone();
                 });
             });
             deleteWrap.appendChild(deleteBtn);
@@ -3031,19 +3074,20 @@
             }
             scheduleSave();
             forceClose();
-            renderEditBody(bodyEl, data);
+            renderWeaponsBody(bodyEl, data);
+            if (onDone) onDone();
         }
 
         function close() {
             if (dirty) {
                 showConfirm(t('common.discardChanges'), function () {
                     forceClose();
-                    renderEditBody(bodyEl, data);
+                    renderWeaponsBody(bodyEl, data);
                 });
                 return;
             }
             forceClose();
-            renderEditBody(bodyEl, data);
+            renderWeaponsBody(bodyEl, data);
         }
 
         function forceClose() {
@@ -3971,15 +4015,21 @@
         label: 'type.weapons',
         hasStatLink: true,
 
-        renderBody: function (bodyEl, data, isPlayMode) {
-            if (isPlayMode) {
-                renderPlayBody(bodyEl, data);
-            } else {
-                renderEditBody(bodyEl, data);
-            }
+        renderBody: function (bodyEl, data) {
+            renderWeaponsBody(bodyEl, data);
         },
 
-        syncState: function () {},
+        overflowMenuItems: function (moduleEl, data) {
+            return [
+                {
+                    onClick: function () {
+                        openWeaponModuleSettings(moduleEl, data);
+                    },
+                    label: t('weapons.settingsTitle'),
+                    icon: cvIcon('settings', 14),
+                },
+            ];
+        },
     });
 
     // ── Window Exports ──
@@ -4024,7 +4074,7 @@
             var moduleEl = document.querySelector('.module[data-id="' + mod.id + '"]');
             if (!moduleEl) return;
             var bodyEl = moduleEl.querySelector('.module-body');
-            if (bodyEl) renderEditBody(bodyEl, mod);
+            if (bodyEl) renderWeaponsBody(bodyEl, mod);
         });
     });
 

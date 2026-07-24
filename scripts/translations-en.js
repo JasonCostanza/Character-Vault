@@ -173,6 +173,7 @@ window.CV_TRANSLATIONS.en = {
             'companion.log.dismiss': '{name} is dismissed',
 
             // Abilities submodule
+            'abilities.manageAbilities': 'Manage Abilities',
             'abilities.addAbility': 'Add Ability',
             'abilities.deleteAbility': 'Delete Ability',
             'abilities.unnamed': 'Unnamed',
@@ -212,6 +213,9 @@ window.CV_TRANSLATIONS.en = {
             'text.placeholder': 'Write your notes...',
             'text.moduleSettings': 'Module Settings',
             'text.settingsTitle': 'Text Box Settings',
+            'text.editContent': 'Edit Content',
+            'text.editTitle': 'Edit Text',
+            'text.discardPrompt': 'You have unsaved changes. Discard?',
 
             // Health submodule
             'health.currentHP': 'Current HP',
@@ -244,6 +248,7 @@ window.CV_TRANSLATIONS.en = {
             'stat.eyedropper': 'Get from Board',
             'stat.moduleSettings': 'Module Settings',
             'stat.settingsTitle': 'Stat Settings',
+            'stat.manageStats': 'Manage Stats',
             'stat.rollableStats': 'Rollable Stats',
             'stat.getFromBoardSuccess': 'Stats imported from board',
 
@@ -850,7 +855,9 @@ window.CV_TRANSLATIONS.en = {
             'def.base': 'Base: {value}',
             'def.modLabel': 'Mod',
             'def.close': 'Close',
-            'def.qdSettings': 'Quick Defense Settings',
+            'def.settingsTitle': 'Defense Settings',
+            'def.manageDefenses': 'Manage Defenses',
+            'def.manageQuickDefenses': 'Manage Quick Defenses',
             'def.addQD': 'Add Quick Defense',
             'def.deleteQD': 'Delete quick defense',
             'def.qdEmptyTitle': 'No quick defenses configured.',
@@ -860,6 +867,7 @@ window.CV_TRANSLATIONS.en = {
             'counter.addCounter': 'Add Counter',
             'counter.moduleSettings': 'Module Settings',
             'counter.settingsTitle': 'Counter Settings',
+            'counter.manageCounters': 'Manage Counters',
             'counter.createTitle': 'New Counter',
             'counter.editTitle': 'Edit Counter',
             'counter.name': 'Name',
@@ -908,7 +916,9 @@ window.CV_TRANSLATIONS.en = {
             'save.modifier': 'Mod',
             'save.save': 'Save',
             'save.moduleSettings': 'Module Settings',
+            'save.editNotes': 'Edit Notes',
             'save.settingsTitle': 'Saving Throw Settings',
+            'save.manageSaves': 'Manage Saves',
             'save.enableTiers': 'Enable Proficiency Tiers',
             'save.tierPreset': 'Tier Preset',
             'save.tierPresetDnd5e': 'D&D 5e',
@@ -1127,6 +1137,7 @@ window.CV_TRANSLATIONS.en = {
             'recovery.log.rest': '{buttonName}: {details}',
             'recovery.moduleSettings': 'Module Settings',
             'recovery.settingsTitle': 'Recovery Settings',
+            'recovery.manageButtons': 'Manage Rest Buttons',
             'recovery.close': 'Close',
 
             // Weapons submodule
@@ -1353,8 +1364,8 @@ window.CV_TRANSLATIONS.en = {
             'weapons.enhancements.cprCategoryPlaceholder': 'e.g. Scope, Smartgun Link',
             'weapons.enhancements.attackBonus': 'Attack Bonus',
             'weapons.proficiency': 'Proficiency',
-            'weapons.settings': 'Weapon Settings',
             'weapons.settingsTitle': 'Weapon Settings',
+            'weapons.manageWeapons': 'Manage Weapons',
             'weapons.linkedStatModule': 'Linked Stat Module',
             'weapons.noLinkedModule': 'None (manual)',
             'weapons.linkedTo': 'Linked to {name}',
@@ -1497,6 +1508,13 @@ window.CV_TRANSLATIONS.en = {
             'bio.predatorType': 'Predator Type',
             'bio.ambition': 'Ambition',
             'bio.desire': 'Desire',
+            'bio.clickToAdd': 'Click to add…',
+            'bio.addDetails': 'Add details…',
+            'bio.editAppearance': 'Edit Appearance',
+            'bio.editBiography': 'Edit Biography',
+            'bio.editPersonality': 'Edit Personality',
+            'bio.editNotes': 'Edit Notes',
+            'bio.editBackground': 'Edit Background',
             // Dice variables
             'diceVar.brokenRef': 'Variable "{name}" not found — using 0',
             'diceVar.level': 'Level',

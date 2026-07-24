@@ -241,24 +241,7 @@
     user-select: none;
 }
 
-/* ── Layout Mode ── */
-
-.recovery-edit-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding: 6px;
-    height: 100%;
-    box-sizing: border-box;
-    overflow-y: auto;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
-}
-
-.recovery-edit-container::-webkit-scrollbar { width: 4px; }
-.recovery-edit-container::-webkit-scrollbar-track { background: transparent; }
-.recovery-edit-container::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
+/* ── Manage Rest Buttons (Settings Modal) ── */
 
 .recovery-btn-list {
     display: flex;
@@ -339,6 +322,7 @@
     background: color-mix(in srgb, var(--cv-danger) 12%, transparent);
 }
 
+/* ── Rest Button Edit Modal ── */
 
 .recovery-edit-field {
     display: flex;

@@ -471,12 +471,12 @@
     });
 
     // ── Module Type Registry ──
-    // Each module type registers: label, renderBody.
-    // renderBody(bodyEl, data, isPlayMode) — populate the .module-body element.
+    // Each module type registers: label, renderBody(bodyEl, data), and
+    // optionally overflowMenuItems(moduleEl, data) → [{ onClick, label, icon }].
     const MODULE_TYPES = {};
 
-    function registerModuleType(type, { label, renderBody, syncState, hasStatLink }) {
-        MODULE_TYPES[type] = { label, renderBody, syncState, hasStatLink };
+    function registerModuleType(type, config) {
+        MODULE_TYPES[type] = config;
     }
 
     // ── Module Rendering ──
@@ -588,126 +588,17 @@
         const menu = document.createElement('div');
         menu.className = 'module-overflow-menu';
 
+        // Rename first, Delete last; each type contributes its own entries via
+        // MODULE_TYPES[type].overflowMenuItems(moduleEl, data).
         const btnDefs = [
             {
                 onClick: () => openRenameModule(moduleEl, data),
                 label: t('module.rename'),
                 icon: cvIcon('pencil', 14),
             },
-            {
-                sel: '.module-abilities-settings-btn',
-                label: t('abilities.settings'),
-                icon: cvIcon('settings', 14),
-            },
-            {
-                sel: '.module-abilities-add-btn',
-                label: t('abilities.addAbility'),
-                icon: cvIcon('plus', 14),
-            },
-            {
-                sel: '.module-health-maxmod-btn',
-                label: t('health.moduleSettings'),
-                icon: cvIcon('settings', 14),
-            },
-            {
-                sel: '.module-addstat-btn',
-                label: t('stat.addStat'),
-                icon: cvIcon('plus', 14),
-            },
-            {
-                sel: '.module-counter-add-btn',
-                label: t('counter.addCounter'),
-                icon: cvIcon('plus', 14),
-            },
-            {
-                sel: '.module-actions-add-btn',
-                label: t('actions.add'),
-                icon: cvIcon('plus', 14),
-            },
             ...(MODULE_TYPES[data?.type]?.overflowMenuItems?.(moduleEl, data) ?? []),
             {
-                sel: '.module-actions-settings-btn',
-                label: t('actions.settings'),
-                icon: cvIcon('settings', 14),
-            },
-            {
-                sel: '.module-list-additem-btn',
-                label: t('list.addItem'),
-                icon: cvIcon('plus', 14),
-            },
-            {
-                sel: '.module-list-manage-btn',
-                label: t('list.moduleSettings'),
-                icon: cvIcon('settings', 14),
-            },
-            {
-                sel: '.module-stat-settings-btn',
-                label: t('stat.moduleSettings'),
-                icon: cvIcon('settings', 14),
-            },
-            {
-                sel: '.module-text-settings-btn',
-                label: t('text.moduleSettings'),
-                icon: cvIcon('settings', 14),
-            },
-            {
-                sel: '.module-counter-settings-btn',
-                label: t('counter.moduleSettings'),
-                icon: cvIcon('settings', 14),
-            },
-            {
-                sel: '.module-cond-settings-btn',
-                label: t('cond.moduleSettings'),
-                icon: cvIcon('settings', 14),
-            },
-            {
-                sel: '.module-save-add-btn',
-                label: t('save.addSave'),
-                icon: cvIcon('plus', 14),
-            },
-            {
-                sel: '.module-save-settings-btn',
-                label: t('save.moduleSettings'),
-                icon: cvIcon('settings', 14),
-            },
-            {
-                sel: '.module-res-settings-btn',
-                label: t('res.moduleSettings'),
-                icon: cvIcon('settings', 14),
-            },
-            {
-                sel: '.module-copy-btn',
-                label: t('module.copyClipboard'),
-                icon: cvIcon('clipboard-copy', 14),
-            },
-            {
-                sel: '.module-level-settings-btn',
-                label: t('level.settings'),
-                icon: cvIcon('settings', 14),
-            },
-            {
-                sel: '.module-spells-settings-btn',
-                label: t('spells.settings'),
-                icon: cvIcon('settings', 14),
-            },
-            { sel: '.module-activity-settings-btn', label: t('activity.settings'), icon: cvIcon('settings', 14) },
-            {
-                sel: '.module-recovery-settings-btn',
-                label: t('recovery.moduleSettings'),
-                icon: cvIcon('settings', 14),
-            },
-            {
-                sel: '.module-companions-settings-btn',
-                label: t('companion.settings'),
-                icon: cvIcon('settings', 14),
-            },
-            {
-                sel: '.module-def-settings-btn',
-                label: t('def.qdSettings'),
-                icon: cvIcon('settings', 14),
-            },
-            {
-                sel: '.module-delete-btn',
+                onClick: () => openDeleteConfirm(data.id),
                 label: t('module.deleteModule'),
                 icon: cvIcon('trash-2', 14),
                 cls: 'danger',
@@ -715,19 +606,11 @@
         ];
 
         btnDefs.forEach((def) => {
-            let trigger;
-            if (def.onClick) {
-                trigger = def.onClick;
-            } else {
-                const realBtn = moduleEl.querySelector(def.sel);
-                if (!realBtn) return;
-                trigger = () => realBtn.click();
-            }
             const item = document.createElement('button');
             item.className = 'module-overflow-menu-item' + (def.cls ? ' ' + def.cls : '');
             item.innerHTML = def.icon + `<span>${escapeHtml(def.label)}</span>`;
             item.addEventListener('click', () => {
-                trigger();
+                def.onClick();
                 closeOverflowMenu();
             });
             menu.appendChild(item);
@@ -960,269 +843,18 @@
 
         const showResize = data.type !== 'hline';
         const displayTitle = data.title || t(typeDef.label);
-        // Per-type toolbar buttons are permanently hidden click proxies — the
-        // options (overflow) menu triggers them via querySelector + click().
         el.innerHTML = `
         <div class="module-header">
             <span class="module-drag-handle">&#x2807;</span>
             ${MODULE_TYPES[data.type]?.hasStatLink ? `<span class="module-${data.type}-link-indicator" title="" style="display:none">${cvIcon('link', 12)}</span>` : ''}
             <span class="module-type-label">${escapeHtml(displayTitle)}</span>
             <button class="module-overflow-btn" title="${t('module.moreOptions')}">${cvIcon('more-vertical', 14)}</button>
-            ${data.type === 'health' ? `<button class="module-toolbar-btn module-health-maxmod-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'stat' ? `<button class="module-toolbar-btn module-stat-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'stat' ? `<button class="module-toolbar-btn module-addstat-btn" style="display:none" aria-hidden="true">${cvIcon('plus', 14)}</button>` : ''}
-            ${data.type === 'text' ? `<button class="module-toolbar-btn module-text-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'text' ? `<button class="module-toolbar-btn module-copy-btn" style="display:none" aria-hidden="true">${cvIcon('clipboard-copy', 14)}</button>` : ''}
-            ${data.type === 'counters' ? `<button class="module-toolbar-btn module-counter-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'counters' ? `<button class="module-toolbar-btn module-counter-add-btn" style="display:none" aria-hidden="true">${cvIcon('plus', 14)}</button>` : ''}
-            ${data.type === 'actions' ? `<button class="module-toolbar-btn module-actions-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button><button class="module-toolbar-btn module-actions-add-btn" style="display:none" aria-hidden="true">${cvIcon('plus', 14)}</button>` : ''}
-            ${data.type === 'list' ? `<button class="module-toolbar-btn module-list-additem-btn" style="display:none" aria-hidden="true">${cvIcon('plus', 14)}</button>` : ''}
-            ${data.type === 'list' ? `<button class="module-toolbar-btn module-list-manage-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'abilities' ? `<button class="module-toolbar-btn module-abilities-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'abilities' ? `<button class="module-toolbar-btn module-abilities-add-btn" style="display:none" aria-hidden="true">${cvIcon('plus', 14)}</button>` : ''}
-            ${data.type === 'weapons' ? `<button class="module-toolbar-btn module-weapons-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'condition' ? `<button class="module-toolbar-btn module-cond-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'savingthrow' ? `<button class="module-toolbar-btn module-save-add-btn" style="display:none" aria-hidden="true">${cvIcon('plus', 14)}</button>` : ''}
-            ${data.type === 'savingthrow' ? `<button class="module-toolbar-btn module-save-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'recovery' ? `<button class="module-toolbar-btn module-recovery-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'resistance' ? `<button class="module-toolbar-btn module-res-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'spells' ? `<button class="module-toolbar-btn module-spells-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'level' ? `<button class="module-toolbar-btn module-level-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'activity' ? `<button class="module-activity-settings-btn module-toolbar-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'companions' ? `<button class="module-toolbar-btn module-companions-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            ${data.type === 'defenses' ? `<button class="module-toolbar-btn module-def-settings-btn" style="display:none" aria-hidden="true">${cvIcon('settings', 14)}</button>` : ''}
-            <button class="module-toolbar-btn module-delete-btn" style="display:none" aria-hidden="true">${cvIcon('trash-2', 14)}</button>
         </div>
         <div class="module-body"></div>
         ${showResize ? `<div class="module-resize-handle" title="${t('module.dragResize')}"></div>` : ''}
     `;
 
-        el.querySelector('.module-delete-btn').addEventListener('click', () => {
-            openDeleteConfirm(data.id);
-        });
-
-        // Add ability button (abilities modules only)
-        const addAbilityBtn = el.querySelector('.module-abilities-add-btn');
-        if (addAbilityBtn) {
-            addAbilityBtn.addEventListener('click', () => {
-                data.content.abilities.push({ name: '', modifier: 0, proficiency: false, linkedStat: null });
-                const bodyEl = el.querySelector('.module-body');
-                const isPlay = window.isPlayMode;
-                typeDef.renderBody(bodyEl, data, isPlay);
-                snapModuleHeight(el, data);
-                scheduleSave();
-            });
-        }
-
-        // Settings button (abilities modules only)
-        const abilitiesSettingsBtn = el.querySelector('.module-abilities-settings-btn');
-        if (abilitiesSettingsBtn) {
-            abilitiesSettingsBtn.addEventListener('click', () => {
-                openAbilitySettings(el, data);
-            });
-        }
-
-        const weaponsSettingsBtn = el.querySelector('.module-weapons-settings-btn');
-        if (weaponsSettingsBtn) {
-            weaponsSettingsBtn.addEventListener('click', () => {
-                if (typeof openWeaponModuleSettings === 'function') openWeaponModuleSettings(el, data);
-            });
-        }
-
-        const activitySettingsBtn = el.querySelector('.module-activity-settings-btn');
-        if (activitySettingsBtn) {
-            activitySettingsBtn.addEventListener('click', () => {
-                if (typeof openActivitySettings === 'function') openActivitySettings(el, data);
-            });
-        }
-
-        const recoverySettingsBtn = el.querySelector('.module-recovery-settings-btn');
-        if (recoverySettingsBtn) {
-            recoverySettingsBtn.addEventListener('click', () => {
-                if (typeof openRecoverySettingsModal === 'function') openRecoverySettingsModal(el, data);
-            });
-        }
-
-        // Add stat button (stat modules only — lives in header)
-        const addStatBtn = el.querySelector('.module-addstat-btn');
-        if (addStatBtn) {
-            addStatBtn.addEventListener('click', () => {
-                data.content.stats.push({ name: '', value: 0, modifier: 0, proficient: false, rollable: true });
-                const bodyEl = el.querySelector('.module-body');
-                const isPlay = window.isPlayMode;
-                typeDef.renderBody(bodyEl, data, isPlay);
-                snapModuleHeight(el, data);
-                scheduleSave();
-                document.dispatchEvent(new CustomEvent('cv:stats-changed', { detail: { moduleId: data.id } }));
-            });
-        }
-
-        // Max HP Modifier button (health modules only)
-        const healthMaxModBtn = el.querySelector('.module-health-maxmod-btn');
-        if (healthMaxModBtn) {
-            healthMaxModBtn.addEventListener('click', () => {
-                openHealthSettingsModal(el, data);
-            });
-        }
-
-        // Copy to clipboard (text modules only)
-        const copyBtn = el.querySelector('.module-copy-btn');
-        if (copyBtn) {
-            copyBtn.addEventListener('click', () => {
-                const textarea = el.querySelector('.module-textarea');
-                const text = textarea ? textarea.value : data.content || '';
-                const tmp = document.createElement('textarea');
-                tmp.value = text;
-                tmp.style.position = 'fixed';
-                tmp.style.opacity = '0';
-                document.body.appendChild(tmp);
-                tmp.select();
-                document.execCommand('copy');
-                document.body.removeChild(tmp);
-                copyBtn.classList.add('flash-confirm');
-                setTimeout(() => copyBtn.classList.remove('flash-confirm'), 600);
-            });
-        }
-
-        // Add Counter button (counters modules only)
-        const counterAddBtn = el.querySelector('.module-counter-add-btn');
-        if (counterAddBtn) {
-            counterAddBtn.addEventListener('click', () => {
-                openCounterCreateModal(el, data);
-            });
-        }
-
-        // Add Action button (actions modules only)
-        const actionsAddBtn = el.querySelector('.module-actions-add-btn');
-        if (actionsAddBtn) {
-            actionsAddBtn.addEventListener('click', () => {
-                openAddActionModal(el, data);
-            });
-        }
-
-        // Settings button (actions modules only)
-        const actionsSettingsBtn = el.querySelector('.module-actions-settings-btn');
-        if (actionsSettingsBtn) {
-            actionsSettingsBtn.addEventListener('click', () => {
-                openActionsSettings(el, data);
-            });
-        }
-
-        // Add Item button (list modules only)
-        const listAddItemBtn = el.querySelector('.module-list-additem-btn');
-        if (listAddItemBtn) {
-            listAddItemBtn.addEventListener('click', () => {
-                addListItem(el, data);
-            });
-        }
-
-        // Manage Attributes button (list modules only)
-        const listManageBtn = el.querySelector('.module-list-manage-btn');
-        if (listManageBtn) {
-            listManageBtn.addEventListener('click', () => {
-                openListManageAttrs(el, data);
-            });
-        }
-
-        // Settings button (stat modules only)
-        const statSettingsBtn = el.querySelector('.module-stat-settings-btn');
-        if (statSettingsBtn) {
-            statSettingsBtn.addEventListener('click', () => {
-                if (typeof window.openStatSettingsModal === 'function') window.openStatSettingsModal(el, data);
-            });
-        }
-
-        // Settings button (text modules only)
-        const textSettingsBtn = el.querySelector('.module-text-settings-btn');
-        if (textSettingsBtn) {
-            textSettingsBtn.addEventListener('click', () => {
-                openSimpleSettingsModal(el, data, 'text-settings-overlay', 'text.settingsTitle');
-            });
-        }
-
-        // Settings button (counters modules only)
-        const counterSettingsBtn = el.querySelector('.module-counter-settings-btn');
-        if (counterSettingsBtn) {
-            counterSettingsBtn.addEventListener('click', () => {
-                openSimpleSettingsModal(el, data, 'counter-settings-overlay', 'counter.settingsTitle');
-            });
-        }
-
-        // Settings button (condition modules only)
-        const condSettingsBtn = el.querySelector('.module-cond-settings-btn');
-        if (condSettingsBtn) {
-            condSettingsBtn.addEventListener('click', () => {
-                openCondSettings(el, data);
-            });
-        }
-
-        // Add Save button (savingthrow modules only)
-        const saveAddBtn = el.querySelector('.module-save-add-btn');
-        if (saveAddBtn) {
-            saveAddBtn.addEventListener('click', () => {
-                data.content.saves.push({
-                    id: generateId('save'),
-                    name: '',
-                    value: 0,
-                    proficiencyTier: null,
-                });
-                const bodyEl = el.querySelector('.module-body');
-                const isPlay = window.isPlayMode;
-                typeDef.renderBody(bodyEl, data, isPlay);
-                snapModuleHeight(el, data);
-                scheduleSave();
-            });
-        }
-
-        // Settings button (savingthrow modules only)
-        const saveSettingsBtn = el.querySelector('.module-save-settings-btn');
-        if (saveSettingsBtn) {
-            saveSettingsBtn.addEventListener('click', () => {
-                openSaveSettings(el, data);
-            });
-        }
-
-        // Settings button (resistance modules only)
-        const resSettingsBtn = el.querySelector('.module-res-settings-btn');
-        if (resSettingsBtn) {
-            resSettingsBtn.addEventListener('click', () => {
-                openResSettings(el, data);
-            });
-        }
-
-        // Settings button (level modules only)
-        const levelSettingsBtn = el.querySelector('.module-level-settings-btn');
-        if (levelSettingsBtn) {
-            levelSettingsBtn.addEventListener('click', () => {
-                openLevelSettings(el, data);
-            });
-        }
-
-        // Settings button (spells modules only)
-        const spellsSettingsBtn = el.querySelector('.module-spells-settings-btn');
-        if (spellsSettingsBtn) {
-            spellsSettingsBtn.addEventListener('click', () => {
-                openSpellSettings(el, data);
-            });
-        }
-
-        // Settings button (companions modules only)
-        const companionsSettingsBtn = el.querySelector('.module-companions-settings-btn');
-        if (companionsSettingsBtn) {
-            companionsSettingsBtn.addEventListener('click', () => {
-                if (typeof window.openCompanionSettings === 'function') window.openCompanionSettings(el, data);
-            });
-        }
-
-        // QD Settings button (defenses modules only)
-        const defSettingsBtn = el.querySelector('.module-def-settings-btn');
-        if (defSettingsBtn) {
-            defSettingsBtn.addEventListener('click', () => {
-                if (typeof window.openDefenseSettingsModal === 'function') window.openDefenseSettingsModal(el, data);
-            });
-        }
-
-        // Overflow menu (kebab button for narrow modules)
+        // Overflow menu (kebab button)
         const overflowBtn = el.querySelector('.module-overflow-btn');
         overflowBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -1230,7 +862,7 @@
         });
 
         const bodyEl = el.querySelector('.module-body');
-        typeDef.renderBody(bodyEl, data, isPlayMode);
+        typeDef.renderBody(bodyEl, data);
 
         moduleGrid.appendChild(el);
         if (data.type !== 'hline') {
@@ -1607,6 +1239,7 @@
 
     window.MODULE_TYPES = MODULE_TYPES;
     window.registerModuleType = registerModuleType;
+    window.openSimpleSettingsModal = openSimpleSettingsModal;
     window.moduleGrid = moduleGrid;
     window.updateEmptyState = updateEmptyState;
     window.renderModule = renderModule;

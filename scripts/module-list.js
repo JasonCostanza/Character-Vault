@@ -141,11 +141,6 @@
         });
     }
 
-    // ── Render Empty State ──
-    function renderEmptyState(container) {
-        container.innerHTML = `<div class="list-empty-state">${escapeHtml(t('list.emptyState'))}</div>`;
-    }
-
     // ── Sorted Items ──
     function getSortedItems(content) {
         const items = content.items.slice();
@@ -238,8 +233,34 @@
         };
     }
 
+    // Update the pending "item added" log entry with the item's first name, or
+    // log a rename for an already-named item.
+    function logItemRename(item, oldName, newName, data) {
+        const listName = data.title || t('type.list');
+        if (pendingAddEntries.has(item.id)) {
+            if (newName) {
+                const entryId = pendingAddEntries.get(item.id);
+                const entry = (window.activityLog || []).find((e) => e.id === entryId);
+                if (entry) {
+                    entry.message = t('list.log.addNamed', { name: newName, listName });
+                    scheduleSave();
+                    if (typeof window.refreshActivityLog === 'function') window.refreshActivityLog();
+                }
+            }
+            pendingAddEntries.delete(item.id);
+        } else if (newName && newName !== oldName && oldName && typeof window.logActivity === 'function') {
+            window.logActivity({
+                type: 'list.event.rename',
+                message: t('list.log.rename', { oldName, newName, listName }),
+                sourceModuleId: data.id,
+            });
+        }
+    }
+
     // ── Attribute Value Cell ──
-    function renderAttrValue(attr, value, isPlayMode, item, onUpdate, onLog) {
+    // asDisplay: true → compact interactive display (module body rows);
+    // false → full form inputs (item inspect modal).
+    function renderAttrValue(attr, value, asDisplay, item, onUpdate, onLog) {
         const cell = document.createElement('div');
         cell.className = 'list-attr-cell list-attr-' + attr.type;
 
@@ -261,7 +282,7 @@
 
         if (attr.type === 'quantity') {
             let val = parseInt(value) || 0;
-            if (isPlayMode) {
+            if (asDisplay) {
                 const qtySpan = document.createElement('span');
                 qtySpan.className = 'list-attr-quantity-display';
                 qtySpan.textContent = val;
@@ -305,7 +326,7 @@
         }
 
         if (attr.type === 'number') {
-            if (isPlayMode) {
+            if (asDisplay) {
                 const numSpan = document.createElement('span');
                 numSpan.className = 'list-attr-number-display';
                 numSpan.textContent = value != null ? value : 0;
@@ -337,7 +358,7 @@
         if (attr.type === 'number-pair') {
             const pairCur = value && value.current != null ? value.current : 0;
             const pairMax = value && value.max != null ? value.max : 0;
-            if (isPlayMode) {
+            if (asDisplay) {
                 const pairSpan = document.createElement('span');
                 pairSpan.className = 'list-attr-pair-display';
                 pairSpan.textContent = pairCur + ' / ' + pairMax;
@@ -394,7 +415,7 @@
 
         if (attr.type === 'dropdown') {
             const opts = attr.options || [];
-            if (isPlayMode) {
+            if (asDisplay) {
                 const dropSpan = document.createElement('span');
                 dropSpan.className = 'list-attr-dropdown-display';
                 dropSpan.textContent = value != null ? value : opts[0] || '';
@@ -419,7 +440,7 @@
         }
 
         // text
-        if (isPlayMode) {
+        if (asDisplay) {
             const txtSpan = document.createElement('span');
             txtSpan.className = 'list-attr-text-display';
             txtSpan.textContent = value != null ? value : '';
@@ -458,18 +479,18 @@
 
     function closeColumnPicker(skipRender) {
         if (!activeColumnPicker) return;
-        const { popover, bodyEl, data, isPlayMode, onKeyDown } = activeColumnPicker;
+        const { popover, bodyEl, data, onKeyDown } = activeColumnPicker;
         document.removeEventListener('keydown', onKeyDown);
         document.removeEventListener('click', handleColumnPickerOutsideClick);
         popover.remove();
         activeColumnPicker = null;
         if (!skipRender) {
-            renderListBody(bodyEl, data, isPlayMode);
+            renderListBody(bodyEl, data);
             snapModuleHeight(bodyEl.closest('.module'), data);
         }
     }
 
-    function openColumnPicker(anchorEl, content, bodyEl, data, isPlayMode) {
+    function openColumnPicker(anchorEl, content, bodyEl, data) {
         if (activeColumnPicker) closeColumnPicker();
 
         const popover = document.createElement('div');
@@ -542,7 +563,7 @@
             if (e.key === 'Escape') closeColumnPicker();
         };
         document.addEventListener('keydown', onKeyDown);
-        activeColumnPicker = { popover, bodyEl, data, isPlayMode, onKeyDown, anchorEl };
+        activeColumnPicker = { popover, bodyEl, data, onKeyDown, anchorEl };
 
         requestAnimationFrame(function () {
             document.addEventListener('click', handleColumnPickerOutsideClick);
@@ -635,16 +656,16 @@
     }
 
     // ── Column Headers ──
-    function renderColumnHeaders(content, bodyEl, data, isPlayMode, isSorted) {
+    function renderColumnHeaders(content, bodyEl, data, isSorted) {
         const pinnedAttrs = content.attributes.filter(function (a) {
             return a.pinned;
         });
 
         const headerRow = document.createElement('div');
-        headerRow.className = 'list-header-row' + (!isPlayMode && !isSorted ? ' cols-draggable' : '');
+        headerRow.className = 'list-header-row';
 
         // Handle spacer — matches drag handle width when handles are visible
-        if (!isPlayMode && !isSorted) {
+        if (!isSorted) {
             const handleSpacer = document.createElement('div');
             handleSpacer.className = 'list-col-handle-spacer';
             headerRow.appendChild(handleSpacer);
@@ -683,7 +704,7 @@
                 content.sortDir = 'asc';
             }
             scheduleSave();
-            renderListBody(bodyEl, data, isPlayMode);
+            renderListBody(bodyEl, data);
         });
 
         headerRow.appendChild(nameHeader);
@@ -723,13 +744,11 @@
                     content.sortDir = 'asc';
                 }
                 scheduleSave();
-                renderListBody(bodyEl, data, isPlayMode);
+                renderListBody(bodyEl, data);
             });
 
             applyColWidth(colHeader, attr.width);
-            if (!isPlayMode) {
-                initColResizeHandle(colHeader, attr, bodyEl, data);
-            }
+            initColResizeHandle(colHeader, attr, bodyEl, data);
 
             headerRow.appendChild(colHeader);
         });
@@ -745,7 +764,7 @@
                 if (activeColumnPicker && activeColumnPicker.anchorEl === pickerBtn) {
                     closeColumnPicker();
                 } else {
-                    openColumnPicker(pickerBtn, content, bodyEl, data, isPlayMode);
+                    openColumnPicker(pickerBtn, content, bodyEl, data);
                 }
             });
             headerRow.appendChild(pickerBtn);
@@ -824,7 +843,7 @@
         return true;
     }
 
-    // ── Sortable (Layout Mode — reorder + cross-list transfer) ──
+    // ── Sortable (manual reorder + cross-list transfer) ──
     function initListSortable(container, data) {
         if (container._sortable) container._sortable.destroy();
         const content = ensureContent(data);
@@ -879,12 +898,12 @@
 
                 if (sourceModuleEl) {
                     const srcBody = sourceModuleEl.querySelector('.module-body');
-                    renderListBody(srcBody, sourceData, false);
+                    renderListBody(srcBody, sourceData);
                     snapModuleHeight(sourceModuleEl, sourceData);
                 }
                 if (targetModuleEl) {
                     const tgtBody = targetModuleEl.querySelector('.module-body');
-                    renderListBody(tgtBody, targetData, false);
+                    renderListBody(tgtBody, targetData);
                     snapModuleHeight(targetModuleEl, targetData);
                 }
 
@@ -893,37 +912,8 @@
         });
     }
 
-    // ── Column Header Sortable (Layout Mode — reorder columns) ──
-    function initColumnSortable(headerRow, content, bodyEl, data) {
-        if (!headerRow) return;
-        headerRow._colSortable = new Sortable(headerRow, {
-            draggable: '.list-col-attr',
-            filter: '.list-col-resize-handle',
-            animation: 150,
-            ghostClass: 'list-col-ghost',
-            onEnd: function () {
-                const newPinnedIds = Array.from(headerRow.querySelectorAll('.list-col-attr')).map(function (el) {
-                    return el.dataset.attrId;
-                });
-                const pinnedInNewOrder = newPinnedIds
-                    .map(function (id) {
-                        return content.attributes.find(function (a) {
-                            return a.id === id;
-                        });
-                    })
-                    .filter(Boolean);
-                let pinnedIdx = 0;
-                content.attributes = content.attributes.map(function (a) {
-                    return a.pinned ? pinnedInNewOrder[pinnedIdx++] : a;
-                });
-                scheduleSave();
-                renderListBody(bodyEl, data, false);
-            },
-        });
-    }
-
     // ── Render List Body ──
-    function renderListBody(bodyEl, data, isPlayMode) {
+    function renderListBody(bodyEl, data) {
         const content = ensureContent(data);
         if (activeColumnPicker && activeColumnPicker.bodyEl === bodyEl) {
             document.removeEventListener('keydown', activeColumnPicker.onKeyDown);
@@ -938,38 +928,24 @@
         if (oldContainer && oldContainer._sortable) {
             oldContainer._sortable.destroy();
         }
-        const oldHeaderRow = bodyEl.querySelector('.list-header-row');
-        if (oldHeaderRow && oldHeaderRow._colSortable) {
-            oldHeaderRow._colSortable.destroy();
-        }
         bodyEl.innerHTML = '';
-
-        // Play mode with no items: just show empty state
-        if (isPlayMode && content.items.length === 0) {
-            renderEmptyState(bodyEl);
-            return;
-        }
 
         const pinnedAttrs = content.attributes.filter((a) => a.pinned);
         const isSorted = content.sortBy !== null;
         const sortedItems = getSortedItems(content);
         const hasItems = content.items.length > 0;
-        const hasColumns = pinnedAttrs.length > 0;
         // Show header row whenever there are items so the Name column is always sortable
         const showHeader = hasItems;
 
-        // Always create container (even if empty) so it can be a drop target in layout mode
+        // Always create container (even if empty) so it can be a cross-list drop target
         const container = document.createElement('div');
         container.className = 'list-container';
 
         // Column headers — always shown when there are items
         if (showHeader) {
-            const headerRow = renderColumnHeaders(content, bodyEl, data, isPlayMode, isSorted);
+            const headerRow = renderColumnHeaders(content, bodyEl, data, isSorted);
             if (headerRow) {
                 container.appendChild(headerRow);
-                if (!isPlayMode && !isSorted) {
-                    initColumnSortable(headerRow, content, bodyEl, data);
-                }
             }
         }
 
@@ -985,73 +961,35 @@
                 row.dataset.itemId = item.id;
                 if (moduleEl) row.dataset.moduleId = moduleEl.dataset.id;
 
-                if (isPlayMode) {
-                    // Name
-                    const nameSpan = document.createElement('span');
-                    nameSpan.className = 'list-item-name';
-                    nameSpan.textContent = item.name || t('list.itemName');
-                    row.appendChild(nameSpan);
-                } else {
-                    // Drag handle — only when not sorted
-                    if (!isSorted) {
-                        const handle = document.createElement('span');
-                        handle.className = 'list-item-drag-handle';
-                        handle.innerHTML = '&#x2807;';
-                        row.appendChild(handle);
-                    }
-
-                    // Name input
-                    const nameInput = document.createElement('input');
-                    nameInput.className = 'list-item-name-input';
-                    nameInput.type = 'text';
-                    nameInput.value = item.name;
-                    nameInput.placeholder = t('list.itemName');
-                    nameInput.addEventListener('input', () => {
-                        item.name = nameInput.value;
-                        scheduleSave();
-                    });
-                    nameInput.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter' || e.key === 'Escape') nameInput.blur();
-                    });
-                    let nameOnFocus = item.name;
-                    nameInput.addEventListener('focus', () => {
-                        nameOnFocus = nameInput.value;
-                    });
-                    nameInput.addEventListener('blur', () => {
-                        const newName = nameInput.value;
-                        if (pendingAddEntries.has(item.id)) {
-                            if (newName) {
-                                const entryId = pendingAddEntries.get(item.id);
-                                const entry = (window.activityLog || []).find((e) => e.id === entryId);
-                                if (entry) {
-                                    entry.message = t('list.log.addNamed', {
-                                        name: newName,
-                                        listName: data.title || t('type.list'),
-                                    });
-                                    scheduleSave();
-                                    if (typeof window.refreshActivityLog === 'function') window.refreshActivityLog();
-                                }
-                            }
-                            pendingAddEntries.delete(item.id);
-                        } else if (
-                            newName &&
-                            newName !== nameOnFocus &&
-                            nameOnFocus &&
-                            typeof window.logActivity === 'function'
-                        ) {
-                            window.logActivity({
-                                type: 'list.event.rename',
-                                message: t('list.log.rename', {
-                                    oldName: nameOnFocus,
-                                    newName,
-                                    listName: data.title || t('type.list'),
-                                }),
-                                sourceModuleId: data.id,
-                            });
-                        }
-                    });
-                    row.appendChild(nameInput);
+                // Drag handle — only when not sorted (manual order active)
+                if (!isSorted) {
+                    const handle = document.createElement('span');
+                    handle.className = 'list-item-drag-handle';
+                    handle.innerHTML = '&#x2807;';
+                    row.appendChild(handle);
                 }
+
+                // Name — Ctrl+Click edits
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'list-item-name';
+                nameSpan.textContent = item.name || t('list.itemName');
+                nameSpan.addEventListener('click', (e) => {
+                    if (!e.ctrlKey) return;
+                    e.stopPropagation();
+                    window.openEditPopover(nameSpan, {
+                        label: t('list.colName'),
+                        value: item.name || '',
+                        type: 'text',
+                        onSave(newName) {
+                            const oldName = item.name;
+                            item.name = newName;
+                            logItemRename(item, oldName, newName, data);
+                            scheduleSave();
+                            renderListBody(bodyEl, data);
+                        },
+                    });
+                });
+                row.appendChild(nameSpan);
 
                 // Pinned attribute value cells
                 pinnedAttrs.forEach((attr) => {
@@ -1059,7 +997,7 @@
                     const attrCell = renderAttrValue(
                         attr,
                         val,
-                        isPlayMode,
+                        true,
                         item,
                         function (newVal) {
                             if (!item.values) item.values = {};
@@ -1073,45 +1011,15 @@
                     row.appendChild(attrCell);
                 });
 
-                if (isPlayMode) {
-                    // Expand button
-                    const expandBtn = document.createElement('button');
-                    expandBtn.className = 'list-item-expand-btn';
-                    expandBtn.title = escapeHtml(t('list.inspectTitle'));
-                    expandBtn.innerHTML = cvIcon('maximize-2', 14);
-                    expandBtn.addEventListener('click', function () {
-                        openItemInspect(moduleEl, data, item.id);
-                    });
-                    row.appendChild(expandBtn);
-                } else {
-                    // Delete button
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.className = 'list-item-delete-btn';
-                    deleteBtn.title = escapeHtml(t('list.deleteItem'));
-                    deleteBtn.innerHTML = cvIcon('x', 12);
-                    deleteBtn.addEventListener('click', () => {
-                        const idx = content.items.findIndex((i) => i.id === item.id);
-                        if (idx !== -1) {
-                            const itemName = item.name || t('list.itemName');
-                            pendingAddEntries.delete(item.id);
-                            content.items.splice(idx, 1);
-                            renderListBody(bodyEl, data, false);
-                            snapModuleHeight(bodyEl.closest('.module'), data);
-                            scheduleSave();
-                            if (typeof window.logActivity === 'function') {
-                                window.logActivity({
-                                    type: 'list.event.remove',
-                                    message: t('list.log.remove', {
-                                        name: itemName,
-                                        listName: data.title || t('type.list'),
-                                    }),
-                                    sourceModuleId: data.id,
-                                });
-                            }
-                        }
-                    });
-                    row.appendChild(deleteBtn);
-                }
+                // Expand button
+                const expandBtn = document.createElement('button');
+                expandBtn.className = 'list-item-expand-btn';
+                expandBtn.title = escapeHtml(t('list.inspectTitle'));
+                expandBtn.innerHTML = cvIcon('maximize-2', 14);
+                expandBtn.addEventListener('click', function () {
+                    openItemInspect(moduleEl, data, item.id);
+                });
+                row.appendChild(expandBtn);
 
                 container.appendChild(row);
             });
@@ -1119,15 +1027,14 @@
 
         bodyEl.appendChild(container);
 
-        // Initialize SortableJS only in layout mode and only when not sorted
-        if (!isPlayMode && !isSorted) {
+        // Manual reorder / cross-list transfer — only when not sorted
+        if (!isSorted) {
             initListSortable(container, data);
         }
     }
 
     // ── Add Item ──
-    // Called from module-core.js toolbar button handler
-    window.addListItem = function (moduleEl, data) {
+    function addListItem(moduleEl, data) {
         const content = ensureContent(data);
         const values = {};
         content.attributes.forEach((attr) => {
@@ -1142,7 +1049,7 @@
         };
         content.items.push(newItem);
         const bodyEl = moduleEl.querySelector('.module-body');
-        renderListBody(bodyEl, data, false);
+        renderListBody(bodyEl, data);
         snapModuleHeight(moduleEl, data);
         scheduleSave();
         if (typeof window.logActivity === 'function') {
@@ -1153,10 +1060,9 @@
             });
             if (logEntryId) pendingAddEntries.set(newItem.id, logEntryId);
         }
-        // Focus the new item's name input
-        const rows = bodyEl.querySelectorAll('.list-item-name-input');
-        if (rows.length > 0) rows[rows.length - 1].focus();
-    };
+        // Open the inspect modal so the new item can be named immediately
+        openItemInspect(moduleEl, data, newItem.id);
+    }
 
     // ── Manage Attributes Panel ──
 
@@ -1165,10 +1071,11 @@
         const overlay = document.querySelector('.list-manage-overlay');
         if (!overlay) return;
         if (overlay._keyHandler) document.removeEventListener('keydown', overlay._keyHandler);
+        const attrList = overlay.querySelector('.list-attr-manage-list');
+        if (attrList && attrList._sortable) attrList._sortable.destroy();
         overlay.remove();
-        // Re-render list body in layout mode
         const bodyEl = moduleEl.querySelector('.module-body');
-        renderListBody(bodyEl, data, false);
+        renderListBody(bodyEl, data);
         snapModuleHeight(moduleEl, data);
     }
 
@@ -1234,9 +1141,19 @@
             noAttrs.textContent = t('list.noAttrs');
             body.appendChild(noAttrs);
         } else {
+            const attrList = document.createElement('div');
+            attrList.className = 'list-attr-manage-list';
+
             content.attributes.forEach(function (attr) {
                 const row = document.createElement('div');
                 row.className = 'list-attr-row';
+                row.dataset.attrId = attr.id;
+
+                // Drag handle — reordering attributes reorders their columns
+                const dragHandle = document.createElement('span');
+                dragHandle.className = 'list-attr-drag-handle';
+                dragHandle.innerHTML = '&#x2807;';
+                row.appendChild(dragHandle);
 
                 // Icon
                 const iconSpan = document.createElement('span');
@@ -1300,8 +1217,26 @@
                 });
                 row.appendChild(deleteBtn);
 
-                body.appendChild(row);
+                attrList.appendChild(row);
             });
+
+            attrList._sortable = new Sortable(attrList, {
+                handle: '.list-attr-drag-handle',
+                animation: 150,
+                ghostClass: 'list-attr-ghost',
+                draggable: '.list-attr-row',
+                onEnd: function () {
+                    const orderedIds = Array.from(attrList.querySelectorAll('.list-attr-row')).map(function (el) {
+                        return el.dataset.attrId;
+                    });
+                    content.attributes.sort(function (a, b) {
+                        return orderedIds.indexOf(a.id) - orderedIds.indexOf(b.id);
+                    });
+                    scheduleSave();
+                },
+            });
+
+            body.appendChild(attrList);
         }
 
         // ── Add Preset Section ──
@@ -1668,10 +1603,6 @@
         });
     }
 
-    window.openListManageAttrs = function (moduleEl, data) {
-        openManageAttrsPanel(moduleEl, data);
-    };
-
     // ── Inspect Overlay ──
     let activeInspectContext = null;
 
@@ -1682,12 +1613,19 @@
         const overlay = document.getElementById('list-inspect-overlay');
 
         if (isDiscard) {
-            // Check dirty state
+            // Check dirty state — window.confirm() is blocked in TaleSpire's
+            // embedded Chromium, so route through the custom showConfirm dialog
             const currentItemJson = JSON.stringify(ctx.itemOriginal);
             const editedItemJson = JSON.stringify(ctx.itemProxy);
 
             if (currentItemJson !== editedItemJson) {
-                if (!confirm(t('list.discardPrompt'))) return;
+                showConfirm(t('list.discardPrompt'), function () {
+                    document.removeEventListener('keydown', ctx.onKeyDown);
+                    overlay.classList.remove('open');
+                    overlay.setAttribute('aria-hidden', 'true');
+                    activeInspectContext = null;
+                });
+                return;
             }
         } else {
             // Save: update original object
@@ -1765,7 +1703,7 @@
                 // Re-render
                 const bodyEl = ctx.moduleEl.querySelector('.module-body');
                 if (bodyEl) {
-                    renderListBody(bodyEl, ctx.data, true);
+                    renderListBody(bodyEl, ctx.data);
                     snapModuleHeight(ctx.moduleEl, ctx.data);
                     if (typeof window.reapplyPendingStates === 'function') window.reapplyPendingStates();
                 }
@@ -1929,7 +1867,7 @@
                     }
                     const bEl = moduleEl.querySelector('.module-body');
                     if (bEl) {
-                        renderListBody(bEl, data, true);
+                        renderListBody(bEl, data);
                         snapModuleHeight(moduleEl, data);
                         if (typeof window.reapplyPendingStates === 'function') window.reapplyPendingStates();
                     }
@@ -1987,19 +1925,24 @@
     registerModuleType('list', {
         label: 'type.list',
 
-        renderBody(bodyEl, data, isPlayMode) {
+        renderBody(bodyEl, data) {
             ensureContent(data);
-            renderListBody(bodyEl, data, isPlayMode);
+            renderListBody(bodyEl, data);
         },
 
-        syncState(moduleEl, data) {
-            const content = ensureContent(data);
-            moduleEl.querySelectorAll('.list-item-row').forEach((row) => {
-                const item = content.items.find((i) => i.id === row.dataset.itemId);
-                if (!item) return;
-                const nameInput = row.querySelector('.list-item-name-input');
-                if (nameInput) item.name = nameInput.value;
-            });
+        overflowMenuItems(moduleEl, data) {
+            return [
+                {
+                    onClick: () => addListItem(moduleEl, data),
+                    label: t('list.addItem'),
+                    icon: cvIcon('plus', 14),
+                },
+                {
+                    onClick: () => openManageAttrsPanel(moduleEl, data),
+                    label: t('list.moduleSettings'),
+                    icon: cvIcon('settings', 14),
+                },
+            ];
         },
     });
 

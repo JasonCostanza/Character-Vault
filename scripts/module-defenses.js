@@ -222,7 +222,7 @@
                 onSave(newVal) {
                     def.value = newVal;
                     scheduleSave();
-                    MODULE_TYPES['defenses'].renderBody(bodyEl, data, true);
+                    MODULE_TYPES['defenses'].renderBody(bodyEl, data);
                 },
             });
         });
@@ -250,6 +250,7 @@
             const def = content.defenses[i];
             const row = document.createElement('div');
             row.className = 'def-secondary-row';
+            row.dataset.defId = def.id;
 
             if (def.icon) {
                 const iconEl = document.createElement('span');
@@ -277,7 +278,7 @@
                     onSave(newVal) {
                         def.value = newVal;
                         scheduleSave();
-                        MODULE_TYPES['defenses'].renderBody(bodyEl, data, true);
+                        MODULE_TYPES['defenses'].renderBody(bodyEl, data);
                     },
                 });
             });
@@ -342,142 +343,6 @@
         });
 
         container.appendChild(strip);
-    }
-
-    // ── Layout Mode: Edit Row ──
-
-    function renderEditRow(def, data, bodyEl) {
-        const row = document.createElement('div');
-        row.className = 'def-edit-row';
-        row.dataset.id = def.id;
-
-        // Drag handle
-        const handle = document.createElement('span');
-        handle.className = 'def-drag-handle';
-        handle.innerHTML = '&#x2807;';
-        row.appendChild(handle);
-
-        // Icon button
-        const iconBtn = document.createElement('button');
-        iconBtn.type = 'button';
-        iconBtn.className = 'def-icon-btn';
-        iconBtn.title = t('def.changeIcon');
-        iconBtn.innerHTML = def.icon ? cvIcon(def.icon) : cvIcon('none');
-        iconBtn.addEventListener('click', function () {
-            openDefenseIconPicker(iconBtn, def.icon, function (newIcon) {
-                def.icon = newIcon;
-                scheduleSave();
-                MODULE_TYPES['defenses'].renderBody(bodyEl, data, false);
-            });
-        });
-        row.appendChild(iconBtn);
-
-        // Name input
-        const nameInput = document.createElement('input');
-        nameInput.type = 'text';
-        nameInput.className = 'def-name-input';
-        nameInput.value = def.name;
-        nameInput.addEventListener('input', function () {
-            const oldName = def.name;
-            def.name = nameInput.value;
-            if (typeof window.propagateEntityRename === 'function') {
-                window.propagateEntityRename(data.id, 'defense', oldName, def.name);
-            }
-            scheduleSave();
-        });
-        row.appendChild(nameInput);
-
-        // Sign toggle
-        const signBtn = document.createElement('button');
-        signBtn.type = 'button';
-        signBtn.className = 'def-sign-toggle' + (def.showSign ? ' active' : '');
-        signBtn.title = t('def.showSign');
-        signBtn.textContent = '±';
-        signBtn.addEventListener('click', function () {
-            def.showSign = !def.showSign;
-            signBtn.classList.toggle('active', def.showSign);
-            scheduleSave();
-        });
-        row.appendChild(signBtn);
-
-        // Value input
-        const valueInput = document.createElement('input');
-        valueInput.type = 'number';
-        valueInput.className = 'def-value-input';
-        valueInput.value = def.value;
-        valueInput.addEventListener('input', function () {
-            def.value = parseInt(valueInput.value, 10) || 0;
-            scheduleSave();
-        });
-        row.appendChild(valueInput);
-
-        // Delete button
-        const deleteBtn = document.createElement('button');
-        deleteBtn.type = 'button';
-        deleteBtn.className = 'def-delete-btn';
-        deleteBtn.title = t('def.deleteDefense');
-        deleteBtn.innerHTML = SVG_CLOSE;
-        deleteBtn.addEventListener('click', function () {
-            showConfirm(t('def.confirmDelete', { name: def.name || t('def.unnamed') }), function () {
-                const idx = data.content.defenses.findIndex(function (d) {
-                    return d.id === def.id;
-                });
-                if (idx !== -1) data.content.defenses.splice(idx, 1);
-                MODULE_TYPES['defenses'].renderBody(bodyEl, data, false);
-                scheduleSave();
-            });
-        });
-        row.appendChild(deleteBtn);
-
-        return row;
-    }
-
-    // ── Layout Mode: Add Defense Row ──
-
-    function renderAddRow(data, bodyEl) {
-        const row = document.createElement('div');
-        row.className = 'def-add-row';
-        row.innerHTML = SVG_PLUS + '<span>' + escapeHtml(t('def.addDefense')) + '</span>';
-        row.addEventListener('click', function () {
-            data.content.defenses.push({
-                id: generateDefenseId(),
-                name: '',
-                value: 0,
-                icon: null,
-                showSign: false,
-            });
-            MODULE_TYPES['defenses'].renderBody(bodyEl, data, false);
-            scheduleSave();
-            const inputs = bodyEl.querySelectorAll('.def-name-input');
-            if (inputs.length) inputs[inputs.length - 1].focus();
-        });
-        return row;
-    }
-
-    // ── SortableJS: Defense List ──
-
-    function initDefenseSortable(container, data) {
-        if (container._sortable) container._sortable.destroy();
-        container._sortable = new Sortable(container, {
-            handle: '.def-drag-handle',
-            animation: 150,
-            ghostClass: 'cv-drag-ghost',
-            draggable: '.def-edit-row',
-            onEnd: function () {
-                const ids = Array.from(container.querySelectorAll('.def-edit-row')).map(function (el) {
-                    return el.dataset.id;
-                });
-                const reordered = ids
-                    .map(function (id) {
-                        return data.content.defenses.find(function (d) {
-                            return d.id === id;
-                        });
-                    })
-                    .filter(Boolean);
-                data.content.defenses = reordered;
-                scheduleSave();
-            },
-        });
     }
 
     // ── QD Settings Modal ──
@@ -617,7 +482,7 @@
         });
     }
 
-    function openQDSettingsModal(moduleEl, data) {
+    function openDefenseSettingsModal(moduleEl, data) {
         const content = ensureContent(data);
 
         const existing = document.querySelector('.def-settings-overlay');
@@ -634,7 +499,7 @@
         header.className = 'cv-modal-header';
         const titleEl = document.createElement('span');
         titleEl.className = 'cv-modal-title';
-        titleEl.textContent = t('def.qdSettings');
+        titleEl.textContent = t('def.settingsTitle');
         const closeXBtn = document.createElement('button');
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
@@ -647,6 +512,185 @@
         // Body
         const body = document.createElement('div');
         body.className = 'cv-modal-body';
+
+        function reRenderModuleBody() {
+            const bodyEl = moduleEl.querySelector('.module-body');
+            if (bodyEl) MODULE_TYPES['defenses'].renderBody(bodyEl, data);
+        }
+
+        // ── Manage Defenses ──
+        const manageLabel = document.createElement('div');
+        manageLabel.className = 'cv-modal-label';
+        manageLabel.textContent = t('def.manageDefenses');
+        body.appendChild(manageLabel);
+
+        const manageList = document.createElement('div');
+        manageList.className = 'def-manage-list';
+
+        function buildManageRow(def) {
+            const row = document.createElement('div');
+            row.className = 'def-manage-row';
+            row.dataset.id = def.id;
+
+            const drag = document.createElement('span');
+            drag.className = 'def-manage-drag';
+            drag.innerHTML = '&#x2807;';
+            row.appendChild(drag);
+
+            const iconBtn = document.createElement('button');
+            iconBtn.type = 'button';
+            iconBtn.className = 'def-icon-btn';
+            iconBtn.title = t('def.changeIcon');
+            iconBtn.innerHTML = def.icon ? cvIcon(def.icon) : cvIcon('none');
+            iconBtn.addEventListener('click', function () {
+                openDefenseIconPicker(iconBtn, def.icon, function (newIcon) {
+                    def.icon = newIcon;
+                    scheduleSave();
+                    iconBtn.innerHTML = def.icon ? cvIcon(def.icon) : cvIcon('none');
+                    reRenderModuleBody();
+                });
+            });
+            row.appendChild(iconBtn);
+
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.className = 'def-manage-name';
+            nameInput.value = def.name;
+            nameInput.addEventListener('input', function () {
+                const oldName = def.name;
+                def.name = nameInput.value;
+                if (typeof window.propagateEntityRename === 'function') {
+                    window.propagateEntityRename(data.id, 'defense', oldName, def.name);
+                }
+                scheduleSave();
+                const bodyEl = moduleEl.querySelector('.module-body');
+                if (bodyEl) {
+                    const nameEl =
+                        content.defenses[0] === def
+                            ? bodyEl.querySelector('.def-spotlight-label')
+                            : bodyEl.querySelector('.def-secondary-row[data-def-id="' + def.id + '"] .def-secondary-name');
+                    if (nameEl) nameEl.textContent = def.name;
+                }
+            });
+            row.appendChild(nameInput);
+
+            const signBtn = document.createElement('button');
+            signBtn.type = 'button';
+            signBtn.className = 'def-manage-sign' + (def.showSign ? ' active' : '');
+            signBtn.title = t('def.showSign');
+            signBtn.textContent = '±';
+            signBtn.addEventListener('click', function () {
+                def.showSign = !def.showSign;
+                signBtn.classList.toggle('active', def.showSign);
+                scheduleSave();
+                reRenderModuleBody();
+            });
+            row.appendChild(signBtn);
+
+            const valueInput = document.createElement('input');
+            valueInput.type = 'number';
+            valueInput.className = 'def-manage-value';
+            valueInput.value = def.value;
+            valueInput.addEventListener('input', function () {
+                def.value = parseInt(valueInput.value, 10) || 0;
+                scheduleSave();
+                const bodyEl = moduleEl.querySelector('.module-body');
+                if (bodyEl) {
+                    if (content.defenses[0] === def) {
+                        const spotlightEl = bodyEl.querySelector('.def-spotlight');
+                        if (spotlightEl) refreshSpotlightState(spotlightEl, content);
+                    } else {
+                        const valueEl = bodyEl.querySelector(
+                            '.def-secondary-row[data-def-id="' + def.id + '"] .def-secondary-value'
+                        );
+                        if (valueEl) valueEl.textContent = fmtDefValue(def.value, def.showSign);
+                    }
+                }
+            });
+            row.appendChild(valueInput);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.className = 'def-manage-delete';
+            deleteBtn.title = t('def.deleteDefense');
+            deleteBtn.innerHTML = SVG_CLOSE;
+            deleteBtn.addEventListener('click', function () {
+                showConfirm(t('def.confirmDelete', { name: def.name || t('def.unnamed') }), function () {
+                    const idx = content.defenses.findIndex(function (d) {
+                        return d.id === def.id;
+                    });
+                    if (idx !== -1) content.defenses.splice(idx, 1);
+                    scheduleSave();
+                    renderManageRows();
+                    reRenderModuleBody();
+                });
+            });
+            row.appendChild(deleteBtn);
+
+            return row;
+        }
+
+        function renderManageRows() {
+            manageList.innerHTML = '';
+            content.defenses.forEach(function (def) {
+                manageList.appendChild(buildManageRow(def));
+            });
+
+            if (manageList._sortable) manageList._sortable.destroy();
+            if (content.defenses.length > 1) {
+                manageList._sortable = new Sortable(manageList, {
+                    handle: '.def-manage-drag',
+                    animation: 150,
+                    ghostClass: 'cv-drag-ghost',
+                    draggable: '.def-manage-row',
+                    onEnd: function () {
+                        const ids = Array.from(manageList.querySelectorAll('.def-manage-row')).map(function (el) {
+                            return el.dataset.id;
+                        });
+                        const reordered = ids
+                            .map(function (id) {
+                                return content.defenses.find(function (d) {
+                                    return d.id === id;
+                                });
+                            })
+                            .filter(Boolean);
+                        content.defenses = reordered;
+                        scheduleSave();
+                        reRenderModuleBody();
+                    },
+                });
+            }
+        }
+
+        renderManageRows();
+        body.appendChild(manageList);
+
+        const addDefenseBtn = document.createElement('button');
+        addDefenseBtn.type = 'button';
+        addDefenseBtn.className = 'btn-secondary sm';
+        addDefenseBtn.innerHTML = SVG_PLUS + ' ' + escapeHtml(t('def.addDefense'));
+        addDefenseBtn.addEventListener('click', function () {
+            content.defenses.push({
+                id: generateDefenseId(),
+                name: '',
+                value: 0,
+                icon: null,
+                showSign: false,
+            });
+            scheduleSave();
+            renderManageRows();
+            reRenderModuleBody();
+            const inputs = manageList.querySelectorAll('.def-manage-name');
+            if (inputs.length) inputs[inputs.length - 1].focus();
+        });
+        body.appendChild(addDefenseBtn);
+
+        // ── Manage Quick Defenses ──
+        const qdLabel = document.createElement('div');
+        qdLabel.className = 'cv-modal-label';
+        qdLabel.textContent = t('def.manageQuickDefenses');
+        body.appendChild(qdLabel);
+
         renderQDModalBody(body, content, data, moduleEl);
         buildCommonSettingsSection(body, moduleEl, data);
         panel.appendChild(body);
@@ -666,11 +710,7 @@
         function closeModal() {
             document.removeEventListener('keydown', keyHandler);
             overlay.remove();
-            const bodyEl = moduleEl.querySelector('.module-body');
-            if (bodyEl) {
-                const isPlay = window.isPlayMode;
-                MODULE_TYPES['defenses'].renderBody(bodyEl, data, isPlay);
-            }
+            reRenderModuleBody();
         }
         const keyHandler = (e) => {
             if (e.key === 'Escape') {
@@ -694,7 +734,7 @@
     registerModuleType('defenses', {
         label: 'type.defenses',
 
-        renderBody: function (bodyEl, data, isPlayMode) {
+        renderBody: function (bodyEl, data) {
             const content = ensureContent(data);
             bodyEl.innerHTML = '';
 
@@ -702,7 +742,7 @@
             container.className = 'def-container';
             const moduleEl = bodyEl.closest('.module');
 
-            if (content.defenses.length === 0 && isPlayMode) {
+            if (content.defenses.length === 0) {
                 const empty = document.createElement('div');
                 empty.className = 'def-empty';
                 empty.innerHTML =
@@ -713,24 +753,27 @@
                     escapeHtml(t('def.emptyHint')) +
                     '</div>';
                 container.appendChild(empty);
-            } else if (isPlayMode) {
+            } else {
                 renderSpotlight(container, content, data, bodyEl);
                 renderSecondaryRows(container, content, data, bodyEl);
                 renderQDButtons(container, content, data, bodyEl);
-            } else {
-                content.defenses.forEach(function (def) {
-                    container.appendChild(renderEditRow(def, data, bodyEl));
-                });
-                if (content.defenses.length > 1) {
-                    initDefenseSortable(container, data);
-                }
-                container.appendChild(renderAddRow(data, bodyEl));
             }
 
             bodyEl.appendChild(container);
             if (typeof snapModuleHeight === 'function') snapModuleHeight(moduleEl, data);
         },
 
+        overflowMenuItems: function (moduleEl, data) {
+            return [
+                {
+                    onClick: function () {
+                        openDefenseSettingsModal(moduleEl, data);
+                    },
+                    label: t('def.settingsTitle'),
+                    icon: cvIcon('settings', 14),
+                },
+            ];
+        },
     });
 
     // ── Window Exports ──
@@ -740,7 +783,7 @@
     window.generateQDId = generateQDId;
     window.buildDefensesDefaultContent = buildDefensesDefaultContent;
     window.computeSpotlightValue = computeSpotlightValue;
-    window.openDefenseSettingsModal = openQDSettingsModal;
+    window.openDefenseSettingsModal = openDefenseSettingsModal;
 
     console.log('[CV] Defenses module registered');
 })();

@@ -90,12 +90,6 @@
     opacity: 1;
 }
 
-.module-delete-btn[title]::after {
-    left: auto;
-    right: 0;
-    transform: none;
-}
-
 .module-drag-handle {
     color: var(--cv-text-muted);
     cursor: grab;
@@ -113,39 +107,6 @@
     letter-spacing: 0.06em;
     color: var(--cv-text-secondary);
     flex: 1;
-}
-
-/* ── Module Toolbar Button (shared base) ── */
-.module-toolbar-btn {
-    margin-left: 4px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    color: var(--cv-text-muted);
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.module:hover .module-toolbar-btn {
-    opacity: 1;
-}
-
-.module-toolbar-btn:hover {
-    color: var(--cv-accent);
-    background: rgba(192, 135, 74, 0.12);
-    border-color: rgba(192, 135, 74, 0.3);
-}
-
-.module-toolbar-btn .icon {
-    width: 14px;
-    height: 14px;
 }
 
 /* ── Toolbar Button Overrides ── */
@@ -171,20 +132,6 @@
     color: var(--cv-accent);
     border-color: rgba(192, 135, 74, 0.3);
 }
-
-.module-copy-btn.flash-confirm {
-    color: var(--cv-success);
-    border-color: var(--cv-success);
-}
-
-.module-delete-btn:hover {
-    color: var(--cv-danger);
-    background: rgba(184, 64, 64, 0.12);
-    border-color: rgba(184, 64, 64, 0.3);
-}
-
-/* ── Health Module Header Buttons ── */
-/* (base styles provided by .module-toolbar-btn) */
 
 /* ── Module Overflow (Kebab) Button ── */
 .module-overflow-btn {
@@ -493,6 +440,21 @@
     margin: 0;
 }
 
+textarea.cv-modal-input {
+    resize: vertical;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
+}
+
+textarea.cv-modal-input::-webkit-scrollbar { width: 4px; }
+textarea.cv-modal-input::-webkit-scrollbar-track { background: transparent; }
+textarea.cv-modal-input::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
+
+.text-edit-textarea {
+    min-height: 240px;
+}
+
 /* ── Delete Confirmation Dialog ── */
 .delete-confirm-overlay {
     position: fixed;
@@ -619,34 +581,6 @@
 .module-body::-webkit-scrollbar-thumb {
     background-color: var(--cv-text-muted);
     border-radius: 2px;
-}
-
-.module-textarea {
-    width: 100%;
-    min-height: 80px;
-    flex: 1;
-    padding: 8px;
-    font-family: inherit;
-    font-size: 13px;
-    color: inherit;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    resize: none;
-    line-height: 1.5;
-    overflow: hidden;
-}
-
-
-.module-textarea::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-    text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
-    font-weight: bold;
-}
-
-
-.module-textarea:focus {
-    box-shadow: inset 0 0 0 1px var(--cv-focus-ring);
 }
 
 .module-text-display {
@@ -930,43 +864,6 @@
     gap: 0;
 }
 
-.module[data-type="hline"] .hline-input {
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--cv-text);
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    padding: 1px 6px;
-    height: 20px;
-    outline: none;
-    font-family: inherit;
-    text-align: center;
-    min-width: 60px;
-    max-width: 200px;
-}
-
-.module[data-type="hline"] .hline-input::placeholder {
-    color: var(--cv-text-muted);
-    text-transform: uppercase;
-    text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
-    font-weight: bold;
-}
-
-.module[data-type="hline"] .hline-input:hover {
-    border-color: var(--cv-border-subtle);
-}
-
-.module[data-type="hline"] .hline-input:focus {
-    border-color: var(--cv-accent);
-}
-
-.module[data-type="hline"] .hline-input:placeholder-shown {
-    min-width: 80px;
-}
-
 .module[data-type="hline"] .hline-drag-handle {
     color: var(--cv-text-muted);
     cursor: grab;
@@ -978,6 +875,8 @@
     cursor: grabbing;
 }
 
+/* Hover-reveal chrome — the module header is hidden for hlines, so the
+   divider's own delete button follows the standard reveal pattern */
 .module[data-type="hline"] .hline-delete-btn {
     background: none;
     border: none;
@@ -987,6 +886,14 @@
     flex-shrink: 0;
     display: flex;
     align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.module[data-type="hline"]:hover .hline-delete-btn {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .module[data-type="hline"] .hline-delete-btn:hover {
@@ -1016,11 +923,21 @@
     align-items: flex-start;
 }
 
+/* Hover-reveal chrome — the module header is hidden for spacers, so the whole
+   controls row (handle + label + delete) reveals on module hover */
 .module[data-type="spacer"] .spacer-controls {
     display: flex;
     align-items: center;
     gap: 6px;
     width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+}
+
+.module[data-type="spacer"]:hover .spacer-controls {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .module[data-type="spacer"] .spacer-drag-handle {
@@ -1069,10 +986,6 @@
 
 /* XS: ~1 column width */
 
-.module[data-size="xs"] .module-toolbar-btn {
-    display: none !important;
-}
-
 .module[data-size="xs"] .stat-container {
     grid-template-columns: 1fr;
 }
@@ -1089,49 +1002,16 @@
     font-size: 8px;
 }
 
-.module[data-size="xs"] .stat-add-btn {
-    min-height: 40px;
-}
-
-.module[data-size="xs"] .module-textarea {
-    min-height: 40px;
-    font-size: 11px;
-}
-
-.module[data-size="xs"] .stat-edit-name {
-    font-size: 9px;
-}
-
-.module[data-size="xs"] .stat-edit-field label {
-    font-size: 7px;
-}
-
-.module[data-size="xs"] .stat-edit-field input[type="number"] {
-    font-size: 11px;
-}
 
 /* SM: ~2 column narrow width */
-
-.module[data-size="sm"] .module-toolbar-btn {
-    display: none !important;
-}
 
 .module[data-size="sm"] .stat-block {
     flex-basis: 60px;
     max-width: none;
 }
 
-.module[data-size="sm"] .stat-block-edit {
-    flex-basis: 60px;
-    max-width: none;
-}
-
 .module[data-size="sm"] .stat-primary {
     font-size: 20px;
-}
-
-.module[data-size="sm"] .stat-add-btn {
-    min-height: 50px;
 }
 
 /* Wizard layout sub-option */

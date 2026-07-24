@@ -6,11 +6,6 @@
         return window.resolveMathExpression(str, null, false);
     }
 
-    function autoSizeInput(input, buffer) {
-        const len = input.value.length || 1;
-        input.style.width = len + buffer + 'ch';
-    }
-
     function getEffectiveMaxHP(content) {
         return (content.maxHP || 0) + (content.maxHPModifier || 0);
     }
@@ -45,7 +40,7 @@
         }
     }
 
-    /** Keep play + edit layers in sync with `data.content` without rebuilding DOM. */
+    /** Keep the module body in sync with `data.content` without rebuilding DOM. */
     function syncHealthLayersFromData(moduleEl, data) {
         const container = moduleEl.querySelector('.health-container');
         if (!container) return;
@@ -63,27 +58,6 @@
                 const tv = tempBadge.querySelector('.health-temp-value');
                 if (tv) tv.textContent = c.tempHP > 0 ? '+' + c.tempHP : '0';
             }
-        }
-        const edit = container.querySelector('.health-layer-edit');
-        if (edit) {
-            const curIn = edit.querySelector('.health-inline-input.health-current');
-            const maxIn = edit.querySelector('.health-inline-input.health-max');
-            const tempIn = edit.querySelector('.health-temp-input');
-            const tempBadge = edit.querySelector('.health-temp-badge-edit');
-            if (curIn) {
-                curIn.value = c.currentHP;
-                autoSizeInput(curIn, 0.5);
-            }
-            if (maxIn) {
-                maxIn.value = c.maxHP;
-                autoSizeInput(maxIn, 0.5);
-            }
-            if (tempIn) {
-                tempIn.value = c.tempHP || 0;
-                autoSizeInput(tempIn, 1.5);
-            }
-            if (tempBadge) tempBadge.classList.toggle('has-temp', c.tempHP > 0);
-            setMaxModIndicatorEl(edit.querySelector('.health-maxmod-indicator'), c);
         }
     }
 
@@ -473,169 +447,11 @@
         return layer;
     }
 
-    function buildEditLayer(bodyEl, data) {
-        const c = data.content;
-        const layer = document.createElement('div');
-        layer.className = 'health-layer health-layer-edit';
-
-        function makeHPInput(key, className, value, sizeBuffer) {
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.className = 'health-inline-input ' + className;
-            input.value = value;
-            input.spellcheck = false;
-            input.autocomplete = 'off';
-
-            function commitValue() {
-                const result = evaluateHealthExpression(input.value);
-                if (result !== null) {
-                    const oldVal = c[key];
-                    c[key] = key === 'tempHP' ? Math.max(0, result) : result;
-                    input.value = c[key];
-                    scheduleSave();
-                    if (oldVal !== c[key] && typeof window.logActivity === 'function') {
-                        window.logActivity({
-                            type: 'health.event.adjust',
-                            message: t('health.log.adjust', {
-                                field: t('health.' + key),
-                                oldVal: oldVal,
-                                newVal: c[key],
-                            }),
-                            sourceModuleId: data.id,
-                        });
-                    }
-                    syncHealthLayersFromData(bodyEl.closest('.module'), data);
-                } else {
-                    input.value = c[key];
-                }
-            }
-
-            input.addEventListener('blur', commitValue);
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === 'Escape') {
-                    commitValue();
-                    input.blur();
-                }
-            });
-            input.addEventListener('input', () => autoSizeInput(input, sizeBuffer));
-            autoSizeInput(input, sizeBuffer);
-
-            return input;
-        }
-
-        const mainRow = document.createElement('div');
-        mainRow.className = 'health-main-row';
-
-        const hpCol = document.createElement('div');
-        hpCol.className = 'health-hp-col';
-
-        const hpRow = document.createElement('div');
-        hpRow.className = 'health-hp-row';
-
-        const currentInput = makeHPInput('currentHP', 'health-current', c.currentHP, 0.5);
-        const sepSpan = document.createElement('span');
-        sepSpan.className = 'health-sep';
-        sepSpan.textContent = '/';
-        const maxInput = makeHPInput('maxHP', 'health-max', c.maxHP, 0.5);
-
-        hpRow.appendChild(currentInput);
-        hpRow.appendChild(sepSpan);
-        hpRow.appendChild(maxInput);
-        hpCol.appendChild(hpRow);
-
-        const modEdit = document.createElement('div');
-        modEdit.className = 'health-maxmod-indicator';
-        setMaxModIndicatorEl(modEdit, c);
-        hpCol.appendChild(modEdit);
-
-        mainRow.appendChild(hpCol);
-
-        layer.appendChild(mainRow);
-
-        const tempRow = document.createElement('div');
-        tempRow.className = 'health-temp-row';
-
-        const tempBadge = document.createElement('div');
-        tempBadge.className = 'health-temp-badge health-temp-badge-edit' + (c.tempHP > 0 ? ' has-temp' : '');
-
-        const tempInput = document.createElement('input');
-        tempInput.type = 'text';
-        tempInput.className = 'health-temp-input';
-        tempInput.value = c.tempHP || 0;
-        tempInput.spellcheck = false;
-        tempInput.autocomplete = 'off';
-
-        function commitTemp() {
-            const result = evaluateHealthExpression(tempInput.value);
-            if (result !== null) {
-                const oldTemp = c.tempHP;
-                c.tempHP = Math.max(0, result);
-                tempInput.value = c.tempHP;
-                scheduleSave();
-                if (oldTemp !== c.tempHP && typeof window.logActivity === 'function') {
-                    window.logActivity({
-                        type: 'health.event.tempHP',
-                        message: t('health.log.tempAdjust', { oldTemp: oldTemp, newTemp: c.tempHP }),
-                        sourceModuleId: data.id,
-                    });
-                }
-                tempBadge.classList.toggle('has-temp', c.tempHP > 0);
-                syncHealthLayersFromData(bodyEl.closest('.module'), data);
-            } else {
-                tempInput.value = c.tempHP;
-            }
-        }
-
-        tempInput.addEventListener('blur', commitTemp);
-        tempInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === 'Escape') {
-                commitTemp();
-                tempInput.blur();
-            }
-        });
-        tempInput.addEventListener('input', () => autoSizeInput(tempInput, 1.5));
-        autoSizeInput(tempInput, 1.5);
-
-        const tempLabel = document.createElement('span');
-        tempLabel.className = 'health-temp-label';
-        tempLabel.textContent = t('health.tempHP');
-
-        tempBadge.appendChild(tempInput);
-        tempBadge.appendChild(tempLabel);
-        tempRow.appendChild(tempBadge);
-        layer.appendChild(tempRow);
-
-        const actionsRow = document.createElement('div');
-        actionsRow.className = 'health-actions-row';
-
-        const actions = document.createElement('div');
-        actions.className = 'health-actions';
-
-        const healBtn = document.createElement('button');
-        healBtn.className = 'health-action-btn health-heal-btn';
-        healBtn.title = t('health.heal');
-        healBtn.textContent = t('health.healShort');
-        healBtn.disabled = true;
-
-        const damageBtn = document.createElement('button');
-        damageBtn.className = 'health-action-btn health-damage-btn';
-        damageBtn.title = t('health.takeDamage');
-        damageBtn.textContent = t('health.dmgShort');
-        damageBtn.disabled = true;
-
-        actions.appendChild(healBtn);
-        actions.appendChild(damageBtn);
-        actionsRow.appendChild(actions);
-        layer.appendChild(actionsRow);
-
-        return layer;
-    }
-
     // ── Health Module Type ──
     registerModuleType('health', {
         label: 'type.health',
 
-        renderBody(bodyEl, data, isPlayMode) {
+        renderBody(bodyEl, data) {
             // Guard: ensure content shape
             if (!data.content || typeof data.content === 'string') {
                 data.content = { currentHP: 0, maxHP: 0, tempHP: 0, maxHPModifier: 0 };
@@ -647,40 +463,21 @@
             container.className = 'health-container';
 
             const playLayer = buildPlayLayer(bodyEl, data);
-            const editLayer = buildEditLayer(bodyEl, data);
-
-            if (isPlayMode) {
-                playLayer.classList.add('is-active');
-                editLayer.classList.remove('is-active');
-            } else {
-                playLayer.classList.remove('is-active');
-                editLayer.classList.add('is-active');
-            }
-
+            playLayer.classList.add('is-active');
             container.appendChild(playLayer);
-            container.appendChild(editLayer);
 
             bodyEl.innerHTML = '';
             bodyEl.appendChild(container);
         },
 
-        syncState(moduleEl, data) {
-            const currentInput = moduleEl.querySelector('.health-layer-edit .health-inline-input.health-current');
-            const maxInput = moduleEl.querySelector('.health-layer-edit .health-inline-input.health-max');
-            const tempInput = moduleEl.querySelector('.health-layer-edit .health-temp-input');
-
-            if (currentInput) {
-                const result = evaluateHealthExpression(currentInput.value);
-                if (result !== null) data.content.currentHP = result;
-            }
-            if (maxInput) {
-                const result = evaluateHealthExpression(maxInput.value);
-                if (result !== null) data.content.maxHP = result;
-            }
-            if (tempInput) {
-                const result = evaluateHealthExpression(tempInput.value);
-                if (result !== null) data.content.tempHP = Math.max(0, result);
-            }
+        overflowMenuItems(moduleEl, data) {
+            return [
+                {
+                    onClick: () => openHealthSettingsModal(moduleEl, data),
+                    label: t('health.moduleSettings'),
+                    icon: cvIcon('settings', 14),
+                },
+            ];
         },
     });
 

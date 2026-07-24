@@ -2,8 +2,7 @@
 /* ── Resistance Module ── */
 
 /* ── Resistance Shared Layout ── */
-.res-play-container,
-.res-edit-container {
+.res-play-container {
     padding: 4px 0;
     user-select: none;
 }
@@ -20,35 +19,29 @@
     gap: 8px;
 }
 
-/* ── Resistance Section (Play & Edit) ── */
-.res-play-section,
-.res-edit-section {
+/* ── Resistance Section ── */
+.res-play-section {
     flex: 1;
     min-width: 0;
     overflow: hidden;
-    min-width: 0;
 }
 
-.res-layout-rows .res-play-section,
-.res-layout-rows .res-edit-section {
+.res-layout-rows .res-play-section {
     flex: none;
 }
 
-.res-layout-columns .res-play-section:not(:first-child),
-.res-layout-columns .res-edit-section:not(:first-child) {
+.res-layout-columns .res-play-section:not(:first-child) {
     border-left: 1px dashed var(--cv-border);
     padding-left: 8px;
 }
 
-.res-layout-rows .res-play-section:not(:first-child),
-.res-layout-rows .res-edit-section:not(:first-child) {
+.res-layout-rows .res-play-section:not(:first-child) {
     border-top: 1px dashed var(--cv-border);
     padding-top: 6px;
     margin-top: 2px;
 }
 
-.res-play-section-label,
-.res-edit-section-label {
+.res-play-section-label {
     font-size: 9px;
     font-weight: 700;
     text-transform: uppercase;
@@ -59,7 +52,7 @@
     margin-bottom: 4px;
 }
 
-/* ── Resistance Play Mode Items ── */
+/* ── Resistance Items ── */
 .res-play-items {
     display: flex;
     flex-wrap: wrap;
@@ -121,7 +114,7 @@
     white-space: nowrap;
 }
 
-/* ── Resistance Play Mode Tooltips ── */
+/* ── Resistance Item Tooltips ── */
 .res-play-item[data-tooltip]::after {
     content: attr(data-tooltip);
     position: absolute;
@@ -157,61 +150,6 @@
 
 .res-play-item[data-tooltip]:hover::after {
     opacity: 1;
-}
-
-/* ── Resistance Layout Mode Items ── */
-.res-edit-items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    padding: 2px 0;
-}
-
-.res-edit-item {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 6px;
-    background: var(--cv-bg-raised);
-    border: 1px solid var(--cv-border-subtle);
-    border-radius: 4px;
-    color: var(--cv-text);
-    min-width: 0;
-    max-width: 100%;
-}
-
-.res-edit-icon {
-    flex-shrink: 0;
-    width: 14px;
-    height: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.res-edit-icon .icon {
-    width: 14px;
-    height: 14px;
-}
-
-.res-edit-name {
-    font-size: 10px;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-width: 0;
-}
-
-.res-edit-value {
-    font-size: 9px;
-    color: var(--cv-text-secondary);
-    white-space: nowrap;
-}
-
-.res-edit-immune {
-    font-style: italic;
-    color: var(--cv-text-muted);
 }
 
 /* ── Resistance Empty State ── */

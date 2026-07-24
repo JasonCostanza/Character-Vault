@@ -371,7 +371,7 @@
             var bodyEl = moduleEl.querySelector('.module-body');
             var typeDef = window.MODULE_TYPES && window.MODULE_TYPES[moduleType];
             if (bodyEl && typeDef && typeDef.renderBody) {
-                typeDef.renderBody(bodyEl, mod, window.isPlayMode !== false);
+                typeDef.renderBody(bodyEl, mod);
             }
         }
     }
@@ -1199,7 +1199,7 @@
             var bodyEl = moduleEl.querySelector('.module-body');
             var typeDef = window.MODULE_TYPES && window.MODULE_TYPES['weapons'];
             if (bodyEl && typeDef && typeDef.renderBody) {
-                typeDef.renderBody(bodyEl, mod, window.isPlayMode !== false);
+                typeDef.renderBody(bodyEl, mod);
             }
         }
 
@@ -1311,7 +1311,7 @@
             var bodyEl = moduleEl.querySelector('.module-body');
             var typeDef = window.MODULE_TYPES && window.MODULE_TYPES['spells'];
             if (bodyEl && typeDef && typeDef.renderBody) {
-                typeDef.renderBody(bodyEl, mod, window.isPlayMode !== false);
+                typeDef.renderBody(bodyEl, mod);
             }
         }
 

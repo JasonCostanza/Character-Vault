@@ -1736,7 +1736,7 @@
         input.select();
     }
 
-    // ── Expand Modal (Play Mode) ──
+    // ── Expand Modal ──
 
     function openCondExpandModal(item, content, data, moduleEl) {
         const existing = document.querySelector('.cond-expand-overlay');
@@ -1984,18 +1984,13 @@
         function rerender() {
             const bodyEl = moduleEl.querySelector('.module-body');
             if (bodyEl && !document.querySelector('.cond-settings-overlay')) {
-                const isPlay = isPlayMode;
-                if (isPlay) {
-                    renderPlayBody(bodyEl, data);
-                } else {
-                    renderEditBody(bodyEl, data);
-                }
+                renderPlayBody(bodyEl, data);
                 snapModuleHeight(moduleEl, data);
             }
         }
     }
 
-    // ── Play Mode Rendering ──
+    // ── Module Body Rendering ──
 
     function renderPlayBody(bodyEl, data) {
         const content = ensureCondContent(data);
@@ -2013,7 +2008,7 @@
         container.className = 'cond-play-container';
 
         // Sort header
-        const sortHeader = buildSortHeader(content, bodyEl, data, true);
+        const sortHeader = buildSortHeader(content, bodyEl, data);
         container.appendChild(sortHeader);
 
         // Sort applied list
@@ -2150,73 +2145,10 @@
         bodyEl.appendChild(container);
     }
 
-    // ── Layout Mode Rendering ──
-
-    function renderEditBody(bodyEl, data) {
-        const content = ensureCondContent(data);
-        bodyEl.innerHTML = '';
-
-        if (!content.applied.length) {
-            const empty = document.createElement('div');
-            empty.className = 'cond-empty-state';
-            empty.textContent = t('cond.emptyState');
-            bodyEl.appendChild(empty);
-            return;
-        }
-
-        const container = document.createElement('div');
-        container.className = 'cond-edit-container';
-
-        // Sort header
-        const sortHeader = buildSortHeader(content, bodyEl, data, false);
-        container.appendChild(sortHeader);
-
-        // Sort applied list
-        sortAppliedList(content.applied, content);
-
-        // Render items
-        const list = document.createElement('div');
-        list.className = 'cond-applied-list';
-
-        content.applied.forEach(function (item) {
-            const condType = getCondType(item, content);
-
-            const row = document.createElement('div');
-            row.className = 'cond-edit-item' + (item.active === false ? ' inactive' : '');
-
-            const desc = getCondDescription(item, content);
-            if (desc) row.setAttribute('data-tooltip', desc);
-
-            const iconSvg = getCondIconSvg(item, content);
-            if (iconSvg) {
-                const iconSpan = document.createElement('span');
-                iconSpan.className = 'cond-edit-icon';
-                iconSpan.innerHTML = iconSvg;
-                row.appendChild(iconSpan);
-            }
-
-            const nameSpan = document.createElement('span');
-            nameSpan.className = 'cond-edit-name';
-            nameSpan.textContent = getCondName(item, content);
-            row.appendChild(nameSpan);
-
-            if (condType === 'value') {
-                const valSpan = document.createElement('span');
-                valSpan.className = 'cond-edit-value';
-                valSpan.textContent = item.value || 0;
-                row.appendChild(valSpan);
-            }
-
-            list.appendChild(row);
-        });
-
-        container.appendChild(list);
-        bodyEl.appendChild(container);
-    }
 
     // ── Sort Header ──
 
-    function buildSortHeader(content, bodyEl, data, isPlayMode) {
+    function buildSortHeader(content, bodyEl, data) {
         const headerRow = document.createElement('div');
         headerRow.className = 'cond-sort-header';
 
@@ -2257,8 +2189,7 @@
                 content.sortDir = 'asc';
             }
             scheduleSave();
-            if (isPlayMode) renderPlayBody(bodyEl, data);
-            else renderEditBody(bodyEl, data);
+            renderPlayBody(bodyEl, data);
             snapModuleHeight(bodyEl.closest('.module'), data);
         });
         headerRow.appendChild(nameHeader);
@@ -2295,18 +2226,15 @@
                 content.sortDir = 'asc';
             }
             scheduleSave();
-            if (isPlayMode) renderPlayBody(bodyEl, data);
-            else renderEditBody(bodyEl, data);
+            renderPlayBody(bodyEl, data);
             snapModuleHeight(bodyEl.closest('.module'), data);
         });
         headerRow.appendChild(valueHeader);
 
-        // Expand spacer (play mode only) — aligns VALUE header with value column
-        if (isPlayMode) {
-            const expandSpacer = document.createElement('div');
-            expandSpacer.className = 'cond-sort-expand-spacer';
-            headerRow.appendChild(expandSpacer);
-        }
+        // Expand spacer — aligns VALUE header with value column
+        const expandSpacer = document.createElement('div');
+        expandSpacer.className = 'cond-sort-expand-spacer';
+        headerRow.appendChild(expandSpacer);
 
         return headerRow;
     }
@@ -2325,7 +2253,7 @@
         });
         overlay.remove();
         const bodyEl = moduleEl.querySelector('.module-body');
-        renderEditBody(bodyEl, data);
+        renderPlayBody(bodyEl, data);
         snapModuleHeight(moduleEl, data);
     }
 
@@ -3077,24 +3005,24 @@
     registerModuleType('condition', {
         label: 'type.condition',
 
-        renderBody: function (bodyEl, data, isPlayMode) {
+        renderBody: function (bodyEl, data) {
             ensureCondContent(data);
-            if (isPlayMode) {
-                renderPlayBody(bodyEl, data);
-            } else {
-                renderEditBody(bodyEl, data);
-            }
+            renderPlayBody(bodyEl, data);
         },
 
-        syncState: function (moduleEl, data) {
-            // Data is mutated directly via event handlers; no form sync needed
+        overflowMenuItems: function (moduleEl, data) {
+            return [
+                {
+                    onClick: function () {
+                        openCondSettingsPanel(moduleEl, data);
+                    },
+                    label: t('cond.moduleSettings'),
+                    icon: cvIcon('settings', 14),
+                },
+            ];
         },
     });
 
-    // Expose for module-core.js
-    window.openCondSettings = function (moduleEl, data) {
-        openCondSettingsPanel(moduleEl, data);
-    };
     window.applyConditionTemplate = applyTemplate;
 
     window.getConditionValue = function (key) {

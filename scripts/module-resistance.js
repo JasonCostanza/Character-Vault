@@ -165,7 +165,7 @@
         input.select();
     }
 
-    // ── Play Mode Rendering ──
+    // ── Module Body Rendering ──
 
     function renderPlayBody(bodyEl, data) {
         const content = ensureResContent(data);
@@ -271,82 +271,6 @@
         bodyEl.appendChild(container);
     }
 
-    // ── Layout Mode Rendering ──
-
-    function renderEditBody(bodyEl, data) {
-        const content = ensureResContent(data);
-        bodyEl.innerHTML = '';
-
-        const hasAny = content.immunities.length || content.resistances.length || content.weaknesses.length;
-
-        if (!hasAny) {
-            const empty = document.createElement('div');
-            empty.className = 'res-empty-state';
-            empty.textContent = t('res.emptyState');
-            bodyEl.appendChild(empty);
-            return;
-        }
-
-        const container = document.createElement('div');
-        container.className =
-            'res-edit-container ' + (content.layout === 'rows' ? 'res-layout-rows' : 'res-layout-columns');
-
-        COLUMN_KEYS.forEach(function (colKey) {
-            const items = content[colKey];
-            if (!items.length) return;
-
-            sortColumnAlpha(items, content);
-
-            const col = document.createElement('div');
-            col.className = 'res-edit-section';
-
-            const label = document.createElement('div');
-            label.className = 'res-edit-section-label';
-            label.textContent = t(COLUMN_LABEL_KEYS[colKey]);
-            col.appendChild(label);
-
-            const itemsWrap = document.createElement('div');
-            itemsWrap.className = 'res-edit-items';
-
-            items.forEach(function (item) {
-                const el = document.createElement('div');
-                el.className = 'res-edit-item';
-
-                const iconSvg = getResIconSvg(item, content);
-                if (iconSvg) {
-                    const iconSpan = document.createElement('span');
-                    iconSpan.className = 'res-edit-icon';
-                    iconSpan.innerHTML = iconSvg;
-                    el.appendChild(iconSpan);
-                }
-
-                const nameSpan = document.createElement('span');
-                nameSpan.className = 'res-edit-name';
-                nameSpan.textContent = getResName(item, content);
-                el.appendChild(nameSpan);
-
-                if (colKey !== 'immunities') {
-                    const valSpan = document.createElement('span');
-                    valSpan.className = 'res-edit-value';
-                    valSpan.textContent = item.value || '';
-                    el.appendChild(valSpan);
-                } else {
-                    const immuneSpan = document.createElement('span');
-                    immuneSpan.className = 'res-edit-value res-edit-immune';
-                    immuneSpan.textContent = t('res.immune');
-                    el.appendChild(immuneSpan);
-                }
-
-                itemsWrap.appendChild(el);
-            });
-
-            col.appendChild(itemsWrap);
-            container.appendChild(col);
-        });
-
-        bodyEl.appendChild(container);
-    }
-
     // ── Settings Panel ──
 
     function closeResSettingsPanel(moduleEl, data) {
@@ -361,9 +285,8 @@
             }
         });
         overlay.remove();
-        // Re-render edit body
         const bodyEl = moduleEl.querySelector('.module-body');
-        renderEditBody(bodyEl, data);
+        renderPlayBody(bodyEl, data);
         snapModuleHeight(moduleEl, data);
     }
 
@@ -517,7 +440,7 @@
                 content.layout = val;
                 const bodyEl = moduleEl.querySelector('.module-body');
                 if (bodyEl && window.MODULE_TYPES[data.type]) {
-                    window.MODULE_TYPES[data.type].renderBody(bodyEl, data, window.isPlayMode);
+                    window.MODULE_TYPES[data.type].renderBody(bodyEl, data);
                 }
                 window.snapModuleHeight(moduleEl, data);
                 scheduleSave();
@@ -944,24 +867,23 @@
     registerModuleType('resistance', {
         label: 'type.resistance',
 
-        renderBody: function (bodyEl, data, isPlayMode) {
+        renderBody: function (bodyEl, data) {
             ensureResContent(data);
-            if (isPlayMode) {
-                renderPlayBody(bodyEl, data);
-            } else {
-                renderEditBody(bodyEl, data);
-            }
+            renderPlayBody(bodyEl, data);
         },
 
-        syncState: function (moduleEl, data) {
-            // Data is mutated directly via event handlers; no form sync needed
+        overflowMenuItems: function (moduleEl, data) {
+            return [
+                {
+                    onClick: function () {
+                        openResSettingsPanel(moduleEl, data);
+                    },
+                    label: t('res.moduleSettings'),
+                    icon: cvIcon('settings', 14),
+                },
+            ];
         },
     });
-
-    // Expose for module-core.js
-    window.openResSettings = function (moduleEl, data) {
-        openResSettingsPanel(moduleEl, data);
-    };
 
     window.ensureResContent = ensureResContent;
     window.getResName = getResName;

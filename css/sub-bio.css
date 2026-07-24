@@ -95,7 +95,7 @@
     height: 48px;
 }
 
-/* Edit mode overlay controls */
+/* Hover-reveal portrait controls */
 .bio-portrait-controls {
     position: absolute;
     bottom: 0;
@@ -159,7 +159,7 @@
     flex-wrap: wrap;
 }
 
-/* ── Labeled Field (Edit Mode) ── */
+/* ── Labeled Field ── */
 .bio-field {
     display: flex;
     flex-direction: column;
@@ -182,47 +182,6 @@
     padding-left: 2px;
     user-select: none;
 }
-
-.bio-field-input {
-    width: 100%;
-    background: var(--cv-bg-sunken);
-    border: 1px solid var(--cv-border-subtle);
-    border-radius: 3px;
-    padding: 4px 6px;
-    font-size: 12px;
-    color: var(--cv-text);
-    font-family: inherit;
-    outline: none;
-    transition: border-color 0.15s ease;
-    box-sizing: border-box;
-}
-
-.bio-field-input:focus {
-    border-color: var(--cv-accent);
-}
-
-.bio-field-input::placeholder {
-    color: var(--cv-text-muted);
-    opacity: 0.6;
-}
-
-textarea.bio-field-input {
-    resize: none;
-    line-height: 1.5;
-    min-height: 0;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
-}
-
-textarea.bio-field-input[data-key="biography"] {
-    resize: vertical;
-    min-height: 60px;
-}
-
-textarea.bio-field-input::-webkit-scrollbar { width: 4px; }
-textarea.bio-field-input::-webkit-scrollbar-track { background: transparent; }
-textarea.bio-field-input::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
 /* ── Section Divider ── */
 .bio-section-divider {
@@ -292,15 +251,9 @@ textarea.bio-field-input::-webkit-scrollbar-thumb { background-color: var(--cv-t
 }
 
 /* ══════════════════════════════════════════════════════════════
-   BIO MODULE — Play Mode
+   BIO MODULE — Field Display
    ══════════════════════════════════════════════════════════════ */
 
-/* Portrait in play mode — no controls overlay */
-.bio-portrait-frame.play-mode .bio-portrait-controls {
-    display: none;
-}
-
-/* Play mode: value replaces input, same box dimensions */
 .bio-field-value {
     width: 100%;
     padding: 4px 6px;
@@ -312,20 +265,23 @@ textarea.bio-field-input::-webkit-scrollbar-thumb { background-color: var(--cv-t
     user-select: text;
 }
 
-/* Play mode: name rendered larger */
 .bio-field-value.name {
     font-size: 15px;
     font-weight: 600;
     padding: 2px 6px;
 }
 
-/* Play mode: textarea-style blocks */
 .bio-field-value.block {
     white-space: pre-wrap;
     line-height: 1.5;
 }
 
-/* Play mode biography (markdown rendered) */
+/* Empty-state placeholder — applied alongside any field/block text class */
+.bio-field-value--empty {
+    opacity: 0.55;
+    font-style: italic;
+}
+
 .bio-biography-display {
     font-size: 13px;
     color: var(--cv-text);
@@ -342,7 +298,7 @@ textarea.bio-field-input::-webkit-scrollbar-thumb { background-color: var(--cv-t
 .bio-biography-display ol { padding-left: 18px; margin-bottom: 8px; }
 .bio-biography-display li { margin-bottom: 2px; }
 
-/* Play mode personality block */
+/* Personality block */
 .bio-play-personality-block {
     padding: 6px 8px;
     background: var(--cv-bg-sunken);
@@ -367,7 +323,7 @@ textarea.bio-field-input::-webkit-scrollbar-thumb { background-color: var(--cv-t
     user-select: text;
 }
 
-/* Play mode textarea blocks (Allies, Likes, etc.) */
+/* Long-form blocks (Allies, Likes, system background fields, etc.) */
 .bio-play-block {
     padding: 1px 0;
 }

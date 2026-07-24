@@ -264,7 +264,7 @@
 
             // Re-render this recovery module
             const bodyEl = moduleEl.querySelector('.module-body');
-            if (bodyEl) MODULE_TYPES['recovery'].renderBody(bodyEl, data, true);
+            if (bodyEl) MODULE_TYPES['recovery'].renderBody(bodyEl, data);
 
             // Log activity
             if (typeof window.logActivity === 'function' && results.length > 0) {
@@ -313,10 +313,125 @@
         const body = document.createElement('div');
         body.className = 'cv-modal-body';
 
+        function reRenderModuleBody() {
+            const bodyEl = moduleEl.querySelector('.module-body');
+            if (bodyEl) MODULE_TYPES['recovery'].renderBody(bodyEl, data);
+        }
+
+        // ── Manage Rest Buttons ──
+        const manageLabel = document.createElement('div');
+        manageLabel.className = 'cv-modal-label';
+        manageLabel.textContent = t('recovery.manageButtons');
+        body.appendChild(manageLabel);
+
+        const btnList = document.createElement('div');
+        btnList.className = 'recovery-btn-list';
+
+        function renderBtnList() {
+            if (btnList._sortable) btnList._sortable.destroy();
+            btnList.innerHTML = '';
+
+            content.restButtons.forEach((btn) => {
+                const row = document.createElement('div');
+                row.className = 'recovery-btn-row';
+                row.dataset.btnId = btn.id;
+
+                const dragHandle = document.createElement('span');
+                dragHandle.className = 'recovery-btn-drag-handle';
+                dragHandle.innerHTML = '&#x2807;';
+
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'recovery-btn-row-name';
+                nameSpan.textContent = btn.name;
+
+                const rowActions = document.createElement('div');
+                rowActions.className = 'recovery-btn-row-actions';
+
+                const editBtn = document.createElement('button');
+                editBtn.type = 'button';
+                editBtn.className = 'recovery-btn-row-edit';
+                editBtn.title = t('recovery.editButton');
+                editBtn.innerHTML = cvIcon('pencil', 12);
+                editBtn.addEventListener('click', () => {
+                    openRestButtonEditModal(
+                        btn,
+                        content,
+                        () => {
+                            renderBtnList();
+                            reRenderModuleBody();
+                        },
+                        false
+                    );
+                });
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.type = 'button';
+                deleteBtn.className = 'recovery-btn-row-delete';
+                deleteBtn.title = t('recovery.deleteButton');
+                deleteBtn.innerHTML = cvIcon('trash-2', 12);
+                deleteBtn.addEventListener('click', () => {
+                    content.restButtons = content.restButtons.filter((b) => b.id !== btn.id);
+                    renderBtnList();
+                    reRenderModuleBody();
+                    scheduleSave();
+                });
+
+                rowActions.appendChild(editBtn);
+                rowActions.appendChild(deleteBtn);
+                row.appendChild(dragHandle);
+                row.appendChild(nameSpan);
+                row.appendChild(rowActions);
+                btnList.appendChild(row);
+            });
+
+            if (typeof Sortable !== 'undefined' && content.restButtons.length > 1) {
+                btnList._sortable = Sortable.create(btnList, {
+                    handle: '.recovery-btn-drag-handle',
+                    animation: 150,
+                    ghostClass: 'recovery-btn-ghost',
+                    draggable: '.recovery-btn-row',
+                    onEnd() {
+                        const rows = Array.from(btnList.querySelectorAll('.recovery-btn-row'));
+                        const newOrder = rows.map((r) => r.dataset.btnId);
+                        content.restButtons.sort((a, b) => newOrder.indexOf(a.id) - newOrder.indexOf(b.id));
+                        scheduleSave();
+                        reRenderModuleBody();
+                    },
+                });
+            }
+        }
+
+        renderBtnList();
+        body.appendChild(btnList);
+
+        const addBtnRow = document.createElement('button');
+        addBtnRow.type = 'button';
+        addBtnRow.className = 'recovery-add-btn-row';
+        addBtnRow.innerHTML = `${cvIcon('plus', 12)} ${escapeHtml(t('recovery.addButton'))}`;
+        addBtnRow.addEventListener('click', () => {
+            const newBtn = { id: genBtnId(), name: t('recovery.newButton'), actions: [] };
+            openRestButtonEditModal(
+                newBtn,
+                content,
+                () => {
+                    renderBtnList();
+                    reRenderModuleBody();
+                },
+                true
+            );
+        });
+        body.appendChild(addBtnRow);
+
+        // ── Hit Dice Configuration ──
         if (!content.hitDice) {
             content.hitDice = { dieSize: 8, total: 1, remaining: 1, modifier: 0, restoreOnLongRest: 'half' };
         }
         const hd = content.hitDice;
+
+        const hdLabel = document.createElement('div');
+        hdLabel.className = 'cv-modal-label';
+        hdLabel.textContent = t('recovery.hitDiceConfig');
+        body.appendChild(hdLabel);
 
         const grid = document.createElement('div');
         grid.className = 'recovery-hitdice-config-grid';
@@ -428,7 +543,7 @@
     }
     window.openRecoverySettingsModal = openRecoverySettingsModal;
 
-    // ── Play Mode ──
+    // ── Module Body ──
 
     function buildPlayMode(bodyEl, data) {
         const content = data.content;
@@ -775,117 +890,26 @@
         nameInput.select();
     }
 
-    // ── Layout Mode ──
-
-    function buildEditMode(bodyEl, moduleEl, data) {
-        const content = data.content;
-        const container = document.createElement('div');
-        container.className = 'recovery-edit-container';
-
-        const btnList = document.createElement('div');
-        btnList.className = 'recovery-btn-list';
-
-        let sortableInstance = null;
-
-        function renderBtnList() {
-            if (sortableInstance) {
-                sortableInstance.destroy();
-                sortableInstance = null;
-            }
-            btnList.innerHTML = '';
-
-            content.restButtons.forEach((btn) => {
-                const row = document.createElement('div');
-                row.className = 'recovery-btn-row';
-                row.dataset.btnId = btn.id;
-
-                const dragHandle = document.createElement('span');
-                dragHandle.className = 'recovery-btn-drag-handle';
-                dragHandle.innerHTML = '&#x2807;';
-
-                const nameSpan = document.createElement('span');
-                nameSpan.className = 'recovery-btn-row-name';
-                nameSpan.textContent = btn.name;
-
-                const rowActions = document.createElement('div');
-                rowActions.className = 'recovery-btn-row-actions';
-
-                const editBtn = document.createElement('button');
-                editBtn.type = 'button';
-                editBtn.className = 'recovery-btn-row-edit';
-                editBtn.title = t('recovery.editButton');
-                editBtn.innerHTML = cvIcon('pencil', 12);
-                editBtn.addEventListener('click', () => {
-                    openRestButtonEditModal(btn, content, renderBtnList, false);
-                });
-
-                const deleteBtn = document.createElement('button');
-                deleteBtn.type = 'button';
-                deleteBtn.className = 'recovery-btn-row-delete';
-                deleteBtn.title = t('recovery.deleteButton');
-                deleteBtn.innerHTML = cvIcon('trash-2', 12);
-                deleteBtn.addEventListener('click', () => {
-                    content.restButtons = content.restButtons.filter((b) => b.id !== btn.id);
-                    renderBtnList();
-                    scheduleSave();
-                });
-
-                rowActions.appendChild(editBtn);
-                rowActions.appendChild(deleteBtn);
-                row.appendChild(dragHandle);
-                row.appendChild(nameSpan);
-                row.appendChild(rowActions);
-                btnList.appendChild(row);
-            });
-
-            if (typeof Sortable !== 'undefined' && content.restButtons.length > 1) {
-                sortableInstance = Sortable.create(btnList, {
-                    handle: '.recovery-btn-drag-handle',
-                    animation: 150,
-                    ghostClass: 'recovery-btn-ghost',
-                    draggable: '.recovery-btn-row',
-                    onEnd() {
-                        const rows = Array.from(btnList.querySelectorAll('.recovery-btn-row'));
-                        const newOrder = rows.map((r) => r.dataset.btnId);
-                        content.restButtons.sort((a, b) => newOrder.indexOf(a.id) - newOrder.indexOf(b.id));
-                        scheduleSave();
-                    },
-                });
-            }
-        }
-
-        renderBtnList();
-        container.appendChild(btnList);
-
-        const addRow = document.createElement('button');
-        addRow.type = 'button';
-        addRow.className = 'recovery-add-btn-row';
-        addRow.innerHTML = `${cvIcon('plus', 12)} ${escapeHtml(t('recovery.addButton'))}`;
-        addRow.addEventListener('click', () => {
-            const newBtn = { id: genBtnId(), name: t('recovery.newButton'), actions: [] };
-            openRestButtonEditModal(newBtn, content, renderBtnList, true);
-        });
-        container.appendChild(addRow);
-
-        bodyEl.innerHTML = '';
-        bodyEl.appendChild(container);
-    }
-
     // ── Module Registration ──
 
     registerModuleType('recovery', {
         label: 'type.recovery',
 
-        renderBody(bodyEl, data, isPlayMode) {
+        renderBody(bodyEl, data) {
             if (!data.content || typeof data.content !== 'object' || !Array.isArray(data.content.restButtons)) {
                 data.content = { restButtons: [], hitDice: null };
             }
-            if (isPlayMode) {
-                buildPlayMode(bodyEl, data);
-            } else {
-                buildEditMode(bodyEl, bodyEl.closest('.module'), data);
-            }
+            buildPlayMode(bodyEl, data);
         },
 
+        overflowMenuItems(moduleEl, data) {
+            return [
+                {
+                    onClick: () => openRecoverySettingsModal(moduleEl, data),
+                    label: t('recovery.moduleSettings'),
+                    icon: cvIcon('settings', 14),
+                },
+            ];
+        },
     });
 })();

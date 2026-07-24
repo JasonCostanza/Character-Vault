@@ -341,7 +341,7 @@
 
     // ── Render a Single Companion Row ──
 
-    function renderCompanionRow(companion, content, data, tableBody, bodyEl, isLayoutMode) {
+    function renderCompanionRow(companion, content, data, tableBody, bodyEl) {
         const pinnedAttrs = content.attributes.filter((a) => a.pinned);
 
         // Main row
@@ -356,7 +356,7 @@
         dragHandle.className = 'companion-drag-handle';
         dragHandle.innerHTML = '&#x2807;';
         dragHandle.title = '';
-        if (!isLayoutMode || content.sortBy !== null) {
+        if (content.sortBy !== null) {
             dragHandle.style.visibility = 'hidden';
         }
         dragTd.appendChild(dragHandle);
@@ -398,7 +398,7 @@
                     });
                 }
             }
-            renderCompanionsBody(bodyEl, data, isLayoutMode);
+            renderCompanionsBody(bodyEl, data);
         });
         activeTd.appendChild(activeBtn);
         tr.appendChild(activeTd);
@@ -475,19 +475,33 @@
         notesLabel.textContent = t('companion.notes');
         notesSection.appendChild(notesLabel);
 
-        const notesTextarea = document.createElement('textarea');
-        notesTextarea.className = 'companion-notes-textarea';
-        notesTextarea.placeholder = t('companion.notesPlaceholder');
-        notesTextarea.value = companion.notes || '';
-        notesTextarea.addEventListener('input', () => {
-            companion.notes = notesTextarea.value;
-            scheduleSave();
-        });
-        notesSection.appendChild(notesTextarea);
-
         const notesDisplay = document.createElement('div');
         notesDisplay.className = 'companion-notes-display module-text-display';
-        notesDisplay.innerHTML = renderMarkdown(companion.notes || '');
+
+        function renderNotesDisplay() {
+            notesDisplay.innerHTML = companion.notes
+                ? renderMarkdown(companion.notes)
+                : `<span class="companion-notes-placeholder">${escapeHtml(t('companion.notesPlaceholder'))}</span>`;
+        }
+
+        notesDisplay.addEventListener('click', () => {
+            const textarea = document.createElement('textarea');
+            textarea.className = 'companion-notes-textarea';
+            textarea.placeholder = t('companion.notesPlaceholder');
+            textarea.value = companion.notes || '';
+            textarea.addEventListener('blur', () => {
+                if (textarea.value !== (companion.notes || '')) {
+                    companion.notes = textarea.value;
+                    scheduleSave();
+                    renderNotesDisplay();
+                }
+                textarea.replaceWith(notesDisplay);
+            });
+            notesDisplay.replaceWith(textarea);
+            textarea.focus();
+        });
+
+        renderNotesDisplay();
         notesSection.appendChild(notesDisplay);
 
         drawerTd.appendChild(notesSection);
@@ -499,10 +513,6 @@
             chevBtn.title = companion.expanded ? t('companion.collapse') : t('companion.expand');
             chevBtn.classList.toggle('expanded', companion.expanded);
             drawerTr.style.display = companion.expanded ? '' : 'none';
-            if (companion.expanded) {
-                const display = drawerTr.querySelector('.companion-notes-display');
-                if (display) display.innerHTML = renderMarkdown(companion.notes || '');
-            }
             scheduleSave();
         });
 
@@ -512,14 +522,14 @@
 
     // ── Render Full Module Body ──
 
-    function renderCompanionsBody(bodyEl, data, isLayoutMode) {
+    function renderCompanionsBody(bodyEl, data) {
         const content = ensureContent(data);
         const pinnedAttrs = content.attributes.filter((a) => a.pinned);
 
         bodyEl.innerHTML = '';
 
         const container = document.createElement('div');
-        container.className = 'companion-container' + (isLayoutMode ? ' is-layout' : '');
+        container.className = 'companion-container';
 
         if (content.companions.length === 0) {
             const empty = document.createElement('div');
@@ -576,7 +586,7 @@
                 content.sortDir = 'asc';
             }
             scheduleSave();
-            renderCompanionsBody(bodyEl, data, isLayoutMode);
+            renderCompanionsBody(bodyEl, data);
         });
         headerRow.appendChild(nameTh);
 
@@ -616,7 +626,7 @@
                     content.sortDir = 'asc';
                 }
                 scheduleSave();
-                renderCompanionsBody(bodyEl, data, isLayoutMode);
+                renderCompanionsBody(bodyEl, data);
             });
             headerRow.appendChild(th);
         });
@@ -627,14 +637,14 @@
         const tbody = document.createElement('tbody');
         const sorted = getSortedCompanions(content);
         sorted.forEach((companion) => {
-            renderCompanionRow(companion, content, data, tbody, bodyEl, isLayoutMode);
+            renderCompanionRow(companion, content, data, tbody, bodyEl);
         });
         table.appendChild(tbody);
 
         container.appendChild(table);
         bodyEl.appendChild(container);
 
-        if (isLayoutMode && content.sortBy === null) {
+        if (content.sortBy === null) {
             initCompanionSortable(tbody, content);
         }
     }
@@ -658,54 +668,6 @@
                 scheduleSave();
             },
         });
-    }
-
-    // ── Sync Mode Without Rebuild ──
-
-    function syncCompanionsMode(bodyEl, data, isLayoutMode) {
-        const content = ensureContent(data);
-        const container = bodyEl.querySelector('.companion-container');
-        if (!container) {
-            renderCompanionsBody(bodyEl, data, isLayoutMode);
-            return;
-        }
-
-        container.classList.toggle('is-layout', isLayoutMode);
-
-        // Update drag handle visibility
-        const showDrag = isLayoutMode && content.sortBy === null;
-        container.querySelectorAll('.companion-drag-handle').forEach((h) => {
-            h.style.visibility = showDrag ? '' : 'hidden';
-        });
-
-        // Re-render markdown display for expanded drawers when entering play mode.
-        // Textarea stays in sync via its input handler; collapsed drawers are skipped.
-        if (!isLayoutMode) {
-            const drawerMap = {};
-            container.querySelectorAll('[data-companion-drawer]').forEach((tr) => {
-                drawerMap[tr.dataset.companionDrawer] = tr;
-            });
-            content.companions.forEach((companion) => {
-                if (!companion.expanded) return;
-                const drawerTr = drawerMap[companion.id];
-                if (!drawerTr) return;
-                const display = drawerTr.querySelector('.companion-notes-display');
-                if (display) display.innerHTML = renderMarkdown(companion.notes || '');
-            });
-        }
-
-        // SortableJS: init on layout mode with manual sort, destroy otherwise
-        const tbody = container.querySelector('tbody');
-        if (tbody) {
-            if (isLayoutMode && content.sortBy === null) {
-                if (!tbody._sortable) initCompanionSortable(tbody, content);
-            } else {
-                if (tbody._sortable) {
-                    tbody._sortable.destroy();
-                    tbody._sortable = null;
-                }
-            }
-        }
     }
 
     // ── Settings Modal ──
@@ -794,12 +756,7 @@
             addInput.value = '';
             scheduleSave();
             refreshCompanionList();
-
-            const bodyEl = moduleEl.querySelector('.module-body');
-            if (bodyEl) {
-                const isLayoutMode = !window.isPlayMode;
-                renderCompanionsBody(bodyEl, data, isLayoutMode);
-            }
+            reRenderModuleBody();
         });
 
         addInput.addEventListener('keydown', (e) => {
@@ -835,11 +792,7 @@
                 nameInput.addEventListener('blur', () => {
                     companion.name = nameInput.value.trim();
                     scheduleSave();
-                    const bodyEl = moduleEl.querySelector('.module-body');
-                    if (bodyEl) {
-                        const isLayoutMode = !window.isPlayMode;
-                        renderCompanionsBody(bodyEl, data, isLayoutMode);
-                    }
+                    reRenderModuleBody();
                 });
 
                 const deleteBtn = document.createElement('button');
@@ -860,11 +813,7 @@
                             });
                             scheduleSave();
                             refreshCompanionList();
-                            const bodyEl = moduleEl.querySelector('.module-body');
-                            if (bodyEl) {
-                                const isLayoutMode = !window.isPlayMode;
-                                renderCompanionsBody(bodyEl, data, isLayoutMode);
-                            }
+                            reRenderModuleBody();
                         }
                     );
                 });
@@ -899,10 +848,7 @@
 
         function reRenderModuleBody() {
             const bodyEl = moduleEl.querySelector('.module-body');
-            if (bodyEl) {
-                const isLayoutMode = !window.isPlayMode;
-                renderCompanionsBody(bodyEl, data, isLayoutMode);
-            }
+            if (bodyEl) renderCompanionsBody(bodyEl, data);
         }
 
         function refreshAttrList() {
@@ -1131,13 +1077,22 @@
     registerModuleType('companions', {
         label: 'type.companions',
 
-        renderBody(bodyEl, data, isPlayMode) {
-            const isLayoutMode = !isPlayMode;
-            renderCompanionsBody(bodyEl, data, isLayoutMode);
+        renderBody(bodyEl, data) {
+            renderCompanionsBody(bodyEl, data);
         },
 
         syncState(data) {
             ensureContent(data);
+        },
+
+        overflowMenuItems(moduleEl, data) {
+            return [
+                {
+                    onClick: () => openCompanionSettings(moduleEl, data),
+                    label: t('companion.settings'),
+                    icon: cvIcon('settings', 14),
+                },
+            ];
         },
     });
 

@@ -72,7 +72,7 @@
         });
     }
 
-    function renderEntries(container, content, isPlayMode, data, bodyEl) {
+    function renderEntries(container, content, data, bodyEl) {
         container.innerHTML = '';
         const entries = getVisibleEntries(content);
 
@@ -129,7 +129,7 @@
                 if (idx !== -1) {
                     window.activityLog.splice(idx, 1);
                     scheduleSave();
-                    renderActivityLogBody(bodyEl, data, isPlayMode);
+                    renderActivityLogBody(bodyEl, data);
                 }
             });
             row.appendChild(deleteBtn);
@@ -138,7 +138,7 @@
         });
     }
 
-    function renderActivityLogBody(bodyEl, data, isPlayMode) {
+    function renderActivityLogBody(bodyEl, data) {
         ensureContent(data);
         const content = data.content;
 
@@ -163,7 +163,7 @@
                 content.hiddenEventTypes.push(eventType);
             }
             scheduleSave();
-            renderActivityLogBody(bodyEl, data, isPlayMode);
+            renderActivityLogBody(bodyEl, data);
         });
 
         wrapper.appendChild(tagBar);
@@ -172,7 +172,7 @@
         const entryList = document.createElement('div');
         entryList.className = 'activity-entry-list';
 
-        renderEntries(entryList, content, isPlayMode, data, bodyEl);
+        renderEntries(entryList, content, data, bodyEl);
 
         wrapper.appendChild(entryList);
         bodyEl.appendChild(wrapper);
@@ -230,8 +230,7 @@
             });
             if (modData) {
                 const bodyEl = el.querySelector('.module-body');
-                const isPlay = window.isPlayMode;
-                renderActivityLogBody(bodyEl, modData, isPlay);
+                renderActivityLogBody(bodyEl, modData);
             }
         });
 
@@ -246,7 +245,7 @@
             });
             if (modData) {
                 const bEl = el.querySelector('.module-body');
-                renderActivityLogBody(bEl, modData, window.isPlayMode);
+                renderActivityLogBody(bEl, modData);
             }
         });
     };
@@ -352,7 +351,7 @@
                     });
                     if (modData) {
                         const bEl = el.querySelector('.module-body');
-                        renderActivityLogBody(bEl, modData, window.isPlayMode);
+                        renderActivityLogBody(bEl, modData);
                     }
                 });
             });
@@ -389,7 +388,7 @@
             data.content.maxEntries = working.maxEntries;
             scheduleSave();
             const bEl = moduleEl.querySelector('.module-body');
-            renderActivityLogBody(bEl, data, window.isPlayMode);
+            renderActivityLogBody(bEl, data);
             close();
         }
 
@@ -513,7 +512,7 @@
                             return m.id === el.dataset.id;
                         });
                         if (modData)
-                            renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
+                            renderActivityLogBody(el.querySelector('.module-body'), modData);
                     });
                     return;
                 }
@@ -572,7 +571,7 @@
                             return m.id === el.dataset.id;
                         });
                         if (modData)
-                            renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
+                            renderActivityLogBody(el.querySelector('.module-body'), modData);
                     });
                     return;
                 }
@@ -602,7 +601,7 @@
                         const spellModEl = document.querySelector('.module[data-id="' + pending.moduleId + '"]');
                         if (spellModEl) {
                             const bodyEl = spellModEl.querySelector('.module-body');
-                            if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, spellModData, window.isPlayMode);
+                            if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, spellModData);
                         }
                     }
                     scheduleSave();
@@ -611,7 +610,7 @@
                             return m.id === el.dataset.id;
                         });
                         if (modData)
-                            renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
+                            renderActivityLogBody(el.querySelector('.module-body'), modData);
                     });
                     return;
                 }
@@ -624,7 +623,7 @@
                             return m.id === el.dataset.id;
                         });
                         if (modData)
-                            renderActivityLogBody(el.querySelector('.module-body'), modData, window.isPlayMode);
+                            renderActivityLogBody(el.querySelector('.module-body'), modData);
                     });
                 }
                 return;
@@ -685,6 +684,18 @@
         label: 'type.activity',
 
         renderBody: renderActivityLogBody,
+
+        overflowMenuItems: function (moduleEl, data) {
+            return [
+                {
+                    onClick: function () {
+                        openActivitySettings(moduleEl, data);
+                    },
+                    label: t('activity.settings'),
+                    icon: cvIcon('settings', 14),
+                },
+            ];
+        },
     });
 
     window.extractDieFaces = extractDieFaces;

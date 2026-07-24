@@ -1,8 +1,5 @@
 // ── Settings ──
 (function () {
-    // Layout mode removed — always play mode
-    window.isPlayMode = true;
-
     // ── Settings Overlay ──
     const settingsOverlay = document.getElementById('settings-overlay');
     const btnSettingsOpen = document.getElementById('btn-settings');

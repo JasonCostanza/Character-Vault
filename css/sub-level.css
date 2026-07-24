@@ -22,7 +22,7 @@
     font-weight: 700;
     color: var(--cv-text);
     line-height: 1;
-    cursor: pointer;
+    cursor: default;
 }
 
 .level-label {

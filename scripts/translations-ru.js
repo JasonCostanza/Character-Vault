@@ -1472,11 +1472,8 @@ window.CV_TRANSLATIONS['ru'] = {
             'bio.desire': 'Желание',
             'bio.clickToAdd': 'Нажмите, чтобы добавить…',
             'bio.addDetails': 'Добавить детали…',
-            'bio.editAppearance': 'Редактировать внешность',
-            'bio.editBiography': 'Редактировать биографию',
-            'bio.editPersonality': 'Редактировать личность',
-            'bio.editNotes': 'Редактировать заметки',
-            'bio.editBackground': 'Редактировать предысторию',
+            'bio.editOverview': 'Редактировать обзор',
+            'bio.editDetails': 'Редактировать детали',
             // Dice variables
             'diceVar.brokenRef': 'Переменная «{name}» не найдена — использую 0',
             'diceVar.level': 'Уровень',

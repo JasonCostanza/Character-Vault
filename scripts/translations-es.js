@@ -1144,11 +1144,8 @@ window.CV_TRANSLATIONS['es'] = {
             'bio.desire': 'Deseo',
             'bio.clickToAdd': 'Clic para añadir…',
             'bio.addDetails': 'Añadir detalles…',
-            'bio.editAppearance': 'Editar Apariencia',
-            'bio.editBiography': 'Editar Biografía',
-            'bio.editPersonality': 'Editar Personalidad',
-            'bio.editNotes': 'Editar Notas',
-            'bio.editBackground': 'Editar Trasfondo',
+            'bio.editOverview': 'Editar Resumen',
+            'bio.editDetails': 'Editar Detalles',
             // Dice variables
             'diceVar.brokenRef': 'Variable "{name}" no encontrada — usando 0',
             'diceVar.level': 'Nivel',

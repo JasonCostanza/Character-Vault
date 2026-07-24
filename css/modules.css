@@ -375,6 +375,7 @@
     gap: 8px;
     overflow-y: auto;
     overflow-x: hidden;
+    scrollbar-gutter: stable;
     scrollbar-width: thin;
     scrollbar-color: var(--cv-text-muted) transparent;
 }

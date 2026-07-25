@@ -787,6 +787,7 @@
     scrollbar-color: var(--cv-text-muted) transparent;
     outline: none;
     font-family: inherit;
+    box-sizing: border-box;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 

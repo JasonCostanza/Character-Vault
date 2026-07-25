@@ -698,13 +698,16 @@
     border: 1px solid var(--cv-border);
     border-radius: 4px;
     color: var(--cv-text);
-    font-size: 11px;
-    padding: 6px 8px;
+    font-size: 13px;
+    padding: 8px 12px;
     outline: none;
     font-family: inherit;
     resize: vertical;
     min-height: 42px;
-    line-height: 1.4;
+    line-height: 1.5;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
     box-sizing: border-box;
 }
@@ -714,18 +717,9 @@
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
 
-.cond-expand-desc::-webkit-scrollbar {
-    width: 4px;
-}
-
-.cond-expand-desc::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.cond-expand-desc::-webkit-scrollbar-thumb {
-    background-color: var(--cv-text-muted);
-    border-radius: 2px;
-}
+.cond-expand-desc::-webkit-scrollbar { width: 4px; }
+.cond-expand-desc::-webkit-scrollbar-track { background: transparent; }
+.cond-expand-desc::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
 .cond-expand-footer {
     display: flex;
@@ -970,13 +964,16 @@
     border: 1px solid var(--cv-border);
     border-radius: 4px;
     color: var(--cv-text);
-    font-size: 12px;
-    padding: 8px 10px;
+    font-size: 13px;
+    padding: 8px 12px;
     outline: none;
     font-family: inherit;
     resize: vertical;
     min-height: 42px;
-    line-height: 1.4;
+    line-height: 1.5;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
     box-sizing: border-box;
 }
@@ -985,6 +982,10 @@
     border-color: var(--cv-accent);
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
+
+.cond-wizard-desc-input::-webkit-scrollbar { width: 4px; }
+.cond-wizard-desc-input::-webkit-scrollbar-track { background: transparent; }
+.cond-wizard-desc-input::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
 /* ── Condition Wizard Type Toggle ── */
 .cond-wizard-type-toggle {

@@ -563,9 +563,19 @@
 }
 
 .weapon-edit-notes {
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 8px 12px;
     resize: vertical;
     min-height: 50px;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
 }
+
+.weapon-edit-notes::-webkit-scrollbar { width: 4px; }
+.weapon-edit-notes::-webkit-scrollbar-track { background: transparent; }
+.weapon-edit-notes::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
 /* Pool stat combobox */
 .pool-combobox {
@@ -930,7 +940,14 @@
     font-size: 11px;
     resize: vertical;
     min-height: 36px;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
 }
+
+.weapon-trait-inline-desc::-webkit-scrollbar { width: 4px; }
+.weapon-trait-inline-desc::-webkit-scrollbar-track { background: transparent; }
+.weapon-trait-inline-desc::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
 .weapon-trait-inline-actions {
     display: flex;

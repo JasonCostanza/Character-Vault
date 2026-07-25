@@ -833,7 +833,7 @@
             })
         );
         toolbar.appendChild(
-            makeSpellDrawerToolbarBtn('trash', t('spells.delete'), 'spells-drawer-toolbar-btn--delete', (e) => {
+            makeSpellDrawerToolbarBtn('trash-2', t('spells.delete'), 'spells-drawer-toolbar-btn--delete', (e) => {
                 e.stopPropagation();
                 const modEl = tbody.closest('.module');
                 if (modEl) {

@@ -811,11 +811,11 @@
         drawerContent.appendChild(descDisplay);
         const toolbar = document.createElement('div');
         toolbar.className = 'spells-drawer-toolbar';
-        const moduleEl = tbody.closest('.module');
         toolbar.appendChild(
             makeSpellDrawerToolbarBtn('pencil', t('spells.edit'), '', (e) => {
                 e.stopPropagation();
-                if (moduleEl) openSpellInspect(moduleEl, data, cat.id, spell.id);
+                const modEl = tbody.closest('.module');
+                if (modEl) openSpellInspect(modEl, data, cat.id, spell.id);
             })
         );
         toolbar.appendChild(
@@ -835,9 +835,10 @@
         toolbar.appendChild(
             makeSpellDrawerToolbarBtn('trash', t('spells.delete'), 'spells-drawer-toolbar-btn--delete', (e) => {
                 e.stopPropagation();
-                if (moduleEl) {
+                const modEl = tbody.closest('.module');
+                if (modEl) {
                     showConfirm({ title: t('spells.deleteSpell'), message: t('spells.deleteSpellConfirm') }, () => {
-                        deleteSpellFromModule(moduleEl, data, cat.id, spell.id, spell.name);
+                        deleteSpellFromModule(modEl, data, cat.id, spell.id, spell.name);
                     });
                 }
             })
@@ -1920,7 +1921,8 @@
     }
 
     function openSpellInspect(moduleEl, data, catId, spellId, isNew) {
-        const content = ensureContent(data);
+        ensureContent(data);
+        const content = data.content;
         const cat = content.categories.find(function (c) { return c.id === catId; });
         if (!cat) return;
         const spellOriginal = (cat.spells || []).find(function (s) { return s.id === spellId; });
@@ -2166,7 +2168,8 @@
     }
 
     function addSpellToCategory(moduleEl, data, catId) {
-        const content = ensureContent(data);
+        ensureContent(data);
+        const content = data.content;
         const cat = content.categories.find(function (c) { return c.id === catId; });
         if (!cat) return;
         if (!cat.spells) cat.spells = [];

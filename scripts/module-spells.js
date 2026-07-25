@@ -466,7 +466,7 @@
         const table = document.createElement('table');
         table.className = 'spells-table';
         const thead = document.createElement('thead');
-        renderSpellTableHeaders(thead, data, bodyEl, pinnedAttrs);
+        renderSpellTableHeaders(thead, data, bodyEl, pinnedAttrs, preparationMode);
         const tbody = document.createElement('tbody');
         const sorted = getSortedSpells(data.content, cat.spells || []);
         sorted.forEach((spell) => {
@@ -499,6 +499,16 @@
         catName.textContent = cat.name || t('spells.unnamedCategory');
         header.appendChild(collapseBtn);
         header.appendChild(catName);
+        const addSpellBtn = document.createElement('button');
+        addSpellBtn.className = 'spells-cat-add-btn';
+        addSpellBtn.title = t('spells.addSpell');
+        addSpellBtn.innerHTML = cvIcon('plus', 12);
+        addSpellBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const moduleEl = blockEl.closest('.module');
+            if (moduleEl) addSpellToCategory(moduleEl, data, cat.id);
+        });
+        header.appendChild(addSpellBtn);
         const catSys = window.gameSystem || 'custom';
         if (spellsIsSupported(catSys)) {
             const catAttack = spellsComputeAttackBonus(data.content);
@@ -625,7 +635,8 @@
                 e.target.closest('.spells-cat-pips') ||
                 e.target.closest('.spells-cat-collapse-btn') ||
                 e.target.closest('.spells-cat-bonus-badges') ||
-                e.target.closest('.spell-prep-bulk-actions')
+                e.target.closest('.spell-prep-bulk-actions') ||
+                e.target.closest('.spells-cat-add-btn')
             )
                 return;
             toggleCollapse();
@@ -633,7 +644,7 @@
         blockEl.appendChild(header);
     }
 
-    function renderSpellTableHeaders(thead, data, bodyEl, pinnedAttrs) {
+    function renderSpellTableHeaders(thead, data, bodyEl, pinnedAttrs, preparationMode) {
         const content = data.content;
         const tr = document.createElement('tr');
         const chevTh = document.createElement('th');
@@ -648,9 +659,25 @@
             tr.appendChild(th);
         });
         const castTh = document.createElement('th');
+        castTh.className = 'spells-cast-th';
         castTh.style.width = '40px';
+        castTh.textContent = preparationMode
+            ? t('spells.prepareColumn')
+            : content.casterType === 'prepared'
+              ? t('spells.preparedColumn')
+              : t('spells.castColumn');
         tr.appendChild(castTh);
         thead.appendChild(tr);
+    }
+
+    function makeSpellDrawerToolbarBtn(iconName, label, extraClass, onClick) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'spells-drawer-toolbar-btn' + (extraClass ? ' ' + extraClass : '');
+        btn.innerHTML = cvIcon(iconName, 11);
+        btn.appendChild(document.createTextNode(' ' + label));
+        btn.addEventListener('click', onClick);
+        return btn;
     }
 
     function renderSpellRow(spell, cat, data, tbody, bodyEl, pinnedAttrs, preparationMode) {
@@ -782,23 +809,40 @@
         descDisplay.className = 'spells-desc-display module-text-display';
         descDisplay.innerHTML = renderMarkdown(spell.description || '');
         drawerContent.appendChild(descDisplay);
-        const sendBtn = document.createElement('button');
-        sendBtn.type = 'button';
-        sendBtn.className = 'list-inspect-btn-send spells-drawer-send-btn';
-        sendBtn.innerHTML = cvIcon('send', 11) + t('transfer.sendToPlayer');
-        sendBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const srcPool = (data.content.resourcePools || []).find((p) => p.id === cat.resourcePoolId);
-            const moduleMeta = {
-                attrs: data.content.attributes,
-                categoryName: cat.name,
-                poolDescriptor: srcPool
-                    ? { type: srcPool.type, level: srcPool.level ?? null, name: srcPool.name ?? null }
-                    : null,
-            };
-            window.openSendToPlayerModal(spell, 'spells', moduleMeta, data.id, spell.id);
-        });
-        drawerContent.appendChild(sendBtn);
+        const toolbar = document.createElement('div');
+        toolbar.className = 'spells-drawer-toolbar';
+        const moduleEl = tbody.closest('.module');
+        toolbar.appendChild(
+            makeSpellDrawerToolbarBtn('pencil', t('spells.edit'), '', (e) => {
+                e.stopPropagation();
+                if (moduleEl) openSpellInspect(moduleEl, data, cat.id, spell.id);
+            })
+        );
+        toolbar.appendChild(
+            makeSpellDrawerToolbarBtn('send', t('transfer.sendToPlayer'), '', (e) => {
+                e.stopPropagation();
+                const srcPool = (data.content.resourcePools || []).find((p) => p.id === cat.resourcePoolId);
+                const moduleMeta = {
+                    attrs: data.content.attributes,
+                    categoryName: cat.name,
+                    poolDescriptor: srcPool
+                        ? { type: srcPool.type, level: srcPool.level ?? null, name: srcPool.name ?? null }
+                        : null,
+                };
+                window.openSendToPlayerModal(spell, 'spells', moduleMeta, data.id, spell.id);
+            })
+        );
+        toolbar.appendChild(
+            makeSpellDrawerToolbarBtn('trash', t('spells.delete'), 'spells-drawer-toolbar-btn--delete', (e) => {
+                e.stopPropagation();
+                if (moduleEl) {
+                    showConfirm({ title: t('spells.deleteSpell'), message: t('spells.deleteSpellConfirm') }, () => {
+                        deleteSpellFromModule(moduleEl, data, cat.id, spell.id, spell.name);
+                    });
+                }
+            })
+        );
+        drawerContent.appendChild(toolbar);
         drawerTd.appendChild(drawerContent);
         drawerTr.appendChild(drawerTd);
         chevBtn.addEventListener('click', () => {
@@ -1825,6 +1869,323 @@
         };
         document.addEventListener('keydown', keyHandler);
         overlay._keyHandler = keyHandler;
+    }
+
+    // ── Spell Inspect Modal ──
+    let activeSpellInspectContext = null;
+
+    function hideSpellInspectOverlay(ctx) {
+        document.removeEventListener('keydown', ctx.onKeyDown);
+        document.getElementById('list-inspect-overlay').classList.remove('open');
+        document.getElementById('list-inspect-overlay').setAttribute('aria-hidden', 'true');
+        activeSpellInspectContext = null;
+    }
+
+    function closeSpellInspect(isDiscard) {
+        if (!activeSpellInspectContext) return;
+        const ctx = activeSpellInspectContext;
+
+        if (isDiscard) {
+            const originalJson = JSON.stringify(ctx.spellOriginal);
+            const editedJson = JSON.stringify(ctx.spellProxy);
+            if (originalJson !== editedJson) {
+                showConfirm(t('spells.discardPrompt'), function () {
+                    if (ctx.isNew && !ctx.spellProxy.name) {
+                        removeSpellFromCategory(ctx.data, ctx.catId, ctx.spellOriginal.id);
+                    }
+                    hideSpellInspectOverlay(ctx);
+                    reRenderSpellsModule(ctx.moduleEl, ctx.data);
+                });
+                return;
+            }
+            if (ctx.isNew && !ctx.spellProxy.name) {
+                removeSpellFromCategory(ctx.data, ctx.catId, ctx.spellOriginal.id);
+                reRenderSpellsModule(ctx.moduleEl, ctx.data);
+            }
+        } else {
+            Object.assign(ctx.spellOriginal, ctx.spellProxy);
+            scheduleSave();
+
+            if (ctx.isNew && ctx.spellProxy.name && typeof window.logActivity === 'function') {
+                window.logActivity({
+                    type: 'spells.event.slot',
+                    message: t('spells.log.addSpell', { name: ctx.spellProxy.name }),
+                    sourceModuleId: ctx.data.id,
+                });
+            }
+            reRenderSpellsModule(ctx.moduleEl, ctx.data);
+        }
+
+        hideSpellInspectOverlay(ctx);
+    }
+
+    function openSpellInspect(moduleEl, data, catId, spellId, isNew) {
+        const content = ensureContent(data);
+        const cat = content.categories.find(function (c) { return c.id === catId; });
+        if (!cat) return;
+        const spellOriginal = (cat.spells || []).find(function (s) { return s.id === spellId; });
+        if (!spellOriginal) return;
+
+        const spellProxy = JSON.parse(JSON.stringify(spellOriginal));
+
+        activeSpellInspectContext = {
+            moduleEl: moduleEl,
+            data: data,
+            catId: catId,
+            spellOriginal: spellOriginal,
+            spellProxy: spellProxy,
+            isNew: !!isNew,
+            onKeyDown: function (e) {
+                if (e.key === 'Escape') closeSpellInspect(true);
+            },
+        };
+
+        const overlay = document.getElementById('list-inspect-overlay');
+        const panel = document.getElementById('list-inspect-panel');
+        panel.innerHTML = '';
+
+        // Header
+        const header = document.createElement('div');
+        header.className = 'list-inspect-header';
+        const title = document.createElement('span');
+        title.className = 'list-inspect-title';
+        title.textContent = isNew ? t('spells.addSpellTitle') : t('spells.editSpellTitle');
+        const closeXBtn = document.createElement('button');
+        closeXBtn.className = 'list-inspect-close-x';
+        closeXBtn.innerHTML = cvIcon('x', 16);
+        closeXBtn.title = t('spells.close');
+        closeXBtn.addEventListener('click', function () { closeSpellInspect(true); });
+        header.appendChild(title);
+        header.appendChild(closeXBtn);
+
+        // Body
+        const body = document.createElement('div');
+        body.className = 'list-inspect-body';
+
+        // Name
+        const nameField = document.createElement('div');
+        nameField.className = 'list-inspect-field';
+        const nameLabel = document.createElement('label');
+        nameLabel.className = 'list-inspect-label';
+        nameLabel.textContent = t('spells.spellName');
+        const nameInput = document.createElement('input');
+        nameInput.className = 'list-inspect-name-input';
+        nameInput.type = 'text';
+        nameInput.value = spellProxy.name || '';
+        nameInput.placeholder = t('spells.spellNamePlaceholder');
+        nameInput.addEventListener('input', function () { spellProxy.name = nameInput.value; });
+        nameField.appendChild(nameLabel);
+        nameField.appendChild(nameInput);
+        body.appendChild(nameField);
+
+        // Description
+        const descField = document.createElement('div');
+        descField.className = 'list-inspect-field';
+        const descLabel = document.createElement('label');
+        descLabel.className = 'list-inspect-label';
+        descLabel.textContent = t('spells.spellDescription');
+        const descInput = document.createElement('textarea');
+        descInput.className = 'list-inspect-notes-input';
+        descInput.value = spellProxy.description || '';
+        descInput.placeholder = t('spells.spellDescriptionPlaceholder');
+        descInput.addEventListener('input', function () { spellProxy.description = descInput.value; });
+        descField.appendChild(descLabel);
+        descField.appendChild(descInput);
+        body.appendChild(descField);
+
+        // Attributes grid — cell rendering delegated to the List module's
+        // renderAttrValue() since spells share the same attribute-type system
+        // (text/number/number-pair/toggle) and inspect-modal styling.
+        if (content.attributes.length > 0) {
+            const attrGrid = document.createElement('div');
+            attrGrid.className = 'list-inspect-attr-grid';
+            content.attributes.forEach(function (attr) {
+                const attrItem = document.createElement('div');
+                attrItem.className = 'list-inspect-attr-item';
+                const attrLabel = document.createElement('div');
+                attrLabel.className = 'list-inspect-attr-label';
+                attrLabel.textContent = attr.name;
+                attrItem.appendChild(attrLabel);
+
+                const val = spellProxy.values && spellProxy.values[attr.id] != null
+                    ? spellProxy.values[attr.id]
+                    : attr.defaultValue;
+                const cell = window.renderAttrValue(attr, val, false, spellProxy, function (newVal) {
+                    if (!spellProxy.values) spellProxy.values = {};
+                    spellProxy.values[attr.id] = newVal;
+                });
+                attrItem.appendChild(cell);
+                attrGrid.appendChild(attrItem);
+            });
+            body.appendChild(attrGrid);
+        }
+
+        // Casting Options card
+        const pool = cat.resourcePoolId
+            ? content.resourcePools.find(function (p) { return p.id === cat.resourcePoolId; })
+            : null;
+        if (pool) {
+            const castingCard = document.createElement('div');
+            castingCard.className = 'spells-inspect-casting-card';
+            const castingTitle = document.createElement('div');
+            castingTitle.className = 'spells-settings-card-title';
+            castingTitle.textContent = t('spells.castingOptions');
+            castingCard.appendChild(castingTitle);
+
+            // Slot Cost row
+            const costRow = document.createElement('div');
+            costRow.className = 'spells-inspect-casting-row';
+            const costText = document.createElement('div');
+            costText.className = 'spells-inspect-casting-text';
+            const costName = document.createElement('span');
+            costName.className = 'spells-inspect-casting-name';
+            costName.textContent = t('spells.slotCost');
+            const costDesc = document.createElement('span');
+            costDesc.className = 'spells-inspect-casting-desc';
+            costDesc.textContent = t('spells.slotCostDesc');
+            costText.appendChild(costName);
+            costText.appendChild(costDesc);
+            costRow.appendChild(costText);
+            const costInput = document.createElement('input');
+            costInput.type = 'number';
+            costInput.className = 'spells-inspect-cost-input';
+            costInput.min = '0';
+            costInput.value = spellProxy.slotCost != null ? spellProxy.slotCost : '';
+            costInput.placeholder = '1';
+            costInput.addEventListener('input', function () {
+                spellProxy.slotCost = costInput.value === '' ? null : Math.max(0, Number(costInput.value) || 0);
+            });
+            costRow.appendChild(costInput);
+            castingCard.appendChild(costRow);
+
+            // Can Upcast row (only for spell-slot type pools with autoSpend)
+            if (pool.type === 'spell-slot' && content.autoSpendSlots) {
+                const upcastRow = document.createElement('div');
+                upcastRow.className = 'spells-inspect-casting-row';
+                const upcastText = document.createElement('div');
+                upcastText.className = 'spells-inspect-casting-text';
+                const upcastName = document.createElement('span');
+                upcastName.className = 'spells-inspect-casting-name';
+                upcastName.textContent = t('spells.allowUpcast');
+                const upcastDesc = document.createElement('span');
+                upcastDesc.className = 'spells-inspect-casting-desc';
+                upcastDesc.textContent = t('spells.canUpcastDesc');
+                upcastText.appendChild(upcastName);
+                upcastText.appendChild(upcastDesc);
+                upcastRow.appendChild(upcastText);
+                const upcastToggle = makeCvToggle(!!spellProxy.canUpcast, function (checked) {
+                    spellProxy.canUpcast = checked;
+                });
+                upcastRow.appendChild(upcastToggle);
+                castingCard.appendChild(upcastRow);
+            }
+
+            body.appendChild(castingCard);
+        }
+
+        // Footer actions
+        const actions = document.createElement('div');
+        actions.className = 'list-inspect-actions';
+
+        if (!isNew) {
+            const delBtn = document.createElement('button');
+            delBtn.className = 'list-inspect-btn-delete';
+            delBtn.textContent = t('spells.delete');
+            delBtn.addEventListener('click', function () {
+                showConfirm({ title: t('spells.deleteSpell'), message: t('spells.deleteSpellConfirm') }, function () {
+                    deleteSpellFromModule(moduleEl, data, catId, spellOriginal.id, spellOriginal.name);
+                    hideSpellInspectOverlay(activeSpellInspectContext);
+                });
+            });
+            actions.appendChild(delBtn);
+
+            const sendBtn = document.createElement('button');
+            sendBtn.className = 'list-inspect-btn-send';
+            sendBtn.innerHTML = cvIcon('send', 14) + ' ' + escapeHtml(t('transfer.sendToPlayer'));
+            sendBtn.addEventListener('click', function () {
+                const moduleMeta = {
+                    attrs: data.content.attributes,
+                    categoryName: cat.name,
+                    poolDescriptor: pool
+                        ? { type: pool.type, level: pool.level ?? null, name: pool.name ?? null }
+                        : null,
+                };
+                window.openSendToPlayerModal(spellProxy, 'spells', moduleMeta, data.id, spellProxy.id);
+            });
+            actions.appendChild(sendBtn);
+        }
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'list-inspect-btn-close';
+        cancelBtn.textContent = t('spells.cancel');
+        cancelBtn.addEventListener('click', function () { closeSpellInspect(true); });
+        actions.appendChild(cancelBtn);
+
+        const saveBtn = document.createElement('button');
+        saveBtn.className = 'list-inspect-btn-save';
+        saveBtn.textContent = t('spells.save');
+        saveBtn.addEventListener('click', function () { closeSpellInspect(false); });
+        actions.appendChild(saveBtn);
+
+        panel.appendChild(header);
+        panel.appendChild(body);
+        panel.appendChild(actions);
+
+        document.addEventListener('keydown', activeSpellInspectContext.onKeyDown);
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+
+        nameInput.focus();
+    }
+
+    function removeSpellFromCategory(data, catId, spellId) {
+        const cat = (data.content.categories || []).find(function (c) { return c.id === catId; });
+        if (!cat) return;
+        cat.spells = (cat.spells || []).filter(function (s) { return s.id !== spellId; });
+        scheduleSave();
+    }
+
+    function deleteSpellFromModule(moduleEl, data, catId, spellId, spellName) {
+        removeSpellFromCategory(data, catId, spellId);
+        if (typeof window.logActivity === 'function') {
+            window.logActivity({
+                type: 'spells.event.slot',
+                message: t('spells.log.removeSpell', { name: spellName || t('spells.unnamed') }),
+                sourceModuleId: data.id,
+            });
+        }
+        reRenderSpellsModule(moduleEl, data);
+    }
+
+    function reRenderSpellsModule(moduleEl, data) {
+        if (!moduleEl) return;
+        const bodyEl = moduleEl.querySelector('.module-body');
+        if (bodyEl) MODULE_TYPES['spells'].renderBody(bodyEl, data);
+        if (typeof window.snapModuleHeight === 'function') window.snapModuleHeight(moduleEl, data);
+        if (typeof window.reapplyPendingStates === 'function') window.reapplyPendingStates();
+    }
+
+    function addSpellToCategory(moduleEl, data, catId) {
+        const content = ensureContent(data);
+        const cat = content.categories.find(function (c) { return c.id === catId; });
+        if (!cat) return;
+        if (!cat.spells) cat.spells = [];
+        // values starts empty — the inspect modal falls back to each
+        // attribute's own defaultValue when a spell has no stored value yet.
+        const newSpell = {
+            id: generateId('spell'),
+            name: '',
+            description: '',
+            order: cat.spells.length,
+            expanded: false,
+            values: {},
+            slotCost: null,
+            canUpcast: false,
+            preparedCount: 0,
+            castsUsed: 0,
+        };
+        cat.spells.push(newSpell);
+        openSpellInspect(moduleEl, data, catId, newSpell.id, true);
     }
 
     // ── Cross-Module API (used by Recovery module) ──

@@ -1921,6 +1921,10 @@
         setTimeout(() => nameInput.focus(), 100);
     }
 
+    // Exposed for reuse by other modules that share the list attribute-type system
+    // (text/number/number-pair/toggle) in their own inspect surfaces, e.g. module-spells.js.
+    window.renderAttrValue = renderAttrValue;
+
     // ── Module Type Registration ──
     registerModuleType('list', {
         label: 'type.list',

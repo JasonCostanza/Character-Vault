@@ -97,6 +97,9 @@ globalThis.CV_TRANSLATIONS = {
     'spells.donePreparing': 'Done Preparing',
     'spells.notPreparedError': 'This spell is not prepared.',
     'spells.preparedExhaustedError': 'No prepared uses remaining.',
+    'spells.castColumn': 'Cast',
+    'spells.preparedColumn': 'Prepared',
+    'spells.prepareColumn': 'Prep',
   },
   es: {
     'menu.settings': 'Configuracion',

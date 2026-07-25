@@ -724,11 +724,18 @@
 .list-inspect-body {
     flex: 1;
     overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
     padding: 20px 24px;
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
+
+.list-inspect-body::-webkit-scrollbar { width: 4px; }
+.list-inspect-body::-webkit-scrollbar-track { background: transparent; }
+.list-inspect-body::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
 .list-inspect-field {
     display: flex;

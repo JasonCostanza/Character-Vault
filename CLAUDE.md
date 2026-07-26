@@ -29,16 +29,6 @@ Character Vault is a TaleSpire Symbiote — a vanilla HTML/CSS/JS character shee
 
 Per-file descriptions, script load order, and CSS cascade: `_DOCS/ARCHITECTURE.md` § "Files at a Glance".
 
-## Commands
-
-```bash
-npm run test        # Run vitest test suite (single pass)
-npm run test:watch  # Run vitest in watch mode
-npm run lint        # ESLint check on scripts/
-npm run lint:fix    # ESLint auto-fix
-npm run format      # Prettier format scripts/
-```
-
 ## Rules
 
 1. **Never modify `LICENSE.txt`** without explicit user permission.

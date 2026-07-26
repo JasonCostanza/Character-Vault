@@ -25,7 +25,7 @@
             // Ctrl+Click anywhere on the divider edits the label
             const divider = bodyEl.querySelector('.hline-divider');
             divider.addEventListener('click', (e) => {
-                if (!e.ctrlKey) return;
+                if (!modKeys.ctrl) return;
                 e.stopPropagation();
                 window.openEditPopover(divider, {
                     label: defaultLabel,

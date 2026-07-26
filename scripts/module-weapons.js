@@ -752,7 +752,7 @@
             ammoEl.setAttribute('data-tooltip', t('weapons.ammo'));
             (function (el, w) {
                 el.addEventListener('click', function (e) {
-                    if (e.ctrlKey) {
+                    if (modKeys.ctrl) {
                         e.stopPropagation();
                         enterQuickEditAmmo(el, w, data, bodyEl);
                     }
@@ -767,7 +767,7 @@
             hpEl.textContent = (weapon.shieldHp || 0) + ' / ' + (weapon.shieldHpMax || 0) + ' HP';
             (function (el, w) {
                 el.addEventListener('click', function (e) {
-                    if (e.ctrlKey) {
+                    if (modKeys.ctrl) {
                         e.stopPropagation();
                         enterQuickEditShieldHp(el, w, data, bodyEl);
                     }
@@ -781,7 +781,7 @@
         // Click rolls (action modal); Ctrl+Click edits
         (function (w) {
             card.addEventListener('click', function (e) {
-                if (e.ctrlKey) {
+                if (modKeys.ctrl) {
                     openWeaponEditModal(moduleEl, data, w, bodyEl);
                 } else {
                     openWeaponActionModal(moduleEl, data, w);

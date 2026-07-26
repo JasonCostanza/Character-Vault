@@ -139,7 +139,7 @@
         block.innerHTML = html;
 
         block.addEventListener('click', (e) => {
-            if (e.ctrlKey) {
+            if (modKeys.ctrl) {
                 enterSaveQuickEdit(block, save, data);
                 return;
             }

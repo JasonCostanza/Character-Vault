@@ -337,7 +337,7 @@
         // Ctrl+Click quick edit on the HP numbers (relative math: "+2", "-5")
         function wireHPQuickEdit(span, key) {
             span.addEventListener('click', (e) => {
-                if (!e.ctrlKey) return;
+                if (!modKeys.ctrl) return;
                 e.stopPropagation();
                 window.openEditPopover(span, {
                     label: t('health.' + key),

@@ -974,7 +974,7 @@
                 nameSpan.className = 'list-item-name';
                 nameSpan.textContent = item.name || t('list.itemName');
                 nameSpan.addEventListener('click', (e) => {
-                    if (!e.ctrlKey) return;
+                    if (!modKeys.ctrl) return;
                     e.stopPropagation();
                     window.openEditPopover(nameSpan, {
                         label: t('list.colName'),

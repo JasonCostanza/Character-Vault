@@ -137,7 +137,7 @@
         numEl.className = 'level-number';
         numEl.textContent = c.level;
         numEl.addEventListener('click', (e) => {
-            if (!(e.ctrlKey || e.metaKey)) return;
+            if (!modKeys.ctrl) return;
             e.stopPropagation();
             openSetLevelModal(bodyEl.closest('.module'), data);
         });

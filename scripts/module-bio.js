@@ -187,7 +187,7 @@
 
         if (key) {
             val.addEventListener('click', (e) => {
-                if (!isBlock && (e.ctrlKey || e.metaKey)) {
+                if (!isBlock && modKeys.ctrl) {
                     enterBioFieldQuickEdit(val, content, key, t(labelKey), moduleEl);
                     return;
                 }

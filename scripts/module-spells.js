@@ -378,7 +378,7 @@
                     attackChip.textContent = spellsFormatAttackBonus(data.content) + ' ' + t('spells.attackLabel');
                     if (isOverride) attackChip.title = t('spells.bonusOverrideIndicator');
                     attackChip.addEventListener('click', function (e) {
-                        if (e.ctrlKey) {
+                        if (modKeys.ctrl) {
                             e.stopPropagation();
                             enterSpellBonusQuickEdit(attackChip, 'spellAttackOverride', data.content, data, bodyEl);
                         }
@@ -396,7 +396,7 @@
                     dcChip.textContent = t('spells.dcLabel') + ' ' + spellsFormatDC(data.content);
                     if (isDCOverride) dcChip.title = t('spells.bonusOverrideIndicator');
                     dcChip.addEventListener('click', function (e) {
-                        if (e.ctrlKey) {
+                        if (modKeys.ctrl) {
                             e.stopPropagation();
                             enterSpellBonusQuickEdit(dcChip, 'spellDCOverride', data.content, data, bodyEl);
                         }
@@ -527,7 +527,7 @@
                     attackBadge.dataset.type = 'attack';
                     attackBadge.textContent = spellsFormatAttackBonus(data.content);
                     attackBadge.addEventListener('click', function (e) {
-                        if (e.ctrlKey) {
+                        if (modKeys.ctrl) {
                             e.stopPropagation();
                             enterSpellBonusQuickEdit(attackBadge, 'spellAttackOverride', data.content, data, bodyEl);
                         }
@@ -545,7 +545,7 @@
                     dcBadge.dataset.type = 'dc';
                     dcBadge.textContent = t('spells.dcLabel') + ' ' + spellsFormatDC(data.content);
                     dcBadge.addEventListener('click', function (e) {
-                        if (e.ctrlKey) {
+                        if (modKeys.ctrl) {
                             e.stopPropagation();
                             enterSpellBonusQuickEdit(dcBadge, 'spellDCOverride', data.content, data, bodyEl);
                         }

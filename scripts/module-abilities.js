@@ -325,7 +325,7 @@
             `<span class="ability-modifier">${escapeHtml(formatModifier(getAbilityBaseMod(ability, data)))}</span>`;
 
         row.addEventListener('click', (e) => {
-            if (e.ctrlKey || e.metaKey) {
+            if (modKeys.ctrl) {
                 e.stopPropagation();
                 enterAbilityQuickEdit(row, ability, index, data);
                 return;

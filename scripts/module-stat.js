@@ -135,7 +135,7 @@
             const nameEl = block.querySelector('.stat-name');
             if (nameEl) {
                 nameEl.addEventListener('click', (e) => {
-                    if (!e.ctrlKey) return;
+                    if (!modKeys.ctrl) return;
                     e.stopPropagation();
                     enterNameQuickEdit(nameEl, block, stat, data);
                 });
@@ -144,7 +144,7 @@
 
         if (stat.rollable) {
             block.addEventListener('click', (e) => {
-                if (e.ctrlKey) {
+                if (modKeys.ctrl) {
                     if (!isAutoProf) enterQuickEdit(block, stat, data);
                     return;
                 }
@@ -154,7 +154,7 @@
 
         if (!stat.rollable) {
             block.addEventListener('click', (e) => {
-                if (e.ctrlKey && !isAutoProf) enterQuickEdit(block, stat, data);
+                if (modKeys.ctrl && !isAutoProf) enterQuickEdit(block, stat, data);
             });
         }
 

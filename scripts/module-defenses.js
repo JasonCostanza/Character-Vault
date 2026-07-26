@@ -212,7 +212,7 @@
         const valueEl = document.createElement('span');
         valueEl.className = 'def-spotlight-value';
         valueEl.addEventListener('click', function (e) {
-            if (!e.ctrlKey && !e.metaKey) return;
+            if (!modKeys.ctrl) return;
             e.stopPropagation();
             window.openEditPopover(valueEl, {
                 label: def.name,
@@ -268,7 +268,7 @@
             valueEl.className = 'def-secondary-value';
             valueEl.textContent = fmtDefValue(def.value, def.showSign);
             valueEl.addEventListener('click', function (e) {
-                if (!e.ctrlKey && !e.metaKey) return;
+                if (!modKeys.ctrl) return;
                 e.stopPropagation();
                 window.openEditPopover(valueEl, {
                     label: def.name,

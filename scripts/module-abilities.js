@@ -340,6 +340,14 @@
             `<span class="ability-name">${escapeHtml(ability.name || t('abilities.unnamed'))}</span>` +
             `<span class="ability-modifier">${escapeHtml(formatModifier(getAbilityTotalMod(ability, data)))}</span>`;
 
+        const nameEl = row.querySelector('.ability-name');
+        nameEl.addEventListener('click', (e) => {
+            if (modKeys.ctrl) {
+                e.stopPropagation();
+                enterAbilityNameQuickEdit(row, nameEl, ability, index, data);
+            }
+        });
+
         row.addEventListener('click', (e) => {
             if (modKeys.ctrl) {
                 e.stopPropagation();
@@ -361,6 +369,23 @@
             relative: true,
             onSave(newVal) {
                 ability.modifier = newVal;
+                scheduleSave();
+                row.replaceWith(renderAbilityRow(ability, index, data));
+            },
+        });
+    }
+
+    function enterAbilityNameQuickEdit(row, nameEl, ability, index, data) {
+        window.openEditPopover(nameEl, {
+            label: t('abilities.nameLabel'),
+            value: ability.name || '',
+            type: 'text',
+            onSave(newName) {
+                const oldName = ability.name;
+                ability.name = newName;
+                if (typeof window.propagateEntityRename === 'function') {
+                    window.propagateEntityRename(data.id, 'ability', oldName, ability.name);
+                }
                 scheduleSave();
                 row.replaceWith(renderAbilityRow(ability, index, data));
             },

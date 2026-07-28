@@ -169,6 +169,7 @@ window.CV_TRANSLATIONS['de'] = {
             'abilities.addAbility': 'Fähigkeit hinzufügen',
             'abilities.deleteAbility': 'Fähigkeit löschen',
             'abilities.unnamed': 'Unbenannt',
+            'abilities.nameLabel': 'Name',
             'abilities.noAbilities': 'Keine Fähigkeiten',
             'abilities.rollCheck': '{name}-Probe würfeln',
             'abilities.check': 'Probe',

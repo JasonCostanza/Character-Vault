@@ -168,6 +168,7 @@ window.CV_TRANSLATIONS['fr'] = {
             'abilities.addAbility': 'Ajouter Compétence',
             'abilities.deleteAbility': 'Supprimer Compétence',
             'abilities.unnamed': 'Sans Nom',
+            'abilities.nameLabel': 'Nom',
             'abilities.noAbilities': 'Aucune compétence',
             'abilities.rollCheck': 'Jet de {name}',
             'abilities.check': 'Test',

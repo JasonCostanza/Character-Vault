@@ -170,6 +170,7 @@ window.CV_TRANSLATIONS['es'] = {
             'abilities.addAbility': 'Agregar Habilidad',
             'abilities.deleteAbility': 'Eliminar Habilidad',
             'abilities.unnamed': 'Sin Nombre',
+            'abilities.nameLabel': 'Nombre',
             'abilities.noAbilities': 'No hay habilidades',
             'abilities.rollCheck': 'Tirada de {name}',
             'abilities.check': 'Prueba',

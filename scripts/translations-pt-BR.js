@@ -169,6 +169,7 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'abilities.addAbility': 'Adicionar Habilidade',
             'abilities.deleteAbility': 'Excluir Habilidade',
             'abilities.unnamed': 'Sem Nome',
+            'abilities.nameLabel': 'Nome',
             'abilities.noAbilities': 'Nenhuma habilidade',
             'abilities.rollCheck': 'Rolar {name}',
             'abilities.check': 'Teste',

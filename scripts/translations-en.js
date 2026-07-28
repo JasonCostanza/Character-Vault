@@ -177,6 +177,7 @@ window.CV_TRANSLATIONS.en = {
             'abilities.addAbility': 'Add Ability',
             'abilities.deleteAbility': 'Delete Ability',
             'abilities.unnamed': 'Unnamed',
+            'abilities.nameLabel': 'Name',
             'abilities.noAbilities': 'No abilities added',
             'abilities.rollCheck': 'Roll {name} check',
             'abilities.check': 'Check',

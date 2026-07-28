@@ -170,6 +170,7 @@ window.CV_TRANSLATIONS['ru'] = {
             'abilities.addAbility': 'Добавить навык',
             'abilities.deleteAbility': 'Удалить навык',
             'abilities.unnamed': 'Без названия',
+            'abilities.nameLabel': 'Имя',
             'abilities.noAbilities': 'Нет навыков',
             'abilities.rollCheck': 'Бросок {name}',
             'abilities.check': 'Проверка',

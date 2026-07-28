@@ -4078,6 +4078,16 @@
         });
     });
 
+    document.addEventListener('cv:level-changed', function () {
+        (window.modules || []).forEach(function (mod) {
+            if (mod.type !== 'weapons' || !mod.content) return;
+            var moduleEl = document.querySelector('.module[data-id="' + mod.id + '"]');
+            if (!moduleEl) return;
+            var bodyEl = moduleEl.querySelector('.module-body');
+            if (bodyEl) renderWeaponsBody(bodyEl, mod);
+        });
+    });
+
     document.addEventListener('cv:stats-changed', function (e) {
         var changedModuleId = e.detail && e.detail.moduleId;
         (window.modules || []).forEach(function (mod) {

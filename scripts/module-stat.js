@@ -232,6 +232,7 @@
                 scheduleSave();
                 const idx = parseInt(block.dataset.index, 10);
                 block.replaceWith(renderStatBlock(stat, idx, data));
+                document.dispatchEvent(new CustomEvent('cv:stat-values-changed', { detail: { moduleId: data.id } }));
             },
         });
     }

@@ -19,6 +19,11 @@ beforeEach(() => {
     configurable: true,
   });
 
+  globalThis.gameSystem = 'dnd5e';
+  globalThis.getProficiencyBonus = vi.fn(() => 2);
+  globalThis.computePf2eProficiencyBonus = vi.fn(() => 0);
+  globalThis.getAbilityModifierFrom = vi.fn(() => 0);
+
   loadScript('scripts/icons.js');
   loadScript('scripts/shared.js');
   loadScript('scripts/i18n.js');
@@ -202,5 +207,39 @@ describe('saveNotesCheckboxProxy', () => {
     const data = { content: { notes: null } };
     const proxy = window.saveNotesCheckboxProxy(data);
     expect(proxy.content).toBe('');
+  });
+});
+
+describe('getSaveTotalMod', () => {
+  const content = { linkedStatModuleId: null };
+
+  it('dnd5e: excludes proficiency bonus when not proficient', () => {
+    globalThis.gameSystem = 'dnd5e';
+    const save = { value: 3, proficiencyTier: null };
+    expect(window.getSaveTotalMod(save, content)).toBe(3);
+  });
+
+  it('dnd5e: adds proficiency bonus when proficiencyTier is "Proficient"', () => {
+    globalThis.gameSystem = 'dnd5e';
+    globalThis.getProficiencyBonus = vi.fn(() => 2);
+    const save = { value: 3, proficiencyTier: 'Proficient' };
+    expect(window.getSaveTotalMod(save, content)).toBe(5);
+  });
+
+  it('pf2e: adds rank-based bonus for any non-null tier', () => {
+    globalThis.gameSystem = 'pf2e';
+    globalThis.computePf2eProficiencyBonus = vi.fn((rank) => (rank === 'trained' ? 4 : 1));
+    const trained = { value: 2, proficiencyTier: 'Trained' };
+    expect(window.getSaveTotalMod(trained, content)).toBe(6);
+
+    const untrained = { value: 2, proficiencyTier: 'Untrained' };
+    expect(window.getSaveTotalMod(untrained, content)).toBe(3);
+  });
+
+  it('custom: behaves like dnd5e', () => {
+    globalThis.gameSystem = 'custom';
+    globalThis.getProficiencyBonus = vi.fn(() => 2);
+    const save = { value: 1, proficiencyTier: 'Proficient' };
+    expect(window.getSaveTotalMod(save, content)).toBe(3);
   });
 });

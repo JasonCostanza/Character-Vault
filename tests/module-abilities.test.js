@@ -74,3 +74,37 @@ describe('applyAbilityTemplate', () => {
     });
   });
 });
+
+describe('getAbilityTotalMod', () => {
+  const data = { content: { linkedStatModuleId: null } };
+
+  it('dnd5e: excludes proficiency bonus when not proficient', () => {
+    globalThis.gameSystem = 'dnd5e';
+    const ability = { modifier: 3, proficiency: false };
+    expect(window.getAbilityTotalMod(ability, data)).toBe(3);
+  });
+
+  it('dnd5e: adds proficiency bonus when proficient', () => {
+    globalThis.gameSystem = 'dnd5e';
+    globalThis.getProficiencyBonus = vi.fn(() => 2);
+    const ability = { modifier: 3, proficiency: true };
+    expect(window.getAbilityTotalMod(ability, data)).toBe(5);
+  });
+
+  it('pf2e: adds rank-based bonus even when untrained (includes level via computePf2eProficiencyBonus)', () => {
+    globalThis.gameSystem = 'pf2e';
+    globalThis.computePf2eProficiencyBonus = vi.fn((rank) => (rank === 'trained' ? 4 : 1));
+    const untrained = { modifier: 2, proficiencyRank: 'untrained' };
+    expect(window.getAbilityTotalMod(untrained, data)).toBe(3);
+
+    const trained = { modifier: 2, proficiencyRank: 'trained' };
+    expect(window.getAbilityTotalMod(trained, data)).toBe(6);
+  });
+
+  it('custom: behaves like dnd5e', () => {
+    globalThis.gameSystem = 'custom';
+    globalThis.getProficiencyBonus = vi.fn(() => 2);
+    const ability = { modifier: 1, proficiency: true };
+    expect(window.getAbilityTotalMod(ability, data)).toBe(3);
+  });
+});

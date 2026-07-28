@@ -241,6 +241,22 @@
         return ability.modifier || 0;
     }
 
+    function getAbilityTotalMod(ability, data) {
+        var base = getAbilityBaseMod(ability, data);
+        var sys = window.gameSystem || 'custom';
+        if (
+            (sys === 'dnd5e' || sys === 'custom') &&
+            ability.proficiency &&
+            typeof window.getProficiencyBonus === 'function'
+        ) {
+            return base + window.getProficiencyBonus();
+        }
+        if (sys === 'pf2e' && typeof window.computePf2eProficiencyBonus === 'function') {
+            return base + window.computePf2eProficiencyBonus(ability.proficiencyRank || 'untrained');
+        }
+        return base;
+    }
+
     function rollAbilityCheck(ability, data) {
         var sys = window.gameSystem || 'custom';
         var profBonus = 0;
@@ -322,7 +338,7 @@
             profHtml +
             (abbrev ? `<span class="ability-abbrev">${escapeHtml(abbrev)}</span>` : '') +
             `<span class="ability-name">${escapeHtml(ability.name || t('abilities.unnamed'))}</span>` +
-            `<span class="ability-modifier">${escapeHtml(formatModifier(getAbilityBaseMod(ability, data)))}</span>`;
+            `<span class="ability-modifier">${escapeHtml(formatModifier(getAbilityTotalMod(ability, data)))}</span>`;
 
         row.addEventListener('click', (e) => {
             if (modKeys.ctrl) {
@@ -693,6 +709,7 @@
 
     window.ABILITY_TEMPLATES = ABILITY_TEMPLATES;
     window.applyAbilityTemplate = applyAbilityTemplate;
+    window.getAbilityTotalMod = getAbilityTotalMod;
     window.refreshLinkedAbilitiesChainIcons = function (statModuleId) {
         window.modules.forEach((mod) => {
             if (mod.type !== 'abilities') return;
@@ -707,6 +724,16 @@
         window.modules.forEach(function (mod) {
             if (mod.type !== 'abilities' || !mod.content) return;
             if (mod.content.linkedStatModuleId !== changedId) return;
+            var moduleEl = document.querySelector('.module[data-id="' + mod.id + '"]');
+            if (!moduleEl) return;
+            var bodyEl = moduleEl.querySelector('.module-body');
+            if (bodyEl) buildAbilityBody(bodyEl, mod);
+        });
+    });
+
+    document.addEventListener('cv:level-changed', function () {
+        window.modules.forEach(function (mod) {
+            if (mod.type !== 'abilities' || !mod.content) return;
             var moduleEl = document.querySelector('.module[data-id="' + mod.id + '"]');
             if (!moduleEl) return;
             var bodyEl = moduleEl.querySelector('.module-body');

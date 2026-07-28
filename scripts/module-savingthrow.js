@@ -110,6 +110,22 @@
         return save.value || 0;
     }
 
+    function getSaveTotalMod(save, content) {
+        var base = getSaveBaseMod(save, content);
+        var sys = window.gameSystem || 'custom';
+        if (
+            (sys === 'dnd5e' || sys === 'custom') &&
+            save.proficiencyTier === 'Proficient' &&
+            typeof window.getProficiencyBonus === 'function'
+        ) {
+            return base + window.getProficiencyBonus();
+        }
+        if (sys === 'pf2e' && save.proficiencyTier && typeof window.computePf2eProficiencyBonus === 'function') {
+            return base + window.computePf2eProficiencyBonus(save.proficiencyTier.toLowerCase());
+        }
+        return base;
+    }
+
     function getTierForSave(save, tiers) {
         if (!save.proficiencyTier) return null;
         return tiers.find((tier) => tier.name === save.proficiencyTier) || null;
@@ -135,7 +151,7 @@
             html += `<span class="save-tier-badge" style="background:${escapeHtml(tier.color)}">${escapeHtml(tier.letter)}</span>`;
         }
         html += `<div class="save-name" title="${escapeHtml(save.name || t('save.unnamed'))}">${escapeHtml(save.name || t('save.unnamed'))}</div>`;
-        html += `<div class="save-modifier">${escapeHtml(formatModifier(getSaveBaseMod(save, content)))}</div>`;
+        html += `<div class="save-modifier">${escapeHtml(formatModifier(getSaveTotalMod(save, content)))}</div>`;
         block.innerHTML = html;
 
         block.addEventListener('click', (e) => {
@@ -885,6 +901,7 @@
     window.ensureSaveContent = ensureSaveContent;
     window.getTierForSave = getTierForSave;
     window.saveNotesCheckboxProxy = saveNotesCheckboxProxy;
+    window.getSaveTotalMod = getSaveTotalMod;
 
     function reRenderLinkedSaves(changedId) {
         window.modules.forEach(function (mod) {
@@ -901,6 +918,18 @@
 
     document.addEventListener('cv:stat-values-changed', function (e) {
         reRenderLinkedSaves(e.detail && e.detail.moduleId);
+    });
+
+    document.addEventListener('cv:level-changed', function () {
+        window.modules.forEach(function (mod) {
+            if (mod.type !== 'savingthrow' || !mod.content) return;
+            var moduleEl = document.querySelector('.module[data-id="' + mod.id + '"]');
+            if (!moduleEl) return;
+            var bodyEl = moduleEl.querySelector('.module-body');
+            if (bodyEl && window.MODULE_TYPES && window.MODULE_TYPES['savingthrow']) {
+                window.MODULE_TYPES['savingthrow'].renderBody(bodyEl, mod);
+            }
+        });
     });
 
     document.addEventListener('cv:stats-changed', function (e) {

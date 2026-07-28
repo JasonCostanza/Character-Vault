@@ -37,6 +37,9 @@
     // ── Module-data lookup helpers ──
 
     function computeAbilityMod(ability, mod) {
+        if (typeof window.getAbilityTotalMod === 'function') {
+            return window.getAbilityTotalMod(ability, mod);
+        }
         if (mod.content.linkedStatModuleId && ability.linkedStat) {
             var statMod = typeof window.getAbilityModifierFrom === 'function'
                 ? window.getAbilityModifierFrom(ability.linkedStat, mod.content.linkedStatModuleId) : 0;
@@ -54,6 +57,9 @@
     }
 
     function computeSaveMod(save, mod) {
+        if (typeof window.getSaveTotalMod === 'function') {
+            return window.getSaveTotalMod(save, mod.content);
+        }
         if (mod.content.linkedStatModuleId && save.linkedStatName) {
             var statMod = typeof window.getAbilityModifierFrom === 'function'
                 ? window.getAbilityModifierFrom(save.linkedStatName, mod.content.linkedStatModuleId) : 0;

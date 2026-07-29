@@ -226,7 +226,7 @@
         return template.map((t) => ({
             name: t.name,
             modifier: 0,
-            proficiency: false,
+            proficiency: 'none',
             proficiencyRank: 'untrained',
             linkedStat: t.linkedStat || null,
         }));
@@ -246,10 +246,10 @@
         var sys = window.gameSystem || 'custom';
         if (
             (sys === 'dnd5e' || sys === 'custom') &&
-            ability.proficiency &&
             typeof window.getProficiencyBonus === 'function'
         ) {
-            return base + window.getProficiencyBonus();
+            if (ability.proficiency === 'expert') return base + window.getProficiencyBonus() * 2;
+            if (ability.proficiency === 'proficient') return base + window.getProficiencyBonus();
         }
         if (sys === 'pf2e' && typeof window.computePf2eProficiencyBonus === 'function') {
             return base + window.computePf2eProficiencyBonus(ability.proficiencyRank || 'untrained');
@@ -262,10 +262,10 @@
         var profBonus = 0;
         if (
             (sys === 'dnd5e' || sys === 'custom') &&
-            ability.proficiency &&
             typeof window.getProficiencyBonus === 'function'
         ) {
-            profBonus = window.getProficiencyBonus();
+            if (ability.proficiency === 'expert') profBonus = window.getProficiencyBonus() * 2;
+            else if (ability.proficiency === 'proficient') profBonus = window.getProficiencyBonus();
         } else if (sys === 'pf2e' && typeof window.computePf2eProficiencyBonus === 'function') {
             profBonus = window.computePf2eProficiencyBonus(ability.proficiencyRank || 'untrained');
         }
@@ -310,7 +310,6 @@
 
     // ── Render Functions ──
     function renderAbilityRow(ability, index, data) {
-        const proficient = ability.proficiency;
         const abbrev = ability.linkedStat ? ability.linkedStat.substring(0, 3).toUpperCase() : ability.abbrev || '';
         const row = document.createElement('div');
         row.className = 'ability-row ability-rollable';
@@ -332,7 +331,11 @@
                 profHtml = '<span class="ability-rank-badge untrained"></span>';
             }
         } else {
-            profHtml = `<span class="ability-proficiency-dot${proficient ? ' active' : ''}"></span>`;
+            var isExpert = ability.proficiency === 'expert';
+            var isProf = ability.proficiency === 'proficient' || isExpert;
+            var dotClass = 'ability-proficiency-dot' + (isProf ? ' active' : '') + (isExpert ? ' expert' : '');
+            var dotTitle = isExpert ? t('abilities.expertise') : isProf ? t('abilities.proficiency') : t('abilities.notProficient');
+            profHtml = '<span class="' + dotClass + '" title="' + escapeHtml(dotTitle) + '"></span>';
         }
         row.innerHTML =
             profHtml +
@@ -466,11 +469,18 @@
                 row.appendChild(rankWrap);
             } else {
                 const profDot = document.createElement('span');
-                profDot.className = 'ability-proficiency-dot' + (ability.proficiency ? ' active' : '');
-                profDot.title = t('abilities.proficiency');
+                var isExp = ability.proficiency === 'expert';
+                var isPrf = ability.proficiency === 'proficient' || isExp;
+                profDot.className = 'ability-proficiency-dot' + (isPrf ? ' active' : '') + (isExp ? ' expert' : '');
+                profDot.title = isExp ? t('abilities.expertise') : isPrf ? t('abilities.proficiency') : t('abilities.notProficient');
                 profDot.addEventListener('click', function () {
-                    ability.proficiency = !ability.proficiency;
-                    profDot.classList.toggle('active', ability.proficiency);
+                    if (ability.proficiency === 'none' || !ability.proficiency) ability.proficiency = 'proficient';
+                    else if (ability.proficiency === 'proficient') ability.proficiency = 'expert';
+                    else ability.proficiency = 'none';
+                    var e = ability.proficiency === 'expert';
+                    var p = ability.proficiency === 'proficient' || e;
+                    profDot.className = 'ability-proficiency-dot' + (p ? ' active' : '') + (e ? ' expert' : '');
+                    profDot.title = e ? t('abilities.expertise') : p ? t('abilities.proficiency') : t('abilities.notProficient');
                     scheduleSave();
                     reRenderModuleBody();
                 });
@@ -575,7 +585,7 @@
             data.content.abilities.push({
                 name: '',
                 modifier: 0,
-                proficiency: false,
+                proficiency: 'none',
                 proficiencyRank: 'untrained',
                 linkedStat: null,
             });
@@ -675,8 +685,14 @@
         }
         var abilityGuardSys = window.gameSystem || 'custom';
         data.content.abilities.forEach(function (ability) {
+            if (typeof ability.proficiency === 'boolean') {
+                ability.proficiency = ability.proficiency ? 'proficient' : 'none';
+            }
+            if (ability.proficiency !== 'none' && ability.proficiency !== 'proficient' && ability.proficiency !== 'expert') {
+                ability.proficiency = 'none';
+            }
             if (ability.proficiencyRank === undefined) {
-                ability.proficiencyRank = abilityGuardSys === 'pf2e' && ability.proficiency ? 'trained' : 'untrained';
+                ability.proficiencyRank = abilityGuardSys === 'pf2e' && ability.proficiency === 'proficient' ? 'trained' : 'untrained';
             }
         });
 
@@ -719,7 +735,7 @@
                 },
                 {
                     onClick() {
-                        data.content.abilities.push({ name: '', modifier: 0, proficiency: false, linkedStat: null });
+                        data.content.abilities.push({ name: '', modifier: 0, proficiency: 'none', linkedStat: null });
                         const bodyEl = moduleEl.querySelector('.module-body');
                         buildAbilityBody(bodyEl, data);
                         snapModuleHeight(moduleEl, data);

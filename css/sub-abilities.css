@@ -83,6 +83,14 @@
     border-color: var(--cv-accent);
 }
 
+.ability-proficiency-dot.expert {
+    box-shadow: 0 0 0 1.5px var(--cv-bg-raised), 0 0 0 3px var(--cv-accent);
+}
+
+.ability-manage-row .ability-proficiency-dot.expert {
+    box-shadow: 0 0 0 1.5px var(--cv-bg), 0 0 0 3px var(--cv-accent);
+}
+
 .ability-rank-badge {
     width: 12px;
     height: 12px;

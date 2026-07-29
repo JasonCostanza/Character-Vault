@@ -51,10 +51,10 @@ describe('applyAbilityTemplate', () => {
     expect(window.applyAbilityTemplate('unknown')).toEqual([]);
   });
 
-  it('each ability defaults to proficiency: false and proficiencyRank: untrained', () => {
+  it('each ability defaults to proficiency: none and proficiencyRank: untrained', () => {
     ['dnd5e', 'pf2e', 'coc', 'vtm', 'cpred', 'sr6'].forEach((key) => {
       window.applyAbilityTemplate(key).forEach((a) => {
-        expect(a.proficiency).toBe(false);
+        expect(a.proficiency).toBe('none');
         expect(a.proficiencyRank).toBe('untrained');
       });
     });
@@ -80,15 +80,29 @@ describe('getAbilityTotalMod', () => {
 
   it('dnd5e: excludes proficiency bonus when not proficient', () => {
     globalThis.gameSystem = 'dnd5e';
-    const ability = { modifier: 3, proficiency: false };
+    const ability = { modifier: 3, proficiency: 'none' };
     expect(window.getAbilityTotalMod(ability, data)).toBe(3);
   });
 
   it('dnd5e: adds proficiency bonus when proficient', () => {
     globalThis.gameSystem = 'dnd5e';
     globalThis.getProficiencyBonus = vi.fn(() => 2);
-    const ability = { modifier: 3, proficiency: true };
+    const ability = { modifier: 3, proficiency: 'proficient' };
     expect(window.getAbilityTotalMod(ability, data)).toBe(5);
+  });
+
+  it('dnd5e: doubles proficiency bonus when expert', () => {
+    globalThis.gameSystem = 'dnd5e';
+    globalThis.getProficiencyBonus = vi.fn(() => 2);
+    const ability = { modifier: 3, proficiency: 'expert' };
+    expect(window.getAbilityTotalMod(ability, data)).toBe(7);
+  });
+
+  it('custom: doubles proficiency bonus when expert', () => {
+    globalThis.gameSystem = 'custom';
+    globalThis.getProficiencyBonus = vi.fn(() => 3);
+    const ability = { modifier: 1, proficiency: 'expert' };
+    expect(window.getAbilityTotalMod(ability, data)).toBe(7);
   });
 
   it('pf2e: adds rank-based bonus even when untrained (includes level via computePf2eProficiencyBonus)', () => {
@@ -104,7 +118,7 @@ describe('getAbilityTotalMod', () => {
   it('custom: behaves like dnd5e', () => {
     globalThis.gameSystem = 'custom';
     globalThis.getProficiencyBonus = vi.fn(() => 2);
-    const ability = { modifier: 1, proficiency: true };
+    const ability = { modifier: 1, proficiency: 'proficient' };
     expect(window.getAbilityTotalMod(ability, data)).toBe(3);
   });
 });

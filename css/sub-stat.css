@@ -73,6 +73,10 @@
     background-color: var(--cv-accent);
 }
 
+.stat-proficiency-dot.expert {
+    box-shadow: 0 0 0 1.5px var(--cv-bg-sunken), 0 0 0 3px var(--cv-accent);
+}
+
 .stat-rank-badge {
     position: absolute;
     bottom: 3px;
@@ -248,6 +252,10 @@
 .stat-edit-prof-dot.active {
     background-color: var(--cv-accent);
     border-color: var(--cv-accent);
+}
+
+.stat-edit-prof-dot.expert {
+    box-shadow: 0 0 0 1.5px var(--cv-bg), 0 0 0 3px var(--cv-accent);
 }
 
 /* SortableJS drag ghost for stats */

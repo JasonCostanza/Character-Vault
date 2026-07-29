@@ -24,7 +24,10 @@
 
     const TIER_PRESETS = {
         // One tier: proficient saves show badge; non-proficiency is the empty "None" option (not a tier row).
-        dnd5e: [{ name: 'Proficient', letter: 'P', color: '#22aa44' }],
+        dnd5e: [
+            { name: 'Proficient', letter: 'P', color: '#22aa44' },
+            { name: 'Expert', letter: 'E', color: '#3388dd' },
+        ],
         pf2e: [
             { name: 'Untrained', letter: 'U', color: '#888888' },
             { name: 'Trained', letter: 'T', color: '#22aa44' },
@@ -115,10 +118,10 @@
         var sys = window.gameSystem || 'custom';
         if (
             (sys === 'dnd5e' || sys === 'custom') &&
-            save.proficiencyTier === 'Proficient' &&
             typeof window.getProficiencyBonus === 'function'
         ) {
-            return base + window.getProficiencyBonus();
+            if (save.proficiencyTier === 'Expert') return base + window.getProficiencyBonus() * 2;
+            if (save.proficiencyTier === 'Proficient') return base + window.getProficiencyBonus();
         }
         if (sys === 'pf2e' && save.proficiencyTier && typeof window.computePf2eProficiencyBonus === 'function') {
             return base + window.computePf2eProficiencyBonus(save.proficiencyTier.toLowerCase());
@@ -171,10 +174,10 @@
         var profBonus = 0;
         if (
             (sys === 'dnd5e' || sys === 'custom') &&
-            save.proficiencyTier === 'Proficient' &&
             typeof window.getProficiencyBonus === 'function'
         ) {
-            profBonus = window.getProficiencyBonus();
+            if (save.proficiencyTier === 'Expert') profBonus = window.getProficiencyBonus() * 2;
+            else if (save.proficiencyTier === 'Proficient') profBonus = window.getProficiencyBonus();
         } else if (sys === 'pf2e' && save.proficiencyTier && typeof window.computePf2eProficiencyBonus === 'function') {
             profBonus = window.computePf2eProficiencyBonus(save.proficiencyTier.toLowerCase());
         }

@@ -86,8 +86,15 @@ describe('applySavingThrowTemplate', () => {
 });
 
 describe('applyTierPreset', () => {
-  it('returns 1 tier for dnd5e', () => {
-    expect(window.applyTierPreset('dnd5e')).toHaveLength(1);
+  it('returns 2 tiers for dnd5e', () => {
+    expect(window.applyTierPreset('dnd5e')).toHaveLength(2);
+  });
+
+  it('dnd5e preset includes Expert tier', () => {
+    const tiers = window.applyTierPreset('dnd5e');
+    const expert = tiers.find((t) => t.name === 'Expert');
+    expect(expert).toBeDefined();
+    expect(expert.letter).toBe('E');
   });
 
   it('returns 5 tiers for pf2e', () => {
@@ -224,6 +231,13 @@ describe('getSaveTotalMod', () => {
     globalThis.getProficiencyBonus = vi.fn(() => 2);
     const save = { value: 3, proficiencyTier: 'Proficient' };
     expect(window.getSaveTotalMod(save, content)).toBe(5);
+  });
+
+  it('dnd5e: doubles proficiency bonus when proficiencyTier is "Expert"', () => {
+    globalThis.gameSystem = 'dnd5e';
+    globalThis.getProficiencyBonus = vi.fn(() => 2);
+    const save = { value: 3, proficiencyTier: 'Expert' };
+    expect(window.getSaveTotalMod(save, content)).toBe(7);
   });
 
   it('pf2e: adds rank-based bonus for any non-null tier', () => {

@@ -83,7 +83,7 @@
             name: t.name,
             value: 0,
             modifier: 0,
-            proficient: false,
+            proficient: 'none',
             proficiencyRank: 'untrained',
             rollable: t.rollable !== undefined ? t.rollable : true,
             ...(t.isProficiencyStat ? { isProficiencyStat: true } : {}),
@@ -113,8 +113,9 @@
                 '">' +
                 rank.charAt(0).toUpperCase() +
                 '</span>';
-        } else if (stat.proficient && sys !== 'daggerheart') {
-            profIndicatorHtml = '<span class="stat-proficiency-dot"></span>';
+        } else if (stat.proficient && stat.proficient !== 'none' && sys !== 'daggerheart') {
+            var dotExpert = stat.proficient === 'expert';
+            profIndicatorHtml = '<span class="stat-proficiency-dot' + (dotExpert ? ' expert' : '') + '" title="' + escapeHtml(dotExpert ? t('stat.expertise') : t('stat.proficient')) + '"></span>';
         }
         if (isModifierOnly) {
             block.innerHTML =
@@ -166,10 +167,10 @@
         var profBonus = 0;
         if (
             (sys === 'dnd5e' || sys === 'custom') &&
-            stat.proficient &&
             typeof window.getProficiencyBonus === 'function'
         ) {
-            profBonus = window.getProficiencyBonus();
+            if (stat.proficient === 'expert') profBonus = window.getProficiencyBonus() * 2;
+            else if (stat.proficient === 'proficient') profBonus = window.getProficiencyBonus();
         } else if (sys === 'pf2e' && typeof window.computePf2eProficiencyBonus === 'function') {
             profBonus = window.computePf2eProficiencyBonus(stat.proficiencyRank);
         }
@@ -264,8 +265,14 @@
             }
             var guardSys = window.gameSystem || 'custom';
             data.content.stats.forEach(function (stat) {
+                if (typeof stat.proficient === 'boolean') {
+                    stat.proficient = stat.proficient ? 'proficient' : 'none';
+                }
+                if (stat.proficient !== 'none' && stat.proficient !== 'proficient' && stat.proficient !== 'expert') {
+                    stat.proficient = 'none';
+                }
                 if (stat.proficiencyRank === undefined) {
-                    stat.proficiencyRank = guardSys === 'pf2e' && stat.proficient ? 'trained' : 'untrained';
+                    stat.proficiencyRank = guardSys === 'pf2e' && stat.proficient === 'proficient' ? 'trained' : 'untrained';
                 }
             });
 
@@ -288,7 +295,7 @@
                             name: '',
                             value: 0,
                             modifier: 0,
-                            proficient: false,
+                            proficient: 'none',
                             rollable: true,
                         });
                         const bodyEl = moduleEl.querySelector('.module-body');
@@ -464,11 +471,18 @@
                     row.appendChild(buildRankPillBar(stat));
                 } else if (sys !== 'daggerheart') {
                     var profDot = document.createElement('button');
-                    profDot.className = 'stat-edit-prof-dot' + (stat.proficient ? ' active' : '');
-                    profDot.title = t('stat.proficient');
+                    var sExp = stat.proficient === 'expert';
+                    var sPrf = stat.proficient === 'proficient' || sExp;
+                    profDot.className = 'stat-edit-prof-dot' + (sPrf ? ' active' : '') + (sExp ? ' expert' : '');
+                    profDot.title = sExp ? t('stat.expertise') : sPrf ? t('stat.proficient') : t('stat.notProficient');
                     profDot.addEventListener('click', function () {
-                        stat.proficient = !stat.proficient;
-                        profDot.classList.toggle('active', stat.proficient);
+                        if (stat.proficient === 'none' || !stat.proficient) stat.proficient = 'proficient';
+                        else if (stat.proficient === 'proficient') stat.proficient = 'expert';
+                        else stat.proficient = 'none';
+                        var e = stat.proficient === 'expert';
+                        var p = stat.proficient === 'proficient' || e;
+                        profDot.className = 'stat-edit-prof-dot' + (p ? ' active' : '') + (e ? ' expert' : '');
+                        profDot.title = e ? t('stat.expertise') : p ? t('stat.proficient') : t('stat.notProficient');
                         scheduleSave();
                         reRenderModuleBody();
                     });
@@ -522,7 +536,7 @@
         addStatBtn.className = 'btn-secondary sm';
         addStatBtn.innerHTML = cvIcon('plus', 14) + ' ' + escapeHtml(t('stat.addStat'));
         addStatBtn.addEventListener('click', function () {
-            data.content.stats.push({ name: '', value: 0, modifier: 0, proficient: false, proficiencyRank: 'untrained', rollable: true });
+            data.content.stats.push({ name: '', value: 0, modifier: 0, proficient: 'none', proficiencyRank: 'untrained', rollable: true });
             scheduleSave();
             refreshAfterListChange();
             document.dispatchEvent(new CustomEvent('cv:stats-changed', { detail: { moduleId: data.id } }));
@@ -608,7 +622,7 @@
                                 name: s.name || t('stat.unnamed'),
                                 value: s.value || 0,
                                 modifier: 0,
-                                proficient: false,
+                                proficient: 'none',
                                 rollable: true,
                             };
                         });

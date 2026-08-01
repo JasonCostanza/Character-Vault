@@ -111,6 +111,30 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'tutorial.next': 'Próximo',
             'tutorial.close': 'Fechar',
 
+            // Tutorial: stat
+            'tutorial.stat.1.title': 'O que é um módulo de Estatística?',
+            'tutorial.stat.1.body': 'Um módulo de Estatística armazena os atributos principais do seu personagem — como Força, Destreza ou Inteligência. Cada estatística exibe um valor e um modificador. Você pode começar com um modelo de sistema de jogo (como D&D 5e ou Pathfinder) ou criar uma lista totalmente personalizada.',
+            'tutorial.stat.2.title': 'Rolando verificações de atributo',
+            'tutorial.stat.2.body': 'Clique em qualquer bloco de estatística para rolar essa verificação na bandeja de dados do TaleSpire. O modificador é incluído automaticamente — se o seu modificador de Força for +3, será enviado 1d20+3. Estatísticas marcadas como não roláveis não ativam uma rolagem ao clicar.',
+            'tutorial.stat.3.title': 'Editando estatísticas',
+            'tutorial.stat.3.body': 'Segure Ctrl e clique em qualquer bloco de estatística para alterar rapidamente seu valor ou modificador sem abrir nenhum menu. Para adicionar, remover, renomear ou reordenar estatísticas, abra {icon:more-vertical} Configurações do módulo. Você também pode mudar o layout para exibir apenas os modificadores.',
+
+            // Tutorial: abilities
+            'tutorial.abilities.1.title': 'O que é um módulo de Habilidades?',
+            'tutorial.abilities.1.body': 'Um módulo de Habilidades rastreia as verificações de perícia do seu personagem — como Acrobacia, Furtividade ou Persuasão. Cada habilidade exibe um modificador e um indicador de proficiência opcional. Clique em qualquer habilidade para rolar 1d20 mais o modificador diretamente no TaleSpire.',
+            'tutorial.abilities.2.title': 'Vinculando habilidades a estatísticas',
+            'tutorial.abilities.2.body': 'Você pode vincular este módulo a um módulo de Estatística para que o modificador de cada habilidade seja calculado automaticamente a partir do atributo correspondente. Em {icon:more-vertical} Configurações do módulo, escolha um módulo de Estatística em Módulo de estatística vinculado e atribua a cada habilidade a estatística que a governa.',
+            'tutorial.abilities.3.title': 'Gerenciando habilidades',
+            'tutorial.abilities.3.body': 'Abra {icon:more-vertical} Configurações do módulo para adicionar, renomear, reordenar ou remover habilidades e definir seu nível de proficiência. Para ajustar diretamente o modificador de uma habilidade, segure Ctrl e clique na linha dessa habilidade. Esse modificador é somado ao valor da estatística vinculada.',
+
+            // Tutorial: savingthrow
+            'tutorial.savingthrow.1.title': 'O que é um módulo de Testes de Resistência?',
+            'tutorial.savingthrow.1.body': 'Um módulo de Testes de Resistência rastreia as defesas reativas do seu personagem contra efeitos prejudiciais — como um teste de Força ou Sabedoria. Cada entrada exibe um nome e um modificador. Clique em qualquer teste para rolar 1d20 mais o modificador no TaleSpire.',
+            'tutorial.savingthrow.2.title': 'Graus de proficiência',
+            'tutorial.savingthrow.2.body': 'Você pode ativar os graus de proficiência para exibir em cada teste um selo colorido indicando seu nível de treinamento — por exemplo, D para Destreinado, T para Treinado ou E para Especialista. Use um predefinido do seu sistema de jogo ou defina seus próprios graus em {icon:more-vertical} Configurações do módulo.',
+            'tutorial.savingthrow.3.title': 'Gerenciando testes de resistência',
+            'tutorial.savingthrow.3.body': 'Abra {icon:more-vertical} Configurações do módulo para adicionar, renomear, reordenar ou excluir testes e atribuir graus de proficiência. Segure Ctrl e clique no modificador de qualquer teste para alterá-lo rapidamente. Use Editar nota no menu de opções para adicionar uma nota que se aplica a todos os testes de resistência.',
+
             'type.abilities': 'Habilidades',
             'type.actions': 'Rastreador de Ações',
             'type.activity': 'Registro de Atividade',

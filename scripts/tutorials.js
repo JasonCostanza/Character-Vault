@@ -2,6 +2,27 @@
 (function () {
     const TUTORIALS = {};
 
+    // Tutorial: stat
+    TUTORIALS.stat = [
+        { titleKey: 'tutorial.stat.1.title', bodyKey: 'tutorial.stat.1.body' },
+        { titleKey: 'tutorial.stat.2.title', bodyKey: 'tutorial.stat.2.body' },
+        { titleKey: 'tutorial.stat.3.title', bodyKey: 'tutorial.stat.3.body' },
+    ];
+
+    // Tutorial: abilities
+    TUTORIALS.abilities = [
+        { titleKey: 'tutorial.abilities.1.title', bodyKey: 'tutorial.abilities.1.body' },
+        { titleKey: 'tutorial.abilities.2.title', bodyKey: 'tutorial.abilities.2.body' },
+        { titleKey: 'tutorial.abilities.3.title', bodyKey: 'tutorial.abilities.3.body' },
+    ];
+
+    // Tutorial: savingthrow
+    TUTORIALS.savingthrow = [
+        { titleKey: 'tutorial.savingthrow.1.title', bodyKey: 'tutorial.savingthrow.1.body' },
+        { titleKey: 'tutorial.savingthrow.2.title', bodyKey: 'tutorial.savingthrow.2.body' },
+        { titleKey: 'tutorial.savingthrow.3.title', bodyKey: 'tutorial.savingthrow.3.body' },
+    ];
+
     function renderTutorialText(key) {
         return t(key).replace(/\{icon:(\w[\w-]*)\}/g, (_, name) => cvIcon(name, 14));
     }

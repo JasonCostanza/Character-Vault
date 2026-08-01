@@ -118,6 +118,30 @@ window.CV_TRANSLATIONS.en = {
             'tutorial.next': 'Next',
             'tutorial.close': 'Close',
 
+            // Tutorial: stat
+            'tutorial.stat.1.title': 'What Is a Stat Module?',
+            'tutorial.stat.1.body': 'A Stat module holds your character\'s core ability scores — things like Strength, Dexterity, or Intelligence. Each stat shows a value and a modifier. You can start from a game system template (like D&D 5e or Pathfinder) or build a completely custom list.',
+            'tutorial.stat.2.title': 'Rolling Stat Checks',
+            'tutorial.stat.2.body': 'Click any stat block to roll that check in TaleSpire\'s dice tray. The roll automatically includes the stat\'s modifier — if your Strength modifier is +3, clicking it sends 1d20+3. Stats marked as non-rollable won\'t trigger a roll when clicked.',
+            'tutorial.stat.3.title': 'Editing Stats',
+            'tutorial.stat.3.body': 'Hold Ctrl and click any stat block to quickly change its value or modifier without opening a menu. To add, remove, rename, or reorder stats, open {icon:more-vertical} Module Settings. You can also change the display layout to show just modifiers, or swap which number appears largest.',
+
+            // Tutorial: abilities
+            'tutorial.abilities.1.title': 'What Is an Abilities Module?',
+            'tutorial.abilities.1.body': 'An Abilities module tracks your character\'s skill checks — things like Acrobatics, Stealth, or Persuasion. Each skill shows a modifier and an optional proficiency indicator. Click any skill to roll 1d20 plus its modifier directly in TaleSpire.',
+            'tutorial.abilities.2.title': 'Linking Skills to Stats',
+            'tutorial.abilities.2.body': 'You can link this module to a Stat module so that each skill\'s modifier is calculated from the matching ability score automatically. In {icon:more-vertical} Module Settings, choose a Stat module under Linked Stat Module, then assign each skill to the stat that governs it.',
+            'tutorial.abilities.3.title': 'Managing Skills',
+            'tutorial.abilities.3.body': 'Open {icon:more-vertical} Module Settings to add, rename, reorder, or remove skills and to set their proficiency level. To adjust a skill\'s modifier directly, hold Ctrl and click the skill row. That modifier is a bonus stacked on top of any linked stat\'s value.',
+
+            // Tutorial: savingthrow
+            'tutorial.savingthrow.1.title': 'What Is a Saving Throws Module?',
+            'tutorial.savingthrow.1.body': 'A Saving Throws module tracks your character\'s defensive checks against harmful effects — things like a Strength save or a Wisdom save. Each entry shows a name and a modifier. Click any save to roll 1d20 plus its modifier in TaleSpire.',
+            'tutorial.savingthrow.2.title': 'Proficiency Tiers',
+            'tutorial.savingthrow.2.body': 'You can enable proficiency tiers to show a colored badge on each save indicating your training level — for example U for Untrained, T for Trained, or E for Expert. Use a preset from your game system or define your own tiers in {icon:more-vertical} Module Settings.',
+            'tutorial.savingthrow.3.title': 'Managing Saves',
+            'tutorial.savingthrow.3.body': 'Open {icon:more-vertical} Module Settings to add, rename, reorder, or delete saves and to assign proficiency tiers. Hold Ctrl and click any save\'s modifier to quickly change it without opening the settings. Use Add Note from the overflow menu to add a note that applies to all saves.',
+
             // Module type labels
             'type.abilities': 'Abilities',
             'type.actions': 'Action Tracker',

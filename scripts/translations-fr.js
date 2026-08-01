@@ -111,6 +111,30 @@ window.CV_TRANSLATIONS['fr'] = {
             'tutorial.next': 'Suivant',
             'tutorial.close': 'Fermer',
 
+            // Tutorial: stat
+            'tutorial.stat.1.title': 'À quoi sert un module Statistique ?',
+            'tutorial.stat.1.body': 'Un module Statistique contient les valeurs de caractéristiques principales de votre personnage — comme la Force, la Dextérité ou l\'Intelligence. Chaque statistique affiche une valeur et un modificateur. Vous pouvez démarrer avec un modèle de système de jeu (comme D&D 5e ou Pathfinder) ou créer une liste entièrement personnalisée.',
+            'tutorial.stat.2.title': 'Lancer des jets de caractéristique',
+            'tutorial.stat.2.body': 'Cliquez sur n\'importe quel bloc de statistique pour lancer ce jet dans le plateau de dés de TaleSpire. Le modificateur est inclus automatiquement — si votre modificateur de Force est +3, le jet envoyé est 1d20+3. Les statistiques marquées comme non lançables ne déclenchent pas de jet au clic.',
+            'tutorial.stat.3.title': 'Modifier des statistiques',
+            'tutorial.stat.3.body': 'Maintenez Ctrl et cliquez sur un bloc de statistique pour modifier rapidement sa valeur ou son modificateur sans ouvrir de menu. Pour ajouter, supprimer, renommer ou réordonner des statistiques, ouvrez {icon:more-vertical} Paramètres du module. Vous pouvez aussi changer la disposition pour n\'afficher que les modificateurs.',
+
+            // Tutorial: abilities
+            'tutorial.abilities.1.title': 'À quoi sert un module Compétences ?',
+            'tutorial.abilities.1.body': 'Un module Compétences suit les jets de compétence de votre personnage — comme l\'Acrobatie, la Discrétion ou la Persuasion. Chaque compétence affiche un modificateur et un indicateur de maîtrise facultatif. Cliquez sur une compétence pour lancer 1d20 plus son modificateur directement dans TaleSpire.',
+            'tutorial.abilities.2.title': 'Lier les compétences aux statistiques',
+            'tutorial.abilities.2.body': 'Vous pouvez lier ce module à un module Statistique pour que le modificateur de chaque compétence soit calculé automatiquement à partir de la caractéristique correspondante. Dans {icon:more-vertical} Paramètres du module, choisissez un module Statistique sous Module de statistique lié, puis associez chaque compétence à la caractéristique qui la gouverne.',
+            'tutorial.abilities.3.title': 'Gérer les compétences',
+            'tutorial.abilities.3.body': 'Ouvrez {icon:more-vertical} Paramètres du module pour ajouter, renommer, réordonner ou supprimer des compétences et définir leur niveau de maîtrise. Pour ajuster directement le modificateur d\'une compétence, maintenez Ctrl et cliquez sur la ligne de cette compétence. Ce modificateur s\'ajoute à la valeur de la statistique liée.',
+
+            // Tutorial: savingthrow
+            'tutorial.savingthrow.1.title': 'À quoi sert un module Jets de Sauvegarde ?',
+            'tutorial.savingthrow.1.body': 'Un module Jets de Sauvegarde suit les défenses réactives de votre personnage contre les effets néfastes — comme un jet de Vigueur ou de Sagesse. Chaque entrée affiche un nom et un modificateur. Cliquez sur un jet pour lancer 1d20 plus son modificateur dans TaleSpire.',
+            'tutorial.savingthrow.2.title': 'Niveaux de maîtrise',
+            'tutorial.savingthrow.2.body': 'Vous pouvez activer les niveaux de maîtrise pour afficher sur chaque jet un badge coloré indiquant votre degré d\'entraînement — par exemple I pour Inexpérimenté, E pour Entraîné ou X pour Expert. Utilisez un préréglage de votre système de jeu ou définissez vos propres niveaux dans {icon:more-vertical} Paramètres du module.',
+            'tutorial.savingthrow.3.title': 'Gérer les jets de sauvegarde',
+            'tutorial.savingthrow.3.body': 'Ouvrez {icon:more-vertical} Paramètres du module pour ajouter, renommer, réordonner ou supprimer des jets et leur assigner des niveaux de maîtrise. Maintenez Ctrl et cliquez sur le modificateur d\'un jet pour le modifier rapidement. Utilisez Modifier la note dans le menu déroulant pour ajouter une note qui s\'applique à tous les jets de sauvegarde.',
+
             'type.abilities': 'Compétences',
             'type.actions': 'Suivi des Actions',
             'type.activity': 'Journal d\'Activité',

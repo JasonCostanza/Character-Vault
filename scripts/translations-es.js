@@ -111,6 +111,30 @@ window.CV_TRANSLATIONS['es'] = {
             'tutorial.next': 'Siguiente',
             'tutorial.close': 'Cerrar',
 
+            // Tutorial: stat
+            'tutorial.stat.1.title': '¿Qué es un módulo de Estadística?',
+            'tutorial.stat.1.body': 'Un módulo de Estadística almacena los atributos principales de tu personaje — como Fuerza, Destreza o Inteligencia. Cada estadística muestra un valor y un modificador. Puedes empezar con una plantilla de sistema de juego (como D&D 5e o Pathfinder) o crear una lista totalmente personalizada.',
+            'tutorial.stat.2.title': 'Tiradas de comprobación',
+            'tutorial.stat.2.body': 'Haz clic en cualquier bloque de estadística para realizar esa tirada en la bandeja de dados de TaleSpire. El modificador se incluye automáticamente — si tu modificador de Fuerza es +3, se enviará 1d20+3. Las estadísticas marcadas como no lanzables no activarán una tirada al hacer clic.',
+            'tutorial.stat.3.title': 'Editar estadísticas',
+            'tutorial.stat.3.body': 'Mantén Ctrl y haz clic en cualquier bloque de estadística para cambiar rápidamente su valor o modificador sin abrir ningún menú. Para añadir, eliminar, renombrar o reordenar estadísticas, abre {icon:more-vertical} Ajustes del módulo. También puedes cambiar la disposición visual para mostrar solo los modificadores.',
+
+            // Tutorial: abilities
+            'tutorial.abilities.1.title': '¿Qué es un módulo de Habilidades?',
+            'tutorial.abilities.1.body': 'Un módulo de Habilidades hace seguimiento de las comprobaciones de habilidad de tu personaje — como Acrobacias, Sigilo o Persuasión. Cada habilidad muestra un modificador y un indicador de competencia opcional. Haz clic en cualquier habilidad para tirar 1d20 más su modificador directamente en TaleSpire.',
+            'tutorial.abilities.2.title': 'Vincular habilidades a estadísticas',
+            'tutorial.abilities.2.body': 'Puedes vincular este módulo a uno de Estadística para que el modificador de cada habilidad se calcule automáticamente a partir del atributo correspondiente. En {icon:more-vertical} Ajustes del módulo, elige un módulo de Estadística en Módulo de estadística vinculado y asigna a cada habilidad la estadística que la rige.',
+            'tutorial.abilities.3.title': 'Gestionar habilidades',
+            'tutorial.abilities.3.body': 'Abre {icon:more-vertical} Ajustes del módulo para añadir, renombrar, reordenar o eliminar habilidades y establecer su nivel de competencia. Para ajustar directamente el modificador de una habilidad, mantén Ctrl y haz clic en la fila de esa habilidad. Ese modificador se suma al valor de la estadística vinculada.',
+
+            // Tutorial: savingthrow
+            'tutorial.savingthrow.1.title': '¿Qué es un módulo de Tiradas de Salvación?',
+            'tutorial.savingthrow.1.body': 'Un módulo de Tiradas de Salvación hace seguimiento de las defensas reactivas de tu personaje contra efectos dañinos — como una salvación de Fuerza o de Sabiduría. Cada entrada muestra un nombre y un modificador. Haz clic en cualquier tirada para lanzar 1d20 más su modificador en TaleSpire.',
+            'tutorial.savingthrow.2.title': 'Rangos de competencia',
+            'tutorial.savingthrow.2.body': 'Puedes activar los rangos de competencia para mostrar en cada tirada un indicador de color que refleje tu nivel de entrenamiento — por ejemplo, I para Inexperto, E para Entrenado o X para Experto. Usa un preajuste de tu sistema de juego o define tus propios rangos en {icon:more-vertical} Ajustes del módulo.',
+            'tutorial.savingthrow.3.title': 'Gestionar tiradas de salvación',
+            'tutorial.savingthrow.3.body': 'Abre {icon:more-vertical} Ajustes del módulo para añadir, renombrar, reordenar o eliminar tiradas y asignar rangos de competencia. Mantén Ctrl y haz clic en el modificador de cualquier tirada para cambiarlo rápidamente. Usa Editar nota en el menú de opciones para añadir una nota que se aplique a todas las tiradas de salvación.',
+
             'type.abilities': 'Habilidades',
             'type.actions': 'Rastreador de Acciones',
             'type.activity': 'Registro de Actividad',

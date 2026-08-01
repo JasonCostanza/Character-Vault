@@ -111,6 +111,30 @@ window.CV_TRANSLATIONS['de'] = {
             'tutorial.next': 'Weiter',
             'tutorial.close': 'Schließen',
 
+            // Tutorial: stat
+            'tutorial.stat.1.title': 'Was ist ein Wert-Modul?',
+            'tutorial.stat.1.body': 'Ein Wert-Modul enthält die Kernattribute deines Charakters — zum Beispiel Stärke, Geschicklichkeit oder Intelligenz. Jeder Wert zeigt einen Grundwert und einen Modifikator. Du kannst mit einer Vorlage für ein Spielsystem (z. B. D&D 5e oder Pathfinder) beginnen oder eine vollständig eigene Liste erstellen.',
+            'tutorial.stat.2.title': 'Attributswürfe',
+            'tutorial.stat.2.body': 'Klicke auf einen beliebigen Wert-Block, um diesen Wurf im TaleSpire-Würfelbereich auszuführen. Der Modifikator wird automatisch hinzugerechnet — hat dein Stärkemodifikator +3, wird 1d20+3 geworfen. Werte, die als nicht würfelbar markiert sind, lösen beim Klick keinen Wurf aus.',
+            'tutorial.stat.3.title': 'Werte bearbeiten',
+            'tutorial.stat.3.body': 'Halte Strg und klicke auf einen Wert-Block, um Wert oder Modifikator schnell zu ändern, ohne ein Menü zu öffnen. Um Werte hinzuzufügen, zu entfernen, umzubenennen oder neu anzuordnen, öffne {icon:more-vertical} Modul-Einstellungen. Du kannst auch das Anzeigelayout ändern, um nur Modifikatoren anzuzeigen.',
+
+            // Tutorial: abilities
+            'tutorial.abilities.1.title': 'Was ist ein Fähigkeiten-Modul?',
+            'tutorial.abilities.1.body': 'Ein Fähigkeiten-Modul verfolgt die Fertigkeitswürfe deines Charakters — zum Beispiel Akrobatik, Heimlichkeit oder Überzeugung. Jede Fertigkeit zeigt einen Modifikator und eine optionale Profizienzkennzeichnung. Klicke auf eine Fertigkeit, um 1d20 plus ihren Modifikator direkt in TaleSpire zu würfeln.',
+            'tutorial.abilities.2.title': 'Fertigkeiten mit Werten verknüpfen',
+            'tutorial.abilities.2.body': 'Du kannst dieses Modul mit einem Wert-Modul verknüpfen, damit der Modifikator jeder Fertigkeit automatisch aus dem entsprechenden Attributswert berechnet wird. Wähle in {icon:more-vertical} Modul-Einstellungen unter „Verknüpftes Wert-Modul" ein Wert-Modul aus und weise jeder Fertigkeit das zugehörige Attribut zu.',
+            'tutorial.abilities.3.title': 'Fertigkeiten verwalten',
+            'tutorial.abilities.3.body': 'Öffne {icon:more-vertical} Modul-Einstellungen, um Fertigkeiten hinzuzufügen, umzubenennen, neu anzuordnen, zu entfernen und ihren Profizienzgrad festzulegen. Um den Modifikator einer Fertigkeit direkt anzupassen, halte Strg und klicke auf die Fertigkeit. Dieser Modifikator wird zusätzlich zum Wert des verknüpften Attributs angewendet.',
+
+            // Tutorial: savingthrow
+            'tutorial.savingthrow.1.title': 'Was ist ein Rettungswurf-Modul?',
+            'tutorial.savingthrow.1.body': 'Ein Rettungswurf-Modul verfolgt die Abwehrwürfe deines Charakters gegen schädliche Effekte — zum Beispiel Stärke- oder Weisheitswürfe. Jeder Eintrag zeigt einen Namen und einen Modifikator. Klicke auf einen Rettungswurf, um 1d20 plus den Modifikator in TaleSpire zu würfeln.',
+            'tutorial.savingthrow.2.title': 'Profizienz-Stufen',
+            'tutorial.savingthrow.2.body': 'Du kannst Profizienz-Stufen aktivieren, um für jeden Rettungswurf ein farbiges Abzeichen anzuzeigen, das dein Ausbildungsniveau angibt — zum Beispiel U für Ungeübt, T für Geübt oder E für Experte. Verwende eine Voreinstellung deines Spielsystems oder definiere eigene Stufen in {icon:more-vertical} Modul-Einstellungen.',
+            'tutorial.savingthrow.3.title': 'Rettungswürfe verwalten',
+            'tutorial.savingthrow.3.body': 'Öffne {icon:more-vertical} Modul-Einstellungen, um Rettungswürfe hinzuzufügen, umzubenennen, neu anzuordnen, zu löschen und Profizienz-Stufen zuzuweisen. Halte Strg und klicke auf den Modifikator eines Rettungswurfs, um ihn schnell zu ändern. Nutze Notiz bearbeiten im Überlaufmenü, um eine Notiz hinzuzufügen, die für alle Rettungswürfe gilt.',
+
             'type.abilities': 'Fähigkeiten',
             'type.actions': 'Aktionsverfolgung',
             'type.activity': 'Aktivitätsprotokoll',

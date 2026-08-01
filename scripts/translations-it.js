@@ -116,6 +116,30 @@ window.CV_TRANSLATIONS['it'] = {
             'tutorial.next': 'Successivo',
             'tutorial.close': 'Chiudi',
 
+            // Tutorial: stat
+            'tutorial.stat.1.title': 'Che cos\'è un modulo Statistica?',
+            'tutorial.stat.1.body': 'Un modulo Statistica contiene le caratteristiche principali del tuo personaggio — come Forza, Destrezza o Intelligenza. Ogni statistica mostra un valore e un modificatore. Puoi iniziare da un modello di sistema di gioco (come D&D 5e o Pathfinder) oppure creare un elenco completamente personalizzato.',
+            'tutorial.stat.2.title': 'Tirare le prove di caratteristica',
+            'tutorial.stat.2.body': 'Clicca su qualsiasi blocco di statistica per eseguire quella prova nel vassoio dei dadi di TaleSpire. Il modificatore è incluso automaticamente — se il tuo modificatore di Forza è +3, verrà inviato 1d20+3. Le statistiche contrassegnate come non lanciabili non attivano un tiro al clic.',
+            'tutorial.stat.3.title': 'Modificare le statistiche',
+            'tutorial.stat.3.body': 'Tieni premuto Ctrl e clicca su un blocco di statistica per modificarne rapidamente il valore o il modificatore senza aprire alcun menu. Per aggiungere, rimuovere, rinominare o riordinare le statistiche, apri {icon:more-vertical} Impostazioni modulo. Puoi anche cambiare il layout per mostrare solo i modificatori.',
+
+            // Tutorial: abilities
+            'tutorial.abilities.1.title': 'Che cos\'è un modulo Abilità?',
+            'tutorial.abilities.1.body': 'Un modulo Abilità tiene traccia delle prove di abilità del tuo personaggio — come Acrobazia, Furtività o Persuasione. Ogni abilità mostra un modificatore e un indicatore di competenza opzionale. Clicca su un\'abilità per tirare 1d20 più il suo modificatore direttamente in TaleSpire.',
+            'tutorial.abilities.2.title': 'Collegare le abilità alle statistiche',
+            'tutorial.abilities.2.body': 'Puoi collegare questo modulo a un modulo Statistica in modo che il modificatore di ogni abilità venga calcolato automaticamente dalla caratteristica corrispondente. In {icon:more-vertical} Impostazioni modulo, scegli un modulo Statistica alla voce Modulo statistica collegato, quindi assegna a ogni abilità la caratteristica che la governa.',
+            'tutorial.abilities.3.title': 'Gestire le abilità',
+            'tutorial.abilities.3.body': 'Apri {icon:more-vertical} Impostazioni modulo per aggiungere, rinominare, riordinare o rimuovere abilità e impostarne il livello di competenza. Per modificare direttamente il modificatore di un\'abilità, tieni premuto Ctrl e clicca sulla riga di quell\'abilità. Quel modificatore si aggiunge al valore della statistica collegata.',
+
+            // Tutorial: savingthrow
+            'tutorial.savingthrow.1.title': 'Che cos\'è un modulo Tiri Salvezza?',
+            'tutorial.savingthrow.1.body': 'Un modulo Tiri Salvezza tiene traccia delle difese reattive del tuo personaggio contro gli effetti dannosi — come un tiro salvezza su Forza o Saggezza. Ogni voce mostra un nome e un modificatore. Clicca su un tiro per lanciare 1d20 più il suo modificatore in TaleSpire.',
+            'tutorial.savingthrow.2.title': 'Gradi di competenza',
+            'tutorial.savingthrow.2.body': 'Puoi abilitare i gradi di competenza per mostrare su ogni tiro un distintivo colorato che indica il tuo livello di addestramento — ad esempio I per Inesperto, A per Addestrato o E per Esperto. Usa un predefinito del tuo sistema di gioco o definisci i tuoi gradi in {icon:more-vertical} Impostazioni modulo.',
+            'tutorial.savingthrow.3.title': 'Gestire i tiri salvezza',
+            'tutorial.savingthrow.3.body': 'Apri {icon:more-vertical} Impostazioni modulo per aggiungere, rinominare, riordinare o eliminare tiri e assegnare gradi di competenza. Tieni premuto Ctrl e clicca sul modificatore di un tiro per modificarlo rapidamente. Usa Modifica nota nel menu delle opzioni per aggiungere una nota che si applica a tutti i tiri salvezza.',
+
             // Module type labels
             'type.abilities': 'Abilità',
             'type.actions': 'Tracciatore Azioni',

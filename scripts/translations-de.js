@@ -135,6 +135,32 @@ window.CV_TRANSLATIONS['de'] = {
             'tutorial.savingthrow.3.title': 'Rettungswürfe verwalten',
             'tutorial.savingthrow.3.body': 'Öffne {icon:more-vertical} Modul-Einstellungen, um Rettungswürfe hinzuzufügen, umzubenennen, neu anzuordnen, zu löschen und Profizienz-Stufen zuzuweisen. Halte Strg und klicke auf den Modifikator eines Rettungswurfs, um ihn schnell zu ändern. Nutze Notiz bearbeiten im Überlaufmenü, um eine Notiz hinzuzufügen, die für alle Rettungswürfe gilt.',
 
+            // Tutorial: health
+            'tutorial.health.1.title': 'Was ist ein Gesundheits-Modul?',
+            'tutorial.health.1.body': 'Ein Gesundheits-Modul verfolgt die Trefferpunkte (TP) deines Charakters — also wie viel Schaden du einstecken kannst, bevor du kampfunfähig wirst. Es zeigt deine aktuellen TP im Verhältnis zu deinen maximalen TP an und führt temporäre TP separat auf. Temporäre TP absorbieren Schaden, bevor deine echten TP betroffen sind.',
+            'tutorial.health.2.title': 'Schaden nehmen und heilen',
+            'tutorial.health.2.body': 'Im Spielmodus kannst du mit der Schaden-Schaltfläche Schaden anwenden und mit der Heilen-Schaltfläche TP zurückgewinnen. Schaden entleert zunächst die temporären TP und greift dann auf deine aktuellen TP zu. Heilung stellt nur aktuelle TP wieder her und ist auf dein Maximum begrenzt. Klicke auf das Temp-TP-Abzeichen, um einen neuen Wert festzulegen.',
+            'tutorial.health.3.title': 'TP bearbeiten und Einstellungen',
+            'tutorial.health.3.body': 'Wechsle in den Bearbeitungsmodus, um TP-Werte direkt einzutippen — einfache Rechnungen wie „40-5" sind erlaubt. Öffne {icon:more-vertical} Modul-Einstellungen, um einen Max-TP-Modifikator für Buffs oder Debuffs festzulegen oder deine aktuellen und maximalen TP direkt von der TaleSpire-Miniatur zu übernehmen.',
+
+            // Tutorial: level
+            'tutorial.level.1.title': 'Was ist ein Stufen-Modul?',
+            'tutorial.level.1.body': 'Ein Stufen-Modul verfolgt die Stufe und die Erfahrungspunkte (EP) deines Charakters. Die aktuelle Stufe wird hervorgehoben angezeigt, und ein EP-Fortschrittsbalken zeigt, wie nah du dem nächsten Stufenaufstieg bist. Mehrklassen-Charaktere können für jede Klasse ein eigenes Stufen-Modul hinzufügen.',
+            'tutorial.level.2.title': 'EP sammeln und aufsteigen',
+            'tutorial.level.2.body': 'Klicke auf den EP-Balken, um Erfahrungspunkte hinzuzufügen oder abzuziehen. Sobald deine EP den Schwellenwert für die nächste Stufe erreichen oder überschreiten, erscheint eine Stufenaufstieg-Schaltfläche — klicke darauf, um aufzusteigen. Du kannst auch Strg halten und auf die Stufenzahl klicken, um sie jederzeit manuell festzulegen.',
+            'tutorial.level.3.title': 'Modul-Einstellungen',
+            'tutorial.level.3.body': 'Öffne {icon:more-vertical} Modul-Einstellungen, um zwischen EP-Tracking und Meilenstein-Stufung zu wählen, einen optionalen Klassennamen über deiner Stufenzahl festzulegen, EP-Schwellenwerte für jeden Level zu definieren, den Übertrag von überschüssigen EP beim Aufstieg zu regeln und Stil sowie Farbe des Fortschrittsbalkens anzupassen.',
+
+            // Tutorial: recovery
+            'tutorial.recovery.1.title': 'Was ist ein Erholungs-Modul?',
+            'tutorial.recovery.1.body': 'Ein Erholungs-Modul bietet anpassbare Ruhepausen-Schaltflächen — wie Kurze Rast und Lange Rast in D&D 5e —, die häufige Aktionen zwischen Begegnungen automatisieren: vollständig heilen, Zauberplätze wiederherstellen, temporäre TP zurücksetzen und Trefferwürfel rollen. Die Standardschaltflächen richten sich nach deinem Spielsystem, aber alles ist frei konfigurierbar.',
+            'tutorial.recovery.2.title': 'Ruhepausen-Schaltflächen verwenden',
+            'tutorial.recovery.2.body': 'Klicke auf eine Ruhepausen-Schaltfläche, um ein Bestätigungsdialogfeld mit allen Aktionen anzuzeigen, die ausgeführt werden. Bestätige, um sie alle gleichzeitig auszuführen. Aktionen werden automatisch auf alle deine Gesundheits- und Zauberlisten-Module angewendet — du musst sie nicht einzeln aktualisieren.',
+            'tutorial.recovery.3.title': 'Trefferwürfel',
+            'tutorial.recovery.3.body': 'Wenn eine Schaltfläche einen Trefferwürfelwurf enthält (z. B. bei einer Kurzen Rast), wirst du gefragt, wie viele Würfel du ausgeben möchtest. Jeder geworfene Würfel fügt eine Heilung hinzu, die dem Wurfergebnis plus deinem Modifikator entspricht und auf deine TP angerechnet wird. Deine verbleibenden Trefferwürfel werden im Modul angezeigt und füllen sich gemäß deiner Langen-Rast-Einstellung wieder auf.',
+            'tutorial.recovery.4.title': 'Ruhepausen-Schaltflächen anpassen',
+            'tutorial.recovery.4.body': 'Öffne {icon:more-vertical} Modul-Einstellungen, um Ruhepausen-Schaltflächen hinzuzufügen, umzubenennen, neu anzuordnen oder zu entfernen und auszuwählen, welche Aktionen jede Schaltfläche auslöst. Du kannst auch die Trefferwürfelanzahl, den Würfeltyp, den Modifikator und die Anzahl der bei einer Langen Rast wiederhergestellten Würfel konfigurieren.',
+
             'type.abilities': 'Fähigkeiten',
             'type.actions': 'Aktionsverfolgung',
             'type.activity': 'Aktivitätsprotokoll',

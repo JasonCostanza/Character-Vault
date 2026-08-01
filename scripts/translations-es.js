@@ -135,6 +135,32 @@ window.CV_TRANSLATIONS['es'] = {
             'tutorial.savingthrow.3.title': 'Gestionar tiradas de salvación',
             'tutorial.savingthrow.3.body': 'Abre {icon:more-vertical} Ajustes del módulo para añadir, renombrar, reordenar o eliminar tiradas y asignar rangos de competencia. Mantén Ctrl y haz clic en el modificador de cualquier tirada para cambiarlo rápidamente. Usa Editar nota en el menú de opciones para añadir una nota que se aplique a todas las tiradas de salvación.',
 
+            // Tutorial: health
+            'tutorial.health.1.title': '¿Qué es un módulo de Salud?',
+            'tutorial.health.1.body': 'Un módulo de Salud rastrea los puntos de golpe (PG) de tu personaje — cuánto daño puedes absorber antes de caer. Muestra tus PG actuales sobre tus PG máximos, con los PG temporales indicados por separado. Los PG temporales absorben el daño antes de que afecte a tus PG reales.',
+            'tutorial.health.2.title': 'Recibir daño y curarse',
+            'tutorial.health.2.body': 'Durante el juego, usa el botón Daño para aplicar daño y el botón Curar para recuperar PG. El daño consume primero los PG temporales antes de afectar a los actuales. La curación solo restaura los PG actuales y no puede superar el máximo. Toca el indicador de PG temporales para establecer un nuevo valor.',
+            'tutorial.health.3.title': 'Editar PG y ajustes',
+            'tutorial.health.3.body': 'Cambia al modo Editar para escribir los valores de PG directamente — puedes introducir operaciones simples como "40-5". Abre {icon:more-vertical} Ajustes del módulo para establecer un Modificador de PG máximos para bonificaciones o penalizaciones, o para importar tus PG actuales y máximos desde la miniatura de TaleSpire en el tablero.',
+
+            // Tutorial: level
+            'tutorial.level.1.title': '¿Qué es un módulo de Nivel?',
+            'tutorial.level.1.body': 'Un módulo de Nivel rastrea el nivel y los puntos de experiencia (PX) de tu personaje. Tu nivel actual aparece de forma destacada, con una barra de progreso de PX que indica cuánto te falta para subir de nivel. Los personajes multiclase pueden añadir un módulo de Nivel por clase.',
+            'tutorial.level.2.title': 'Ganar PX y subir de nivel',
+            'tutorial.level.2.body': 'Haz clic en la barra de PX para añadir o restar experiencia. Cuando tus PX alcanzan o superan el umbral del siguiente nivel, aparece el botón Subir de Nivel — haz clic para avanzar. También puedes mantener Ctrl y hacer clic en el número de nivel para establecerlo manualmente en cualquier momento.',
+            'tutorial.level.3.title': 'Ajustes del módulo',
+            'tutorial.level.3.body': 'Abre {icon:more-vertical} Ajustes del módulo para elegir entre seguimiento por PX o por hitos, establecer un nombre de clase opcional sobre tu nivel, definir los umbrales de PX para cada nivel, decidir si el exceso de PX se acumula al subir de nivel, y personalizar el estilo y color de la barra de progreso.',
+
+            // Tutorial: recovery
+            'tutorial.recovery.1.title': '¿Qué es un módulo de Recuperación?',
+            'tutorial.recovery.1.body': 'Un módulo de Recuperación ofrece botones de descanso personalizables — como Descanso Corto y Descanso Largo en D&D 5e — que automatizan las acciones habituales entre encuentros: curar hasta el máximo, restaurar espacios de conjuro, restablecer los PG temporales y tirar Dados de Golpe. Los botones predeterminados se adaptan a tu sistema de juego, pero puedes configurar todo libremente.',
+            'tutorial.recovery.2.title': 'Usar los botones de descanso',
+            'tutorial.recovery.2.body': 'Haz clic en un botón de descanso para ver un cuadro de confirmación con todas las acciones que se ejecutarán. Confirma para aplicarlas todas a la vez. Las acciones se aplican automáticamente a todos tus módulos de Salud y Conjuros — no hace falta actualizarlos uno a uno.',
+            'tutorial.recovery.3.title': 'Dados de Golpe',
+            'tutorial.recovery.3.body': 'Si un botón incluye una tirada de Dado de Golpe (como en un Descanso Corto), se te preguntará cuántos dados quieres gastar. Cada dado tirado añade curación igual al resultado más tu modificador, aplicada a tus PG. Tus Dados de Golpe restantes se muestran en el módulo y se recuperan según tu configuración de Descanso Largo.',
+            'tutorial.recovery.4.title': 'Personalizar los botones de descanso',
+            'tutorial.recovery.4.body': 'Abre {icon:more-vertical} Ajustes del módulo para añadir, renombrar, reordenar o eliminar botones de descanso y elegir qué acciones activa cada uno. También puedes configurar el tamaño de tu reserva de Dados de Golpe, el tipo de dado, el modificador y cuántos se recuperan en un Descanso Largo.',
+
             'type.abilities': 'Habilidades',
             'type.actions': 'Rastreador de Acciones',
             'type.activity': 'Registro de Actividad',

@@ -135,6 +135,32 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'tutorial.savingthrow.3.title': 'Gerenciando testes de resistência',
             'tutorial.savingthrow.3.body': 'Abra {icon:more-vertical} Configurações do módulo para adicionar, renomear, reordenar ou excluir testes e atribuir graus de proficiência. Segure Ctrl e clique no modificador de qualquer teste para alterá-lo rapidamente. Use Editar nota no menu de opções para adicionar uma nota que se aplica a todos os testes de resistência.',
 
+            // Tutorial: health
+            'tutorial.health.1.title': 'O que é um módulo de Saúde?',
+            'tutorial.health.1.body': 'Um módulo de Saúde rastreia os pontos de vida (PV) do seu personagem — quanto dano você pode absorver antes de cair. Ele exibe seus PV atuais sobre os PV máximos, com os PV temporários indicados separadamente. Os PV temporários absorvem o dano antes dos seus PV reais.',
+            'tutorial.health.2.title': 'Receber dano e se curar',
+            'tutorial.health.2.body': 'Durante o jogo, use o botão Dano para aplicar dano e o botão Curar para recuperar PV. O dano drena primeiro os PV temporários antes de afetar os PV atuais. A cura só restaura os PV atuais e é limitada ao máximo. Toque no emblema de PV temporários para definir um novo valor.',
+            'tutorial.health.3.title': 'Editar PV e configurações',
+            'tutorial.health.3.body': 'Mude para o modo Editar para digitar valores de PV diretamente — você pode inserir operações simples como "40-5". Abra {icon:more-vertical} Configurações do módulo para definir um Modificador de PV Máximos para bônus ou penalidades, ou para importar seus PV atuais e máximos diretamente da miniatura do TaleSpire no tabuleiro.',
+
+            // Tutorial: level
+            'tutorial.level.1.title': 'O que é um módulo de Nível?',
+            'tutorial.level.1.body': 'Um módulo de Nível rastreia o nível e os pontos de experiência (PE) do seu personagem. Seu nível atual aparece em destaque, com uma barra de progresso de PE mostrando o quanto falta para subir de nível. Personagens multiclasse podem adicionar um módulo de Nível por classe.',
+            'tutorial.level.2.title': 'Ganhar PE e subir de nível',
+            'tutorial.level.2.body': 'Clique na barra de PE para adicionar ou subtrair experiência. Quando seus PE atingem ou superam o limite para o próximo nível, um botão Subir de Nível aparece — clique para avançar. Você também pode segurar Ctrl e clicar no número do nível para defini-lo manualmente a qualquer momento.',
+            'tutorial.level.3.title': 'Configurações do módulo',
+            'tutorial.level.3.body': 'Abra {icon:more-vertical} Configurações do módulo para escolher entre rastreamento por PE ou por marcos, definir um nome de classe opcional acima do seu nível, configurar os limites de PE para cada nível, decidir se o excesso de PE é mantido ao subir de nível, e personalizar o estilo e a cor da barra de progresso.',
+
+            // Tutorial: recovery
+            'tutorial.recovery.1.title': 'O que é um módulo de Recuperação?',
+            'tutorial.recovery.1.body': 'Um módulo de Recuperação fornece botões de descanso personalizáveis — como Descanso Curto e Descanso Longo no D&D 5e — que automatizam ações comuns entre encontros: curar ao máximo, restaurar espaços de magia, zerar os PV temporários e rolar Dados de Vida. Os botões padrão correspondem ao seu sistema de jogo, mas tudo é configurável livremente.',
+            'tutorial.recovery.2.title': 'Usar os botões de descanso',
+            'tutorial.recovery.2.body': 'Clique em um botão de descanso para ver um diálogo de confirmação listando todas as ações que serão executadas. Confirme para aplicá-las todas de uma vez. As ações são aplicadas automaticamente a todos os seus módulos de Saúde e Magias — não é necessário atualizá-los um por um.',
+            'tutorial.recovery.3.title': 'Dados de Vida',
+            'tutorial.recovery.3.body': 'Se um botão inclui uma rolagem de Dados de Vida (como no Descanso Curto), você será perguntado quantos dados gastar. Cada dado rolado adiciona cura igual ao resultado mais seu modificador, aplicada aos seus PV. Seus Dados de Vida restantes são exibidos no módulo e são restaurados conforme sua configuração de Descanso Longo.',
+            'tutorial.recovery.4.title': 'Personalizar os botões de descanso',
+            'tutorial.recovery.4.body': 'Abra {icon:more-vertical} Configurações do módulo para adicionar, renomear, reordenar ou remover botões de descanso e escolher quais ações cada um aciona. Você também pode configurar o tamanho da sua reserva de Dados de Vida, o tipo de dado, o modificador e quantos são restaurados em um Descanso Longo.',
+
             'type.abilities': 'Habilidades',
             'type.actions': 'Rastreador de Ações',
             'type.activity': 'Registro de Atividade',

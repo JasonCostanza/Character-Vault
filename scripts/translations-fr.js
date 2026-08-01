@@ -135,6 +135,32 @@ window.CV_TRANSLATIONS['fr'] = {
             'tutorial.savingthrow.3.title': 'Gérer les jets de sauvegarde',
             'tutorial.savingthrow.3.body': 'Ouvrez {icon:more-vertical} Paramètres du module pour ajouter, renommer, réordonner ou supprimer des jets et leur assigner des niveaux de maîtrise. Maintenez Ctrl et cliquez sur le modificateur d\'un jet pour le modifier rapidement. Utilisez Modifier la note dans le menu déroulant pour ajouter une note qui s\'applique à tous les jets de sauvegarde.',
 
+            // Tutorial: health
+            'tutorial.health.1.title': 'À quoi sert un module Santé ?',
+            'tutorial.health.1.body': 'Un module Santé suit les points de vie (PV) de votre personnage — combien de dégâts vous pouvez encaisser avant de tomber. Il affiche vos PV actuels sur vos PV maximum, avec les points de vie temporaires indiqués séparément. Les PV temporaires absorbent les dégâts avant vos vrais PV.',
+            'tutorial.health.2.title': 'Subir des dégâts et se soigner',
+            'tutorial.health.2.body': 'Pendant le jeu, utilisez le bouton Dégâts pour appliquer des dégâts et le bouton Soin pour récupérer des PV. Les dégâts épuisent d\'abord les PV temporaires avant d\'affecter les PV actuels. Les soins ne restaurent que les PV actuels et sont plafonnés au maximum. Appuyez sur le badge de PV temporaires pour définir une nouvelle valeur.',
+            'tutorial.health.3.title': 'Modifier les PV et paramètres',
+            'tutorial.health.3.body': 'Passez en mode Édition pour saisir les valeurs de PV directement — vous pouvez entrer des calculs simples comme « 40-5 ». Ouvrez {icon:more-vertical} Paramètres du module pour définir un Modificateur de PV maximum pour les buffs ou debuffs, ou pour importer vos PV actuels et maximum depuis la figurine TaleSpire sur le plateau.',
+
+            // Tutorial: level
+            'tutorial.level.1.title': 'À quoi sert un module Niveau ?',
+            'tutorial.level.1.body': 'Un module Niveau suit le niveau et les points d\'expérience (PX) de votre personnage. Votre niveau actuel apparaît en évidence, avec une barre de progression PX indiquant votre avancement vers le niveau suivant. Les personnages multiclasse peuvent ajouter un module Niveau par classe.',
+            'tutorial.level.2.title': 'Gagner des PX et monter de niveau',
+            'tutorial.level.2.body': 'Cliquez sur la barre de PX pour ajouter ou retirer de l\'expérience. Lorsque vos PX atteignent ou dépassent le seuil du niveau suivant, un bouton Monter de Niveau apparaît — cliquez dessus pour progresser. Vous pouvez aussi maintenir Ctrl et cliquer sur le numéro de niveau pour le définir manuellement à tout moment.',
+            'tutorial.level.3.title': 'Paramètres du module',
+            'tutorial.level.3.body': 'Ouvrez {icon:more-vertical} Paramètres du module pour choisir entre le suivi par PX ou par jalons, définir un nom de classe optionnel au-dessus de votre niveau, configurer les seuils de PX par niveau, décider si les PX excédentaires sont conservés lors d\'une montée de niveau, et personnaliser le style et la couleur de la barre de progression.',
+
+            // Tutorial: recovery
+            'tutorial.recovery.1.title': 'À quoi sert un module Récupération ?',
+            'tutorial.recovery.1.body': 'Un module Récupération fournit des boutons de repos personnalisables — comme Repos Court et Repos Long dans D&D 5e — qui automatisent les actions habituelles entre les rencontres : soins à fond, restauration des emplacements de sort, réinitialisation des PV temporaires et lancer de Dés de Vie. Les boutons par défaut correspondent à votre système de jeu, mais tout est librement configurable.',
+            'tutorial.recovery.2.title': 'Utiliser les boutons de repos',
+            'tutorial.recovery.2.body': 'Cliquez sur un bouton de repos pour afficher un dialogue de confirmation listant toutes les actions qui seront exécutées. Confirmez pour les appliquer en une seule fois. Les actions s\'appliquent automatiquement à tous vos modules Santé et Sorts — pas besoin de les mettre à jour un par un.',
+            'tutorial.recovery.3.title': 'Dés de Vie',
+            'tutorial.recovery.3.body': 'Si un bouton inclut un jet de Dés de Vie (comme pour un Repos Court), on vous demandera combien de dés dépenser. Chaque dé lancé ajoute des soins égaux au résultat plus votre modificateur, appliqués à vos PV. Vos Dés de Vie restants sont affichés dans le module et se rechargent selon votre réglage de Repos Long.',
+            'tutorial.recovery.4.title': 'Personnaliser les boutons de repos',
+            'tutorial.recovery.4.body': 'Ouvrez {icon:more-vertical} Paramètres du module pour ajouter, renommer, réordonner ou supprimer des boutons de repos et choisir les actions déclenchées par chacun. Vous pouvez aussi configurer la taille de votre réserve de Dés de Vie, le type de dé, le modificateur et le nombre restaurés lors d\'un Repos Long.',
+
             'type.abilities': 'Compétences',
             'type.actions': 'Suivi des Actions',
             'type.activity': 'Journal d\'Activité',

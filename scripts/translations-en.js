@@ -142,6 +142,32 @@ window.CV_TRANSLATIONS.en = {
             'tutorial.savingthrow.3.title': 'Managing Saves',
             'tutorial.savingthrow.3.body': 'Open {icon:more-vertical} Module Settings to add, rename, reorder, or delete saves and to assign proficiency tiers. Hold Ctrl and click any save\'s modifier to quickly change it without opening the settings. Use Add Note from the overflow menu to add a note that applies to all saves.',
 
+            // Tutorial: health
+            'tutorial.health.1.title': 'What Is a Health Module?',
+            'tutorial.health.1.body': 'A Health module tracks your character\'s hit points (HP) — how much damage you can take before going down. It displays your current HP over your maximum HP, and shows any temporary HP you\'ve been granted separately. Temp HP absorbs damage before your real HP does.',
+            'tutorial.health.2.title': 'Taking Damage and Healing',
+            'tutorial.health.2.body': 'During play, use the Dmg button to apply damage and the Heal button to recover HP. Damage drains temporary HP first, then cuts into your current HP. Healing only restores current HP and is capped at your maximum. Tap the temp HP badge to set a new temporary HP value.',
+            'tutorial.health.3.title': 'Editing HP and Settings',
+            'tutorial.health.3.body': 'Switch to Edit mode to type HP values directly — you can enter simple math like "40-5". Open {icon:more-vertical} Module Settings to set a Max HP Modifier for buffs or debuffs, or to pull your current and max HP directly from the TaleSpire miniature on the board.',
+
+            // Tutorial: level
+            'tutorial.level.1.title': 'What Is a Level Module?',
+            'tutorial.level.1.body': 'A Level module tracks your character\'s level and experience points. Your current level appears prominently, with an XP progress bar showing how close you are to leveling up. Multiclass characters can add one Level module per class.',
+            'tutorial.level.2.title': 'Gaining XP and Leveling Up',
+            'tutorial.level.2.body': 'Click the XP bar to add or subtract experience. When your XP meets or exceeds the threshold for the next level, a Level Up button appears — click it to advance. You can also Ctrl+click the level number at any time to set it manually without going through XP.',
+            'tutorial.level.3.title': 'Module Settings',
+            'tutorial.level.3.body': 'Open {icon:more-vertical} Module Settings to choose between XP tracking or Milestone leveling, set an optional class name that displays above your level, define XP thresholds for each level, choose whether excess XP carries over on level-up, and customize the progress bar style and color.',
+
+            // Tutorial: recovery
+            'tutorial.recovery.1.title': 'What Is a Recovery Module?',
+            'tutorial.recovery.1.body': 'A Recovery module gives you customizable rest buttons — like Short Rest and Long Rest in D&D 5e — that automate common end-of-encounter actions: healing to full HP, restoring spell slots, resetting temporary HP, and rolling Hit Dice. The default buttons match your game system, but you can configure everything freely.',
+            'tutorial.recovery.2.title': 'Using Rest Buttons',
+            'tutorial.recovery.2.body': 'Click a rest button to see a confirmation dialog listing every action it will perform. Confirm to execute them all at once. Actions are applied across all your Health and Spells modules automatically — you don\'t need to update each one by hand.',
+            'tutorial.recovery.3.title': 'Hit Dice',
+            'tutorial.recovery.3.body': 'If a button includes a Hit Dice roll (like a Short Rest), you\'ll be asked how many dice to spend. Each die rolled adds healing equal to the roll plus your modifier, applied to your HP. Your remaining Hit Dice are shown in the module and refill based on your Long Rest setting.',
+            'tutorial.recovery.4.title': 'Customizing Rest Buttons',
+            'tutorial.recovery.4.body': 'Open {icon:more-vertical} Module Settings to add, rename, reorder, or remove rest buttons, and choose which actions each button triggers. You can also configure your Hit Dice pool size, die type, modifier, and how many are restored on a long rest.',
+
             // Module type labels
             'type.abilities': 'Abilities',
             'type.actions': 'Action Tracker',

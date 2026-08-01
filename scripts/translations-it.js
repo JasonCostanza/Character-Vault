@@ -140,6 +140,32 @@ window.CV_TRANSLATIONS['it'] = {
             'tutorial.savingthrow.3.title': 'Gestire i tiri salvezza',
             'tutorial.savingthrow.3.body': 'Apri {icon:more-vertical} Impostazioni modulo per aggiungere, rinominare, riordinare o eliminare tiri e assegnare gradi di competenza. Tieni premuto Ctrl e clicca sul modificatore di un tiro per modificarlo rapidamente. Usa Modifica nota nel menu delle opzioni per aggiungere una nota che si applica a tutti i tiri salvezza.',
 
+            // Tutorial: health
+            'tutorial.health.1.title': 'Che cos\'è un modulo Salute?',
+            'tutorial.health.1.body': 'Un modulo Salute tiene traccia dei punti ferita (PF) del tuo personaggio — quanti danni puoi subire prima di cadere. Mostra i PF attuali rispetto ai PF massimi, con i punti ferita temporanei indicati separatamente. I PF temporanei assorbono i danni prima che colpiscano i tuoi PF reali.',
+            'tutorial.health.2.title': 'Subire danni e curarsi',
+            'tutorial.health.2.body': 'Durante il gioco, usa il pulsante Danno per applicare danni e il pulsante Cura per recuperare PF. I danni esauriscono prima i PF temporanei, poi si ripercuotono sui PF attuali. La cura ripristina solo i PF attuali ed è limitata al massimo. Tocca il badge dei PF temporanei per impostare un nuovo valore.',
+            'tutorial.health.3.title': 'Modificare i PF e impostazioni',
+            'tutorial.health.3.body': 'Passa alla modalità Modifica per digitare direttamente i valori dei PF — puoi inserire calcoli semplici come "40-5". Apri {icon:more-vertical} Impostazioni modulo per impostare un Modificatore PF massimi per buff o debuff, oppure per importare i PF attuali e massimi direttamente dalla miniatura TaleSpire sul tavolo.',
+
+            // Tutorial: level
+            'tutorial.level.1.title': 'Che cos\'è un modulo Livello?',
+            'tutorial.level.1.body': 'Un modulo Livello tiene traccia del livello e dei punti esperienza (PE) del tuo personaggio. Il livello attuale appare in evidenza, con una barra di avanzamento PE che mostra quanto manca per salire di livello. I personaggi multiclasse possono aggiungere un modulo Livello per ogni classe.',
+            'tutorial.level.2.title': 'Guadagnare PE e salire di livello',
+            'tutorial.level.2.body': 'Clicca sulla barra dei PE per aggiungere o sottrarre esperienza. Quando i PE raggiungono o superano la soglia per il livello successivo, appare un pulsante Sali di Livello — cliccalo per avanzare. Puoi anche tenere premuto Ctrl e cliccare sul numero di livello per impostarlo manualmente in qualsiasi momento.',
+            'tutorial.level.3.title': 'Impostazioni modulo',
+            'tutorial.level.3.body': 'Apri {icon:more-vertical} Impostazioni modulo per scegliere tra il tracciamento per PE o per traguardi, impostare un nome di classe opzionale sopra il numero di livello, definire le soglie PE per ogni livello, decidere se i PE in eccesso vengono mantenuti al salire di livello, e personalizzare stile e colore della barra di avanzamento.',
+
+            // Tutorial: recovery
+            'tutorial.recovery.1.title': 'Che cos\'è un modulo Recupero?',
+            'tutorial.recovery.1.body': 'Un modulo Recupero fornisce pulsanti di riposo personalizzabili — come Riposo Breve e Riposo Lungo in D&D 5e — che automatizzano le azioni comuni tra un\'incontro e l\'altro: guarire completamente, ripristinare gli slot incantesimo, azzerare i PF temporanei e tirare i Dadi Vita. I pulsanti predefiniti seguono il tuo sistema di gioco, ma tutto è configurabile liberamente.',
+            'tutorial.recovery.2.title': 'Usare i pulsanti di riposo',
+            'tutorial.recovery.2.body': 'Clicca su un pulsante di riposo per vedere una finestra di conferma con tutte le azioni che verranno eseguite. Conferma per applicarle tutte in una volta. Le azioni vengono applicate automaticamente a tutti i moduli Salute e Magie — non è necessario aggiornarli uno per uno.',
+            'tutorial.recovery.3.title': 'Dadi Vita',
+            'tutorial.recovery.3.body': 'Se un pulsante include un lancio di Dadi Vita (come per un Riposo Breve), ti verrà chiesto quanti dadi spendere. Ogni dado lanciato aggiunge cura pari al risultato più il tuo modificatore, applicata ai PF. I tuoi Dadi Vita rimanenti sono mostrati nel modulo e si ripristinano in base alla tua impostazione di Riposo Lungo.',
+            'tutorial.recovery.4.title': 'Personalizzare i pulsanti di riposo',
+            'tutorial.recovery.4.body': 'Apri {icon:more-vertical} Impostazioni modulo per aggiungere, rinominare, riordinare o rimuovere i pulsanti di riposo e scegliere quali azioni ciascuno attiva. Puoi anche configurare la dimensione della riserva di Dadi Vita, il tipo di dado, il modificatore e quanti ne vengono ripristinati con un Riposo Lungo.',
+
             // Module type labels
             'type.abilities': 'Abilità',
             'type.actions': 'Tracciatore Azioni',

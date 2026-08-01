@@ -131,9 +131,9 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'tutorial.savingthrow.1.title': 'O que é um módulo de Testes de Resistência?',
             'tutorial.savingthrow.1.body': 'Um módulo de Testes de Resistência rastreia as defesas reativas do seu personagem contra efeitos prejudiciais, como um teste de Força ou Sabedoria. Cada entrada exibe um nome e um modificador. Clique em qualquer teste para rolar 1d20 mais o modificador no TaleSpire.',
             'tutorial.savingthrow.2.title': 'Graus de proficiência',
-            'tutorial.savingthrow.2.body': 'Você pode ativar os graus de proficiência para exibir em cada teste um selo colorido indicando seu nível de treinamento, por exemplo, D para Destreinado, T para Treinado ou E para Especialista. Use um predefinido do seu sistema de jogo ou defina seus próprios graus em {icon:more-vertical} Configurações do módulo.',
+            'tutorial.savingthrow.2.body': 'Você pode ativar os graus de proficiência para exibir em cada teste um selo colorido indicando seu nível de treinamento, por exemplo, D para Destreinado, T para Treinado ou E para Especialista. Use um predefinido do seu sistema de jogo ou defina seus próprios graus conforme sua necessidade.',
             'tutorial.savingthrow.3.title': 'Gerenciando testes de resistência',
-            'tutorial.savingthrow.3.body': 'Abra {icon:more-vertical} Configurações do módulo para adicionar, renomear, reordenar ou excluir testes e atribuir graus de proficiência. Segure Ctrl e clique no modificador de qualquer teste para alterá-lo rapidamente. Use Editar nota no menu de opções para adicionar uma nota que se aplica a todos os testes de resistência.',
+            'tutorial.savingthrow.3.body': 'Abra {icon:more-vertical} Configurações do módulo para adicionar, renomear, reordenar ou excluir testes e atribuir graus de proficiência. No mesmo menu, escolha Editar nota para adicionar uma nota que se aplica a todos os testes de resistência. Segure Ctrl e clique no modificador de qualquer teste para alterá-lo rapidamente sem abrir as configurações.',
 
             // Tutorial: health
             'tutorial.health.1.title': 'O que é um módulo de Saúde?',

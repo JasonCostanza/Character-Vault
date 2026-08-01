@@ -138,9 +138,9 @@ window.CV_TRANSLATIONS.en = {
             'tutorial.savingthrow.1.title': 'What Is a Saving Throws Module?',
             'tutorial.savingthrow.1.body': 'A Saving Throws module tracks your character\'s defensive checks against harmful effects: things like a Strength save or a Wisdom save. Each entry shows a name and a modifier. Click any save to roll 1d20 plus its modifier in TaleSpire.',
             'tutorial.savingthrow.2.title': 'Proficiency Tiers',
-            'tutorial.savingthrow.2.body': 'You can enable proficiency tiers to show a colored badge on each save indicating your training level, for example U for Untrained, T for Trained, or E for Expert. Use a preset from your game system or define your own tiers in {icon:more-vertical} Module Settings.',
+            'tutorial.savingthrow.2.body': 'You can enable proficiency tiers to show a colored badge on each save indicating your training level, for example U for Untrained, T for Trained, or E for Expert. Use a preset from your game system, or define your own tiers to match your needs.',
             'tutorial.savingthrow.3.title': 'Managing Saves',
-            'tutorial.savingthrow.3.body': 'Open {icon:more-vertical} Module Settings to add, rename, reorder, or delete saves and to assign proficiency tiers. Hold Ctrl and click any save\'s modifier to quickly change it without opening the settings. Use Add Note from the overflow menu to add a note that applies to all saves.',
+            'tutorial.savingthrow.3.body': 'Open {icon:more-vertical} Module Settings to add, rename, reorder, or delete saves and to assign proficiency tiers. From the same menu, choose Edit Notes to add a note that applies to all saves. Hold Ctrl and click any save\'s modifier to quickly change it without opening the settings.',
 
             // Tutorial: health
             'tutorial.health.1.title': 'What Is a Health Module?',

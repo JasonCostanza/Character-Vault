@@ -136,9 +136,9 @@ window.CV_TRANSLATIONS['it'] = {
             'tutorial.savingthrow.1.title': 'Che cos\'è un modulo Tiri Salvezza?',
             'tutorial.savingthrow.1.body': 'Un modulo Tiri Salvezza tiene traccia delle difese reattive del tuo personaggio contro gli effetti dannosi, come un tiro salvezza su Forza o Saggezza. Ogni voce mostra un nome e un modificatore. Clicca su un tiro per lanciare 1d20 più il suo modificatore in TaleSpire.',
             'tutorial.savingthrow.2.title': 'Gradi di competenza',
-            'tutorial.savingthrow.2.body': 'Puoi abilitare i gradi di competenza per mostrare su ogni tiro un distintivo colorato che indica il tuo livello di addestramento, ad esempio I per Inesperto, A per Addestrato o E per Esperto. Usa un predefinito del tuo sistema di gioco o definisci i tuoi gradi in {icon:more-vertical} Impostazioni modulo.',
+            'tutorial.savingthrow.2.body': 'Puoi abilitare i gradi di competenza per mostrare su ogni tiro un distintivo colorato che indica il tuo livello di addestramento, ad esempio I per Inesperto, A per Addestrato o E per Esperto. Usa un predefinito del tuo sistema di gioco o definisci i tuoi gradi in base alle tue esigenze.',
             'tutorial.savingthrow.3.title': 'Gestire i tiri salvezza',
-            'tutorial.savingthrow.3.body': 'Apri {icon:more-vertical} Impostazioni modulo per aggiungere, rinominare, riordinare o eliminare tiri e assegnare gradi di competenza. Tieni premuto Ctrl e clicca sul modificatore di un tiro per modificarlo rapidamente. Usa Modifica nota nel menu delle opzioni per aggiungere una nota che si applica a tutti i tiri salvezza.',
+            'tutorial.savingthrow.3.body': 'Apri {icon:more-vertical} Impostazioni modulo per aggiungere, rinominare, riordinare o eliminare tiri e assegnare gradi di competenza. Dallo stesso menu, scegli Modifica nota per aggiungere una nota che si applica a tutti i tiri salvezza. Tieni premuto Ctrl e clicca sul modificatore di un tiro per modificarlo rapidamente senza aprire le impostazioni.',
 
             // Tutorial: health
             'tutorial.health.1.title': 'Che cos\'è un modulo Salute?',

@@ -131,9 +131,9 @@ window.CV_TRANSLATIONS['es'] = {
             'tutorial.savingthrow.1.title': '¿Qué es un módulo de Tiradas de Salvación?',
             'tutorial.savingthrow.1.body': 'Un módulo de Tiradas de Salvación hace seguimiento de las defensas reactivas de tu personaje contra efectos dañinos, como una salvación de Fuerza o de Sabiduría. Cada entrada muestra un nombre y un modificador. Haz clic en cualquier tirada para lanzar 1d20 más su modificador en TaleSpire.',
             'tutorial.savingthrow.2.title': 'Rangos de competencia',
-            'tutorial.savingthrow.2.body': 'Puedes activar los rangos de competencia para mostrar en cada tirada un indicador de color que refleje tu nivel de entrenamiento, por ejemplo, I para Inexperto, E para Entrenado o X para Experto. Usa un preajuste de tu sistema de juego o define tus propios rangos en {icon:more-vertical} Ajustes del módulo.',
+            'tutorial.savingthrow.2.body': 'Puedes activar los rangos de competencia para mostrar en cada tirada un indicador de color que refleje tu nivel de entrenamiento, por ejemplo, I para Inexperto, E para Entrenado o X para Experto. Usa un preajuste de tu sistema de juego o define tus propios rangos según tus necesidades.',
             'tutorial.savingthrow.3.title': 'Gestionar tiradas de salvación',
-            'tutorial.savingthrow.3.body': 'Abre {icon:more-vertical} Ajustes del módulo para añadir, renombrar, reordenar o eliminar tiradas y asignar rangos de competencia. Mantén Ctrl y haz clic en el modificador de cualquier tirada para cambiarlo rápidamente. Usa Editar nota en el menú de opciones para añadir una nota que se aplique a todas las tiradas de salvación.',
+            'tutorial.savingthrow.3.body': 'Abre {icon:more-vertical} Ajustes del módulo para añadir, renombrar, reordenar o eliminar tiradas y asignar rangos de competencia. En ese mismo menú, elige Editar nota para añadir una nota que se aplique a todas las tiradas de salvación. Mantén Ctrl y haz clic en el modificador de cualquier tirada para cambiarlo rápidamente sin abrir los ajustes.',
 
             // Tutorial: health
             'tutorial.health.1.title': '¿Qué es un módulo de Salud?',

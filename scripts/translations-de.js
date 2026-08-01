@@ -131,9 +131,9 @@ window.CV_TRANSLATIONS['de'] = {
             'tutorial.savingthrow.1.title': 'Was ist ein Rettungswurf-Modul?',
             'tutorial.savingthrow.1.body': 'Ein Rettungswurf-Modul verfolgt die Abwehrwürfe deines Charakters gegen schädliche Effekte: zum Beispiel Stärke- oder Weisheitswürfe. Jeder Eintrag zeigt einen Namen und einen Modifikator. Klicke auf einen Rettungswurf, um 1d20 plus den Modifikator in TaleSpire zu würfeln.',
             'tutorial.savingthrow.2.title': 'Profizienz-Stufen',
-            'tutorial.savingthrow.2.body': 'Du kannst Profizienz-Stufen aktivieren, um für jeden Rettungswurf ein farbiges Abzeichen anzuzeigen, das dein Ausbildungsniveau angibt, zum Beispiel U für Ungeübt, T für Geübt oder E für Experte. Verwende eine Voreinstellung deines Spielsystems oder definiere eigene Stufen in {icon:more-vertical} Modul-Einstellungen.',
+            'tutorial.savingthrow.2.body': 'Du kannst Profizienz-Stufen aktivieren, um für jeden Rettungswurf ein farbiges Abzeichen anzuzeigen, das dein Ausbildungsniveau angibt, zum Beispiel U für Ungeübt, T für Geübt oder E für Experte. Verwende eine Voreinstellung deines Spielsystems oder definiere eigene Stufen nach deinen Bedürfnissen.',
             'tutorial.savingthrow.3.title': 'Rettungswürfe verwalten',
-            'tutorial.savingthrow.3.body': 'Öffne {icon:more-vertical} Modul-Einstellungen, um Rettungswürfe hinzuzufügen, umzubenennen, neu anzuordnen, zu löschen und Profizienz-Stufen zuzuweisen. Halte Strg und klicke auf den Modifikator eines Rettungswurfs, um ihn schnell zu ändern. Nutze Notiz bearbeiten im Überlaufmenü, um eine Notiz hinzuzufügen, die für alle Rettungswürfe gilt.',
+            'tutorial.savingthrow.3.body': 'Öffne {icon:more-vertical} Modul-Einstellungen, um Rettungswürfe hinzuzufügen, umzubenennen, neu anzuordnen, zu löschen und Profizienz-Stufen zuzuweisen. Wähle im selben Menü Notiz bearbeiten, um eine Notiz hinzuzufügen, die für alle Rettungswürfe gilt. Halte Strg und klicke auf den Modifikator eines Rettungswurfs, um ihn schnell zu ändern, ohne die Einstellungen zu öffnen.',
 
             // Tutorial: health
             'tutorial.health.1.title': 'Was ist ein Gesundheits-Modul?',

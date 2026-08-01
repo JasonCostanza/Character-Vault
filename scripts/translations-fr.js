@@ -131,9 +131,9 @@ window.CV_TRANSLATIONS['fr'] = {
             'tutorial.savingthrow.1.title': 'À quoi sert un module Jets de Sauvegarde ?',
             'tutorial.savingthrow.1.body': 'Un module Jets de Sauvegarde suit les défenses réactives de votre personnage contre les effets néfastes, comme un jet de Vigueur ou de Sagesse. Chaque entrée affiche un nom et un modificateur. Cliquez sur un jet pour lancer 1d20 plus son modificateur dans TaleSpire.',
             'tutorial.savingthrow.2.title': 'Niveaux de maîtrise',
-            'tutorial.savingthrow.2.body': 'Vous pouvez activer les niveaux de maîtrise pour afficher sur chaque jet un badge coloré indiquant votre degré d\'entraînement, par exemple I pour Inexpérimenté, E pour Entraîné ou X pour Expert. Utilisez un préréglage de votre système de jeu ou définissez vos propres niveaux dans {icon:more-vertical} Paramètres du module.',
+            'tutorial.savingthrow.2.body': 'Vous pouvez activer les niveaux de maîtrise pour afficher sur chaque jet un badge coloré indiquant votre degré d\'entraînement, par exemple I pour Inexpérimenté, E pour Entraîné ou X pour Expert. Utilisez un préréglage de votre système de jeu ou définissez vos propres niveaux selon vos besoins.',
             'tutorial.savingthrow.3.title': 'Gérer les jets de sauvegarde',
-            'tutorial.savingthrow.3.body': 'Ouvrez {icon:more-vertical} Paramètres du module pour ajouter, renommer, réordonner ou supprimer des jets et leur assigner des niveaux de maîtrise. Maintenez Ctrl et cliquez sur le modificateur d\'un jet pour le modifier rapidement. Utilisez Modifier la note dans le menu déroulant pour ajouter une note qui s\'applique à tous les jets de sauvegarde.',
+            'tutorial.savingthrow.3.body': 'Ouvrez {icon:more-vertical} Paramètres du module pour ajouter, renommer, réordonner ou supprimer des jets et leur assigner des niveaux de maîtrise. Dans ce même menu, choisissez Modifier la note pour ajouter une note qui s\'applique à tous les jets de sauvegarde. Maintenez Ctrl et cliquez sur le modificateur d\'un jet pour le modifier rapidement sans ouvrir les paramètres.',
 
             // Tutorial: health
             'tutorial.health.1.title': 'À quoi sert un module Santé ?',

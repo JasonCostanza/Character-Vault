@@ -141,7 +141,7 @@ window.CV_TRANSLATIONS['fr'] = {
             'tutorial.health.2.title': 'Subir des dégâts et se soigner',
             'tutorial.health.2.body': 'Pendant le jeu, utilisez le bouton Dégâts pour appliquer des dégâts et le bouton Soin pour récupérer des PV. Les dégâts épuisent d\'abord les PV temporaires avant d\'affecter les PV actuels. Les soins ne restaurent que les PV actuels et sont plafonnés au maximum. Appuyez sur le badge de PV temporaires pour définir une nouvelle valeur.',
             'tutorial.health.3.title': 'Modifier les PV et paramètres',
-            'tutorial.health.3.body': 'Passez en mode Édition pour saisir les valeurs de PV directement. Vous pouvez entrer des calculs simples comme « 40-5 ». Ouvrez {icon:more-vertical} Paramètres du module pour définir un Modificateur de PV maximum pour les buffs ou debuffs, ou pour importer vos PV actuels et maximum depuis la figurine TaleSpire sur le plateau.',
+            'tutorial.health.3.body': 'Maintenez Ctrl et cliquez sur une valeur de PV pour la saisir directement. Vous pouvez entrer des calculs simples comme « 40-5 ». Ouvrez {icon:more-vertical} Paramètres du module pour définir un Modificateur de PV maximum pour les buffs ou debuffs, ou pour importer vos PV actuels et maximum depuis la figurine TaleSpire sur le plateau.',
 
             // Tutorial: level
             'tutorial.level.1.title': 'À quoi sert un module Niveau ?',
@@ -215,7 +215,7 @@ window.CV_TRANSLATIONS['fr'] = {
             'tutorial.condition.1.title': 'Qu\'est-ce qu\'un module Conditions ?',
             'tutorial.condition.1.body': 'Le module Conditions permet de suivre les états et afflictions affectant votre personnage, comme Aveuglé, Effrayé ou Empoisonné. Commencez par choisir un modèle de système de jeu dans {icon:more-vertical} Paramètres du module, ou utilisez Personnalisé pour créer votre propre liste.',
             'tutorial.condition.2.title': 'Appliquer et suivre les conditions',
-            'tutorial.condition.2.body': 'En mode Jeu, cliquez sur le nom d\'une condition pour l\'activer ou la désactiver. Les conditions avec une valeur numérique (comme l\'Épuisement en D&D 5e) affichent un compteur : clic pour augmenter, clic droit pour diminuer. Le bouton Développer ouvre une vue détaillée permettant de définir la valeur directement ou de supprimer la condition.',
+            'tutorial.condition.2.body': 'Cliquez sur le nom d\'une condition pour l\'activer ou la désactiver. Les conditions avec une valeur numérique (comme l\'Épuisement en D&D 5e) affichent un compteur : clic pour augmenter, clic droit pour diminuer. Le bouton Développer ouvre une vue détaillée permettant de définir la valeur directement ou de supprimer la condition.',
             'tutorial.condition.3.title': 'Modèles et conditions personnalisées',
             'tutorial.condition.3.body': 'Ouvrez {icon:more-vertical} Paramètres du module pour changer de modèle de système de jeu ou passer en mode Personnalisé. Dans ce mode, vous pouvez créer vos propres conditions, leur attribuer une description et une icône, et choisir si elles fonctionnent comme un interrupteur ou avec une valeur numérique. Les conditions personnalisées restent toujours disponibles aux côtés des entrées du modèle.',
 
@@ -232,14 +232,14 @@ window.CV_TRANSLATIONS['fr'] = {
             'tutorial.resistance.1.body': 'Le module Résistances suit les immunités, résistances et faiblesses de votre personnage face aux types de dégâts, comme le Feu, le Froid, le Poison ou le Contondant. Chaque entrée affiche une icône, le nom du type de dégât et une valeur optionnelle. Le module est divisé en trois colonnes : Immunités, Résistances et Faiblesses.',
             'tutorial.resistance.2.title': 'Assigner des résistances',
             'tutorial.resistance.2.body': 'Ouvrez {icon:more-vertical} Paramètres du module pour gérer vos résistances. Une zone de préparation liste tous les types de dégâts disponibles. Faites glisser un type vers la colonne Immunités, Résistances ou Faiblesses pour l\'assigner. En déposant dans Immunités, la valeur est automatiquement définie sur Immun ; sinon, saisissez le texte ou le nombre de votre choix.',
-            'tutorial.resistance.3.title': 'Mode Jeu et types personnalisés',
-            'tutorial.resistance.3.body': 'En mode Jeu, cliquez sur une résistance pour basculer son état actif ou inactif. Les entrées inactives sont grisées pour voir d\'un coup d\'œil lesquelles sont en jeu. Ouvrez {icon:more-vertical} Paramètres du module et cliquez sur Créer personnalisé pour ajouter des types de dégâts absents de la liste prédéfinie. Donnez-leur un nom et une icône, ils apparaîtront dans la zone de préparation prêts à être assignés.',
+            'tutorial.resistance.3.title': 'Basculer et types personnalisés',
+            'tutorial.resistance.3.body': 'Cliquez sur une résistance pour basculer son état actif ou inactif. Les entrées inactives sont grisées pour voir d\'un coup d\'œil lesquelles sont en jeu. Ouvrez {icon:more-vertical} Paramètres du module et cliquez sur Créer personnalisé pour ajouter des types de dégâts absents de la liste prédéfinie. Donnez-leur un nom et une icône, ils apparaîtront dans la zone de préparation prêts à être assignés.',
 
             // Tutorial: bio
             'tutorial.bio.1.title': 'Qu\'est-ce qu\'un module Bio ?',
             'tutorial.bio.1.body': 'Le module Bio est la carte d\'identité de votre personnage : portrait, nom, traits physiques et biographie réunis au même endroit. Il est divisé en deux onglets : Aperçu pour l\'essentiel, et Détails pour le passé et la personnalité. Les champs propres à votre système de jeu, comme l\'Héritage en Pathfinder 2e ou le Clan dans Vampire : La Mascarade, apparaissent automatiquement.',
             'tutorial.bio.2.title': 'Ajouter un portrait et remplir les détails',
-            'tutorial.bio.2.body': 'Cliquez sur la zone du portrait pour importer une image (PNG, JPG ou WEBP, jusqu\'à 1 Mo). Remplissez directement des champs comme Race, Âge et Apparence. Les champs vides sont simplement masqués en mode Jeu, donc ne vous inquiétez pas d\'en laisser certains vides. Passez à l\'onglet Détails pour la biographie, les idéaux, les liens et les défauts.',
+            'tutorial.bio.2.body': 'Cliquez sur la zone du portrait pour importer une image (PNG, JPG ou WEBP, jusqu\'à 1 Mo). Les champs vides affichent le repère « Cliquer pour ajouter… », donc ne vous inquiétez pas d\'en laisser certains vides : cliquez dessus pour le remplir, ou maintenez Ctrl et cliquez sur un champ court pour le modifier directement. Passez à l\'onglet Détails pour la biographie, les idéaux, les liens et les défauts.',
             'tutorial.bio.3.title': 'La section Personnalité',
             'tutorial.bio.3.body': 'Dans l\'onglet Aperçu, cliquez sur l\'en-tête Personnalité pour déployer une section repliable regroupant Traits de personnalité, Idéaux, Liens et Défauts. Elle reste repliée par défaut pour garder le module compact. Dépliez-la quand vous souhaitez noter ou consulter ces détails.',
 

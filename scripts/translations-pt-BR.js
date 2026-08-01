@@ -141,7 +141,7 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'tutorial.health.2.title': 'Receber dano e se curar',
             'tutorial.health.2.body': 'Durante o jogo, use o botão Dano para aplicar dano e o botão Curar para recuperar PV. O dano drena primeiro os PV temporários antes de afetar os PV atuais. A cura só restaura os PV atuais e é limitada ao máximo. Toque no emblema de PV temporários para definir um novo valor.',
             'tutorial.health.3.title': 'Editar PV e configurações',
-            'tutorial.health.3.body': 'Mude para o modo Editar para digitar valores de PV diretamente. Você pode inserir operações simples como "40-5". Abra {icon:more-vertical} Configurações do módulo para definir um Modificador de PV Máximos para bônus ou penalidades, ou para importar seus PV atuais e máximos diretamente da miniatura do TaleSpire no tabuleiro.',
+            'tutorial.health.3.body': 'Segure Ctrl e clique em um valor de PV para digitar um novo valor diretamente. Você pode inserir operações simples como "40-5". Abra {icon:more-vertical} Configurações do módulo para definir um Modificador de PV Máximos para bônus ou penalidades, ou para importar seus PV atuais e máximos diretamente da miniatura do TaleSpire no tabuleiro.',
 
             // Tutorial: level
             'tutorial.level.1.title': 'O que é um módulo de Nível?',
@@ -215,7 +215,7 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'tutorial.condition.1.title': 'O que é um módulo de Condições?',
             'tutorial.condition.1.body': 'O módulo de Condições permite acompanhar os estados e aflições que afetam seu personagem, como Cego, Amedrontado ou Envenenado. Comece escolhendo um modelo de sistema de jogo em {icon:more-vertical} Configurações do módulo, ou use Personalizado para criar sua própria lista.',
             'tutorial.condition.2.title': 'Aplicar e rastrear condições',
-            'tutorial.condition.2.body': 'No modo de Jogo, clique no nome de uma condição para ativá-la ou desativá-la. Condições com valor numérico (como Exaustão em D&D 5e) exibem um contador: clique para incrementar, clique direito para decrementar. O botão Expandir abre uma visualização de detalhes onde você pode definir o valor diretamente ou remover a condição.',
+            'tutorial.condition.2.body': 'Clique no nome de uma condição para ativá-la ou desativá-la. Condições com valor numérico (como Exaustão em D&D 5e) exibem um contador: clique para incrementar, clique direito para decrementar. O botão Expandir abre uma visualização de detalhes onde você pode definir o valor diretamente ou remover a condição.',
             'tutorial.condition.3.title': 'Modelos e condições personalizadas',
             'tutorial.condition.3.body': 'Abra {icon:more-vertical} Configurações do módulo para trocar o modelo de sistema de jogo ou alternar para o modo Personalizado. Nesse modo, você pode criar condições próprias, atribuir a cada uma uma descrição e ícone, e escolher se funcionam como alternância ou com valor numérico. Condições personalizadas ficam sempre disponíveis ao lado das entradas do modelo.',
 
@@ -232,14 +232,14 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'tutorial.resistance.1.body': 'O módulo de Resistências rastreia as imunidades, resistências e fraquezas do seu personagem em relação a tipos de dano, como Fogo, Frio, Veneno ou Cortante. Cada entrada exibe um ícone, o nome do tipo de dano e um valor opcional. O módulo é dividido em três colunas: Imunidades, Resistências e Fraquezas.',
             'tutorial.resistance.2.title': 'Atribuir resistências',
             'tutorial.resistance.2.body': 'Abra {icon:more-vertical} Configurações do módulo para gerenciar suas resistências. Uma área de preparação lista todos os tipos de dano disponíveis. Arraste qualquer tipo da área de preparação para a coluna Imunidades, Resistências ou Fraquezas. Ao soltar na coluna Imunidades, o valor é definido automaticamente como Imune; caso contrário, insira qualquer texto ou número.',
-            'tutorial.resistance.3.title': 'Modo de jogo e tipos personalizados',
-            'tutorial.resistance.3.body': 'No modo de Jogo, clique em uma resistência para alternar seu estado ativo ou inativo. Entradas inativas ficam esmaecidas para que você veja de relance quais resistências estão em vigor. Abra {icon:more-vertical} Configurações do módulo e clique em Criar personalizado para adicionar tipos de dano ausentes da lista predefinida. Dê um nome e escolha um ícone: eles aparecerão na área de preparação prontos para atribuição.',
+            'tutorial.resistance.3.title': 'Alternância e tipos personalizados',
+            'tutorial.resistance.3.body': 'Clique em uma resistência para alternar seu estado ativo ou inativo. Entradas inativas ficam esmaecidas para que você veja de relance quais resistências estão em vigor. Abra {icon:more-vertical} Configurações do módulo e clique em Criar personalizado para adicionar tipos de dano ausentes da lista predefinida. Dê um nome e escolha um ícone: eles aparecerão na área de preparação prontos para atribuição.',
 
             // Tutorial: bio
             'tutorial.bio.1.title': 'O que é um módulo de Bio?',
             'tutorial.bio.1.body': 'O módulo Bio é o cartão de identidade do seu personagem: retrato, nome, traços físicos e biografia tudo em um só lugar. Ele é dividido em duas abas: Visão Geral para o básico e Detalhes para histórico e personalidade. Campos específicos do seu sistema de jogo, como Herança em Pathfinder 2e ou Clã em Vampiro: A Máscara, aparecem automaticamente.',
             'tutorial.bio.2.title': 'Adicionando um retrato e preenchendo os detalhes',
-            'tutorial.bio.2.body': 'Clique na área do retrato para enviar uma imagem (PNG, JPG ou WEBP, até 1 MB). Preencha campos como Raça, Idade e Aparência diretamente. Campos vazios simplesmente ficam ocultos no modo de Jogo, então não se preocupe em deixar algo em branco. Mude para a aba Detalhes para biografia, ideais, vínculos e defeitos.',
+            'tutorial.bio.2.body': 'Clique na área do retrato para enviar uma imagem (PNG, JPG ou WEBP, até 1 MB). Campos vazios exibem o espaço reservado "Clique para adicionar…", então não se preocupe em deixar algo em branco: clique nele para preenchê-lo, ou segure Ctrl e clique em um campo curto para editá-lo diretamente. Mude para a aba Detalhes para biografia, ideais, vínculos e defeitos.',
             'tutorial.bio.3.title': 'A seção Personalidade',
             'tutorial.bio.3.body': 'Na aba Visão Geral, clique no cabeçalho Personalidade para expandir uma seção recolhível com Traços de Personalidade, Ideais, Vínculos e Defeitos. Ela permanece recolhida por padrão para manter o módulo compacto. Expanda-a sempre que quiser anotar ou consultar esses detalhes.',
 

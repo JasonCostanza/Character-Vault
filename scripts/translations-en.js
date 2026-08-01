@@ -148,7 +148,7 @@ window.CV_TRANSLATIONS.en = {
             'tutorial.health.2.title': 'Taking Damage and Healing',
             'tutorial.health.2.body': 'During play, use the Dmg button to apply damage and the Heal button to recover HP. Damage drains temporary HP first, then cuts into your current HP. Healing only restores current HP and is capped at your maximum. Tap the temp HP badge to set a new temporary HP value.',
             'tutorial.health.3.title': 'Editing HP and Settings',
-            'tutorial.health.3.body': 'Switch to Edit mode to type HP values directly. You can enter simple math like "40-5". Open {icon:more-vertical} Module Settings to set a Max HP Modifier for buffs or debuffs, or to pull your current and max HP directly from the TaleSpire miniature on the board.',
+            'tutorial.health.3.body': 'Hold Ctrl and click a HP number to type a new value directly. You can enter simple math like "40-5". Open {icon:more-vertical} Module Settings to set a Max HP Modifier for buffs or debuffs, or to pull your current and max HP directly from the TaleSpire miniature on the board.',
 
             // Tutorial: level
             'tutorial.level.1.title': 'What Is a Level Module?',
@@ -222,7 +222,7 @@ window.CV_TRANSLATIONS.en = {
             'tutorial.condition.1.title': 'What Is a Conditions Module?',
             'tutorial.condition.1.body': 'A Conditions module lets you track the status effects and afflictions on your character: things like Blinded, Frightened, or Poisoned. Start by choosing a template in {icon:more-vertical} Module Settings that matches your game system, or use Custom to build your own list.',
             'tutorial.condition.2.title': 'Applying and Tracking Conditions',
-            'tutorial.condition.2.body': 'In Play mode, click a condition\'s name to toggle it on or off. Conditions with a numeric severity (like Exhaustion in D&D 5e) show a counter instead: click the value to increment it, or right-click it to decrease it. The expand button on any condition opens a detail view where you can set the value directly or remove the condition.',
+            'tutorial.condition.2.body': 'Click a condition\'s name to toggle it on or off. Conditions with a numeric severity (like Exhaustion in D&D 5e) show a counter instead: click the value to increment it, or right-click it to decrease it. The expand button on any condition opens a detail view where you can set the value directly or remove the condition.',
             'tutorial.condition.3.title': 'Templates and Custom Conditions',
             'tutorial.condition.3.body': 'Open {icon:more-vertical} Module Settings to switch game system templates or move to Custom. In Custom mode, you can add your own conditions, give each one a description, choose an icon, and pick whether it toggles on/off or tracks a numeric value. Custom conditions you create are always available alongside the template entries.',
 
@@ -239,14 +239,14 @@ window.CV_TRANSLATIONS.en = {
             'tutorial.resistance.1.body': 'The Resistances module tracks your character\'s immunities, resistances, and weaknesses to damage types, like Fire, Cold, Poison, or Bludgeoning. Each entry shows an icon, the damage type\'s name, and an optional value. The module is split into three columns: Immunities, Resistances, and Weaknesses.',
             'tutorial.resistance.2.title': 'Assigning Resistances',
             'tutorial.resistance.2.body': 'Open {icon:more-vertical} Module Settings to manage your resistances. A staging area lists all available damage types. Drag any type from the staging area into the Immunities, Resistances, or Weaknesses column. When you drop into the Immunity column the value is set to Immune automatically; otherwise you can enter any text or number you like.',
-            'tutorial.resistance.3.title': 'Play Mode and Custom Types',
-            'tutorial.resistance.3.body': 'In Play mode, click any resistance to toggle it active or inactive. Inactive entries are dimmed so you can see at a glance which resistances are currently in effect. Open {icon:more-vertical} Module Settings and click Create Custom to add damage types not in the predefined list. Give it a name, pick an icon, and it will appear in the staging area ready to assign.',
+            'tutorial.resistance.3.title': 'Toggling and Custom Types',
+            'tutorial.resistance.3.body': 'Click any resistance to toggle it active or inactive. Inactive entries are dimmed so you can see at a glance which resistances are currently in effect. Open {icon:more-vertical} Module Settings and click Create Custom to add damage types not in the predefined list. Give it a name, pick an icon, and it will appear in the staging area ready to assign.',
 
             // Tutorial: bio
             'tutorial.bio.1.title': 'What Is a Bio Module?',
             'tutorial.bio.1.body': 'The Bio module is your character\'s identity card: portrait, name, physical traits, and biography all in one place. It\'s split into two tabs: Overview for the basics, and Details for background and personality. Fields specific to your game system, like Heritage in Pathfinder 2e or Clan in Vampire: The Masquerade, appear automatically.',
             'tutorial.bio.2.title': 'Adding a Portrait and Filling In Details',
-            'tutorial.bio.2.body': 'Click the portrait area to upload an image (PNG, JPG, or WEBP, up to 1 MB). Fill in fields like Race, Age, and Appearance directly. Empty fields are simply hidden in Play mode, so don\'t worry about leaving anything blank. Switch to the Details tab for biography, ideals, bonds, and flaws.',
+            'tutorial.bio.2.body': 'Click the portrait area to upload an image (PNG, JPG, or WEBP, up to 1 MB). Empty fields show a "Click to add…" placeholder, so don\'t worry about leaving anything blank: click one to fill it in, or hold Ctrl and click a short field to edit it in place. Switch to the Details tab for biography, ideals, bonds, and flaws.',
             'tutorial.bio.3.title': 'The Personality Section',
             'tutorial.bio.3.body': 'On the Overview tab, click the Personality header to expand a collapsible section for Personality Traits, Ideals, Bonds, and Flaws. It stays collapsed by default to keep the module compact. Expand it whenever you want to jot down or reference those details.',
 

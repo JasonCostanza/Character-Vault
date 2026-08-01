@@ -104,6 +104,12 @@ window.CV_TRANSLATIONS['ru'] = {
             'module.appearance': 'Внешний вид',
             'module.cancel': 'Отмена',
             'module.close': 'Закрыть',
+            'module.help': 'Помощь',
+
+            // Tutorial modal
+            'tutorial.previous': 'Назад',
+            'tutorial.next': 'Далее',
+            'tutorial.close': 'Закрыть',
 
             'type.abilities': 'Навыки',
             'type.actions': 'Трекер Действий',

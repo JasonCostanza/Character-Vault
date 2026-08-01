@@ -673,6 +673,11 @@
             t: 's',
             d: '<circle cx="12" cy="12" r="10"/> <path d="M4.929 4.929 19.07 19.071"/>',
         },
+        'help-circle': {
+            v: '0 0 24 24',
+            t: 's',
+            d: '<circle cx="12" cy="12" r="10"/> <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/> <line x1="12" x2="12.01" y1="17" y2="17"/>',
+        },
     };
 
     // Maps legacy CV_ICONS save-data keys (pre-icons.js) to current cvIcon names,

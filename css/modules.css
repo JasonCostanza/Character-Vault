@@ -1608,3 +1608,40 @@ textarea.cv-modal-input::-webkit-scrollbar-thumb { background-color: var(--cv-te
     padding: 4px 0;
     user-select: none;
 }
+
+/* ── Tutorial Modal ── */
+.tutorial-footer {
+    justify-content: space-between;
+}
+
+.tutorial-body-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--cv-text-secondary);
+    user-select: none;
+}
+
+.tutorial-body-text .icon {
+    vertical-align: middle;
+    margin: 0 2px;
+}
+
+.tutorial-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding-top: 8px;
+    user-select: none;
+}
+
+.tutorial-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cv-text-muted);
+    transition: background 0.15s;
+}
+
+.tutorial-dot.active {
+    background: var(--cv-accent);
+}

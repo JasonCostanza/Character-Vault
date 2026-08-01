@@ -104,6 +104,12 @@ window.CV_TRANSLATIONS['de'] = {
             'module.appearance': 'Erscheinungsbild',
             'module.cancel': 'Abbrechen',
             'module.close': 'Schließen',
+            'module.help': 'Hilfe',
+
+            // Tutorial modal
+            'tutorial.previous': 'Zurück',
+            'tutorial.next': 'Weiter',
+            'tutorial.close': 'Schließen',
 
             'type.abilities': 'Fähigkeiten',
             'type.actions': 'Aktionsverfolgung',

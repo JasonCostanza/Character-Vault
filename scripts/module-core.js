@@ -597,6 +597,10 @@
                 icon: cvIcon('pencil', 14),
             },
             ...(MODULE_TYPES[data?.type]?.overflowMenuItems?.(moduleEl, data) ?? []),
+            // ── Help entry (skip for hline/spacer) ──
+            ...(data?.type !== 'hline' && data?.type !== 'spacer'
+                ? [{ onClick: () => openTutorialModal(data.type), label: t('module.help'), icon: cvIcon('help-circle', 14) }]
+                : []),
             {
                 onClick: () => openDeleteConfirm(data.id),
                 label: t('module.deleteModule'),

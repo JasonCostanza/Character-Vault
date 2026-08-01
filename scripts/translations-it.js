@@ -192,6 +192,30 @@ window.CV_TRANSLATIONS['it'] = {
             'tutorial.text.3.title': 'Riferimenti ai valori in tempo reale',
             'tutorial.text.3.body': 'Puoi incorporare riferimenti ai valori del tuo personaggio direttamente nel testo usando token ${variabile}. Questi si aggiornano automaticamente quando il valore referenziato cambia — utile per la percezione passiva, la capacità di carico o altri valori derivati da menzionare nel testo.',
 
+            // Tutorial: spells
+            'tutorial.spells.1.title': 'Che cos\'è un modulo Magie?',
+            'tutorial.spells.1.body': 'Il modulo Magie tiene traccia di tutti gli incantesimi del tuo personaggio, organizzati in categorie come Trucchi e Magie di 1° livello. In cima, una riga di gettoni mostra gli slot di magia per ogni livello: i gettoni pieni sono disponibili, quelli vuoti sono esauriti. Fai clic su un gettone per alternarne lo stato.',
+            'tutorial.spells.2.title': 'Configurare gli slot di magia',
+            'tutorial.spells.2.body': 'Apri {icon:more-vertical} Impostazioni modulo per aggiungere livelli di slot e definire quanti slot hai per ciascun livello. Se una categoria è collegata a un livello di slot, nella sua intestazione appare una riga di gettoni — questi condividono lo stesso stato della barra superiore, così puoi tenere traccia degli slot direttamente accanto alle tue magie.',
+            'tutorial.spells.3.title': 'Aggiungere categorie e magie',
+            'tutorial.spells.3.body': 'Apri {icon:more-vertical} per aggiungere una categoria (come Trucchi o Magie di 2° livello) o una magia direttamente. Ogni categoria può essere collegata a un livello di slot così che lanciarla consumi le risorse automaticamente. Apri {icon:more-vertical} Impostazioni modulo per rinominare le categorie e modificare il livello collegato.',
+            'tutorial.spells.4.title': 'Lanciare una magia',
+            'tutorial.spells.4.body': 'Fai clic sul pulsante fulmine (Lancia) su una riga di magia per inviare tutti i dadi di quell\'incantesimo direttamente a TaleSpire. Il tiro e il risultato vengono registrati nel Registro attività. Se Consuma slot automaticamente è attivo nelle impostazioni, lanciare la magia segnerà uno slot come esaurito. Fai clic sulla freccia di espansione su qualsiasi riga per visualizzare la descrizione completa.',
+            'tutorial.spells.5.title': 'Personalizzare le colonne',
+            'tutorial.spells.5.body': 'Gli attributi sono colonne condivise che appaiono per ogni magia — come Gittata, Durata o Danni. Apri {icon:more-vertical} Impostazioni modulo per aggiungere, bloccare, sbloccare, riordinare o eliminare le colonne. I valori degli attributi possono contenere testo, numeri o notazione per i dadi come 2d6+3. Fai clic sull\'intestazione di una colonna per ordinare le magie in base a quel campo.',
+
+            // Tutorial: weapons
+            'tutorial.weapons.1.title': 'Che cos\'è un modulo Armi?',
+            'tutorial.weapons.1.body': 'Il modulo Armi mostra l\'equipaggiamento del tuo personaggio come schede in un layout a due colonne: mano principale e mano secondaria. Ogni scheda indica il nome dell\'arma, il bonus di attacco, i danni e i tratti rilevanti. Fai clic su una scheda per aprire il pannello delle azioni e iniziare a tirare i dadi.',
+            'tutorial.weapons.2.title': 'Effettuare un attacco',
+            'tutorial.weapons.2.body': 'Fai clic su una scheda arma per aprire il pannello delle azioni. Fai clic su Attacca per tirare 1d20 più il tuo bonus di attacco in TaleSpire. Ogni tipo di danno ha il proprio pulsante per essere tirato separatamente — utile quando il GM deve applicare resistenza o vulnerabilità a un tipo specifico. I risultati vengono registrati nel Registro attività.',
+            'tutorial.weapons.3.title': 'Aggiungere e modificare armi',
+            'tutorial.weapons.3.body': 'Apri {icon:more-vertical} e scegli Aggiungi arma per crearne una nuova. Per modificare un\'arma esistente, tieni premuto Ctrl e fai clic sulla scheda per aprire il modulo di modifica direttamente. Lì puoi cambiare nome, dadi danno, modificatore di caratteristica, competenza, tratti, gittata e munizioni. Anche gli scudi si aggiungono qui e tracciano il bonus CA e i PF dello scudo.',
+            'tutorial.weapons.4.title': 'Bonus di attacco e competenza',
+            'tutorial.weapons.4.body': 'Il bonus di attacco di un\'arma viene calcolato automaticamente dal modificatore di caratteristica collegato — come Forza o Destrezza — più il bonus di competenza quando l\'opzione Competente è attiva. Se hai bisogno di un valore diverso, come un bonus situazionale o una regola della casa, imposta un Valore fisso per il bonus di attacco nel modulo di modifica.',
+            'tutorial.weapons.5.title': 'Tratti, gittata e munizioni',
+            'tutorial.weapons.5.body': 'I tratti appaiono come piccole etichette su ogni scheda arma, indicando proprietà come Finesse, Versatile o Pesante. Le armi a distanza mostrano un contatore di munizioni accanto alla gittata; Ctrl+clic sul contatore permette di modificarlo direttamente senza aprire il modulo. Le armi a due mani occupano entrambe le mani — nella colonna della mano secondaria appare una scheda segnaposto per indicare che quella mano è impegnata.',
+
             // Module type labels
             'type.abilities': 'Abilità',
             'type.actions': 'Tracciatore Azioni',

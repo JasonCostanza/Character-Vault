@@ -187,6 +187,30 @@ window.CV_TRANSLATIONS['es'] = {
             'tutorial.text.3.title': 'Referencias de valores en vivo',
             'tutorial.text.3.body': 'Puedes insertar referencias a los valores de tu personaje directamente en el texto usando tokens ${variable}. Estos se actualizan automáticamente cuando cambia el valor referenciado — útil para la percepción pasiva, la carga máxima u otros valores derivados que quieras mencionar en el texto.',
 
+            // Tutorial: spells
+            'tutorial.spells.1.title': '¿Qué es un módulo de Conjuros?',
+            'tutorial.spells.1.body': 'El módulo de Conjuros rastrea todos los conjuros de tu personaje, organizados en categorías como Trucos y Conjuros de nivel 1. En la parte superior, una fila de círculos muestra tus espacios de conjuro para cada nivel: los círculos rellenos están disponibles, los vacíos están gastados. Haz clic en un círculo para alternar el estado del espacio.',
+            'tutorial.spells.2.title': 'Configurar espacios de conjuro',
+            'tutorial.spells.2.body': 'Abre {icon:more-vertical} Ajustes del módulo para añadir niveles de espacio y establecer cuántos tienes en cada uno. Si una categoría está vinculada a un nivel de espacio, aparecerá una fila de círculos en su cabecera — esos círculos comparten el mismo estado que la barra superior, permitiéndote rastrear los espacios junto a tus conjuros.',
+            'tutorial.spells.3.title': 'Añadir categorías y conjuros',
+            'tutorial.spells.3.body': 'Abre {icon:more-vertical} para añadir una categoría (como Trucos o Conjuros de nivel 2) o un conjuro directamente. Cada categoría puede vincularse a un nivel de espacio para que lanzarla descuente los recursos automáticamente. Abre {icon:more-vertical} Ajustes del módulo para renombrar categorías y cambiar su nivel vinculado en cualquier momento.',
+            'tutorial.spells.4.title': 'Lanzar un conjuro',
+            'tutorial.spells.4.body': 'Haz clic en el botón rayo (Lanzar) de cualquier fila para enviar todos los dados de ese conjuro directamente a TaleSpire. La tirada y el resultado se registran en el Registro de actividad. Si Gastar espacios automáticamente está activado en los ajustes, lanzar el conjuro marcará un espacio como gastado. Haz clic en el icono de expansión de cualquier fila para ver la descripción completa.',
+            'tutorial.spells.5.title': 'Personalizar columnas de conjuros',
+            'tutorial.spells.5.body': 'Los atributos son columnas compartidas que aparecen en todos los conjuros — como Alcance, Duración o Daño. Abre {icon:more-vertical} Ajustes del módulo para añadir, fijar, desfijar, reordenar o eliminar columnas. Los valores de atributo admiten texto, números o notación de dados como 2d6+3. Haz clic en cualquier cabecera de columna para ordenar los conjuros por ese campo.',
+
+            // Tutorial: weapons
+            'tutorial.weapons.1.title': '¿Qué es un módulo de Armas?',
+            'tutorial.weapons.1.body': 'El módulo de Armas muestra el equipo de tu personaje como tarjetas en un diseño de mano principal y mano secundaria. Cada tarjeta muestra el nombre del arma, el bonificador de ataque, el daño y los rasgos relevantes. Haz clic en una tarjeta para abrir el panel de acción y comenzar a tirar dados.',
+            'tutorial.weapons.2.title': 'Realizar un ataque',
+            'tutorial.weapons.2.body': 'Haz clic en una tarjeta de arma para abrir su panel de acción. Haz clic en Atacar para tirar 1d20 más tu bonificador de ataque en TaleSpire. Cada tipo de daño tiene su propio botón para tirarlos por separado — útil cuando el DJ necesita aplicar resistencia o vulnerabilidad solo a un tipo. Los resultados se registran en el Registro de actividad.',
+            'tutorial.weapons.3.title': 'Añadir y editar armas',
+            'tutorial.weapons.3.body': 'Abre {icon:more-vertical} y elige Añadir arma para crear una nueva. Para editar un arma existente, mantén pulsado Ctrl y haz clic en su tarjeta para abrir el formulario de edición directamente. Allí puedes cambiar el nombre, los dados de daño, el modificador de característica, la competencia, los rasgos, el alcance y la munición. Los escudos también se añaden aquí y rastrean el bonificador de CA y los PG del escudo.',
+            'tutorial.weapons.4.title': 'Bonificadores de ataque y competencia',
+            'tutorial.weapons.4.body': 'El bonificador de ataque se calcula automáticamente a partir del modificador de característica vinculado — como Fuerza o Destreza — más el bonificador de competencia cuando la opción Competente está activada. Si necesitas un valor diferente, como un bonificador situacional o una regla de la casa, establece una Anulación del bonificador de ataque en el formulario de edición.',
+            'tutorial.weapons.5.title': 'Rasgos, alcance y munición',
+            'tutorial.weapons.5.body': 'Los rasgos aparecen como pequeñas etiquetas en cada tarjeta de arma e indican propiedades como Finura, Versátil o Pesada. Las armas a distancia muestran un contador de munición junto al alcance; Ctrl+clic en el contador permite ajustarlo directamente sin abrir el formulario. Las armas de dos manos ocupan ambas manos — aparece una tarjeta de marcador de posición en la mano secundaria para indicar que esa mano está ocupada.',
+
             'type.abilities': 'Habilidades',
             'type.actions': 'Rastreador de Acciones',
             'type.activity': 'Registro de Actividad',

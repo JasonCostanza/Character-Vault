@@ -67,6 +67,24 @@
         { titleKey: 'tutorial.text.3.title', bodyKey: 'tutorial.text.3.body' },
     ];
 
+    // Tutorial: spells
+    TUTORIALS.spells = [
+        { titleKey: 'tutorial.spells.1.title', bodyKey: 'tutorial.spells.1.body' },
+        { titleKey: 'tutorial.spells.2.title', bodyKey: 'tutorial.spells.2.body' },
+        { titleKey: 'tutorial.spells.3.title', bodyKey: 'tutorial.spells.3.body' },
+        { titleKey: 'tutorial.spells.4.title', bodyKey: 'tutorial.spells.4.body' },
+        { titleKey: 'tutorial.spells.5.title', bodyKey: 'tutorial.spells.5.body' },
+    ];
+
+    // Tutorial: weapons
+    TUTORIALS.weapons = [
+        { titleKey: 'tutorial.weapons.1.title', bodyKey: 'tutorial.weapons.1.body' },
+        { titleKey: 'tutorial.weapons.2.title', bodyKey: 'tutorial.weapons.2.body' },
+        { titleKey: 'tutorial.weapons.3.title', bodyKey: 'tutorial.weapons.3.body' },
+        { titleKey: 'tutorial.weapons.4.title', bodyKey: 'tutorial.weapons.4.body' },
+        { titleKey: 'tutorial.weapons.5.title', bodyKey: 'tutorial.weapons.5.body' },
+    ];
+
     function renderTutorialText(key) {
         return t(key).replace(/\{icon:(\w[\w-]*)\}/g, (_, name) => cvIcon(name, 14));
     }

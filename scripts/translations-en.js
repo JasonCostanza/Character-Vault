@@ -194,6 +194,30 @@ window.CV_TRANSLATIONS.en = {
             'tutorial.text.3.title': 'Live Stat References',
             'tutorial.text.3.body': 'You can embed references to your character\'s values directly in your text using ${variable} tokens. These update automatically whenever the referenced value changes — useful for noting passive perception, carrying capacity, or any derived value you want to track in prose.',
 
+            // Tutorial: spells
+            'tutorial.spells.1.title': 'What Is a Spells Module?',
+            'tutorial.spells.1.body': 'The Spells module tracks every spell your character can cast, organized into categories like Cantrips and Level 1 Spells. At the top, a row of pips shows your spell slots for each level: filled pips are available, hollow pips are spent. Click a pip to toggle a slot between available and spent.',
+            'tutorial.spells.2.title': 'Setting Up Spell Slots',
+            'tutorial.spells.2.body': 'Open {icon:more-vertical} Module Settings to add slot levels and set how many slots you have at each level. If a category is linked to a slot level, a matching pip row appears in that category\'s header — those pips share the same state as the top bar so you can track slots right alongside your spells.',
+            'tutorial.spells.3.title': 'Adding Categories and Spells',
+            'tutorial.spells.3.body': 'Open {icon:more-vertical} to add a category (like Cantrips or Level 2 Spells) or add a spell directly. Each category can be linked to a slot level so casting automatically tracks your resources. Open {icon:more-vertical} Module Settings to rename categories and change their linked slot level at any time.',
+            'tutorial.spells.4.title': 'Casting a Spell',
+            'tutorial.spells.4.body': 'Click the lightning bolt Cast button on a spell row to send all of that spell\'s dice directly to TaleSpire. The roll and result are recorded in your Activity Log. If Auto-Spend Slots is on in settings, casting marks one slot as spent automatically. Click the expand chevron on any row to show the spell\'s full description.',
+            'tutorial.spells.5.title': 'Customizing Spell Columns',
+            'tutorial.spells.5.body': 'Attributes are shared columns that appear across every spell — things like Range, Duration, or Damage. Open {icon:more-vertical} Module Settings to add, pin, unpin, reorder, or delete columns. Attribute values can hold plain text, numbers, or dice notation like 2d6+3. Click any column header to sort spells by that field.',
+
+            // Tutorial: weapons
+            'tutorial.weapons.1.title': 'What Is a Weapons Module?',
+            'tutorial.weapons.1.body': 'The Weapons module holds your character\'s equipped weapons as cards arranged in a main-hand and off-hand layout. Each card shows the weapon\'s name, attack bonus, damage, and traits. Click a weapon card to open the action panel and start rolling.',
+            'tutorial.weapons.2.title': 'Rolling an Attack',
+            'tutorial.weapons.2.body': 'Click a weapon card to open its action panel. Click Attack to roll 1d20 plus your attack bonus in TaleSpire. Each damage type has its own button so you can roll them separately — useful when the GM needs to apply resistance or weakness to one type but not another. Results are recorded in your Activity Log.',
+            'tutorial.weapons.3.title': 'Adding and Editing Weapons',
+            'tutorial.weapons.3.body': 'Open {icon:more-vertical} and choose Add Weapon to create a new one. To edit an existing weapon, hold Ctrl and click its card to open the edit form directly. From there you can change the name, damage dice, ability modifier, proficiency, traits, range, and ammo count. Shields are added here too and track AC bonus and shield HP instead of an attack.',
+            'tutorial.weapons.4.title': 'Attack Bonuses and Proficiency',
+            'tutorial.weapons.4.body': 'A weapon\'s attack bonus is computed automatically from the linked ability modifier — like Strength or Dexterity — plus your proficiency bonus when the Proficient option is on. If you need a different value, such as a situational bonus or a homebrew weapon, set an Attack Bonus Override in the edit form to replace the automatic calculation.',
+            'tutorial.weapons.5.title': 'Traits, Range, and Ammo',
+            'tutorial.weapons.5.body': 'Traits appear as small chips on each weapon card, indicating properties like Finesse, Versatile, or Heavy. Ranged weapons show an ammo counter next to the range; Ctrl+click the counter to adjust it directly without opening the edit form. Two-handed weapons occupy both hands — a placeholder card appears in the off-hand slot to show that hand is in use.',
+
             // Module type labels
             'type.abilities': 'Abilities',
             'type.actions': 'Action Tracker',

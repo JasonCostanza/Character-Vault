@@ -187,6 +187,30 @@ window.CV_TRANSLATIONS['de'] = {
             'tutorial.text.3.title': 'Live-Werte einbetten',
             'tutorial.text.3.body': 'Du kannst Verweise auf Charakterwerte direkt in deinen Text einbetten, indem du ${Variable}-Token verwendest. Diese werden automatisch aktualisiert, wenn sich der referenzierte Wert ändert — nützlich für Passivwahrnehmung, Traglast oder andere abgeleitete Werte, die du im Fließtext festhalten möchtest.',
 
+            // Tutorial: spells
+            'tutorial.spells.1.title': 'Was ist ein Zauber-Modul?',
+            'tutorial.spells.1.body': 'Das Zauber-Modul verfolgt alle Zauber deines Charakters, geordnet in Kategorien wie Zaubertricks und Zauber des 1. Grades. Am oberen Rand zeigt eine Reihe von Punkten deine Zauberspiegelpunkte an: gefüllte Punkte sind verfügbar, leere Punkte verbraucht. Klicke auf einen Punkt, um einen Slot als verwendet oder verfügbar zu markieren.',
+            'tutorial.spells.2.title': 'Zauberspiegelpunkte einrichten',
+            'tutorial.spells.2.body': 'Öffne {icon:more-vertical} Modul-Einstellungen, um Zaubergrade hinzuzufügen und festzulegen, wie viele Slots du auf jedem Grad hast. Wenn eine Kategorie mit einem Zaubergrad verknüpft ist, erscheint in der Kopfzeile der Kategorie eine passende Punktreihe — diese Punkte teilen denselben Zustand wie die obere Leiste, sodass du Slots direkt neben deinen Zaubern verfolgen kannst.',
+            'tutorial.spells.3.title': 'Kategorien und Zauber hinzufügen',
+            'tutorial.spells.3.body': 'Öffne {icon:more-vertical}, um eine Kategorie (wie Zaubertricks oder Zauber des 2. Grades) oder direkt einen Zauber hinzuzufügen. Jede Kategorie kann mit einem Zaubergrad verknüpft werden, damit das Wirken automatisch deine Ressourcen verfolgt. Öffne {icon:more-vertical} Modul-Einstellungen, um Kategorien umzubenennen und ihren Zaubergrad zu ändern.',
+            'tutorial.spells.4.title': 'Einen Zauber wirken',
+            'tutorial.spells.4.body': 'Klicke auf die Blitz-Schaltfläche (Wirken) in einer Zauberzeile, um alle Würfel dieses Zaubers direkt an TaleSpire zu senden. Wurf und Ergebnis werden im Aktivitätsprotokoll festgehalten. Wenn Slots automatisch ausgeben in den Einstellungen aktiviert ist, wird beim Wirken automatisch ein Slot als verbraucht markiert. Klicke auf den Pfeil einer Zeile, um die vollständige Zauberbeschreibung anzuzeigen.',
+            'tutorial.spells.5.title': 'Zauberspalten anpassen',
+            'tutorial.spells.5.body': 'Attribute sind gemeinsame Spalten, die für jeden Zauber angezeigt werden — z.B. Reichweite, Dauer oder Schaden. Öffne {icon:more-vertical} Modul-Einstellungen, um Spalten hinzuzufügen, anzuheften, zu lösen, neu anzuordnen oder zu löschen. Attributwerte können Text, Zahlen oder Würfelnotation wie 2W6+3 enthalten. Klicke auf eine Spaltenüberschrift, um Zauber nach diesem Feld zu sortieren.',
+
+            // Tutorial: weapons
+            'tutorial.weapons.1.title': 'Was ist ein Waffen-Modul?',
+            'tutorial.weapons.1.body': 'Das Waffen-Modul enthält die Ausrüstung deines Charakters als Karten in einem Zweihand-Layout mit Haupthand und Nebenhand. Jede Karte zeigt Name, Angriffsbonus, Schaden und Eigenschaften der Waffe. Klicke auf eine Waffenkarte, um das Aktionspanel zu öffnen und zu würfeln.',
+            'tutorial.weapons.2.title': 'Einen Angriff würfeln',
+            'tutorial.weapons.2.body': 'Klicke auf eine Waffenkarte, um ihr Aktionspanel zu öffnen. Klicke Angriff, um 1W20 plus deinen Angriffsbonus in TaleSpire zu würfeln. Jeder Schadenstyp hat eine eigene Schaltfläche, damit du sie einzeln würfeln kannst — hilfreich, wenn ein Spielleiter Resistenz oder Schwäche nur auf einen Typ anwenden muss. Ergebnisse werden im Aktivitätsprotokoll festgehalten.',
+            'tutorial.weapons.3.title': 'Waffen hinzufügen und bearbeiten',
+            'tutorial.weapons.3.body': 'Öffne {icon:more-vertical} und wähle Waffe hinzufügen. Um eine vorhandene Waffe zu bearbeiten, halte Strg gedrückt und klicke ihre Karte, um das Bearbeitungsformular direkt zu öffnen. Dort kannst du Name, Schadenswürfel, Fähigkeitsmodifikator, Übungsgrad, Eigenschaften, Reichweite und Munitionsvorrat ändern. Schilde werden hier ebenfalls hinzugefügt und verfolgen Rüstungsklassenbonus und Schildtrefferpunkte.',
+            'tutorial.weapons.4.title': 'Angriffsboni und Übung',
+            'tutorial.weapons.4.body': 'Der Angriffsbonus einer Waffe wird automatisch aus dem verknüpften Fähigkeitsmodifikator — z.B. Stärke oder Geschicklichkeit — plus dem Übungsbonus berechnet, wenn die Option Geübt aktiviert ist. Wenn du einen anderen Wert benötigst — für einen situativen Bonus oder eine Hausregel — lege im Bearbeitungsformular einen Angriffsbonus-Override fest, um die automatische Berechnung zu ersetzen.',
+            'tutorial.weapons.5.title': 'Eigenschaften, Reichweite und Munition',
+            'tutorial.weapons.5.body': 'Eigenschaften erscheinen als kleine Chips auf jeder Waffenkarte und zeigen Merkmale wie Finesse, Vielseitig oder Schwer an. Fernkampfwaffen zeigen einen Munitionszähler neben der Reichweite; Strg+Klick auf den Zähler passt ihn direkt an, ohne das Bearbeitungsformular zu öffnen. Zweihändige Waffen belegen beide Hände — in der Nebenhand erscheint eine Platzhalterkarte, die anzeigt, dass diese Hand belegt ist.',
+
             'type.abilities': 'Fähigkeiten',
             'type.actions': 'Aktionsverfolgung',
             'type.activity': 'Aktivitätsprotokoll',

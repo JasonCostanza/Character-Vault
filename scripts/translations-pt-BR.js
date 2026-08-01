@@ -187,6 +187,30 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'tutorial.text.3.title': 'Referências de valores ao vivo',
             'tutorial.text.3.body': 'Você pode incorporar referências a valores do personagem diretamente no texto usando tokens ${variável}. Esses tokens se atualizam automaticamente quando o valor referenciado muda — útil para percepção passiva, capacidade de carga ou outros valores derivados que você queira mencionar no texto.',
 
+            // Tutorial: spells
+            'tutorial.spells.1.title': 'O que é um módulo de Magias?',
+            'tutorial.spells.1.body': 'O módulo de Magias rastreia todos os feitiços do seu personagem, organizados em categorias como Truques e Magias de 1º nível. No topo, uma fileira de marcadores mostra seus espaços de magia para cada nível: marcadores preenchidos estão disponíveis, os vazios estão gastos. Clique em um marcador para alternar o estado do espaço.',
+            'tutorial.spells.2.title': 'Configurar espaços de magia',
+            'tutorial.spells.2.body': 'Abra {icon:more-vertical} Configurações do módulo para adicionar níveis de espaço e definir quantos você tem em cada nível. Se uma categoria estiver vinculada a um nível de espaço, uma fileira de marcadores aparecerá no cabeçalho da categoria — esses marcadores compartilham o mesmo estado da barra superior, permitindo rastrear os espaços diretamente ao lado das suas magias.',
+            'tutorial.spells.3.title': 'Adicionar categorias e magias',
+            'tutorial.spells.3.body': 'Abra {icon:more-vertical} para adicionar uma categoria (como Truques ou Magias de 2º nível) ou uma magia diretamente. Cada categoria pode ser vinculada a um nível de espaço para que conjurá-la consuma recursos automaticamente. Abra {icon:more-vertical} Configurações do módulo para renomear categorias e alterar o nível vinculado a qualquer momento.',
+            'tutorial.spells.4.title': 'Conjurar uma magia',
+            'tutorial.spells.4.body': 'Clique no botão raio (Conjurar) em uma linha de magia para enviar todos os dados daquele feitiço diretamente ao TaleSpire. A rolagem e o resultado são registrados no Registro de atividade. Se Gastar espaços automaticamente estiver ativado nas configurações, conjurar marcará um espaço como gasto. Clique na seta de expansão de qualquer linha para ver a descrição completa do feitiço.',
+            'tutorial.spells.5.title': 'Personalizar colunas de magia',
+            'tutorial.spells.5.body': 'Atributos são colunas compartilhadas que aparecem em todos os feitiços — como Alcance, Duração ou Dano. Abra {icon:more-vertical} Configurações do módulo para adicionar, fixar, desafixar, reordenar ou excluir colunas. Os valores dos atributos podem ser texto, números ou notação de dados como 2d6+3. Clique em qualquer cabeçalho de coluna para ordenar as magias por aquele campo.',
+
+            // Tutorial: weapons
+            'tutorial.weapons.1.title': 'O que é um módulo de Armas?',
+            'tutorial.weapons.1.body': 'O módulo de Armas exibe o equipamento do seu personagem como fichas em um layout de mão principal e mão secundária. Cada ficha mostra o nome da arma, o bônus de ataque, o dano e os traços relevantes. Clique em uma ficha para abrir o painel de ação e começar a rolar os dados.',
+            'tutorial.weapons.2.title': 'Realizar um ataque',
+            'tutorial.weapons.2.body': 'Clique em uma ficha de arma para abrir seu painel de ação. Clique em Atacar para rolar 1d20 mais seu bônus de ataque no TaleSpire. Cada tipo de dano tem seu próprio botão para ser rolado separadamente — útil quando o Mestre precisa aplicar resistência ou vulnerabilidade a um tipo específico. Os resultados são registrados no Registro de atividade.',
+            'tutorial.weapons.3.title': 'Adicionar e editar armas',
+            'tutorial.weapons.3.body': 'Abra {icon:more-vertical} e escolha Adicionar arma para criar uma nova. Para editar uma arma existente, segure Ctrl e clique na ficha para abrir o formulário de edição diretamente. Lá você pode alterar o nome, os dados de dano, o modificador de atributo, a proficiência, os traços, o alcance e a munição. Escudos também são adicionados aqui e rastreiam o bônus de CA e os PV do escudo.',
+            'tutorial.weapons.4.title': 'Bônus de ataque e proficiência',
+            'tutorial.weapons.4.body': 'O bônus de ataque de uma arma é calculado automaticamente a partir do modificador de atributo vinculado — como Força ou Destreza — mais o bônus de proficiência quando a opção Proficiente está ativa. Se precisar de um valor diferente, como um bônus situacional ou uma regra da casa, defina uma Substituição do bônus de ataque no formulário de edição.',
+            'tutorial.weapons.5.title': 'Traços, alcance e munição',
+            'tutorial.weapons.5.body': 'Os traços aparecem como pequenos emblemas em cada ficha de arma, indicando propriedades como Finesse, Versátil ou Pesada. Armas de longa distância mostram um contador de munição ao lado do alcance; Ctrl+clique no contador permite ajustá-lo diretamente sem abrir o formulário. Armas de duas mãos ocupam ambas as mãos — uma ficha marcadora aparece na coluna da mão secundária para indicar que aquela mão está ocupada.',
+
             'type.abilities': 'Habilidades',
             'type.actions': 'Rastreador de Ações',
             'type.activity': 'Registro de Atividade',

@@ -187,6 +187,30 @@ window.CV_TRANSLATIONS['fr'] = {
             'tutorial.text.3.title': 'Références de valeurs en direct',
             'tutorial.text.3.body': 'Vous pouvez insérer des références aux valeurs de votre personnage directement dans le texte avec des tokens ${variable}. Ceux-ci se mettent à jour automatiquement quand la valeur référencée change — utile pour la perception passive, la capacité de charge ou d\'autres valeurs dérivées à mentionner dans le texte.',
 
+            // Tutorial: spells
+            'tutorial.spells.1.title': 'Qu\'est-ce qu\'un module de Sorts ?',
+            'tutorial.spells.1.body': 'Le module de Sorts suit tous les sorts de votre personnage, organisés en catégories comme Tours et Sorts de niveau 1. En haut, une rangée de jetons affiche vos emplacements de sort pour chaque niveau : les jetons pleins sont disponibles, les vides sont épuisés. Cliquez sur un jeton pour basculer l\'état d\'un emplacement.',
+            'tutorial.spells.2.title': 'Configurer les emplacements de sorts',
+            'tutorial.spells.2.body': 'Ouvrez {icon:more-vertical} Paramètres du module pour ajouter des niveaux d\'emplacements et définir combien vous en avez à chaque niveau. Si une catégorie est liée à un niveau d\'emplacement, une rangée de jetons apparaît dans son en-tête — ils partagent le même état que la barre supérieure, ce qui vous permet de suivre vos emplacements directement à côté de vos sorts.',
+            'tutorial.spells.3.title': 'Ajouter des catégories et des sorts',
+            'tutorial.spells.3.body': 'Ouvrez {icon:more-vertical} pour ajouter une catégorie (comme Tours ou Sorts de niveau 2) ou un sort directement. Chaque catégorie peut être liée à un niveau d\'emplacement pour que le lancement dépense les ressources automatiquement. Ouvrez {icon:more-vertical} Paramètres du module pour renommer les catégories et modifier leur niveau lié.',
+            'tutorial.spells.4.title': 'Lancer un sort',
+            'tutorial.spells.4.body': 'Cliquez sur le bouton éclair (Lancer) d\'une ligne de sort pour envoyer tous ses dés directement dans TaleSpire. Le jet et le résultat sont enregistrés dans le Journal d\'activité. Si Dépenser automatiquement les emplacements est activé dans les paramètres, lancer le sort marquera un emplacement comme épuisé. Cliquez sur le chevron d\'une ligne pour afficher la description complète du sort.',
+            'tutorial.spells.5.title': 'Personnaliser les colonnes',
+            'tutorial.spells.5.body': 'Les attributs sont des colonnes partagées qui apparaissent pour chaque sort — comme Portée, Durée ou Dégâts. Ouvrez {icon:more-vertical} Paramètres du module pour ajouter, épingler, détacher, réorganiser ou supprimer des colonnes. Les valeurs peuvent contenir du texte, des nombres ou une notation de dés comme 2d6+3. Cliquez sur un en-tête de colonne pour trier les sorts selon ce champ.',
+
+            // Tutorial: weapons
+            'tutorial.weapons.1.title': 'Qu\'est-ce qu\'un module d\'Armes ?',
+            'tutorial.weapons.1.body': 'Le module d\'Armes affiche l\'équipement de votre personnage sous forme de cartes dans une mise en page main principale et main secondaire. Chaque carte indique le nom de l\'arme, le bonus d\'attaque, les dégâts et les traits pertinents. Cliquez sur une carte pour ouvrir le panneau d\'action et commencer à lancer les dés.',
+            'tutorial.weapons.2.title': 'Effectuer une attaque',
+            'tutorial.weapons.2.body': 'Cliquez sur une carte d\'arme pour ouvrir son panneau d\'action. Cliquez sur Attaquer pour lancer 1d20 plus votre bonus d\'attaque dans TaleSpire. Chaque type de dégâts dispose de son propre bouton pour les lancer séparément — utile quand le MJ doit appliquer une résistance ou une vulnérabilité à un seul type. Les résultats sont enregistrés dans le Journal d\'activité.',
+            'tutorial.weapons.3.title': 'Ajouter et modifier des armes',
+            'tutorial.weapons.3.body': 'Ouvrez {icon:more-vertical} et choisissez Ajouter une arme pour en créer une nouvelle. Pour modifier une arme existante, maintenez Ctrl et cliquez sur sa carte pour ouvrir le formulaire d\'édition directement. Vous pouvez y modifier le nom, les dés de dégâts, le modificateur de caractéristique, la maîtrise, les traits, la portée et les munitions. Les boucliers s\'ajoutent ici aussi et suivent le bonus de CA et les PV du bouclier.',
+            'tutorial.weapons.4.title': 'Bonus d\'attaque et maîtrise',
+            'tutorial.weapons.4.body': 'Le bonus d\'attaque d\'une arme est calculé automatiquement à partir du modificateur de caractéristique lié — comme Force ou Dextérité — plus le bonus de maîtrise quand l\'option Maîtrisée est cochée. Si vous avez besoin d\'une valeur différente, comme un bonus situationnel ou une règle maison, définissez un Remplacement du bonus d\'attaque dans le formulaire d\'édition.',
+            'tutorial.weapons.5.title': 'Traits, portée et munitions',
+            'tutorial.weapons.5.body': 'Les traits apparaissent sous forme de petites étiquettes sur chaque carte d\'arme, indiquant des propriétés comme Finesse, Polyvalent ou Lourd. Les armes à distance affichent un compteur de munitions à côté de la portée ; Ctrl+clic sur le compteur permet de l\'ajuster directement sans ouvrir le formulaire. Les armes à deux mains occupent les deux mains — une carte de réservation apparaît dans l\'emplacement de la main secondaire pour l\'indiquer.',
+
             'type.abilities': 'Compétences',
             'type.actions': 'Suivi des Actions',
             'type.activity': 'Journal d\'Activité',

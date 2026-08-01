@@ -120,15 +120,15 @@ window.CV_TRANSLATIONS.en = {
 
             // Tutorial: stat
             'tutorial.stat.1.title': 'What Is a Stat Module?',
-            'tutorial.stat.1.body': 'A Stat module holds your character\'s core ability scores — things like Strength, Dexterity, or Intelligence. Each stat shows a value and a modifier. You can start from a game system template (like D&D 5e or Pathfinder) or build a completely custom list.',
+            'tutorial.stat.1.body': 'A Stat module holds your character\'s core ability scores: things like Strength, Dexterity, or Intelligence. Each stat shows a value and a modifier. You can start from a game system template (like D&D 5e or Pathfinder) or build a completely custom list.',
             'tutorial.stat.2.title': 'Rolling Stat Checks',
-            'tutorial.stat.2.body': 'Click any stat block to roll that check in TaleSpire\'s dice tray. The roll automatically includes the stat\'s modifier — if your Strength modifier is +3, clicking it sends 1d20+3. Stats marked as non-rollable won\'t trigger a roll when clicked.',
+            'tutorial.stat.2.body': 'Click any stat block to roll that check in TaleSpire\'s dice tray. The roll automatically includes the stat\'s modifier. If your Strength modifier is +3, clicking it sends 1d20+3. Stats marked as non-rollable won\'t trigger a roll when clicked.',
             'tutorial.stat.3.title': 'Editing Stats',
             'tutorial.stat.3.body': 'Hold Ctrl and click any stat block to quickly change its value or modifier without opening a menu. To add, remove, rename, or reorder stats, open {icon:more-vertical} Module Settings. You can also change the display layout to show just modifiers, or swap which number appears largest.',
 
             // Tutorial: abilities
             'tutorial.abilities.1.title': 'What Is an Abilities Module?',
-            'tutorial.abilities.1.body': 'An Abilities module tracks your character\'s skill checks — things like Acrobatics, Stealth, or Persuasion. Each skill shows a modifier and an optional proficiency indicator. Click any skill to roll 1d20 plus its modifier directly in TaleSpire.',
+            'tutorial.abilities.1.body': 'An Abilities module tracks your character\'s skill checks: things like Acrobatics, Stealth, or Persuasion. Each skill shows a modifier and an optional proficiency indicator. Click any skill to roll 1d20 plus its modifier directly in TaleSpire.',
             'tutorial.abilities.2.title': 'Linking Skills to Stats',
             'tutorial.abilities.2.body': 'You can link this module to a Stat module so that each skill\'s modifier is calculated from the matching ability score automatically. In {icon:more-vertical} Module Settings, choose a Stat module under Linked Stat Module, then assign each skill to the stat that governs it.',
             'tutorial.abilities.3.title': 'Managing Skills',
@@ -136,33 +136,33 @@ window.CV_TRANSLATIONS.en = {
 
             // Tutorial: savingthrow
             'tutorial.savingthrow.1.title': 'What Is a Saving Throws Module?',
-            'tutorial.savingthrow.1.body': 'A Saving Throws module tracks your character\'s defensive checks against harmful effects — things like a Strength save or a Wisdom save. Each entry shows a name and a modifier. Click any save to roll 1d20 plus its modifier in TaleSpire.',
+            'tutorial.savingthrow.1.body': 'A Saving Throws module tracks your character\'s defensive checks against harmful effects: things like a Strength save or a Wisdom save. Each entry shows a name and a modifier. Click any save to roll 1d20 plus its modifier in TaleSpire.',
             'tutorial.savingthrow.2.title': 'Proficiency Tiers',
-            'tutorial.savingthrow.2.body': 'You can enable proficiency tiers to show a colored badge on each save indicating your training level — for example U for Untrained, T for Trained, or E for Expert. Use a preset from your game system or define your own tiers in {icon:more-vertical} Module Settings.',
+            'tutorial.savingthrow.2.body': 'You can enable proficiency tiers to show a colored badge on each save indicating your training level, for example U for Untrained, T for Trained, or E for Expert. Use a preset from your game system or define your own tiers in {icon:more-vertical} Module Settings.',
             'tutorial.savingthrow.3.title': 'Managing Saves',
             'tutorial.savingthrow.3.body': 'Open {icon:more-vertical} Module Settings to add, rename, reorder, or delete saves and to assign proficiency tiers. Hold Ctrl and click any save\'s modifier to quickly change it without opening the settings. Use Add Note from the overflow menu to add a note that applies to all saves.',
 
             // Tutorial: health
             'tutorial.health.1.title': 'What Is a Health Module?',
-            'tutorial.health.1.body': 'A Health module tracks your character\'s hit points (HP) — how much damage you can take before going down. It displays your current HP over your maximum HP, and shows any temporary HP you\'ve been granted separately. Temp HP absorbs damage before your real HP does.',
+            'tutorial.health.1.body': 'A Health module tracks your character\'s hit points (HP): how much damage you can take before going down. It displays your current HP over your maximum HP, and shows any temporary HP you\'ve been granted separately. Temp HP absorbs damage before your real HP does.',
             'tutorial.health.2.title': 'Taking Damage and Healing',
             'tutorial.health.2.body': 'During play, use the Dmg button to apply damage and the Heal button to recover HP. Damage drains temporary HP first, then cuts into your current HP. Healing only restores current HP and is capped at your maximum. Tap the temp HP badge to set a new temporary HP value.',
             'tutorial.health.3.title': 'Editing HP and Settings',
-            'tutorial.health.3.body': 'Switch to Edit mode to type HP values directly — you can enter simple math like "40-5". Open {icon:more-vertical} Module Settings to set a Max HP Modifier for buffs or debuffs, or to pull your current and max HP directly from the TaleSpire miniature on the board.',
+            'tutorial.health.3.body': 'Switch to Edit mode to type HP values directly. You can enter simple math like "40-5". Open {icon:more-vertical} Module Settings to set a Max HP Modifier for buffs or debuffs, or to pull your current and max HP directly from the TaleSpire miniature on the board.',
 
             // Tutorial: level
             'tutorial.level.1.title': 'What Is a Level Module?',
             'tutorial.level.1.body': 'A Level module tracks your character\'s level and experience points. Your current level appears prominently, with an XP progress bar showing how close you are to leveling up. Multiclass characters can add one Level module per class.',
             'tutorial.level.2.title': 'Gaining XP and Leveling Up',
-            'tutorial.level.2.body': 'Click the XP bar to add or subtract experience. When your XP meets or exceeds the threshold for the next level, a Level Up button appears — click it to advance. You can also Ctrl+click the level number at any time to set it manually without going through XP.',
+            'tutorial.level.2.body': 'Click the XP bar to add or subtract experience. When your XP meets or exceeds the threshold for the next level, a Level Up button appears. Click it to advance. You can also Ctrl+click the level number at any time to set it manually without going through XP.',
             'tutorial.level.3.title': 'Module Settings',
             'tutorial.level.3.body': 'Open {icon:more-vertical} Module Settings to choose between XP tracking or Milestone leveling, set an optional class name that displays above your level, define XP thresholds for each level, choose whether excess XP carries over on level-up, and customize the progress bar style and color.',
 
             // Tutorial: recovery
             'tutorial.recovery.1.title': 'What Is a Recovery Module?',
-            'tutorial.recovery.1.body': 'A Recovery module gives you customizable rest buttons — like Short Rest and Long Rest in D&D 5e — that automate common end-of-encounter actions: healing to full HP, restoring spell slots, resetting temporary HP, and rolling Hit Dice. The default buttons match your game system, but you can configure everything freely.',
+            'tutorial.recovery.1.body': 'A Recovery module gives you customizable rest buttons (like Short Rest and Long Rest in D&D 5e) that automate common end-of-encounter actions: healing to full HP, restoring spell slots, resetting temporary HP, and rolling Hit Dice. The default buttons match your game system, but you can configure everything freely.',
             'tutorial.recovery.2.title': 'Using Rest Buttons',
-            'tutorial.recovery.2.body': 'Click a rest button to see a confirmation dialog listing every action it will perform. Confirm to execute them all at once. Actions are applied across all your Health and Spells modules automatically — you don\'t need to update each one by hand.',
+            'tutorial.recovery.2.body': 'Click a rest button to see a confirmation dialog listing every action it will perform. Confirm to execute them all at once. Actions are applied across all your Health and Spells modules automatically, so you don\'t need to update each one by hand.',
             'tutorial.recovery.3.title': 'Hit Dice',
             'tutorial.recovery.3.body': 'If a button includes a Hit Dice roll (like a Short Rest), you\'ll be asked how many dice to spend. Each die rolled adds healing equal to the roll plus your modifier, applied to your HP. Your remaining Hit Dice are shown in the module and refill based on your Long Rest setting.',
             'tutorial.recovery.4.title': 'Customizing Rest Buttons',
@@ -170,7 +170,7 @@ window.CV_TRANSLATIONS.en = {
 
             // Tutorial: counters
             'tutorial.counters.1.title': 'What Is a Counters Module?',
-            'tutorial.counters.1.body': 'A Counters module lets you track any number that goes up and down during play — limited-use abilities, spell slots, ammo, action points, or even the number of enemies defeated. Each counter can have a name, an icon, and optional minimum and maximum values.',
+            'tutorial.counters.1.body': 'A Counters module lets you track any number that goes up and down during play: limited-use abilities, spell slots, ammo, action points, or even the number of enemies defeated. Each counter can have a name, an icon, and optional minimum and maximum values.',
             'tutorial.counters.2.title': 'Incrementing and Decrementing',
             'tutorial.counters.2.body': 'Click a counter to increase it by 1, or right-click to decrease it. You can also use the {icon:plus} and {icon:minus} buttons on each row. The reset button returns a counter to its minimum value. Increment and decrement are disabled automatically when the counter reaches its maximum or minimum.',
             'tutorial.counters.3.title': 'Adding and Editing Counters',
@@ -178,99 +178,99 @@ window.CV_TRANSLATIONS.en = {
 
             // Tutorial: list
             'tutorial.list.1.title': 'What Is a List Module?',
-            'tutorial.list.1.body': 'A List module is a flexible table of items — inventory, equipment, consumables, or anything else your character carries or tracks. Each item starts with just a name, but you can extend every item in the list with shared attributes like Weight, Equipped, or Durability.',
+            'tutorial.list.1.body': 'A List module is a flexible table of items: inventory, equipment, consumables, or anything else your character carries or tracks. Each item starts with just a name, but you can extend every item in the list with shared attributes like Weight, Equipped, or Durability.',
             'tutorial.list.2.title': 'Adding Items and Viewing Details',
             'tutorial.list.2.body': 'Open {icon:more-vertical} and choose Add Item to create a new entry. Click the expand button on any item row to open its detail view, where you can edit the name, add notes, and adjust all of its attribute values. Changes are saved when you click Save.',
             'tutorial.list.3.title': 'Attributes and Columns',
             'tutorial.list.3.body': 'Attributes are shared columns that apply to every item in the list. Open {icon:more-vertical} Module Settings to add or remove attributes, choose from built-in presets like Weight or Equipped, or create a custom one with the Attribute Wizard. Pinned attributes appear as columns directly on each item row.',
             'tutorial.list.4.title': 'Sorting and Moving Items',
-            'tutorial.list.4.body': 'Click any column header to sort items by that field. Click again to reverse the order; click a third time to return to manual order. Drag any item\'s handle to reorder it manually. You can also drag an item from one List module and drop it onto another to transfer it — the item\'s attribute values move with it.',
+            'tutorial.list.4.body': 'Click any column header to sort items by that field. Click again to reverse the order; click a third time to return to manual order. Drag any item\'s handle to reorder it manually. You can also drag an item from one List module and drop it onto another to transfer it. The item\'s attribute values move with it.',
 
             // Tutorial: text
             'tutorial.text.1.title': 'What Is a Text Box?',
-            'tutorial.text.1.body': 'A Text Box is a free-form notes area for anything that doesn\'t fit a structured module — character backstory, session logs, house rules, NPC descriptions, or quick reference tables. Content is written in Markdown and displayed rendered inside the module.',
+            'tutorial.text.1.body': 'A Text Box is a free-form notes area for anything that doesn\'t fit a structured module: character backstory, session logs, house rules, NPC descriptions, or quick reference tables. Content is written in Markdown and displayed rendered inside the module.',
             'tutorial.text.2.title': 'Writing and Formatting Content',
             'tutorial.text.2.body': 'Open {icon:more-vertical} and choose Edit Content to open the text editor. You can use Markdown formatting: **bold**, *italic*, # headings, - lists, > blockquotes, and even interactive task-list checkboxes with - [ ]. Changes take effect when you save.',
             'tutorial.text.3.title': 'Live Stat References',
-            'tutorial.text.3.body': 'You can embed references to your character\'s values directly in your text using ${variable} tokens. These update automatically whenever the referenced value changes — useful for noting passive perception, carrying capacity, or any derived value you want to track in prose.',
+            'tutorial.text.3.body': 'You can embed references to your character\'s values directly in your text using ${variable} tokens. These update automatically whenever the referenced value changes, which is useful for noting passive perception, carrying capacity, or any derived value you want to track in prose.',
 
             // Tutorial: spells
             'tutorial.spells.1.title': 'What Is a Spells Module?',
             'tutorial.spells.1.body': 'The Spells module tracks every spell your character can cast, organized into categories like Cantrips and Level 1 Spells. At the top, a row of pips shows your spell slots for each level: filled pips are available, hollow pips are spent. Click a pip to toggle a slot between available and spent.',
             'tutorial.spells.2.title': 'Setting Up Spell Slots',
-            'tutorial.spells.2.body': 'Open {icon:more-vertical} Module Settings to add slot levels and set how many slots you have at each level. If a category is linked to a slot level, a matching pip row appears in that category\'s header — those pips share the same state as the top bar so you can track slots right alongside your spells.',
+            'tutorial.spells.2.body': 'Open {icon:more-vertical} Module Settings to add slot levels and set how many slots you have at each level. If a category is linked to a slot level, a matching pip row appears in that category\'s header. Those pips share the same state as the top bar so you can track slots right alongside your spells.',
             'tutorial.spells.3.title': 'Adding Categories and Spells',
             'tutorial.spells.3.body': 'Open {icon:more-vertical} to add a category (like Cantrips or Level 2 Spells) or add a spell directly. Each category can be linked to a slot level so casting automatically tracks your resources. Open {icon:more-vertical} Module Settings to rename categories and change their linked slot level at any time.',
             'tutorial.spells.4.title': 'Casting a Spell',
             'tutorial.spells.4.body': 'Click the lightning bolt Cast button on a spell row to send all of that spell\'s dice directly to TaleSpire. The roll and result are recorded in your Activity Log. If Auto-Spend Slots is on in settings, casting marks one slot as spent automatically. Click the expand chevron on any row to show the spell\'s full description.',
             'tutorial.spells.5.title': 'Customizing Spell Columns',
-            'tutorial.spells.5.body': 'Attributes are shared columns that appear across every spell — things like Range, Duration, or Damage. Open {icon:more-vertical} Module Settings to add, pin, unpin, reorder, or delete columns. Attribute values can hold plain text, numbers, or dice notation like 2d6+3. Click any column header to sort spells by that field.',
+            'tutorial.spells.5.body': 'Attributes are shared columns that appear across every spell: things like Range, Duration, or Damage. Open {icon:more-vertical} Module Settings to add, pin, unpin, reorder, or delete columns. Attribute values can hold plain text, numbers, or dice notation like 2d6+3. Click any column header to sort spells by that field.',
 
             // Tutorial: weapons
             'tutorial.weapons.1.title': 'What Is a Weapons Module?',
             'tutorial.weapons.1.body': 'The Weapons module holds your character\'s equipped weapons as cards arranged in a main-hand and off-hand layout. Each card shows the weapon\'s name, attack bonus, damage, and traits. Click a weapon card to open the action panel and start rolling.',
             'tutorial.weapons.2.title': 'Rolling an Attack',
-            'tutorial.weapons.2.body': 'Click a weapon card to open its action panel. Click Attack to roll 1d20 plus your attack bonus in TaleSpire. Each damage type has its own button so you can roll them separately — useful when the GM needs to apply resistance or weakness to one type but not another. Results are recorded in your Activity Log.',
+            'tutorial.weapons.2.body': 'Click a weapon card to open its action panel. Click Attack to roll 1d20 plus your attack bonus in TaleSpire. Each damage type has its own button so you can roll them separately, which helps when the GM needs to apply resistance or weakness to one type but not another. Results are recorded in your Activity Log.',
             'tutorial.weapons.3.title': 'Adding and Editing Weapons',
             'tutorial.weapons.3.body': 'Open {icon:more-vertical} and choose Add Weapon to create a new one. To edit an existing weapon, hold Ctrl and click its card to open the edit form directly. From there you can change the name, damage dice, ability modifier, proficiency, traits, range, and ammo count. Shields are added here too and track AC bonus and shield HP instead of an attack.',
             'tutorial.weapons.4.title': 'Attack Bonuses and Proficiency',
-            'tutorial.weapons.4.body': 'A weapon\'s attack bonus is computed automatically from the linked ability modifier — like Strength or Dexterity — plus your proficiency bonus when the Proficient option is on. If you need a different value, such as a situational bonus or a homebrew weapon, set an Attack Bonus Override in the edit form to replace the automatic calculation.',
+            'tutorial.weapons.4.body': 'A weapon\'s attack bonus is computed automatically from the linked ability modifier (like Strength or Dexterity) plus your proficiency bonus when the Proficient option is on. If you need a different value, such as a situational bonus or a homebrew weapon, set an Attack Bonus Override in the edit form to replace the automatic calculation.',
             'tutorial.weapons.5.title': 'Traits, Range, and Ammo',
-            'tutorial.weapons.5.body': 'Traits appear as small chips on each weapon card, indicating properties like Finesse, Versatile, or Heavy. Ranged weapons show an ammo counter next to the range; Ctrl+click the counter to adjust it directly without opening the edit form. Two-handed weapons occupy both hands — a placeholder card appears in the off-hand slot to show that hand is in use.',
+            'tutorial.weapons.5.body': 'Traits appear as small chips on each weapon card, indicating properties like Finesse, Versatile, or Heavy. Ranged weapons show an ammo counter next to the range; Ctrl+click the counter to adjust it directly without opening the edit form. Two-handed weapons occupy both hands, so a placeholder card appears in the off-hand slot to show that hand is in use.',
 
             // Tutorial: condition
             'tutorial.condition.1.title': 'What Is a Conditions Module?',
-            'tutorial.condition.1.body': 'A Conditions module lets you track the status effects and afflictions on your character — things like Blinded, Frightened, or Poisoned. Start by choosing a template in {icon:more-vertical} Module Settings that matches your game system, or use Custom to build your own list.',
+            'tutorial.condition.1.body': 'A Conditions module lets you track the status effects and afflictions on your character: things like Blinded, Frightened, or Poisoned. Start by choosing a template in {icon:more-vertical} Module Settings that matches your game system, or use Custom to build your own list.',
             'tutorial.condition.2.title': 'Applying and Tracking Conditions',
-            'tutorial.condition.2.body': 'In Play mode, click a condition\'s name to toggle it on or off. Conditions with a numeric severity — like Exhaustion in D&D 5e — show a counter instead: click the value to increment it, or right-click it to decrease it. The expand button on any condition opens a detail view where you can set the value directly or remove the condition.',
+            'tutorial.condition.2.body': 'In Play mode, click a condition\'s name to toggle it on or off. Conditions with a numeric severity (like Exhaustion in D&D 5e) show a counter instead: click the value to increment it, or right-click it to decrease it. The expand button on any condition opens a detail view where you can set the value directly or remove the condition.',
             'tutorial.condition.3.title': 'Templates and Custom Conditions',
             'tutorial.condition.3.body': 'Open {icon:more-vertical} Module Settings to switch game system templates or move to Custom. In Custom mode, you can add your own conditions, give each one a description, choose an icon, and pick whether it toggles on/off or tracks a numeric value. Custom conditions you create are always available alongside the template entries.',
 
             // Tutorial: defenses
             'tutorial.defenses.1.title': 'What Is a Defenses Module?',
-            'tutorial.defenses.1.body': 'The Defenses module tracks your character\'s defensive ratings — like Armor Class in D&D 5e, Evasion in Cyberpunk Red, or Defense Rating in Shadowrun. The primary stat, called the spotlight, is displayed prominently at the top. Any additional defensive values are listed beneath it.',
+            'tutorial.defenses.1.body': 'The Defenses module tracks your character\'s defensive ratings, like Armor Class in D&D 5e, Evasion in Cyberpunk Red, or Defense Rating in Shadowrun. The primary stat, called the spotlight, is displayed prominently at the top. Any additional defensive values are listed beneath it.',
             'tutorial.defenses.2.title': 'Quick Defense Buttons',
-            'tutorial.defenses.2.body': 'Quick Defense buttons are toggles for temporary situational bonuses — like Raise Shield or Take Cover. Click a button to apply its modifier to your spotlight value; click it again to remove it. The spotlight updates immediately to show the adjusted total. Hover over any button to see its name and modifier.',
+            'tutorial.defenses.2.body': 'Quick Defense buttons are toggles for temporary situational bonuses, like Raise Shield or Take Cover. Click a button to apply its modifier to your spotlight value; click it again to remove it. The spotlight updates immediately to show the adjusted total. Hover over any button to see its name and modifier.',
             'tutorial.defenses.3.title': 'Managing Defenses',
-            'tutorial.defenses.3.body': 'Ctrl+click any defense value — spotlight or secondary — to change it directly without opening settings. Open {icon:more-vertical} Module Settings to add, remove, rename, or reorder defenses. Whichever stat sits in position 1 is the spotlight; drag it to the top to promote any stat to the primary position. Quick Defense buttons are also added and managed from the same settings panel.',
+            'tutorial.defenses.3.body': 'Ctrl+click any defense value (spotlight or secondary) to change it directly without opening settings. Open {icon:more-vertical} Module Settings to add, remove, rename, or reorder defenses. Whichever stat sits in position 1 is the spotlight; drag it to the top to promote any stat to the primary position. Quick Defense buttons are also added and managed from the same settings panel.',
 
             // Tutorial: resistance
             'tutorial.resistance.1.title': 'What Is a Resistances Module?',
-            'tutorial.resistance.1.body': 'The Resistances module tracks your character\'s immunities, resistances, and weaknesses to damage types — like Fire, Cold, Poison, or Bludgeoning. Each entry shows an icon, the damage type\'s name, and an optional value. The module is split into three columns: Immunities, Resistances, and Weaknesses.',
+            'tutorial.resistance.1.body': 'The Resistances module tracks your character\'s immunities, resistances, and weaknesses to damage types, like Fire, Cold, Poison, or Bludgeoning. Each entry shows an icon, the damage type\'s name, and an optional value. The module is split into three columns: Immunities, Resistances, and Weaknesses.',
             'tutorial.resistance.2.title': 'Assigning Resistances',
             'tutorial.resistance.2.body': 'Open {icon:more-vertical} Module Settings to manage your resistances. A staging area lists all available damage types. Drag any type from the staging area into the Immunities, Resistances, or Weaknesses column. When you drop into the Immunity column the value is set to Immune automatically; otherwise you can enter any text or number you like.',
             'tutorial.resistance.3.title': 'Play Mode and Custom Types',
-            'tutorial.resistance.3.body': 'In Play mode, click any resistance to toggle it active or inactive — inactive entries are dimmed so you can see at a glance which resistances are currently in effect. Open {icon:more-vertical} Module Settings and click Create Custom to add damage types not in the predefined list. Give it a name, pick an icon, and it will appear in the staging area ready to assign.',
+            'tutorial.resistance.3.body': 'In Play mode, click any resistance to toggle it active or inactive. Inactive entries are dimmed so you can see at a glance which resistances are currently in effect. Open {icon:more-vertical} Module Settings and click Create Custom to add damage types not in the predefined list. Give it a name, pick an icon, and it will appear in the staging area ready to assign.',
 
             // Tutorial: bio
             'tutorial.bio.1.title': 'What Is a Bio Module?',
-            'tutorial.bio.1.body': 'The Bio module is your character\'s identity card — portrait, name, physical traits, and biography all in one place. It\'s split into two tabs: Overview for the basics, and Details for background and personality. Fields specific to your game system, like Heritage in Pathfinder 2e or Clan in Vampire: The Masquerade, appear automatically.',
+            'tutorial.bio.1.body': 'The Bio module is your character\'s identity card: portrait, name, physical traits, and biography all in one place. It\'s split into two tabs: Overview for the basics, and Details for background and personality. Fields specific to your game system, like Heritage in Pathfinder 2e or Clan in Vampire: The Masquerade, appear automatically.',
             'tutorial.bio.2.title': 'Adding a Portrait and Filling In Details',
-            'tutorial.bio.2.body': 'Click the portrait area to upload an image (PNG, JPG, or WEBP, up to 1 MB). Fill in fields like Race, Age, and Appearance directly — empty fields are simply hidden in Play mode, so don\'t worry about leaving anything blank. Switch to the Details tab for biography, ideals, bonds, and flaws.',
+            'tutorial.bio.2.body': 'Click the portrait area to upload an image (PNG, JPG, or WEBP, up to 1 MB). Fill in fields like Race, Age, and Appearance directly. Empty fields are simply hidden in Play mode, so don\'t worry about leaving anything blank. Switch to the Details tab for biography, ideals, bonds, and flaws.',
             'tutorial.bio.3.title': 'The Personality Section',
-            'tutorial.bio.3.body': 'On the Overview tab, click the Personality header to expand a collapsible section for Personality Traits, Ideals, Bonds, and Flaws. It stays collapsed by default to keep the module compact — expand it whenever you want to jot down or reference those details.',
+            'tutorial.bio.3.body': 'On the Overview tab, click the Personality header to expand a collapsible section for Personality Traits, Ideals, Bonds, and Flaws. It stays collapsed by default to keep the module compact. Expand it whenever you want to jot down or reference those details.',
 
             // Tutorial: companions
             'tutorial.companions.1.title': 'What Is a Companions Module?',
-            'tutorial.companions.1.body': 'The Companions module tracks the NPCs that travel with your character — a loyal animal companion, a familiar, or anything similar. Each companion appears as a row in a table with editable HP, AC, Run Speed, and Fly Speed columns.',
+            'tutorial.companions.1.body': 'The Companions module tracks the NPCs that travel with your character, such as a loyal animal companion, a familiar, or anything similar. Each companion appears as a row in a table with editable HP, AC, Run Speed, and Fly Speed columns.',
             'tutorial.companions.2.title': 'Adding and Editing Companions',
-            'tutorial.companions.2.body': 'Open {icon:more-vertical} Module Settings to add a new companion — only a name is required. Once added, click any attribute value to edit it directly; values support simple math like "+6" or "5+7". Click the chevron on a companion\'s row to expand a drawer with a Notes field and applied Conditions.',
+            'tutorial.companions.2.body': 'Open {icon:more-vertical} Module Settings to add a new companion. Only a name is required. Once added, click any attribute value to edit it directly; values support simple math like "+6" or "5+7". Click the chevron on a companion\'s row to expand a drawer with a Notes field and applied Conditions.',
             'tutorial.companions.3.title': 'Active Status and Custom Attributes',
-            'tutorial.companions.3.body': 'Toggle a companion\'s Active status to mark it as summoned or dismissed — inactive companions stay visible but appear dimmed. Open {icon:more-vertical} Module Settings to add custom attributes beyond the built-in four, rename companions, or drag attributes to reorder the table columns.',
+            'tutorial.companions.3.body': 'Toggle a companion\'s Active status to mark it as summoned or dismissed. Inactive companions stay visible but appear dimmed. Open {icon:more-vertical} Module Settings to add custom attributes beyond the built-in four, rename companions, or drag attributes to reorder the table columns.',
 
             // Tutorial: actions
             'tutorial.actions.1.title': 'What Is an Action Tracker?',
-            'tutorial.actions.1.body': 'The Action Tracker helps you plan your turn by showing your available actions as pills — Action, Bonus Action, and Reaction for D&D 5e, three fungible actions for Pathfinder 2e, or whatever your game system uses. It pre-fills with defaults for your game system when you create it.',
+            'tutorial.actions.1.body': 'The Action Tracker helps you plan your turn by showing your available actions as pills: Action, Bonus Action, and Reaction for D&D 5e, three fungible actions for Pathfinder 2e, or whatever your game system uses. It pre-fills with defaults for your game system when you create it.',
             'tutorial.actions.2.title': 'Using Action Pills',
-            'tutorial.actions.2.body': 'Click the name on a pill to toggle it between available (lit up) and used (dimmed) as you spend actions during your turn. Drag a pill by its handle to reorder it, or click the {icon:x} to delete it. Duplicates are allowed — some systems need more than one identical action pill.',
+            'tutorial.actions.2.body': 'Click the name on a pill to toggle it between available (lit up) and used (dimmed) as you spend actions during your turn. Drag a pill by its handle to reorder it, or click the {icon:x} to delete it. Duplicates are allowed since some systems need more than one identical action pill.',
             'tutorial.actions.3.title': 'Adding Actions and Layout Options',
             'tutorial.actions.3.body': 'Use the {icon:plus} button in the module toolbar to add a custom action pill. Open {icon:more-vertical} Module Settings to switch between Wrap layout (pills flow left to right) and List layout (one pill per row). Use Reset All in the overflow menu to flip every pill back to available at the start of a new turn.',
 
             // Tutorial: activity
             'tutorial.activity.1.title': 'What Is an Activity Log Module?',
-            'tutorial.activity.1.body': 'The Activity Log automatically records major events from other modules — damage taken, spells cast, dice rolled, and more — so you have a running history of what happened during a session. You don\'t add entries manually; other modules report to the log as you play.',
+            'tutorial.activity.1.body': 'The Activity Log automatically records major events from other modules (damage taken, spells cast, dice rolled, and more) so you have a running history of what happened during a session. You don\'t add entries manually; other modules report to the log as you play.',
             'tutorial.activity.2.title': 'Reading and Filtering Entries',
-            'tutorial.activity.2.body': 'Each entry shows a timestamp and a description of what happened. Tag bubbles at the top of the module let you filter by event type — click a tag to hide that type, click again to show it. Use the sort button in the toolbar or {icon:more-vertical} overflow menu to flip between newest-first and oldest-first.',
+            'tutorial.activity.2.body': 'Each entry shows a timestamp and a description of what happened. Tag bubbles at the top of the module let you filter by event type: click a tag to hide that type, click again to show it. Use the sort button in the toolbar or {icon:more-vertical} overflow menu to flip between newest-first and oldest-first.',
             'tutorial.activity.3.title': 'Managing Log Entries',
             'tutorial.activity.3.body': 'Delete a single entry if it\'s no longer accurate. Open {icon:more-vertical} Module Settings to clear the entire log (with a confirmation prompt), set a maximum number of entries to keep, toggle timestamps, or change the date and time format.',
 

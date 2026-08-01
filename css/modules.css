@@ -1614,6 +1614,10 @@ textarea.cv-modal-input::-webkit-scrollbar-thumb { background-color: var(--cv-te
     justify-content: space-between;
 }
 
+.tutorial-footer button:disabled {
+    visibility: hidden;
+}
+
 .tutorial-body-text {
     font-size: 13px;
     line-height: 1.5;

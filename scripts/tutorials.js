@@ -31,7 +31,7 @@
         closeXBtn.type = 'button';
         closeXBtn.className = 'cv-modal-close';
         closeXBtn.title = t('tutorial.close');
-        closeXBtn.innerHTML = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        closeXBtn.innerHTML = cvIcon('x', 12);
         header.appendChild(titleEl);
         header.appendChild(closeXBtn);
         panel.appendChild(header);
@@ -43,6 +43,12 @@
         textEl.className = 'tutorial-body-text';
         const dotsEl = document.createElement('div');
         dotsEl.className = 'tutorial-dots';
+        const dots = pages.map(() => {
+            const dot = document.createElement('span');
+            dot.className = 'tutorial-dot';
+            dotsEl.appendChild(dot);
+            return dot;
+        });
         body.appendChild(textEl);
         body.appendChild(dotsEl);
         panel.appendChild(body);
@@ -74,14 +80,9 @@
             const page = pages[currentPage];
             titleEl.textContent = t(page.titleKey);
             textEl.innerHTML = renderTutorialText(page.bodyKey);
-            dotsEl.innerHTML = '';
-            pages.forEach((_, i) => {
-                const dot = document.createElement('span');
-                dot.className = 'tutorial-dot' + (i === currentPage ? ' active' : '');
-                dotsEl.appendChild(dot);
-            });
-            prevBtn.style.visibility = currentPage === 0 ? 'hidden' : 'visible';
-            nextBtn.style.visibility = currentPage === pages.length - 1 ? 'hidden' : 'visible';
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === currentPage));
+            prevBtn.disabled = currentPage === 0;
+            nextBtn.disabled = currentPage === pages.length - 1;
         }
 
         function close() {
@@ -90,12 +91,10 @@
         }
 
         prevBtn.addEventListener('click', () => {
-            if (currentPage === 0) return;
             currentPage--;
             renderPage();
         });
         nextBtn.addEventListener('click', () => {
-            if (currentPage === pages.length - 1) return;
             currentPage++;
             renderPage();
         });
@@ -112,9 +111,15 @@
             }
         };
         document.addEventListener('keydown', keyHandler);
+        overlay._keyHandler = keyHandler;
 
         renderPage();
     }
 
+    function hasTutorial(type) {
+        return !!(TUTORIALS[type] && TUTORIALS[type].length);
+    }
+
     window.openTutorialModal = openTutorialModal;
+    window.hasTutorial = hasTutorial;
 })();

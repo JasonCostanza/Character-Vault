@@ -597,8 +597,8 @@
                 icon: cvIcon('pencil', 14),
             },
             ...(MODULE_TYPES[data?.type]?.overflowMenuItems?.(moduleEl, data) ?? []),
-            // ── Help entry (skip for hline/spacer) ──
-            ...(data?.type !== 'hline' && data?.type !== 'spacer'
+            // ── Help entry (only when the type has tutorial content) ──
+            ...(hasTutorial(data?.type)
                 ? [{ onClick: () => openTutorialModal(data.type), label: t('module.help'), icon: cvIcon('help-circle', 14) }]
                 : []),
             {

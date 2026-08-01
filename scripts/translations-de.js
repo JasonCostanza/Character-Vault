@@ -161,6 +161,32 @@ window.CV_TRANSLATIONS['de'] = {
             'tutorial.recovery.4.title': 'Ruhepausen-Schaltflächen anpassen',
             'tutorial.recovery.4.body': 'Öffne {icon:more-vertical} Modul-Einstellungen, um Ruhepausen-Schaltflächen hinzuzufügen, umzubenennen, neu anzuordnen oder zu entfernen und auszuwählen, welche Aktionen jede Schaltfläche auslöst. Du kannst auch die Trefferwürfelanzahl, den Würfeltyp, den Modifikator und die Anzahl der bei einer Langen Rast wiederhergestellten Würfel konfigurieren.',
 
+            // Tutorial: counters
+            'tutorial.counters.1.title': 'Was ist ein Zähler-Modul?',
+            'tutorial.counters.1.body': 'Ein Zähler-Modul ermöglicht das Verfolgen beliebiger Zahlen, die im Spiel steigen und fallen — begrenzte Fähigkeiten, Zauberplätze, Munition, Aktionspunkte oder sogar die Anzahl besiegter Gegner. Jeder Zähler kann einen Namen, ein Symbol und optionale Mindest- und Höchstwerte haben.',
+            'tutorial.counters.2.title': 'Erhöhen und Verringern',
+            'tutorial.counters.2.body': 'Klicke auf einen Zähler, um ihn um 1 zu erhöhen, oder rechtsklicke, um ihn zu verringern. Du kannst auch die {icon:plus}- und {icon:minus}-Schaltflächen in jeder Zeile verwenden. Die Zurücksetzen-Schaltfläche setzt den Zähler auf seinen Mindestwert zurück. Erhöhen und Verringern werden automatisch deaktiviert, wenn der Zähler seinen Höchst- oder Mindestwert erreicht.',
+            'tutorial.counters.3.title': 'Zähler hinzufügen und bearbeiten',
+            'tutorial.counters.3.body': 'Öffne {icon:more-vertical} und wähle Zähler hinzufügen, um einen neuen zu erstellen. Um Name, Symbol, Startwert, Minimum oder Maximum eines Zählers anzupassen, öffne {icon:more-vertical} Modul-Einstellungen. Von dort aus kannst du Zähler auch per Drag-and-Drop neu anordnen.',
+
+            // Tutorial: list
+            'tutorial.list.1.title': 'Was ist ein Listen-Modul?',
+            'tutorial.list.1.body': 'Ein Listen-Modul ist eine flexible Tabelle von Einträgen — Inventar, Ausrüstung, Verbrauchsgüter oder alles andere, was dein Charakter trägt oder verfolgt. Jeder Eintrag beginnt mit einem Namen, kann aber um gemeinsame Attribute wie Gewicht, Ausgerüstet oder Haltbarkeit erweitert werden.',
+            'tutorial.list.2.title': 'Einträge hinzufügen und Details anzeigen',
+            'tutorial.list.2.body': 'Öffne {icon:more-vertical} und wähle Eintrag hinzufügen, um einen neuen Eintrag zu erstellen. Klicke auf die Erweitern-Schaltfläche in einer Zeile, um die Detailansicht zu öffnen — dort kannst du den Namen bearbeiten, Notizen hinzufügen und alle Attributwerte anpassen. Änderungen werden beim Klicken auf Speichern übernommen.',
+            'tutorial.list.3.title': 'Attribute und Spalten',
+            'tutorial.list.3.body': 'Attribute sind gemeinsame Spalten, die für jeden Eintrag in der Liste gelten. Öffne {icon:more-vertical} Modul-Einstellungen, um Attribute hinzuzufügen oder zu entfernen, aus integrierten Vorlagen wie Gewicht oder Ausgerüstet zu wählen oder mit dem Attribut-Assistenten ein eigenes zu erstellen. Angeheftete Attribute erscheinen als Spalten direkt in den Eintragszeilen.',
+            'tutorial.list.4.title': 'Sortieren und Einträge verschieben',
+            'tutorial.list.4.body': 'Klicke auf eine Spaltenüberschrift, um Einträge nach diesem Feld zu sortieren. Erneutes Klicken kehrt die Reihenfolge um; ein dritter Klick stellt die manuelle Reihenfolge wieder her. Ziehe den Griff eines Eintrags, um ihn manuell neu anzuordnen. Du kannst Einträge auch von einem Listen-Modul in ein anderes ziehen, um sie zu übertragen — die Attributwerte werden dabei mitgenommen.',
+
+            // Tutorial: text
+            'tutorial.text.1.title': 'Was ist ein Textfeld-Modul?',
+            'tutorial.text.1.body': 'Ein Textfeld-Modul ist ein freier Notizbereich für alles, was in kein strukturiertes Modul passt — Hintergrundgeschichte, Sitzungsprotokolle, Hausregeln, NSC-Beschreibungen oder Nachschlagetabellen. Der Inhalt wird in Markdown geschrieben und gerendert im Modul angezeigt.',
+            'tutorial.text.2.title': 'Inhalte schreiben und formatieren',
+            'tutorial.text.2.body': 'Öffne {icon:more-vertical} und wähle Inhalt bearbeiten, um den Texteditor zu öffnen. Du kannst Markdown-Formatierungen verwenden: **fett**, *kursiv*, # Überschriften, - Listen, > Blockzitate und interaktive Aufgabenlisten mit - [ ]. Änderungen werden beim Speichern wirksam.',
+            'tutorial.text.3.title': 'Live-Werte einbetten',
+            'tutorial.text.3.body': 'Du kannst Verweise auf Charakterwerte direkt in deinen Text einbetten, indem du ${Variable}-Token verwendest. Diese werden automatisch aktualisiert, wenn sich der referenzierte Wert ändert — nützlich für Passivwahrnehmung, Traglast oder andere abgeleitete Werte, die du im Fließtext festhalten möchtest.',
+
             'type.abilities': 'Fähigkeiten',
             'type.actions': 'Aktionsverfolgung',
             'type.activity': 'Aktivitätsprotokoll',

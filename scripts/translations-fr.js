@@ -161,6 +161,32 @@ window.CV_TRANSLATIONS['fr'] = {
             'tutorial.recovery.4.title': 'Personnaliser les boutons de repos',
             'tutorial.recovery.4.body': 'Ouvrez {icon:more-vertical} Paramètres du module pour ajouter, renommer, réordonner ou supprimer des boutons de repos et choisir les actions déclenchées par chacun. Vous pouvez aussi configurer la taille de votre réserve de Dés de Vie, le type de dé, le modificateur et le nombre restaurés lors d\'un Repos Long.',
 
+            // Tutorial: counters
+            'tutorial.counters.1.title': 'À quoi sert un module Compteurs ?',
+            'tutorial.counters.1.body': 'Un module Compteurs permet de suivre n\'importe quel nombre qui monte et descend pendant la partie — capacités à utilisations limitées, emplacements de sort, munitions, points d\'action, ou même le nombre d\'ennemis vaincus. Chaque compteur peut avoir un nom, une icône et des valeurs minimales et maximales optionnelles.',
+            'tutorial.counters.2.title': 'Incrémenter et décrémenter',
+            'tutorial.counters.2.body': 'Cliquez sur un compteur pour l\'augmenter de 1, ou faites un clic droit pour le diminuer. Vous pouvez aussi utiliser les boutons {icon:plus} et {icon:minus} sur chaque ligne. Le bouton de réinitialisation remet le compteur à sa valeur minimale. Les boutons sont désactivés automatiquement quand le compteur atteint son maximum ou son minimum.',
+            'tutorial.counters.3.title': 'Ajouter et modifier des compteurs',
+            'tutorial.counters.3.body': 'Ouvrez {icon:more-vertical} et choisissez Ajouter un compteur pour en créer un nouveau. Pour ajuster le nom, l\'icône, la valeur de départ, le minimum ou le maximum d\'un compteur, ouvrez {icon:more-vertical} Paramètres du module. Vous pouvez aussi faire glisser les compteurs pour les réordonner.',
+
+            // Tutorial: list
+            'tutorial.list.1.title': 'À quoi sert un module Liste ?',
+            'tutorial.list.1.body': 'Un module Liste est un tableau flexible d\'éléments — inventaire, équipement, consommables ou tout ce que votre personnage porte ou suit. Chaque élément commence avec seulement un nom, mais vous pouvez l\'enrichir avec des attributs partagés comme Poids, Équipé ou Durabilité.',
+            'tutorial.list.2.title': 'Ajouter des éléments et voir les détails',
+            'tutorial.list.2.body': 'Ouvrez {icon:more-vertical} et choisissez Ajouter un élément pour créer une nouvelle entrée. Cliquez sur le bouton d\'expansion d\'une ligne pour ouvrir sa vue détaillée, où vous pouvez modifier le nom, ajouter des notes et ajuster toutes ses valeurs d\'attribut. Les modifications sont sauvegardées en cliquant sur Enregistrer.',
+            'tutorial.list.3.title': 'Attributs et colonnes',
+            'tutorial.list.3.body': 'Les attributs sont des colonnes partagées qui s\'appliquent à tous les éléments de la liste. Ouvrez {icon:more-vertical} Paramètres du module pour ajouter ou supprimer des attributs, choisir parmi des préréglages intégrés comme Poids ou Équipé, ou créer un attribut personnalisé avec l\'Assistant d\'attribut. Les attributs épinglés apparaissent comme des colonnes directement sur chaque ligne.',
+            'tutorial.list.4.title': 'Trier et déplacer des éléments',
+            'tutorial.list.4.body': 'Cliquez sur un en-tête de colonne pour trier les éléments selon ce champ. Cliquez à nouveau pour inverser l\'ordre ; un troisième clic restaure l\'ordre manuel. Faites glisser la poignée d\'un élément pour le réordonner manuellement. Vous pouvez aussi faire glisser un élément d\'un module Liste et le déposer sur un autre pour le transférer — ses valeurs d\'attribut l\'accompagnent.',
+
+            // Tutorial: text
+            'tutorial.text.1.title': 'À quoi sert un module Zone de Texte ?',
+            'tutorial.text.1.body': 'Une Zone de Texte est un espace de notes libre pour tout ce qui ne tient pas dans un module structuré — historique du personnage, journaux de session, règles maison, descriptions de PNJ ou tables de référence rapide. Le contenu est écrit en Markdown et affiché en rendu dans le module.',
+            'tutorial.text.2.title': 'Écrire et formater du contenu',
+            'tutorial.text.2.body': 'Ouvrez {icon:more-vertical} et choisissez Modifier le contenu pour ouvrir l\'éditeur. Vous pouvez utiliser le formatage Markdown : **gras**, *italique*, # titres, - listes, > citations, et même des cases à cocher interactives avec - [ ]. Les modifications prennent effet dès la sauvegarde.',
+            'tutorial.text.3.title': 'Références de valeurs en direct',
+            'tutorial.text.3.body': 'Vous pouvez insérer des références aux valeurs de votre personnage directement dans le texte avec des tokens ${variable}. Ceux-ci se mettent à jour automatiquement quand la valeur référencée change — utile pour la perception passive, la capacité de charge ou d\'autres valeurs dérivées à mentionner dans le texte.',
+
             'type.abilities': 'Compétences',
             'type.actions': 'Suivi des Actions',
             'type.activity': 'Journal d\'Activité',

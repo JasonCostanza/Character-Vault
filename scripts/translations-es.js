@@ -161,6 +161,32 @@ window.CV_TRANSLATIONS['es'] = {
             'tutorial.recovery.4.title': 'Personalizar los botones de descanso',
             'tutorial.recovery.4.body': 'Abre {icon:more-vertical} Ajustes del módulo para añadir, renombrar, reordenar o eliminar botones de descanso y elegir qué acciones activa cada uno. También puedes configurar el tamaño de tu reserva de Dados de Golpe, el tipo de dado, el modificador y cuántos se recuperan en un Descanso Largo.',
 
+            // Tutorial: counters
+            'tutorial.counters.1.title': '¿Qué es un módulo de Contadores?',
+            'tutorial.counters.1.body': 'Un módulo de Contadores permite rastrear cualquier número que sube y baja durante el juego — habilidades de uso limitado, espacios de conjuros, munición, puntos de acción, o incluso la cantidad de enemigos derrotados. Cada contador puede tener un nombre, un icono y valores mínimos y máximos opcionales.',
+            'tutorial.counters.2.title': 'Aumentar y disminuir',
+            'tutorial.counters.2.body': 'Haz clic en un contador para aumentarlo en 1, o haz clic derecho para disminuirlo. También puedes usar los botones {icon:plus} y {icon:minus} de cada fila. El botón de restablecimiento devuelve el contador a su valor mínimo. Los botones se desactivan automáticamente cuando el contador alcanza su máximo o mínimo.',
+            'tutorial.counters.3.title': 'Añadir y editar contadores',
+            'tutorial.counters.3.body': 'Abre {icon:more-vertical} y elige Añadir contador para crear uno nuevo. Para ajustar el nombre, icono, valor inicial, mínimo o máximo de un contador, abre {icon:more-vertical} Ajustes del módulo. Desde allí también puedes arrastrar los contadores para reordenarlos.',
+
+            // Tutorial: list
+            'tutorial.list.1.title': '¿Qué es un módulo de Lista?',
+            'tutorial.list.1.body': 'Un módulo de Lista es una tabla flexible de elementos — inventario, equipamiento, consumibles o cualquier otra cosa que tu personaje lleve o registre. Cada elemento comienza con solo un nombre, pero puedes ampliar todos los elementos con atributos compartidos como Peso, Equipado o Durabilidad.',
+            'tutorial.list.2.title': 'Añadir elementos y ver detalles',
+            'tutorial.list.2.body': 'Abre {icon:more-vertical} y elige Añadir elemento para crear una nueva entrada. Haz clic en el botón de expansión de cualquier fila para abrir su vista detallada, donde puedes editar el nombre, añadir notas y ajustar todos sus atributos. Los cambios se guardan al hacer clic en Guardar.',
+            'tutorial.list.3.title': 'Atributos y columnas',
+            'tutorial.list.3.body': 'Los atributos son columnas compartidas que se aplican a todos los elementos de la lista. Abre {icon:more-vertical} Ajustes del módulo para añadir o eliminar atributos, elegir entre preajustes integrados como Peso o Equipado, o crear uno personalizado con el Asistente de Atributos. Los atributos anclados aparecen como columnas directamente en cada fila.',
+            'tutorial.list.4.title': 'Ordenar y mover elementos',
+            'tutorial.list.4.body': 'Haz clic en cualquier encabezado de columna para ordenar los elementos por ese campo. Vuelve a hacer clic para invertir el orden; un tercer clic restaura el orden manual. Arrastra el tirador de cualquier elemento para reordenarlo manualmente. También puedes arrastrar un elemento de un módulo de Lista y soltarlo en otro para transferirlo — los valores de sus atributos se trasladan con él.',
+
+            // Tutorial: text
+            'tutorial.text.1.title': '¿Qué es un Cuadro de Texto?',
+            'tutorial.text.1.body': 'Un Cuadro de Texto es un área de notas libre para todo lo que no cabe en un módulo estructurado — trasfondo del personaje, registros de sesión, reglas de la casa, descripciones de PNJs o tablas de referencia rápida. El contenido se escribe en Markdown y se muestra renderizado dentro del módulo.',
+            'tutorial.text.2.title': 'Escribir y formatear contenido',
+            'tutorial.text.2.body': 'Abre {icon:more-vertical} y elige Editar contenido para abrir el editor de texto. Puedes usar formato Markdown: **negrita**, *cursiva*, # encabezados, - listas, > citas en bloque, e incluso casillas de verificación interactivas con - [ ]. Los cambios surten efecto al guardar.',
+            'tutorial.text.3.title': 'Referencias de valores en vivo',
+            'tutorial.text.3.body': 'Puedes insertar referencias a los valores de tu personaje directamente en el texto usando tokens ${variable}. Estos se actualizan automáticamente cuando cambia el valor referenciado — útil para la percepción pasiva, la carga máxima u otros valores derivados que quieras mencionar en el texto.',
+
             'type.abilities': 'Habilidades',
             'type.actions': 'Rastreador de Acciones',
             'type.activity': 'Registro de Actividad',

@@ -45,6 +45,28 @@
         { titleKey: 'tutorial.recovery.4.title', bodyKey: 'tutorial.recovery.4.body' },
     ];
 
+    // Tutorial: counters
+    TUTORIALS.counters = [
+        { titleKey: 'tutorial.counters.1.title', bodyKey: 'tutorial.counters.1.body' },
+        { titleKey: 'tutorial.counters.2.title', bodyKey: 'tutorial.counters.2.body' },
+        { titleKey: 'tutorial.counters.3.title', bodyKey: 'tutorial.counters.3.body' },
+    ];
+
+    // Tutorial: list
+    TUTORIALS.list = [
+        { titleKey: 'tutorial.list.1.title', bodyKey: 'tutorial.list.1.body' },
+        { titleKey: 'tutorial.list.2.title', bodyKey: 'tutorial.list.2.body' },
+        { titleKey: 'tutorial.list.3.title', bodyKey: 'tutorial.list.3.body' },
+        { titleKey: 'tutorial.list.4.title', bodyKey: 'tutorial.list.4.body' },
+    ];
+
+    // Tutorial: text
+    TUTORIALS.text = [
+        { titleKey: 'tutorial.text.1.title', bodyKey: 'tutorial.text.1.body' },
+        { titleKey: 'tutorial.text.2.title', bodyKey: 'tutorial.text.2.body' },
+        { titleKey: 'tutorial.text.3.title', bodyKey: 'tutorial.text.3.body' },
+    ];
+
     function renderTutorialText(key) {
         return t(key).replace(/\{icon:(\w[\w-]*)\}/g, (_, name) => cvIcon(name, 14));
     }

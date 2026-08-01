@@ -166,6 +166,32 @@ window.CV_TRANSLATIONS['it'] = {
             'tutorial.recovery.4.title': 'Personalizzare i pulsanti di riposo',
             'tutorial.recovery.4.body': 'Apri {icon:more-vertical} Impostazioni modulo per aggiungere, rinominare, riordinare o rimuovere i pulsanti di riposo e scegliere quali azioni ciascuno attiva. Puoi anche configurare la dimensione della riserva di Dadi Vita, il tipo di dado, il modificatore e quanti ne vengono ripristinati con un Riposo Lungo.',
 
+            // Tutorial: counters
+            'tutorial.counters.1.title': 'Che cos\'è un modulo Contatori?',
+            'tutorial.counters.1.body': 'Un modulo Contatori permette di tenere traccia di qualsiasi numero che sale e scende durante il gioco — capacità a uso limitato, slot incantesimo, munizioni, punti azione o anche il numero di nemici sconfitti. Ogni contatore può avere un nome, un\'icona e valori minimo e massimo facoltativi.',
+            'tutorial.counters.2.title': 'Incrementare e decrementare',
+            'tutorial.counters.2.body': 'Clicca su un contatore per aumentarlo di 1, oppure fai clic destro per diminuirlo. Puoi anche usare i pulsanti {icon:plus} e {icon:minus} su ogni riga. Il pulsante di ripristino riporta il contatore al suo valore minimo. I pulsanti vengono disabilitati automaticamente quando il contatore raggiunge il massimo o il minimo.',
+            'tutorial.counters.3.title': 'Aggiungere e modificare contatori',
+            'tutorial.counters.3.body': 'Apri {icon:more-vertical} e scegli Aggiungi contatore per crearne uno nuovo. Per modificare nome, icona, valore iniziale, minimo o massimo di un contatore, apri {icon:more-vertical} Impostazioni modulo. Da lì puoi anche trascinare i contatori per riordinarli.',
+
+            // Tutorial: list
+            'tutorial.list.1.title': 'Che cos\'è un modulo Elenco?',
+            'tutorial.list.1.body': 'Un modulo Elenco è una tabella flessibile di elementi — inventario, equipaggiamento, consumabili o qualsiasi altra cosa il personaggio porta o tiene traccia. Ogni elemento inizia con solo un nome, ma puoi estenderlo con attributi condivisi come Peso, Equipaggiato o Durabilità.',
+            'tutorial.list.2.title': 'Aggiungere elementi e visualizzare i dettagli',
+            'tutorial.list.2.body': 'Apri {icon:more-vertical} e scegli Aggiungi elemento per creare una nuova voce. Clicca sul pulsante di espansione su qualsiasi riga per aprire la vista dettagliata, dove puoi modificare il nome, aggiungere note e regolare tutti i valori degli attributi. Le modifiche vengono salvate cliccando su Salva.',
+            'tutorial.list.3.title': 'Attributi e colonne',
+            'tutorial.list.3.body': 'Gli attributi sono colonne condivise che si applicano a tutti gli elementi dell\'elenco. Apri {icon:more-vertical} Impostazioni modulo per aggiungere o rimuovere attributi, scegliere tra predefiniti come Peso o Equipaggiato, o crearne uno personalizzato con la Procedura guidata Attributo. Gli attributi fissi appaiono come colonne direttamente su ogni riga.',
+            'tutorial.list.4.title': 'Ordinare e spostare elementi',
+            'tutorial.list.4.body': 'Clicca sull\'intestazione di una colonna per ordinare gli elementi in base a quel campo. Clicca di nuovo per invertire l\'ordine; un terzo clic ripristina l\'ordine manuale. Trascina il cursore di un elemento per riordinarlo manualmente. Puoi anche trascinare un elemento da un modulo Elenco e rilasciarlo su un altro per trasferirlo — i valori degli attributi si spostano con esso.',
+
+            // Tutorial: text
+            'tutorial.text.1.title': 'Che cos\'è un modulo Casella di Testo?',
+            'tutorial.text.1.body': 'Una Casella di Testo è uno spazio libero per note su tutto ciò che non si adatta a un modulo strutturato — storia del personaggio, diari di sessione, regole della casa, descrizioni di PNG o tabelle di riferimento rapido. Il contenuto è scritto in Markdown e visualizzato in forma renderizzata nel modulo.',
+            'tutorial.text.2.title': 'Scrivere e formattare il contenuto',
+            'tutorial.text.2.body': 'Apri {icon:more-vertical} e scegli Modifica contenuto per aprire l\'editor. Puoi usare la formattazione Markdown: **grassetto**, *corsivo*, # titoli, - elenchi, > citazioni e persino caselle di controllo interattive con - [ ]. Le modifiche hanno effetto al salvataggio.',
+            'tutorial.text.3.title': 'Riferimenti ai valori in tempo reale',
+            'tutorial.text.3.body': 'Puoi incorporare riferimenti ai valori del tuo personaggio direttamente nel testo usando token ${variabile}. Questi si aggiornano automaticamente quando il valore referenziato cambia — utile per la percezione passiva, la capacità di carico o altri valori derivati da menzionare nel testo.',
+
             // Module type labels
             'type.abilities': 'Abilità',
             'type.actions': 'Tracciatore Azioni',

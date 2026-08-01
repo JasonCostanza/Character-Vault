@@ -168,6 +168,32 @@ window.CV_TRANSLATIONS.en = {
             'tutorial.recovery.4.title': 'Customizing Rest Buttons',
             'tutorial.recovery.4.body': 'Open {icon:more-vertical} Module Settings to add, rename, reorder, or remove rest buttons, and choose which actions each button triggers. You can also configure your Hit Dice pool size, die type, modifier, and how many are restored on a long rest.',
 
+            // Tutorial: counters
+            'tutorial.counters.1.title': 'What Is a Counters Module?',
+            'tutorial.counters.1.body': 'A Counters module lets you track any number that goes up and down during play — limited-use abilities, spell slots, ammo, action points, or even the number of enemies defeated. Each counter can have a name, an icon, and optional minimum and maximum values.',
+            'tutorial.counters.2.title': 'Incrementing and Decrementing',
+            'tutorial.counters.2.body': 'Click a counter to increase it by 1, or right-click to decrease it. You can also use the {icon:plus} and {icon:minus} buttons on each row. The reset button returns a counter to its minimum value. Increment and decrement are disabled automatically when the counter reaches its maximum or minimum.',
+            'tutorial.counters.3.title': 'Adding and Editing Counters',
+            'tutorial.counters.3.body': 'Open {icon:more-vertical} and choose Add Counter to create a new one. To adjust a counter\'s name, icon, starting value, minimum, or maximum, open {icon:more-vertical} Module Settings. From there you can also drag counters to reorder them.',
+
+            // Tutorial: list
+            'tutorial.list.1.title': 'What Is a List Module?',
+            'tutorial.list.1.body': 'A List module is a flexible table of items — inventory, equipment, consumables, or anything else your character carries or tracks. Each item starts with just a name, but you can extend every item in the list with shared attributes like Weight, Equipped, or Durability.',
+            'tutorial.list.2.title': 'Adding Items and Viewing Details',
+            'tutorial.list.2.body': 'Open {icon:more-vertical} and choose Add Item to create a new entry. Click the expand button on any item row to open its detail view, where you can edit the name, add notes, and adjust all of its attribute values. Changes are saved when you click Save.',
+            'tutorial.list.3.title': 'Attributes and Columns',
+            'tutorial.list.3.body': 'Attributes are shared columns that apply to every item in the list. Open {icon:more-vertical} Module Settings to add or remove attributes, choose from built-in presets like Weight or Equipped, or create a custom one with the Attribute Wizard. Pinned attributes appear as columns directly on each item row.',
+            'tutorial.list.4.title': 'Sorting and Moving Items',
+            'tutorial.list.4.body': 'Click any column header to sort items by that field. Click again to reverse the order; click a third time to return to manual order. Drag any item\'s handle to reorder it manually. You can also drag an item from one List module and drop it onto another to transfer it — the item\'s attribute values move with it.',
+
+            // Tutorial: text
+            'tutorial.text.1.title': 'What Is a Text Box?',
+            'tutorial.text.1.body': 'A Text Box is a free-form notes area for anything that doesn\'t fit a structured module — character backstory, session logs, house rules, NPC descriptions, or quick reference tables. Content is written in Markdown and displayed rendered inside the module.',
+            'tutorial.text.2.title': 'Writing and Formatting Content',
+            'tutorial.text.2.body': 'Open {icon:more-vertical} and choose Edit Content to open the text editor. You can use Markdown formatting: **bold**, *italic*, # headings, - lists, > blockquotes, and even interactive task-list checkboxes with - [ ]. Changes take effect when you save.',
+            'tutorial.text.3.title': 'Live Stat References',
+            'tutorial.text.3.body': 'You can embed references to your character\'s values directly in your text using ${variable} tokens. These update automatically whenever the referenced value changes — useful for noting passive perception, carrying capacity, or any derived value you want to track in prose.',
+
             // Module type labels
             'type.abilities': 'Abilities',
             'type.actions': 'Action Tracker',

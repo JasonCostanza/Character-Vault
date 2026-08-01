@@ -211,6 +211,30 @@ window.CV_TRANSLATIONS['fr'] = {
             'tutorial.weapons.5.title': 'Traits, portée et munitions',
             'tutorial.weapons.5.body': 'Les traits apparaissent sous forme de petites étiquettes sur chaque carte d\'arme, indiquant des propriétés comme Finesse, Polyvalent ou Lourd. Les armes à distance affichent un compteur de munitions à côté de la portée ; Ctrl+clic sur le compteur permet de l\'ajuster directement sans ouvrir le formulaire. Les armes à deux mains occupent les deux mains — une carte de réservation apparaît dans l\'emplacement de la main secondaire pour l\'indiquer.',
 
+            // Tutorial: condition
+            'tutorial.condition.1.title': 'Qu\'est-ce qu\'un module Conditions ?',
+            'tutorial.condition.1.body': 'Le module Conditions permet de suivre les états et afflictions affectant votre personnage — comme Aveuglé, Effrayé ou Empoisonné. Commencez par choisir un modèle de système de jeu dans {icon:more-vertical} Paramètres du module, ou utilisez Personnalisé pour créer votre propre liste.',
+            'tutorial.condition.2.title': 'Appliquer et suivre les conditions',
+            'tutorial.condition.2.body': 'En mode Jeu, cliquez sur le nom d\'une condition pour l\'activer ou la désactiver. Les conditions avec une valeur numérique — comme l\'Épuisement en D&D 5e — affichent un compteur : clic pour augmenter, clic droit pour diminuer. Le bouton Développer ouvre une vue détaillée permettant de définir la valeur directement ou de supprimer la condition.',
+            'tutorial.condition.3.title': 'Modèles et conditions personnalisées',
+            'tutorial.condition.3.body': 'Ouvrez {icon:more-vertical} Paramètres du module pour changer de modèle de système de jeu ou passer en mode Personnalisé. Dans ce mode, vous pouvez créer vos propres conditions, leur attribuer une description et une icône, et choisir si elles fonctionnent comme un interrupteur ou avec une valeur numérique. Les conditions personnalisées restent toujours disponibles aux côtés des entrées du modèle.',
+
+            // Tutorial: defenses
+            'tutorial.defenses.1.title': 'Qu\'est-ce qu\'un module Défenses ?',
+            'tutorial.defenses.1.body': 'Le module Défenses suit les statistiques défensives de votre personnage — comme la Classe d\'Armure en D&D 5e, l\'Esquive en Cyberpunk Red ou la Cote de Défense en Shadowrun. La statistique principale, appelée spotlight, est affichée en évidence en haut. Les autres valeurs défensives sont listées en dessous.',
+            'tutorial.defenses.2.title': 'Boutons de défense rapide',
+            'tutorial.defenses.2.body': 'Les boutons de défense rapide sont des interrupteurs pour des bonus situationnels — comme Lever le Bouclier ou Se Mettre à Couvert. Cliquez pour appliquer le modificateur au spotlight ; recliquez pour le retirer. Le spotlight se met à jour immédiatement. Survolez un bouton pour voir son nom et son modificateur.',
+            'tutorial.defenses.3.title': 'Gérer les défenses',
+            'tutorial.defenses.3.body': 'Ctrl+clic sur n\'importe quelle valeur défensive — spotlight ou secondaire — pour la modifier directement sans ouvrir les paramètres. Ouvrez {icon:more-vertical} Paramètres du module pour ajouter, supprimer, renommer ou réorganiser les défenses. La statistique en première position est toujours le spotlight ; faites-la glisser en tête de liste pour la promouvoir. Les boutons de défense rapide sont également gérés depuis ce même panneau.',
+
+            // Tutorial: resistance
+            'tutorial.resistance.1.title': 'Qu\'est-ce qu\'un module Résistances ?',
+            'tutorial.resistance.1.body': 'Le module Résistances suit les immunités, résistances et faiblesses de votre personnage face aux types de dégâts — comme le Feu, le Froid, le Poison ou le Contondant. Chaque entrée affiche une icône, le nom du type de dégât et une valeur optionnelle. Le module est divisé en trois colonnes : Immunités, Résistances et Faiblesses.',
+            'tutorial.resistance.2.title': 'Assigner des résistances',
+            'tutorial.resistance.2.body': 'Ouvrez {icon:more-vertical} Paramètres du module pour gérer vos résistances. Une zone de préparation liste tous les types de dégâts disponibles. Faites glisser un type vers la colonne Immunités, Résistances ou Faiblesses pour l\'assigner. En déposant dans Immunités, la valeur est automatiquement définie sur Immun ; sinon, saisissez le texte ou le nombre de votre choix.',
+            'tutorial.resistance.3.title': 'Mode Jeu et types personnalisés',
+            'tutorial.resistance.3.body': 'En mode Jeu, cliquez sur une résistance pour basculer son état actif ou inactif — les entrées inactives sont grisées pour voir d\'un coup d\'œil lesquelles sont en jeu. Ouvrez {icon:more-vertical} Paramètres du module et cliquez sur Créer personnalisé pour ajouter des types de dégâts absents de la liste prédéfinie. Donnez-leur un nom et une icône, ils apparaîtront dans la zone de préparation prêts à être assignés.',
+
             'type.abilities': 'Compétences',
             'type.actions': 'Suivi des Actions',
             'type.activity': 'Journal d\'Activité',

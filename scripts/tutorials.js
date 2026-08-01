@@ -85,6 +85,27 @@
         { titleKey: 'tutorial.weapons.5.title', bodyKey: 'tutorial.weapons.5.body' },
     ];
 
+    // Tutorial: condition
+    TUTORIALS.condition = [
+        { titleKey: 'tutorial.condition.1.title', bodyKey: 'tutorial.condition.1.body' },
+        { titleKey: 'tutorial.condition.2.title', bodyKey: 'tutorial.condition.2.body' },
+        { titleKey: 'tutorial.condition.3.title', bodyKey: 'tutorial.condition.3.body' },
+    ];
+
+    // Tutorial: defenses
+    TUTORIALS.defenses = [
+        { titleKey: 'tutorial.defenses.1.title', bodyKey: 'tutorial.defenses.1.body' },
+        { titleKey: 'tutorial.defenses.2.title', bodyKey: 'tutorial.defenses.2.body' },
+        { titleKey: 'tutorial.defenses.3.title', bodyKey: 'tutorial.defenses.3.body' },
+    ];
+
+    // Tutorial: resistance
+    TUTORIALS.resistance = [
+        { titleKey: 'tutorial.resistance.1.title', bodyKey: 'tutorial.resistance.1.body' },
+        { titleKey: 'tutorial.resistance.2.title', bodyKey: 'tutorial.resistance.2.body' },
+        { titleKey: 'tutorial.resistance.3.title', bodyKey: 'tutorial.resistance.3.body' },
+    ];
+
     function renderTutorialText(key) {
         return t(key).replace(/\{icon:(\w[\w-]*)\}/g, (_, name) => cvIcon(name, 14));
     }

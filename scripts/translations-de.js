@@ -211,6 +211,30 @@ window.CV_TRANSLATIONS['de'] = {
             'tutorial.weapons.5.title': 'Eigenschaften, Reichweite und Munition',
             'tutorial.weapons.5.body': 'Eigenschaften erscheinen als kleine Chips auf jeder Waffenkarte und zeigen Merkmale wie Finesse, Vielseitig oder Schwer an. Fernkampfwaffen zeigen einen Munitionszähler neben der Reichweite; Strg+Klick auf den Zähler passt ihn direkt an, ohne das Bearbeitungsformular zu öffnen. Zweihändige Waffen belegen beide Hände — in der Nebenhand erscheint eine Platzhalterkarte, die anzeigt, dass diese Hand belegt ist.',
 
+            // Tutorial: condition
+            'tutorial.condition.1.title': 'Was ist ein Zustands-Modul?',
+            'tutorial.condition.1.body': 'Das Zustands-Modul ermöglicht es dir, Statuseffekte und Beeinträchtigungen deines Charakters zu verfolgen — wie Geblendet, Verängstigt oder Vergiftet. Wähle in {icon:more-vertical} Modul-Einstellungen eine Spielsystemvorlage oder nutze Benutzerdefiniert, um eine eigene Liste zu erstellen.',
+            'tutorial.condition.2.title': 'Zustände anwenden und verfolgen',
+            'tutorial.condition.2.body': 'Im Spielmodus: auf den Namen eines Zustands klicken, um ihn ein- oder auszuschalten. Zustände mit einem numerischen Schweregrad — etwa Erschöpfung in D&D 5e — zeigen stattdessen einen Zähler: Klick zum Erhöhen, Rechtsklick zum Verringern. Der Erweitern-Button öffnet eine Detailansicht, wo der Wert direkt gesetzt oder der Zustand entfernt werden kann.',
+            'tutorial.condition.3.title': 'Vorlagen und eigene Zustände',
+            'tutorial.condition.3.body': 'Öffne {icon:more-vertical} Modul-Einstellungen, um Spielsystemvorlagen zu wechseln oder auf Benutzerdefiniert umzustellen. Im benutzerdefinierten Modus kannst du eigene Zustände hinzufügen, jedem eine Beschreibung und ein Symbol geben und festlegen, ob er umschaltbar oder mit einem Zahlenwert versehen ist. Selbst erstellte Zustände stehen immer neben den Vorlageneinträgen zur Verfügung.',
+
+            // Tutorial: defenses
+            'tutorial.defenses.1.title': 'Was ist ein Verteidigungs-Modul?',
+            'tutorial.defenses.1.body': 'Das Verteidigungs-Modul verfolgt die Verteidigungswerte deines Charakters — wie Rüstungsklasse in D&D 5e, Ausweichen in Cyberpunk Red oder Verteidigungsbewertung in Shadowrun. Der Hauptwert, auch Scheinwerfer genannt, wird oben hervorgehoben. Weitere Verteidigungswerte sind darunter aufgelistet.',
+            'tutorial.defenses.2.title': 'Schnellverteidigungs-Schaltflächen',
+            'tutorial.defenses.2.body': 'Schnellverteidigungs-Schaltflächen sind Umschalter für situative Boni — wie Schild heben oder In Deckung gehen. Klicken zum Aktivieren des Modifikators auf den Scheinwerferwert; erneutes Klicken deaktiviert ihn. Der Scheinwerferwert aktualisiert sich sofort. Hovern über eine Schaltfläche zeigt Name und Modifikator.',
+            'tutorial.defenses.3.title': 'Verteidigung verwalten',
+            'tutorial.defenses.3.body': 'Strg+Klick auf einen beliebigen Verteidigungswert — Scheinwerfer oder sekundär — ermöglicht die direkte Änderung ohne Einstellungsmenü. {icon:more-vertical} Modul-Einstellungen öffnen, um Verteidigungswerte hinzuzufügen, zu entfernen, umzubenennen oder neu zu ordnen. Der Wert an erster Stelle ist immer der Scheinwerfer; durch Ziehen an die erste Position wird jeder Wert zum Hauptwert. Schnellverteidigungs-Schaltflächen werden ebenfalls über dieses Einstellungsmenü verwaltet.',
+
+            // Tutorial: resistance
+            'tutorial.resistance.1.title': 'Was ist ein Resistenz-Modul?',
+            'tutorial.resistance.1.body': 'Das Resistenz-Modul verfolgt die Immunitäten, Resistenzen und Schwächen deines Charakters gegenüber Schadenstypen — wie Feuer, Kälte, Gift oder Wucht. Jeder Eintrag zeigt ein Symbol, den Namen des Schadenstyps und einen optionalen Wert. Das Modul ist in drei Spalten aufgeteilt: Immunitäten, Resistenzen und Schwächen.',
+            'tutorial.resistance.2.title': 'Resistenzen zuweisen',
+            'tutorial.resistance.2.body': 'Öffne {icon:more-vertical} Modul-Einstellungen, um Resistenzen zu verwalten. Ein Bereitstellungsbereich listet alle verfügbaren Schadenstypen auf. Jeden Typ per Drag-and-Drop in die Spalte Immunitäten, Resistenzen oder Schwächen ziehen. Bei Immunitäten wird der Wert automatisch auf Immun gesetzt; ansonsten kann ein beliebiger Text oder Zahlenwert eingegeben werden.',
+            'tutorial.resistance.3.title': 'Spielmodus und eigene Typen',
+            'tutorial.resistance.3.body': 'Im Spielmodus: Klick auf eine Resistenz schaltet sie aktiv oder inaktiv — inaktive Einträge werden abgedunkelt, sodass auf einen Blick erkennbar ist, welche Resistenzen aktuell wirksam sind. {icon:more-vertical} Modul-Einstellungen öffnen und Benutzerdefiniert erstellen klicken, um Schadenstypen hinzuzufügen, die nicht in der Standardliste enthalten sind. Mit Name und Symbol aus dem Auswahlraster erscheinen sie sofort im Bereitstellungsbereich.',
+
             'type.abilities': 'Fähigkeiten',
             'type.actions': 'Aktionsverfolgung',
             'type.activity': 'Aktivitätsprotokoll',

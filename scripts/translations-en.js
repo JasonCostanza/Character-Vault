@@ -218,6 +218,30 @@ window.CV_TRANSLATIONS.en = {
             'tutorial.weapons.5.title': 'Traits, Range, and Ammo',
             'tutorial.weapons.5.body': 'Traits appear as small chips on each weapon card, indicating properties like Finesse, Versatile, or Heavy. Ranged weapons show an ammo counter next to the range; Ctrl+click the counter to adjust it directly without opening the edit form. Two-handed weapons occupy both hands — a placeholder card appears in the off-hand slot to show that hand is in use.',
 
+            // Tutorial: condition
+            'tutorial.condition.1.title': 'What Is a Conditions Module?',
+            'tutorial.condition.1.body': 'A Conditions module lets you track the status effects and afflictions on your character — things like Blinded, Frightened, or Poisoned. Start by choosing a template in {icon:more-vertical} Module Settings that matches your game system, or use Custom to build your own list.',
+            'tutorial.condition.2.title': 'Applying and Tracking Conditions',
+            'tutorial.condition.2.body': 'In Play mode, click a condition\'s name to toggle it on or off. Conditions with a numeric severity — like Exhaustion in D&D 5e — show a counter instead: click the value to increment it, or right-click it to decrease it. The expand button on any condition opens a detail view where you can set the value directly or remove the condition.',
+            'tutorial.condition.3.title': 'Templates and Custom Conditions',
+            'tutorial.condition.3.body': 'Open {icon:more-vertical} Module Settings to switch game system templates or move to Custom. In Custom mode, you can add your own conditions, give each one a description, choose an icon, and pick whether it toggles on/off or tracks a numeric value. Custom conditions you create are always available alongside the template entries.',
+
+            // Tutorial: defenses
+            'tutorial.defenses.1.title': 'What Is a Defenses Module?',
+            'tutorial.defenses.1.body': 'The Defenses module tracks your character\'s defensive ratings — like Armor Class in D&D 5e, Evasion in Cyberpunk Red, or Defense Rating in Shadowrun. The primary stat, called the spotlight, is displayed prominently at the top. Any additional defensive values are listed beneath it.',
+            'tutorial.defenses.2.title': 'Quick Defense Buttons',
+            'tutorial.defenses.2.body': 'Quick Defense buttons are toggles for temporary situational bonuses — like Raise Shield or Take Cover. Click a button to apply its modifier to your spotlight value; click it again to remove it. The spotlight updates immediately to show the adjusted total. Hover over any button to see its name and modifier.',
+            'tutorial.defenses.3.title': 'Managing Defenses',
+            'tutorial.defenses.3.body': 'Ctrl+click any defense value — spotlight or secondary — to change it directly without opening settings. Open {icon:more-vertical} Module Settings to add, remove, rename, or reorder defenses. Whichever stat sits in position 1 is the spotlight; drag it to the top to promote any stat to the primary position. Quick Defense buttons are also added and managed from the same settings panel.',
+
+            // Tutorial: resistance
+            'tutorial.resistance.1.title': 'What Is a Resistances Module?',
+            'tutorial.resistance.1.body': 'The Resistances module tracks your character\'s immunities, resistances, and weaknesses to damage types — like Fire, Cold, Poison, or Bludgeoning. Each entry shows an icon, the damage type\'s name, and an optional value. The module is split into three columns: Immunities, Resistances, and Weaknesses.',
+            'tutorial.resistance.2.title': 'Assigning Resistances',
+            'tutorial.resistance.2.body': 'Open {icon:more-vertical} Module Settings to manage your resistances. A staging area lists all available damage types. Drag any type from the staging area into the Immunities, Resistances, or Weaknesses column. When you drop into the Immunity column the value is set to Immune automatically; otherwise you can enter any text or number you like.',
+            'tutorial.resistance.3.title': 'Play Mode and Custom Types',
+            'tutorial.resistance.3.body': 'In Play mode, click any resistance to toggle it active or inactive — inactive entries are dimmed so you can see at a glance which resistances are currently in effect. Open {icon:more-vertical} Module Settings and click Create Custom to add damage types not in the predefined list. Give it a name, pick an icon, and it will appear in the staging area ready to assign.',
+
             // Module type labels
             'type.abilities': 'Abilities',
             'type.actions': 'Action Tracker',

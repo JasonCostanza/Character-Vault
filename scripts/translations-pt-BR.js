@@ -211,6 +211,30 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'tutorial.weapons.5.title': 'Traços, alcance e munição',
             'tutorial.weapons.5.body': 'Os traços aparecem como pequenos emblemas em cada ficha de arma, indicando propriedades como Finesse, Versátil ou Pesada. Armas de longa distância mostram um contador de munição ao lado do alcance; Ctrl+clique no contador permite ajustá-lo diretamente sem abrir o formulário. Armas de duas mãos ocupam ambas as mãos — uma ficha marcadora aparece na coluna da mão secundária para indicar que aquela mão está ocupada.',
 
+            // Tutorial: condition
+            'tutorial.condition.1.title': 'O que é um módulo de Condições?',
+            'tutorial.condition.1.body': 'O módulo de Condições permite acompanhar os estados e aflições que afetam seu personagem — como Cego, Amedrontado ou Envenenado. Comece escolhendo um modelo de sistema de jogo em {icon:more-vertical} Configurações do módulo, ou use Personalizado para criar sua própria lista.',
+            'tutorial.condition.2.title': 'Aplicar e rastrear condições',
+            'tutorial.condition.2.body': 'No modo de Jogo, clique no nome de uma condição para ativá-la ou desativá-la. Condições com valor numérico — como Exaustão em D&D 5e — exibem um contador: clique para incrementar, clique direito para decrementar. O botão Expandir abre uma visualização de detalhes onde você pode definir o valor diretamente ou remover a condição.',
+            'tutorial.condition.3.title': 'Modelos e condições personalizadas',
+            'tutorial.condition.3.body': 'Abra {icon:more-vertical} Configurações do módulo para trocar o modelo de sistema de jogo ou alternar para o modo Personalizado. Nesse modo, você pode criar condições próprias, atribuir a cada uma uma descrição e ícone, e escolher se funcionam como alternância ou com valor numérico. Condições personalizadas ficam sempre disponíveis ao lado das entradas do modelo.',
+
+            // Tutorial: defenses
+            'tutorial.defenses.1.title': 'O que é um módulo de Defesas?',
+            'tutorial.defenses.1.body': 'O módulo de Defesas rastreia as estatísticas defensivas do seu personagem — como a Classe de Armadura em D&D 5e, a Esquiva em Cyberpunk Red ou a Classificação de Defesa em Shadowrun. A estatística principal, chamada destaque, é exibida com proeminência no topo. Valores defensivos adicionais ficam listados abaixo.',
+            'tutorial.defenses.2.title': 'Botões de Defesa Rápida',
+            'tutorial.defenses.2.body': 'Os botões de Defesa Rápida são alternadores para bônus situacionais — como Erguer o Escudo ou Se Abrigar. Clique para aplicar o modificador ao destaque; clique novamente para removê-lo. O destaque é atualizado imediatamente. Passe o cursor sobre um botão para ver o nome e o modificador.',
+            'tutorial.defenses.3.title': 'Gerenciar defesas',
+            'tutorial.defenses.3.body': 'Ctrl+clique em qualquer valor defensivo — destaque ou secundário — para alterá-lo diretamente sem abrir as configurações. Abra {icon:more-vertical} Configurações do módulo para adicionar, remover, renomear ou reordenar defesas. A estatística na primeira posição é sempre o destaque; arraste-a para o topo para promover qualquer estatística à posição principal. Os botões de Defesa Rápida também são gerenciados nesse mesmo painel.',
+
+            // Tutorial: resistance
+            'tutorial.resistance.1.title': 'O que é um módulo de Resistências?',
+            'tutorial.resistance.1.body': 'O módulo de Resistências rastreia as imunidades, resistências e fraquezas do seu personagem em relação a tipos de dano — como Fogo, Frio, Veneno ou Cortante. Cada entrada exibe um ícone, o nome do tipo de dano e um valor opcional. O módulo é dividido em três colunas: Imunidades, Resistências e Fraquezas.',
+            'tutorial.resistance.2.title': 'Atribuir resistências',
+            'tutorial.resistance.2.body': 'Abra {icon:more-vertical} Configurações do módulo para gerenciar suas resistências. Uma área de preparação lista todos os tipos de dano disponíveis. Arraste qualquer tipo da área de preparação para a coluna Imunidades, Resistências ou Fraquezas. Ao soltar na coluna Imunidades, o valor é definido automaticamente como Imune; caso contrário, insira qualquer texto ou número.',
+            'tutorial.resistance.3.title': 'Modo de jogo e tipos personalizados',
+            'tutorial.resistance.3.body': 'No modo de Jogo, clique em uma resistência para alternar seu estado ativo ou inativo — entradas inativas ficam esmaecidas para que você veja de relance quais resistências estão em vigor. Abra {icon:more-vertical} Configurações do módulo e clique em Criar personalizado para adicionar tipos de dano ausentes da lista predefinida. Dê um nome e escolha um ícone: eles aparecerão na área de preparação prontos para atribuição.',
+
             'type.abilities': 'Habilidades',
             'type.actions': 'Rastreador de Ações',
             'type.activity': 'Registro de Atividade',

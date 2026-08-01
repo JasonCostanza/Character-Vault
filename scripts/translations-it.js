@@ -216,6 +216,30 @@ window.CV_TRANSLATIONS['it'] = {
             'tutorial.weapons.5.title': 'Tratti, gittata e munizioni',
             'tutorial.weapons.5.body': 'I tratti appaiono come piccole etichette su ogni scheda arma, indicando proprietà come Finesse, Versatile o Pesante. Le armi a distanza mostrano un contatore di munizioni accanto alla gittata; Ctrl+clic sul contatore permette di modificarlo direttamente senza aprire il modulo. Le armi a due mani occupano entrambe le mani — nella colonna della mano secondaria appare una scheda segnaposto per indicare che quella mano è impegnata.',
 
+            // Tutorial: condition
+            'tutorial.condition.1.title': 'Cos\'è un modulo Condizioni?',
+            'tutorial.condition.1.body': 'Il modulo Condizioni consente di tenere traccia degli stati e delle afflizioni che colpiscono il tuo personaggio — come Accecato, Spaventato o Avvelenato. Inizia scegliendo un modello di sistema di gioco in {icon:more-vertical} Impostazioni modulo, oppure usa Personalizzato per creare la tua lista.',
+            'tutorial.condition.2.title': 'Applicare e monitorare le condizioni',
+            'tutorial.condition.2.body': 'In modalità Gioco, fai clic sul nome di una condizione per attivarla o disattivarla. Le condizioni con un valore numerico — come l\'Esaurimento in D&D 5e — mostrano un contatore: clic per incrementare, clic destro per decrementare. Il pulsante Espandi apre una vista dettagliata dove puoi impostare il valore direttamente o rimuovere la condizione.',
+            'tutorial.condition.3.title': 'Modelli e condizioni personalizzate',
+            'tutorial.condition.3.body': 'Apri {icon:more-vertical} Impostazioni modulo per cambiare il modello di sistema di gioco o passare alla modalità Personalizzato. In quella modalità puoi aggiungere condizioni proprie, assegnare loro una descrizione e un\'icona, e scegliere se funzionano come interruttore o con un valore numerico. Le condizioni create restano sempre disponibili accanto alle voci del modello.',
+
+            // Tutorial: defenses
+            'tutorial.defenses.1.title': 'Cos\'è un modulo Difese?',
+            'tutorial.defenses.1.body': 'Il modulo Difese tiene traccia delle statistiche difensive del tuo personaggio — come la Classe Armatura in D&D 5e, l\'Evasione in Cyberpunk Red o la Valutazione Difensiva in Shadowrun. La statistica principale, chiamata spotlight, è visualizzata in evidenza in cima. Le eventuali statistiche difensive aggiuntive sono elencate sotto.',
+            'tutorial.defenses.2.title': 'Pulsanti Difesa Rapida',
+            'tutorial.defenses.2.body': 'I pulsanti di Difesa Rapida sono interruttori per bonus situazionali — come Alzare lo Scudo o Trovare Riparo. Fai clic per applicare il modificatore allo spotlight; fai clic di nuovo per rimuoverlo. Lo spotlight si aggiorna immediatamente. Passa il cursore su un pulsante per vedere il nome e il modificatore.',
+            'tutorial.defenses.3.title': 'Gestire le difese',
+            'tutorial.defenses.3.body': 'Ctrl+clic su qualsiasi valore difensivo — spotlight o secondario — per modificarlo direttamente senza aprire le impostazioni. Apri {icon:more-vertical} Impostazioni modulo per aggiungere, rimuovere, rinominare o riordinare le difese. La statistica in prima posizione è sempre lo spotlight; trascinala in cima per promuovere qualsiasi statistica alla posizione principale. I pulsanti di Difesa Rapida si gestiscono dallo stesso pannello.',
+
+            // Tutorial: resistance
+            'tutorial.resistance.1.title': 'Cos\'è un modulo Resistenze?',
+            'tutorial.resistance.1.body': 'Il modulo Resistenze tiene traccia delle immunità, resistenze e debolezze del tuo personaggio verso i tipi di danno — come Fuoco, Freddo, Veleno o Contundente. Ogni voce mostra un\'icona, il nome del tipo di danno e un valore opzionale. Il modulo è diviso in tre colonne: Immunità, Resistenze e Debolezze.',
+            'tutorial.resistance.2.title': 'Assegnare resistenze',
+            'tutorial.resistance.2.body': 'Apri {icon:more-vertical} Impostazioni modulo per gestire le tue resistenze. Un\'area di staging elenca tutti i tipi di danno disponibili. Trascina un tipo dall\'area di staging nella colonna Immunità, Resistenze o Debolezze. Rilasciando in Immunità, il valore viene impostato automaticamente su Immune; altrimenti inserisci qualsiasi testo o numero.',
+            'tutorial.resistance.3.title': 'Modalità Gioco e tipi personalizzati',
+            'tutorial.resistance.3.body': 'In modalità Gioco, fai clic su una resistenza per alternarne lo stato attivo o inattivo — le voci inattive sono attenuate così puoi vedere a colpo d\'occhio quali resistenze sono operative. Apri {icon:more-vertical} Impostazioni modulo e clicca Crea personalizzato per aggiungere tipi di danno non presenti nella lista predefinita. Assegna un nome e un\'icona: appariranno nell\'area di staging pronti per essere assegnati.',
+
             // Module type labels
             'type.abilities': 'Abilità',
             'type.actions': 'Tracciatore Azioni',

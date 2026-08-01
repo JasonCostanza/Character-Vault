@@ -235,6 +235,38 @@ window.CV_TRANSLATIONS['de'] = {
             'tutorial.resistance.3.title': 'Spielmodus und eigene Typen',
             'tutorial.resistance.3.body': 'Im Spielmodus: Klick auf eine Resistenz schaltet sie aktiv oder inaktiv — inaktive Einträge werden abgedunkelt, sodass auf einen Blick erkennbar ist, welche Resistenzen aktuell wirksam sind. {icon:more-vertical} Modul-Einstellungen öffnen und Benutzerdefiniert erstellen klicken, um Schadenstypen hinzuzufügen, die nicht in der Standardliste enthalten sind. Mit Name und Symbol aus dem Auswahlraster erscheinen sie sofort im Bereitstellungsbereich.',
 
+            // Tutorial: bio
+            'tutorial.bio.1.title': 'Was ist ein Bio-Modul?',
+            'tutorial.bio.1.body': 'Das Bio-Modul ist die Identitätskarte deines Charakters — Porträt, Name, körperliche Merkmale und Biografie an einem Ort. Es ist in zwei Tabs unterteilt: Übersicht für die Grundlagen und Details für Hintergrund und Persönlichkeit. Felder, die spezifisch für dein Spielsystem sind, wie Abstammung in Pathfinder 2e oder Klan in Vampire: The Masquerade, erscheinen automatisch.',
+            'tutorial.bio.2.title': 'Porträt hinzufügen und Details ausfüllen',
+            'tutorial.bio.2.body': 'Klicke auf den Porträtbereich, um ein Bild hochzuladen (PNG, JPG oder WEBP, bis zu 1 MB). Fülle Felder wie Rasse, Alter und Aussehen direkt aus — leere Felder werden im Spielmodus einfach ausgeblendet, also mach dir keine Sorgen, etwas leer zu lassen. Wechsle zum Tab Details für Biografie, Ideale, Bindungen und Schwächen.',
+            'tutorial.bio.3.title': 'Der Persönlichkeitsbereich',
+            'tutorial.bio.3.body': 'Klicke im Tab Übersicht auf die Überschrift Persönlichkeit, um einen einklappbaren Bereich für Persönlichkeitsmerkmale, Ideale, Bindungen und Schwächen zu öffnen. Er bleibt standardmäßig eingeklappt, um das Modul kompakt zu halten — öffne ihn, wann immer du diese Details notieren oder nachschlagen möchtest.',
+
+            // Tutorial: companions
+            'tutorial.companions.1.title': 'Was ist ein Begleiter-Modul?',
+            'tutorial.companions.1.body': 'Das Begleiter-Modul verfolgt die NPCs, die deinen Charakter begleiten — ein treuer Tierbegleiter, ein Vertrauter oder Ähnliches. Jeder Begleiter erscheint als Zeile in einer Tabelle mit bearbeitbaren Spalten für TP, RK, Lauf- und Flugtempo.',
+            'tutorial.companions.2.title': 'Begleiter hinzufügen und bearbeiten',
+            'tutorial.companions.2.body': 'Öffne {icon:more-vertical} Modul-Einstellungen, um einen neuen Begleiter hinzuzufügen — nur ein Name ist erforderlich. Nach dem Hinzufügen kannst du jeden Attributwert direkt anklicken, um ihn zu bearbeiten; Werte unterstützen einfache Rechenoperationen wie "+6" oder "5+7". Klicke auf den Pfeil in der Zeile eines Begleiters, um eine Schublade mit einem Notizfeld und angewendeten Zuständen zu öffnen.',
+            'tutorial.companions.3.title': 'Aktiv-Status und eigene Attribute',
+            'tutorial.companions.3.body': 'Schalte den Aktiv-Status eines Begleiters um, um ihn als beschworen oder entlassen zu markieren — inaktive Begleiter bleiben sichtbar, werden aber abgedunkelt dargestellt. Öffne {icon:more-vertical} Modul-Einstellungen, um über die eingebauten vier hinaus eigene Attribute hinzuzufügen, Begleiter umzubenennen oder Attribute per Drag-and-Drop neu anzuordnen.',
+
+            // Tutorial: actions
+            'tutorial.actions.1.title': 'Was ist ein Aktions-Tracker?',
+            'tutorial.actions.1.body': 'Der Aktions-Tracker hilft dir, deinen Zug zu planen, indem er deine verfügbaren Aktionen als Pillen anzeigt — Aktion, Bonusaktion und Reaktion für D&D 5e, drei gleichwertige Aktionen für Pathfinder 2e oder was auch immer dein Spielsystem verwendet. Beim Erstellen wird es mit den Standardwerten deines Spielsystems vorausgefüllt.',
+            'tutorial.actions.2.title': 'Aktions-Pillen verwenden',
+            'tutorial.actions.2.body': 'Klicke auf den Namen einer Pille, um sie zwischen verfügbar (hell) und verbraucht (abgedunkelt) umzuschalten, während du im Laufe deines Zuges Aktionen ausgibst. Ziehe eine Pille an ihrem Griff, um sie neu anzuordnen, oder klicke auf {icon:x}, um sie zu löschen. Duplikate sind erlaubt — manche Systeme benötigen mehr als eine identische Aktions-Pille.',
+            'tutorial.actions.3.title': 'Aktionen hinzufügen und Layout-Optionen',
+            'tutorial.actions.3.body': 'Verwende die Schaltfläche {icon:plus} in der Modul-Werkzeugleiste, um eine eigene Aktions-Pille hinzuzufügen. Öffne {icon:more-vertical} Modul-Einstellungen, um zwischen Umbruch-Layout (Pillen fließen von links nach rechts) und Listen-Layout (eine Pille pro Zeile) zu wechseln. Nutze Alle zurücksetzen im Überlaufmenü, um zu Beginn eines neuen Zugs alle Pillen wieder auf verfügbar zu setzen.',
+
+            // Tutorial: activity
+            'tutorial.activity.1.title': 'Was ist ein Aktivitätsprotokoll-Modul?',
+            'tutorial.activity.1.body': 'Das Aktivitätsprotokoll zeichnet automatisch wichtige Ereignisse aus anderen Modulen auf — erlittener Schaden, gewirkte Zauber, gewürfelte Würfe und mehr —, damit du eine laufende Historie dessen hast, was während einer Sitzung passiert ist. Du fügst Einträge nicht manuell hinzu; andere Module melden sich während des Spiels beim Protokoll.',
+            'tutorial.activity.2.title': 'Einträge lesen und filtern',
+            'tutorial.activity.2.body': 'Jeder Eintrag zeigt einen Zeitstempel und eine Beschreibung des Geschehens. Mit den Tag-Bubbles oben im Modul kannst du nach Ereignistyp filtern — klicke auf ein Tag, um diesen Typ auszublenden, klicke erneut, um ihn wieder anzuzeigen. Nutze die Sortier-Schaltfläche in der Werkzeugleiste oder im {icon:more-vertical} Überlaufmenü, um zwischen neueste zuerst und älteste zuerst zu wechseln.',
+            'tutorial.activity.3.title': 'Protokolleinträge verwalten',
+            'tutorial.activity.3.body': 'Lösche einen einzelnen Eintrag, wenn er nicht mehr zutrifft. Öffne {icon:more-vertical} Modul-Einstellungen, um das gesamte Protokoll zu leeren (mit Bestätigungsabfrage), eine maximale Anzahl an Einträgen festzulegen, Zeitstempel umzuschalten oder das Datums- und Zeitformat zu ändern.',
+
             'type.abilities': 'Fähigkeiten',
             'type.actions': 'Aktionsverfolgung',
             'type.activity': 'Aktivitätsprotokoll',

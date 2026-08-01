@@ -235,6 +235,38 @@ window.CV_TRANSLATIONS['es'] = {
             'tutorial.resistance.3.title': 'Modo de partida y tipos personalizados',
             'tutorial.resistance.3.body': 'En el modo de Partida, haz clic en una resistencia para alternar su estado activo o inactivo — las entradas inactivas se atenúan para que veas de un vistazo cuáles están en vigor. Abre {icon:more-vertical} Ajustes del módulo y haz clic en Crear personalizado para añadir tipos de daño que no estén en la lista predefinida. Dales un nombre e icono y aparecerán en el área de preparación listos para asignar.',
 
+            // Tutorial: bio
+            'tutorial.bio.1.title': '¿Qué es un módulo de Biografía?',
+            'tutorial.bio.1.body': 'El módulo de Biografía es la tarjeta de identidad de tu personaje — retrato, nombre, rasgos físicos y biografía en un solo lugar. Está dividido en dos pestañas: Resumen para lo básico y Detalles para el trasfondo y la personalidad. Los campos específicos de tu sistema de juego, como Herencia en Pathfinder 2e o Clan en Vampiro: La Mascarada, aparecen automáticamente.',
+            'tutorial.bio.2.title': 'Añadir un retrato y completar los detalles',
+            'tutorial.bio.2.body': 'Haz clic en el área del retrato para subir una imagen (PNG, JPG o WEBP, hasta 1 MB). Completa campos como Raza, Edad y Aspecto directamente — los campos vacíos simplemente se ocultan en el modo Partida, así que no te preocupes por dejar algo en blanco. Cambia a la pestaña Detalles para biografía, ideales, vínculos y defectos.',
+            'tutorial.bio.3.title': 'La sección de Personalidad',
+            'tutorial.bio.3.body': 'En la pestaña Resumen, haz clic en el encabezado Personalidad para desplegar una sección colapsable con Rasgos de Personalidad, Ideales, Vínculos y Defectos. Permanece colapsada por defecto para mantener el módulo compacto — despliégala cuando quieras anotar o consultar esos detalles.',
+
+            // Tutorial: companions
+            'tutorial.companions.1.title': '¿Qué es un módulo de Compañeros?',
+            'tutorial.companions.1.body': 'El módulo de Compañeros rastrea a los PNJ que acompañan a tu personaje — un fiel compañero animal, un familiar o algo similar. Cada compañero aparece como una fila en una tabla con columnas editables de PV, CA, Velocidad de carrera y Velocidad de vuelo.',
+            'tutorial.companions.2.title': 'Añadir y editar compañeros',
+            'tutorial.companions.2.body': 'Abre {icon:more-vertical} Ajustes del módulo para añadir un nuevo compañero — solo se requiere un nombre. Una vez añadido, haz clic en cualquier valor de atributo para editarlo directamente; los valores admiten operaciones simples como "+6" o "5+7". Haz clic en la flecha de la fila de un compañero para desplegar un panel con un campo de Notas y las Condiciones aplicadas.',
+            'tutorial.companions.3.title': 'Estado activo y atributos personalizados',
+            'tutorial.companions.3.body': 'Alterna el estado Activo de un compañero para marcarlo como invocado o despedido — los compañeros inactivos siguen visibles pero aparecen atenuados. Abre {icon:more-vertical} Ajustes del módulo para añadir atributos personalizados además de los cuatro predeterminados, renombrar compañeros o arrastrar atributos para reordenar las columnas de la tabla.',
+
+            // Tutorial: actions
+            'tutorial.actions.1.title': '¿Qué es un Rastreador de Acciones?',
+            'tutorial.actions.1.body': 'El Rastreador de Acciones te ayuda a planificar tu turno mostrando tus acciones disponibles como píldoras — Acción, Acción adicional y Reacción en D&D 5e, tres acciones equivalentes en Pathfinder 2e, o lo que use tu sistema de juego. Se rellena con los valores predeterminados de tu sistema al crearlo.',
+            'tutorial.actions.2.title': 'Usar las píldoras de acción',
+            'tutorial.actions.2.body': 'Haz clic en el nombre de una píldora para alternarla entre disponible (iluminada) y usada (atenuada) mientras gastas acciones durante tu turno. Arrastra una píldora por su asa para reordenarla, o haz clic en {icon:x} para eliminarla. Se permiten duplicados — algunos sistemas necesitan más de una píldora de acción idéntica.',
+            'tutorial.actions.3.title': 'Añadir acciones y opciones de diseño',
+            'tutorial.actions.3.body': 'Usa el botón {icon:plus} de la barra de herramientas del módulo para añadir una píldora de acción personalizada. Abre {icon:more-vertical} Ajustes del módulo para alternar entre el diseño de Ajuste (las píldoras fluyen de izquierda a derecha) y el diseño de Lista (una píldora por fila). Usa Restablecer todo en el menú desplegable para volver a poner todas las píldoras en disponible al inicio de un nuevo turno.',
+
+            // Tutorial: activity
+            'tutorial.activity.1.title': '¿Qué es un módulo de Registro de Actividad?',
+            'tutorial.activity.1.body': 'El Registro de Actividad graba automáticamente los eventos importantes de otros módulos — daño recibido, hechizos lanzados, tiradas de dados y más — para que tengas un historial continuo de lo sucedido durante una sesión. No añades entradas manualmente; otros módulos informan al registro mientras juegas.',
+            'tutorial.activity.2.title': 'Leer y filtrar entradas',
+            'tutorial.activity.2.body': 'Cada entrada muestra una marca de tiempo y una descripción de lo ocurrido. Las burbujas de etiquetas en la parte superior del módulo te permiten filtrar por tipo de evento — haz clic en una etiqueta para ocultar ese tipo, vuelve a hacer clic para mostrarla. Usa el botón de ordenar en la barra de herramientas o en el menú {icon:more-vertical} para alternar entre más reciente primero y más antiguo primero.',
+            'tutorial.activity.3.title': 'Gestionar las entradas del registro',
+            'tutorial.activity.3.body': 'Elimina una entrada individual si ya no es precisa. Abre {icon:more-vertical} Ajustes del módulo para borrar todo el registro (con confirmación), establecer un número máximo de entradas a conservar, alternar las marcas de tiempo o cambiar el formato de fecha y hora.',
+
             'type.abilities': 'Habilidades',
             'type.actions': 'Rastreador de Acciones',
             'type.activity': 'Registro de Actividad',

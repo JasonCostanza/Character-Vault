@@ -240,6 +240,38 @@ window.CV_TRANSLATIONS['it'] = {
             'tutorial.resistance.3.title': 'Modalità Gioco e tipi personalizzati',
             'tutorial.resistance.3.body': 'In modalità Gioco, fai clic su una resistenza per alternarne lo stato attivo o inattivo — le voci inattive sono attenuate così puoi vedere a colpo d\'occhio quali resistenze sono operative. Apri {icon:more-vertical} Impostazioni modulo e clicca Crea personalizzato per aggiungere tipi di danno non presenti nella lista predefinita. Assegna un nome e un\'icona: appariranno nell\'area di staging pronti per essere assegnati.',
 
+            // Tutorial: bio
+            'tutorial.bio.1.title': 'Cos\'è un modulo Bio?',
+            'tutorial.bio.1.body': 'Il modulo Bio è la carta d\'identità del tuo personaggio — ritratto, nome, tratti fisici e biografia tutti in un unico posto. È diviso in due schede: Panoramica per le basi e Dettagli per background e personalità. I campi specifici del tuo sistema di gioco, come Discendenza in Pathfinder 2e o Clan in Vampire: The Masquerade, appaiono automaticamente.',
+            'tutorial.bio.2.title': 'Aggiungere un ritratto e compilare i dettagli',
+            'tutorial.bio.2.body': 'Fai clic sull\'area del ritratto per caricare un\'immagine (PNG, JPG o WEBP, fino a 1 MB). Compila campi come Razza, Età e Aspetto direttamente — i campi vuoti vengono semplicemente nascosti in modalità Gioco, quindi non preoccuparti di lasciarne qualcuno vuoto. Passa alla scheda Dettagli per biografia, ideali, legami e difetti.',
+            'tutorial.bio.3.title': 'La sezione Personalità',
+            'tutorial.bio.3.body': 'Nella scheda Panoramica, fai clic sull\'intestazione Personalità per espandere una sezione comprimibile con Tratti di personalità, Ideali, Legami e Difetti. Resta chiusa per impostazione predefinita per mantenere il modulo compatto — aprila quando vuoi annotare o consultare quei dettagli.',
+
+            // Tutorial: companions
+            'tutorial.companions.1.title': 'Cos\'è un modulo Compagni?',
+            'tutorial.companions.1.body': 'Il modulo Compagni tiene traccia dei PNG che accompagnano il tuo personaggio — un fedele compagno animale, un famiglio o qualcosa di simile. Ogni compagno appare come una riga in una tabella con colonne modificabili di PF, CA, Velocità di corsa e Velocità di volo.',
+            'tutorial.companions.2.title': 'Aggiungere e modificare compagni',
+            'tutorial.companions.2.body': 'Apri {icon:more-vertical} Impostazioni modulo per aggiungere un nuovo compagno — è richiesto solo un nome. Una volta aggiunto, fai clic su qualsiasi valore di attributo per modificarlo direttamente; i valori supportano operazioni semplici come "+6" o "5+7". Fai clic sulla freccia sulla riga di un compagno per aprire un cassetto con un campo Note e le Condizioni applicate.',
+            'tutorial.companions.3.title': 'Stato attivo e attributi personalizzati',
+            'tutorial.companions.3.body': 'Attiva o disattiva lo stato Attivo di un compagno per segnarlo come evocato o congedato — i compagni inattivi restano visibili ma appaiono attenuati. Apri {icon:more-vertical} Impostazioni modulo per aggiungere attributi personalizzati oltre ai quattro predefiniti, rinominare i compagni o trascinare gli attributi per riordinare le colonne della tabella.',
+
+            // Tutorial: actions
+            'tutorial.actions.1.title': 'Cos\'è un Tracciatore Azioni?',
+            'tutorial.actions.1.body': 'Il Tracciatore Azioni ti aiuta a pianificare il tuo turno mostrando le azioni disponibili come pillole — Azione, Azione bonus e Reazione per D&D 5e, tre azioni equivalenti per Pathfinder 2e, o qualunque cosa usi il tuo sistema di gioco. Si precompila con i valori predefiniti del tuo sistema alla creazione.',
+            'tutorial.actions.2.title': 'Usare le pillole azione',
+            'tutorial.actions.2.body': 'Fai clic sul nome di una pillola per alternarla tra disponibile (accesa) e usata (attenuata) man mano che spendi azioni durante il tuo turno. Trascina una pillola dalla sua maniglia per riordinarla, oppure fai clic su {icon:x} per eliminarla. I duplicati sono consentiti — alcuni sistemi richiedono più di una pillola azione identica.',
+            'tutorial.actions.3.title': 'Aggiungere azioni e opzioni di layout',
+            'tutorial.actions.3.body': 'Usa il pulsante {icon:plus} nella barra degli strumenti del modulo per aggiungere una pillola azione personalizzata. Apri {icon:more-vertical} Impostazioni modulo per passare tra il layout A capo (le pillole scorrono da sinistra a destra) e il layout Elenco (una pillola per riga). Usa Ripristina tutto nel menu overflow per riportare tutte le pillole a disponibile all\'inizio di un nuovo turno.',
+
+            // Tutorial: activity
+            'tutorial.activity.1.title': 'Cos\'è un modulo Registro Attività?',
+            'tutorial.activity.1.body': 'Il Registro Attività registra automaticamente gli eventi principali degli altri moduli — danno subito, incantesimi lanciati, tiri di dado e altro — così hai una cronologia continua di ciò che è successo durante una sessione. Non aggiungi voci manualmente; gli altri moduli segnalano al registro mentre giochi.',
+            'tutorial.activity.2.title': 'Leggere e filtrare le voci',
+            'tutorial.activity.2.body': 'Ogni voce mostra una marca temporale e una descrizione di ciò che è accaduto. Le bolle di tag nella parte superiore del modulo ti permettono di filtrare per tipo di evento — fai clic su un tag per nascondere quel tipo, fai di nuovo clic per mostrarlo. Usa il pulsante di ordinamento nella barra degli strumenti o nel menu {icon:more-vertical} per alternare tra più recente prima e meno recente prima.',
+            'tutorial.activity.3.title': 'Gestire le voci del registro',
+            'tutorial.activity.3.body': 'Elimina una singola voce se non è più accurata. Apri {icon:more-vertical} Impostazioni modulo per cancellare l\'intero registro (con richiesta di conferma), impostare un numero massimo di voci da conservare, attivare o disattivare le marche temporali o cambiare il formato di data e ora.',
+
             // Module type labels
             'type.abilities': 'Abilità',
             'type.actions': 'Tracciatore Azioni',

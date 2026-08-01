@@ -106,6 +106,34 @@
         { titleKey: 'tutorial.resistance.3.title', bodyKey: 'tutorial.resistance.3.body' },
     ];
 
+    // Tutorial: bio
+    TUTORIALS.bio = [
+        { titleKey: 'tutorial.bio.1.title', bodyKey: 'tutorial.bio.1.body' },
+        { titleKey: 'tutorial.bio.2.title', bodyKey: 'tutorial.bio.2.body' },
+        { titleKey: 'tutorial.bio.3.title', bodyKey: 'tutorial.bio.3.body' },
+    ];
+
+    // Tutorial: companions
+    TUTORIALS.companions = [
+        { titleKey: 'tutorial.companions.1.title', bodyKey: 'tutorial.companions.1.body' },
+        { titleKey: 'tutorial.companions.2.title', bodyKey: 'tutorial.companions.2.body' },
+        { titleKey: 'tutorial.companions.3.title', bodyKey: 'tutorial.companions.3.body' },
+    ];
+
+    // Tutorial: actions
+    TUTORIALS.actions = [
+        { titleKey: 'tutorial.actions.1.title', bodyKey: 'tutorial.actions.1.body' },
+        { titleKey: 'tutorial.actions.2.title', bodyKey: 'tutorial.actions.2.body' },
+        { titleKey: 'tutorial.actions.3.title', bodyKey: 'tutorial.actions.3.body' },
+    ];
+
+    // Tutorial: activity
+    TUTORIALS.activity = [
+        { titleKey: 'tutorial.activity.1.title', bodyKey: 'tutorial.activity.1.body' },
+        { titleKey: 'tutorial.activity.2.title', bodyKey: 'tutorial.activity.2.body' },
+        { titleKey: 'tutorial.activity.3.title', bodyKey: 'tutorial.activity.3.body' },
+    ];
+
     function renderTutorialText(key) {
         return t(key).replace(/\{icon:(\w[\w-]*)\}/g, (_, name) => cvIcon(name, 14));
     }

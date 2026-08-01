@@ -235,6 +235,38 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'tutorial.resistance.3.title': 'Modo de jogo e tipos personalizados',
             'tutorial.resistance.3.body': 'No modo de Jogo, clique em uma resistência para alternar seu estado ativo ou inativo — entradas inativas ficam esmaecidas para que você veja de relance quais resistências estão em vigor. Abra {icon:more-vertical} Configurações do módulo e clique em Criar personalizado para adicionar tipos de dano ausentes da lista predefinida. Dê um nome e escolha um ícone: eles aparecerão na área de preparação prontos para atribuição.',
 
+            // Tutorial: bio
+            'tutorial.bio.1.title': 'O que é um módulo de Bio?',
+            'tutorial.bio.1.body': 'O módulo Bio é o cartão de identidade do seu personagem — retrato, nome, traços físicos e biografia tudo em um só lugar. Ele é dividido em duas abas: Visão Geral para o básico e Detalhes para histórico e personalidade. Campos específicos do seu sistema de jogo, como Herança em Pathfinder 2e ou Clã em Vampiro: A Máscara, aparecem automaticamente.',
+            'tutorial.bio.2.title': 'Adicionando um retrato e preenchendo os detalhes',
+            'tutorial.bio.2.body': 'Clique na área do retrato para enviar uma imagem (PNG, JPG ou WEBP, até 1 MB). Preencha campos como Raça, Idade e Aparência diretamente — campos vazios simplesmente ficam ocultos no modo de Jogo, então não se preocupe em deixar algo em branco. Mude para a aba Detalhes para biografia, ideais, vínculos e defeitos.',
+            'tutorial.bio.3.title': 'A seção Personalidade',
+            'tutorial.bio.3.body': 'Na aba Visão Geral, clique no cabeçalho Personalidade para expandir uma seção recolhível com Traços de Personalidade, Ideais, Vínculos e Defeitos. Ela permanece recolhida por padrão para manter o módulo compacto — expanda-a sempre que quiser anotar ou consultar esses detalhes.',
+
+            // Tutorial: companions
+            'tutorial.companions.1.title': 'O que é um módulo de Companheiros?',
+            'tutorial.companions.1.body': 'O módulo de Companheiros rastreia os NPCs que acompanham seu personagem — um fiel companheiro animal, um familiar ou algo semelhante. Cada companheiro aparece como uma linha em uma tabela com colunas editáveis de PV, CA, Velocidade de Corrida e Velocidade de Voo.',
+            'tutorial.companions.2.title': 'Adicionando e editando companheiros',
+            'tutorial.companions.2.body': 'Abra {icon:more-vertical} Configurações do módulo para adicionar um novo companheiro — apenas um nome é necessário. Depois de adicionado, clique em qualquer valor de atributo para editá-lo diretamente; os valores aceitam operações simples como "+6" ou "5+7". Clique no chevron da linha de um companheiro para expandir uma gaveta com um campo de Notas e as Condições aplicadas.',
+            'tutorial.companions.3.title': 'Status ativo e atributos personalizados',
+            'tutorial.companions.3.body': 'Alterne o status Ativo de um companheiro para marcá-lo como invocado ou dispensado — companheiros inativos permanecem visíveis, mas aparecem esmaecidos. Abra {icon:more-vertical} Configurações do módulo para adicionar atributos personalizados além dos quatro padrão, renomear companheiros ou arrastar atributos para reordenar as colunas da tabela.',
+
+            // Tutorial: actions
+            'tutorial.actions.1.title': 'O que é um Rastreador de Ações?',
+            'tutorial.actions.1.body': 'O Rastreador de Ações ajuda você a planejar seu turno mostrando suas ações disponíveis como pílulas — Ação, Ação Bônus e Reação para D&D 5e, três ações equivalentes para Pathfinder 2e, ou o que quer que seu sistema de jogo use. Ele é pré-preenchido com os padrões do seu sistema de jogo ao ser criado.',
+            'tutorial.actions.2.title': 'Usando as pílulas de ação',
+            'tutorial.actions.2.body': 'Clique no nome de uma pílula para alterná-la entre disponível (acesa) e usada (esmaecida) conforme você gasta ações durante seu turno. Arraste uma pílula pela alça para reordená-la, ou clique no {icon:x} para excluí-la. Duplicatas são permitidas — alguns sistemas precisam de mais de uma pílula de ação idêntica.',
+            'tutorial.actions.3.title': 'Adicionando ações e opções de layout',
+            'tutorial.actions.3.body': 'Use o botão {icon:plus} na barra de ferramentas do módulo para adicionar uma pílula de ação personalizada. Abra {icon:more-vertical} Configurações do módulo para alternar entre o layout Quebra (as pílulas fluem da esquerda para a direita) e o layout Lista (uma pílula por linha). Use Redefinir Tudo no menu de mais opções para voltar todas as pílulas para disponível no início de um novo turno.',
+
+            // Tutorial: activity
+            'tutorial.activity.1.title': 'O que é um módulo de Registro de Atividade?',
+            'tutorial.activity.1.body': 'O Registro de Atividade grava automaticamente eventos importantes de outros módulos — dano recebido, feitiços conjurados, dados rolados e mais — para que você tenha um histórico contínuo do que aconteceu durante uma sessão. Você não adiciona entradas manualmente; outros módulos reportam ao registro enquanto você joga.',
+            'tutorial.activity.2.title': 'Lendo e filtrando entradas',
+            'tutorial.activity.2.body': 'Cada entrada mostra um carimbo de data/hora e uma descrição do que aconteceu. Bolhas de tags no topo do módulo permitem filtrar por tipo de evento — clique em uma tag para ocultar aquele tipo, clique novamente para mostrá-la. Use o botão de ordenar na barra de ferramentas ou no menu {icon:more-vertical} para alternar entre mais recente primeiro e mais antigo primeiro.',
+            'tutorial.activity.3.title': 'Gerenciando entradas do registro',
+            'tutorial.activity.3.body': 'Exclua uma entrada individual se ela não for mais precisa. Abra {icon:more-vertical} Configurações do módulo para limpar todo o registro (com confirmação), definir um número máximo de entradas a manter, alternar carimbos de data/hora ou mudar o formato de data e hora.',
+
             'type.abilities': 'Habilidades',
             'type.actions': 'Rastreador de Ações',
             'type.activity': 'Registro de Atividade',

@@ -235,6 +235,38 @@ window.CV_TRANSLATIONS['fr'] = {
             'tutorial.resistance.3.title': 'Mode Jeu et types personnalisés',
             'tutorial.resistance.3.body': 'En mode Jeu, cliquez sur une résistance pour basculer son état actif ou inactif — les entrées inactives sont grisées pour voir d\'un coup d\'œil lesquelles sont en jeu. Ouvrez {icon:more-vertical} Paramètres du module et cliquez sur Créer personnalisé pour ajouter des types de dégâts absents de la liste prédéfinie. Donnez-leur un nom et une icône, ils apparaîtront dans la zone de préparation prêts à être assignés.',
 
+            // Tutorial: bio
+            'tutorial.bio.1.title': 'Qu\'est-ce qu\'un module Bio ?',
+            'tutorial.bio.1.body': 'Le module Bio est la carte d\'identité de votre personnage — portrait, nom, traits physiques et biographie réunis au même endroit. Il est divisé en deux onglets : Aperçu pour l\'essentiel, et Détails pour le passé et la personnalité. Les champs propres à votre système de jeu, comme l\'Héritage en Pathfinder 2e ou le Clan dans Vampire : La Mascarade, apparaissent automatiquement.',
+            'tutorial.bio.2.title': 'Ajouter un portrait et remplir les détails',
+            'tutorial.bio.2.body': 'Cliquez sur la zone du portrait pour importer une image (PNG, JPG ou WEBP, jusqu\'à 1 Mo). Remplissez directement des champs comme Race, Âge et Apparence — les champs vides sont simplement masqués en mode Jeu, donc ne vous inquiétez pas d\'en laisser certains vides. Passez à l\'onglet Détails pour la biographie, les idéaux, les liens et les défauts.',
+            'tutorial.bio.3.title': 'La section Personnalité',
+            'tutorial.bio.3.body': 'Dans l\'onglet Aperçu, cliquez sur l\'en-tête Personnalité pour déployer une section repliable regroupant Traits de personnalité, Idéaux, Liens et Défauts. Elle reste repliée par défaut pour garder le module compact — dépliez-la quand vous souhaitez noter ou consulter ces détails.',
+
+            // Tutorial: companions
+            'tutorial.companions.1.title': 'Qu\'est-ce qu\'un module Compagnons ?',
+            'tutorial.companions.1.body': 'Le module Compagnons suit les PNJ qui accompagnent votre personnage — un fidèle compagnon animal, un familier, ou toute entité similaire. Chaque compagnon apparaît comme une ligne dans un tableau avec des colonnes PV, CA, Vitesse de course et Vitesse de vol modifiables.',
+            'tutorial.companions.2.title': 'Ajouter et modifier des compagnons',
+            'tutorial.companions.2.body': 'Ouvrez {icon:more-vertical} Paramètres du module pour ajouter un nouveau compagnon — seul un nom est requis. Une fois ajouté, cliquez sur n\'importe quelle valeur d\'attribut pour la modifier directement ; les valeurs acceptent des opérations simples comme "+6" ou "5+7". Cliquez sur le chevron de la ligne d\'un compagnon pour déployer un tiroir contenant un champ Notes et les Conditions appliquées.',
+            'tutorial.companions.3.title': 'Statut actif et attributs personnalisés',
+            'tutorial.companions.3.body': 'Basculez le statut Actif d\'un compagnon pour le marquer comme invoqué ou renvoyé — les compagnons inactifs restent visibles mais apparaissent grisés. Ouvrez {icon:more-vertical} Paramètres du module pour ajouter des attributs personnalisés au-delà des quatre par défaut, renommer des compagnons, ou faire glisser les attributs pour réorganiser les colonnes du tableau.',
+
+            // Tutorial: actions
+            'tutorial.actions.1.title': 'Qu\'est-ce qu\'un Suivi des Actions ?',
+            'tutorial.actions.1.body': 'Le Suivi des Actions vous aide à planifier votre tour en affichant vos actions disponibles sous forme de pastilles — Action, Action bonus et Réaction pour D&D 5e, trois actions équivalentes pour Pathfinder 2e, ou ce qu\'utilise votre système de jeu. Il se préremplit avec les valeurs par défaut de votre système à la création.',
+            'tutorial.actions.2.title': 'Utiliser les pastilles d\'action',
+            'tutorial.actions.2.body': 'Cliquez sur le nom d\'une pastille pour basculer entre disponible (allumée) et utilisée (grisée) au fil des actions dépensées pendant votre tour. Faites glisser une pastille par sa poignée pour la réorganiser, ou cliquez sur {icon:x} pour la supprimer. Les doublons sont autorisés — certains systèmes ont besoin de plusieurs pastilles d\'action identiques.',
+            'tutorial.actions.3.title': 'Ajouter des actions et options de mise en page',
+            'tutorial.actions.3.body': 'Utilisez le bouton {icon:plus} dans la barre d\'outils du module pour ajouter une pastille d\'action personnalisée. Ouvrez {icon:more-vertical} Paramètres du module pour basculer entre la mise en page Flux (les pastilles s\'enchaînent de gauche à droite) et Liste (une pastille par ligne). Utilisez Tout réinitialiser dans le menu déroulant pour repasser toutes les pastilles à disponible au début d\'un nouveau tour.',
+
+            // Tutorial: activity
+            'tutorial.activity.1.title': 'Qu\'est-ce qu\'un module Journal d\'Activité ?',
+            'tutorial.activity.1.body': 'Le Journal d\'Activité enregistre automatiquement les événements majeurs des autres modules — dégâts subis, sorts lancés, jets de dés et plus — pour garder un historique de ce qui s\'est passé pendant une session. Vous n\'ajoutez pas d\'entrées manuellement ; les autres modules alimentent le journal pendant que vous jouez.',
+            'tutorial.activity.2.title': 'Lire et filtrer les entrées',
+            'tutorial.activity.2.body': 'Chaque entrée affiche un horodatage et une description de ce qui s\'est passé. Les bulles d\'étiquettes en haut du module permettent de filtrer par type d\'événement — cliquez sur une étiquette pour masquer ce type, cliquez à nouveau pour l\'afficher. Utilisez le bouton de tri dans la barre d\'outils ou le menu {icon:more-vertical} pour basculer entre le plus récent d\'abord et le plus ancien d\'abord.',
+            'tutorial.activity.3.title': 'Gérer les entrées du journal',
+            'tutorial.activity.3.body': 'Supprimez une entrée individuelle si elle n\'est plus exacte. Ouvrez {icon:more-vertical} Paramètres du module pour vider tout le journal (avec confirmation), définir un nombre maximal d\'entrées à conserver, activer ou désactiver les horodatages, ou changer le format de date et d\'heure.',
+
             'type.abilities': 'Compétences',
             'type.actions': 'Suivi des Actions',
             'type.activity': 'Journal d\'Activité',

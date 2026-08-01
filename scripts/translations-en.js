@@ -242,6 +242,38 @@ window.CV_TRANSLATIONS.en = {
             'tutorial.resistance.3.title': 'Play Mode and Custom Types',
             'tutorial.resistance.3.body': 'In Play mode, click any resistance to toggle it active or inactive — inactive entries are dimmed so you can see at a glance which resistances are currently in effect. Open {icon:more-vertical} Module Settings and click Create Custom to add damage types not in the predefined list. Give it a name, pick an icon, and it will appear in the staging area ready to assign.',
 
+            // Tutorial: bio
+            'tutorial.bio.1.title': 'What Is a Bio Module?',
+            'tutorial.bio.1.body': 'The Bio module is your character\'s identity card — portrait, name, physical traits, and biography all in one place. It\'s split into two tabs: Overview for the basics, and Details for background and personality. Fields specific to your game system, like Heritage in Pathfinder 2e or Clan in Vampire: The Masquerade, appear automatically.',
+            'tutorial.bio.2.title': 'Adding a Portrait and Filling In Details',
+            'tutorial.bio.2.body': 'Click the portrait area to upload an image (PNG, JPG, or WEBP, up to 1 MB). Fill in fields like Race, Age, and Appearance directly — empty fields are simply hidden in Play mode, so don\'t worry about leaving anything blank. Switch to the Details tab for biography, ideals, bonds, and flaws.',
+            'tutorial.bio.3.title': 'The Personality Section',
+            'tutorial.bio.3.body': 'On the Overview tab, click the Personality header to expand a collapsible section for Personality Traits, Ideals, Bonds, and Flaws. It stays collapsed by default to keep the module compact — expand it whenever you want to jot down or reference those details.',
+
+            // Tutorial: companions
+            'tutorial.companions.1.title': 'What Is a Companions Module?',
+            'tutorial.companions.1.body': 'The Companions module tracks the NPCs that travel with your character — a loyal animal companion, a familiar, or anything similar. Each companion appears as a row in a table with editable HP, AC, Run Speed, and Fly Speed columns.',
+            'tutorial.companions.2.title': 'Adding and Editing Companions',
+            'tutorial.companions.2.body': 'Open {icon:more-vertical} Module Settings to add a new companion — only a name is required. Once added, click any attribute value to edit it directly; values support simple math like "+6" or "5+7". Click the chevron on a companion\'s row to expand a drawer with a Notes field and applied Conditions.',
+            'tutorial.companions.3.title': 'Active Status and Custom Attributes',
+            'tutorial.companions.3.body': 'Toggle a companion\'s Active status to mark it as summoned or dismissed — inactive companions stay visible but appear dimmed. Open {icon:more-vertical} Module Settings to add custom attributes beyond the built-in four, rename companions, or drag attributes to reorder the table columns.',
+
+            // Tutorial: actions
+            'tutorial.actions.1.title': 'What Is an Action Tracker?',
+            'tutorial.actions.1.body': 'The Action Tracker helps you plan your turn by showing your available actions as pills — Action, Bonus Action, and Reaction for D&D 5e, three fungible actions for Pathfinder 2e, or whatever your game system uses. It pre-fills with defaults for your game system when you create it.',
+            'tutorial.actions.2.title': 'Using Action Pills',
+            'tutorial.actions.2.body': 'Click the name on a pill to toggle it between available (lit up) and used (dimmed) as you spend actions during your turn. Drag a pill by its handle to reorder it, or click the {icon:x} to delete it. Duplicates are allowed — some systems need more than one identical action pill.',
+            'tutorial.actions.3.title': 'Adding Actions and Layout Options',
+            'tutorial.actions.3.body': 'Use the {icon:plus} button in the module toolbar to add a custom action pill. Open {icon:more-vertical} Module Settings to switch between Wrap layout (pills flow left to right) and List layout (one pill per row). Use Reset All in the overflow menu to flip every pill back to available at the start of a new turn.',
+
+            // Tutorial: activity
+            'tutorial.activity.1.title': 'What Is an Activity Log Module?',
+            'tutorial.activity.1.body': 'The Activity Log automatically records major events from other modules — damage taken, spells cast, dice rolled, and more — so you have a running history of what happened during a session. You don\'t add entries manually; other modules report to the log as you play.',
+            'tutorial.activity.2.title': 'Reading and Filtering Entries',
+            'tutorial.activity.2.body': 'Each entry shows a timestamp and a description of what happened. Tag bubbles at the top of the module let you filter by event type — click a tag to hide that type, click again to show it. Use the sort button in the toolbar or {icon:more-vertical} overflow menu to flip between newest-first and oldest-first.',
+            'tutorial.activity.3.title': 'Managing Log Entries',
+            'tutorial.activity.3.body': 'Delete a single entry if it\'s no longer accurate. Open {icon:more-vertical} Module Settings to clear the entire log (with a confirmation prompt), set a maximum number of entries to keep, toggle timestamps, or change the date and time format.',
+
             // Module type labels
             'type.abilities': 'Abilities',
             'type.actions': 'Action Tracker',

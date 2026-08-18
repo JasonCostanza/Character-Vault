@@ -44,6 +44,22 @@
                 icon: 'shield',
                 showSign: false,
             });
+        } else if (sys === 'daggerheart') {
+            content.defenses.push({ id: generateDefenseId(), name: 'Evasion', value: 10, icon: 'shield', showSign: false });
+            content.defenses.push({
+                id: generateDefenseId(),
+                name: 'Major Threshold',
+                value: 5,
+                icon: 'activity',
+                showSign: false,
+            });
+            content.defenses.push({
+                id: generateDefenseId(),
+                name: 'Severe Threshold',
+                value: 10,
+                icon: 'alert-triangle',
+                showSign: false,
+            });
         } else {
             content.defenses.push({ id: generateDefenseId(), name: 'AC', value: 10, icon: 'shield', showSign: false });
         }

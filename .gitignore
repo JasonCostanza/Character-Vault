@@ -14,9 +14,6 @@ node_modules/
 # Pi Coding Agent
 .pi/
 
-# Design Documents
-_DOCS
-
 # Generic Agent files
 .agents/
 

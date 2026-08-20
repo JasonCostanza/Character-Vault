@@ -1,0 +1,405 @@
+{
+    "version": 3,
+    "savedAt": "2026-07-28T00:00:00.000Z",
+    "gameSystem": "mothership",
+    "activeTabId": "tab_dev_moth_1",
+    "moduleIdCounter": 14,
+    "tabIdCounter": 4,
+    "activityLog": [],
+    "tabs": [
+        { "id": "tab_dev_moth_1", "name": "Stats", "order": 0 },
+        { "id": "tab_dev_moth_2", "name": "Combat", "order": 1 },
+        { "id": "tab_dev_moth_3", "name": "Bio", "order": 2 }
+    ],
+    "modules": [
+        {
+            "id": "mod_dev_moth_001",
+            "type": "bio",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_moth_3",
+            "content": {
+                "activeTab": "overview",
+                "portrait": null,
+                "name": "Sgt. Rex Morrow",
+                "pronouns": "",
+                "race": "Human",
+                "alignment": "",
+                "age": "35",
+                "height": "",
+                "weight": "",
+                "eyes": "",
+                "hair": "",
+                "skin": "",
+                "appearance": "",
+                "biography": "Twenty years in the Colonial Marine Corps. Two Purple Hearts. One very bad day on Kepler-7 that he doesn't talk about.",
+                "showPersonality": true,
+                "personalityTraits": "",
+                "ideals": "",
+                "bonds": "",
+                "flaws": "",
+                "deity": "",
+                "birthplace": "",
+                "nationality": "Colonial",
+                "ethnicity": "",
+                "alias": "",
+                "likesDislikes": "",
+                "alliesEnemies": "",
+                "organizations": "",
+                "backgroundName": "",
+                "heritage": "",
+                "edicts": "",
+                "anathemas": "",
+                "occupation": "",
+                "ideologyBeliefs": "",
+                "culturalOrigin": "",
+                "community": "",
+                "lifestyle": "",
+                "clan": "",
+                "generation": "",
+                "sire": "",
+                "predatorType": "",
+                "ambition": "",
+                "desire": ""
+            }
+        },
+        {
+            "id": "mod_dev_moth_002",
+            "type": "activity",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 16,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_moth_3",
+            "content": {
+                "sortOrder": "newest",
+                "hiddenEventTypes": [],
+                "showTimestamps": true,
+                "maxEntries": 200
+            }
+        },
+        {
+            "id": "mod_dev_moth_003",
+            "type": "health",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_moth_1",
+            "content": {
+                "currentHP": 18,
+                "maxHP": 20,
+                "tempHP": 0,
+                "maxHPModifier": 0
+            }
+        },
+        {
+            "id": "mod_dev_moth_004",
+            "type": "savingthrow",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_moth_1",
+            "linkedStatModuleId": null,
+            "content": {
+                "tierPreset": "simple",
+                "tiersEnabled": false,
+                "tiers": [
+                    { "name": "Untrained", "letter": "U", "color": "#888888" },
+                    { "name": "Trained", "letter": "T", "color": "#22aa44" },
+                    { "name": "Expert", "letter": "E", "color": "#3388dd" },
+                    { "name": "Master", "letter": "M", "color": "#aa44cc" }
+                ],
+                "saves": [
+                    { "id": "save_dev_moth_001", "name": "Sanity", "value": 30, "proficiencyTier": null, "linkedStatName": null },
+                    { "id": "save_dev_moth_002", "name": "Fear", "value": 40, "proficiencyTier": null, "linkedStatName": null },
+                    { "id": "save_dev_moth_003", "name": "Body", "value": 55, "proficiencyTier": null, "linkedStatName": null },
+                    { "id": "save_dev_moth_004", "name": "Armor", "value": 3, "proficiencyTier": null, "linkedStatName": null }
+                ],
+                "notes": "Roll under to pass. Failed Fear/Sanity checks add Stress."
+            }
+        },
+        {
+            "id": "mod_dev_moth_005",
+            "type": "stat",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 3,
+            "order": 2,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_moth_1",
+            "content": {
+                "layout": "large-stat",
+                "stats": [
+                    { "id": "stat_dev_moth_001", "name": "Strength", "value": 50, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_moth_002", "name": "Speed", "value": 40, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_moth_003", "name": "Intellect", "value": 30, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_moth_004", "name": "Combat", "value": 65, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_moth_006",
+            "type": "abilities",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 7,
+            "order": 3,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_moth_1",
+            "linkedStatModuleId": "mod_dev_moth_005",
+            "content": {
+                "abilities": [
+                    { "id": "abl_dev_moth_001", "name": "Military Training", "linkedStat": "Combat", "modifier": 65, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_moth_002", "name": "Athletics", "linkedStat": "Speed", "modifier": 50, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_moth_003", "name": "Firearms", "linkedStat": "Combat", "modifier": 55, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_moth_004", "name": "Zero-G", "linkedStat": "Speed", "modifier": 35, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_moth_005", "name": "First Aid", "linkedStat": "Intellect", "modifier": 30, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_moth_006", "name": "Computers", "linkedStat": "Intellect", "modifier": 20, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_moth_007", "name": "Mechanical Repair", "linkedStat": "Intellect", "modifier": 20, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_moth_008", "name": "Hand-to-Hand", "linkedStat": "Combat", "modifier": 45, "proficiency": "none", "proficiencyRank": "untrained" }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_moth_007",
+            "type": "condition",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": 5,
+            "order": 4,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_moth_1",
+            "content": {
+                "template": "mothership",
+                "applied": [
+                    { "id": "cond_dev_moth_001", "typeKey": "moth_stress", "type": "value", "value": 3, "active": true, "description": null, "maxValue": 20 },
+                    { "id": "cond_dev_moth_002", "typeKey": "moth_wounded", "type": "value", "value": 1, "active": true, "description": null, "maxValue": null }
+                ],
+                "staging": [
+                    { "id": "cond_dev_moth_003", "typeKey": "moth_unconscious", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_004", "typeKey": "moth_panicked", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_005", "typeKey": "moth_adrenalinerush", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_006", "typeKey": "moth_anxious", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_007", "typeKey": "moth_overwhelmed", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_008", "typeKey": "moth_cowardice", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_009", "typeKey": "moth_hallucinations", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_010", "typeKey": "moth_phobia", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_011", "typeKey": "moth_nightmares", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_012", "typeKey": "moth_lossconfidence", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_013", "typeKey": "moth_paranoid", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_014", "typeKey": "moth_catatonic", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_015", "typeKey": "moth_rage", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_016", "typeKey": "moth_spiraling", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_017", "typeKey": "moth_bleeding", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_018", "typeKey": "moth_broken", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_019", "typeKey": "moth_concussed", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_020", "typeKey": "moth_exhausted", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_021", "typeKey": "moth_cryosick", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_022", "typeKey": "moth_addicted", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_moth_023", "typeKey": "moth_irradiated", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_moth_008",
+            "type": "counters",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 5,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_moth_1",
+            "content": {
+                "counters": [
+                    { "id": "ctr_dev_moth_001", "name": "Stress", "icon": "activity", "value": 3, "max": 20, "min": 0, "order": 0 }
+                ],
+                "sortBy": "custom",
+                "sortDir": "asc"
+            }
+        },
+        {
+            "id": "mod_dev_moth_009",
+            "type": "defenses",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_moth_2",
+            "content": {
+                "defenses": [
+                    { "id": "def_dev_moth_001", "name": "DR", "value": 3, "icon": "shield", "showSign": false }
+                ],
+                "quickDefenses": []
+            }
+        },
+        {
+            "id": "mod_dev_moth_010",
+            "type": "actions",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_moth_2",
+            "content": {
+                "layout": "wrap",
+                "actions": [
+                    { "id": "act_dev_moth_001", "name": "Move", "used": false },
+                    { "id": "act_dev_moth_002", "name": "Action", "used": false }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_moth_011",
+            "type": "weapons",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 4,
+            "order": 2,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_moth_2",
+            "linkedStatModuleId": "mod_dev_moth_005",
+            "content": {
+                "weapons": [
+                    {
+                        "id": "wpn_dev_moth_001",
+                        "name": "Combat Shotgun",
+                        "slot": "main",
+                        "kind": "ranged",
+                        "icon": null,
+                        "abilityMod": "Combat",
+                        "proficient": true,
+                        "attackBonusOverride": null,
+                        "damageInstances": [
+                            { "dice": "4d10", "modFromAbility": false, "flatBonus": 0, "damageType": "ballistic" }
+                        ],
+                        "range": "Close",
+                        "ammoCount": 6,
+                        "traits": [],
+                        "notesMarkdown": "",
+                        "twoHanded": false,
+                        "acBonus": null,
+                        "shieldHp": null,
+                        "shieldHpMax": null,
+                        "firingModes": [],
+                        "attachedEnhancements": null,
+                        "proficiencyRank": null,
+                        "skillName": "Military Training",
+                        "skillValue": 65,
+                        "poolAttribute": null,
+                        "poolSkill": null,
+                        "poolSize": null,
+                        "poolAdjustment": null,
+                        "poolAutoCompute": false,
+                        "weaponCategory": null,
+                        "cpredStat": null,
+                        "cpredSkillValue": null,
+                        "governingTrait": null,
+                        "baseDamageFlat": null,
+                        "damageCategory": null,
+                        "impaling": null,
+                        "armorSavePenalty": 1,
+                        "accuracy": null
+                    },
+                    {
+                        "id": "wpn_dev_moth_002",
+                        "name": "Combat Knife",
+                        "slot": "off",
+                        "kind": "melee",
+                        "icon": null,
+                        "abilityMod": "Combat",
+                        "proficient": true,
+                        "attackBonusOverride": null,
+                        "damageInstances": [
+                            { "dice": "1d10", "modFromAbility": false, "flatBonus": 2, "damageType": "piercing" }
+                        ],
+                        "range": null,
+                        "ammoCount": null,
+                        "traits": [],
+                        "notesMarkdown": "",
+                        "twoHanded": false,
+                        "acBonus": null,
+                        "shieldHp": null,
+                        "shieldHpMax": null,
+                        "firingModes": [],
+                        "attachedEnhancements": null,
+                        "proficiencyRank": null,
+                        "skillName": "Hand-to-Hand",
+                        "skillValue": 45,
+                        "poolAttribute": null,
+                        "poolSkill": null,
+                        "poolSize": null,
+                        "poolAdjustment": null,
+                        "poolAutoCompute": false,
+                        "weaponCategory": null,
+                        "cpredStat": null,
+                        "cpredSkillValue": null,
+                        "governingTrait": null,
+                        "baseDamageFlat": null,
+                        "damageCategory": null,
+                        "impaling": true,
+                        "armorSavePenalty": null,
+                        "accuracy": null
+                    }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_moth_012",
+            "type": "text",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": 3,
+            "order": 3,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_moth_2",
+            "content": {
+                "text": "## Marine Notes\n- Stress: 3/20 (Panic threshold: 10)\n- Wounds: 1\n\n**Training:** Expert: Military Training\n\n**Contract:** Survey Detail, 18 months remaining"
+            }
+        },
+        {
+            "id": "mod_dev_moth_013",
+            "type": "list",
+            "title": "Marine Kit",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 4,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_moth_2",
+            "content": {
+                "attributes": [
+                    { "id": "attr_dev_moth_001", "name": "Qty", "type": "quantity", "icon": null, "defaultValue": 1, "pinned": true, "builtIn": true, "presetKey": "presetQuantity" }
+                ],
+                "items": [
+                    { "id": "itm_dev_moth_001", "name": "Combat Rations", "order": 0, "attributeValues": [{ "attrId": "attr_dev_moth_001", "value": 3 }] },
+                    { "id": "itm_dev_moth_002", "name": "Medpatch", "order": 1, "attributeValues": [{ "attrId": "attr_dev_moth_001", "value": 2 }] },
+                    { "id": "itm_dev_moth_003", "name": "Flares", "order": 2, "attributeValues": [{ "attrId": "attr_dev_moth_001", "value": 5 }] },
+                    { "id": "itm_dev_moth_004", "name": "12-gauge Shells", "order": 3, "attributeValues": [{ "attrId": "attr_dev_moth_001", "value": 18 }] },
+                    { "id": "itm_dev_moth_005", "name": "Comms Headset", "order": 4, "attributeValues": [{ "attrId": "attr_dev_moth_001", "value": 1 }] }
+                ]
+            }
+        }
+    ]
+}

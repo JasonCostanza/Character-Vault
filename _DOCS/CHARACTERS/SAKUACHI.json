@@ -1,0 +1,1174 @@
+{
+    "version": 3,
+    "savedAt": "2026-06-24T23:39:57.626Z",
+    "moduleIdCounter": 34,
+    "tabIdCounter": 4,
+    "gameSystem": "pf2e",
+    "activityLog": [],
+    "tabs": [
+        { "id": "tab-1", "name": "Stats", "order": 1, "color": null },
+        { "id": "tab-2", "name": "Inventory", "order": 2, "color": null },
+        { "id": "tab-3", "name": "Bio", "order": 0, "color": "#3A3A3A" },
+        { "id": "tab-4", "name": "Activity Log", "order": 3, "color": "#000000" }
+    ],
+    "activeTabId": "tab-1",
+    "modules": [
+        {
+            "id": "module-018",
+            "type": "list",
+            "title": "Gear",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-2",
+            "content": {
+                "attributes": [
+                    {
+                        "id": "attr_mpf0l8k8s762",
+                        "name": "Equipped",
+                        "type": "toggle",
+                        "icon": "helmet",
+                        "defaultValue": false,
+                        "pinned": true,
+                        "builtIn": true,
+                        "presetKey": "presetEquipped"
+                    }
+                ],
+                "items": [
+                    {
+                        "id": "item_mpf0keopw32g",
+                        "name": "Padded Armor",
+                        "notes": "",
+                        "order": 0,
+                        "values": { "attr_mpf0l8k8s762": true }
+                    },
+                    {
+                        "id": "item_mpf0kn5cl8cl",
+                        "name": "Standard Astrolabe",
+                        "notes": "",
+                        "order": 1,
+                        "values": { "attr_mpf0l8k8s762": false }
+                    },
+                    {
+                        "id": "item_mpf0kso7gj6y",
+                        "name": "Winter Clothing",
+                        "notes": "",
+                        "order": 2,
+                        "values": { "attr_mpf0l8k8s762": true }
+                    }
+                ],
+                "sortBy": null,
+                "sortDir": "asc"
+            }
+        },
+        {
+            "id": "module-004",
+            "type": "level",
+            "title": null,
+            "colSpan": 2,
+            "rowSpan": 3,
+            "order": 0,
+            "theme": "#000000",
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": {
+                "level": 4,
+                "currentXP": 3000,
+                "levelingSystem": "xp",
+                "xpThresholds": [
+                    1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000, 13000, 14000, 15000,
+                    16000, 17000, 18000, 19000
+                ],
+                "carryOverXP": true,
+                "barColor": null,
+                "barStyle": "solid",
+                "className": null
+            }
+        },
+        {
+            "id": "module-034",
+            "type": "activity",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 16,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": { "sortOrder": "newest", "hiddenEventTypes": [], "showTimestamps": true, "maxEntries": 200 }
+        },
+        {
+            "id": "module-005",
+            "type": "health",
+            "title": null,
+            "colSpan": 3,
+            "rowSpan": 3,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": { "currentHP": 60, "maxHP": 60, "tempHP": 0, "maxHPModifier": 0 }
+        },
+        {
+            "id": "module-025",
+            "type": "bio",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 14,
+            "order": 2,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-3",
+            "content": {
+                "activeTab": "overview",
+                "portrait": "data:image/jpeg;base64,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",
+                "name": "Sakuachi",
+                "pronouns": "She/Her",
+                "race": "Aaminiut",
+                "alignment": "Neutral Good",
+                "age": "13",
+                "height": "",
+                "weight": "",
+                "eyes": "",
+                "hair": "",
+                "skin": "",
+                "appearance": "",
+                "biography": "# Destined Dream Seer\nSakuachi is the youngest scion in a long line of Erutaki seers. Like her forebears, she was born and raised in Aaminiut, a small town on the Crown of the World northeast of Avistan. Her mother Sialuk and her grandmother Seshu both taught Sakuachi how to see patterns in the ice below, read the stars above, and interpret the signs of the natural world all around.\n\nIt was astronomy, above all other pursuits, which appealed most to Sakuachi. As a girl, she spent many long nights studying constellations, practicing with her astrolabe, and divining omens from the wisps and waves of the aurora. Before she was 5 years old, she’d already learned the names of every star configuration, the positions of the visible planets, and how to predict and interpret the movement of the celestial mantle. By the time she was a teenager, Sakuachi was the town’s best astronomer.\n\nAll the while, Elder Seshu looked proudly upon her granddaughter. But Seshu also bore the burden of a terrible secret—she knew that, one day, her beloved Sakuachi would be forced to reckon with an ancient and terrible evil. On 21 Erastus of 4722 ar, at the close of Sakuachi’s final summer before adulthood, unnatural blue lights beamed up from the center of the Crown of the World. Around Golarion, this occasion was known as the night of the Missing Moment. To Elder Seshu, it was a sign that the time had come for Sakuachi to fulfill her grim destiny.\n\nThat night, Seshu dreamt of an ancient being of white fur, bestial horns, and glowing runic tattoos: Ainamuuren, the Last Saumen Kar. Seshu had befriended Ainamuuren long ago, and for years she’d listened to his dire warnings of a great evil that lurked beneath the Crown of the World. She hadn’t seen her friend in many seasons, though, so his dream visit came as a surprise. In this dream, Ainamuuren told Seshu that his strength was fading, and that soon he wouldn’t be able to maintain the magic that keeps the ancient evil sealed beneath the ice. To renew the seal, Ainamuuren explained, the saumen kar’s magic would need to be renewed through the sacrifice of a god, a quest which only a mortal could undertake. As Seshu’s dream vision faded to darkness, one of Ainamuuren’s runes glowed brighter and longer than all the others.\n\nEarly the following morning, Seshu met with the other elders and told them the time had come to send one of their own on a holy quest. As Seshu had predicted, her granddaughter Sakuachi eagerly volunteered to take on this quest. Together, the elders agreed that Sakuachi—young and good of heart—should take on this great task. With her, the town sent four companions: the hunter Deniigi, the guide Innumma, the storyteller Pamak, and the navigator Ulikuq. Together, the group gathered and took a solemn vow to return to their homeland with a sacrificial god.\n\nBefore the party left, Seshu took Sakuachi aside “To honor the one who has given us this quest,” Seshu told the girl, “you must take his symbol as your own.” Seshu held the nape of Sakuachi’s neck firmly in her grasp, so much so that it hurt. Though the grip was tight, Sakuachi felt a warmth in her grandmother’s palm. When her grandmother withdrew her palm, Sakuachi bore one of Ainamuuren’s runes like a fresh tattoo.\n\nIn his travels, the guide Innumma had heard of a land called Sarkoris, where gods still roamed the Material Plane, but no one in Aaminiut had ever been there. The town’s most skilled sorcerer had visited a city called Skywatch long ago, so she teleported the group there to expedite their journey. Yet when they arrived, Sakuachi and her companions discovered the city strangely abandoned and full of danger. The streets seemed to writhe and twist under the group’s feet, confusing their minds. They became separated, and Sakuachi barricaded herself in the city’s observatory after being chased by violent raiders.\n\nGlancing through the observatory’s telescope, Sakuachi prayed to the stars above for help in her challenging endeavor. Amazingly, the stars answered—the telescope formed a magical conduit with astronomers on another planet, and they teleported a group of adventurers to Skywatch to help her. Even more astonishing, these “gatewalkers” bore the same rune of Ainamuuren as she did. The young seer believed in many wonders, but not coincidences. From then on, she knew that their destinies were intertwined, and she’d need to stay close to her strange new friends if she was to fulfill her quest.\n\n---\n\n# Campaign Role\nThe party first comes in contact with Sakuachi and her companions during their exploration of the abandoned city of Skywatch at the beginning of this adventure. Based on what the player characters learned about the alien entity Osoyo from the astronomers of Loskialua in the “The Seventh Arch,” their investigation into the cause of the Missing Moment overlaps significantly with Sakuachi’s quest to find and sacrifice a living god. Indeed, by the time the characters and their new friends escape Skywatch’s dangers and reach safety on the shores of Mendev, their employer, Dr. Etward Ritalson, tasks the characters with helping Sakuachi fulfill her quest.\n\nSakuachi’s success will ultimately be the player characters’ success, so it’s important they see her as a key to solving their own mystery. In the next adventure, Sakuachi will need to sacrifice her spirit guide to seal away Osoyo once more, but this doesn’t mean she’s the star of the story. In fact, as they’ll soon learn, the player characters are the primary instigators of the troubles which set Sakuachi’s quest in motion in the first place. How this story ends is, ultimately, the party’s decision to make.\n\nSakuachi is more a scholar more than a fighter. During the times when she’s accompanying the characters and a battle occurs, such as in Chapter 3 of “They Watched the Stars,” she rarely (if ever) directly attacks a foe. In the heightened stress of combat, her connection to Ainamuuren may manifest as visions and flashes of memory as the saumen kar attempts to communicate with her, which allows her to Recall Knowledge about one or more of the creatures in combat using her Fortune-Telling Lore skill, though it also prevents her from participating in combat. Beyond providing information, she also can use spells like resist energy or guidance to support the party.",
+                "showPersonality": true,
+                "personalityTraits": "",
+                "ideals": "",
+                "bonds": "",
+                "flaws": "",
+                "deity": "",
+                "birthplace": "",
+                "nationality": "Erutaki",
+                "ethnicity": "",
+                "alias": "",
+                "likesDislikes": "",
+                "alliesEnemies": "",
+                "organizations": "",
+                "backgroundName": "Seer",
+                "heritage": "Aaminiut",
+                "edicts": "",
+                "anathemas": "",
+                "occupation": "",
+                "ideologyBeliefs": "",
+                "culturalOrigin": "",
+                "community": "",
+                "lifestyle": "",
+                "clan": "",
+                "generation": "",
+                "sire": "",
+                "predatorType": "",
+                "ambition": "",
+                "desire": ""
+            }
+        },
+        {
+            "id": "module-006",
+            "type": "recovery",
+            "title": null,
+            "colSpan": 3,
+            "rowSpan": 3,
+            "order": 2,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": {
+                "restButtons": [
+                    {
+                        "id": "btn_2bdolqo",
+                        "name": "Long Rest",
+                        "actions": [
+                            { "type": "healToFull" },
+                            { "type": "resetTempHP" },
+                            { "type": "restoreAllSpellSlots" }
+                        ]
+                    }
+                ],
+                "hitDice": null
+            }
+        },
+        {
+            "id": "module-019",
+            "type": "text",
+            "title": "Movement",
+            "colSpan": 8,
+            "rowSpan": 3,
+            "order": 3,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": "| Type          | Distance   |\n| ----------- | ----------- |\n| Ground     | 25 ft.         |\n| Fly             | 0               |\n| Swim         | 0               |\n"
+        },
+        {
+            "id": "module-009",
+            "type": "hline",
+            "title": "Stats & Saves",
+            "colSpan": 8,
+            "rowSpan": null,
+            "order": 4,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": ""
+        },
+        {
+            "id": "module-021",
+            "type": "hline",
+            "title": "inventory",
+            "colSpan": 8,
+            "rowSpan": null,
+            "order": 5,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-2",
+            "content": ""
+        },
+        {
+            "id": "module-012",
+            "type": "stat",
+            "title": "Stats",
+            "colSpan": 8,
+            "rowSpan": 3,
+            "order": 5,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": {
+                "layout": "large-modifier",
+                "stats": [
+                    {
+                        "name": "STR",
+                        "value": 0,
+                        "modifier": 0,
+                        "proficient": false,
+                        "proficiencyRank": "untrained",
+                        "rollable": true
+                    },
+                    {
+                        "name": "DEX",
+                        "value": 0,
+                        "modifier": 1,
+                        "proficient": false,
+                        "proficiencyRank": "untrained",
+                        "rollable": true
+                    },
+                    {
+                        "name": "CON",
+                        "value": 0,
+                        "modifier": 2,
+                        "proficient": false,
+                        "proficiencyRank": "untrained",
+                        "rollable": true
+                    },
+                    {
+                        "name": "INT",
+                        "value": 0,
+                        "modifier": 1,
+                        "proficient": false,
+                        "proficiencyRank": "untrained",
+                        "rollable": true
+                    },
+                    {
+                        "name": "WIS",
+                        "value": 0,
+                        "modifier": 3,
+                        "proficient": false,
+                        "proficiencyRank": "untrained",
+                        "rollable": true
+                    },
+                    {
+                        "name": "CHA",
+                        "value": 0,
+                        "modifier": 4,
+                        "proficient": false,
+                        "proficiencyRank": "untrained",
+                        "rollable": true
+                    },
+                    {
+                        "name": "Proficiency",
+                        "value": 0,
+                        "modifier": 0,
+                        "proficient": false,
+                        "proficiencyRank": "untrained",
+                        "rollable": false,
+                        "isProficiencyStat": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": "module-013",
+            "type": "abilities",
+            "title": "abilities",
+            "colSpan": 8,
+            "rowSpan": 9,
+            "order": 6,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": {
+                "linkedStatModuleId": "module-012",
+                "abilities": [
+                    {
+                        "name": "Acrobatics",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "DEX",
+                        "abbrev": "DEX"
+                    },
+                    {
+                        "name": "Arcana",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "INT",
+                        "abbrev": "INT"
+                    },
+                    {
+                        "name": "Athletics",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "STR",
+                        "abbrev": "STR"
+                    },
+                    {
+                        "name": "Crafting",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "INT",
+                        "abbrev": "INT"
+                    },
+                    {
+                        "name": "Deception",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "CHA",
+                        "abbrev": "CHA"
+                    },
+                    {
+                        "name": "Diplomacy",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "CHA",
+                        "abbrev": "CHA"
+                    },
+                    {
+                        "name": "Intimidation",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "CHA",
+                        "abbrev": "CHA"
+                    },
+                    {
+                        "name": "Lore",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "INT",
+                        "abbrev": "INT"
+                    },
+                    {
+                        "name": "Medicine",
+                        "modifier": 7,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "WIS",
+                        "abbrev": "WIS"
+                    },
+                    {
+                        "name": "Nature",
+                        "modifier": 9,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "WIS",
+                        "abbrev": "WIS"
+                    },
+                    {
+                        "name": "Occultism",
+                        "modifier": 14,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "INT",
+                        "abbrev": "INT"
+                    },
+                    {
+                        "name": "Performance",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "CHA",
+                        "abbrev": "CHA"
+                    },
+                    {
+                        "name": "Religion",
+                        "modifier": 9,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "WIS",
+                        "abbrev": "WIS"
+                    },
+                    {
+                        "name": "Society",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "INT",
+                        "abbrev": "INT"
+                    },
+                    {
+                        "name": "Stealth",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "DEX",
+                        "abbrev": "DEX"
+                    },
+                    {
+                        "name": "Survival",
+                        "modifier": 7,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "WIS",
+                        "abbrev": "WIS"
+                    },
+                    {
+                        "name": "Thievery",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "DEX",
+                        "abbrev": "DEX"
+                    },
+                    {
+                        "name": "Astronomy Lore",
+                        "modifier": 15,
+                        "proficiency": "none",
+                        "linkedStat": null,
+                        "proficiencyRank": "untrained",
+                        "abbrev": null
+                    },
+                    {
+                        "name": "Fortune-Telling lore",
+                        "modifier": 15,
+                        "proficiency": "none",
+                        "linkedStat": null,
+                        "proficiencyRank": "untrained",
+                        "abbrev": null
+                    }
+                ]
+            }
+        },
+        {
+            "id": "module-014",
+            "type": "savingthrow",
+            "title": "saving throws",
+            "colSpan": 8,
+            "rowSpan": 3,
+            "order": 7,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": {
+                "linkedStatModuleId": "module-012",
+                "saves": [
+                    { "id": "save_mpf0ixkok766", "name": "Fortitude", "value": 9, "proficiencyTier": null, "linkedStatName": "CON" },
+                    { "id": "save_mpf0ixko7wd6", "name": "Reflex", "value": 9, "proficiencyTier": null, "linkedStatName": "DEX" },
+                    { "id": "save_mpf0ixko7g0h", "name": "Will", "value": 11, "proficiencyTier": null, "linkedStatName": "WIS" }
+                ],
+                "notes": "",
+                "tiersEnabled": true,
+                "tiers": [
+                    { "name": "Untrained", "letter": "U", "color": "#888888" },
+                    { "name": "Trained", "letter": "T", "color": "#22aa44" },
+                    { "name": "Expert", "letter": "E", "color": "#3388dd" },
+                    { "name": "Master", "letter": "M", "color": "#aa44cc" },
+                    { "name": "Legendary", "letter": "L", "color": "#cc9900" }
+                ],
+                "tierPreset": "pf2e"
+            }
+        },
+        {
+            "id": "module-017",
+            "type": "hline",
+            "title": "Combat",
+            "colSpan": 8,
+            "rowSpan": null,
+            "order": 8,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": ""
+        },
+        {
+            "id": "module-020",
+            "type": "weapons",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 4,
+            "order": 9,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": {
+                "weapons": [
+                    {
+                        "id": "wpn_mpf0o308ifqa",
+                        "name": "Spear",
+                        "slot": "main",
+                        "kind": "melee",
+                        "icon": "spear",
+                        "abilityMod": "str",
+                        "proficient": false,
+                        "attackBonusOverride": 9,
+                        "damageInstances": [
+                            { "dice": "1d6", "modFromAbility": false, "flatBonus": 0, "damageType": "Piercing" }
+                        ],
+                        "range": null,
+                        "ammoCount": null,
+                        "traits": [],
+                        "notesMarkdown": "",
+                        "twoHanded": true,
+                        "acBonus": null,
+                        "shieldHp": null,
+                        "shieldHpMax": null,
+                        "firingModes": [],
+                        "attachedEnhancements": null,
+                        "proficiencyRank": null,
+                        "skillName": null,
+                        "skillValue": null,
+                        "poolAttribute": null,
+                        "poolSkill": null,
+                        "poolSize": null,
+                        "weaponCategory": null,
+                        "cpredStat": null,
+                        "cpredSkillValue": null,
+                        "governingTrait": null,
+                        "baseDamageFlat": null,
+                        "damageCategory": null,
+                        "impaling": null,
+                        "armorSavePenalty": null,
+                        "poolAdjustment": null,
+                        "poolAutoCompute": false,
+                        "accuracy": null
+                    },
+                    {
+                        "id": "wpn_mpf0pea4j4vj",
+                        "name": "Spear (Thrown)",
+                        "slot": "main",
+                        "kind": "ranged",
+                        "icon": "spear",
+                        "abilityMod": "str",
+                        "proficient": false,
+                        "attackBonusOverride": 10,
+                        "damageInstances": [
+                            { "dice": "1d6", "modFromAbility": true, "flatBonus": 0, "damageType": "Piercing" }
+                        ],
+                        "range": "20",
+                        "ammoCount": 1,
+                        "traits": [],
+                        "notesMarkdown": "",
+                        "twoHanded": false,
+                        "acBonus": null,
+                        "shieldHp": null,
+                        "shieldHpMax": null,
+                        "firingModes": [],
+                        "attachedEnhancements": null,
+                        "proficiencyRank": null,
+                        "skillName": null,
+                        "skillValue": null,
+                        "poolAttribute": null,
+                        "poolSkill": null,
+                        "poolSize": null,
+                        "weaponCategory": null,
+                        "cpredStat": null,
+                        "cpredSkillValue": null,
+                        "governingTrait": null,
+                        "baseDamageFlat": null,
+                        "damageCategory": null,
+                        "impaling": null,
+                        "armorSavePenalty": null,
+                        "poolAdjustment": null,
+                        "poolAutoCompute": false,
+                        "accuracy": null
+                    }
+                ],
+                "customWeaponTraits": [],
+                "enhancementCatalog": [],
+                "daggerheartProficiency": null,
+                "linkedStatModuleId": null
+            }
+        },
+        {
+            "id": "module-033",
+            "type": "hline",
+            "title": "Defenses",
+            "colSpan": 8,
+            "rowSpan": null,
+            "order": 10,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": ""
+        },
+        {
+            "id": "module-026",
+            "type": "defenses",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 4,
+            "order": 11,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": {
+                "defenses": [
+                    { "id": "def_mqk6x7oalu8y", "name": "AC", "value": 21, "icon": "shield", "showSign": false }
+                ],
+                "quickDefenses": [
+                    {
+                        "id": "qd_mqk6x7oa536d",
+                        "name": "Raise Shield",
+                        "icon": "shield",
+                        "modifier": 2,
+                        "active": false
+                    }
+                ]
+            }
+        },
+        {
+            "id": "module-031",
+            "type": "condition",
+            "title": "Pathfinder 2e Conditions",
+            "colSpan": 4,
+            "rowSpan": 3,
+            "order": 12,
+            "theme": "#8B2020",
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": {
+                "template": "pf2e",
+                "applied": [],
+                "staging": [
+                    {
+                        "id": "cond_mqq4ciby8036",
+                        "typeKey": "pf2e_blinded",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4cibyvg52",
+                        "typeKey": "pf2e_clumsy",
+                        "type": "value",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": 4
+                    },
+                    {
+                        "id": "cond_mqq4ciby4sf8",
+                        "typeKey": "pf2e_concealed",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4cibyuw1z",
+                        "typeKey": "pf2e_confused",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4cibynp04",
+                        "typeKey": "pf2e_controlled",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4cibypeup",
+                        "typeKey": "pf2e_dazzled",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4cibyxpo6",
+                        "typeKey": "pf2e_deafened",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4ciby8ucq",
+                        "typeKey": "pf2e_dying",
+                        "type": "value",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": 4
+                    },
+                    {
+                        "id": "cond_mqq4cibya5xs",
+                        "typeKey": "pf2e_fascinated",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4cibyf3rq",
+                        "typeKey": "pf2e_fatigued",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4ciby0373",
+                        "typeKey": "pf2e_fleeing",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4cibyi0g7",
+                        "typeKey": "pf2e_grabbed",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4ciby32w3",
+                        "typeKey": "pf2e_hidden",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4cibyb0c0",
+                        "typeKey": "pf2e_offguard",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4cibyumhv",
+                        "typeKey": "pf2e_immobilized",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4cibychit",
+                        "typeKey": "pf2e_impaired",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4cibym52m",
+                        "typeKey": "pf2e_invisible",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4ciby0x6w",
+                        "typeKey": "pf2e_paralyzed",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4cibytdlf",
+                        "typeKey": "pf2e_incapacitated",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4cibyqjwp",
+                        "typeKey": "pf2e_petrified",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4ciby8zyr",
+                        "typeKey": "pf2e_prone",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4cibyfz2m",
+                        "typeKey": "pf2e_restrained",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_mqq4ciby3y2c",
+                        "typeKey": "pf2e_sickened",
+                        "type": "value",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": 4
+                    },
+                    {
+                        "id": "cond_mqq4cibyg5qw",
+                        "typeKey": "pf2e_slowed",
+                        "type": "value",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": 4
+                    },
+                    {
+                        "id": "cond_mqq4ciby5q06",
+                        "typeKey": "pf2e_stunned",
+                        "type": "value",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": 4
+                    },
+                    {
+                        "id": "cond_mqq4cibysqgy",
+                        "typeKey": "pf2e_stupefied",
+                        "type": "value",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": 4
+                    },
+                    {
+                        "id": "cond_mqq4cibyrffk",
+                        "typeKey": "pf2e_unconscious",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    }
+                ],
+                "customConditions": [],
+                "sortBy": null,
+                "sortDir": "asc",
+                "savedCustomInstances": []
+            }
+        },
+        {
+            "id": "module-023",
+            "type": "hline",
+            "title": "spells",
+            "colSpan": 8,
+            "rowSpan": null,
+            "order": 13,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": ""
+        },
+        {
+            "id": "module-022",
+            "type": "spells",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 11,
+            "order": 14,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": {
+                "autoSpendSlots": true,
+                "showSlotErrors": true,
+                "categories": [
+                    {
+                        "id": "cat_mpf0wo23dwt",
+                        "name": "Innate Abilities",
+                        "collapsed": false,
+                        "spells": [
+                            {
+                                "id": "sp_mpf0wulhmsa",
+                                "name": "Search the Stars",
+                                "description": "(`concentrate`, `manipulate`)\n\n---\n\n**Requirements** Sakuachi is holding an astrolabe and can see the stars; **Effect** Sakuachi spends **1 hour** attempting to gain a vague glimpse of the future written in the stars. She attempts a **DC 24** `Fortune-Telling Lore` or `Occultism` check.\n\n**Critical Success** Sakuachi receives an accurate vision of an event to come within the next week. While this vision can be vague and confusing, it’s typically true.\n\n**Success** As critical success, but the vision is of an event that will occur within the next day. If nothing noteworthy is to happen within the next day, she sees nothing written in the stars.\n\n**Failure** Sakuachi sees nothing written in the stars.\n\n**Critical Failure** Sakuachi misinterprets the writing in the stars and receives an inaccurate vision of an upcoming event. Such a vision looks the same as one achieved with a critical success, but is typically false.",
+                                "order": 0,
+                                "expanded": false,
+                                "values": { "attr_mpj2i1d6vjd": 0, "attr_mpj2ic5wky8": 0 },
+                                "slotCost": null,
+                                "canUpcast": false,
+                                "preparedCount": 1,
+                                "castsUsed": 0
+                            }
+                        ],
+                        "resourcePoolId": "rp_mpj2jmh72cb"
+                    },
+                    {
+                        "id": "cat_mpf0rjqg9vu",
+                        "name": "Cantrips (2nd)",
+                        "collapsed": false,
+                        "spells": [
+                            {
+                                "id": "sp_mpf0u0vo510",
+                                "name": "Detect Magic",
+                                "description": "`CANTRIP` | `DETECTION` | `DIVINATION`\n\n**Traditions** `arcane`, `divine`, `occult`, `primal`\n\n**Cast** 2-actions `somatic`, `verbal`\n\n**Area** 30-foot emanation\n\n---\n\nYou send out a pulse that registers the presence of magic. You receive no information beyond the presence or absence of magic. You can choose to ignore magic you’re fully aware of, such as the magic items and ongoing spells of you and your allies.\n\nYou detect illusion magic only if that magic’s effect has a lower level than the level of your detect magic spell. However, items that have an illusion aura but aren’t deceptive in appearance (such as an invisibility potion) typically are detected normally.\n\n---\n\n**Heightened (3rd)** You learn the school of magic for the highest-level effect within range that the spell detects. If multiple effects are equally strong, the GM determines which you learn.\n\n**Heightened (4th)** As 3rd level, but you also pinpoint the source of the highest-level magic. Like for an imprecise sense, you don’t learn the exact location, but can narrow down the source to within a 5-foot cube (or the nearest if larger than that).",
+                                "order": 0,
+                                "expanded": false,
+                                "values": { "attr_mpj2i1d6vjd": 0, "attr_mpj2ic5wky8": 0 },
+                                "slotCost": 2,
+                                "canUpcast": true,
+                                "preparedCount": 1,
+                                "castsUsed": 0
+                            },
+                            {
+                                "id": "sp_mpf0u4z2yw0",
+                                "name": "Guidance",
+                                "description": "`CANTRIP` | `DIVINATION`\n\n**Traditions** `divine`, `occult`, `primal`\n\n**Cast** 1-action `Verbal`\n\n**Range **30 feet; Targets 1 creature\n\n**Duration** until the start of your next turn\n\n---\n\nYou ask for divine guidance, granting the target a `+1 status bonus` to one attack roll, Perception check, saving throw, or skill check the target attempts before the duration ends. The target chooses which roll to use the bonus on before rolling. If the target uses the bonus, the spell ends. Either way, the target is then temporarily immune for 1 hour.",
+                                "order": 1,
+                                "expanded": false,
+                                "values": { "attr_mpj2i1d6vjd": 0, "attr_mpj2ic5wky8": 0 },
+                                "slotCost": null,
+                                "canUpcast": false,
+                                "preparedCount": 1,
+                                "castsUsed": 0
+                            },
+                            {
+                                "id": "sp_mpf0u7vuvtm",
+                                "name": "Light",
+                                "description": "`CANTRIP` | `EVOCATION` | `LIGHT`\n\n**Traditions** `arcane`, `divine`, `occult`, `primal`\n\n**Cast** 2-actions `somatic`, `verbal`\n\n**Range** touch; **Targets** 1 object of 1 Bulk or less, either unattended or possessed by you or a willing ally\n\n**Duration** until the next time you make your daily preparations\n\nThe object glows, casting bright light in a 20-foot radius (and dim light for the next 20 feet) like a torch. If you cast this spell again on a second object, the light spell on the first object ends.\n\n---\n\n**Heightened (4th)** The object sheds bright light in a 60-foot radius (and dim light for the next 60 feet).",
+                                "order": 2,
+                                "expanded": false,
+                                "values": { "attr_mpj2i1d6vjd": 0, "attr_mpj2ic5wky8": 0 },
+                                "slotCost": 2,
+                                "canUpcast": true,
+                                "preparedCount": 1,
+                                "castsUsed": 0
+                            },
+                            {
+                                "id": "sp_mpf0uabz898",
+                                "name": "Read Aura",
+                                "description": "`CANTRIP` | `DETECTION` | `DIVINATION`\n\nTraditions arcane, divine, occult, primal\n\nCast 1 minute (somatic, verbal)\n\nRange 30 feet; Targets 1 object\n\n---\n\nYou focus on the target object, opening your mind to perceive magical auras. When the casting is complete, you know whether that item is magical, and if it is, you learn the school of magic.\n\nIf the object is illusory, you detect this only if the effect’s level is lower than the level of your read aura spell.\n\n---\n\nHeightened (3rd) You can target up to 10 objects.\n\nHeightened (6th) You can target any number of objects.",
+                                "order": 3,
+                                "expanded": false,
+                                "values": { "attr_mpj2i1d6vjd": 0, "attr_mpj2ic5wky8": 0 },
+                                "slotCost": null,
+                                "canUpcast": true,
+                                "preparedCount": 1,
+                                "castsUsed": 0
+                            },
+                            {
+                                "id": "sp_mpf0ue020a7",
+                                "name": "Shield",
+                                "description": "`ABJURATION` | `CANTRIP` | `FORCE`\n\n**Traditions** `arcane` | `divine` | `occult`\n\n**Cast ** `verbal`\n\n**Duration** until the start of your next turn\n\nYou raise a magical shield of force. This counts as using the Raise a Shield action, giving you a `+1 circumstance bonus` to **AC** until the start of your next turn, but it doesn’t require a hand to use.\n\nWhile the spell is in effect, you can use the Shield Block reaction with your magic shield. The shield has Hardness 5. After you use Shield Block, the spell ends and you can’t cast it again for 10 minutes. Unlike a normal Shield Block, you can use the spell’s reaction against the magic missile spell.\n\nHeightening the spell increases the shield’s Hardness.\n\n---\n\n**Heightened (3rd)** The shield has Hardness 10.\n\n**Heightened (5th)** The shield has Hardness 15.\n\n**Heightened (7th)** The shield has Hardness 20.\n\n**Heightened (9th)** The shield has Hardness 25.",
+                                "order": 4,
+                                "expanded": false,
+                                "values": { "attr_mpj2i1d6vjd": 0, "attr_mpj2ic5wky8": 0 },
+                                "slotCost": null,
+                                "canUpcast": true,
+                                "preparedCount": 1,
+                                "castsUsed": 0
+                            }
+                        ],
+                        "resourcePoolId": "rp_mpj2jmh72cb"
+                    },
+                    {
+                        "id": "cat_mpf0tr6qh5t",
+                        "name": "1st Level",
+                        "collapsed": false,
+                        "spells": [
+                            {
+                                "id": "sp_mpf0ujkho5c",
+                                "name": "Bless",
+                                "description": "`ENCHANTMENT` | `MENTAL`\n\n**Cast**  `somatic`, `verbal`\n\n**Area** 5-foot emanation\n\n**Duration** 1 minute\n\n---\n\nBlessings from beyond help your companions strike true. You and your allies gain a +1 status bonus to attack rolls while within the emanation. Once per turn, starting the turn after you cast bless, you can use a single action, which has the concentrate trait, to increase the emanation’s radius by 5 feet. **Bless** can counteract **bane**.",
+                                "order": 0,
+                                "expanded": false,
+                                "values": { "attr_mpj2i1d6vjd": 0, "attr_mpj2ic5wky8": 0 },
+                                "slotCost": null,
+                                "canUpcast": false,
+                                "preparedCount": 1,
+                                "castsUsed": 0
+                            },
+                            {
+                                "id": "sp_mpf0unst9iz",
+                                "name": "Liberating Command",
+                                "description": "`ENCHANTMENT` | `MENTAL`\n\n**Traditions** occult\n\n**Cast** 1-action `verbal`\n\n**Range** 60 feet; **Targets** 1 creature\n\n---\n\nYou call out a liberating cry, urging an ally to break free of an effect that holds them in place. If the target is grabbed, immobilized, or restrained, it can immediately use a reaction to attempt to Escape.",
+                                "order": 1,
+                                "expanded": false,
+                                "values": { "attr_mpj2i1d6vjd": 0, "attr_mpj2ic5wky8": 0 },
+                                "slotCost": null,
+                                "canUpcast": false,
+                                "preparedCount": 1,
+                                "castsUsed": 0
+                            },
+                            {
+                                "id": "sp_mpf0usz0ce1",
+                                "name": "Sleep",
+                                "description": "`ENCHANTMENT` | `INCAPACITATION` | `MENTAL` | `SLEEP`\n\n**Cast**  2-actions `somatic`, `verbal`\n\n**Range** 30 feet; **Area** 5-foot burst\n\n**Saving Throw** Will\n\n---\n\nEach creature in the area becomes drowsy and might fall asleep. A creature that falls unconscious from this spell doesn’t fall prone or release what it’s holding. This spell doesn’t prevent creatures from waking up due to a successful Perception check, limiting its utility in combat.\n\n**Critical Success** The creature is unaffected.\n\n**Success** The creature takes a –1 status penalty to Perception checks for 1 round.\n\n**Failure** The creature falls unconscious. If it’s still unconscious after 1 minute, it wakes up automatically.\n\n**Critical Failure** The creature falls unconscious. If it’s still unconscious after 1 hour, it wakes up automatically.\n\n---\n\n**Heightened (4th)** The creatures fall unconscious for 1 round on a failure or 1 minute on a critical failure. They fall prone and release what they’re holding, and they can’t attempt Perception checks to wake up. When the duration ends, the creature is sleeping normally instead of automatically waking up.",
+                                "order": 2,
+                                "expanded": false,
+                                "values": { "attr_mpj2i1d6vjd": 0, "attr_mpj2ic5wky8": 0 },
+                                "slotCost": 2,
+                                "canUpcast": true,
+                                "preparedCount": 1,
+                                "castsUsed": 0
+                            }
+                        ],
+                        "resourcePoolId": "rp_mpj2jmh72cb"
+                    },
+                    {
+                        "id": "cat_mpf0tsmy84j",
+                        "name": "2nd Level",
+                        "collapsed": false,
+                        "spells": [
+                            {
+                                "id": "sp_mpf0w2di3xh",
+                                "name": "Augury",
+                                "description": "`DIVINATION` | `PREDICTION`\n\n**Traditions** `divine`, `occult`\n\n**Cast** 10 minutes `material`, `somatic`, `verbal`\n\n---\n\nYou gain a vague glimpse of the future. During the casting of this spell, ask about the results of a particular course of action. The spell can predict results up to 30 minutes into the future and reveals the GM’s best guess among the following outcomes:\n\n- **Weal** The results will be good.\n- **Woe** The results will be bad.\n- **Weal and Woe** The results will be a mix of good and bad.\n- **Nothing** There won’t be particularly good or bad results.\nThe GM rolls a secret DC 6 flat check. On a failure, the result is always “nothing.” This makes it impossible to tell whether a “nothing” result is accurate. If anyone asks about the same topic as the first casting of **augury** during an additional casting, the GM uses the secret roll result from the first casting. If circumstances change, though, it’s possible to get a different result.",
+                                "order": 0,
+                                "expanded": false,
+                                "values": { "attr_mpj2i1d6vjd": 0, "attr_mpj2ic5wky8": 0 },
+                                "slotCost": null,
+                                "canUpcast": false,
+                                "preparedCount": 1,
+                                "castsUsed": 0
+                            },
+                            {
+                                "id": "sp_mpf0w6q8ovo",
+                                "name": "Resist Energy",
+                                "description": "`ABJURATION`\n\n**Traditions** `arcane`, `divine`, `occult`, `primal`\n\n**Cast** 2-actions `somatic`, `verbal`\n\n**Range** touch; **Targets** 1 creature\n\n**Duration** 10 minutes\n\n---\n\nA shield of elemental energy protects a creature against one type of energy damage. Choose acid, cold, electricity, fire, or sonic damage. The target and its gear gain resistance 5 against the damage type you chose.\n\n---\n\n***Heightened (4th)*** The resistance increases to 10, and you can target up to two creatures.\n\n***Heightened (7th)*** The resistance increases to 15, and you can target up to five creatures.",
+                                "order": 1,
+                                "expanded": false,
+                                "values": { "attr_mpj2i1d6vjd": 0, "attr_mpj2ic5wky8": 0 },
+                                "slotCost": 2,
+                                "canUpcast": true,
+                                "preparedCount": 1,
+                                "castsUsed": 0
+                            },
+                            {
+                                "id": "sp_mpf0wcoubc3",
+                                "name": "Silence",
+                                "description": "`ILLUSION`\n\n**Traditions** `divine`, `occult`\n\n**Range** touch; **Targets** 1 willing creature\n\n**Duration** 1 minute\n\n---\n\nThe target makes no sound, preventing creatures from noticing it using hearing alone. The target can’t use sonic attacks, nor can it use actions with the auditory trait. This prevents it from casting spells that include verbal components.\n\n---\n\n**Heightened (4th)** The spell effect emanates from the touched creature, silencing all sound in or passing through a 10-foot radius and preventing any auditory and sonic effects in the affected area. While within the radius, creatures are subject to the same effects as the target. Depending upon the position of the effect, a creature might notice the lack of sound reaching it (blocking off the noise coming from a party, for example).",
+                                "order": 2,
+                                "expanded": false,
+                                "values": { "attr_mpj2i1d6vjd": 0, "attr_mpj2ic5wky8": 0 },
+                                "slotCost": null,
+                                "canUpcast": true,
+                                "preparedCount": 1,
+                                "castsUsed": 0
+                            }
+                        ],
+                        "resourcePoolId": "rp_mpj2jmh72cb"
+                    }
+                ],
+                "attributes": [
+                    {
+                        "id": "attr_mpj2i1d6vjd",
+                        "name": "Range",
+                        "type": "number",
+                        "defaultValue": 0,
+                        "pinned": true,
+                        "builtIn": false
+                    },
+                    {
+                        "id": "attr_mpj2ic5wky8",
+                        "name": "Duration",
+                        "type": "number",
+                        "defaultValue": 0,
+                        "pinned": true,
+                        "builtIn": false
+                    }
+                ],
+                "sortBy": null,
+                "sortDir": "asc",
+                "linkedStatModuleId": "module-012",
+                "spellcastingAbility": "WIS",
+                "spellProficiencyRank": "expert",
+                "spellAttackOverride": 12,
+                "spellDCOverride": 18,
+                "resourcePools": [
+                    {
+                        "id": "rp_mpj2jmh72cb",
+                        "type": "custom",
+                        "level": null,
+                        "name": "Actions",
+                        "max": 3,
+                        "spent": 0
+                    },
+                    {
+                        "id": "rp_mpj2jt56zru",
+                        "type": "focus",
+                        "level": null,
+                        "name": "Hero Points",
+                        "max": 3,
+                        "spent": 3
+                    }
+                ],
+                "casterType": "prepared"
+            }
+        },
+        {
+            "id": "module-032",
+            "type": "resistance",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": 3,
+            "order": 15,
+            "theme": "#1E3A5F",
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": { "layout": "columns", "immunities": [], "resistances": [], "weaknesses": [], "customTypes": [] }
+        }
+    ]
+}

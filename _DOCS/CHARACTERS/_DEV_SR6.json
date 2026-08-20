@@ -1,0 +1,382 @@
+{
+    "version": 3,
+    "savedAt": "2026-07-28T00:00:00.000Z",
+    "gameSystem": "sr6",
+    "activeTabId": "tab_dev_sr6_1",
+    "moduleIdCounter": 13,
+    "tabIdCounter": 4,
+    "activityLog": [],
+    "tabs": [
+        { "id": "tab_dev_sr6_1", "name": "Stats", "order": 0 },
+        { "id": "tab_dev_sr6_2", "name": "Combat", "order": 1 },
+        { "id": "tab_dev_sr6_3", "name": "Bio", "order": 2 }
+    ],
+    "modules": [
+        {
+            "id": "mod_dev_sr6_001",
+            "type": "bio",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_sr6_3",
+            "content": {
+                "activeTab": "overview",
+                "portrait": null,
+                "name": "Chrome Chang",
+                "pronouns": "",
+                "race": "Human",
+                "alignment": "",
+                "age": "",
+                "height": "",
+                "weight": "",
+                "eyes": "",
+                "hair": "",
+                "skin": "",
+                "appearance": "",
+                "biography": "Former corporate security, now running the Shadows. Specializes in close-quarters work and personal protection. Strict code: corpos and criminals only, never civilians.",
+                "showPersonality": true,
+                "personalityTraits": "",
+                "ideals": "",
+                "bonds": "",
+                "flaws": "",
+                "deity": "",
+                "birthplace": "",
+                "nationality": "Seattle (UCAS)",
+                "ethnicity": "",
+                "alias": "Chrome",
+                "likesDislikes": "",
+                "alliesEnemies": "",
+                "organizations": "",
+                "backgroundName": "",
+                "heritage": "",
+                "edicts": "",
+                "anathemas": "",
+                "occupation": "",
+                "ideologyBeliefs": "",
+                "culturalOrigin": "",
+                "community": "",
+                "lifestyle": "Middle",
+                "clan": "",
+                "generation": "",
+                "sire": "",
+                "predatorType": "",
+                "ambition": "",
+                "desire": ""
+            }
+        },
+        {
+            "id": "mod_dev_sr6_002",
+            "type": "activity",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 16,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_sr6_3",
+            "content": {
+                "sortOrder": "newest",
+                "hiddenEventTypes": [],
+                "showTimestamps": true,
+                "maxEntries": 200
+            }
+        },
+        {
+            "id": "mod_dev_sr6_003",
+            "type": "health",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_sr6_1",
+            "content": {
+                "currentHP": 9,
+                "maxHP": 11,
+                "tempHP": 0,
+                "maxHPModifier": 0
+            }
+        },
+        {
+            "id": "mod_dev_sr6_004",
+            "type": "defenses",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_sr6_1",
+            "content": {
+                "defenses": [
+                    { "id": "def_dev_sr6_001", "name": "Defense Rating", "value": 4, "icon": "shield", "showSign": false },
+                    { "id": "def_dev_sr6_002", "name": "Initiative", "value": 13, "icon": "zap", "showSign": true }
+                ],
+                "quickDefenses": []
+            }
+        },
+        {
+            "id": "mod_dev_sr6_005",
+            "type": "stat",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 3,
+            "order": 2,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_sr6_1",
+            "content": {
+                "layout": "large-stat",
+                "stats": [
+                    { "id": "stat_dev_sr6_001", "name": "Body", "value": 6, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_sr6_002", "name": "Agility", "value": 8, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_sr6_003", "name": "Reaction", "value": 7, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_sr6_004", "name": "Strength", "value": 5, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_sr6_005", "name": "Willpower", "value": 4, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_sr6_006", "name": "Logic", "value": 3, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_sr6_007", "name": "Intuition", "value": 6, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_sr6_008", "name": "Charisma", "value": 2, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_sr6_009", "name": "Edge", "value": 4, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_sr6_006",
+            "type": "abilities",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 7,
+            "order": 3,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_sr6_1",
+            "linkedStatModuleId": "mod_dev_sr6_005",
+            "content": {
+                "abilities": [
+                    { "id": "abl_dev_sr6_001", "name": "Close Combat", "linkedStat": "Agility", "modifier": 8, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_sr6_002", "name": "Firearms", "linkedStat": "Agility", "modifier": 8, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_sr6_003", "name": "Stealth", "linkedStat": "Agility", "modifier": 6, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_sr6_004", "name": "Athletics", "linkedStat": "Agility", "modifier": 5, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_sr6_005", "name": "Perception", "linkedStat": "Intuition", "modifier": 6, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_sr6_006", "name": "Piloting", "linkedStat": "Reaction", "modifier": 5, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_sr6_007", "name": "Con", "linkedStat": "Charisma", "modifier": 2, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_sr6_008", "name": "Biotech", "linkedStat": "Logic", "modifier": 3, "proficiency": "none", "proficiencyRank": "untrained" }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_sr6_007",
+            "type": "condition",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": 5,
+            "order": 4,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_sr6_1",
+            "content": {
+                "template": "sr6",
+                "applied": [
+                    { "id": "cond_dev_sr6_001", "typeKey": "sr6_dazed", "type": "toggle", "value": 0, "active": true, "description": null, "maxValue": null }
+                ],
+                "staging": [
+                    { "id": "cond_dev_sr6_002", "typeKey": "sr6_blinded", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_003", "typeKey": "sr6_burning", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_004", "typeKey": "sr6_chilled", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_005", "typeKey": "sr6_confused", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_006", "typeKey": "sr6_corrosive", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_007", "typeKey": "sr6_deafened", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_008", "typeKey": "sr6_fatigued", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_009", "typeKey": "sr6_frightened", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_010", "typeKey": "sr6_heightened", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_011", "typeKey": "sr6_immobilized", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_012", "typeKey": "sr6_invisible", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_013", "typeKey": "sr6_nauseated", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_014", "typeKey": "sr6_panicked", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_015", "typeKey": "sr6_paralyzed", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_016", "typeKey": "sr6_petrified", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_017", "typeKey": "sr6_poisoned", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_018", "typeKey": "sr6_prone", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_019", "typeKey": "sr6_silent", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_020", "typeKey": "sr6_stunned", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_021", "typeKey": "sr6_unconscious", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_022", "typeKey": "sr6_wet", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_sr6_023", "typeKey": "sr6_zapped", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_sr6_008",
+            "type": "counters",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 5,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_sr6_1",
+            "content": {
+                "counters": [
+                    { "id": "ctr_dev_sr6_001", "name": "Edge", "icon": "zap", "value": 4, "max": 4, "min": 0, "order": 0 }
+                ],
+                "sortBy": "custom",
+                "sortDir": "asc"
+            }
+        },
+        {
+            "id": "mod_dev_sr6_009",
+            "type": "text",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": 3,
+            "order": 6,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_sr6_1",
+            "content": {
+                "text": "## SR6 Notes\n- Initiative: 1d6+13\n- Stun Monitor: 7/10\n\n**Cyberware:**\n- Wired Reflexes 1\n- Muscle Replacement 2\n\n**Contacts:**\n- Fixer: 'Mother' (L4/C3)"
+            }
+        },
+        {
+            "id": "mod_dev_sr6_010",
+            "type": "actions",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_sr6_2",
+            "content": {
+                "layout": "wrap",
+                "actions": [
+                    { "id": "act_dev_sr6_001", "name": "Major Action", "used": false },
+                    { "id": "act_dev_sr6_002", "name": "Minor Action", "used": false },
+                    { "id": "act_dev_sr6_003", "name": "Minor Action", "used": false }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_sr6_011",
+            "type": "weapons",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 4,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_sr6_2",
+            "linkedStatModuleId": "mod_dev_sr6_005",
+            "content": {
+                "weapons": [
+                    {
+                        "id": "wpn_dev_sr6_001",
+                        "name": "Ares Predator VI",
+                        "slot": "main",
+                        "kind": "ranged",
+                        "icon": null,
+                        "abilityMod": null,
+                        "proficient": true,
+                        "attackBonusOverride": null,
+                        "damageInstances": [],
+                        "range": "5/15/30/50",
+                        "ammoCount": 15,
+                        "traits": [],
+                        "notesMarkdown": "",
+                        "twoHanded": false,
+                        "acBonus": null,
+                        "shieldHp": null,
+                        "shieldHpMax": null,
+                        "firingModes": [
+                            { "name": "SA", "ammoCost": 1, "diceModifier": null, "damageBonus": null },
+                            { "name": "BF", "ammoCost": 3, "diceModifier": 2, "damageBonus": null }
+                        ],
+                        "attachedEnhancements": null,
+                        "proficiencyRank": null,
+                        "skillName": null,
+                        "skillValue": null,
+                        "poolAttribute": "Agility",
+                        "poolSkill": "Firearms",
+                        "poolSize": 15,
+                        "poolAdjustment": null,
+                        "poolAutoCompute": false,
+                        "weaponCategory": null,
+                        "cpredStat": null,
+                        "cpredSkillValue": null,
+                        "governingTrait": null,
+                        "baseDamageFlat": 9,
+                        "damageCategory": "Physical",
+                        "impaling": null,
+                        "armorSavePenalty": null,
+                        "accuracy": null
+                    },
+                    {
+                        "id": "wpn_dev_sr6_002",
+                        "name": "Katana",
+                        "slot": "main",
+                        "kind": "melee",
+                        "icon": null,
+                        "abilityMod": null,
+                        "proficient": true,
+                        "attackBonusOverride": null,
+                        "damageInstances": [],
+                        "range": null,
+                        "ammoCount": null,
+                        "traits": [],
+                        "notesMarkdown": "",
+                        "twoHanded": false,
+                        "acBonus": null,
+                        "shieldHp": null,
+                        "shieldHpMax": null,
+                        "firingModes": [],
+                        "attachedEnhancements": null,
+                        "proficiencyRank": null,
+                        "skillName": null,
+                        "skillValue": null,
+                        "poolAttribute": "Agility",
+                        "poolSkill": "Close Combat",
+                        "poolSize": 14,
+                        "poolAdjustment": null,
+                        "poolAutoCompute": false,
+                        "weaponCategory": null,
+                        "cpredStat": null,
+                        "cpredSkillValue": null,
+                        "governingTrait": null,
+                        "baseDamageFlat": 8,
+                        "damageCategory": "Physical",
+                        "impaling": null,
+                        "armorSavePenalty": null,
+                        "accuracy": null
+                    }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_sr6_012",
+            "type": "list",
+            "title": "Street Gear",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 2,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_sr6_2",
+            "content": {
+                "attributes": [
+                    { "id": "attr_dev_sr6_001", "name": "Qty", "type": "quantity", "icon": null, "defaultValue": 1, "pinned": true, "builtIn": true, "presetKey": "presetQuantity" }
+                ],
+                "items": [
+                    { "id": "itm_dev_sr6_001", "name": "Ammo clips", "order": 0, "attributeValues": [{ "attrId": "attr_dev_sr6_001", "value": 3 }] },
+                    { "id": "itm_dev_sr6_002", "name": "Stim Patches", "order": 1, "attributeValues": [{ "attrId": "attr_dev_sr6_001", "value": 2 }] },
+                    { "id": "itm_dev_sr6_003", "name": "DocWagon Contract", "order": 2, "attributeValues": [{ "attrId": "attr_dev_sr6_001", "value": 1 }] },
+                    { "id": "itm_dev_sr6_004", "name": "Fake SIN", "order": 3, "attributeValues": [{ "attrId": "attr_dev_sr6_001", "value": 1 }] },
+                    { "id": "itm_dev_sr6_005", "name": "Armor Jacket", "order": 4, "attributeValues": [{ "attrId": "attr_dev_sr6_001", "value": 1 }] }
+                ]
+            }
+        }
+    ]
+}

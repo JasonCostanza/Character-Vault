@@ -1,0 +1,376 @@
+{
+    "version": 3,
+    "savedAt": "2026-07-28T00:00:00.000Z",
+    "moduleIdCounter": 13,
+    "tabIdCounter": 4,
+    "gameSystem": "vtm",
+    "activityLog": [],
+    "tabs": [
+        { "id": "tab_dev_vtm_1", "name": "Stats", "order": 0, "color": null },
+        { "id": "tab_dev_vtm_2", "name": "Combat", "order": 1, "color": null },
+        { "id": "tab_dev_vtm_3", "name": "Bio", "order": 2, "color": null }
+    ],
+    "activeTabId": "tab_dev_vtm_1",
+    "modules": [
+        {
+            "id": "mod_dev_vtm_001",
+            "type": "bio",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_vtm_3",
+            "content": {
+                "activeTab": "overview",
+                "portrait": null,
+                "name": "Sebastian Marchetti",
+                "pronouns": "",
+                "race": "Human (Kindred)",
+                "alignment": "",
+                "age": "",
+                "height": "",
+                "weight": "",
+                "eyes": "",
+                "hair": "",
+                "skin": "",
+                "appearance": "",
+                "biography": "Embraced in Florence during the Renaissance. Centuries mastering financial power and social manipulation. An Ancilla serving his Prince while quietly advancing his own agenda.",
+                "showPersonality": true,
+                "personalityTraits": "",
+                "ideals": "",
+                "bonds": "",
+                "flaws": "",
+                "deity": "",
+                "birthplace": "",
+                "nationality": "",
+                "ethnicity": "",
+                "alias": "",
+                "likesDislikes": "",
+                "alliesEnemies": "",
+                "organizations": "",
+                "backgroundName": "",
+                "heritage": "",
+                "edicts": "",
+                "anathemas": "",
+                "occupation": "",
+                "ideologyBeliefs": "",
+                "culturalOrigin": "",
+                "community": "",
+                "lifestyle": "",
+                "clan": "Ventrue",
+                "generation": "10th",
+                "sire": "Eleonora Ricci",
+                "predatorType": "Sandman",
+                "ambition": "Control the city's financial networks",
+                "desire": "Respect and deference from all he meets"
+            }
+        },
+        {
+            "id": "mod_dev_vtm_002",
+            "type": "activity",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 16,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_vtm_3",
+            "content": { "sortOrder": "newest", "hiddenEventTypes": [], "showTimestamps": true, "maxEntries": 200 }
+        },
+        {
+            "id": "mod_dev_vtm_003",
+            "type": "health",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_vtm_1",
+            "content": { "currentHP": 6, "maxHP": 6, "tempHP": 0, "maxHPModifier": 0 }
+        },
+        {
+            "id": "mod_dev_vtm_004",
+            "type": "counters",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_vtm_1",
+            "content": {
+                "counters": [
+                    { "id": "ctr_dev_vtm_001", "name": "Willpower", "icon": "brain", "value": 4, "max": 6, "min": 0, "order": 0 },
+                    { "id": "ctr_dev_vtm_002", "name": "Hunger", "icon": "droplet", "value": 2, "max": 5, "min": 0, "order": 1 }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_vtm_005",
+            "type": "stat",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 3,
+            "order": 2,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_vtm_1",
+            "content": {
+                "layout": "large-stat",
+                "stats": [
+                    { "name": "Strength", "value": 2, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "Dexterity", "value": 3, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "Stamina", "value": 3, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "Charisma", "value": 4, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "Manipulation", "value": 5, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "Composure", "value": 3, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "Intelligence", "value": 3, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "Wits", "value": 3, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "Resolve", "value": 3, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_vtm_006",
+            "type": "abilities",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 8,
+            "order": 3,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_vtm_1",
+            "content": {
+                "linkedStatModuleId": "mod_dev_vtm_005",
+                "abilities": [
+                    { "name": "Athletics", "modifier": 1, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Strength", "abbrev": "STR" },
+                    { "name": "Brawl", "modifier": 2, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Strength", "abbrev": "STR" },
+                    { "name": "Stealth", "modifier": 2, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Dexterity", "abbrev": "DEX" },
+                    { "name": "Firearms", "modifier": 2, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Dexterity", "abbrev": "DEX" },
+                    { "name": "Etiquette", "modifier": 3, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Charisma", "abbrev": "CHA" },
+                    { "name": "Intimidation", "modifier": 3, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Strength", "abbrev": "STR" },
+                    { "name": "Leadership", "modifier": 2, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Charisma", "abbrev": "CHA" },
+                    { "name": "Persuasion", "modifier": 4, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Charisma", "abbrev": "CHA" },
+                    { "name": "Subterfuge", "modifier": 4, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Manipulation", "abbrev": "MAN" },
+                    { "name": "Insight", "modifier": 3, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Wits", "abbrev": "WIT" },
+                    { "name": "Awareness", "modifier": 3, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Wits", "abbrev": "WIT" },
+                    { "name": "Finance", "modifier": 4, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Intelligence", "abbrev": "INT" },
+                    { "name": "Investigation", "modifier": 3, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Intelligence", "abbrev": "INT" },
+                    { "name": "Politics", "modifier": 3, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Intelligence", "abbrev": "INT" },
+                    { "name": "Academics", "modifier": 2, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Intelligence", "abbrev": "INT" },
+                    { "name": "Occult", "modifier": 2, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "Intelligence", "abbrev": "INT" }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_vtm_007",
+            "type": "condition",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": 5,
+            "order": 4,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_vtm_1",
+            "content": {
+                "template": "vtm",
+                "applied": [
+                    { "id": "cond_dev_vtm_001", "typeKey": "vtm_hunger", "type": "value", "value": 2, "active": true, "description": null, "maxValue": 5 },
+                    { "id": "cond_dev_vtm_002", "typeKey": "vtm_stains", "type": "value", "value": 1, "active": true, "description": null, "maxValue": 10 }
+                ],
+                "staging": [
+                    { "id": "cond_dev_vtm_003", "typeKey": "vtm_impaired", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_vtm_004", "typeKey": "vtm_bloodbound", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_vtm_005", "typeKey": "vtm_frenzy", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_vtm_006", "typeKey": "vtm_rotschreck", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_vtm_007", "typeKey": "vtm_torpor", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_vtm_008", "typeKey": "vtm_incapacitated", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_vtm_009", "typeKey": "vtm_finaldeath", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_vtm_010", "typeKey": "vtm_compulsion", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_vtm_011", "typeKey": "vtm_messycritical", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_vtm_012", "typeKey": "vtm_bestialfailure", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null }
+                ],
+                "customConditions": [],
+                "sortBy": null,
+                "sortDir": "asc",
+                "savedCustomInstances": []
+            }
+        },
+        {
+            "id": "mod_dev_vtm_008",
+            "type": "text",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": 4,
+            "order": 5,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_vtm_1",
+            "content": "## Kindred Notes\n- **Clan Bane:** Ventrue feeding restriction\n- **Disciplines:** Dominate 3, Presence 3, Fortitude 1\n- **Blood Potency:** 2\n- **Touchstones:** Isabella Marchetti (grandniece)\n\n**Predator Type:** Sandman — feeds on sleeping victims"
+        },
+        {
+            "id": "mod_dev_vtm_009",
+            "type": "defenses",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_vtm_2",
+            "content": {
+                "defenses": [
+                    { "id": "def_dev_vtm_001", "name": "Defense", "value": 6, "icon": "shield", "showSign": false }
+                ],
+                "quickDefenses": []
+            }
+        },
+        {
+            "id": "mod_dev_vtm_010",
+            "type": "actions",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_vtm_2",
+            "content": {
+                "actions": [
+                    { "id": "act_dev_vtm_001", "name": "Action", "used": false }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_vtm_011",
+            "type": "weapons",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 4,
+            "order": 2,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_vtm_2",
+            "content": {
+                "weapons": [
+                    {
+                        "id": "wpn_dev_vtm_001",
+                        "name": "Brawl",
+                        "slot": "main",
+                        "kind": "melee",
+                        "icon": null,
+                        "abilityMod": null,
+                        "proficient": false,
+                        "attackBonusOverride": null,
+                        "damageInstances": [],
+                        "range": null,
+                        "ammoCount": null,
+                        "traits": [],
+                        "notesMarkdown": "",
+                        "twoHanded": false,
+                        "acBonus": null,
+                        "shieldHp": null,
+                        "shieldHpMax": null,
+                        "firingModes": [],
+                        "attachedEnhancements": null,
+                        "proficiencyRank": null,
+                        "skillName": null,
+                        "skillValue": null,
+                        "poolAttribute": "Strength",
+                        "poolSkill": "Brawl",
+                        "poolSize": 4,
+                        "poolAdjustment": null,
+                        "poolAutoCompute": false,
+                        "weaponCategory": null,
+                        "cpredStat": null,
+                        "cpredSkillValue": null,
+                        "governingTrait": null,
+                        "baseDamageFlat": 2,
+                        "damageCategory": null,
+                        "impaling": null,
+                        "armorSavePenalty": null,
+                        "accuracy": null
+                    },
+                    {
+                        "id": "wpn_dev_vtm_002",
+                        "name": "Beretta 92FS",
+                        "slot": "off",
+                        "kind": "ranged",
+                        "icon": null,
+                        "abilityMod": null,
+                        "proficient": false,
+                        "attackBonusOverride": null,
+                        "damageInstances": [],
+                        "range": "30",
+                        "ammoCount": 15,
+                        "traits": [],
+                        "notesMarkdown": "",
+                        "twoHanded": false,
+                        "acBonus": null,
+                        "shieldHp": null,
+                        "shieldHpMax": null,
+                        "firingModes": [],
+                        "attachedEnhancements": null,
+                        "proficiencyRank": null,
+                        "skillName": null,
+                        "skillValue": null,
+                        "poolAttribute": "Dexterity",
+                        "poolSkill": "Firearms",
+                        "poolSize": 5,
+                        "poolAdjustment": null,
+                        "poolAutoCompute": false,
+                        "weaponCategory": null,
+                        "cpredStat": null,
+                        "cpredSkillValue": null,
+                        "governingTrait": null,
+                        "baseDamageFlat": 3,
+                        "damageCategory": null,
+                        "impaling": null,
+                        "armorSavePenalty": null,
+                        "accuracy": null
+                    }
+                ],
+                "customWeaponTraits": [],
+                "enhancementCatalog": [],
+                "daggerheartProficiency": null,
+                "linkedStatModuleId": "mod_dev_vtm_005"
+            }
+        },
+        {
+            "id": "mod_dev_vtm_012",
+            "type": "list",
+            "title": "Possessions",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 3,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_vtm_2",
+            "content": {
+                "attributes": [
+                    {
+                        "id": "attr_dev_vtm_001",
+                        "name": "Equipped",
+                        "type": "toggle",
+                        "icon": "helmet",
+                        "defaultValue": false,
+                        "pinned": true,
+                        "builtIn": true,
+                        "presetKey": "presetEquipped"
+                    }
+                ],
+                "items": [
+                    { "id": "item_dev_vtm_001", "name": "Phone (encrypted)", "notes": "", "order": 0, "values": { "attr_dev_vtm_001": false } },
+                    { "id": "item_dev_vtm_002", "name": "Forged ID", "notes": "", "order": 1, "values": { "attr_dev_vtm_001": false } },
+                    { "id": "item_dev_vtm_003", "name": "Finely Tailored Suit", "notes": "", "order": 2, "values": { "attr_dev_vtm_001": true } },
+                    { "id": "item_dev_vtm_004", "name": "Cash", "notes": "EUR 2000", "order": 3, "values": { "attr_dev_vtm_001": false } }
+                ],
+                "sortBy": null,
+                "sortDir": "asc"
+            }
+        }
+    ]
+}

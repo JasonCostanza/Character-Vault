@@ -1,0 +1,425 @@
+{
+    "version": 3,
+    "savedAt": "2026-07-28T00:00:00.000Z",
+    "gameSystem": "cpred",
+    "activeTabId": "tab_dev_cpred_1",
+    "moduleIdCounter": 14,
+    "tabIdCounter": 4,
+    "activityLog": [],
+    "tabs": [
+        { "id": "tab_dev_cpred_1", "name": "Stats", "order": 0 },
+        { "id": "tab_dev_cpred_2", "name": "Combat", "order": 1 },
+        { "id": "tab_dev_cpred_3", "name": "Bio", "order": 2 }
+    ],
+    "modules": [
+        {
+            "id": "mod_dev_cpred_001",
+            "type": "bio",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_cpred_3",
+            "content": {
+                "activeTab": "overview",
+                "portrait": null,
+                "name": "Mikael 'Spike' Kessler",
+                "pronouns": "",
+                "race": "Human",
+                "alignment": "",
+                "age": "29",
+                "height": "",
+                "weight": "",
+                "eyes": "",
+                "hair": "",
+                "skin": "",
+                "appearance": "",
+                "biography": "Former corporate security contractor turned freelance Solo after a hostile takeover dissolved his employer. Known for brutal efficiency.",
+                "showPersonality": true,
+                "personalityTraits": "",
+                "ideals": "",
+                "bonds": "",
+                "flaws": "",
+                "deity": "",
+                "birthplace": "",
+                "nationality": "",
+                "ethnicity": "",
+                "alias": "",
+                "likesDislikes": "",
+                "alliesEnemies": "",
+                "organizations": "",
+                "backgroundName": "",
+                "heritage": "",
+                "edicts": "",
+                "anathemas": "",
+                "occupation": "",
+                "ideologyBeliefs": "",
+                "culturalOrigin": "Eastern European",
+                "community": "",
+                "lifestyle": "",
+                "clan": "",
+                "generation": "",
+                "sire": "",
+                "predatorType": "",
+                "ambition": "",
+                "desire": ""
+            }
+        },
+        {
+            "id": "mod_dev_cpred_002",
+            "type": "activity",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 16,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_cpred_3",
+            "content": {
+                "sortOrder": "newest",
+                "hiddenEventTypes": [],
+                "showTimestamps": true,
+                "maxEntries": 200
+            }
+        },
+        {
+            "id": "mod_dev_cpred_003",
+            "type": "health",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_cpred_1",
+            "content": {
+                "currentHP": 20,
+                "maxHP": 25,
+                "tempHP": 0,
+                "maxHPModifier": 0
+            }
+        },
+        {
+            "id": "mod_dev_cpred_004",
+            "type": "savingthrow",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_cpred_1",
+            "linkedStatModuleId": null,
+            "content": {
+                "tierPreset": "simple",
+                "tiersEnabled": false,
+                "tiers": [
+                    { "name": "Untrained", "letter": "U", "color": "#888888" },
+                    { "name": "Trained", "letter": "T", "color": "#22aa44" },
+                    { "name": "Expert", "letter": "E", "color": "#3388dd" },
+                    { "name": "Master", "letter": "M", "color": "#aa44cc" }
+                ],
+                "saves": [
+                    { "id": "save_dev_cpred_001", "name": "Death Save", "value": 6, "proficiencyTier": null, "linkedStatName": null },
+                    { "id": "save_dev_cpred_002", "name": "Stun", "value": 5, "proficiencyTier": null, "linkedStatName": null }
+                ],
+                "notes": "Death Save = BODY. Stun = WILL."
+            }
+        },
+        {
+            "id": "mod_dev_cpred_005",
+            "type": "stat",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 4,
+            "order": 2,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_cpred_1",
+            "content": {
+                "layout": "large-stat",
+                "stats": [
+                    { "id": "stat_dev_cpred_001", "name": "INT", "value": 5, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_cpred_002", "name": "REF", "value": 7, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_cpred_003", "name": "DEX", "value": 7, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_cpred_004", "name": "TECH", "value": 4, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_cpred_005", "name": "COOL", "value": 6, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_cpred_006", "name": "WILL", "value": 5, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_cpred_007", "name": "LUCK", "value": 4, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_cpred_008", "name": "MOVE", "value": 6, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_cpred_009", "name": "BODY", "value": 6, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "id": "stat_dev_cpred_010", "name": "EMP", "value": 3, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_cpred_006",
+            "type": "abilities",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 8,
+            "order": 3,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_cpred_1",
+            "linkedStatModuleId": "mod_dev_cpred_005",
+            "content": {
+                "abilities": [
+                    { "id": "abl_dev_cpred_001", "name": "Handgun", "linkedStat": "REF", "modifier": 10, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_cpred_002", "name": "Shoulder Arms", "linkedStat": "REF", "modifier": 9, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_cpred_003", "name": "Melee Weapon", "linkedStat": "REF", "modifier": 9, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_cpred_004", "name": "Athletics", "linkedStat": "DEX", "modifier": 9, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_cpred_005", "name": "Brawling", "linkedStat": "DEX", "modifier": 9, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_cpred_006", "name": "Evasion", "linkedStat": "DEX", "modifier": 8, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_cpred_007", "name": "Stealth", "linkedStat": "DEX", "modifier": 8, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_cpred_008", "name": "Streetwise", "linkedStat": "COOL", "modifier": 8, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_cpred_009", "name": "Perception", "linkedStat": "INT", "modifier": 7, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_cpred_010", "name": "First Aid", "linkedStat": "TECH", "modifier": 5, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_cpred_011", "name": "Persuasion", "linkedStat": "COOL", "modifier": 6, "proficiency": "none", "proficiencyRank": "untrained" },
+                    { "id": "abl_dev_cpred_012", "name": "Concentration", "linkedStat": "WILL", "modifier": 5, "proficiency": "none", "proficiencyRank": "untrained" }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_cpred_007",
+            "type": "condition",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": 5,
+            "order": 4,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_cpred_1",
+            "content": {
+                "template": "cpred",
+                "applied": [
+                    { "id": "cond_dev_cpred_001", "typeKey": "cpred_prone", "type": "toggle", "value": 0, "active": true, "description": null, "maxValue": null }
+                ],
+                "staging": [
+                    { "id": "cond_dev_cpred_002", "typeKey": "cpred_blinded", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_003", "typeKey": "cpred_deafened", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_004", "typeKey": "cpred_grabbed", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_005", "typeKey": "cpred_onfire", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_006", "typeKey": "cpred_poisoned", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_007", "typeKey": "cpred_restrained", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_008", "typeKey": "cpred_stunned", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_009", "typeKey": "cpred_unconscious", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_010", "typeKey": "cpred_dying", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_011", "typeKey": "cpred_braininjury", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_012", "typeKey": "cpred_brokenjaw", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_013", "typeKey": "cpred_concussion", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_014", "typeKey": "cpred_crackedskull", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_015", "typeKey": "cpred_crushedwindpipe", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_016", "typeKey": "cpred_damagedeye", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_017", "typeKey": "cpred_damagedear", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_018", "typeKey": "cpred_destroyedeye", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_019", "typeKey": "cpred_lostear", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_020", "typeKey": "cpred_shatteredjaw", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_021", "typeKey": "cpred_brokenarm", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_022", "typeKey": "cpred_brokenleg", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_023", "typeKey": "cpred_brokenribs", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_024", "typeKey": "cpred_collapsedlung", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_025", "typeKey": "cpred_crushedfingers", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_026", "typeKey": "cpred_dislocshoulder", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_027", "typeKey": "cpred_dismemberedarm", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_028", "typeKey": "cpred_dismemberedhand", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_029", "typeKey": "cpred_dismemberedleg", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_030", "typeKey": "cpred_foreignobject", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_031", "typeKey": "cpred_spinalinjury", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_032", "typeKey": "cpred_suckingchest", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_cpred_033", "typeKey": "cpred_tornmuscle", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_cpred_008",
+            "type": "counters",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 5,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_cpred_1",
+            "content": {
+                "counters": [
+                    { "id": "ctr_dev_cpred_001", "name": "Luck", "icon": "star", "value": 4, "max": 4, "min": 0, "order": 0 }
+                ],
+                "sortBy": "custom",
+                "sortDir": "asc"
+            }
+        },
+        {
+            "id": "mod_dev_cpred_009",
+            "type": "defenses",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_cpred_2",
+            "content": {
+                "defenses": [
+                    { "id": "def_dev_cpred_001", "name": "SP (Torso)", "value": 7, "icon": "shield", "showSign": false },
+                    { "id": "def_dev_cpred_002", "name": "SP (Head)", "value": 7, "icon": "shield", "showSign": false }
+                ],
+                "quickDefenses": []
+            }
+        },
+        {
+            "id": "mod_dev_cpred_010",
+            "type": "actions",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_cpred_2",
+            "content": {
+                "layout": "wrap",
+                "actions": [
+                    { "id": "act_dev_cpred_001", "name": "Move", "used": false },
+                    { "id": "act_dev_cpred_002", "name": "Action", "used": false }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_cpred_011",
+            "type": "weapons",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 4,
+            "order": 2,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_cpred_2",
+            "linkedStatModuleId": "mod_dev_cpred_005",
+            "content": {
+                "weapons": [
+                    {
+                        "id": "wpn_dev_cpred_001",
+                        "name": "Militech CODA Heavy Pistol",
+                        "slot": "main",
+                        "kind": "ranged",
+                        "icon": null,
+                        "abilityMod": null,
+                        "proficient": true,
+                        "attackBonusOverride": null,
+                        "damageInstances": [
+                            { "dice": "2d6", "modFromAbility": false, "flatBonus": 3, "damageType": "ballistic" }
+                        ],
+                        "range": "50",
+                        "ammoCount": 8,
+                        "traits": [],
+                        "notesMarkdown": "",
+                        "twoHanded": false,
+                        "acBonus": null,
+                        "shieldHp": null,
+                        "shieldHpMax": null,
+                        "firingModes": [
+                            { "name": "Single Shot", "ammoCost": 1, "diceModifier": null, "damageBonus": null }
+                        ],
+                        "attachedEnhancements": null,
+                        "proficiencyRank": null,
+                        "skillName": null,
+                        "skillValue": null,
+                        "poolAttribute": null,
+                        "poolSkill": null,
+                        "poolSize": null,
+                        "poolAdjustment": null,
+                        "poolAutoCompute": false,
+                        "weaponCategory": "handgun",
+                        "cpredStat": "REF",
+                        "cpredSkillValue": 10,
+                        "governingTrait": null,
+                        "baseDamageFlat": null,
+                        "damageCategory": null,
+                        "impaling": null,
+                        "armorSavePenalty": null,
+                        "accuracy": null
+                    },
+                    {
+                        "id": "wpn_dev_cpred_002",
+                        "name": "Mono-Katana",
+                        "slot": "main",
+                        "kind": "melee",
+                        "icon": null,
+                        "abilityMod": null,
+                        "proficient": true,
+                        "attackBonusOverride": null,
+                        "damageInstances": [
+                            { "dice": "2d6", "modFromAbility": false, "flatBonus": 0, "damageType": "slashing" }
+                        ],
+                        "range": null,
+                        "ammoCount": null,
+                        "traits": [],
+                        "notesMarkdown": "",
+                        "twoHanded": false,
+                        "acBonus": null,
+                        "shieldHp": null,
+                        "shieldHpMax": null,
+                        "firingModes": [],
+                        "attachedEnhancements": null,
+                        "proficiencyRank": null,
+                        "skillName": null,
+                        "skillValue": null,
+                        "poolAttribute": null,
+                        "poolSkill": null,
+                        "poolSize": null,
+                        "poolAdjustment": null,
+                        "poolAutoCompute": false,
+                        "weaponCategory": "Melee Weapon",
+                        "cpredStat": "REF",
+                        "cpredSkillValue": 9,
+                        "governingTrait": null,
+                        "baseDamageFlat": null,
+                        "damageCategory": null,
+                        "impaling": null,
+                        "armorSavePenalty": null,
+                        "accuracy": null
+                    }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_cpred_012",
+            "type": "text",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": 3,
+            "order": 3,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_cpred_2",
+            "content": {
+                "text": "## Solo Notes\n- Cyberware: Subdermal Armor, Reflex Booster\n- Street Cred: 4\n- Martial Art: Solo Combat\n\n**IP:** 150"
+            }
+        },
+        {
+            "id": "mod_dev_cpred_013",
+            "type": "list",
+            "title": "Gear",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 4,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_cpred_2",
+            "content": {
+                "attributes": [
+                    { "id": "attr_dev_cpred_001", "name": "Qty", "type": "quantity", "icon": null, "defaultValue": 1, "pinned": true, "builtIn": true, "presetKey": "presetQuantity" }
+                ],
+                "items": [
+                    { "id": "itm_dev_cpred_001", "name": "Ammunition 9mm", "order": 0, "attributeValues": [{ "attrId": "attr_dev_cpred_001", "value": 24 }] },
+                    { "id": "itm_dev_cpred_002", "name": "Stim", "order": 1, "attributeValues": [{ "attrId": "attr_dev_cpred_001", "value": 2 }] },
+                    { "id": "itm_dev_cpred_003", "name": "Trauma Team Card", "order": 2, "attributeValues": [{ "attrId": "attr_dev_cpred_001", "value": 1 }] },
+                    { "id": "itm_dev_cpred_004", "name": "Zipties", "order": 3, "attributeValues": [{ "attrId": "attr_dev_cpred_001", "value": 5 }] }
+                ]
+            }
+        }
+    ]
+}

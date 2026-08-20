@@ -1,0 +1,1645 @@
+{
+    "version": 3,
+    "savedAt": "2026-08-16T18:37:16.145Z",
+    "moduleIdCounter": 50,
+    "tabIdCounter": 7,
+    "gameSystem": "dnd5e",
+    "activityLog": [
+        {
+            "id": "log_ms17hsuhfh50",
+            "timestamp": 1785034569545,
+            "eventType": "stat.event.roll",
+            "sourceModuleId": "module-003",
+            "message": "Rolled STR check (1d20+0) → 14"
+        },
+        {
+            "id": "log_ms17icdrd2il",
+            "timestamp": 1785034594863,
+            "eventType": "stat.event.roll",
+            "sourceModuleId": "module-003",
+            "message": "Rolled STR check (1d20+0) → 13"
+        },
+        {
+            "id": "log_ms17rmvu0l1n",
+            "timestamp": 1785035028378,
+            "eventType": "level.event.xp",
+            "sourceModuleId": "module-005",
+            "message": "Gained 52479 XP (0 → 52479)"
+        },
+        {
+            "id": "log_ms17rq5wyywy",
+            "timestamp": 1785035032628,
+            "eventType": "level.event.levelUp",
+            "sourceModuleId": "module-005",
+            "message": "Leveled up to 2"
+        },
+        {
+            "id": "log_ms17rr0f2vy7",
+            "timestamp": 1785035033727,
+            "eventType": "level.event.levelUp",
+            "sourceModuleId": "module-005",
+            "message": "Leveled up to 3"
+        },
+        {
+            "id": "log_ms17rrihzid4",
+            "timestamp": 1785035034377,
+            "eventType": "level.event.levelUp",
+            "sourceModuleId": "module-005",
+            "message": "Leveled up to 4"
+        },
+        {
+            "id": "log_ms17rrxbvuy9",
+            "timestamp": 1785035034911,
+            "eventType": "level.event.levelUp",
+            "sourceModuleId": "module-005",
+            "message": "Leveled up to 5"
+        },
+        {
+            "id": "log_ms17rs9s7hbm",
+            "timestamp": 1785035035360,
+            "eventType": "level.event.levelUp",
+            "sourceModuleId": "module-005",
+            "message": "Leveled up to 6"
+        },
+        {
+            "id": "log_ms17rsmaious",
+            "timestamp": 1785035035810,
+            "eventType": "level.event.levelUp",
+            "sourceModuleId": "module-005",
+            "message": "Leveled up to 7"
+        },
+        {
+            "id": "log_ms17rszq7so1",
+            "timestamp": 1785035036294,
+            "eventType": "level.event.levelUp",
+            "sourceModuleId": "module-005",
+            "message": "Leveled up to 8"
+        },
+        {
+            "id": "log_ms17rti9plvz",
+            "timestamp": 1785035036961,
+            "eventType": "level.event.levelUp",
+            "sourceModuleId": "module-005",
+            "message": "Leveled up to 9"
+        },
+        {
+            "id": "log_ms186qblu1rj",
+            "timestamp": 1785035732673,
+            "eventType": "abilities.event.roll",
+            "sourceModuleId": "module-002",
+            "message": "Rolled Acrobatics check (+9) → 26"
+        },
+        {
+            "id": "log_ms186wl25nok",
+            "timestamp": 1785035740790,
+            "eventType": "abilities.event.roll",
+            "sourceModuleId": "module-002",
+            "message": "Rolled Acrobatics check (+9) → 20"
+        },
+        {
+            "id": "log_ms1878or4zkl",
+            "timestamp": 1785035756475,
+            "eventType": "save.event.roll",
+            "sourceModuleId": "module-004",
+            "message": "Rolled Dexterity save (+9) → 29"
+        },
+        {
+            "id": "log_ms18b8lnt5ss",
+            "timestamp": 1785035942987,
+            "eventType": "abilities.event.roll",
+            "sourceModuleId": "module-002",
+            "message": "Rolled Arcana check (+7) → 26"
+        },
+        {
+            "id": "log_ms18efqt4ms1",
+            "timestamp": 1785036092213,
+            "eventType": "save.event.roll",
+            "sourceModuleId": "module-004",
+            "message": "Rolled Intelligence save (+7) → 9"
+        },
+        {
+            "id": "log_ms18hhxr9f1a",
+            "timestamp": 1785036235023,
+            "eventType": "list.event.add",
+            "sourceModuleId": "module-006",
+            "message": "Added SENSES to List"
+        },
+        {
+            "id": "log_ms19005l3jl4",
+            "timestamp": 1785037098441,
+            "eventType": "abilities.event.roll",
+            "sourceModuleId": "module-002",
+            "message": "Rolled Forgery Kit check (+9) → 21"
+        },
+        {
+            "id": "log_ms191a4btrb7",
+            "timestamp": 1785037158011,
+            "eventType": "abilities.event.roll",
+            "sourceModuleId": "module-002",
+            "message": "Rolled Stealth check (+13) → 21"
+        },
+        {
+            "id": "log_ms19rz8ghedx",
+            "timestamp": 1785038403616,
+            "eventType": "module.event.delete",
+            "sourceModuleId": "module-015",
+            "message": "Deleted module: Text Box (text)"
+        },
+        {
+            "id": "log_ms1hd8dpyz0a",
+            "timestamp": 1785051152558,
+            "eventType": "list.event.add",
+            "sourceModuleId": "module-022",
+            "message": "Added LEVEL          FEATURES           PSIONIC POWER to SOULKNIFE"
+        },
+        {
+            "id": "log_ms1herlbufg4",
+            "timestamp": 1785051224111,
+            "eventType": "module.event.delete",
+            "sourceModuleId": "module-022",
+            "message": "Deleted module: SOULKNIFE (list)"
+        },
+        {
+            "id": "log_ms1hfafmm13t",
+            "timestamp": 1785051248530,
+            "eventType": "module.event.delete",
+            "sourceModuleId": "module-023",
+            "message": "Deleted module: Activity Log (activity)"
+        },
+        {
+            "id": "log_ms1hg9jz8zx9",
+            "timestamp": 1785051294047,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-024",
+            "message": "Incremented Level (0 → 1)"
+        },
+        {
+            "id": "log_ms1hgaygmp43",
+            "timestamp": 1785051295864,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-024",
+            "message": "Incremented Level (1 → 2)"
+        },
+        {
+            "id": "log_ms1hgd5n5gde",
+            "timestamp": 1785051298715,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-024",
+            "message": "Incremented Level (2 → 3)"
+        },
+        {
+            "id": "log_ms1hge1luboh",
+            "timestamp": 1785051299865,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-024",
+            "message": "Decremented Level (3 → 2)"
+        },
+        {
+            "id": "log_ms1hgek4yn3o",
+            "timestamp": 1785051300532,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-024",
+            "message": "Decremented Level (2 → 1)"
+        },
+        {
+            "id": "log_ms1hgiztp7x4",
+            "timestamp": 1785051306281,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-024",
+            "message": "Incremented Level (1 → 2)"
+        },
+        {
+            "id": "log_ms1hgjr6syya",
+            "timestamp": 1785051307266,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-024",
+            "message": "Incremented Level (2 → 3)"
+        },
+        {
+            "id": "log_ms1hgjy4alne",
+            "timestamp": 1785051307516,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-024",
+            "message": "Incremented Level (3 → 4)"
+        },
+        {
+            "id": "log_ms1hgkvxzavn",
+            "timestamp": 1785051308733,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-024",
+            "message": "Decremented Level (4 → 3)"
+        },
+        {
+            "id": "log_ms1hgl3s09qo",
+            "timestamp": 1785051309016,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-024",
+            "message": "Decremented Level (3 → 2)"
+        },
+        {
+            "id": "log_ms1hglc42ytz",
+            "timestamp": 1785051309316,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-024",
+            "message": "Decremented Level (2 → 1)"
+        },
+        {
+            "id": "log_ms1hglle39mg",
+            "timestamp": 1785051309650,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-024",
+            "message": "Decremented Level (1 → 0)"
+        },
+        {
+            "id": "log_ms1hgs8ukbmk",
+            "timestamp": 1785051318270,
+            "eventType": "module.event.delete",
+            "sourceModuleId": "module-024",
+            "message": "Deleted module: Counters (counters)"
+        },
+        {
+            "id": "log_ms1i8flls3ji",
+            "timestamp": 1785052608249,
+            "eventType": "module.event.delete",
+            "sourceModuleId": "module-011",
+            "message": "Deleted module: Spacer (spacer)"
+        },
+        {
+            "id": "log_ms1jmi9g0jph",
+            "timestamp": 1785054944500,
+            "eventType": "module.event.delete",
+            "sourceModuleId": "module-010",
+            "message": "Deleted module: ........ROGUE........ (text)"
+        },
+        {
+            "id": "log_ms1jpur7opa6",
+            "timestamp": 1785055100659,
+            "eventType": "module.event.delete",
+            "sourceModuleId": "module-012",
+            "message": "Deleted module: Horizontal Line (hline)"
+        },
+        {
+            "id": "log_ms1kbcm3nuny",
+            "timestamp": 1785056103579,
+            "eventType": "module.event.delete",
+            "sourceModuleId": "module-029",
+            "message": "Deleted module: Spacer (spacer)"
+        },
+        {
+            "id": "log_ms1l8xvwd3ey",
+            "timestamp": 1785057670796,
+            "eventType": "health.event.heal",
+            "sourceModuleId": "module-044",
+            "message": "Healed 71 HP (0 → 71)"
+        },
+        {
+            "id": "log_ms1lff0wlkei",
+            "timestamp": 1785057972944,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-046",
+            "message": "Incremented Hit Dice (0 → 1)"
+        },
+        {
+            "id": "log_ms1lffoz1z44",
+            "timestamp": 1785057973811,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-046",
+            "message": "Incremented Hit Dice (1 → 2)"
+        },
+        {
+            "id": "log_ms1lfg0kjuxp",
+            "timestamp": 1785057974228,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-046",
+            "message": "Incremented Hit Dice (2 → 3)"
+        },
+        {
+            "id": "log_ms1lfgd2hrcj",
+            "timestamp": 1785057974678,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-046",
+            "message": "Incremented Hit Dice (3 → 4)"
+        },
+        {
+            "id": "log_ms1lfgp3dabi",
+            "timestamp": 1785057975111,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-046",
+            "message": "Incremented Hit Dice (4 → 5)"
+        },
+        {
+            "id": "log_ms1lfh228h15",
+            "timestamp": 1785057975578,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-046",
+            "message": "Incremented Hit Dice (5 → 6)"
+        },
+        {
+            "id": "log_ms1lfhkkihj1",
+            "timestamp": 1785057976244,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-046",
+            "message": "Incremented Hit Dice (6 → 7)"
+        },
+        {
+            "id": "log_ms1lfi18jnzm",
+            "timestamp": 1785057976844,
+            "eventType": "counter.event.change",
+            "sourceModuleId": "module-046",
+            "message": "Incremented Hit Dice (7 → 8)"
+        },
+        {
+            "id": "log_ms1ln2b6won3",
+            "timestamp": 1785058329714,
+            "eventType": "save.event.roll",
+            "sourceModuleId": "module-004",
+            "message": "Rolled Strength save (+0) → 4"
+        },
+        {
+            "id": "log_ms1lpfcf286b",
+            "timestamp": 1785058439919,
+            "eventType": "list.event.add",
+            "sourceModuleId": "module-047",
+            "message": "Added Shortsword to List"
+        },
+        {
+            "id": "log_ms1lr4cdsb3n",
+            "timestamp": 1785058518973,
+            "eventType": "list.event.attrChange",
+            "sourceModuleId": "module-047",
+            "message": "Shortsword: Damage → 1D6 (List)"
+        },
+        {
+            "id": "log_ms1lr4cdnstw",
+            "timestamp": 1785058518973,
+            "eventType": "list.event.attrChange",
+            "sourceModuleId": "module-047",
+            "message": "Shortsword: Weight → 1 (List)"
+        },
+        {
+            "id": "log_ms1lrnswmq4h",
+            "timestamp": 1785058544192,
+            "eventType": "list.event.add",
+            "sourceModuleId": "module-047",
+            "message": "Added Shortbow to List"
+        },
+        {
+            "id": "log_ms1ls7imr9dm",
+            "timestamp": 1785058569742,
+            "eventType": "list.event.attrChange",
+            "sourceModuleId": "module-047",
+            "message": "Shortbow: Damage → 1D6 (List)"
+        },
+        {
+            "id": "log_ms1ls7in9z72",
+            "timestamp": 1785058569743,
+            "eventType": "list.event.attrChange",
+            "sourceModuleId": "module-047",
+            "message": "Shortbow: Weight → 2 (List)"
+        },
+        {
+            "id": "log_ms1lsdniqlrl",
+            "timestamp": 1785058577694,
+            "eventType": "list.event.add",
+            "sourceModuleId": "module-047",
+            "message": "Added Studded Leather Armour to List"
+        },
+        {
+            "id": "log_ms1lsqixypov",
+            "timestamp": 1785058594377,
+            "eventType": "list.event.attrChange",
+            "sourceModuleId": "module-047",
+            "message": "Studded Leather Armour: Weight → 13 (List)"
+        },
+        {
+            "id": "log_ms1ltbn6gojt",
+            "timestamp": 1785058621746,
+            "eventType": "list.event.add",
+            "sourceModuleId": "module-047",
+            "message": "Added I leave it to you to add your equipment.  to List"
+        },
+        {
+            "id": "log_ms1lu1sfuey6",
+            "timestamp": 1785058655631,
+            "eventType": "module.event.delete",
+            "sourceModuleId": "module-006",
+            "message": "Deleted module: List (list)"
+        },
+        {
+            "id": "log_ms1lu905qaon",
+            "timestamp": 1785058664981,
+            "eventType": "module.event.delete",
+            "sourceModuleId": "module-008",
+            "message": "Deleted module: Characteristics (text)"
+        },
+        {
+            "id": "log_ms1lunptbyh3",
+            "timestamp": 1785058684049,
+            "eventType": "cond.event.toggle",
+            "sourceModuleId": "module-048",
+            "message": "Applied condition: Deafened"
+        },
+        {
+            "id": "log_ms1lux3b74pi",
+            "timestamp": 1785058696199,
+            "eventType": "cond.event.toggle",
+            "sourceModuleId": "module-048",
+            "message": "Removed condition: Deafened"
+        },
+        {
+            "id": "log_ms1m1dowoboc",
+            "timestamp": 1785058997648,
+            "eventType": "weapons.event.roll",
+            "sourceModuleId": "module-049",
+            "message": "Attack with PSYCHIC BLADE (1d20+4) → 7"
+        },
+        {
+            "id": "log_ms1m3gqvo8s7",
+            "timestamp": 1785059094919,
+            "eventType": "weapons.event.roll",
+            "sourceModuleId": "module-049",
+            "message": "Attack with PSYCHIC BLADE (1d20+4) → 17"
+        },
+        {
+            "id": "log_ms1m743e1hho",
+            "timestamp": 1785059265146,
+            "eventType": "weapons.event.damage",
+            "sourceModuleId": "module-049",
+            "message": "PSYCHIC BLADE damage: 1d6 slashing → 5"
+        },
+        {
+            "id": "log_ms1m8nazazpd",
+            "timestamp": 1785059336699,
+            "eventType": "weapons.event.damage",
+            "sourceModuleId": "module-049",
+            "message": "PSYCHIC BLADE damage: 1d6+5 slashing → 11"
+        },
+        {
+            "id": "log_ms1mazlfa9t3",
+            "timestamp": 1785059445939,
+            "eventType": "spells.event.slot",
+            "sourceModuleId": "module-050",
+            "message": "Added slot level 1"
+        },
+        {
+            "id": "log_ms1mb43fd8g1",
+            "timestamp": 1785059451771,
+            "eventType": "spells.event.slot",
+            "sourceModuleId": "module-050",
+            "message": "Added slot level 2"
+        }
+    ],
+    "tabs": [
+        { "id": "tab-1", "name": "Bio", "order": 0, "color": null },
+        { "id": "tab-2", "name": "Stats", "order": 1, "color": "#1E3A5F" },
+        { "id": "tab-3", "name": "Traits", "order": 2, "color": "#2D5A3D" },
+        { "id": "tab-4", "name": "Rogue", "order": 3, "color": "#3A3A3A" },
+        { "id": "tab-5", "name": "Soulknife", "order": 4, "color": "#4A2D6B" },
+        { "id": "tab-6", "name": "BG", "order": 5, "color": "#5C3A1E" },
+        { "id": "tab-7", "name": "EQUIP", "order": 6, "color": null }
+    ],
+    "activeTabId": "tab-2",
+    "modules": [
+        {
+            "id": "module-001",
+            "type": "bio",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 9,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-1",
+            "content": {
+                "activeTab": "details",
+                "portrait": "data:image/jpeg;base64,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",
+                "name": "Zephyric",
+                "pronouns": "",
+                "race": "Wood Elf",
+                "alignment": "Chaotic Good",
+                "age": "",
+                "height": "",
+                "weight": "",
+                "eyes": "",
+                "hair": "Red",
+                "skin": "",
+                "appearance": "",
+                "biography": "",
+                "showPersonality": true,
+                "personalityTraits": "",
+                "ideals": "",
+                "bonds": "",
+                "flaws": "",
+                "deity": "",
+                "birthplace": "",
+                "nationality": "",
+                "ethnicity": "",
+                "alias": "",
+                "likesDislikes": "",
+                "alliesEnemies": "",
+                "organizations": "",
+                "backgroundName": "Charlatan",
+                "heritage": "",
+                "edicts": "",
+                "anathemas": "",
+                "occupation": "",
+                "ideologyBeliefs": "",
+                "culturalOrigin": "",
+                "community": "",
+                "lifestyle": "",
+                "clan": "",
+                "generation": "",
+                "sire": "",
+                "predatorType": "",
+                "ambition": "",
+                "desire": ""
+            }
+        },
+        {
+            "id": "module-002",
+            "type": "abilities",
+            "title": "Skills",
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 1,
+            "theme": "#05394d",
+            "textLight": false,
+            "tabId": "tab-2",
+            "content": {
+                "linkedStatModuleId": "module-003",
+                "abilities": [
+                    {
+                        "name": "Acrobatics",
+                        "modifier": 0,
+                        "proficiency": "proficient",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "DEX"
+                    },
+                    {
+                        "name": "Animal Handling",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "WIS"
+                    },
+                    {
+                        "name": "Arcana",
+                        "modifier": 0,
+                        "proficiency": "proficient",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "INT"
+                    },
+                    {
+                        "name": "Athletics",
+                        "modifier": 0,
+                        "proficiency": "proficient",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "STR"
+                    },
+                    {
+                        "name": "Deception",
+                        "modifier": 0,
+                        "proficiency": "proficient",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "CHA"
+                    },
+                    {
+                        "name": "History",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "INT"
+                    },
+                    {
+                        "name": "Insight",
+                        "modifier": 0,
+                        "proficiency": "proficient",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "WIS"
+                    },
+                    {
+                        "name": "Intimidation",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "CHA"
+                    },
+                    {
+                        "name": "Investigation",
+                        "modifier": 0,
+                        "proficiency": "proficient",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "INT"
+                    },
+                    {
+                        "name": "Medicine",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "WIS"
+                    },
+                    {
+                        "name": "Nature",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "INT"
+                    },
+                    {
+                        "name": "Perception",
+                        "modifier": 0,
+                        "proficiency": "proficient",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "WIS"
+                    },
+                    {
+                        "name": "Performance",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "CHA"
+                    },
+                    {
+                        "name": "Persuasion",
+                        "modifier": 0,
+                        "proficiency": "proficient",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "CHA"
+                    },
+                    {
+                        "name": "Religion",
+                        "modifier": 0,
+                        "proficiency": "none",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "INT"
+                    },
+                    {
+                        "name": "Sleight of Hand",
+                        "modifier": 0,
+                        "proficiency": "expert",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "DEX"
+                    },
+                    {
+                        "name": "Stealth",
+                        "modifier": 0,
+                        "proficiency": "expert",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "DEX"
+                    },
+                    {
+                        "name": "Survival",
+                        "modifier": 0,
+                        "proficiency": "proficient",
+                        "proficiencyRank": "untrained",
+                        "linkedStat": "WIS"
+                    },
+                    {
+                        "name": "Forgery Kit",
+                        "modifier": 0,
+                        "proficiency": "proficient",
+                        "linkedStat": "DEX",
+                        "proficiencyRank": "untrained",
+                        "abbrev": "DEX"
+                    },
+                    {
+                        "name": "Thieve's Tools",
+                        "modifier": 0,
+                        "proficiency": "proficient",
+                        "linkedStat": "DEX",
+                        "proficiencyRank": "untrained",
+                        "abbrev": "DEX"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "module-048",
+            "type": "condition",
+            "title": "D&D 5e Conditions",
+            "colSpan": 3,
+            "rowSpan": 4,
+            "order": 1,
+            "theme": "#1E3A5F",
+            "textLight": false,
+            "tabId": "tab-3",
+            "content": {
+                "template": "dnd5e",
+                "applied": [],
+                "staging": [
+                    {
+                        "id": "cond_ms1ludxhz7i0",
+                        "typeKey": "dnd5e_blinded",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_ms1ludxhqlez",
+                        "typeKey": "dnd5e_charmed",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_ms1ludxhoei6",
+                        "typeKey": "dnd5e_exhaustion",
+                        "type": "value",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": 6
+                    },
+                    {
+                        "id": "cond_ms1ludxh50l4",
+                        "typeKey": "dnd5e_frightened",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_ms1ludxh70x9",
+                        "typeKey": "dnd5e_grappled",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_ms1ludxhu8lf",
+                        "typeKey": "dnd5e_incapacitated",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_ms1ludxh0gbx",
+                        "typeKey": "dnd5e_invisible",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_ms1ludxhc2v9",
+                        "typeKey": "dnd5e_paralyzed",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_ms1ludxh85mx",
+                        "typeKey": "dnd5e_petrified",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_ms1ludxhyqog",
+                        "typeKey": "dnd5e_poisoned",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_ms1ludxhb9f9",
+                        "typeKey": "dnd5e_prone",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_ms1ludxh0gwk",
+                        "typeKey": "dnd5e_restrained",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_ms1ludxhd742",
+                        "typeKey": "dnd5e_stunned",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_ms1ludxhdd5c",
+                        "typeKey": "dnd5e_unconscious",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    },
+                    {
+                        "id": "cond_ms1ludxh39gi",
+                        "typeKey": "dnd5e_deafened",
+                        "type": "toggle",
+                        "value": 0,
+                        "active": false,
+                        "description": null,
+                        "maxValue": null
+                    }
+                ],
+                "customConditions": [],
+                "sortBy": null,
+                "sortDir": "asc",
+                "savedCustomInstances": []
+            }
+        },
+        {
+            "id": "module-003",
+            "type": "stat",
+            "title": "Stats",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 2,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-2",
+            "content": {
+                "layout": "large-stat",
+                "stats": [
+                    {
+                        "name": "STR",
+                        "value": 10,
+                        "modifier": 0,
+                        "proficient": false,
+                        "proficiencyRank": "untrained",
+                        "rollable": true
+                    },
+                    {
+                        "name": "DEX",
+                        "value": 20,
+                        "modifier": 5,
+                        "proficient": false,
+                        "proficiencyRank": "untrained",
+                        "rollable": true
+                    },
+                    {
+                        "name": "CON",
+                        "value": 15,
+                        "modifier": 2,
+                        "proficient": false,
+                        "proficiencyRank": "untrained",
+                        "rollable": true
+                    },
+                    {
+                        "name": "INT",
+                        "value": 16,
+                        "modifier": 3,
+                        "proficient": false,
+                        "proficiencyRank": "untrained",
+                        "rollable": true
+                    },
+                    {
+                        "name": "WIS",
+                        "value": 14,
+                        "modifier": 2,
+                        "proficient": false,
+                        "proficiencyRank": "untrained",
+                        "rollable": true
+                    },
+                    {
+                        "name": "CHA",
+                        "value": 14,
+                        "modifier": 2,
+                        "proficient": false,
+                        "proficiencyRank": "untrained",
+                        "rollable": true
+                    },
+                    {
+                        "name": "Proficiency",
+                        "value": 4,
+                        "modifier": 0,
+                        "proficient": false,
+                        "proficiencyRank": "untrained",
+                        "rollable": false,
+                        "isProficiencyStat": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": "module-049",
+            "type": "weapons",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 2,
+            "theme": "#1E3A5F",
+            "textLight": false,
+            "tabId": "tab-3",
+            "content": {
+                "weapons": [
+                    {
+                        "id": "wpn_ms1lvr7mce8f",
+                        "name": "PSYCHIC BLADE",
+                        "slot": "main",
+                        "kind": "ranged",
+                        "icon": "broadsword",
+                        "abilityMod": "DEX",
+                        "proficient": true,
+                        "attackBonusOverride": 9,
+                        "damageInstances": [
+                            { "dice": "1d6", "modFromAbility": true, "flatBonus": 0, "damageType": "psychic" }
+                        ],
+                        "range": "60/120",
+                        "ammoCount": null,
+                        "traits": [],
+                        "notesMarkdown": "",
+                        "twoHanded": false,
+                        "acBonus": null,
+                        "shieldHp": null,
+                        "shieldHpMax": null,
+                        "firingModes": [],
+                        "attachedEnhancements": null,
+                        "proficiencyRank": null,
+                        "skillName": null,
+                        "skillValue": null,
+                        "poolAttribute": null,
+                        "poolSkill": null,
+                        "poolSize": null,
+                        "weaponCategory": null,
+                        "cpredStat": null,
+                        "cpredSkillValue": null,
+                        "governingTrait": null,
+                        "baseDamageFlat": null,
+                        "damageCategory": null,
+                        "impaling": null,
+                        "armorSavePenalty": null,
+                        "poolAdjustment": null,
+                        "poolAutoCompute": false,
+                        "accuracy": null
+                    }
+                ],
+                "customWeaponTraits": [],
+                "enhancementCatalog": [],
+                "daggerheartProficiency": null,
+                "linkedStatModuleId": "module-003"
+            }
+        },
+        {
+            "id": "module-004",
+            "type": "savingthrow",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 3,
+            "theme": "#05394d",
+            "textLight": false,
+            "tabId": "tab-2",
+            "content": {
+                "saves": [
+                    {
+                        "id": "save_ms17nfid64ib",
+                        "name": "Strength",
+                        "value": 0,
+                        "proficiencyTier": null,
+                        "linkedStatName": "STR"
+                    },
+                    {
+                        "id": "save_ms17nfidtwvr",
+                        "name": "Dexterity",
+                        "value": 0,
+                        "proficiencyTier": "Proficient",
+                        "linkedStatName": "DEX"
+                    },
+                    {
+                        "id": "save_ms17nfid0ozm",
+                        "name": "Constitution",
+                        "value": 0,
+                        "proficiencyTier": null,
+                        "linkedStatName": "CON"
+                    },
+                    {
+                        "id": "save_ms17nfidqpg9",
+                        "name": "Intelligence",
+                        "value": 0,
+                        "proficiencyTier": "Proficient",
+                        "linkedStatName": "INT"
+                    },
+                    {
+                        "id": "save_ms17nfidteoz",
+                        "name": "Wisdom",
+                        "value": 0,
+                        "proficiencyTier": null,
+                        "linkedStatName": "WIS"
+                    },
+                    {
+                        "id": "save_ms17nfiddhvm",
+                        "name": "Charisma",
+                        "value": 0,
+                        "proficiencyTier": null,
+                        "linkedStatName": "CHA"
+                    }
+                ],
+                "notes": "",
+                "tiersEnabled": true,
+                "tiers": [{ "name": "Proficient", "letter": "P", "color": "#22aa44" }],
+                "tierPreset": "dnd5e",
+                "linkedStatModuleId": "module-003"
+            }
+        },
+        {
+            "id": "module-050",
+            "type": "spells",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 4,
+            "order": 3,
+            "theme": "#1E3A5F",
+            "textLight": false,
+            "tabId": "tab-3",
+            "content": {
+                "autoSpendSlots": true,
+                "showSlotErrors": true,
+                "resourcePools": [],
+                "casterType": "spontaneous",
+                "categories": [],
+                "attributes": [],
+                "sortBy": null,
+                "sortDir": "asc",
+                "linkedStatModuleId": "module-003",
+                "spellcastingAbility": "DEX",
+                "spellProficiencyRank": "untrained",
+                "spellAttackOverride": null,
+                "spellDCOverride": null
+            }
+        },
+        {
+            "id": "module-005",
+            "type": "level",
+            "title": "LEVEL",
+            "colSpan": 4,
+            "rowSpan": 2,
+            "order": 4,
+            "theme": "#8499a1",
+            "textLight": false,
+            "tabId": "tab-2",
+            "content": {
+                "level": 9,
+                "currentXP": 52479,
+                "levelingSystem": "xp",
+                "xpThresholds": [
+                    300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000,
+                    195000, 225000, 265000, 305000, 355000
+                ],
+                "carryOverXP": true,
+                "barColor": null,
+                "barStyle": "solid",
+                "className": "Rogue"
+            }
+        },
+        {
+            "id": "module-007",
+            "type": "actions",
+            "title": null,
+            "colSpan": 3,
+            "rowSpan": 2,
+            "order": 5,
+            "theme": "#1f4012",
+            "textLight": false,
+            "tabId": "tab-3",
+            "content": {
+                "layout": "list",
+                "actions": [
+                    { "id": "act_ms18kto6uyp7", "name": "Action", "used": false },
+                    { "id": "act_ms18kto68r0i", "name": "Bonus Action", "used": false },
+                    { "id": "act_ms18kto63rd5", "name": "Reaction", "used": false }
+                ]
+            }
+        },
+        {
+            "id": "module-009",
+            "type": "text",
+            "title": "Rogue Features",
+            "colSpan": 3,
+            "rowSpan": 5,
+            "order": 6,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": "**PRIMARY ABILITY: ----------->\nHIT POINT DIE: ---------------->\nSV THROW PROFICIENCIES: -->\nSKILL PROFICIENCIES: -------->\n<br>\nWEAPON PROFICIENCIES: --->\nTOOL PROFICIENCIES: -------->\nARMOUR TRAINING: --------->\nSTARTING EQUIPMENT: ------>**"
+        },
+        {
+            "id": "module-013",
+            "type": "text",
+            "title": "LEVEL 1: EXPERTISE",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 7,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": "You gain Expertise in two of your skill proficiencies of your choice. Sleight of Hand and Stealth are recommended if you have proficiency in them.\n\nAt Rogue level 6, you gain Expertise in two more of your skill proficiencies of your choice.\n\n"
+        },
+        {
+            "id": "module-014",
+            "type": "text",
+            "title": "LEVEL 1: SNEAK ATTACK",
+            "colSpan": 8,
+            "rowSpan": 4,
+            "order": 8,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": "You know how to strike subtly and exploit a foe's distraction. Once per turn, you can deal an extra 1d6 damage to one creature you hit with an attack roll if you have Advantage on the roll and the attack uses a Finesse or a Ranged weapon. The extra damage's type is the same as the weapon's type.\n\nYou don't need Advantage on the attack roll if at least one of your allies is within 5 feet of the target, the ally doesn't have the Incapacitated condition, and you don't have Disadvantage on the attack roll.\n\nThe extra damage increases as you gain Rogue levels, as shown in the Sneak Attack column of the Rogue Features table.\n\nCurrent Sneak Attack Damage: 5d6"
+        },
+        {
+            "id": "module-016",
+            "type": "text",
+            "title": "LEVEL 1: Thieves' Cant",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 9,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": "You picked up various languages in the communities where you plied your roguish talents. You know Thieves' Cant and one other language of your choice, which you choose from the language tables in Character Creation."
+        },
+        {
+            "id": "module-017",
+            "type": "text",
+            "title": "LEVEL 2: CUNNING ACTION",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 10,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": "Your quick thinking and agility allow you to move and act quickly. On your turn, you can take one of the following actions as a Bonus Action: Hide, Dash , or Disengage."
+        },
+        {
+            "id": "module-018",
+            "type": "text",
+            "title": "LEVEL 1: WEAPON MASTERY",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 11,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": "Your training with weapons allows you to use the mastery properties of two kinds of weapons of your choice with which you have proficiency, such as Daggers and Shortbows.\n\nWhenever you finish a Long Rest, you can change the kinds of weapons you chose. For example, you could switch to using the mastery properties of Scimitars and Shortswords."
+        },
+        {
+            "id": "module-019",
+            "type": "text",
+            "title": "LEVEL 3: STEADY AIM",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 12,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": "As a Bonus Action, you give yourself Advantage on your next attack roll on the current turn. You can use this feature only if you haven't moved during this turn, and after you use it, your Speed is 0 until the end of the current turn."
+        },
+        {
+            "id": "module-020",
+            "type": "text",
+            "title": "SOULKNIFE",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 13,
+            "theme": "#546a6e",
+            "textLight": false,
+            "tabId": "tab-5",
+            "content": "A Soulknife strikes with the mind, cutting through barriers both physical and psychic. These Rogues discover psionic power within themselves and channel it to do their roguish work. As a Soulknife, your psionic abilities might have haunted you since childhood, revealing their full potential only as you experienced the stress of adventure. Or you might have sought out an order of psychic adepts and spent years learning how to manifest your power."
+        },
+        {
+            "id": "module-021",
+            "type": "text",
+            "title": "LEVEL 3: PSIONIC POWER",
+            "colSpan": 8,
+            "rowSpan": 8,
+            "order": 14,
+            "theme": "#546a6e",
+            "textLight": false,
+            "tabId": "tab-5",
+            "content": "You harbor a wellspring of psionic energy within yourself. It is represented by your Psionic Energy Dice, which fuel certain powers you have from this subclass. The Soulknife Energy Dice table shows the number of these dice you have when you reach certain Rogue levels, and the table shows the die size.\n\nAny features in this subclass that use a Psionic Energy Die use only the dice from this subclass. Some of your powers expend a Psionic Energy Die, as specified in a power’s description, and you can’t use a power if it requires you to use a die when your Psionic Energy Dice are all expended.\n\nYou regain one of your expended Psionic Energy Dice when you finish a Short Rest, and you regain all of them when you finish a Long Rest.\n<br>\n**PSI-BOLSTERED KNACK.** If you fail an ability check using a skill or tool with which you have proficiency, you can roll one Psionic Energy Die and add the number rolled to the check, potentially turning failure into success. The die is expended only if the roll then succeeds.\n<br>\n**PSYCHIC WHISPERS.** You can establish telepathic communication between yourself and others. As a Magic action, choose one or more creatures you can see, up to a number of creatures equal to your Proficiency Bonus, and then roll one Psionic Energy Die. For a number of hours equal to the number rolled, the chosen creatures can speak telepathically with you, and you can speak telepathically with them. To send or receive a message (no action required), you and the other creature must be within 1 mile of each other. A creature can end the telepathic connection at any time (no action required).\n\nThe first time you use this power after each Long Rest, you don’t expend the Psionic Energy Die. All other times you use the power, you expend the die."
+        },
+        {
+            "id": "module-025",
+            "type": "text",
+            "title": "LEVEL",
+            "colSpan": 1,
+            "rowSpan": 3,
+            "order": 15,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-5",
+            "content": "3 ---->\n5 ---->\n9 ---->\n11 -->\n13 -->\n17 -->"
+        },
+        {
+            "id": "module-026",
+            "type": "text",
+            "title": "FEATURES",
+            "colSpan": 3,
+            "rowSpan": 3,
+            "order": 16,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-5",
+            "content": "Psionic Powers, Psionic Blades ->\nN/A ------------------------------>\nSoul Blades ---------------------->\nN/A ------------------------------>\nPsychic Veil ---------------------->\nRend Mind ---------------------->"
+        },
+        {
+            "id": "module-027",
+            "type": "text",
+            "title": "PSI POWERS",
+            "colSpan": 2,
+            "rowSpan": 3,
+            "order": 17,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab-5",
+            "content": "**<p style=\"text-align: center;\">4D6\n6D8\n8D8\n8D10\n10D10\n12D12</p>**"
+        },
+        {
+            "id": "module-028",
+            "type": "text",
+            "title": "LEVEL 3: PSYCIC BLADES",
+            "colSpan": 8,
+            "rowSpan": 5,
+            "order": 18,
+            "theme": "#546a6e",
+            "textLight": false,
+            "tabId": "tab-5",
+            "content": "You can manifest shimmering blades of psychic energy. Whenever you take the Attack action or make an Opportunity Attack, you can manifest a Psychic Blade in your free hand and make the attack with that blade. The magic blade has the following traits:\n<br>\n**Weapon Category: Simple Melee**\nDamage on a Hit: **1d6** Psychic plus the ability modifier used for the attack roll\n\nProperties: Finesse, Thrown (range 60/120 feet)\n\nMastery: **Vex** (you can use this property, and it doesn’t count against the number of properties you can use with Weapon Mastery)\n\nThe blade vanishes immediately after it hits or misses its target, and it leaves no mark if it deals damage.\n\nAfter you attack with the blade on your turn, you can make a melee or ranged attack with a second psychic blade as a Bonus Action on the same turn if your other hand is free to create it. The damage die of this bonus attack is **1d4** instead of **1d6**."
+        },
+        {
+            "id": "module-030",
+            "type": "text",
+            "title": "LEVEL 9: SOUL BLADES",
+            "colSpan": 8,
+            "rowSpan": 3,
+            "order": 19,
+            "theme": "#546a6e",
+            "textLight": false,
+            "tabId": "tab-5",
+            "content": "You can now use the following powers with your Psychic Blades.\n\n**HOMING STRIKES**. If you make an attack roll with your Psychic Blade and miss the target, you can roll one Psionic Energy Die and add the number rolled to the attack roll. If this causes the attack to hit, the die is expended.\n\n**PSYCHIC TELEPORTATION**. As a Bonus Action, you manifest a Psychic Blade, expend one Psionic Energy Die and roll it, and throw the blade at an unoccupied space you can see up to a number of feet away equal to 10 times the number rolled. You then teleport to that space, and the blade vanishes."
+        },
+        {
+            "id": "module-031",
+            "type": "text",
+            "title": "LEVEL 13: PSYCHIC VEIL",
+            "colSpan": 8,
+            "rowSpan": 3,
+            "order": 20,
+            "theme": "#546a6e",
+            "textLight": false,
+            "tabId": "tab-5",
+            "content": "You can weave a veil of psychic static to mask yourself. As a Magic action, you gain the Invisible condition for 1 hour or until you dismiss this effect (no action required). This invisibility ends early immediately after you deal damage to a creature or you force a creature to make a saving throw.\n\nOnce you use this feature, you can’t do so again until you finish a Long Rest unless you expend a Psionic Energy Die (no action required) to restore your use of it."
+        },
+        {
+            "id": "module-032",
+            "type": "text",
+            "title": "LEVEL 17: REND MIND",
+            "colSpan": 8,
+            "rowSpan": 3,
+            "order": 21,
+            "theme": "#546a6e",
+            "textLight": false,
+            "tabId": "tab-5",
+            "content": "You can sweep your Psychic Blades through a creature’s mind. When you use your Psychic Blades to deal Sneak Attack damage to a creature, you can force that target to make a *Wisdom saving throw* **(DC 8 plus your Dexterity modifier and Proficiency Bonus).** If the save fails, the target has the Stunned condition for 1 minute. The Stunned target repeats the save at the end of each of its turns, ending the effect on itself on a success.\n\nOnce you use this feature, you can’t do so again until you finish a Long Rest unless you expend three Psionic Energy Dice (no action required) to restore your use of it."
+        },
+        {
+            "id": "module-033",
+            "type": "text",
+            "title": "CHARLATAN",
+            "colSpan": 8,
+            "rowSpan": 5,
+            "order": 22,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-6",
+            "content": "**Ability Scores:** Dexterity, Constitution, Charisma\n**Feat:** Skilled\n**Skill Proficiencies:** Deception and Sleight of Hand\n**Tool Proficiency:** Forgery Kit\n<br>\n**Equipment:** Choose A or B: (A) Forgery Kit, Costume, Fine Clothes, 15 GP; or (B) **50 GP**\n<br>\nOnce you were old enough to order an ale, you soon had a favorite stool in every tavern within ten miles of where you were born. As you traveled the circuit from public house to watering hole, you learned to prey on unfortunates who were in the market for a comforting lie or two—perhaps a sham potion or forged ancestry records."
+        },
+        {
+            "id": "module-034",
+            "type": "text",
+            "title": "-",
+            "colSpan": 5,
+            "rowSpan": 5,
+            "order": 23,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": "Dexterity\n**D8** per Rogue Level\nDexterity and Intelligence\nChoose 4 from Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Persuasion, Sleight of Hand, or Stealth\nSimple, Hand Crossbow, Rapier, Scimitar, Shortsword, and Whip Thieve's Tools\nLight\n*Choose A or B:* Leather Armour, **2X** Dagger, Shortsword, Shortbow,\n**20X** Arrows, Quiver, Thieves' Tools, Burglar's Pack, and **8 GP**, or (B): **100 GP**"
+        },
+        {
+            "id": "module-035",
+            "type": "text",
+            "title": "LEVEL 4: ABILITY SCORE IMPROVEMENT / FEAT",
+            "colSpan": 8,
+            "rowSpan": 1,
+            "order": 24,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": ""
+        },
+        {
+            "id": "module-036",
+            "type": "text",
+            "title": "LEVEL 5: CUNNING STRIKE",
+            "colSpan": 8,
+            "rowSpan": 7,
+            "order": 25,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": "You've developed cunning ways to use your Sneak Attack. When you deal Sneak Attack damage, you can add one of the following Cunning Strike effects. Each effect has a die cost, which is the number of Sneak Attack damage dice you must forgo to add the effect. You remove the die before rolling, and the effect occurs immediately after the attack's damage is dealt. For example, if you add the Poison effect, remove **1d6** from the ***Sneak Attack's*** damage before rolling.\nIf a Cunning Strike effect requires a saving throw, the DC equals 8 plus your Dexterity modifier and Proficiency Bonus.\n<br>\n**POISON** (Cost: 1d6). You add a toxin to your strike, forcing the target to make a Constitution saving throw. On a failed save, the target has the  condition for 1 minute. At the end of each of its turns, the Poisoned target repeats the save, ending the effect on itself on a success.\nTo use this effect, you must have a Poisoner's Kit on your person.\n<br>\n**TRIP** (Cost: 1d6). If the target is Large or smaller, it must succeed on a Dexterity saving throw or have the  condition.\n<br>\n**WITHDRAW** (Cost: 1d6). Immediately after the attack, you move up to half your Speed without provoking Opportunity Attacks."
+        },
+        {
+            "id": "module-037",
+            "type": "text",
+            "title": "LEVEL 5: UNCANNY DODGE",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 26,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": "When an attacker that you can see hits you with an **attack roll**, you can take a Reaction to halve the attack's damage against you (round down).\n\n**TRIGGER** When an attacker that you can **see** hits you with an **attack roll**"
+        },
+        {
+            "id": "module-038",
+            "type": "text",
+            "title": "LEVEL 7: EVASION",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 27,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": "You can nimbly dodge out of the way of certain dangers. When you're subjected to an effect that allows you to make a **Dexterity saving throw** to take only half damage, you instead take no damage if you succeed on the saving throw and only half damage if you fail. You can't use this feature if you have the Incapacitated condition."
+        },
+        {
+            "id": "module-039",
+            "type": "text",
+            "title": "LEVEL 7: RELIABLE TALENT",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 28,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": "Whenever you make an ability check that uses one of your skill or tool ***proficiencies***, you can treat a d20 roll of 9 or lower as a 10."
+        },
+        {
+            "id": "module-040",
+            "type": "text",
+            "title": "LEVEL 8: ABILITY SCORE IMPROVEMENT / FEAT",
+            "colSpan": 8,
+            "rowSpan": 1,
+            "order": 29,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": ""
+        },
+        {
+            "id": "module-041",
+            "type": "text",
+            "title": "LEVEL 10: ABILITY SCORE IMPROVEMENT / FEAT",
+            "colSpan": 8,
+            "rowSpan": 1,
+            "order": 30,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": ""
+        },
+        {
+            "id": "module-042",
+            "type": "text",
+            "title": "LEVEL 11: IMPROVED CUNNING STRIKE",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 31,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-4",
+            "content": "You can use up to two Cunning Strike effects when you deal Sneak Attack Damage, paying the die cost for each effect."
+        },
+        {
+            "id": "module-043",
+            "type": "text",
+            "title": "FEAT: SKILLED",
+            "colSpan": 8,
+            "rowSpan": 2,
+            "order": 32,
+            "theme": "#3A3A3A",
+            "textLight": false,
+            "tabId": "tab-6",
+            "content": "You gain proficiency in any combination of three skills or tools of your choice.\n\nRepeatable. You can take this feat more than once."
+        },
+        {
+            "id": "module-044",
+            "type": "health",
+            "title": null,
+            "colSpan": 2,
+            "rowSpan": 3,
+            "order": 33,
+            "theme": "#102e00",
+            "textLight": false,
+            "tabId": "tab-2",
+            "content": { "currentHP": 71, "maxHP": 0, "tempHP": 0, "maxHPModifier": 71 }
+        },
+        {
+            "id": "module-045",
+            "type": "defenses",
+            "title": null,
+            "colSpan": 2,
+            "rowSpan": 3,
+            "order": 34,
+            "theme": "#ffffff",
+            "textLight": false,
+            "tabId": "tab-2",
+            "content": {
+                "defenses": [
+                    { "id": "def_ms1l9z1xmxtg", "name": "AC", "value": 17, "icon": "shield", "showSign": false }
+                ],
+                "quickDefenses": [{ "id": "qd_ms1lbig0j5on", "name": "", "icon": null, "modifier": 0, "active": false }]
+            }
+        },
+        {
+            "id": "module-046",
+            "type": "counters",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": 2,
+            "order": 35,
+            "theme": "#000000",
+            "textLight": false,
+            "tabId": "tab-2",
+            "content": {
+                "counters": [
+                    {
+                        "id": "counter_ms1lfaz3q2pw",
+                        "name": "Hit Dice",
+                        "icon": null,
+                        "value": 8,
+                        "max": 9,
+                        "min": 0,
+                        "order": 0
+                    },
+                    {
+                        "id": "counter_ms1li3ns0lf3",
+                        "name": "Psi Dice (D8)",
+                        "icon": null,
+                        "value": 8,
+                        "max": 8,
+                        "min": 0,
+                        "order": 1
+                    }
+                ],
+                "sortBy": "custom",
+                "sortDir": "asc"
+            }
+        },
+        {
+            "id": "module-047",
+            "type": "list",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 6,
+            "order": 36,
+            "theme": "#1E3A5F",
+            "textLight": false,
+            "tabId": "tab-7",
+            "content": {
+                "attributes": [
+                    {
+                        "id": "attr_ms1los8wbrxb",
+                        "name": "Active",
+                        "type": "toggle",
+                        "icon": "power",
+                        "defaultValue": false,
+                        "pinned": false,
+                        "builtIn": true,
+                        "presetKey": "presetActive"
+                    },
+                    {
+                        "id": "attr_ms1lour69o9r",
+                        "name": "Quantity",
+                        "type": "quantity",
+                        "icon": "hash",
+                        "defaultValue": 1,
+                        "pinned": false,
+                        "builtIn": true,
+                        "presetKey": "presetQuantity"
+                    },
+                    {
+                        "id": "attr_ms1loxtdj2nd",
+                        "name": "Equipped",
+                        "type": "toggle",
+                        "icon": "helmet",
+                        "defaultValue": false,
+                        "pinned": false,
+                        "builtIn": true,
+                        "presetKey": "presetEquipped"
+                    },
+                    {
+                        "id": "attr_ms1lp2m2ksnz",
+                        "name": "Damage",
+                        "type": "text",
+                        "icon": "sword",
+                        "defaultValue": "",
+                        "pinned": false,
+                        "builtIn": true,
+                        "presetKey": "presetDamage"
+                    },
+                    {
+                        "id": "attr_ms1lp70v58ei",
+                        "name": "Weight",
+                        "type": "number",
+                        "icon": "scale",
+                        "defaultValue": 0,
+                        "pinned": false,
+                        "builtIn": true,
+                        "presetKey": "presetWeight"
+                    }
+                ],
+                "items": [
+                    {
+                        "id": "item_ms1lpfcer291",
+                        "name": "Shortsword",
+                        "notes": "Martial Melee Weapon - VEX",
+                        "order": 0,
+                        "values": {
+                            "attr_ms1los8wbrxb": false,
+                            "attr_ms1lour69o9r": 1,
+                            "attr_ms1loxtdj2nd": false,
+                            "attr_ms1lp2m2ksnz": "1D6",
+                            "attr_ms1lp70v58ei": 1
+                        }
+                    },
+                    {
+                        "id": "item_ms1lrnsv9t3z",
+                        "name": "Shortbow",
+                        "notes": "",
+                        "order": 1,
+                        "values": {
+                            "attr_ms1los8wbrxb": false,
+                            "attr_ms1lour69o9r": 1,
+                            "attr_ms1loxtdj2nd": false,
+                            "attr_ms1lp2m2ksnz": "1D6",
+                            "attr_ms1lp70v58ei": 2
+                        }
+                    },
+                    {
+                        "id": "item_ms1lsdnhjr0e",
+                        "name": "Studded Leather Armour",
+                        "notes": "",
+                        "order": 2,
+                        "values": {
+                            "attr_ms1los8wbrxb": false,
+                            "attr_ms1lour69o9r": 1,
+                            "attr_ms1loxtdj2nd": false,
+                            "attr_ms1lp2m2ksnz": "",
+                            "attr_ms1lp70v58ei": 13
+                        }
+                    },
+                    {
+                        "id": "item_ms1ltbn5scme",
+                        "name": "I leave it to you to add your equipment. ",
+                        "notes": "",
+                        "order": 3,
+                        "values": {
+                            "attr_ms1los8wbrxb": false,
+                            "attr_ms1lour69o9r": 1,
+                            "attr_ms1loxtdj2nd": false,
+                            "attr_ms1lp2m2ksnz": "",
+                            "attr_ms1lp70v58ei": 0
+                        }
+                    }
+                ],
+                "sortBy": null,
+                "sortDir": "asc"
+            }
+        }
+    ]
+}

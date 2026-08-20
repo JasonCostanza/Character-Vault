@@ -1,0 +1,324 @@
+{
+    "version": 3,
+    "savedAt": "2026-07-28T00:00:00.000Z",
+    "moduleIdCounter": 11,
+    "tabIdCounter": 3,
+    "gameSystem": "daggerheart",
+    "activityLog": [],
+    "tabs": [
+        { "id": "tab_dev_dh_1", "name": "Character", "order": 0, "color": null },
+        { "id": "tab_dev_dh_2", "name": "Bio", "order": 1, "color": null }
+    ],
+    "activeTabId": "tab_dev_dh_1",
+    "modules": [
+        {
+            "id": "mod_dev_dh_001",
+            "type": "bio",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dh_2",
+            "content": {
+                "activeTab": "overview",
+                "portrait": null,
+                "name": "Solene Ironwood",
+                "pronouns": "",
+                "race": "Human",
+                "alignment": "",
+                "age": "",
+                "height": "",
+                "weight": "",
+                "eyes": "",
+                "hair": "",
+                "skin": "",
+                "appearance": "",
+                "biography": "A wanderer who took up the shield to protect those who cannot protect themselves.",
+                "showPersonality": true,
+                "personalityTraits": "Steadfast and immovable. Where others run, I plant my feet.",
+                "ideals": "",
+                "bonds": "",
+                "flaws": "",
+                "deity": "",
+                "birthplace": "",
+                "nationality": "",
+                "ethnicity": "",
+                "alias": "",
+                "likesDislikes": "",
+                "alliesEnemies": "",
+                "organizations": "",
+                "backgroundName": "",
+                "heritage": "",
+                "edicts": "",
+                "anathemas": "",
+                "occupation": "",
+                "ideologyBeliefs": "",
+                "culturalOrigin": "",
+                "community": "Wandering Nomads of the Thornwood",
+                "lifestyle": "",
+                "clan": "",
+                "generation": "",
+                "sire": "",
+                "predatorType": "",
+                "ambition": "",
+                "desire": ""
+            }
+        },
+        {
+            "id": "mod_dev_dh_002",
+            "type": "activity",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 16,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dh_2",
+            "content": { "sortOrder": "newest", "hiddenEventTypes": [], "showTimestamps": true, "maxEntries": 200 }
+        },
+        {
+            "id": "mod_dev_dh_003",
+            "type": "health",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dh_1",
+            "content": { "currentHP": 6, "maxHP": 10, "tempHP": 0, "maxHPModifier": 0 }
+        },
+        {
+            "id": "mod_dev_dh_004",
+            "type": "defenses",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dh_1",
+            "content": {
+                "defenses": [
+                    { "id": "def_dev_dh_001", "name": "Evasion", "value": 10, "icon": "shield", "showSign": false },
+                    { "id": "def_dev_dh_002", "name": "Major Threshold", "value": 8, "icon": "activity", "showSign": false },
+                    { "id": "def_dev_dh_003", "name": "Severe Threshold", "value": 15, "icon": "alert-triangle", "showSign": false }
+                ],
+                "quickDefenses": []
+            }
+        },
+        {
+            "id": "mod_dev_dh_005",
+            "type": "stat",
+            "title": "Daggerheart Traits",
+            "colSpan": 8,
+            "rowSpan": 3,
+            "order": 2,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dh_1",
+            "content": {
+                "layout": "large-modifier",
+                "stats": [
+                    { "name": "Agility", "value": 0, "modifier": -1, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "Strength", "value": 0, "modifier": 3, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "Finesse", "value": 0, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "Instinct", "value": 0, "modifier": 2, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "Presence", "value": 0, "modifier": -1, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "Knowledge", "value": 0, "modifier": -1, "proficient": "none", "proficiencyRank": "untrained", "rollable": true }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_dh_006",
+            "type": "condition",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": 3,
+            "order": 3,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dh_1",
+            "content": {
+                "template": "daggerheart",
+                "applied": [
+                    { "id": "cond_dev_dh_001", "typeKey": "dh_marked", "type": "toggle", "value": 0, "active": true, "description": null, "maxValue": null }
+                ],
+                "staging": [
+                    { "id": "cond_dev_dh_002", "typeKey": "dh_bleeding", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dh_003", "typeKey": "dh_fearful", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dh_004", "typeKey": "dh_hidden", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dh_005", "typeKey": "dh_poisoned", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dh_006", "typeKey": "dh_restrained", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dh_007", "typeKey": "dh_stunned", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dh_008", "typeKey": "dh_vulnerable", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null }
+                ],
+                "customConditions": [],
+                "sortBy": null,
+                "sortDir": "asc",
+                "savedCustomInstances": []
+            }
+        },
+        {
+            "id": "mod_dev_dh_007",
+            "type": "counters",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 4,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dh_1",
+            "content": {
+                "counters": [
+                    { "id": "ctr_dev_dh_001", "name": "Hope", "icon": "star", "value": 2, "max": 6, "min": 0, "order": 0 },
+                    { "id": "ctr_dev_dh_002", "name": "Fear", "icon": "skull", "value": 1, "max": 6, "min": 0, "order": 1 }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_dh_008",
+            "type": "weapons",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 3,
+            "order": 5,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dh_1",
+            "content": {
+                "weapons": [
+                    {
+                        "id": "wpn_dev_dh_001",
+                        "name": "Greataxe",
+                        "slot": "main",
+                        "kind": "melee",
+                        "icon": null,
+                        "abilityMod": null,
+                        "proficient": false,
+                        "attackBonusOverride": null,
+                        "damageInstances": [
+                            { "dice": "2d8", "modFromAbility": true, "flatBonus": 0, "damageType": "physical" }
+                        ],
+                        "range": null,
+                        "ammoCount": null,
+                        "traits": [],
+                        "notesMarkdown": "",
+                        "twoHanded": true,
+                        "acBonus": null,
+                        "shieldHp": null,
+                        "shieldHpMax": null,
+                        "firingModes": [],
+                        "attachedEnhancements": null,
+                        "proficiencyRank": null,
+                        "skillName": null,
+                        "skillValue": null,
+                        "poolAttribute": null,
+                        "poolSkill": null,
+                        "poolSize": null,
+                        "poolAdjustment": null,
+                        "poolAutoCompute": false,
+                        "weaponCategory": null,
+                        "cpredStat": null,
+                        "cpredSkillValue": null,
+                        "governingTrait": "Strength",
+                        "baseDamageFlat": null,
+                        "damageCategory": null,
+                        "impaling": null,
+                        "armorSavePenalty": null,
+                        "accuracy": null
+                    },
+                    {
+                        "id": "wpn_dev_dh_002",
+                        "name": "Tower Shield",
+                        "slot": "off",
+                        "kind": "shield",
+                        "icon": null,
+                        "abilityMod": null,
+                        "proficient": false,
+                        "attackBonusOverride": null,
+                        "damageInstances": [],
+                        "range": null,
+                        "ammoCount": null,
+                        "traits": [],
+                        "notesMarkdown": "",
+                        "twoHanded": false,
+                        "acBonus": 2,
+                        "shieldHp": 12,
+                        "shieldHpMax": 15,
+                        "firingModes": [],
+                        "attachedEnhancements": null,
+                        "proficiencyRank": null,
+                        "skillName": null,
+                        "skillValue": null,
+                        "poolAttribute": null,
+                        "poolSkill": null,
+                        "poolSize": null,
+                        "poolAdjustment": null,
+                        "poolAutoCompute": false,
+                        "weaponCategory": null,
+                        "cpredStat": null,
+                        "cpredSkillValue": null,
+                        "governingTrait": null,
+                        "baseDamageFlat": null,
+                        "damageCategory": null,
+                        "impaling": null,
+                        "armorSavePenalty": null,
+                        "accuracy": null
+                    }
+                ],
+                "customWeaponTraits": [],
+                "enhancementCatalog": [],
+                "daggerheartProficiency": 3,
+                "linkedStatModuleId": "mod_dev_dh_005"
+            }
+        },
+        {
+            "id": "mod_dev_dh_009",
+            "type": "text",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": 4,
+            "order": 6,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dh_1",
+            "content": "## Guardian Notes\n- **Proficiency:** 3\n- **Damage Thresholds:** Major 8 / Severe 15\n- **Class Feature:** Shelter\n\n**Domain Cards:**\n- Stand Firm (Valor, Level 1)\n- Shield Bash (Blade, Level 1)"
+        },
+        {
+            "id": "mod_dev_dh_010",
+            "type": "list",
+            "title": "Equipment",
+            "colSpan": 4,
+            "rowSpan": 2,
+            "order": 7,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dh_1",
+            "content": {
+                "attributes": [
+                    {
+                        "id": "attr_dev_dh_001",
+                        "name": "Qty",
+                        "type": "quantity",
+                        "icon": null,
+                        "defaultValue": 1,
+                        "pinned": true,
+                        "builtIn": true,
+                        "presetKey": "presetQuantity"
+                    }
+                ],
+                "items": [
+                    { "id": "item_dev_dh_001", "name": "Guardian's Pack", "notes": "", "order": 0, "values": { "attr_dev_dh_001": 1 } },
+                    { "id": "item_dev_dh_002", "name": "Healing Potion", "notes": "", "order": 1, "values": { "attr_dev_dh_001": 2 } },
+                    { "id": "item_dev_dh_003", "name": "Javelins", "notes": "", "order": 2, "values": { "attr_dev_dh_001": 4 } },
+                    { "id": "item_dev_dh_004", "name": "Rations", "notes": "", "order": 3, "values": { "attr_dev_dh_001": 7 } }
+                ],
+                "sortBy": null,
+                "sortDir": "asc"
+            }
+        }
+    ]
+}

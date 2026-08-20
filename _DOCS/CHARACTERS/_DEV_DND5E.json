@@ -1,0 +1,519 @@
+{
+    "version": 3,
+    "savedAt": "2026-07-28T00:00:00.000Z",
+    "gameSystem": "dnd5e",
+    "activeTabId": "tab_dev_dnd5e_1",
+    "moduleIdCounter": 17,
+    "tabIdCounter": 4,
+    "activityLog": [],
+    "tabs": [
+        { "id": "tab_dev_dnd5e_1", "name": "Stats", "order": 0 },
+        { "id": "tab_dev_dnd5e_2", "name": "Combat", "order": 1 },
+        { "id": "tab_dev_dnd5e_3", "name": "Bio", "order": 2 }
+    ],
+    "modules": [
+        {
+            "id": "mod_dev_dnd5e_001",
+            "type": "bio",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_3",
+            "content": {
+                "activeTab": "overview",
+                "portrait": null,
+                "name": "Gareth Ashvale",
+                "pronouns": "",
+                "race": "Human",
+                "alignment": "Lawful Good",
+                "age": "28",
+                "height": "",
+                "weight": "",
+                "eyes": "",
+                "hair": "",
+                "skin": "",
+                "appearance": "",
+                "biography": "A career soldier from the northern provinces who enlisted after his village was sacked by gnolls. Rose through the ranks with discipline and courage.",
+                "showPersonality": true,
+                "personalityTraits": "I face problems head-on. A simple, direct solution is the best path.",
+                "ideals": "Greater Good. Our lot is to lay down our lives in defense of others.",
+                "bonds": "My honor is my life.",
+                "flaws": "I have a weakness for the vices of the city.",
+                "deity": "",
+                "birthplace": "",
+                "nationality": "",
+                "ethnicity": "",
+                "alias": "",
+                "likesDislikes": "",
+                "alliesEnemies": "",
+                "organizations": "",
+                "backgroundName": "Soldier",
+                "heritage": "",
+                "edicts": "",
+                "anathemas": "",
+                "occupation": "",
+                "ideologyBeliefs": "",
+                "culturalOrigin": "",
+                "community": "",
+                "lifestyle": "",
+                "clan": "",
+                "generation": "",
+                "sire": "",
+                "predatorType": "",
+                "ambition": "",
+                "desire": ""
+            }
+        },
+        {
+            "id": "mod_dev_dnd5e_002",
+            "type": "activity",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 16,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_3",
+            "content": {
+                "sortOrder": "newest",
+                "hiddenEventTypes": [],
+                "showTimestamps": true,
+                "maxEntries": 200
+            }
+        },
+        {
+            "id": "mod_dev_dnd5e_003",
+            "type": "level",
+            "title": null,
+            "colSpan": 2,
+            "rowSpan": 3,
+            "order": 0,
+            "theme": "#000000",
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_1",
+            "content": {
+                "level": 5,
+                "currentXP": 6500,
+                "levelingSystem": "xp",
+                "xpThresholds": [300,900,2700,6500,14000,23000,34000,48000,64000,85000,100000,120000,140000,165000,195000,225000,265000,305000,355000],
+                "carryOverXP": true,
+                "barColor": null,
+                "barStyle": "solid",
+                "className": "Fighter"
+            }
+        },
+        {
+            "id": "mod_dev_dnd5e_004",
+            "type": "health",
+            "title": null,
+            "colSpan": 3,
+            "rowSpan": 3,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_1",
+            "content": {
+                "currentHP": 44,
+                "maxHP": 49,
+                "tempHP": 5,
+                "maxHPModifier": 0
+            }
+        },
+        {
+            "id": "mod_dev_dnd5e_005",
+            "type": "recovery",
+            "title": null,
+            "colSpan": 3,
+            "rowSpan": 3,
+            "order": 2,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_1",
+            "content": {
+                "restButtons": [
+                    {
+                        "id": "btn_dev_dnd5e_001",
+                        "name": "Long Rest",
+                        "actions": [
+                            { "type": "healToFull" },
+                            { "type": "restoreAllSpellSlots" },
+                            { "type": "resetTempHP" },
+                            { "type": "restoreHitDice" }
+                        ]
+                    },
+                    {
+                        "id": "btn_dev_dnd5e_002",
+                        "name": "Short Rest",
+                        "actions": [
+                            { "type": "healByRoll" }
+                        ]
+                    }
+                ],
+                "hitDice": {
+                    "dieSize": 10,
+                    "total": 5,
+                    "remaining": 3,
+                    "modifier": 3,
+                    "restoreOnLongRest": "half"
+                }
+            }
+        },
+        {
+            "id": "mod_dev_dnd5e_006",
+            "type": "stat",
+            "title": "D&D 5e Stats",
+            "colSpan": 8,
+            "rowSpan": 3,
+            "order": 3,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_1",
+            "content": {
+                "layout": "large-stat",
+                "stats": [
+                    { "name": "STR", "value": 18, "modifier": 4, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "DEX", "value": 12, "modifier": 1, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "CON", "value": 16, "modifier": 3, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "INT", "value": 10, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "WIS", "value": 13, "modifier": 1, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "CHA", "value": 8, "modifier": -1, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+                    { "name": "Proficiency", "value": 3, "modifier": 3, "proficient": "none", "proficiencyRank": "untrained", "rollable": false, "isProficiencyStat": true }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_dnd5e_007",
+            "type": "savingthrow",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": 3,
+            "order": 4,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_1",
+            "content": {
+                "linkedStatModuleId": "mod_dev_dnd5e_006",
+                "tierPreset": "dnd5e",
+                "tiersEnabled": true,
+                "tiers": [
+                    { "name": "Proficient", "letter": "P", "color": "#22aa44" },
+                    { "name": "Expert", "letter": "E", "color": "#3388dd" }
+                ],
+                "saves": [
+                    { "id": "save_dev_dnd5e_001", "name": "Strength", "value": 0, "proficiencyTier": "Proficient", "linkedStatName": "STR" },
+                    { "id": "save_dev_dnd5e_002", "name": "Dexterity", "value": 0, "proficiencyTier": null, "linkedStatName": "DEX" },
+                    { "id": "save_dev_dnd5e_003", "name": "Constitution", "value": 0, "proficiencyTier": "Proficient", "linkedStatName": "CON" },
+                    { "id": "save_dev_dnd5e_004", "name": "Intelligence", "value": 0, "proficiencyTier": null, "linkedStatName": "INT" },
+                    { "id": "save_dev_dnd5e_005", "name": "Wisdom", "value": 0, "proficiencyTier": null, "linkedStatName": "WIS" },
+                    { "id": "save_dev_dnd5e_006", "name": "Charisma", "value": 0, "proficiencyTier": null, "linkedStatName": "CHA" }
+                ],
+                "notes": "Second Wind restores 1d10+5 HP as a bonus action."
+            }
+        },
+        {
+            "id": "mod_dev_dnd5e_008",
+            "type": "abilities",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": 9,
+            "order": 5,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_1",
+            "content": {
+                "linkedStatModuleId": "mod_dev_dnd5e_006",
+                "abilities": [
+                    { "name": "Acrobatics", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "DEX", "abbrev": "Acr" },
+                    { "name": "Animal Handling", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "WIS", "abbrev": "AnH" },
+                    { "name": "Arcana", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "INT", "abbrev": "Arc" },
+                    { "name": "Athletics", "modifier": 0, "proficiency": "proficient", "proficiencyRank": "trained", "linkedStat": "STR", "abbrev": "Ath" },
+                    { "name": "Deception", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "CHA", "abbrev": "Dec" },
+                    { "name": "History", "modifier": 0, "proficiency": "proficient", "proficiencyRank": "trained", "linkedStat": "INT", "abbrev": "His" },
+                    { "name": "Insight", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "WIS", "abbrev": "Ins" },
+                    { "name": "Intimidation", "modifier": 0, "proficiency": "proficient", "proficiencyRank": "trained", "linkedStat": "CHA", "abbrev": "Itm" },
+                    { "name": "Investigation", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "INT", "abbrev": "Inv" },
+                    { "name": "Medicine", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "WIS", "abbrev": "Med" },
+                    { "name": "Nature", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "INT", "abbrev": "Nat" },
+                    { "name": "Perception", "modifier": 0, "proficiency": "proficient", "proficiencyRank": "trained", "linkedStat": "WIS", "abbrev": "Per" },
+                    { "name": "Performance", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "CHA", "abbrev": "Prf" },
+                    { "name": "Persuasion", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "CHA", "abbrev": "Prs" },
+                    { "name": "Religion", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "INT", "abbrev": "Rel" },
+                    { "name": "Sleight of Hand", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "DEX", "abbrev": "SoH" },
+                    { "name": "Stealth", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "DEX", "abbrev": "Ste" },
+                    { "name": "Survival", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "WIS", "abbrev": "Sur" }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_dnd5e_009",
+            "type": "condition",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": 4,
+            "order": 6,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_1",
+            "content": {
+                "template": "dnd5e",
+                "applied": [
+                    { "id": "cond_dev_dnd5e_001", "typeKey": "dnd5e_poisoned", "type": "toggle", "value": 0, "active": true, "description": null, "maxValue": null }
+                ],
+                "staging": [
+                    { "id": "cond_dev_dnd5e_002", "typeKey": "dnd5e_blinded", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dnd5e_003", "typeKey": "dnd5e_charmed", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dnd5e_004", "typeKey": "dnd5e_deafened", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dnd5e_005", "typeKey": "dnd5e_exhaustion", "type": "value", "value": 0, "active": false, "description": null, "maxValue": 6 },
+                    { "id": "cond_dev_dnd5e_006", "typeKey": "dnd5e_frightened", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dnd5e_007", "typeKey": "dnd5e_grappled", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dnd5e_008", "typeKey": "dnd5e_incapacitated", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dnd5e_009", "typeKey": "dnd5e_invisible", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dnd5e_010", "typeKey": "dnd5e_paralyzed", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dnd5e_011", "typeKey": "dnd5e_petrified", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dnd5e_012", "typeKey": "dnd5e_prone", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dnd5e_013", "typeKey": "dnd5e_restrained", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dnd5e_014", "typeKey": "dnd5e_stunned", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null },
+                    { "id": "cond_dev_dnd5e_015", "typeKey": "dnd5e_unconscious", "type": "toggle", "value": 0, "active": false, "description": null, "maxValue": null }
+                ],
+                "customConditions": [],
+                "sortBy": null,
+                "sortDir": "asc",
+                "savedCustomInstances": []
+            }
+        },
+        {
+            "id": "mod_dev_dnd5e_010",
+            "type": "counters",
+            "title": null,
+            "colSpan": 2,
+            "rowSpan": null,
+            "order": 7,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_1",
+            "content": {
+                "counters": [
+                    { "id": "ctr_dev_dnd5e_001", "name": "Inspiration", "icon": "star", "value": 1, "max": 1, "min": 0, "order": 0 }
+                ],
+                "sortBy": "custom",
+                "sortDir": "asc"
+            }
+        },
+        {
+            "id": "mod_dev_dnd5e_011",
+            "type": "text",
+            "title": null,
+            "colSpan": 6,
+            "rowSpan": 3,
+            "order": 8,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_1",
+            "content": "## Fighter Notes\n- Action Surge: 1/Short Rest\n- Second Wind: 1d10+5, Bonus Action, 1/Short Rest\n- Extra Attack (2)\n\n**Fighting Style:** Defense (+1 AC while armored)"
+        },
+        {
+            "id": "mod_dev_dnd5e_012",
+            "type": "defenses",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 0,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_2",
+            "content": {
+                "defenses": [
+                    { "id": "def_dev_dnd5e_001", "name": "AC", "value": 18, "icon": "shield", "showSign": false }
+                ],
+                "quickDefenses": []
+            }
+        },
+        {
+            "id": "mod_dev_dnd5e_013",
+            "type": "actions",
+            "title": null,
+            "colSpan": 4,
+            "rowSpan": null,
+            "order": 1,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_2",
+            "content": {
+                "layout": "wrap",
+                "actions": [
+                    { "id": "act_dev_dnd5e_001", "name": "Action", "used": false },
+                    { "id": "act_dev_dnd5e_002", "name": "Bonus Action", "used": false },
+                    { "id": "act_dev_dnd5e_003", "name": "Reaction", "used": false }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_dnd5e_014",
+            "type": "weapons",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 4,
+            "order": 2,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_2",
+            "content": {
+                "linkedStatModuleId": "mod_dev_dnd5e_006",
+                "weapons": [
+                    {
+                        "id": "wpn_dev_dnd5e_001",
+                        "name": "Longsword",
+                        "slot": "main",
+                        "kind": "melee",
+                        "icon": null,
+                        "abilityMod": "STR",
+                        "proficient": true,
+                        "attackBonusOverride": null,
+                        "damageInstances": [{ "dice": "1d8", "modFromAbility": true, "flatBonus": 0, "damageType": "slashing" }],
+                        "range": null,
+                        "ammoCount": null,
+                        "traits": [{ "key": "versatile", "value": "1d10" }],
+                        "notesMarkdown": "",
+                        "twoHanded": false,
+                        "acBonus": null,
+                        "shieldHp": null,
+                        "shieldHpMax": null,
+                        "firingModes": [],
+                        "attachedEnhancements": null,
+                        "proficiencyRank": null,
+                        "skillName": null,
+                        "skillValue": null,
+                        "poolAttribute": null,
+                        "poolSkill": null,
+                        "poolSize": null,
+                        "poolAdjustment": null,
+                        "poolAutoCompute": false,
+                        "weaponCategory": null,
+                        "cpredStat": null,
+                        "cpredSkillValue": null,
+                        "governingTrait": null,
+                        "baseDamageFlat": null,
+                        "damageCategory": null,
+                        "impaling": null,
+                        "armorSavePenalty": null,
+                        "accuracy": null
+                    },
+                    {
+                        "id": "wpn_dev_dnd5e_002",
+                        "name": "Shield",
+                        "slot": "off",
+                        "kind": "shield",
+                        "icon": null,
+                        "abilityMod": "STR",
+                        "proficient": true,
+                        "attackBonusOverride": null,
+                        "damageInstances": [],
+                        "range": null,
+                        "ammoCount": null,
+                        "traits": [],
+                        "notesMarkdown": "",
+                        "twoHanded": false,
+                        "acBonus": 2,
+                        "shieldHp": null,
+                        "shieldHpMax": null,
+                        "firingModes": [],
+                        "attachedEnhancements": null,
+                        "proficiencyRank": null,
+                        "skillName": null,
+                        "skillValue": null,
+                        "poolAttribute": null,
+                        "poolSkill": null,
+                        "poolSize": null,
+                        "poolAdjustment": null,
+                        "poolAutoCompute": false,
+                        "weaponCategory": null,
+                        "cpredStat": null,
+                        "cpredSkillValue": null,
+                        "governingTrait": null,
+                        "baseDamageFlat": null,
+                        "damageCategory": null,
+                        "impaling": null,
+                        "armorSavePenalty": null,
+                        "accuracy": null
+                    }
+                ]
+            }
+        },
+        {
+            "id": "mod_dev_dnd5e_015",
+            "type": "spells",
+            "title": null,
+            "colSpan": 8,
+            "rowSpan": 6,
+            "order": 3,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_2",
+            "content": {
+                "linkedStatModuleId": "mod_dev_dnd5e_006",
+                "spellcastingAbility": "INT",
+                "spellProficiencyRank": "trained",
+                "casterType": "prepared",
+                "autoSpendSlots": true,
+                "showSlotErrors": true,
+                "resourcePools": [
+                    { "id": "pool_dev_dnd5e_001", "type": "custom", "level": null, "name": "Magic Initiate", "max": 1, "spent": 0 }
+                ],
+                "categories": [
+                    {
+                        "id": "cat_dev_dnd5e_001",
+                        "name": "Cantrips",
+                        "resourcePoolId": null,
+                        "order": 0,
+                        "spells": [
+                            { "id": "sp_dev_dnd5e_001", "name": "Fire Bolt", "description": "Ranged spell attack, 2d10 fire damage", "order": 0, "expanded": false, "values": {}, "slotCost": null, "canUpcast": false, "preparedCount": 0, "castsUsed": 0 },
+                            { "id": "sp_dev_dnd5e_002", "name": "Prestidigitation", "description": "Minor magical tricks", "order": 1, "expanded": false, "values": {}, "slotCost": null, "canUpcast": false, "preparedCount": 0, "castsUsed": 0 }
+                        ]
+                    },
+                    {
+                        "id": "cat_dev_dnd5e_002",
+                        "name": "1st Level",
+                        "resourcePoolId": "pool_dev_dnd5e_001",
+                        "order": 1,
+                        "spells": [
+                            { "id": "sp_dev_dnd5e_003", "name": "Shield", "description": "Reaction: +5 AC until start of next turn", "order": 0, "expanded": false, "values": {}, "slotCost": null, "canUpcast": false, "preparedCount": 0, "castsUsed": 0 }
+                        ]
+                    }
+                ],
+                "attributes": [],
+                "sortBy": null,
+                "sortDir": "asc",
+                "spellAttackOverride": null,
+                "spellDCOverride": null
+            }
+        },
+        {
+            "id": "mod_dev_dnd5e_016",
+            "type": "list",
+            "title": "Inventory",
+            "colSpan": 8,
+            "rowSpan": 3,
+            "order": 4,
+            "theme": null,
+            "textLight": false,
+            "tabId": "tab_dev_dnd5e_2",
+            "content": {
+                "attributes": [
+                    { "id": "attr_dev_dnd5e_001", "name": "Qty", "type": "quantity", "icon": null, "defaultValue": 1, "pinned": true, "builtIn": true, "presetKey": "presetQuantity" },
+                    { "id": "attr_dev_dnd5e_002", "name": "Equipped", "type": "toggle", "icon": "helmet", "defaultValue": false, "pinned": true, "builtIn": true, "presetKey": "presetEquipped" }
+                ],
+                "items": [
+                    { "id": "item_dev_dnd5e_001", "name": "Potion of Healing", "order": 0, "attributes": { "attr_dev_dnd5e_001": 2, "attr_dev_dnd5e_002": false } },
+                    { "id": "item_dev_dnd5e_002", "name": "Rations", "order": 1, "attributes": { "attr_dev_dnd5e_001": 5, "attr_dev_dnd5e_002": false } },
+                    { "id": "item_dev_dnd5e_003", "name": "50ft Rope", "order": 2, "attributes": { "attr_dev_dnd5e_001": 1, "attr_dev_dnd5e_002": false } },
+                    { "id": "item_dev_dnd5e_004", "name": "Tinderbox", "order": 3, "attributes": { "attr_dev_dnd5e_001": 1, "attr_dev_dnd5e_002": false } }
+                ],
+                "sortBy": null,
+                "sortDir": "asc"
+            }
+        }
+    ]
+}

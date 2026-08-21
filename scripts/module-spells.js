@@ -1413,11 +1413,10 @@
             }
 
             if (typeof Sortable !== 'undefined' && content.attributes.length > 1) {
-                attrListEl._sortable = new Sortable(attrListEl, {
-                    handle: '.spells-attr-drag-handle',
-                    animation: 150,
+                initManageListSortable(attrListEl, {
+                    handleSelector: '.spells-attr-drag-handle',
                     ghostClass: 'spells-attr-ghost',
-                    draggable: '.spells-attr-row',
+                    rowSelector: '.spells-attr-row',
                     onEnd() {
                         const rows = Array.from(attrListEl.querySelectorAll('.spells-attr-row'));
                         content.attributes = rows

@@ -385,11 +385,10 @@
             });
 
             if (typeof Sortable !== 'undefined' && content.restButtons.length > 1) {
-                btnList._sortable = Sortable.create(btnList, {
-                    handle: '.recovery-btn-drag-handle',
-                    animation: 150,
+                initManageListSortable(btnList, {
+                    handleSelector: '.recovery-btn-drag-handle',
                     ghostClass: 'recovery-btn-ghost',
-                    draggable: '.recovery-btn-row',
+                    rowSelector: '.recovery-btn-row',
                     onEnd() {
                         const rows = Array.from(btnList.querySelectorAll('.recovery-btn-row'));
                         const newOrder = rows.map((r) => r.dataset.btnId);

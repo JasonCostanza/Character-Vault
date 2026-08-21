@@ -654,11 +654,10 @@
 
             if (manageList._sortable) manageList._sortable.destroy();
             if (content.defenses.length > 1) {
-                manageList._sortable = new Sortable(manageList, {
-                    handle: '.def-manage-drag',
-                    animation: 150,
+                initManageListSortable(manageList, {
+                    handleSelector: '.def-manage-drag',
                     ghostClass: 'cv-drag-ghost',
-                    draggable: '.def-manage-row',
+                    rowSelector: '.def-manage-row',
                     onEnd: function () {
                         const ids = Array.from(manageList.querySelectorAll('.def-manage-row')).map(function (el) {
                             return el.dataset.id;

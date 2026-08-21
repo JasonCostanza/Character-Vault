@@ -1220,11 +1220,10 @@
                 attrList.appendChild(row);
             });
 
-            attrList._sortable = new Sortable(attrList, {
-                handle: '.list-attr-drag-handle',
-                animation: 150,
+            initManageListSortable(attrList, {
+                handleSelector: '.list-attr-drag-handle',
                 ghostClass: 'list-attr-ghost',
-                draggable: '.list-attr-row',
+                rowSelector: '.list-attr-row',
                 onEnd: function () {
                     const orderedIds = Array.from(attrList.querySelectorAll('.list-attr-row')).map(function (el) {
                         return el.dataset.attrId;

@@ -927,11 +927,10 @@
             }
 
             if (typeof Sortable !== 'undefined' && content.attributes.length > 1) {
-                attrListEl._sortable = new Sortable(attrListEl, {
-                    handle: '.companion-attr-drag-handle',
-                    animation: 150,
+                initManageListSortable(attrListEl, {
+                    handleSelector: '.companion-attr-drag-handle',
                     ghostClass: 'companion-attr-ghost',
-                    draggable: '.companion-attr-row',
+                    rowSelector: '.companion-attr-row',
                     onEnd: function () {
                         var rows = Array.from(attrListEl.querySelectorAll('.companion-attr-row'));
                         var reordered = rows

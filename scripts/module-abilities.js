@@ -553,11 +553,10 @@
             });
             if (manageList._sortable) manageList._sortable.destroy();
             if (data.content.abilities.length > 1) {
-                manageList._sortable = new Sortable(manageList, {
-                    handle: '.ability-manage-drag',
-                    animation: 150,
+                initManageListSortable(manageList, {
+                    handleSelector: '.ability-manage-drag',
                     ghostClass: 'ability-ghost',
-                    draggable: '.ability-manage-row',
+                    rowSelector: '.ability-manage-row',
                     onEnd: function () {
                         const items = Array.from(manageList.querySelectorAll('.ability-manage-row'));
                         const reordered = items

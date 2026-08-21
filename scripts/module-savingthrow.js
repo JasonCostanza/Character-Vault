@@ -487,11 +487,10 @@
                 manageList.appendChild(buildManageRow(save, i));
             });
             if (manageList._sortable) manageList._sortable.destroy();
-            manageList._sortable = new Sortable(manageList, {
-                handle: '.save-manage-drag',
-                animation: 150,
+            initManageListSortable(manageList, {
+                handleSelector: '.save-manage-drag',
                 ghostClass: 'save-ghost',
-                draggable: '.save-manage-row',
+                rowSelector: '.save-manage-row',
                 onEnd() {
                     const rows = Array.from(manageList.querySelectorAll('.save-manage-row'));
                     content.saves = rows.map((r) => content.saves[parseInt(r.dataset.index, 10)]).filter(Boolean);

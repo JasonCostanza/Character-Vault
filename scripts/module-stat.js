@@ -511,11 +511,10 @@
                 manageList.appendChild(buildManageRow(stat, i));
             });
             if (manageList._sortable) manageList._sortable.destroy();
-            manageList._sortable = new Sortable(manageList, {
-                handle: '.stat-manage-drag',
-                animation: 150,
+            initManageListSortable(manageList, {
+                handleSelector: '.stat-manage-drag',
                 ghostClass: 'stat-ghost',
-                draggable: '.stat-manage-row',
+                rowSelector: '.stat-manage-row',
                 onEnd: function () {
                     var rows = Array.from(manageList.querySelectorAll('.stat-manage-row'));
                     data.content.stats = rows.map(function (r) { return data.content.stats[parseInt(r.dataset.index, 10)]; }).filter(Boolean);

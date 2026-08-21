@@ -615,7 +615,23 @@
         indicator.style.display = '';
     }
 
+    // ── Manage-List Sortable Helper ──
+    function initManageListSortable(container, options) {
+        if (container._sortable) {
+            container._sortable.destroy();
+        }
+        container._sortable = new Sortable(container, {
+            handle: options.handleSelector,
+            animation: 150,
+            ghostClass: options.ghostClass,
+            draggable: options.rowSelector,
+            onEnd: options.onEnd,
+        });
+        return container._sortable;
+    }
+
     window.buildCommonSettingsSection = buildCommonSettingsSection;
     window.openMoveToTabModal = openMoveToTabModal;
     window.updateChainLinkIndicator = updateChainLinkIndicator;
+    window.initManageListSortable = initManageListSortable;
 })();

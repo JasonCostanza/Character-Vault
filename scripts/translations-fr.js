@@ -348,6 +348,8 @@ window.CV_TRANSLATIONS['fr'] = {
             'abilities.linkedTo': 'Lié à {name}.',
             'abilities.event.roll': 'Jet de Compétence',
             'abilities.log.roll': 'Jet de test de {name} ({modifier})',
+            'abilities.event.percentileRoll': 'Lancer de Pourcentage',
+            'abilities.log.percentileRoll': 'Jet de test de {name} ({roll} contre {skill}%)',
 
             // Action Tracker submodule
             'actions.add': 'Ajouter une Action',
@@ -428,6 +430,8 @@ window.CV_TRANSLATIONS['fr'] = {
             'stat.autoLabel': 'AUTO',
             'stat.event.roll': 'Jet de Stat',
             'stat.log.roll': 'Jet de test de {name} ({modifier})',
+            'stat.event.percentileRoll': 'Lancer de Pourcentage',
+            'stat.log.percentileRoll': 'Jet de test de {name} ({roll} contre {skill}%)',
 
             // List submodule
             'list.addItem': 'Ajouter un Élément',
@@ -617,6 +621,8 @@ window.CV_TRANSLATIONS['fr'] = {
             'save.close': 'Fermer',
             'save.event.roll': 'Jet de Sauvegarde',
             'save.log.roll': 'Jet de sauvegarde de {name} ({modifier})',
+            'save.event.percentileRoll': 'Lancer de Pourcentage',
+            'save.log.percentileRoll': 'Jet de sauvegarde de {name} ({roll} contre {skill}%)',
             'save.linkedStat': 'Caractéristique',
             'save.linkStatFirst': 'Liez d\'abord un module de stats',
             'save.linkedTo': 'Lié à {name}.',

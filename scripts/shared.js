@@ -466,6 +466,28 @@
 
     window.rollDualityDice = rollDualityDice;
 
+    // ── CoC / Mothership Percentile Dice ──
+    function rollPercentileDice(label, eventType, logKey, logReplacements, sourceModuleId) {
+        if (typeof TS === 'undefined') return;
+        var rollPromise = TS.dice.putDiceInTray([{ name: label, roll: '1d100' }]);
+        if (typeof window.logActivity === 'function') {
+            var logEntryId = window.logActivity({
+                type: eventType,
+                message: t(logKey, logReplacements),
+                sourceModuleId: sourceModuleId,
+            });
+            rollPromise
+                .then(function (rollId) {
+                    if (rollId) window.pendingRolls[rollId] = { logEntryId: logEntryId };
+                })
+                .catch(function (e) {
+                    console.warn('[CV] Percentile dice roll failed:', e);
+                });
+        }
+    }
+
+    window.rollPercentileDice = rollPercentileDice;
+
     // ── Clipboard ──
     async function copyTextToClipboard(text) {
         if (navigator.clipboard?.writeText) {

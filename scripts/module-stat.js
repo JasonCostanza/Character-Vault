@@ -187,14 +187,25 @@
             );
             return;
         }
+        if (sys === 'coc' || sys === 'mothership') {
+            window.rollPercentileDice(
+                `${stat.name} ${t('stat.check')}`,
+                'stat.event.percentileRoll',
+                'stat.log.percentileRoll',
+                { name: stat.name || t('stat.unnamed'), roll: '1d100', skill: stat.value || 0 },
+                data.id
+            );
+            return;
+        }
+        var die = sys === 'cpred' ? '1d10' : '1d20';
         try {
             const rollPromise = TS.dice.putDiceInTray([
-                { name: `${stat.name} ${t('stat.check')}`, roll: `1d20${modStr}` },
+                { name: `${stat.name} ${t('stat.check')}`, roll: `${die}${modStr}` },
             ]);
             if (typeof window.logActivity === 'function') {
                 const logEntryId = window.logActivity({
                     type: 'stat.event.roll',
-                    message: t('stat.log.roll', { name: stat.name || t('stat.unnamed'), modifier: `1d20${modStr}` }),
+                    message: t('stat.log.roll', { name: stat.name || t('stat.unnamed'), modifier: `${die}${modStr}` }),
                     sourceModuleId: data.id,
                 });
                 rollPromise

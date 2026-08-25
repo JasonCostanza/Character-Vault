@@ -282,9 +282,20 @@
             );
             return;
         }
+        if (sys === 'coc' || sys === 'mothership') {
+            window.rollPercentileDice(
+                `${ability.name} ${t('abilities.check')}`,
+                'abilities.event.percentileRoll',
+                'abilities.log.percentileRoll',
+                { name: ability.name || t('abilities.unnamed'), roll: '1d100', skill: totalMod },
+                data.id
+            );
+            return;
+        }
+        var die = sys === 'cpred' ? '1d10' : '1d20';
         try {
             const rollPromise = TS.dice.putDiceInTray([
-                { name: `${ability.name} ${t('abilities.check')}`, roll: `1d20${modStr}` },
+                { name: `${ability.name} ${t('abilities.check')}`, roll: `${die}${modStr}` },
             ]);
             if (typeof window.logActivity === 'function') {
                 const logEntryId = window.logActivity({

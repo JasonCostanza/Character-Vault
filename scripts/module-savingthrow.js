@@ -194,11 +194,22 @@
             );
             return;
         }
+        if (sys === 'coc' || sys === 'mothership') {
+            window.rollPercentileDice(
+                `${save.name || t('save.unnamed')} ${t('save.save')}`,
+                'save.event.percentileRoll',
+                'save.log.percentileRoll',
+                { name: save.name || t('save.unnamed'), roll: '1d100', skill: totalMod },
+                data.id
+            );
+            return;
+        }
+        var die = sys === 'cpred' ? '1d10' : '1d20';
         try {
             const rollPromise = TS.dice.putDiceInTray([
                 {
                     name: `${save.name || t('save.unnamed')} ${t('save.save')}`,
-                    roll: `1d20${modStr}`,
+                    roll: `${die}${modStr}`,
                 },
             ]);
             if (typeof window.logActivity === 'function') {

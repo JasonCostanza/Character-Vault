@@ -349,6 +349,8 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'abilities.linkedTo': 'Vinculado a {name}.',
             'abilities.event.roll': 'Rolagem de Habilidade',
             'abilities.log.roll': 'Teste de {name} rolado ({modifier})',
+            'abilities.event.percentileRoll': 'Rolagem Percentual',
+            'abilities.log.percentileRoll': 'Teste de {name} rolado ({roll} vs {skill}%)',
 
             // Action Tracker submodule
             'actions.add': 'Adicionar Ação',
@@ -429,6 +431,8 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'stat.getFromBoardSuccess': 'Atributos importados do tabuleiro',
             'stat.event.roll': 'Rolagem de Estatística',
             'stat.log.roll': 'Teste de {name} rolado ({modifier})',
+            'stat.event.percentileRoll': 'Rolagem Percentual',
+            'stat.log.percentileRoll': 'Teste de {name} rolado ({roll} vs {skill}%)',
 
             // List submodule
             'list.addItem': 'Adicionar Item',
@@ -584,6 +588,8 @@ window.CV_TRANSLATIONS['pt-BR'] = {
             'save.close': 'Fechar',
             'save.event.roll': 'Resistência',
             'save.log.roll': 'Resistência de {name} rolada ({modifier})',
+            'save.event.percentileRoll': 'Rolagem Percentual',
+            'save.log.percentileRoll': 'Resistência de {name} rolada ({roll} vs {skill}%)',
             'save.linkedStat': 'Habilidade',
             'save.linkStatFirst': 'Vincule um módulo de stats primeiro',
             'save.linkedTo': 'Vinculado a {name}.',

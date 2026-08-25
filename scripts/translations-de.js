@@ -349,6 +349,8 @@ window.CV_TRANSLATIONS['de'] = {
             'abilities.linkedTo': 'Verknüpft mit {name}.',
             'abilities.event.roll': 'Fertigkeitswurf',
             'abilities.log.roll': 'Fertigkeitsprobe für {name} ({modifier})',
+            'abilities.event.percentileRoll': 'Prozentwurf',
+            'abilities.log.percentileRoll': 'Fertigkeitsprobe für {name} ({roll} vs {skill}%)',
 
             // Action Tracker submodule
             'actions.add': 'Aktion Hinzufügen',
@@ -429,6 +431,8 @@ window.CV_TRANSLATIONS['de'] = {
             'stat.autoLabel': 'AUTO',
             'stat.event.roll': 'Attributwurf',
             'stat.log.roll': 'Attributprobe für {name} ({modifier})',
+            'stat.event.percentileRoll': 'Prozentwurf',
+            'stat.log.percentileRoll': 'Attributprobe für {name} ({roll} vs {skill}%)',
 
             // List submodule
             'list.addItem': 'Element Hinzufügen',
@@ -965,6 +969,8 @@ window.CV_TRANSLATIONS['de'] = {
             'save.close': 'Schließen',
             'save.event.roll': 'Rettungswurf',
             'save.log.roll': 'Rettungswurf für {name} ({modifier})',
+            'save.event.percentileRoll': 'Prozentwurf',
+            'save.log.percentileRoll': 'Rettungswurf für {name} ({roll} vs {skill}%)',
             'save.linkedStat': 'Attribut',
             'save.linkStatFirst': 'Zuerst ein Stat-Modul verknüpfen',
             'save.linkedTo': 'Verknüpft mit {name}.',

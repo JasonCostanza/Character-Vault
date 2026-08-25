@@ -350,6 +350,8 @@ window.CV_TRANSLATIONS['ru'] = {
             'abilities.linkedTo': 'Связано с {name}.',
             'abilities.event.roll': 'Бросок Навыка',
             'abilities.log.roll': 'Проверка {name} ({modifier})',
+            'abilities.event.percentileRoll': 'Процентный Бросок',
+            'abilities.log.percentileRoll': 'Проверка {name} ({roll} против {skill}%)',
 
             // Action Tracker submodule
             'actions.add': 'Добавить Действие',
@@ -430,6 +432,8 @@ window.CV_TRANSLATIONS['ru'] = {
             'stat.autoLabel': 'АВТО',
             'stat.event.roll': 'Бросок Характеристики',
             'stat.log.roll': 'Проверка {name} ({modifier})',
+            'stat.event.percentileRoll': 'Процентный Бросок',
+            'stat.log.percentileRoll': 'Проверка {name} ({roll} против {skill}%)',
 
             // List submodule
             'list.addItem': 'Добавить Элемент',
@@ -585,6 +589,8 @@ window.CV_TRANSLATIONS['ru'] = {
             'save.close': 'Закрыть',
             'save.event.roll': 'Спасбросок',
             'save.log.roll': 'Спасбросок {name} ({modifier})',
+            'save.event.percentileRoll': 'Процентный Бросок',
+            'save.log.percentileRoll': 'Спасбросок {name} ({roll} против {skill}%)',
             'save.linkedStat': 'Характеристика',
             'save.linkStatFirst': 'Сначала привяжите модуль характеристик',
             'save.linkedTo': 'Связано с {name}.',

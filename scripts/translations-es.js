@@ -350,6 +350,8 @@ window.CV_TRANSLATIONS['es'] = {
             'abilities.linkedTo': 'Vinculado a {name}.',
             'abilities.event.roll': 'Tirada de Habilidad',
             'abilities.log.roll': 'Tirada de prueba de {name} ({modifier})',
+            'abilities.event.percentileRoll': 'Tirada Percentil',
+            'abilities.log.percentileRoll': 'Tirada de prueba de {name} ({roll} vs {skill}%)',
 
             // Action Tracker submodule
             'actions.add': 'Añadir Acción',
@@ -430,6 +432,8 @@ window.CV_TRANSLATIONS['es'] = {
             'stat.autoLabel': 'AUTO',
             'stat.event.roll': 'Tirada de Estadística',
             'stat.log.roll': 'Tirada de prueba de {name} ({modifier})',
+            'stat.event.percentileRoll': 'Tirada Percentil',
+            'stat.log.percentileRoll': 'Tirada de prueba de {name} ({roll} vs {skill}%)',
 
             // List submodule
             'list.addItem': 'Agregar Elemento',
@@ -584,6 +588,8 @@ window.CV_TRANSLATIONS['es'] = {
             'save.close': 'Cerrar',
             'save.event.roll': 'Tirada de Salvación',
             'save.log.roll': 'Tirada de salvación de {name} ({modifier})',
+            'save.event.percentileRoll': 'Tirada Percentil',
+            'save.log.percentileRoll': 'Tirada de salvación de {name} ({roll} vs {skill}%)',
             'save.linkedStat': 'Característica',
             'save.linkStatFirst': 'Vincula primero un módulo de stats',
             'save.linkedTo': 'Vinculado a {name}.',

@@ -356,6 +356,8 @@ window.CV_TRANSLATIONS['it'] = {
             'abilities.linkedTo': 'Collegato a {name}.',
             'abilities.event.roll': 'Tiro di Abilità',
             'abilities.log.roll': 'Prova di {name} ({modifier})',
+            'abilities.event.percentileRoll': 'Tiro Percentuale',
+            'abilities.log.percentileRoll': 'Prova di {name} ({roll} vs {skill}%)',
 
             // Action Tracker submodule
             'actions.add': 'Aggiungi Azione',
@@ -439,6 +441,8 @@ window.CV_TRANSLATIONS['it'] = {
             'stat.getFromBoardSuccess': 'Stat importate dalla plancia',
             'stat.event.roll': 'Tiro di Stat',
             'stat.log.roll': 'Prova di {name} ({modifier})',
+            'stat.event.percentileRoll': 'Tiro Percentuale',
+            'stat.log.percentileRoll': 'Prova di {name} ({roll} vs {skill}%)',
 
             // List submodule
             'list.addItem': 'Aggiungi Elemento',
@@ -594,6 +598,8 @@ window.CV_TRANSLATIONS['it'] = {
             'save.close': 'Chiudi',
             'save.event.roll': 'Tiro Salvezza',
             'save.log.roll': 'Tiro salvezza di {name} ({modifier})',
+            'save.event.percentileRoll': 'Tiro Percentuale',
+            'save.log.percentileRoll': 'Tiro salvezza di {name} ({roll} vs {skill}%)',
             'save.linkedStat': 'Caratteristica',
             'save.linkStatFirst': 'Collega prima un modulo statistiche',
             'save.linkedTo': 'Collegato a {name}.',

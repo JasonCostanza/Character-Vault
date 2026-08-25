@@ -357,6 +357,8 @@ window.CV_TRANSLATIONS.en = {
             'abilities.linkedTo': 'Linked to {name}.',
             'abilities.event.roll': 'Ability Roll',
             'abilities.log.roll': 'Rolled {name} check ({modifier})',
+            'abilities.event.percentileRoll': 'Percentile Roll',
+            'abilities.log.percentileRoll': 'Rolled {name} check ({roll} vs {skill}%)',
 
             // Action Tracker submodule
             'actions.add': 'Add Action',
@@ -440,6 +442,8 @@ window.CV_TRANSLATIONS.en = {
             'stat.autoLabel': 'AUTO',
             'stat.event.roll': 'Stat Roll',
             'stat.log.roll': 'Rolled {name} check ({modifier})',
+            'stat.event.percentileRoll': 'Percentile Roll',
+            'stat.log.percentileRoll': 'Rolled {name} check ({roll} vs {skill}%)',
             // List submodule
             'list.addItem': 'Add Item',
             'list.deleteItem': 'Delete Item',
@@ -1106,6 +1110,8 @@ window.CV_TRANSLATIONS.en = {
             'save.close': 'Close',
             'save.event.roll': 'Saving Throw',
             'save.log.roll': 'Rolled {name} save ({modifier})',
+            'save.event.percentileRoll': 'Percentile Roll',
+            'save.log.percentileRoll': 'Rolled {name} save ({roll} vs {skill}%)',
             'save.linkedStat': 'Ability',
             'save.linkStatFirst': 'Link a stat module first',
             'save.linkedTo': 'Linked to {name}.',

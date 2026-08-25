@@ -15,15 +15,8 @@
     gap: 6px;
     overflow-y: auto;
     overflow-x: hidden;
-    scrollbar-gutter: stable;
     padding: 6px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
 }
-
-.weapons-column::-webkit-scrollbar { width: 4px; }
-.weapons-column::-webkit-scrollbar-track { background: transparent; }
-.weapons-column::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .weapons-column-label {
     font-size: 10px;
@@ -398,14 +391,7 @@
     flex-direction: column;
     gap: 10px;
     overflow-y: auto;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
 }
-
-.weapon-edit-body::-webkit-scrollbar { width: 4px; }
-.weapon-edit-body::-webkit-scrollbar-track { background: transparent; }
-.weapon-edit-body::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .weapon-edit-row {
     display: flex;
@@ -568,14 +554,7 @@
     padding: 8px 12px;
     resize: vertical;
     min-height: 50px;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
 }
-
-.weapon-edit-notes::-webkit-scrollbar { width: 4px; }
-.weapon-edit-notes::-webkit-scrollbar-track { background: transparent; }
-.weapon-edit-notes::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
 /* Pool stat combobox */
 .pool-combobox {
@@ -595,14 +574,7 @@
     z-index: 20;
     max-height: 120px;
     overflow-y: auto;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
 }
-
-.pool-combobox-dropdown::-webkit-scrollbar { width: 4px; }
-.pool-combobox-dropdown::-webkit-scrollbar-track { background: transparent; }
-.pool-combobox-dropdown::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .pool-combobox-dropdown.open {
     display: block;
@@ -740,15 +712,8 @@
     flex-direction: column;
     max-height: 320px;
     overflow-y: auto;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
     gap: 1px;
 }
-
-.weapon-trait-picker-list::-webkit-scrollbar { width: 4px; }
-.weapon-trait-picker-list::-webkit-scrollbar-track { background: transparent; }
-.weapon-trait-picker-list::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .weapon-trait-picker-row {
     display: flex;
@@ -940,14 +905,7 @@
     font-size: 11px;
     resize: vertical;
     min-height: 36px;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
 }
-
-.weapon-trait-inline-desc::-webkit-scrollbar { width: 4px; }
-.weapon-trait-inline-desc::-webkit-scrollbar-track { background: transparent; }
-.weapon-trait-inline-desc::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
 .weapon-trait-inline-actions {
     display: flex;
@@ -1102,7 +1060,6 @@
     max-width: 260px;
     max-height: 220px;
     overflow-y: auto;
-    scrollbar-gutter: stable;
     z-index: 310;
     padding: 4px 0;
 }
@@ -1153,7 +1110,6 @@
 /* Enhancement catalog modal */
 .weapon-enhancement-catalog-body {
     overflow-y: auto;
-    scrollbar-gutter: stable;
     max-height: 60vh;
 }
 

@@ -424,7 +424,7 @@
         header.appendChild(closeBtnEl);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         function reRenderModuleBody() {
             const bodyEl = moduleEl.querySelector('.module-body');

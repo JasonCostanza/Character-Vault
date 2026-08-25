@@ -52,22 +52,6 @@
     gap: 2px;
     padding: 0 4px;
     overflow-y: auto;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
-}
-
-.activity-entry-list::-webkit-scrollbar {
-    width: 4px;
-}
-
-.activity-entry-list::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.activity-entry-list::-webkit-scrollbar-thumb {
-    background: var(--cv-text-muted);
-    border-radius: 2px;
 }
 
 .activity-entry {

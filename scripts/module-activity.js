@@ -170,7 +170,7 @@
 
         // Entry list
         const entryList = document.createElement('div');
-        entryList.className = 'activity-entry-list';
+        entryList.className = 'activity-entry-list cv-scroll';
 
         renderEntries(entryList, content, data, bodyEl);
 
@@ -284,7 +284,7 @@
 
         // Body
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         // Sort order
         const sortLabel = document.createElement('label');

@@ -1909,7 +1909,7 @@
         descRow.appendChild(descLabel);
 
         const descInput = document.createElement('textarea');
-        descInput.className = 'cond-expand-desc';
+        descInput.className = 'cond-expand-desc cv-scroll';
         descInput.rows = 3;
         descInput.value = getCondDescription(item, content);
         descInput.placeholder = t('cond.wizardDescription');
@@ -2311,7 +2311,7 @@
 
         // Body
         const body = document.createElement('div');
-        body.className = 'cv-modal-body cond-settings-body';
+        body.className = 'cv-modal-body cv-scroll cond-settings-body';
 
         // Applied section
         const appliedSection = document.createElement('div');
@@ -2788,7 +2788,7 @@
 
         // Body
         const body = document.createElement('div');
-        body.className = 'cond-wizard-body';
+        body.className = 'cond-wizard-body cv-scroll';
 
         // Icon section
         const iconSection = document.createElement('div');
@@ -2930,7 +2930,7 @@
         descSection.appendChild(descLabel);
 
         const descInput = document.createElement('textarea');
-        descInput.className = 'cond-wizard-desc-input';
+        descInput.className = 'cond-wizard-desc-input cv-scroll';
         descInput.rows = 2;
         descInput.placeholder = t('cond.wizardDescPlaceholder');
         descInput.addEventListener('input', function () {

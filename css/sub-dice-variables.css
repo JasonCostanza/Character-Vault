@@ -9,14 +9,7 @@
     max-height: 240px;
     overflow-y: auto;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
-    scrollbar-gutter: stable;
 }
-
-.cv-var-picker::-webkit-scrollbar { width: 4px; }
-.cv-var-picker::-webkit-scrollbar-track { background: transparent; }
-.cv-var-picker::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
 .cv-var-picker-group {
     padding: 4px 8px 2px;

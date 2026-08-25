@@ -502,7 +502,7 @@
         popover.appendChild(pickerHeader);
 
         const list = document.createElement('div');
-        list.className = 'list-col-picker-list';
+        list.className = 'list-col-picker-list cv-scroll';
 
         if (content.attributes.length === 0) {
             const empty = document.createElement('div');
@@ -1132,7 +1132,7 @@
 
         // ── Body (scrollable) ──
         const body = document.createElement('div');
-        body.className = 'cv-modal-body list-manage-body';
+        body.className = 'cv-modal-body cv-scroll list-manage-body';
 
         // ── Current Attributes Section ──
         if (content.attributes.length === 0) {
@@ -1362,7 +1362,7 @@
 
         // Body
         const body = document.createElement('div');
-        body.className = 'attr-wizard-body';
+        body.className = 'attr-wizard-body cv-scroll';
 
         // -- Name section --
         const nameSection = document.createElement('div');
@@ -1759,7 +1759,7 @@
 
         // Body
         const body = document.createElement('div');
-        body.className = 'list-inspect-body';
+        body.className = 'list-inspect-body cv-scroll';
 
         // Name field
         const nameField = document.createElement('div');
@@ -1791,7 +1791,7 @@
         notesLabel.textContent = t('list.notesTitle');
 
         const notesInput = document.createElement('textarea');
-        notesInput.className = 'list-inspect-notes-input';
+        notesInput.className = 'list-inspect-notes-input cv-scroll';
         notesInput.value = itemProxy.notes || '';
         notesInput.placeholder = t('list.notesPlaceholder');
         notesInput.addEventListener('input', function () {

@@ -206,12 +206,7 @@
     display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
     max-height: 200px; overflow-y: auto;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    scrollbar-gutter: stable; scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
 }
-.def-icon-picker::-webkit-scrollbar { width: 4px; }
-.def-icon-picker::-webkit-scrollbar-track { background: transparent; }
-.def-icon-picker::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
 .def-icon-picker button {
     background: none; border: none; width: 28px; height: 28px;

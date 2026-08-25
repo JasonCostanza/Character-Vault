@@ -317,7 +317,7 @@
         const preparationMode = _prepModeModules.has(data.id);
         renderSlotSummaryBar(bodyEl, data, bodyEl, preparationMode);
         const container = document.createElement('div');
-        container.className = 'spells-container';
+        container.className = 'spells-container cv-scroll';
         if (data.content.categories.length === 0) {
             const empty = document.createElement('div');
             empty.className = 'spells-empty-state';
@@ -1025,7 +1025,7 @@
         panel.appendChild(header);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         const bodyEl = moduleEl.querySelector('.module-body');
         function reRender() {
@@ -1961,7 +1961,7 @@
 
         // Body
         const body = document.createElement('div');
-        body.className = 'list-inspect-body';
+        body.className = 'list-inspect-body cv-scroll';
 
         // Name
         const nameField = document.createElement('div');
@@ -1986,7 +1986,7 @@
         descLabel.className = 'list-inspect-label';
         descLabel.textContent = t('spells.spellDescription');
         const descInput = document.createElement('textarea');
-        descInput.className = 'list-inspect-notes-input';
+        descInput.className = 'list-inspect-notes-input cv-scroll';
         descInput.value = spellProxy.description || '';
         descInput.placeholder = t('spells.spellDescriptionPlaceholder');
         descInput.addEventListener('input', function () { spellProxy.description = descInput.value; });

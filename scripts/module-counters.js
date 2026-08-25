@@ -154,7 +154,7 @@
 
         // Body
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         // Name field
         const nameLabel = document.createElement('label');
@@ -292,7 +292,7 @@
 
         // Body
         const body = document.createElement('div');
-        body.className = 'cv-modal-body counter-edit-body';
+        body.className = 'cv-modal-body cv-scroll counter-edit-body';
 
         // Name
         const nameLabel = document.createElement('label');
@@ -823,7 +823,7 @@
         panel.appendChild(header);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         // ── Manage Counters ──
         const manageLabel = document.createElement('div');

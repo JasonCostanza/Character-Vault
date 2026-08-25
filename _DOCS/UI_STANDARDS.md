@@ -40,22 +40,13 @@ Reference implementations: `showConfirm()` in `scripts/module-counters.js` and `
 
 ## Scrollbar Styling
 
-Every element that can scroll (any `overflow-y: auto`, `overflow-x: auto`, or `<textarea>`) must have:
+Every element that can scroll (any `overflow-y: auto`, `overflow-x: auto`, or `<textarea>`) must have the `cv-scroll` class. Defined once in `css/components.css`, it provides:
 
-1. `scrollbar-gutter: stable;` — prevents layout shift
-2. Themed scrollbar styles:
-   ```css
-   scrollbar-width: thin;
-   scrollbar-color: var(--cv-text-muted) transparent;
-   ```
-3. WebKit rules:
-   ```css
-   ::-webkit-scrollbar { width: 4px; }
-   ::-webkit-scrollbar-track { background: transparent; }
-   ::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
-   ```
+- `scrollbar-gutter: stable` — prevents layout shift
+- A thin, themed scrollbar (`--cv-text-muted` thumb on a transparent track)
+- WebKit pseudo-element fallbacks (4px width/height, 2px border-radius)
 
-Missing scrollbar theming is a recurring bug — check every scrollable element before finishing a task.
+Add `class="cv-scroll"` in HTML, or append `cv-scroll` to the element's `className` in JS. Do not write inline scrollbar declarations — missing the class is a recurring bug, so check every scrollable element before finishing a task.
 
 ## Textareas
 

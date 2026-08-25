@@ -81,9 +81,9 @@
         panel.appendChild(header);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
         const textarea = document.createElement('textarea');
-        textarea.className = 'cv-modal-input text-edit-textarea';
+        textarea.className = 'cv-modal-input cv-scroll text-edit-textarea';
         textarea.placeholder = t('text.placeholder');
         textarea.value = snapshot;
         body.appendChild(textarea);

@@ -92,7 +92,7 @@
             cvIcon('x', 12) +
             `</button>` +
             `</div>` +
-            `<div class="cv-modal-body health-action-body">` +
+            `<div class="cv-modal-body cv-scroll health-action-body">` +
             `<input type="text" class="health-action-input" placeholder="0" spellcheck="false" autocomplete="off">` +
             `</div>` +
             `<div class="cv-modal-footer">` +
@@ -229,7 +229,7 @@
         panel.appendChild(header);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         // ── Get From Board ──
         const getFromBoardBtn = document.createElement('button');

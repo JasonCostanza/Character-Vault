@@ -17,14 +17,7 @@
     overflow-y: auto;
     flex: 1;
     min-height: 0;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
 }
-
-.spells-container::-webkit-scrollbar { width: 4px; }
-.spells-container::-webkit-scrollbar-track { background: transparent; }
-.spells-container::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 /* Slot summary bar — lives as a flex-shrink: 0 sibling above .spells-container in .module-body */
 .spells-slots-summary { display: flex; align-items: center; gap: 8px; padding: 4px 8px; flex-wrap: wrap; flex-shrink: 0; }

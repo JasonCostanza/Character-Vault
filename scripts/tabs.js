@@ -230,7 +230,7 @@
 
         // Body
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         // Rename
         const renameSection = document.createElement('div');
@@ -543,7 +543,7 @@
         panel.appendChild(header);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         const msg = document.createElement('p');
         msg.className = 'tab-delete-message';

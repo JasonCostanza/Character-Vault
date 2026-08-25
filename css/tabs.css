@@ -24,22 +24,6 @@
     padding: 0 6px;
     height: 100%;
     min-width: 0;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
-    scrollbar-gutter: stable;
-}
-
-#tab-scroll-area::-webkit-scrollbar {
-    height: 4px;
-}
-
-#tab-scroll-area::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-#tab-scroll-area::-webkit-scrollbar-thumb {
-    background-color: var(--cv-text-muted);
-    border-radius: 2px;
 }
 
 /* ── Tab Items ── */

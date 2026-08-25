@@ -486,7 +486,7 @@
 
         notesDisplay.addEventListener('click', () => {
             const textarea = document.createElement('textarea');
-            textarea.className = 'companion-notes-textarea';
+            textarea.className = 'companion-notes-textarea cv-scroll';
             textarea.placeholder = t('companion.notesPlaceholder');
             textarea.value = companion.notes || '';
             textarea.addEventListener('blur', () => {
@@ -529,7 +529,7 @@
         bodyEl.innerHTML = '';
 
         const container = document.createElement('div');
-        container.className = 'companion-container';
+        container.className = 'companion-container cv-scroll';
 
         if (content.companions.length === 0) {
             const empty = document.createElement('div');
@@ -704,7 +704,7 @@
 
         // Body
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         // ── Add Companion Section ──
         const addLabel = document.createElement('label');

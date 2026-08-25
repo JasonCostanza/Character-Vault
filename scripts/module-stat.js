@@ -345,7 +345,7 @@
         panel.appendChild(header);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         function reRenderModuleBody() {
             var bodyEl = moduleEl.querySelector('.module-body');

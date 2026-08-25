@@ -705,9 +705,6 @@
     resize: vertical;
     min-height: 42px;
     line-height: 1.5;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
     box-sizing: border-box;
 }
@@ -716,10 +713,6 @@
     border-color: var(--cv-accent);
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
-
-.cond-expand-desc::-webkit-scrollbar { width: 4px; }
-.cond-expand-desc::-webkit-scrollbar-track { background: transparent; }
-.cond-expand-desc::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
 .cond-expand-footer {
     display: flex;
@@ -841,21 +834,6 @@
     overflow-y: auto;
     overflow-x: hidden;
     padding: 20px 0 4px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
-}
-
-.cond-wizard-body::-webkit-scrollbar {
-    width: 4px;
-}
-
-.cond-wizard-body::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.cond-wizard-body::-webkit-scrollbar-thumb {
-    background-color: var(--cv-text-muted);
-    border-radius: 2px;
 }
 
 .cond-wizard-section {
@@ -971,9 +949,6 @@
     resize: vertical;
     min-height: 42px;
     line-height: 1.5;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
     box-sizing: border-box;
 }
@@ -982,10 +957,6 @@
     border-color: var(--cv-accent);
     box-shadow: 0 0 0 2px var(--cv-focus-ring);
 }
-
-.cond-wizard-desc-input::-webkit-scrollbar { width: 4px; }
-.cond-wizard-desc-input::-webkit-scrollbar-track { background: transparent; }
-.cond-wizard-desc-input::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
 /* ── Condition Wizard Type Toggle ── */
 .cond-wizard-type-toggle {

@@ -514,7 +514,7 @@
         panel.appendChild(header);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
         const input = document.createElement('input');
         input.type = 'text';
         input.className = 'cv-input module-rename-input';
@@ -854,7 +854,7 @@
             <span class="module-type-label">${escapeHtml(displayTitle)}</span>
             <button class="module-overflow-btn" title="${t('module.moreOptions')}">${cvIcon('more-vertical', 14)}</button>
         </div>
-        <div class="module-body"></div>
+        <div class="module-body cv-scroll"></div>
         ${showResize ? `<div class="module-resize-handle" title="${t('module.dragResize')}"></div>` : ''}
     `;
 
@@ -991,7 +991,7 @@
         panel.appendChild(header);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
         buildCommonSettingsSection(body, moduleEl, data);
         panel.appendChild(body);
 
@@ -1175,14 +1175,15 @@
             moduleEl.classList.add('module-resizing');
             handle.classList.add('resizing');
 
-            // Create resize dimension badge
-            let badge = moduleEl.querySelector('.module-resize-badge');
-            if (!badge) {
-                badge = document.createElement('div');
-                badge.className = 'module-resize-badge';
-                moduleEl.appendChild(badge);
-            }
+            // Dashed outline (module-resizing) + live badge stand in for the ghost here —
+            // a separate overlay box can't work for resize: shrinking always nests the new
+            // footprint inside the old one (or vice versa when growing), so one of the two
+            // boxes is always fully hidden behind the other. Styling the one real,
+            // live-reflowing element avoids that and keeps resize feeling as live as reposition.
+            const badge = document.createElement('div');
+            badge.className = 'module-resize-badge';
             badge.textContent = `${startColSpan} col × ${startRowSpan} row`;
+            moduleEl.appendChild(badge);
 
             let _layoutRaf = 0;
 
@@ -1214,7 +1215,7 @@
             function onMouseUp() {
                 moduleEl.classList.remove('module-resizing');
                 handle.classList.remove('resizing');
-                if (badge) badge.remove();
+                badge.remove();
                 document.removeEventListener('mousemove', onMouseMove);
                 document.removeEventListener('mouseup', onMouseUp);
                 cancelAnimationFrame(_layoutRaf);

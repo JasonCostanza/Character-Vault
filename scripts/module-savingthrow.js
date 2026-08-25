@@ -288,9 +288,9 @@
         panel.appendChild(header);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
         const textarea = document.createElement('textarea');
-        textarea.className = 'cv-modal-input save-notes-edit-textarea';
+        textarea.className = 'cv-modal-input cv-scroll save-notes-edit-textarea';
         textarea.placeholder = t('save.notesPlaceholder');
         textarea.value = snapshot;
         body.appendChild(textarea);
@@ -382,7 +382,7 @@
 
         // Body
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         function reRenderModuleBody() {
             const bodyEl = moduleEl.querySelector('.module-body');
@@ -693,7 +693,7 @@
 
         // Body
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         // Column header row
         const colHeader = document.createElement('div');

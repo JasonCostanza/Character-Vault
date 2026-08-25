@@ -128,7 +128,7 @@ CSS is organized in the `css/` directory with a strict cascade order. Later file
 | File | Purpose |
 |---|---|
 | **`css/tokens.css`** | All 6 theme color palettes (Dark, Light/Parchment, Cyberpunk, Sci-Fi, Angelic, Demonic) with `--cv-*` custom property definitions. Every other file depends on these tokens. |
-| **`css/components.css`** | Shared UI components: toggle switches (`.cv-toggle`), icon buttons (`.icon`), base button styles, menu bar (`.menu-btn`), settings overlay form controls, custom select dropdowns, toast notifications, focus states, edit popover (`.cv-edit-popover`). |
+| **`css/components.css`** | Shared UI components: scrollbar utility (`.cv-scroll`), toggle switches (`.cv-toggle`), icon buttons (`.icon`), base button styles, menu bar (`.menu-btn`), settings overlay form controls, custom select dropdowns, toast notifications, focus states, edit popover (`.cv-edit-popover`). |
 | **`css/modules.css`** | Module system and grid layout: 4-column CSS Grid, `.module` containers, drag handles, resize handles (z-index layers), overflow menus, theme swatches, delete confirmation modal, responsive size classes (`.module.xs/.sm`), wizard overlay, SortableJS ghost effects. |
 | **`css/tabs.css`** | Tab bar layout: `#tab-bar` flex container, `#tab-scroll-area` scrollable tab list, `.tab-item` tabs with active/hover states, `#btn-add-tab` add button. |
 | **`css/sub-abilities.css`** | Abilities Module: `.ability-container`, `.ability-row`, proficiency dots/rank badges, `.ability-manage-*` (Manage Abilities settings-modal list, SortableJS drag handling). |

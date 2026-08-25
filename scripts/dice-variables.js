@@ -373,7 +373,7 @@
     function getPickerEl() {
         if (pickerEl) return pickerEl;
         pickerEl = document.createElement('div');
-        pickerEl.className = 'cv-var-picker';
+        pickerEl.className = 'cv-var-picker cv-scroll';
         pickerEl.setAttribute('role', 'listbox');
         pickerEl.style.display = 'none';
         document.body.appendChild(pickerEl);

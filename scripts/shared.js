@@ -148,7 +148,7 @@
         trigger.insertAdjacentHTML('beforeend', chevronSvg);
 
         const menu = document.createElement('ul');
-        menu.className = 'cv-select-menu';
+        menu.className = 'cv-select-menu cv-scroll';
         menu.setAttribute('role', 'listbox');
 
         options.forEach(function (opt) {
@@ -539,7 +539,7 @@
         panel.appendChild(header);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         const otherTabs = (window.tabs || [])
             .filter(function (tab) {

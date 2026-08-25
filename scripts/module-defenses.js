@@ -127,7 +127,7 @@
         if (existing) existing.remove();
 
         const picker = document.createElement('div');
-        picker.className = 'def-icon-picker';
+        picker.className = 'def-icon-picker cv-scroll';
         const rect = btn.getBoundingClientRect();
         picker.style.top = rect.bottom + 4 + 'px';
         picker.style.left = rect.left + 'px';
@@ -527,7 +527,7 @@
 
         // Body
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         function reRenderModuleBody() {
             const bodyEl = moduleEl.querySelector('.module-body');

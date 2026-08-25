@@ -415,7 +415,7 @@
 
         // Body
         var body = document.createElement('div');
-        body.className = 'cv-modal-body transfer-picker-body';
+        body.className = 'cv-modal-body cv-scroll transfer-picker-body';
 
         if (itemName) {
             var itemLabel = document.createElement('div');
@@ -449,7 +449,7 @@
             body.appendChild(sendToLabel);
 
             var playerList = document.createElement('div');
-            playerList.className = 'transfer-player-list';
+            playerList.className = 'transfer-player-list cv-scroll';
 
             players.forEach(function (player) {
                 var item = document.createElement('div');
@@ -708,7 +708,7 @@
         header.textContent = window.t('transfer.pendingOffersHeader');
         panel.appendChild(header);
         var list = document.createElement('div');
-        list.className = 'pending-offers-list';
+        list.className = 'pending-offers-list cv-scroll';
         Object.keys(pendingIncoming).forEach(function (txnId) {
             var offer = pendingIncoming[txnId];
             var itemName = offer.data && offer.data.name ? offer.data.name : window.t('transfer.unknownItem');
@@ -1033,7 +1033,7 @@
         var keys = Object.keys(valuesObj || {});
         if (!keys.length) return null;
         var div = document.createElement('div');
-        div.className = 'transfer-attr-preview';
+        div.className = 'transfer-attr-preview cv-scroll';
         keys.forEach(function (name) {
             var row = document.createElement('div');
             row.className = 'transfer-attr-row';
@@ -1372,7 +1372,7 @@
         panel.appendChild(header);
 
         var body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         var fromLabel = document.createElement('div');
         fromLabel.className = 'cv-modal-label';
@@ -1405,7 +1405,7 @@
             var weaponData = incoming.data || {};
             if (Array.isArray(weaponData.damageInstances) && weaponData.damageInstances.length) {
                 var dmgDiv = document.createElement('div');
-                dmgDiv.className = 'transfer-attr-preview';
+                dmgDiv.className = 'transfer-attr-preview cv-scroll';
                 weaponData.damageInstances.forEach(function (inst) {
                     var row = document.createElement('div');
                     row.className = 'transfer-attr-row';
@@ -1434,7 +1434,7 @@
             }
             if (weaponData.notesMarkdown && weaponData.notesMarkdown.trim()) {
                 var notesPreview = document.createElement('div');
-                notesPreview.className = 'transfer-attr-preview transfer-weapon-notes';
+                notesPreview.className = 'transfer-attr-preview cv-scroll transfer-weapon-notes';
                 notesPreview.innerHTML = window.renderMarkdown(weaponData.notesMarkdown);
                 body.appendChild(notesPreview);
             }
@@ -1442,7 +1442,7 @@
             var spellData = incoming.data || {};
             if (spellData.description) {
                 var descPreview = document.createElement('div');
-                descPreview.className = 'transfer-attr-preview';
+                descPreview.className = 'transfer-attr-preview cv-scroll';
                 var descText = document.createElement('div');
                 descText.className = 'transfer-spell-description';
                 descText.textContent = spellData.description;
@@ -1459,7 +1459,7 @@
             if (listAttrEl) body.appendChild(listAttrEl);
             if (incoming.data && incoming.data.notes && incoming.data.notes.trim()) {
                 var listNotesEl = document.createElement('div');
-                listNotesEl.className = 'transfer-attr-preview transfer-list-notes';
+                listNotesEl.className = 'transfer-attr-preview cv-scroll transfer-list-notes';
                 listNotesEl.textContent = incoming.data.notes;
                 body.appendChild(listNotesEl);
             }
@@ -1510,7 +1510,7 @@
                     '</span>' +
                     cvIcon('chevron-down', 10);
                 var tabMenu = document.createElement('ul');
-                tabMenu.className = 'cv-select-menu';
+                tabMenu.className = 'cv-select-menu cv-scroll';
                 tabs.forEach(function (tab) {
                     var li = document.createElement('li');
                     li.className = 'cv-select-option' + (tab.id === window.activeTabId ? ' selected' : '');
@@ -1559,7 +1559,7 @@
                 '</span>' +
                 cvIcon('chevron-down', 10);
             var menu = document.createElement('ul');
-            menu.className = 'cv-select-menu';
+            menu.className = 'cv-select-menu cv-scroll';
             targetModules.forEach(function (mod, idx) {
                 var li = document.createElement('li');
                 li.className = 'cv-select-option' + (idx === 0 ? ' selected' : '');

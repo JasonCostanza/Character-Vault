@@ -138,7 +138,7 @@
             cvIcon('x', 12) +
             '</button>' +
             '</div>' +
-            '<div class="cv-modal-body actions-add-body">' +
+            '<div class="cv-modal-body cv-scroll actions-add-body">' +
             '<input type="text" class="cv-modal-input actions-add-input" placeholder="' +
             escapeHtml(t('actions.namePlaceholder')) +
             '" spellcheck="false" autocomplete="off">' +
@@ -206,7 +206,7 @@
             '<span class="cv-modal-title">' + escapeHtml(t('actions.settingsTitle')) + '</span>' +
             '<button type="button" class="cv-modal-close" title="' + escapeHtml(t('module.close')) + '">' + cvIcon('x', 12) + '</button>' +
             '</div>' +
-            '<div class="cv-modal-body"></div>' +
+            '<div class="cv-modal-body cv-scroll"></div>' +
             '<div class="cv-modal-footer">' +
             '<button type="button" class="btn-secondary sm">' + escapeHtml(t('module.close')) + '</button>' +
             '</div>';

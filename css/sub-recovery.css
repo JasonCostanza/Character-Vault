@@ -9,14 +9,7 @@
     height: 100%;
     box-sizing: border-box;
     overflow-y: auto;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
 }
-
-.recovery-container::-webkit-scrollbar { width: 4px; }
-.recovery-container::-webkit-scrollbar-track { background: transparent; }
-.recovery-container::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .recovery-empty-state {
     display: flex;

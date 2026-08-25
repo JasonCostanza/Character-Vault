@@ -170,7 +170,7 @@
 
         // ── Body ──
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
         const textEl = document.createElement('div');
         textEl.className = 'tutorial-body-text';
         const dotsEl = document.createElement('div');

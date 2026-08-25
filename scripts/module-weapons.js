@@ -880,14 +880,14 @@
         container.className = 'weapons-container';
 
         var mainCol = document.createElement('div');
-        mainCol.className = 'weapons-column';
+        mainCol.className = 'weapons-column cv-scroll';
         mainCol.dataset.slot = 'main';
 
         var divider = document.createElement('div');
         divider.className = 'weapons-divider';
 
         var offCol = document.createElement('div');
-        offCol.className = 'weapons-column';
+        offCol.className = 'weapons-column cv-scroll';
         offCol.dataset.slot = 'off';
 
         var mainLabel = document.createElement('div');
@@ -1261,7 +1261,7 @@
             input.spellcheck = false;
             input.autocomplete = 'off';
             var dropdown = document.createElement('div');
-            dropdown.className = 'pool-combobox-dropdown';
+            dropdown.className = 'pool-combobox-dropdown cv-scroll';
 
             function refreshDropdown(filter) {
                 dropdown.innerHTML = '';
@@ -1760,7 +1760,7 @@
         header.appendChild(closeBtn);
 
         var body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         var bodyEl = moduleEl.querySelector('.module-body');
 
@@ -2003,7 +2003,7 @@
         header.appendChild(closeBtn);
 
         var body = document.createElement('div');
-        body.className = 'cv-modal-body weapon-action-body';
+        body.className = 'cv-modal-body cv-scroll weapon-action-body';
 
         var colWrap = document.createElement('div');
         colWrap.className = 'weapon-action-columns';
@@ -2490,7 +2490,7 @@
 
         // ── Body ──
         var modalBody = document.createElement('div');
-        modalBody.className = 'cv-modal-body weapon-edit-body';
+        modalBody.className = 'cv-modal-body cv-scroll weapon-edit-body';
 
         // Name
         var nameField = buildField(t('weapons.name'));
@@ -2927,7 +2927,7 @@
         // ── Notes ──
         var notesField = buildField(t('weapons.notes'));
         var notesTextarea = document.createElement('textarea');
-        notesTextarea.className = 'cv-input weapon-edit-notes';
+        notesTextarea.className = 'cv-input cv-scroll weapon-edit-notes';
         notesTextarea.value = workingWeapon.notesMarkdown || '';
         notesTextarea.rows = 3;
         notesTextarea.spellcheck = false;
@@ -3140,7 +3140,7 @@
         header.appendChild(closeBtn);
 
         var body = document.createElement('div');
-        body.className = 'cv-modal-body weapon-trait-picker-body';
+        body.className = 'cv-modal-body cv-scroll weapon-trait-picker-body';
 
         var searchInput = document.createElement('input');
         searchInput.type = 'text';
@@ -3150,7 +3150,7 @@
         body.appendChild(searchInput);
 
         var list = document.createElement('div');
-        list.className = 'weapon-trait-picker-list';
+        list.className = 'weapon-trait-picker-list cv-scroll';
         body.appendChild(list);
 
         var tooltipEl = document.createElement('div');
@@ -3228,7 +3228,7 @@
             nameInput.autocomplete = 'off';
 
             var descInput = document.createElement('textarea');
-            descInput.className = 'cv-input weapon-trait-inline-desc';
+            descInput.className = 'cv-input cv-scroll weapon-trait-inline-desc';
             descInput.placeholder = t('weapons.traitPicker.customDescription');
             descInput.value = existingTrait ? existingTrait.description || '' : '';
             descInput.rows = 2;
@@ -3572,7 +3572,7 @@
 
         var content = data.content;
         var picker = document.createElement('div');
-        picker.className = 'weapon-enhancement-picker';
+        picker.className = 'weapon-enhancement-picker cv-scroll';
 
         function renderPickerList() {
             picker.innerHTML = '';
@@ -3670,7 +3670,7 @@
         header.appendChild(closeBtn);
 
         var body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         // Name field
         var nameField = buildField(t('weapons.enhancements.name'));
@@ -3878,7 +3878,7 @@
         header.appendChild(closeBtn);
 
         var body = document.createElement('div');
-        body.className = 'cv-modal-body weapon-enhancement-catalog-body';
+        body.className = 'cv-modal-body cv-scroll weapon-enhancement-catalog-body';
 
         var list = document.createElement('div');
         list.className = 'weapon-enhancement-catalog-list';

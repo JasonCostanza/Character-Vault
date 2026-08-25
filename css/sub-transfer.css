@@ -35,14 +35,7 @@
     gap: 4px;
     max-height: 180px;
     overflow-y: auto;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
 }
-
-.transfer-player-list::-webkit-scrollbar { width: 4px; }
-.transfer-player-list::-webkit-scrollbar-track { background: transparent; }
-.transfer-player-list::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .transfer-player-item {
     display: flex;
@@ -192,14 +185,7 @@
     border: 1px solid var(--cv-border);
     max-height: 120px;
     overflow-y: auto;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
 }
-
-.transfer-attr-preview::-webkit-scrollbar { width: 4px; }
-.transfer-attr-preview::-webkit-scrollbar-track { background: transparent; }
-.transfer-attr-preview::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .transfer-attr-row {
     display: flex;
@@ -312,8 +298,6 @@
     overflow-y: auto;
     flex: 1;
     min-height: 0;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
 }
 
 .pending-offers-item {

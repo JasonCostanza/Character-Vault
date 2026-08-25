@@ -724,18 +724,11 @@
 .list-inspect-body {
     flex: 1;
     overflow-y: auto;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
     padding: 20px 24px;
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
-
-.list-inspect-body::-webkit-scrollbar { width: 4px; }
-.list-inspect-body::-webkit-scrollbar-track { background: transparent; }
-.list-inspect-body::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
 .list-inspect-field {
     display: flex;
@@ -782,18 +775,11 @@
     padding: 8px 12px;
     min-height: 80px;
     resize: vertical;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
     outline: none;
     font-family: inherit;
     box-sizing: border-box;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
-
-.list-inspect-notes-input::-webkit-scrollbar { width: 4px; }
-.list-inspect-notes-input::-webkit-scrollbar-track { background: transparent; }
-.list-inspect-notes-input::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
 .list-inspect-attr-grid {
     display: grid;
@@ -984,23 +970,10 @@
 .list-col-picker-list {
     max-height: 240px;
     overflow-y: auto;
-    scrollbar-gutter: stable;
     padding: 2px 0 6px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
 }
 
-.list-col-picker-list::-webkit-scrollbar {
-    width: 4px;
-}
-
-.list-col-picker-list::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.list-col-picker-list::-webkit-scrollbar-thumb {
-    background: var(--cv-text-muted);
-    border-radius: 2px;
+.list-col-picker-list.cv-scroll::-webkit-scrollbar-thumb {
     opacity: 0.5;
 }
 

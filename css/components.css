@@ -1,4 +1,14 @@
 
+/* ── Scrollbar Utility ── */
+.cv-scroll {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cv-text-muted) transparent;
+}
+.cv-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+.cv-scroll::-webkit-scrollbar-track { background: transparent; }
+.cv-scroll::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
+
 /* ── Toggle Switch ── */
 .cv-toggle {
     display: inline-flex;
@@ -357,14 +367,7 @@ select,
 #content {
     flex: 1;
     overflow-y: auto;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
 }
-
-#content::-webkit-scrollbar { width: 4px; }
-#content::-webkit-scrollbar-track { background: transparent; }
-#content::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 /* ── Settings Overlay ── */
 .settings-overlay {
@@ -419,15 +422,8 @@ select,
 .settings-body {
     flex: 1;
     overflow-y: auto;
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cv-text-muted) transparent;
     padding: 20px 24px;
 }
-
-.settings-body::-webkit-scrollbar { width: 4px; }
-.settings-body::-webkit-scrollbar-track { background: transparent; }
-.settings-body::-webkit-scrollbar-thumb { background: var(--cv-text-muted); border-radius: 2px; }
 
 .settings-section {
     margin-bottom: 24px;
@@ -773,18 +769,6 @@ select,
 
 .cv-select-option.selected {
     color: var(--cv-accent);
-}
-
-/* Scrollbar styling for the dropdown menu */
-.cv-select-menu::-webkit-scrollbar {
-    width: 4px;
-}
-.cv-select-menu::-webkit-scrollbar-track {
-    background: transparent;
-}
-.cv-select-menu::-webkit-scrollbar-thumb {
-    background-color: var(--cv-text-muted);
-    border-radius: 2px;
 }
 
 .wizard-layout-row {

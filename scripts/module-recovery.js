@@ -140,7 +140,7 @@
         panel.appendChild(header);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         const actionList = document.createElement('ul');
         actionList.className = 'recovery-confirm-actions-list';
@@ -311,7 +311,7 @@
         panel.appendChild(header);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         function reRenderModuleBody() {
             const bodyEl = moduleEl.querySelector('.module-body');
@@ -547,7 +547,7 @@
     function buildPlayMode(bodyEl, data) {
         const content = data.content;
         const container = document.createElement('div');
-        container.className = 'recovery-container';
+        container.className = 'recovery-container cv-scroll';
 
         if (!content.restButtons || content.restButtons.length === 0) {
             const empty = document.createElement('div');
@@ -627,7 +627,7 @@
         panel.appendChild(header);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         const nameField = document.createElement('div');
         nameField.className = 'recovery-edit-field';

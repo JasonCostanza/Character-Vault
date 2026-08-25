@@ -239,7 +239,7 @@
         header.appendChild(closeBtn);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
         const pre = document.createElement('pre');
         pre.className = 'import-error-detail';
         pre.textContent = detail;
@@ -322,7 +322,7 @@
         header.appendChild(closeBtn);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
         const descEl = document.createElement('p');
         descEl.className = 'tab-reset-confirm-text';
         descEl.textContent = desc;
@@ -507,7 +507,7 @@
         header.appendChild(closeBtn);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
         const msg = document.createElement('p');
         msg.className = 'tab-reset-confirm-text';
         msg.textContent = t('tabs.resetConfirm');

@@ -311,7 +311,7 @@
         header.appendChild(closeBtn);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         const input = document.createElement('input');
         input.type = 'number';
@@ -445,7 +445,7 @@
         header.appendChild(closeBtn);
 
         const body = document.createElement('div');
-        body.className = 'cv-modal-body health-action-body';
+        body.className = 'cv-modal-body cv-scroll health-action-body';
 
         // Add / Subtract toggle
         const modeRow = document.createElement('div');
@@ -640,7 +640,7 @@
 
         // Body
         const body = document.createElement('div');
-        body.className = 'cv-modal-body';
+        body.className = 'cv-modal-body cv-scroll';
 
         // ── Class Name ──
         const classSection = document.createElement('div');
@@ -707,7 +707,7 @@
         threshLabel.textContent = t('level.thresholdsLabel');
 
         const threshList = document.createElement('div');
-        threshList.className = 'level-threshold-list';
+        threshList.className = 'level-threshold-list cv-scroll';
 
         function rebuildThresholdList() {
             threshList.innerHTML = '';

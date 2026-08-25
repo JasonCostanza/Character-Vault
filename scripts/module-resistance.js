@@ -344,7 +344,7 @@
 
         // ── Body ──
         const body = document.createElement('div');
-        body.className = 'cv-modal-body res-settings-body';
+        body.className = 'cv-modal-body cv-scroll res-settings-body';
 
         // ── Columns (drop zones) ──
         const columnsRow = document.createElement('div');
@@ -734,7 +734,7 @@
 
         // ── Body ──
         const body = document.createElement('div');
-        body.className = 'res-wizard-body';
+        body.className = 'res-wizard-body cv-scroll';
 
         // Icon section
         const iconSection = document.createElement('div');

@@ -1,0 +1,904 @@
+{
+  "version": 3,
+  "savedAt": "2026-08-19T00:00:00.000Z",
+  "moduleIdCounter": 40,
+  "tabIdCounter": 1,
+  "gameSystem": "pf2e",
+  "activityLog": [],
+  "tabs": [
+    { "id": "tab-1", "name": "Breemiphi", "order": 0, "color": null }
+  ],
+  "activeTabId": "tab-1",
+  "modules": [
+    {
+      "id": "module-001",
+      "type": "bio",
+      "title": null,
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 0,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "activeTab": "overview",
+        "portrait": null,
+        "name": "Breemiphi Hearthsfire",
+        "pronouns": "She/her",
+        "race": "Gnome",
+        "alignment": "",
+        "age": "307",
+        "height": "",
+        "weight": "",
+        "eyes": "",
+        "hair": "",
+        "skin": "",
+        "appearance": "Size: Small. Mysterious tattoo location: middle of back of neck.",
+        "biography": "Goes by Bree. Born and lived on the Island of Absalom, specifically the northwest corner of the Immenwood forest. Grew up and wandered between a half-dozen small communities, including a large Iruxi (Lizardfolk) tribe.\n\nHas a friend moth named Rosa (not a familiar, but an actual moth). Has followed the coaxing breezes of the Wild Mother out of the forest and into the larger world. Why the Wild Mother called her away is still unknown to Bree.\n\nCharacter portrait reference: https://twitter.com/Max_Dunbar/status/1631807894113984512",
+        "showPersonality": true,
+        "personalityTraits": "Playful; mischievous; good natured; motherly. Wants to always be useful and active and doing.",
+        "ideals": "",
+        "bonds": "",
+        "flaws": "",
+        "deity": "Melora, the Wild Mother",
+        "birthplace": "",
+        "nationality": "",
+        "ethnicity": "",
+        "alias": "Bree",
+        "likesDislikes": "Likes: Mushrooms! Her forest communities; being a steward of a forest and helper of its denizens; being older (far less dramatic than being younger).\n\nDislikes: Apathy; Unhelpfulness.",
+        "alliesEnemies": "Allies: Rosa (giant moth animal companion); Garron Swiftstrider (Steve); Raevyn Talathyal (Josh)",
+        "organizations": "",
+        "backgroundName": "Herbalist",
+        "heritage": "Fey-touched Gnome",
+        "edicts": "",
+        "anathemas": "",
+        "occupation": "",
+        "ideologyBeliefs": "",
+        "culturalOrigin": "",
+        "community": "",
+        "lifestyle": "",
+        "clan": "",
+        "generation": "",
+        "sire": "",
+        "predatorType": "",
+        "ambition": "",
+        "desire": ""
+      }
+    },
+    {
+      "id": "module-002",
+      "type": "spacer",
+      "title": null,
+      "colSpan": 8,
+      "rowSpan": 1,
+      "order": 1,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-003",
+      "type": "hline",
+      "title": "Attributes & Defenses",
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 2,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-004",
+      "type": "stat",
+      "title": "Attributes",
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 3,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "layout": "modifier-only",
+        "stats": [
+          { "name": "STR", "value": 0, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+          { "name": "DEX", "value": 0, "modifier": 0, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+          { "name": "CON", "value": 4, "modifier": 4, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+          { "name": "INT", "value": 2, "modifier": 2, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+          { "name": "WIS", "value": 4, "modifier": 4, "proficient": "none", "proficiencyRank": "untrained", "rollable": true },
+          { "name": "CHA", "value": 3, "modifier": 3, "proficient": "none", "proficiencyRank": "untrained", "rollable": true }
+        ]
+      }
+    },
+    {
+      "id": "module-005",
+      "type": "defenses",
+      "title": null,
+      "colSpan": 4,
+      "rowSpan": null,
+      "order": 4,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "defenses": [
+          { "id": "def_ac", "name": "AC", "value": 19, "icon": "shield", "showSign": false },
+          { "id": "def_shield", "name": "Shield Bonus", "value": 2, "icon": "shield", "showSign": true },
+          { "id": "def_classdc", "name": "Class DC", "value": 22, "icon": "target", "showSign": false }
+        ],
+        "quickDefenses": [
+          { "id": "qd_raiseshield", "name": "Raise Shield", "icon": "shield", "modifier": 2, "active": false }
+        ]
+      }
+    },
+    {
+      "id": "module-006",
+      "type": "savingthrow",
+      "title": null,
+      "colSpan": 4,
+      "rowSpan": null,
+      "order": 5,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "saves": [
+          { "id": "save_fort", "name": "Fortitude", "value": 0, "proficiencyTier": "Expert", "linkedStatName": "CON" },
+          { "id": "save_ref", "name": "Reflex", "value": 0, "proficiencyTier": "Expert", "linkedStatName": "DEX" },
+          { "id": "save_will", "name": "Will", "value": 0, "proficiencyTier": "Expert", "linkedStatName": "WIS" }
+        ],
+        "notes": "",
+        "tiersEnabled": true,
+        "tiers": [
+          { "name": "Untrained", "letter": "U", "color": "#888888" },
+          { "name": "Trained", "letter": "T", "color": "#22aa44" },
+          { "name": "Expert", "letter": "E", "color": "#3388dd" },
+          { "name": "Master", "letter": "M", "color": "#aa44cc" },
+          { "name": "Legendary", "letter": "L", "color": "#cc9900" }
+        ],
+        "tierPreset": "pf2e",
+        "linkedStatModuleId": "module-004"
+      }
+    },
+    {
+      "id": "module-007",
+      "type": "health",
+      "title": null,
+      "colSpan": 1,
+      "rowSpan": null,
+      "order": 6,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": { "currentHP": 80, "maxHP": 80, "tempHP": 0, "maxHPModifier": 0 }
+    },
+    {
+      "id": "module-008",
+      "type": "level",
+      "title": null,
+      "colSpan": 3,
+      "rowSpan": null,
+      "order": 7,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "level": 6,
+        "currentXP": 0,
+        "levelingSystem": "milestone",
+        "xpThresholds": [],
+        "carryOverXP": true,
+        "barColor": null,
+        "barStyle": "solid",
+        "className": "Druid"
+      }
+    },
+    {
+      "id": "module-009",
+      "type": "counters",
+      "title": "Resources",
+      "colSpan": 4,
+      "rowSpan": null,
+      "order": 8,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "counters": [
+          { "id": "counter_hero", "name": "Hero Points", "icon": "star", "value": 1, "max": 3, "min": 0, "order": 0 },
+          { "id": "counter_focus", "name": "Focus Points", "icon": "diamond", "value": 3, "max": 3, "min": 0, "order": 1 },
+          { "id": "counter_speed", "name": "Speed", "icon": "bolt", "value": 25, "max": null, "min": 0, "order": 2 }
+        ],
+        "sortBy": "custom",
+        "sortDir": "asc"
+      }
+    },
+    {
+      "id": "module-010",
+      "type": "spacer",
+      "title": null,
+      "colSpan": 8,
+      "rowSpan": 1,
+      "order": 9,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-011",
+      "type": "hline",
+      "title": "Skills",
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 10,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-012",
+      "type": "abilities",
+      "title": "Skills",
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 11,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "linkedStatModuleId": "module-004",
+        "abilities": [
+          { "name": "Perception", "modifier": 0, "proficiency": "none", "proficiencyRank": "expert", "linkedStat": "WIS" },
+          { "name": "Acrobatics", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "DEX" },
+          { "name": "Arcana", "modifier": 0, "proficiency": "none", "proficiencyRank": "trained", "linkedStat": "INT" },
+          { "name": "Athletics", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "STR" },
+          { "name": "Crafting", "modifier": 0, "proficiency": "none", "proficiencyRank": "trained", "linkedStat": "INT" },
+          { "name": "Deception", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "CHA" },
+          { "name": "Diplomacy", "modifier": 0, "proficiency": "none", "proficiencyRank": "expert", "linkedStat": "CHA" },
+          { "name": "Intimidation", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "CHA" },
+          { "name": "Herbalism Lore", "modifier": 0, "proficiency": "none", "proficiencyRank": "trained", "linkedStat": "INT" },
+          { "name": "Medicine", "modifier": 0, "proficiency": "none", "proficiencyRank": "trained", "linkedStat": "WIS" },
+          { "name": "Nature", "modifier": 0, "proficiency": "none", "proficiencyRank": "expert", "linkedStat": "WIS" },
+          { "name": "Occultism", "modifier": 0, "proficiency": "none", "proficiencyRank": "trained", "linkedStat": "INT" },
+          { "name": "Performance", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "CHA" },
+          { "name": "Religion", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "WIS" },
+          { "name": "Society", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "INT" },
+          { "name": "Stealth", "modifier": 0, "proficiency": "none", "proficiencyRank": "trained", "linkedStat": "DEX" },
+          { "name": "Survival", "modifier": 0, "proficiency": "none", "proficiencyRank": "trained", "linkedStat": "WIS" },
+          { "name": "Thievery", "modifier": 0, "proficiency": "none", "proficiencyRank": "untrained", "linkedStat": "DEX" }
+        ]
+      }
+    },
+    {
+      "id": "module-013",
+      "type": "spacer",
+      "title": null,
+      "colSpan": 8,
+      "rowSpan": 1,
+      "order": 12,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-014",
+      "type": "hline",
+      "title": "Combat",
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 13,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-015",
+      "type": "weapons",
+      "title": null,
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 14,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "weapons": [
+          {
+            "id": "wpn_staff", "name": "Staff", "slot": "main", "kind": "melee", "icon": "staff",
+            "abilityMod": "str", "proficient": true, "attackBonusOverride": null,
+            "damageInstances": [{ "dice": "1d4", "modFromAbility": true, "flatBonus": 0, "damageType": "bludgeoning" }],
+            "range": null, "ammoCount": null,
+            "traits": [{ "key": "custom.wt_monk", "value": null }, { "key": "pf2e.twoHand", "value": "d8" }],
+            "notesMarkdown": "", "twoHanded": true,
+            "acBonus": null, "shieldHp": null, "shieldHpMax": null,
+            "proficiencyRank": "trained",
+            "skillName": null, "skillValue": null,
+            "poolAttribute": null, "poolSkill": null, "poolSize": null,
+            "weaponCategory": null, "cpredStat": null, "cpredSkillValue": null,
+            "governingTrait": null,
+            "baseDamageFlat": null, "damageCategory": null,
+            "firingModes": null, "impaling": null, "armorSavePenalty": null,
+            "attachedEnhancements": null
+          },
+          {
+            "id": "wpn_shieldbash", "name": "Shield Bash", "slot": "off", "kind": "melee", "icon": "shield",
+            "abilityMod": "str", "proficient": false, "attackBonusOverride": null,
+            "damageInstances": [{ "dice": "1d4", "modFromAbility": true, "flatBonus": 0, "damageType": "bludgeoning" }],
+            "range": null, "ammoCount": null,
+            "traits": [], "notesMarkdown": "", "twoHanded": false,
+            "acBonus": null, "shieldHp": null, "shieldHpMax": null,
+            "proficiencyRank": "untrained",
+            "skillName": null, "skillValue": null,
+            "poolAttribute": null, "poolSkill": null, "poolSize": null,
+            "weaponCategory": null, "cpredStat": null, "cpredSkillValue": null,
+            "governingTrait": null,
+            "baseDamageFlat": null, "damageCategory": null,
+            "firingModes": null, "impaling": null, "armorSavePenalty": null,
+            "attachedEnhancements": null
+          },
+          {
+            "id": "wpn_longspear", "name": "Longspear", "slot": "main", "kind": "melee", "icon": "spear",
+            "abilityMod": "str", "proficient": true, "attackBonusOverride": null,
+            "damageInstances": [{ "dice": "2d8", "modFromAbility": true, "flatBonus": 0, "damageType": "piercing" }],
+            "range": null, "ammoCount": null,
+            "traits": [{ "key": "pf2e.reach", "value": null }, { "key": "custom.wt_magical", "value": null }],
+            "notesMarkdown": "", "twoHanded": false,
+            "acBonus": null, "shieldHp": null, "shieldHpMax": null,
+            "proficiencyRank": "trained",
+            "skillName": null, "skillValue": null,
+            "poolAttribute": null, "poolSkill": null, "poolSize": null,
+            "weaponCategory": null, "cpredStat": null, "cpredSkillValue": null,
+            "governingTrait": null,
+            "baseDamageFlat": null, "damageCategory": null,
+            "firingModes": null, "impaling": null, "armorSavePenalty": null,
+            "attachedEnhancements": null
+          },
+          {
+            "id": "wpn_sling", "name": "Sling", "slot": "off", "kind": "ranged", "icon": null,
+            "abilityMod": "dex", "proficient": true, "attackBonusOverride": null,
+            "damageInstances": [{ "dice": "1d6", "modFromAbility": false, "flatBonus": 0, "damageType": "bludgeoning" }],
+            "range": null, "ammoCount": null,
+            "traits": [{ "key": "pf2e.propulsive", "value": null }],
+            "notesMarkdown": "", "twoHanded": false,
+            "acBonus": null, "shieldHp": null, "shieldHpMax": null,
+            "proficiencyRank": "trained",
+            "skillName": null, "skillValue": null,
+            "poolAttribute": null, "poolSkill": null, "poolSize": null,
+            "weaponCategory": null, "cpredStat": null, "cpredSkillValue": null,
+            "governingTrait": null,
+            "baseDamageFlat": null, "damageCategory": null,
+            "firingModes": null, "impaling": null, "armorSavePenalty": null,
+            "attachedEnhancements": null
+          },
+          {
+            "id": "wpn_blastingbeams", "name": "Blasting Beams", "slot": "off", "kind": "ranged", "icon": null,
+            "abilityMod": "dex", "proficient": false, "attackBonusOverride": 12,
+            "damageInstances": [{ "dice": "3d6", "modFromAbility": false, "flatBonus": 0, "damageType": "fire or electricity" }],
+            "range": null, "ammoCount": null,
+            "traits": [
+              { "key": "custom.wt_rare", "value": null },
+              { "key": "custom.wt_attack", "value": null },
+              { "key": "custom.wt_deviant", "value": null },
+              { "key": "custom.wt_magical", "value": null }
+            ],
+            "notesMarkdown": "A directed beam of heat or an arc of lightning is one of the simplest ways to project energy.",
+            "twoHanded": false,
+            "acBonus": null, "shieldHp": null, "shieldHpMax": null,
+            "proficiencyRank": null,
+            "skillName": null, "skillValue": null,
+            "poolAttribute": null, "poolSkill": null, "poolSize": null,
+            "weaponCategory": null, "cpredStat": null, "cpredSkillValue": null,
+            "governingTrait": null,
+            "baseDamageFlat": null, "damageCategory": null,
+            "firingModes": null, "impaling": null, "armorSavePenalty": null,
+            "attachedEnhancements": null
+          },
+          {
+            "id": "wpn_steelshield", "name": "Steel Shield", "slot": "off", "kind": "shield", "icon": "shield",
+            "abilityMod": "str", "proficient": false, "attackBonusOverride": null,
+            "damageInstances": [],
+            "range": null, "ammoCount": null,
+            "traits": [], "notesMarkdown": "", "twoHanded": false,
+            "acBonus": 2, "shieldHp": null, "shieldHpMax": null,
+            "proficiencyRank": null,
+            "skillName": null, "skillValue": null,
+            "poolAttribute": null, "poolSkill": null, "poolSize": null,
+            "weaponCategory": null, "cpredStat": null, "cpredSkillValue": null,
+            "governingTrait": null,
+            "baseDamageFlat": null, "damageCategory": null,
+            "firingModes": null, "impaling": null, "armorSavePenalty": null,
+            "attachedEnhancements": null
+          }
+        ],
+        "customWeaponTraits": [
+          { "key": "custom.wt_monk", "name": "monk" },
+          { "key": "custom.wt_magical", "name": "magical" },
+          { "key": "custom.wt_rare", "name": "rare" },
+          { "key": "custom.wt_attack", "name": "attack" },
+          { "key": "custom.wt_deviant", "name": "deviant" }
+        ],
+        "enhancementCatalog": [],
+        "daggerheartProficiency": null
+      }
+    },
+    {
+      "id": "module-016",
+      "type": "actions",
+      "title": "Actions",
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 15,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "layout": "wrap",
+        "actions": [
+          { "id": "act_1", "name": "Action", "used": false, "order": 0 },
+          { "id": "act_2", "name": "Action", "used": false, "order": 1 },
+          { "id": "act_3", "name": "Action", "used": false, "order": 2 },
+          { "id": "act_4", "name": "Reaction", "used": false, "order": 3 },
+          { "id": "act_5", "name": "Battle Medicine", "used": false, "order": 4 },
+          { "id": "act_6", "name": "Blasting Beams", "used": false, "order": 5 },
+          { "id": "act_7", "name": "Shield Block (Reaction)", "used": false, "order": 6 },
+          { "id": "act_8", "name": "Eerie Flicker (Reaction)", "used": false, "order": 7 }
+        ]
+      }
+    },
+    {
+      "id": "module-017",
+      "type": "spacer",
+      "title": null,
+      "colSpan": 8,
+      "rowSpan": 1,
+      "order": 16,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-018",
+      "type": "hline",
+      "title": "Spellcasting",
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 17,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-019",
+      "type": "spells",
+      "title": null,
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 18,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "autoSpendSlots": true,
+        "showSlotErrors": true,
+        "resourcePools": [
+          { "id": "rp_1", "type": "spell-slot", "level": 1, "name": null, "max": 3, "spent": 0 },
+          { "id": "rp_2", "type": "spell-slot", "level": 2, "name": null, "max": 3, "spent": 0 },
+          { "id": "rp_3", "type": "spell-slot", "level": 3, "name": null, "max": 3, "spent": 0 }
+        ],
+        "attributes": [
+          { "id": "attr_actions", "name": "Actions", "type": "text", "defaultValue": "", "pinned": true, "builtIn": false }
+        ],
+        "categories": [
+          {
+            "id": "cat_cantrips", "name": "Cantrips", "resourcePoolId": null, "collapsed": false,
+            "spells": [
+              { "id": "sp_detectmagic", "name": "Detect Magic", "description": "", "order": 0, "expanded": false, "values": { "attr_actions": "2" }, "slotCost": null, "canUpcast": false, "preparedCount": 99, "castsUsed": 0 },
+              { "id": "sp_light", "name": "Light", "description": "", "order": 1, "expanded": false, "values": { "attr_actions": "2" }, "slotCost": null, "canUpcast": false, "preparedCount": 99, "castsUsed": 0 }
+            ]
+          },
+          {
+            "id": "cat_focus", "name": "Focus Spells", "resourcePoolId": null, "collapsed": false,
+            "spells": [
+              { "id": "sp_cornucopia", "name": "Cornucopia", "description": "", "order": 0, "expanded": false, "values": { "attr_actions": "2" }, "slotCost": null, "canUpcast": false, "preparedCount": 99, "castsUsed": 0 },
+              { "id": "sp_healcompanion", "name": "Heal Companion", "description": "", "order": 1, "expanded": false, "values": { "attr_actions": "Varies" }, "slotCost": null, "canUpcast": false, "preparedCount": 99, "castsUsed": 0 }
+            ]
+          },
+          { "id": "cat_rank1", "name": "Rank 1 Spells", "resourcePoolId": "rp_1", "collapsed": false, "spells": [] },
+          { "id": "cat_rank2", "name": "Rank 2 Spells", "resourcePoolId": "rp_2", "collapsed": false, "spells": [] },
+          { "id": "cat_rank3", "name": "Rank 3 Spells", "resourcePoolId": "rp_3", "collapsed": false, "spells": [] }
+        ],
+        "sortBy": null,
+        "sortDir": "asc",
+        "linkedStatModuleId": "module-004",
+        "spellcastingAbility": "WIS",
+        "spellProficiencyRank": "trained",
+        "spellAttackOverride": null,
+        "spellDCOverride": null,
+        "casterType": "prepared"
+      }
+    },
+    {
+      "id": "module-020",
+      "type": "recovery",
+      "title": "Rest",
+      "colSpan": 4,
+      "rowSpan": null,
+      "order": 19,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "restButtons": [
+          { "id": "btn_rest", "name": "Rest", "actions": [{ "type": "healToFull" }, { "type": "restoreAllSpellSlots" }] }
+        ],
+        "hitDice": null
+      }
+    },
+    {
+      "id": "module-021",
+      "type": "condition",
+      "title": null,
+      "colSpan": 4,
+      "rowSpan": null,
+      "order": 20,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": { "template": "pf2e", "applied": [], "staging": [], "customConditions": [], "sortBy": null, "sortDir": "asc" }
+    },
+    {
+      "id": "module-022",
+      "type": "spacer",
+      "title": null,
+      "colSpan": 8,
+      "rowSpan": 1,
+      "order": 21,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-023",
+      "type": "hline",
+      "title": "Resources & Tracking",
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 22,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-024",
+      "type": "resistance",
+      "title": null,
+      "colSpan": 4,
+      "rowSpan": null,
+      "order": 23,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": { "layout": "columns", "immunities": [], "resistances": [], "weaknesses": [], "customTypes": [] }
+    },
+    {
+      "id": "module-025",
+      "type": "list",
+      "title": "Languages",
+      "colSpan": 4,
+      "rowSpan": null,
+      "order": 24,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "attributes": [],
+        "items": [
+          { "id": "lang_common", "name": "Common", "notes": "", "order": 0, "values": {} },
+          { "id": "lang_fey", "name": "Fey", "notes": "", "order": 1, "values": {} },
+          { "id": "lang_gnomish", "name": "Gnomish", "notes": "", "order": 2, "values": {} },
+          { "id": "lang_wildsong", "name": "Wildsong", "notes": "", "order": 3, "values": {} }
+        ],
+        "sortBy": null,
+        "sortDir": "asc"
+      }
+    },
+    {
+      "id": "module-026",
+      "type": "spacer",
+      "title": null,
+      "colSpan": 8,
+      "rowSpan": 1,
+      "order": 25,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-027",
+      "type": "hline",
+      "title": "Inventory",
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 26,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-028",
+      "type": "list",
+      "title": "Inventory",
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 27,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "attributes": [
+          { "id": "attr_bulk", "name": "Bulk", "type": "number", "icon": "scale", "defaultValue": 0, "pinned": true, "builtIn": true }
+        ],
+        "items": [
+          { "id": "item_primalsymbol", "name": "Primal Symbol", "notes": "", "order": 0, "values": { "attr_bulk": 0 } },
+          { "id": "item_staff", "name": "Staff", "notes": "", "order": 1, "values": { "attr_bulk": 1 } },
+          { "id": "item_sling", "name": "Sling", "notes": "", "order": 2, "values": { "attr_bulk": 0.1 } },
+          { "id": "item_rope", "name": "Rope (50 feet)", "notes": "", "order": 3, "values": { "attr_bulk": 0.1 } },
+          { "id": "item_backpack", "name": "Backpack", "notes": "", "order": 4, "values": { "attr_bulk": 0 } },
+          { "id": "item_bedroll", "name": "Bedroll", "notes": "", "order": 5, "values": { "attr_bulk": 0.1 } },
+          { "id": "item_chalk", "name": "Chalk", "notes": "", "order": 6, "values": { "attr_bulk": 0 } },
+          { "id": "item_flintsteel", "name": "Flint and Steel", "notes": "", "order": 7, "values": { "attr_bulk": 0 } },
+          { "id": "item_rations", "name": "Rations (1 week)", "notes": "", "order": 8, "values": { "attr_bulk": 0.1 } },
+          { "id": "item_soap", "name": "Soap", "notes": "", "order": 9, "values": { "attr_bulk": 0 } },
+          { "id": "item_torch", "name": "Torch", "notes": "", "order": 10, "values": { "attr_bulk": 0.1 } },
+          { "id": "item_waterskin", "name": "Waterskin", "notes": "", "order": 11, "values": { "attr_bulk": 0.1 } },
+          { "id": "item_leather", "name": "Leather", "notes": "", "order": 12, "values": { "attr_bulk": 1 } },
+          { "id": "item_steelshield", "name": "Steel Shield", "notes": "", "order": 13, "values": { "attr_bulk": 1 } },
+          { "id": "item_healpotminor", "name": "Healing Potion, Minor", "notes": "", "order": 14, "values": { "attr_bulk": 0.2 } },
+          { "id": "item_slingbullet", "name": "Sling Bullet", "notes": "", "order": 15, "values": { "attr_bulk": 0.1 } },
+          { "id": "item_healerstoolkit", "name": "Healers Toolkit", "notes": "", "order": 16, "values": { "attr_bulk": 1 } },
+          { "id": "item_cookware", "name": "Cookware", "notes": "", "order": 17, "values": { "attr_bulk": 2 } },
+          { "id": "item_potionescape", "name": "Potion of Emergency Escape", "notes": "", "order": 18, "values": { "attr_bulk": 0.1 } },
+          { "id": "item_healpotlesser", "name": "Healing Potion, Lesser", "notes": "", "order": 19, "values": { "attr_bulk": 0.2 } },
+          { "id": "item_coinpurse", "name": "Coin Purse", "notes": "0 cp, 9 sp, 151 gp, 0 pp", "order": 20, "values": { "attr_bulk": 0 } }
+        ],
+        "sortBy": null,
+        "sortDir": "asc"
+      }
+    },
+    {
+      "id": "module-029",
+      "type": "spacer",
+      "title": null,
+      "colSpan": 8,
+      "rowSpan": 1,
+      "order": 28,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-030",
+      "type": "hline",
+      "title": "Feats & Class Features",
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 29,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-031",
+      "type": "list",
+      "title": "Feats",
+      "colSpan": 4,
+      "rowSpan": null,
+      "order": 30,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "attributes": [],
+        "items": [
+          { "id": "feat_01", "name": "First World Magic", "notes": "", "order": 0, "values": {} },
+          { "id": "feat_02", "name": "Natural Medicine", "notes": "", "order": 1, "values": {} },
+          { "id": "feat_03", "name": "Shield Block", "notes": "", "order": 2, "values": {} },
+          { "id": "feat_04", "name": "Animal Empathy", "notes": "", "order": 3, "values": {} },
+          { "id": "feat_05", "name": "Order Explorer", "notes": "", "order": 4, "values": {} },
+          { "id": "feat_06", "name": "Animal Companion", "notes": "", "order": 5, "values": {} },
+          { "id": "feat_07", "name": "Survey Wildlife", "notes": "", "order": 6, "values": {} },
+          { "id": "feat_08", "name": "Eerie Flicker", "notes": "", "order": 7, "values": {} },
+          { "id": "feat_09", "name": "Leshy Familiar", "notes": "", "order": 8, "values": {} },
+          { "id": "feat_10", "name": "Plant Empathy", "notes": "", "order": 9, "values": {} },
+          { "id": "feat_11", "name": "Alchemical Crafting", "notes": "", "order": 10, "values": {} },
+          { "id": "feat_12", "name": "Mature Animal Companion", "notes": "", "order": 11, "values": {} },
+          { "id": "feat_13", "name": "Battle Medicine", "notes": "", "order": 12, "values": {} },
+          { "id": "feat_14", "name": "Animal Elocutionist", "notes": "", "order": 13, "values": {} },
+          { "id": "feat_15", "name": "Awakened Power", "notes": "", "order": 14, "values": {} },
+          { "id": "feat_16", "name": "Skill Training", "notes": "", "order": 15, "values": {} },
+          { "id": "feat_17", "name": "Order Magic", "notes": "", "order": 16, "values": {} },
+          { "id": "feat_18", "name": "Blasting Beams", "notes": "", "order": 17, "values": {} }
+        ],
+        "sortBy": null,
+        "sortDir": "asc"
+      }
+    },
+    {
+      "id": "module-032",
+      "type": "list",
+      "title": "Class Features",
+      "colSpan": 4,
+      "rowSpan": null,
+      "order": 31,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "attributes": [],
+        "items": [
+          { "id": "cf_01", "name": "Attribute Boosts", "notes": "", "order": 0, "values": {} },
+          { "id": "cf_02", "name": "Initial Proficiencies", "notes": "", "order": 1, "values": {} },
+          { "id": "cf_03", "name": "Druid Skill Training", "notes": "", "order": 2, "values": {} },
+          { "id": "cf_04", "name": "Druid Spellcasting", "notes": "", "order": 3, "values": {} },
+          { "id": "cf_05", "name": "Anathema", "notes": "", "order": 4, "values": {} },
+          { "id": "cf_06", "name": "Druidic Order", "notes": "", "order": 5, "values": {} },
+          { "id": "cf_07", "name": "Shield Block", "notes": "", "order": 6, "values": {} },
+          { "id": "cf_08", "name": "Voice of Nature", "notes": "", "order": 7, "values": {} },
+          { "id": "cf_09", "name": "Wildsong", "notes": "", "order": 8, "values": {} },
+          { "id": "cf_10", "name": "Heightening Spells", "notes": "", "order": 9, "values": {} },
+          { "id": "cf_11", "name": "Cantrips", "notes": "", "order": 10, "values": {} },
+          { "id": "cf_12", "name": "Leaf", "notes": "", "order": 11, "values": {} },
+          { "id": "cf_13", "name": "Leaf Order", "notes": "", "order": 12, "values": {} },
+          { "id": "cf_14", "name": "Skill Increase", "notes": "", "order": 13, "values": {} },
+          { "id": "cf_15", "name": "Skill Increase", "notes": "", "order": 14, "values": {} },
+          { "id": "cf_16", "name": "Druid Feat", "notes": "", "order": 15, "values": {} },
+          { "id": "cf_17", "name": "Skill Feat", "notes": "", "order": 16, "values": {} },
+          { "id": "cf_18", "name": "2nd-Rank Spells", "notes": "", "order": 17, "values": {} },
+          { "id": "cf_19", "name": "General Feat", "notes": "", "order": 18, "values": {} },
+          { "id": "cf_20", "name": "Perception Expertise", "notes": "", "order": 19, "values": {} },
+          { "id": "cf_21", "name": "Fortitude Expertise", "notes": "", "order": 20, "values": {} },
+          { "id": "cf_22", "name": "Druid Feat", "notes": "", "order": 21, "values": {} },
+          { "id": "cf_23", "name": "Skill Feat", "notes": "", "order": 22, "values": {} },
+          { "id": "cf_24", "name": "3rd-Rank Spells", "notes": "", "order": 23, "values": {} },
+          { "id": "cf_25", "name": "Attribute Boosts", "notes": "", "order": 24, "values": {} },
+          { "id": "cf_26", "name": "Ancestry Feat", "notes": "", "order": 25, "values": {} },
+          { "id": "cf_27", "name": "Reflex Expertise", "notes": "", "order": 26, "values": {} }
+        ],
+        "sortBy": null,
+        "sortDir": "asc"
+      }
+    },
+    {
+      "id": "module-033",
+      "type": "spacer",
+      "title": null,
+      "colSpan": 8,
+      "rowSpan": 1,
+      "order": 32,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-034",
+      "type": "hline",
+      "title": "Companions",
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 33,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-035",
+      "type": "companions",
+      "title": null,
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 34,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": {
+        "companions": [
+          {
+            "id": "comp_rosa", "name": "Rosa", "notes": "Giant moth animal companion. A friend, not a familiar — an actual moth.",
+            "active": true, "expanded": false, "order": 0,
+            "values": { "attr_hp": { "current": 0, "max": 0 }, "attr_ac": 0, "attr_run": 0, "attr_fly": 0 },
+            "conditions": []
+          },
+          {
+            "id": "comp_mushroomhair", "name": "Mushroom Hair", "notes": "Leshy Familiar (tiny fungus, mushroom symbiote) — mated hyphae implanted in the brain stem; mycelium network grows in a symbiotic relationship. HP = 5 × my level. AC = my AC. Save Modifiers = my Save Modifiers. Perception, Acrobatics, and Stealth modifiers equal to my level plus my spellcasting modifier.",
+            "active": true, "expanded": false, "order": 1,
+            "values": { "attr_hp": { "current": 30, "max": 30 }, "attr_ac": 19, "attr_run": 0, "attr_fly": 0 },
+            "conditions": []
+          }
+        ],
+        "attributes": [
+          { "id": "attr_hp", "name": "HP", "type": "number-pair", "icon": null, "defaultValue": { "current": 0, "max": 0 }, "pinned": true, "builtIn": true },
+          { "id": "attr_ac", "name": "AC", "type": "number", "icon": null, "defaultValue": 0, "pinned": true, "builtIn": true },
+          { "id": "attr_run", "name": "Run Speed", "type": "number", "icon": null, "defaultValue": 0, "pinned": true, "builtIn": true },
+          { "id": "attr_fly", "name": "Fly Speed", "type": "number", "icon": null, "defaultValue": 0, "pinned": true, "builtIn": true }
+        ],
+        "sortBy": null,
+        "sortDir": "asc"
+      }
+    },
+    {
+      "id": "module-036",
+      "type": "spacer",
+      "title": null,
+      "colSpan": 8,
+      "rowSpan": 1,
+      "order": 35,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-037",
+      "type": "hline",
+      "title": "Notes",
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 36,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": ""
+    },
+    {
+      "id": "module-038",
+      "type": "text",
+      "title": "Campaign Notes",
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 37,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": "**Backstory**\n\nGoes by Bree. Born and lived on the Island of Absalom, specifically the northwest corner of the Immenwood forest. Grew up and wandered between a half-dozen small communities, including a large Iruxi (Lizardfolk) tribe.\n\nHas a friend moth named Rosa (not a familiar, but an actual moth). Has followed the coaxing breezes of the Wild Mother out of the forest and into the larger world. Why the Wild Mother called her away is still unknown to Bree.\n\n**Leshy Familiar — Mushroom Hair**\n\nTiny fungus, mushroom symbiote. Mated hyphae implanted in the brain stem — mycelium network grows in a symbiotic relationship.\n- HP = 5 × my level\n- AC = my AC\n- Save Modifiers = my Save Modifiers\n- Perception, Acrobatics, and Stealth modifiers equal to my level plus my spellcasting modifier\n\n**Allies**\n\nRosa (giant moth animal companion); Garron Swiftstrider (Steve); Raevyn Talathyal (Josh)\n\n**Reference**\n\nCharacter portrait: https://twitter.com/Max_Dunbar/status/1631807894113984512"
+    },
+    {
+      "id": "module-039",
+      "type": "text",
+      "title": "Reactions & Free Actions",
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 38,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": "**Shield Block** — Reaction — Traits: general\n\nTrigger: While you have your shield raised, you would take physical damage (bludgeoning, piercing, or slashing) from an attack.\n\nEffect: You snap your shield in place to ward off a blow.\n\n---\n\n**Eerie Flicker** — Reaction — Traits: rare, deviant, magical\n\nTrigger: An enemy's Strike would hit you and you weren't already concealed, hidden, or undetected by that enemy.\n\nEffect: Your body flickers momentarily into the Ethereal Plane.\n\n---\n\n**Battle Medicine** — 1 Action — Traits: general, healing, manipulate, skill\n\nEffect: You can patch up wounds, even in combat.\n\n---\n\n**Blasting Beams** — 1 Action — Traits: rare, attack, deviant, magical\n\nEffect: A directed beam of heat or an arc of lightning is one of the simplest ways to project energy."
+    },
+    {
+      "id": "module-040",
+      "type": "activity",
+      "title": null,
+      "colSpan": 8,
+      "rowSpan": null,
+      "order": 39,
+      "theme": null,
+      "textLight": false,
+      "tabId": "tab-1",
+      "content": { "sortOrder": "newest", "hiddenEventTypes": [], "showTimestamps": true, "maxEntries": 200 }
+    }
+  ]
+}

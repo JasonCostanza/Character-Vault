@@ -480,21 +480,27 @@
                     }).length;
                     var totalSuccesses = regularSuccesses + hungerSuccesses;
 
-                    var resultLabel = pending.system === 'sr6' ? t('weapons.pool.hits') : t('weapons.pool.successes');
-                    var resultText = ' \u2192 ' + totalSuccesses + ' ' + resultLabel;
-
+                    var critPairs = 0;
+                    var hungerTens = 0;
+                    var hungerOnes = 0;
                     if (pending.system === 'vtm') {
                         var allTens = allFaces.filter(function (f) {
                             return f === 10;
                         }).length;
-                        var hungerTens = hungerFaces.filter(function (f) {
+                        hungerTens = hungerFaces.filter(function (f) {
                             return f === 10;
                         }).length;
-                        var hungerOnes = hungerFaces.filter(function (f) {
+                        hungerOnes = hungerFaces.filter(function (f) {
                             return f === 1;
                         }).length;
-                        var totalTens = allTens + hungerTens;
-                        var critPairs = Math.floor(totalTens / 2);
+                        critPairs = Math.floor((allTens + hungerTens) / 2);
+                        totalSuccesses += critPairs * 2;
+                    }
+
+                    var resultLabel = pending.system === 'sr6' ? t('weapons.pool.hits') : t('weapons.pool.successes');
+                    var resultText = ' \u2192 ' + totalSuccesses + ' ' + resultLabel;
+
+                    if (pending.system === 'vtm') {
                         if (critPairs > 0 && hungerTens > 0) {
                             resultText += ' \u2014 ' + t('weapons.vtm.messyCrit');
                         } else if (critPairs > 0) {

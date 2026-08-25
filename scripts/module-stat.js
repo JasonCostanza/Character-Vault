@@ -781,8 +781,10 @@
             var profStat = m.content.stats.find(function (s) {
                 return s.isProficiencyStat;
             });
-            if (!profStat || profStat.value === newBonus) return;
+            if (!profStat || (profStat.value === newBonus && profStat.modifier === newBonus)) return;
             profStat.value = newBonus;
+            profStat.modifier = newBonus;
+            scheduleSave();
             var moduleEl = document.querySelector('.module[data-id="' + m.id + '"]');
             if (!moduleEl) return;
             var bodyEl = moduleEl.querySelector('.module-body');

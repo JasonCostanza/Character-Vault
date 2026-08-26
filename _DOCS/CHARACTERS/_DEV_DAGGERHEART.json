@@ -200,7 +200,7 @@
                         "proficient": false,
                         "attackBonusOverride": null,
                         "damageInstances": [
-                            { "dice": "2d8", "modFromAbility": true, "flatBonus": 0, "damageType": "physical" }
+                            { "dice": "1d8", "modFromAbility": true, "flatBonus": 0, "damageType": "physical" }
                         ],
                         "range": null,
                         "ammoCount": null,

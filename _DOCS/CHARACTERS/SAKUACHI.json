@@ -481,9 +481,9 @@
             "content": {
                 "linkedStatModuleId": "module-012",
                 "saves": [
-                    { "id": "save_mpf0ixkok766", "name": "Fortitude", "value": 9, "proficiencyTier": null, "linkedStatName": "CON" },
-                    { "id": "save_mpf0ixko7wd6", "name": "Reflex", "value": 9, "proficiencyTier": null, "linkedStatName": "DEX" },
-                    { "id": "save_mpf0ixko7g0h", "name": "Will", "value": 11, "proficiencyTier": null, "linkedStatName": "WIS" }
+                    { "id": "save_mpf0ixkok766", "name": "Fortitude", "value": 7, "proficiencyTier": null, "linkedStatName": "CON" },
+                    { "id": "save_mpf0ixko7wd6", "name": "Reflex", "value": 8, "proficiencyTier": null, "linkedStatName": "DEX" },
+                    { "id": "save_mpf0ixko7g0h", "name": "Will", "value": 8, "proficiencyTier": null, "linkedStatName": "WIS" }
                 ],
                 "notes": "",
                 "tiersEnabled": true,

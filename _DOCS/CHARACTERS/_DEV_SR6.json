@@ -154,8 +154,8 @@
             "theme": null,
             "textLight": false,
             "tabId": "tab_dev_sr6_1",
-            "linkedStatModuleId": "mod_dev_sr6_005",
             "content": {
+                "linkedStatModuleId": "mod_dev_sr6_005",
                 "abilities": [
                     { "id": "abl_dev_sr6_001", "name": "Close Combat", "linkedStat": "Agility", "modifier": 8, "proficiency": "none", "proficiencyRank": "untrained" },
                     { "id": "abl_dev_sr6_002", "name": "Firearms", "linkedStat": "Agility", "modifier": 8, "proficiency": "none", "proficiencyRank": "untrained" },
@@ -270,8 +270,8 @@
             "theme": null,
             "textLight": false,
             "tabId": "tab_dev_sr6_2",
-            "linkedStatModuleId": "mod_dev_sr6_005",
             "content": {
+                "linkedStatModuleId": "mod_dev_sr6_005",
                 "weapons": [
                     {
                         "id": "wpn_dev_sr6_001",

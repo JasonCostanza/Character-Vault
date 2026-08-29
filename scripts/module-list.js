@@ -852,6 +852,7 @@
             handle: '.list-item-drag-handle',
             animation: 150,
             ghostClass: 'list-item-ghost',
+            chosenClass: 'cv-drag-chosen',
             draggable: '.list-item-row',
 
             onStart(evt) {

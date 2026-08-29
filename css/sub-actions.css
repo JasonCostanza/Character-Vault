@@ -48,6 +48,12 @@
     cursor: grab;
     font-size: 11px;
     flex-shrink: 0;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+}
+
+.actions-drag-handle:hover {
+    opacity: 1;
 }
 
 .actions-drag-handle:active {
@@ -109,9 +115,10 @@
 /* ── SortableJS Ghost ── */
 
 .actions-pill.cv-drag-ghost {
-    border: 2px dashed var(--cv-border);
-    background: transparent;
-    opacity: 0.5;
+    border: 2px dashed var(--cv-accent);
+    background: var(--cv-bg-sunken);
+    opacity: 0.3;
+    border-radius: 20px;
 }
 
 /* ── Add Action Modal ── */

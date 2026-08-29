@@ -257,14 +257,14 @@
     width: 12px;
     cursor: grab;
     color: var(--cv-text-muted);
-    opacity: 0.35;
+    opacity: 0.5;
     margin-right: 4px;
     transition: opacity 0.15s ease;
     user-select: none;
 }
 
 .tab-item:hover .tab-drag-handle {
-    opacity: 0.7;
+    opacity: 1;
 }
 
 .tab-drag-handle:active {
@@ -282,10 +282,10 @@
 
 .tab-ghost {
     opacity: 0.3;
-    border: 2px dashed var(--cv-accent) !important;
-    background: var(--cv-bg-sunken) !important;
+    border: 2px dashed var(--cv-accent);
+    background: var(--cv-bg-sunken);
     border-radius: 4px 4px 0 0 !important;
-    box-shadow: none !important;
+    box-shadow: none;
 }
 
 /* ── Add Tab Button ── */

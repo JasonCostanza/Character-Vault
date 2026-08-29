@@ -552,6 +552,7 @@
                 sort: false,
                 animation: 150,
                 ghostClass: 'res-ghost',
+                chosenClass: 'cv-drag-chosen',
                 draggable: '.res-staging-item',
             });
         }
@@ -563,6 +564,7 @@
                 sort: false,
                 animation: 150,
                 ghostClass: 'res-ghost',
+                chosenClass: 'cv-drag-chosen',
                 draggable: '.res-assigned-item',
                 onAdd: function (evt) {
                     const toColumn = colList.dataset.column;

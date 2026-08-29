@@ -731,6 +731,7 @@
             handle: '.tab-drag-handle',
             animation: 150,
             ghostClass: 'tab-ghost',
+            chosenClass: 'cv-drag-chosen',
             draggable: '.tab-item',
             direction: 'horizontal',
             onEnd: function () {

@@ -2595,6 +2595,7 @@
                 sort: false,
                 animation: 150,
                 ghostClass: 'cond-ghost',
+                chosenClass: 'cv-drag-chosen',
                 draggable: '.cond-staging-item',
             });
         }
@@ -2605,6 +2606,7 @@
                 sort: !content.sortBy, // Manual reorder only when no auto-sort
                 animation: 150,
                 ghostClass: 'cond-ghost',
+                chosenClass: 'cv-drag-chosen',
                 draggable: '.cond-assigned-item',
                 onAdd: function (evt) {
                     const isFromStaging = evt.from.classList.contains('cond-staging-grid');

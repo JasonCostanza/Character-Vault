@@ -50,6 +50,7 @@
     width: 14px;
     text-align: center;
     opacity: 0.5;
+    transition: opacity 0.15s ease;
 }
 
 .list-item-drag-handle:hover {
@@ -443,7 +444,7 @@
 }
 
 .module.list-drop-target .module-body {
-    background: rgba(192, 135, 74, 0.06);
+    background: color-mix(in srgb, var(--cv-accent) 6%, transparent);
 }
 
 /* ── List Manage Attributes Panel ── */
@@ -508,7 +509,7 @@
 .list-attr-ghost {
     opacity: 0.3;
     border: 2px dashed var(--cv-accent);
-    background-color: transparent;
+    background-color: var(--cv-bg-sunken);
 }
 
 .list-attr-icon {

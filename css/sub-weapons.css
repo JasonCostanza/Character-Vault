@@ -223,9 +223,9 @@
 }
 
 .weapon-ghost {
-    opacity: 0.4;
-    background: color-mix(in srgb, var(--cv-accent) 10%, transparent) !important;
-    border: 1px dashed var(--cv-accent) !important;
+    opacity: 0.3;
+    background: var(--cv-bg-sunken);
+    border: 2px dashed var(--cv-accent);
 }
 
 .weapon-card-icon {

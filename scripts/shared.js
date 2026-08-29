@@ -646,6 +646,7 @@
             handle: options.handleSelector,
             animation: 150,
             ghostClass: options.ghostClass,
+            chosenClass: options.chosenClass ?? 'cv-drag-chosen',
             draggable: options.rowSelector,
             onEnd: options.onEnd,
         });

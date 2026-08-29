@@ -102,6 +102,7 @@
             handle: '.actions-drag-handle',
             animation: 150,
             ghostClass: 'cv-drag-ghost',
+            chosenClass: 'cv-drag-chosen',
             draggable: '.actions-pill',
             direction: content.layout === 'list' ? 'vertical' : '',
             onEnd: function () {

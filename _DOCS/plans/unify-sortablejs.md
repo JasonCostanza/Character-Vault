@@ -1,6 +1,6 @@
 # SortableJS Drag UX Polish
 
-## Status: PENDING
+## Status: ✅ COMPLETE — all phases implemented
 
 ## Context
 
@@ -10,7 +10,7 @@ This plan unifies the drag experience so it feels like one cohesive system: same
 
 ---
 
-## Phase 1: Unified Ghost CSS
+## Phase 1: Unified Ghost CSS — ✅ COMPLETE
 
 **Goal**: All ghost placeholders use the same visual recipe. Per-context overrides allowed only for `border-radius`.
 
@@ -48,7 +48,7 @@ These need property fixes:
 
 ---
 
-## Phase 2: Chosen-Class Enhancement
+## Phase 2: Chosen-Class Enhancement — ✅ COMPLETE
 
 **Goal**: The item being dragged gets a subtle accent ring so users can distinguish "what I'm holding" from "where it will land." Module grid already has this via `module-dragging`; all other sortables need it.
 
@@ -94,7 +94,7 @@ Do NOT touch `module-core.js` — it already has `chosenClass: 'module-dragging'
 
 ---
 
-## Phase 3: Drag Handle Consistency
+## Phase 3: Drag Handle Consistency — ✅ COMPLETE
 
 **Goal**: Submodule inline drag handles use a consistent dim-to-reveal pattern: `opacity: 0.5` at rest → `opacity: 1` on hover, with `transition: opacity 0.15s ease`.
 
@@ -122,7 +122,7 @@ Do NOT touch `module-core.js` — it already has `chosenClass: 'module-dragging'
 
 ---
 
-## Phase 4: Cleanup
+## Phase 4: Cleanup — ✅ COMPLETE
 
 ### 4.1 — Fix hardcoded color in `css/sub-list.css`
 

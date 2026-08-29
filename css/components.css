@@ -9,6 +9,20 @@
 .cv-scroll::-webkit-scrollbar-track { background: transparent; }
 .cv-scroll::-webkit-scrollbar-thumb { background-color: var(--cv-text-muted); border-radius: 2px; }
 
+/* ── Drag & Drop ── */
+.cv-drag-ghost {
+    opacity: 0.3;
+    border: 2px dashed var(--cv-accent);
+    background-color: var(--cv-bg-sunken);
+    box-shadow: none;
+}
+
+.cv-drag-chosen {
+    outline: 2px solid var(--cv-accent);
+    outline-offset: 1px;
+    z-index: 1;
+}
+
 /* ── Toggle Switch ── */
 .cv-toggle {
     display: inline-flex;

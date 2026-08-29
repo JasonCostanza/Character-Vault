@@ -150,6 +150,7 @@
     opacity: 0.5;
     padding: 0 2px;
     display: inline-block;
+    transition: opacity 0.15s ease;
 }
 
 .companion-drag-handle:hover {
@@ -392,6 +393,7 @@
     opacity: 0.5;
     padding: 0 2px;
     display: inline-block;
+    transition: opacity 0.15s ease;
 }
 
 .companion-attr-drag-handle:hover {
@@ -400,7 +402,7 @@
 
 .companion-attr-ghost {
     opacity: 0.3;
-    border: 1px dashed var(--cv-accent);
+    border: 2px dashed var(--cv-accent);
     background: var(--cv-bg-sunken);
     box-shadow: none;
 }

@@ -655,6 +655,7 @@
             handle: '.companion-drag-handle',
             animation: 150,
             ghostClass: 'companion-row-ghost',
+            chosenClass: 'cv-drag-chosen',
             draggable: '.companion-row',
             onEnd() {
                 const rows = Array.from(tbody.querySelectorAll('.companion-row'));

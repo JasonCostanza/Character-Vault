@@ -1858,6 +1858,7 @@
                     animation: 150,
                     handle: '.weapon-manage-drag',
                     ghostClass: 'weapon-ghost',
+                    chosenClass: 'cv-drag-chosen',
                     draggable: '.weapon-manage-row',
                     onEnd: commitManageOrder,
                 });

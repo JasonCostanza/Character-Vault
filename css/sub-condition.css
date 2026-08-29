@@ -433,9 +433,9 @@
 
 /* ── Condition SortableJS Ghost ── */
 .cond-ghost {
-    opacity: 0.4;
-    border: 1px dashed var(--cv-accent) !important;
-    background: transparent !important;
+    opacity: 0.3;
+    border: 2px dashed var(--cv-accent);
+    background: var(--cv-bg-sunken);
 }
 
 /* ── Condition Value Prompt ── */

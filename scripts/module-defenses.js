@@ -480,6 +480,7 @@
             handle: '.def-qd-drag-handle',
             animation: 150,
             ghostClass: 'cv-drag-ghost',
+            chosenClass: 'cv-drag-chosen',
             draggable: '.def-qd-row',
             onEnd: function () {
                 const ids = Array.from(container.querySelectorAll('.def-qd-row')).map(function (el) {

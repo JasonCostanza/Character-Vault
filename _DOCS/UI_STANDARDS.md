@@ -18,7 +18,13 @@ Module toolbar buttons must have `title` attributes for custom CSS tooltips (nat
 
 ## Drag-to-Reorder
 
-**Use SortableJS for all drag-to-reorder** — never write custom pointer/mouse-based drag systems. SortableJS is already loaded via CDN. Follow the existing pattern: `handle`, `animation: 150`, `ghostClass`, `draggable`, and `onEnd`. See `initStatSortable()` or `initListSortable()` as references.
+**Use SortableJS for all drag-to-reorder** — never write custom pointer/mouse-based drag systems. SortableJS is already loaded via CDN. Follow the existing pattern: `handle`, `animation: 150`, `ghostClass`, `chosenClass`, `draggable`, and `onEnd`. See `initStatSortable()` or `initListSortable()` as references.
+
+**Ghost placeholder**: every `ghostClass` must resolve to the canonical recipe defined by `.cv-drag-ghost` in `css/components.css` (`opacity: 0.3`, `2px dashed var(--cv-accent)` border, `var(--cv-bg-sunken)` background, no box-shadow). Per-context ghost classes (e.g. `.tab-ghost`, `.save-ghost`) may override `border-radius` only — never opacity, border width/color, or background.
+
+**Chosen (held-item) state**: every Sortable instance must set `chosenClass: 'cv-drag-chosen'` so the dragged item gets a 2px accent outline while it's picked up. `initManageListSortable()` in `scripts/shared.js` defaults to this automatically; standalone `new Sortable(...)` calls must set it explicitly. Module grid drag (`module-dragging`) is the one exception — it uses a distinct scale/shadow treatment.
+
+**Drag handles**: inline drag handles (row/pill handles inside a list, not the module toolbar handle) rest at `opacity: 0.5` and reveal to `opacity: 1` on hover, with `transition: opacity 0.15s ease`. Always-visible handles (management panel rows, layout modules like spacers/hlines) and the module card's reveal-on-card-hover handle are exempt from this pattern by design.
 
 ## Play vs Edit Mode
 

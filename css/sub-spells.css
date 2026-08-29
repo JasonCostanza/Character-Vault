@@ -136,7 +136,6 @@
 
 .spells-cat-name { font-weight: 600; font-size: 12px; color: var(--cv-text); flex: 1; }
 .spells-cat-pips { display: flex; gap: 2px; }
-.spells-category-ghost { opacity: 0.3; border: 1px dashed var(--cv-accent); }
 
 .spells-cat-collapse-btn {
     background: none;
@@ -154,18 +153,6 @@
 .spells-cat-collapse-btn:hover { color: var(--cv-accent); }
 .spells-cat-collapse-btn svg { transition: transform 0.2s ease; }
 .spells-cat-collapse-btn.expanded svg { transform: rotate(90deg); }
-
-.spells-cat-drag-handle {
-    cursor: grab;
-    color: var(--cv-text-secondary);
-    font-size: 12px;
-    user-select: none;
-    opacity: 0.6;
-    padding: 0 2px;
-    display: inline-block;
-}
-
-.spells-cat-drag-handle:hover { opacity: 1; }
 
 /* Table */
 .spells-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
@@ -482,13 +469,14 @@
     opacity: 0.5;
     padding: 0 2px;
     display: inline-block;
+    transition: opacity 0.15s ease;
 }
 
 .spells-attr-drag-handle:hover { opacity: 1; }
 
 .spells-attr-ghost {
     opacity: 0.3;
-    border: 1px dashed var(--cv-accent);
+    border: 2px dashed var(--cv-accent);
     background: var(--cv-bg-sunken);
     box-shadow: none;
 }

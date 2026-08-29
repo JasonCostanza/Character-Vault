@@ -779,6 +779,7 @@
                 handle: '.save-tier-drag-handle',
                 animation: 150,
                 ghostClass: 'save-ghost',
+                chosenClass: 'cv-drag-chosen',
                 draggable: '.save-tier-row',
                 onEnd() {
                     const rows = Array.from(tierList.querySelectorAll('.save-tier-row'));

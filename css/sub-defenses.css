@@ -227,6 +227,12 @@
 .def-qd-drag-handle {
     cursor: grab; color: var(--cv-text-muted); font-size: 14px;
     flex-shrink: 0; user-select: none;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+}
+
+.def-qd-drag-handle:hover {
+    opacity: 1;
 }
 
 .def-qd-name-input {
@@ -276,7 +282,10 @@
 /* ── SortableJS Ghost ── */
 .def-manage-row.cv-drag-ghost,
 .def-qd-row.cv-drag-ghost {
-    opacity: 0.4; border: 1px dashed var(--cv-text-muted); border-radius: 4px;
+    opacity: 0.3;
+    border: 2px dashed var(--cv-accent);
+    background-color: var(--cv-bg-sunken);
+    border-radius: 4px;
 }
 
 /* ── Responsive ── */

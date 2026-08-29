@@ -7,3 +7,6 @@
 
 # Prettier Extension
 .prettier*
+
+# npm dependencies
+node_modules/

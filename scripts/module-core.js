@@ -888,11 +888,10 @@
         disabled: false,
         onStart() {
             _dragging = true;
-            moduleGrid.querySelectorAll('.module').forEach((el) => {
-                const data = window.modules.find((m) => m.id === el.dataset.id);
-                el.style.gridColumn = `span ${data ? data.colSpan : 1}`;
-                el.style.gridRow = `span ${data ? getRowSpan(data) : 1}`;
-            });
+        },
+        onChange() {
+            const orderedIds = Array.from(moduleGrid.querySelectorAll('.module')).map((el) => el.dataset.id);
+            previewDragLayout(orderedIds);
         },
         onEnd(evt) {
             _dragging = false;
@@ -1062,14 +1061,24 @@
         return 1;
     }
 
-    function computeLayout(moduleDataList) {
-        const results = [];
-        const occupied = [];
+    // Explicit "start / span" grid-row and grid-column are only present once a module
+    // has been through applyLayout. Drag-reorder (onStart, above) strips them back down
+    // to bare "span N" for the whole tab, which makes every module un-anchored again —
+    // exactly when we want a full order-based re-derivation instead of position anchoring.
+    function getCurrentPosition(id) {
+        const el = moduleGrid.querySelector(`.module[data-id="${id}"]`);
+        if (!el) return null;
+        const rowMatch = (el.style.gridRow || '').match(/^(\d+)\s*\/\s*span\s+(\d+)/);
+        const colMatch = (el.style.gridColumn || '').match(/^(\d+)\s*\/\s*span\s+(\d+)/);
+        if (!rowMatch || !colMatch) return null;
+        return { rowStart: parseInt(rowMatch[1], 10), colStart: parseInt(colMatch[1], 10) };
+    }
 
+    function createOccupancyGrid() {
+        const occupied = [];
         function isOccupied(row, col) {
             return !!(occupied[row] && occupied[row][col]);
         }
-
         function markOccupied(rowStart, colStart, colSpan, rowSpan) {
             for (let r = rowStart; r < rowStart + rowSpan; r++) {
                 if (!occupied[r]) occupied[r] = [];
@@ -1078,24 +1087,51 @@
                 }
             }
         }
+        function fitsAt(row, col, colSpan, rowSpan) {
+            if (col < 1 || col + colSpan - 1 > GRID_COLUMNS) return false;
+            for (let r = row; r < row + rowSpan; r++) {
+                for (let c = col; c < col + colSpan; c++) {
+                    if (isOccupied(r, c)) return false;
+                }
+            }
+            return true;
+        }
+        return { isOccupied, markOccupied, fitsAt };
+    }
 
+    function computeLayout(moduleDataList) {
+        const results = [];
+        const { markOccupied, fitsAt } = createOccupancyGrid();
+
+        // Anchor modules to their current on-screen position and place them in that
+        // order (top-to-bottom, left-to-right) instead of strict `order`. A resize only
+        // needs to displace whatever it now overlaps, cascading forward from there — not
+        // trigger a full from-scratch re-derivation that can strand an unrelated,
+        // later-`order` module far past everything else.
+        const anchored = [];
+        const unanchored = [];
         for (const data of moduleDataList) {
+            const pos = getCurrentPosition(data.id);
+            if (pos) anchored.push({ data, pos });
+            else unanchored.push({ data, pos: null });
+        }
+        anchored.sort((a, b) => a.pos.rowStart - b.pos.rowStart || a.pos.colStart - b.pos.colStart);
+        unanchored.sort((a, b) => a.data.order - b.data.order);
+
+        for (const { data, pos } of [...anchored, ...unanchored]) {
             const colSpan = data.colSpan;
             const rowSpan = getRowSpan(data);
-            let placed = false;
 
-            for (let row = 1; !placed; row++) {
+            if (pos && fitsAt(pos.rowStart, pos.colStart, colSpan, rowSpan)) {
+                markOccupied(pos.rowStart, pos.colStart, colSpan, rowSpan);
+                results.push({ id: data.id, colStart: pos.colStart, rowStart: pos.rowStart, colSpan, rowSpan });
+                continue;
+            }
+
+            let placed = false;
+            for (let row = pos ? pos.rowStart : 1; !placed; row++) {
                 for (let col = 1; col <= GRID_COLUMNS - colSpan + 1; col++) {
-                    let fits = true;
-                    outer: for (let r = row; r < row + rowSpan; r++) {
-                        for (let c = col; c < col + colSpan; c++) {
-                            if (isOccupied(r, c)) {
-                                fits = false;
-                                break outer;
-                            }
-                        }
-                    }
-                    if (fits) {
+                    if (fitsAt(row, col, colSpan, rowSpan)) {
                         markOccupied(row, col, colSpan, rowSpan);
                         results.push({ id: data.id, colStart: col, rowStart: row, colSpan, rowSpan });
                         placed = true;
@@ -1108,12 +1144,7 @@
         return results;
     }
 
-    function applyLayout() {
-        if (_dragging || _batchMode) return;
-        const tabModules = window.modules
-            .filter((m) => m.tabId === window.activeTabId)
-            .sort((a, b) => a.order - b.order);
-        const positions = computeLayout(tabModules);
+    function applyPositions(positions) {
         _layingOut = true;
         for (const pos of positions) {
             const el = moduleGrid.querySelector(`.module[data-id="${pos.id}"]`);
@@ -1122,6 +1153,54 @@
             el.style.gridRow = `${pos.rowStart} / span ${pos.rowSpan}`;
         }
         _layingOut = false;
+    }
+
+    function applyLayout() {
+        if (_dragging || _batchMode) return;
+        const tabModules = window.modules
+            .filter((m) => m.tabId === window.activeTabId)
+            .sort((a, b) => a.order - b.order);
+        applyPositions(computeLayout(tabModules));
+    }
+
+    // Plain dense pack, greedy scan by `order` only — no position anchoring. Used for
+    // live drag preview and final drop: while dragging, the whole tab's positions need
+    // to be re-derived from the DOM's current (mid-drag) order so the preview matches
+    // what will actually land, not just whatever happens to still fit at each module's
+    // old spot.
+    function computeDenseLayout(moduleDataList) {
+        const results = [];
+        const { markOccupied, fitsAt } = createOccupancyGrid();
+        for (const data of moduleDataList) {
+            const colSpan = data.colSpan;
+            const rowSpan = getRowSpan(data);
+            let placed = false;
+            for (let row = 1; !placed; row++) {
+                for (let col = 1; col <= GRID_COLUMNS - colSpan + 1; col++) {
+                    if (fitsAt(row, col, colSpan, rowSpan)) {
+                        markOccupied(row, col, colSpan, rowSpan);
+                        results.push({ id: data.id, colStart: col, rowStart: row, colSpan, rowSpan });
+                        placed = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return results;
+    }
+
+    // Live drag preview: recompute the real dense layout from the DOM's current
+    // (mid-drag) order instead of letting the browser's native grid auto-placement
+    // take over. Native auto-flow is DOM-order/sparse only — it doesn't know about
+    // our side-by-side dense packing, so it made unrelated modules "evacuate" during
+    // drag in ways that never matched what actually landed on drop.
+    function previewDragLayout(orderedIds) {
+        const tabModules = window.modules.filter((m) => m.tabId === window.activeTabId);
+        const byId = new Map(tabModules.map((m) => [m.id, m]));
+        const tempList = orderedIds
+            .map((id, i) => (byId.has(id) ? { ...byId.get(id), order: i } : null))
+            .filter(Boolean);
+        applyPositions(computeDenseLayout(tempList));
     }
 
     // ── ResizeObserver for Size Classes ──
